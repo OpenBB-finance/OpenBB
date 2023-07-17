@@ -111,7 +111,7 @@ spy = openbb.stocks.options.load_options_chains("SPY")
 
 The result is returned as the object described in the previous section.
 
-![Options Data Object](optionschains1.png)
+![Options Data Object](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/704e6d60-b148-442d-b4b2-689ceca6f55c)
 
 The object is still returned if an unsupported symbol is requested and a message will be printed.
 
@@ -255,7 +255,7 @@ All `chart_` methods have boolean arguments for `raw` and `external_axes`. These
 Returning the command to a variable provides the ability to style and customize charts as desired.
 
 ```python
-fig = data.chart_volatility(expirations=data.expirations[1])
+fig = data.chart_volatility(expirations=data.expirations[1], external_axes = True)
 ```
 
 :::
@@ -331,25 +331,25 @@ The volume and open interest metrics can be visualized in a number of ways. In g
 data.chart_stats()
 ```
 
-![Vix % of Total Volume vs. Strike](chart_stats3.png)
+![Vix % of Total Volume vs. Strike](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/70d55645-7510-4c1e-9e56-c6b37ef40249)
 
 ```python
 data.chart_stats(by="strike", oi=True)
 ```
 
-![VIX % of Total Open Interest vs. Strike](chart_stats1.png)
+![VIX % of Total Open Interest vs. Strike](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/9798ed44-23c3-4a54-9c20-ea6450c035d9)
 
 ```python
 data.chart_stats(by="strike", oi=True, percent=False)
 ```
 
-![VIX Open Interest vs. Strike](chart_stats2.png)
+![VIX Open Interest vs. Strike](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/b1bed9c5-4338-4fb5-8ffe-a67eba6c5219)
 
 ```python
 data.chart_stats(ratios=True)
 ```
 
-![VIX Volume and Open Interest Ratios](chart_stats4.png)
+![VIX Volume and Open Interest Ratios](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/0c459c96-267b-472e-8323-cb547af0e0e4)
 
 ### Options Strategies
 
@@ -406,7 +406,7 @@ data.get_vertical_put_spread(30,13,12.5)
 | DTE                     | 31                   |
 | Strike 1                | 13.0                 |
 | Strike 2                | 12.5                 |
-| Strike 1 Premium        | 0.17                 |
+| Strike 1 Premium        | -0.17                |
 | Strike 2 Premium        | 0.12                 |
 | Cost                    | -0.05 |
 | Cost Percent            | 0.3748               |
@@ -447,15 +447,6 @@ data.get_strategies(days = 30, straddle_strike = data.last_price, strangle_money
 
 The default state of `get_strategies()` is to return all ATM straddles.  This information can be useful for charting the term structure and expected move of the underlying asset.
 
-```python
-structure = data.get_strategies()[["Expiration", "Cost"]].set_index("Expiration")
-openbb.qa.line(structure["Cost"], title = "Cost of ATM VIX Straddle", log_y= False)
-```
-
-![Cost of Straddle](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4d16778c-78bb-44e3-8068-3ba1ceca44c3)
-
-Additional strategies will be added in the future.
-
 ### Volatility
 
 There are two types of views for volatility, smiles and surfaces.
@@ -468,7 +459,7 @@ As a default state, the put and call volatility smiles from the expiration in po
 data.chart_volatility()
 ```
 
-![VIX IV Smile](chart_volatility1.png)
+![VIX IV Smile](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/1bf4534a-7ae8-4770-9b07-5e793889beb9)
 
 The implied volatility can also be visualized as the forward curve at a specific strike or % moneyness.
 
@@ -476,13 +467,13 @@ The implied volatility can also be visualized as the forward curve at a specific
 data.chart_volatility(strike=20)
 ```
 
-![VIX Volatility at $20 Strike](chart_volatility2.png)
+![VIX Volatility at $20 Strike](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/e2b0dba6-2a51-4ff2-9e43-3667de15ae21)
 
 ```python
 data.chart_volatility(moneyness=30)
 ```
 
-![VIX Volatility at 30% OTM](chart_volatility3.png)
+![VIX Volatility at 30% OTM](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/c344724b-8544-4cd1-8cab-25e1924137a5)
 
 #### `chart_surface()`
 
@@ -492,7 +483,7 @@ A portion, or the entire, volatility surface is presented as a 3-D chart. The da
 data.chart_surface(dte_range = [30,300], strike_range = [10,30])
 ```
 
-![VIX OTM IV Surface](chart_surface1.png)
+![VIX OTM IV Surface](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/410769fe-b7da-40bf-915e-68901b3caf13)
 
 ### Skew
 
@@ -545,16 +536,16 @@ As a default state, the put and call skew smiles from the expiration in position
 
 `data.chart_skew()`
 
-![VIX IV Skew](chart_skew1.png)
+![VIX IV Skew](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/509ac801-85bc-41e9-9f6c-7654e471db77)
 
 Multiple expirations can be displayed by entering a list to the `expirations` parameter.
 
 `data.chart_skew(expirations=[data.expirations[6],data.expirations[10]])`
 
-![Multiple Expirations - VIX IV Skew](chart_skew2.png)
+![Multiple Expirations - VIX IV Skew](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/604407aa-bb0a-44dd-8051-0665ddb90b96)
 
 The forward curve is also callable by strike.
 
 `data.chart_skew(strike = 20)`
 
-![VIX IV Skew at $20 Strike](chart_skew3.png)
+![VIX IV Skew at $20 Strike](https://github.com/deeleeramone/OpenBBTerminal/assets/85772166/949674b9-7366-4beb-b278-2ee5c0d5dd71)
