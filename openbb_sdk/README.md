@@ -1,3 +1,18 @@
+# Table of contents
+
+- [Table of contents](#table-of-contents)
+- [OpenBB SDK](#openbb-sdk)
+  - [Pre-requisites](#pre-requisites)
+  - [Installation](#installation)
+  - [API keys](#api-keys)
+    - [From local file](#from-local-file)
+    - [From runtime](#from-runtime)
+    - [From OpenBB Hub](#from-openbb-hub)
+  - [Python Usage](#python-usage)
+  - [API Usage](#api-usage)
+  - [Docker](#docker)
+  - [Development](#development)
+
 # OpenBB SDK
 
 ## Pre-requisites
@@ -100,7 +115,7 @@ Launch the API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Navigate to http://0.0.0.0:8000/docs to see the swagger API documentation.
+Navigate to <http://0.0.0.0:8000/docs> to see the swagger API documentation.
 
 Authorize with the developer credentials: openbb/openbb
 
