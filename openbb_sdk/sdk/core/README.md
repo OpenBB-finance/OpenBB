@@ -1,20 +1,9 @@
 # THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE
 
-
-## 1. Introduction
-
-This is a collection of functions that allow extracting, transforming and exporting financial data.
-
-These functions are special:
-
-- They provide configuration
-- They will be automatically turned into REST API endpoint
-- They allow sharing data between commands
-
-### 1.1. Table of contents
+# Table of contents
 - [THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE](#this-readme-is-a-work-in-progress-and-can-be-very-much-out-of-date-refresh-the-page-until-this-banner-is-gone)
+- [Table of contents](#table-of-contents)
   - [1. Introduction](#1-introduction)
-    - [1.1. Table of contents](#11-table-of-contents)
   - [2. How to install?](#2-how-to-install)
   - [3. How to add a plugin?](#3-how-to-add-a-plugin)
   - [5. Usage](#5-usage)
@@ -31,6 +20,19 @@ These functions are special:
   - [8. Static version (BEING REFACTORED)](#8-static-version-being-refactored)
   - [9. Front-end typing](#9-front-end-typing)
   - [10. Default User](#10-default-user)
+
+
+## 1. Introduction
+
+This is a collection of functions that allow extracting, transforming and exporting financial data.
+
+These functions are special:
+
+- They provide configuration
+- They will be automatically turned into REST API endpoint
+- They allow sharing data between commands
+
+
 
 ## 2. How to install?
 
