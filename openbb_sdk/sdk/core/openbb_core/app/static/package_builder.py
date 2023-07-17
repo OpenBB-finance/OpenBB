@@ -20,7 +20,6 @@ from typing import (
     get_origin,
     get_type_hints,
 )
-from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
 from starlette.routing import BaseRoute
@@ -597,7 +596,7 @@ class PathHandler:
 
     @staticmethod
     def hash_path(path: str) -> str:
-        return str(uuid5(NAMESPACE_DNS, path)).replace("-", "_")
+        return str(path).replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:
