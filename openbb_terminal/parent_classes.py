@@ -119,6 +119,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    HOLD_CHOICES: dict = {}
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
@@ -193,6 +194,8 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
+
+        self.HELP_CHOICES = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
 
         # Add in news options
         news_choices = [
@@ -311,37 +314,38 @@ class BaseController(metaclass=ABCMeta):
                 # create a subplot
                 fig = config_terminal.get_current_figure()
 
-                if not fig.has_subplots:
-                    if config_terminal.make_new_axis():
-                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
-                    else:
-                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
+                if not fig.has_subplots and not config_terminal.make_new_axis():
+                    fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
 
-                for i, trace in enumerate(
-                    config_terminal.get_current_figure().select_traces()
-                ):
-                    trace.yaxis = f"y{i+1}"
+                if config_terminal.make_new_axis():
+                    for i, trace in enumerate(
+                        config_terminal.get_current_figure().select_traces()
+                    ):
+                        trace.yaxis = f"y{i+1}"
 
-                    if i != 0:
-                        fig.update_layout(
-                            {
-                                f"yaxis{i+1}": dict(
-                                    side="left"
-                                    if config_terminal.make_new_axis()
-                                    else "right",
-                                    overlaying="y",
-                                    showgrid=False,
-                                    showline=False,
-                                    zeroline=False,
-                                    automargin=True,
-                                    ticksuffix="       " * (i - 1) if i > 1 else "",
-                                    tickfont=dict(size=13),
-                                    title=dict(font=dict(size=15), standoff=0),
-                                ),
-                            }
-                        )
+                        if i != 0:
+                            fig.update_layout(
+                                {
+                                    f"yaxis{i+1}": dict(
+                                        side="left"
+                                        if config_terminal.make_new_axis()
+                                        else "right",
+                                        overlaying="y",
+                                        showgrid=False,
+                                        showline=False,
+                                        zeroline=False,
+                                        automargin=True,
+                                        ticksuffix="       " * (i - 1) if i > 1 else "",
+                                        tickfont=dict(size=13),
+                                        title=dict(font=dict(size=15), standoff=0),
+                                    ),
+                                }
+                            )
 
-                fig.update_layout(margin=dict(l=30 * i))
+                    fig.update_layout(margin=dict(l=30 * i))
+
+                else:
+                    fig.update_yaxes(title="")
                 fig.show()
 
                 config_terminal.set_current_figure(None)
