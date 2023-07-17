@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 OpenBBFigureT = TypeVar("OpenBBFigureT", bound="OpenBBFigure")
 HOLD: bool = False
-current_figure: Optional[OpenBBFigureT] = None
+current_figure: Optional[OpenBBFigureT] = None  # type: ignore
 new_axis: bool = True
 
 
@@ -52,7 +52,7 @@ def get_current_figure() -> Optional["OpenBBFigure"]:
     return current_figure
 
 
-def set_current_figure(fig: Optional[OpenBBFigureT] = None) -> Optional["OpenBBFigure"]:
+def set_current_figure(fig: Optional[OpenBBFigureT] = None):
     global current_figure
     current_figure = fig
 

@@ -338,8 +338,9 @@ class OpenBBFigure(go.Figure):
 
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
-        if config_terminal.get_current_figure():
-            traces = len(config_terminal.current_figure.data)
+        fig = config_terminal.get_current_figure()
+        if fig is not None:
+            traces = len(fig.data)
             self.update_layout(
                 {f"yaxis{traces+1}": dict(title=kwargs.pop("yaxis_title", ""))}
             )
@@ -367,8 +368,9 @@ class OpenBBFigure(go.Figure):
             Keyword arguments to pass to go.Figure.update_layout
         """
         axis = "yaxis"
-        if config_terminal.get_current_figure() is not None:
-            total_axes = len(config_terminal.current_figure.layout.yaxis)
+        fig = config_terminal.get_current_figure()
+        if fig is not None:
+            total_axes = len(fig.layout.yaxis)
             axis = f"yaxis{total_axes+1}"
             if config_terminal.make_new_axis():
                 kwargs["side"] = "left"
