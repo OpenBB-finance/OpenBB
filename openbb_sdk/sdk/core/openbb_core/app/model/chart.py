@@ -11,7 +11,7 @@ class ChartFormat(str, Enum):
 
 
 class Chart(BaseModel):
-    content: Dict[str, Any]
+    content: Optional[Dict[str, Any]] = None
     format: Optional[ChartFormat] = ChartFormat.plotly
     error: Optional[Error] = None
 
