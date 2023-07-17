@@ -20,7 +20,6 @@ from typing import (
     get_origin,
     get_type_hints,
 )
-from uuid import NAMESPACE_DNS, uuid5
 
 import pandas as pd
 from starlette.routing import BaseRoute
@@ -413,7 +412,7 @@ class MethodDefinition:
             "provider": None,
         }
 
-        DEFAULT_SUB = {
+        DEFAULT_REPLACEMENT = {
             "provider": None,
         }
 
@@ -444,7 +443,7 @@ class MethodDefinition:
                         name=name,
                         kind=Parameter.POSITIONAL_OR_KEYWORD,
                         annotation=updated_type,
-                        default=DEFAULT_SUB.get(name, default),
+                        default=DEFAULT_REPLACEMENT.get(name, default),
                     )
             else:
                 new_type = TYPE_EXPANSION.get(name, ...)
@@ -458,7 +457,7 @@ class MethodDefinition:
                     name=name,
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=updated_type,
-                    default=DEFAULT_SUB.get(name, param.default),
+                    default=DEFAULT_REPLACEMENT.get(name, param.default),
                 )
 
         return MethodDefinition.reorder_params(params=formatted)
@@ -573,7 +572,7 @@ class MethodDefinition:
 class PathHandler:
     @staticmethod
     def build_route_map() -> Dict[str, BaseRoute]:
-        router = RouterLoader.from_plugins()
+        router = RouterLoader.from_extensions()
         route_map = {route.path: route for route in router.api_router.routes}  # type: ignore
 
         return route_map
@@ -611,7 +610,7 @@ class PathHandler:
 
     @staticmethod
     def hash_path(path: str) -> str:
-        return str(uuid5(NAMESPACE_DNS, path)).replace("-", "_")
+        return str(path).replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:

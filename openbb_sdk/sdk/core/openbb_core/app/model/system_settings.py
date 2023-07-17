@@ -1,9 +1,17 @@
+import json
+import os
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
+from pathlib import Path
 from typing import List, Literal, Optional
 
 from pydantic import Field, root_validator, validator
 
-from openbb_core.app.constants import HOME_DIRECTORY, OPENBB_DIRECTORY
+from openbb_core.app.constants import (
+    HOME_DIRECTORY,
+    OPENBB_DIRECTORY,
+    SYSTEM_SETTINGS_PATH,
+    USER_SETTINGS_PATH,
+)
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.logs.utils.system_utils import get_branch, get_commit_hash
 
@@ -28,6 +36,8 @@ class SystemSettings(Tagged):
     version: str = "4.0.0dev"
     home_directory: str = str(HOME_DIRECTORY)
     openbb_directory: str = str(OPENBB_DIRECTORY)
+    user_settings_path: str = str(USER_SETTINGS_PATH)
+    system_settings_path: str = str(SYSTEM_SETTINGS_PATH)
 
     # Logging section
     logging_app_name: str = "gst"
@@ -50,6 +60,28 @@ class SystemSettings(Tagged):
             + "\n\n"
             + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
         )
+
+    @staticmethod
+    def create_empty_json(path: Path) -> None:
+        with open(path, mode="w") as file:
+            json.dump({}, file)
+
+    @root_validator(allow_reuse=True)
+    @classmethod
+    def create_openbb_directory(cls, values):
+        obb_dir = values["openbb_directory"]
+        user_settings = values["user_settings_path"]
+        system_settings = values["system_settings_path"]
+        if not os.path.exists(obb_dir):
+            os.makedirs(obb_dir)
+            cls.create_empty_json(user_settings)
+            cls.create_empty_json(system_settings)
+        else:
+            if not os.path.exists(user_settings):
+                cls.create_empty_json(user_settings)
+            if not os.path.exists(system_settings):
+                cls.create_empty_json(system_settings)
+        return values
 
     @root_validator(allow_reuse=True)
     @classmethod

@@ -103,7 +103,7 @@ def build_api_wrapper(
 
 
 def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> None:
-    plugins_router = RouterLoader.from_plugins()
+    plugins_router = RouterLoader.from_extensions()
 
     for route in plugins_router.api_router.routes:
         route.endpoint = build_api_wrapper(command_runner=command_runner, route=route)  # type: ignore # noqa

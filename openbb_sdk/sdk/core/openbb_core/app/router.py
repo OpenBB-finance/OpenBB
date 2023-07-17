@@ -223,10 +223,17 @@ class SignatureInspector:
         if model:
             if model not in provider_interface.models:
                 raise AttributeError(
-                    f"Invalid model: {model}. Check available models in ProviderInterface().models"
+                    f"Invalid model: '{model}'. Check available models in ProviderInterface().models"
                 )
 
-            cls.validate_signature(func=func)
+            cls.validate_signature(
+                func,
+                {
+                    "provider_choices": ProviderChoices,
+                    "standard_params": StandardParams,
+                    "extra_params": ExtraParams,
+                },
+            )
 
             func = cls.inject_dependency(
                 func=func,
@@ -260,37 +267,20 @@ class SignatureInspector:
         return func
 
     @staticmethod
-    def validate_signature(func: Callable[P, CommandOutput]) -> None:
+    def validate_signature(
+        func: Callable[P, CommandOutput], expected: Dict[str, type]
+    ) -> None:
         """Validate function signature before binding to model."""
-        if "provider_choices" not in func.__annotations__:
-            raise AttributeError(
-                f"Invalid signature: {func.__name__}. Missing provider_choices parameter."
-            )
+        for k, v in expected.items():
+            if k not in func.__annotations__:
+                raise AttributeError(
+                    f"Invalid signature: '{func.__name__}'. Missing '{k}' parameter."
+                )
 
-        if func.__annotations__["provider_choices"] != ProviderChoices:
-            raise TypeError(
-                f"Invalid signature: {func.__name__}. provider_choices parameter must be of type ProviderChoices."
-            )
-
-        if "standard_params" not in func.__annotations__:
-            raise AttributeError(
-                f"Invalid signature: {func.__name__}. Missing standard_params parameter."
-            )
-
-        if func.__annotations__["standard_params"] != StandardParams:
-            raise TypeError(
-                f"Invalid signature: {func.__name__}. standard_params parameter must be of type StandardParams."
-            )
-
-        if "extra_params" not in func.__annotations__:
-            raise AttributeError(
-                f"Invalid signature: {func.__name__}. Missing extra_params parameter."
-            )
-
-        if func.__annotations__["extra_params"] != ExtraParams:
-            raise TypeError(
-                f"Invalid signature: {func.__name__}. extra_params parameter must be of type ExtraParams."
-            )
+            if func.__annotations__[k] != v:
+                raise TypeError(
+                    f"Invalid signature: '{func.__name__}'. '{k}' parameter must be of type '{v.__name__}'."
+                )
 
     @staticmethod
     def inject_dependency(
@@ -317,7 +307,7 @@ class CommandMap:
     """Matching Routes with Commands."""
 
     def __init__(self, router: Optional[Router] = None) -> None:
-        self._router = router or RouterLoader.from_plugins()
+        self._router = router or RouterLoader.from_extensions()
         self._map = self.get_command_map(router=self._router)
         self._provider_coverage = self.get_provider_coverage(router=self._router)
         self._command_coverage = self.get_command_coverage(router=self._router)
@@ -389,9 +379,13 @@ class CommandMap:
         return self._map.get(route, None)
 
 
+class ExtensionError(Exception):
+    pass
+
+
 class RouterLoader:
     @staticmethod
-    def from_plugins() -> Router:
+    def from_extensions() -> Router:
         router = Router()
         for entry_point in pkg_resources.iter_entry_points("openbb_core_extension"):
             try:
@@ -400,8 +394,8 @@ class RouterLoader:
                     prefix=f"/{entry_point.name}",
                 )
             except Exception as e:
-                raise ModuleNotFoundError(
-                    f"Invalid extension {entry_point.name}: {e}"
+                raise ExtensionError(
+                    f"Invalid extension '{entry_point.name}': {e}"
                 ) from e
 
         return router

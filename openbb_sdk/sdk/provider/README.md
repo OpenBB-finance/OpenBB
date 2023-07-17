@@ -1,8 +1,5 @@
-# THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE
-
 # Table of contents
 
-- [THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE](#this-readme-is-a-work-in-progress-and-can-be-very-much-out-of-date-refresh-the-page-until-this-banner-is-gone)
 - [Table of contents](#table-of-contents)
 - [provider](#provider)
   - [What is Data Standardization?](#what-is-data-standardization)

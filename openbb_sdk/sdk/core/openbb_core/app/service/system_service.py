@@ -1,12 +1,12 @@
 from pathlib import Path
 from typing import Optional
 
-from openbb_core.app.constants import OPENBB_DIRECTORY
+from openbb_core.app.constants import SYSTEM_SETTINGS_PATH
 from openbb_core.app.model.system_settings import SystemSettings
 
 
 class SystemService:
-    SYSTEM_SETTINGS_PATH = Path(OPENBB_DIRECTORY, "system_settings.json")
+    SYSTEM_SETTINGS_PATH = SYSTEM_SETTINGS_PATH
     SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {"run_in_isolation", "dbms_uri"}
 
     @classmethod

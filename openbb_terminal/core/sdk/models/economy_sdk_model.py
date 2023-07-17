@@ -51,9 +51,8 @@ class EconomyRoot(Category):
         `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
         `spending`: General government spending provides an indication of the size\n
         `spending_chart`: General government spending provides an indication of the size\n
-        `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
+        `treasury`: Get treasury rates from Federal Reserve\n
         `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
-        `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
         `trust`: Trust in government refers to the share of people who report having confidence in\n
         `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
         `usbonds`: Scrape data for us bonds\n
@@ -108,9 +107,8 @@ class EconomyRoot(Category):
         self.search_index = lib.economy_yfinance_model.get_search_indices
         self.spending = lib.economy_oecd_model.get_spending
         self.spending_chart = lib.economy_oecd_view.plot_spending
-        self.treasury = lib.economy_econdb_model.get_treasuries
-        self.treasury_chart = lib.economy_econdb_view.show_treasuries
-        self.treasury_maturities = lib.economy_econdb_model.get_treasury_maturities
+        self.treasury = lib.economy_fedreserve_model.get_treasury_rates
+        self.treasury_chart = lib.economy_fedreserve_view.show_treasuries
         self.trust = lib.economy_oecd_model.get_trust
         self.trust_chart = lib.economy_oecd_view.plot_trust
         self.usbonds = lib.economy_wsj_model.us_bonds

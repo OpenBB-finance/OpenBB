@@ -27,14 +27,12 @@ try:
     from openbb_core.app.model.user_settings import UserSettings
     from openbb_core.app.static.account import Account
     from openbb_core.app.static.coverage import Coverage
-    from openbb_core.app.static.package.MODULE_4ebd0208_8328_5d69_8c44_ec50939c0967 import (
-        CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967,
-    )
+    from openbb_core.app.static.package.MODULE_ import CLASS_
 except ImportError:
     app = None
 else:
 
-    class App(CLASS_4ebd0208_8328_5d69_8c44_ec50939c0967):
+    class App(CLASS_):
         """App class."""
 
         def __init__(self, command_runner_session):

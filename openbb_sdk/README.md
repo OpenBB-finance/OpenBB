@@ -1,3 +1,18 @@
+# Table of contents
+
+- [Table of contents](#table-of-contents)
+- [OpenBB SDK](#openbb-sdk)
+  - [Pre-requisites](#pre-requisites)
+  - [Installation](#installation)
+  - [API keys](#api-keys)
+    - [From local file](#from-local-file)
+    - [From runtime](#from-runtime)
+    - [From OpenBB Hub](#from-openbb-hub)
+  - [Python Usage](#python-usage)
+  - [API Usage](#api-usage)
+  - [Docker](#docker)
+  - [Development](#development)
+
 # OpenBB SDK
 
 ## Pre-requisites

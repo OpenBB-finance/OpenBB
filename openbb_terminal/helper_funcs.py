@@ -846,6 +846,8 @@ def us_market_holidays(years) -> list:
 
 def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return num
 
     if num == float("inf"):
         return "inf"

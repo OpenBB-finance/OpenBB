@@ -2,7 +2,7 @@ from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
 
-from openbb_core.app.constants import OPENBB_DIRECTORY
+from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
@@ -27,8 +27,8 @@ from pymongo.mongo_client import MongoClient
 
 class UserService:
     REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
-    USER_SETTINGS_PATH = Path(OPENBB_DIRECTORY, "user_settings.json")
-    SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
+    USER_SETTINGS_PATH = USER_SETTINGS_PATH
+    USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
 
     @staticmethod
     def build_token_repository(
@@ -98,7 +98,7 @@ class UserService:
         path = path or cls.USER_SETTINGS_PATH
 
         user_settings_json = user_settings.json(
-            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET,
+            include=cls.USER_SETTINGS_ALLOWED_FIELD_SET,
             indent=4,
             sort_keys=True,
         )

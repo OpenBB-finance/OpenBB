@@ -3,7 +3,7 @@
 import json
 import sys
 import textwrap
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import floor
 from pathlib import Path
 from typing import (
@@ -1052,6 +1052,8 @@ class OpenBBFigure(go.Figure):
             The x shift of the command source annotation, by default 0
         bar_width : `float`, optional
             The width of the bars, by default 0.0001
+        date_xaxis : `bool`, optional
+            Whether to check if the xaxis is a date axis, by default True
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
@@ -1066,7 +1068,9 @@ class OpenBBFigure(go.Figure):
             self._adjust_margins()
 
         self._apply_feature_flags()
-        self._xaxis_tickformatstops()
+        if kwargs.pop("date_xaxis", True):
+            self.add_rangebreaks()
+            self._xaxis_tickformatstops()
 
         self.update_traces(marker_line_width=self.bar_width, selector=dict(type="bar"))
         self.update_traces(
@@ -1262,9 +1266,8 @@ class OpenBBFigure(go.Figure):
         df_data: pd.DataFrame,
         row: Optional[int] = None,
         col: Optional[int] = None,
-        prepost: bool = False,
     ) -> None:
-        """Add rangebreaks to hide gaps on the xaxis.
+        """Add rangebreaks to hide datetime gaps on the xaxis.
 
         Parameters
         ----------
@@ -1274,12 +1277,9 @@ class OpenBBFigure(go.Figure):
             The row of the subplot to hide the gaps, by default None
         col : `int`, optional
             The column of the subplot to hide the gaps, by default None
-        prepost : `bool`, optional
-            Whether to add rangebreaks for pre and post market hours, by default False
         """
         # We get the min and max dates
         dt_start, dt_end = df_data.index.min(), df_data.index.max()
-        has_weekends = df_data.index.dayofweek.isin([5, 6]).any()
         rangebreaks: List[Dict[str, Any]] = []
 
         # if weekly or monthly data, we don't need to hide gaps
@@ -1288,53 +1288,31 @@ class OpenBBFigure(go.Figure):
         if check_freq > 7:
             return
 
-        # We check if weekends are in the df_data
-        if has_weekends:
-            # We get the days including weekends
-            dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
+        # We get the missing days
+        is_daily = df_data.index[-1].time() == df_data.index[-2].time()
+        dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
 
-            # We get the dates that are missing
-            dt_missing_days = list(
-                set(dt_days.strftime("%Y-%m-%d").tolist())
-                - set(df_data.index.strftime("%Y-%m-%d"))
-            )
+        # We get the dates that are missing
+        dt_missing_days = list(
+            set(dt_days.strftime("%Y-%m-%d")) - set(df_data.index.strftime("%Y-%m-%d"))
+        )
+        dt_missing_days = pd.to_datetime(dt_missing_days)
 
-            rangebreaks = [dict(values=dt_missing_days)]
-        else:
-            # We get the missing days excluding weekends
-            is_daily = df_data.index[-1].time() == df_data.index[-2].time()
-            dt_bdays = pd.bdate_range(start=dt_start, end=dt_end, normalize=True)
-            time_string = (
-                (" 09:30:00" if not prepost else " 04:00:00") if not is_daily else ""
-            )
+        rangebreaks = [dict(values=dt_missing_days)]
 
-            # We get the dates that are missing
-            dt_missing_days = list(
-                set(dt_bdays.strftime(f"%Y-%m-%d{time_string}"))
-                - set(df_data.index.strftime(f"%Y-%m-%d{time_string}"))
-            )
-            dt_missing_days = pd.to_datetime(dt_missing_days)
-
-            rangebreaks = [dict(bounds=["sat", "mon"]), dict(values=dt_missing_days)]
-
-            # We add a rangebreak if the first and second time are not the same
-            # since daily data will have the same time (00:00)
-            if not is_daily:
-                if prepost:
-                    rangebreaks.insert(0, dict(bounds=[20, 4], pattern="hour"))
-                else:
-                    rangebreaks.insert(0, dict(bounds=[16, 9.5], pattern="hour"))
+        # We add a rangebreak if the first and second time are not the same
+        # since daily data will have the same time (00:00)
+        if not is_daily:
+            for i in range(len(df_data) - 1):
+                if df_data.index[i + 1] - df_data.index[i] > timedelta(hours=2):
+                    rangebreaks.insert(
+                        0, dict(bounds=[df_data.index[i], df_data.index[i + 1]])
+                    )
 
         self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 
-    def hide_holidays(self, prepost: bool = False) -> None:
-        """Add rangebreaks to hide holidays on the xaxis.
-
-        Parameters
-        ----------
-        prepost : `bool`, optional
-            Whether to add rangebreaks for pre and post market hours, by default False
-        """
+    def add_rangebreaks(self) -> None:
+        """Add rangebreaks to hide datetime gaps on the xaxis."""
         if self.get_dateindex() is None:
             return
 
@@ -1349,7 +1327,6 @@ class OpenBBFigure(go.Figure):
                     pd.DataFrame(index=x_values.tolist()),
                     row=row,
                     col=col,
-                    prepost=prepost,
                 )
 
     def to_subplot(
