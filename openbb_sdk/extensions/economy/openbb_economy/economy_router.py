@@ -11,7 +11,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from openbb_provider.abstract.data import Data
+from pydantic import BaseModel
 
 datetype = Union[datetime.datetime, str]
 list_str = Union[List[str], str]
@@ -65,7 +65,7 @@ def cpi(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[Data]:
+) -> CommandOutput[BaseModel]:
     """CPI."""
     return CommandOutput(results=Query(**locals()).execute())
 

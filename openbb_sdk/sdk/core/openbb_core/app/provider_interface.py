@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
 from openbb_provider.map import build_provider_mapping
-from openbb_provider.registry import build_provider_registry, ProviderRegistry
+from openbb_provider.registry import ProviderRegistry, build_provider_registry
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 
 

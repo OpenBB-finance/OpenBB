@@ -138,7 +138,7 @@ class Custom(PltTA):
             min_pr,
             max_pr,
             lvl_text,
-        ) = calculate_fib_levels(df_ta, limit, start_date, end_date)
+        ) = calculate_fib_levels(df_ta, "FIIIIX", limit, start_date, end_date)
         levels = df_fib.Price
         fibs = [
             "<b>0</b>",
