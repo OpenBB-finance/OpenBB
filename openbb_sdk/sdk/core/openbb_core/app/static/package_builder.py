@@ -250,15 +250,18 @@ class DocstringGenerator:
             return docstring
 
         doc_lines = docstring.split("\n")
-        skip_next_line = False
+        skip_line = False
         cleaned_lines = []
 
         for line in doc_lines:
-            if any(word in line for word in standard_fields) or skip_next_line:
-                skip_next_line = not skip_next_line
-                continue
+            stripped_line = line.strip()
 
-            cleaned_lines.append(line)
+            if skip_line and stripped_line:
+                skip_line = False
+            elif stripped_line.split(" : ")[0] in standard_fields:
+                skip_line = True
+            else:
+                cleaned_lines.append(line)
 
         for i, line in enumerate(cleaned_lines):
             try:
