@@ -1,4 +1,6 @@
 from pathlib import Path
+from typing import Optional
+
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.logs.utils.utils import get_app_id
@@ -6,7 +8,14 @@ from openbb_core.logs.utils.utils import get_app_id
 
 # pylint: disable=too-many-instance-attributes
 class ChartingSettings:
-    def __init__(self, user_settings: UserSettings, system_settings: SystemSettings):
+    def __init__(
+        self,
+        user_settings: Optional[UserSettings] = None,
+        system_settings: Optional[SystemSettings] = None,
+    ):
+        user_settings = user_settings or UserSettings()
+        system_settings = system_settings or SystemSettings()
+
         has_hub = user_settings.profile.hub_session is not None
 
         user_data_directory = (

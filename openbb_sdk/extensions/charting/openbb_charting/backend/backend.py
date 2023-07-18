@@ -2,10 +2,8 @@
 import asyncio
 import atexit
 import json
-
 import os
 import re
-
 import subprocess
 import sys
 import warnings
@@ -16,10 +14,9 @@ from typing import Any, Dict, Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
+from openbb_core.charts.models.charting_settings import ChartingSettings
 from packaging import version
 from reportlab.graphics import renderPDF
-
-from openbb_core.charts.models.charting_settings import ChartingSettings
 
 # pylint: disable=C0415
 try:
@@ -502,6 +499,7 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 
 
 def create_backend(charting_settings: Optional[ChartingSettings] = None):
+    charting_settings = charting_settings or ChartingSettings()
     global BACKEND  # pylint: disable=W0603 # noqa
     BACKEND = Backend(charting_settings)
 
