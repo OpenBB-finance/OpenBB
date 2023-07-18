@@ -1,11 +1,11 @@
 """FMP Major Indices Price fetcher."""
 
 # IMPORT STANDARD
-from enum import Enum
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import QueryParams
+from openbb_provider.models.base import BaseSymbol
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.major_indices_price import (
@@ -19,16 +19,7 @@ from pydantic import Field
 from .helpers import BaseStockPriceData, create_url, get_data_many
 
 
-class Interval(str, Enum):
-    oneminute = "1min"
-    fiveminute = "5min"
-    fifteenminute = "15min"
-    thirtyminute = "30min"
-    onehour = "1hour"
-    fourhour = "4hour"
-
-
-class FMPMajorIndicesPriceQueryParams(QueryParams):
+class FMPMajorIndicesPriceQueryParams(QueryParams, BaseSymbol):
     """FMP MajorIndices Price query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-stock-index-prices
@@ -36,13 +27,13 @@ class FMPMajorIndicesPriceQueryParams(QueryParams):
     Parameter
     ---------
     symbol : str
-        The symbol of the company.
-    interval : Enum of ["1min", "5min", "15min", "30min", "1hour", "4hour"] (default: "1hour")
-        The interval of the data.
+        The symbol of the index.
+    interval : str (default = "1hour")
+        The interval of the index data to fetch. Possible values include "1min", "5min",
+        "15min", "30min", "1hour", "4hour".
     """
 
-    symbol: str = Field(min_length=1)
-    interval: Interval = Field(default=Interval.onehour)
+    interval: str = Field(default="1hour")
 
 
 class FMPMajorIndicesPriceData(BaseStockPriceData):
@@ -62,7 +53,8 @@ class FMPMajorIndicesPriceFetcher(
         query: MajorIndicesPriceQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPMajorIndicesPriceQueryParams:
         return FMPMajorIndicesPriceQueryParams(
-            symbol=query.symbol, **extra_params if extra_params else {}
+            symbol=query.symbol,
+            **extra_params or {},
         )
 
     @staticmethod
@@ -70,7 +62,7 @@ class FMPMajorIndicesPriceFetcher(
         query: FMPMajorIndicesPriceQueryParams, api_key: str
     ) -> List[FMPMajorIndicesPriceData]:
         url = create_url(
-            3, f"historical-chart/{query.interval}/{query.symbol}", api_key
+            3, f"historical-chart/{query.interval}/%5E{query.symbol}", api_key
         )
         return get_data_many(url, FMPMajorIndicesPriceData)
 
