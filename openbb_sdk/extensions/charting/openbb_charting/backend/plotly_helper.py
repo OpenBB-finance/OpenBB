@@ -55,7 +55,7 @@ class TerminalStyle:
 
     STYLES_REPO = Path(__file__).parent.parent / "styles"
     # TODO : this should be a user preference - get_current_user().preferences.USER_STYLES_DIRECTORY
-    USER_STYLES_DIRECTORY = ""
+    USER_STYLES_DIRECTORY = STYLES_REPO
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
@@ -98,13 +98,11 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.apply_console_style(console_style)
+        # self.apply_console_style(console_style)
         self.apply_style()
 
     def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
-
-        # TODO : this is for the rich terminal, we probably don't need it on the sdk-core
 
         if style:
             if style in self.console_styles_available:
