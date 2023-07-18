@@ -326,9 +326,7 @@ class BaseController(metaclass=ABCMeta):
                             fig.update_layout(
                                 {
                                     f"yaxis{i+1}": dict(
-                                        side="left"
-                                        if config_terminal.make_new_axis()
-                                        else "right",
+                                        side="left",
                                         overlaying="y",
                                         showgrid=False,
                                         showline=False,
