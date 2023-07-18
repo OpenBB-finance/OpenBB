@@ -22,9 +22,10 @@ from typing import (
 )
 
 import pandas as pd
+from starlette.routing import BaseRoute
+
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
-from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
