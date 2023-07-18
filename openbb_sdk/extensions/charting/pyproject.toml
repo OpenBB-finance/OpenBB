@@ -24,4 +24,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-charting = "openbb_charting.charting_router:router"
+openbb_charting = "openbb_charting.charting_router:router"

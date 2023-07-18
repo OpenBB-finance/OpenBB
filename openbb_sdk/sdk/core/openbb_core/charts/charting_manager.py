@@ -4,7 +4,9 @@ from typing import Callable, Generic, Optional, TypeVar
 import pkg_resources
 from openbb_core.app.model.chart import Chart, ChartFormat
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.service.user_service import UserService
+from openbb_core.charts.models.charting_settings import ChartingSettings
 
 T = TypeVar("T")
 
@@ -100,6 +102,7 @@ class ChartingManager:
     def chart(
         self,
         user_settings: UserSettings,
+        system_settings: SystemSettings,
         route: str,
         command_output_item: Generic[T],
         **kwargs,
@@ -127,6 +130,7 @@ class ChartingManager:
         Chart
             Chart object.
         """
+        charting_settings = ChartingSettings(user_settings, system_settings)
 
         self._charting_extension = user_settings.preferences.charting_extension
         self._charting_extension_installed = self.check_charting_extension_installed(
@@ -137,6 +141,13 @@ class ChartingManager:
             raise ChartingManagerError(
                 f"Charting extension {self._charting_extension} is not installed"
             )
+
+        if self._charting_extension == "openbb_charting":
+            from openbb_charting.backend.backend import (
+                create_backend,  # pylint: disable=import-outside-toplevel
+            )
+
+            create_backend(charting_settings=charting_settings)
 
         chart_format = self.get_chart_format(self._charting_extension)
 

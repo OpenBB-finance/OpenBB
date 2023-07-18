@@ -23,9 +23,7 @@ class Chart(BaseModel):
 
         # pylint: disable=import-outside-toplevel
         if self.format == ChartFormat.plotly:
-            from openbb_charting.backend.plotly_helper import (
-                OpenBBFigure,
-            )
+            from openbb_charting.backend.openbb_figure import OpenBBFigure
 
             chart = OpenBBFigure()
 

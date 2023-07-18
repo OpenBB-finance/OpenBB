@@ -283,6 +283,7 @@ class StaticCommandRunner:
             if chart:
                 command_output.chart = cls.charting_manager.chart(
                     user_settings=execution_context.user_settings,
+                    system_settings=execution_context.system_settings,
                     route=route,
                     command_output_item=command_output.results,
                     **kwargs,

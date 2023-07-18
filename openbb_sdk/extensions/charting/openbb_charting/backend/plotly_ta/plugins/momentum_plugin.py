@@ -1,9 +1,9 @@
 import pandas as pd
 import pandas_ta as ta
-from openbb_charting.backend.plotly_helper import (
-    OpenBBFigure,
+from openbb_charting.backend.chart_style import (
     theme,
 )
+from openbb_charting.backend.openbb_figure import OpenBBFigure
 from openbb_charting.backend.plotly_ta.base import (
     PltTA,
     indicator,

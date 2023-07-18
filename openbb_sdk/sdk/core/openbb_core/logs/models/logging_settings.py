@@ -12,7 +12,7 @@ class LoggingSettings:
         user_data_directory = (
             str(Path.home() / "OpenBBUserData")
             if not user_settings.preferences
-            else user_settings.preferences.user_data_directory
+            else user_settings.preferences.data_directory
         )
         hub_session = (
             user_settings.profile.hub_session if user_settings.profile else None

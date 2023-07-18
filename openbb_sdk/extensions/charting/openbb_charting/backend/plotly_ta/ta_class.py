@@ -7,10 +7,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
-from openbb_charting.backend.plotly_helper import (
-    OpenBBFigure,
+from openbb_charting.backend.chart_style import (
     theme,
 )
+from openbb_charting.backend.openbb_figure import OpenBBFigure
+
 
 from .base import PltTA
 from .data_classes import ChartIndicators

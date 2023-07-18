@@ -1,12 +1,20 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, PositiveInt
 
 
 class Preferences(BaseModel):
-    user_data_directory: str = str(Path.home() / "OpenBBUserData")
-    charting_extension: Literal["charting"] = "charting"
+    data_directory: str = str(Path.home() / "OpenBBUserData")
+    export_directory: str = str(Path.home() / "OpenBBUserData" / "exports")
+    charting_extension: Literal["openbb_charting"] = "openbb_charting"
+    rich_style: str = "dark"
+    chart_style: Literal["dark", "light"] = "dark"
+    plot_pywry_width: PositiveInt = 1400
+    plot_pywry_height: PositiveInt = 762
+    plot_open_export: bool = (
+        False  # Whether to open plot image exports after they are created
+    )
 
     class Config:
         validate_assignment = True

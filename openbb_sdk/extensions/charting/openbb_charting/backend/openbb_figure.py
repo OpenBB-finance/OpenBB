@@ -1,7 +1,6 @@
-"""Chart and style helpers for Plotly."""
+"""OpenBB Figure Class."""
 # pylint: disable=C0302,R0902,W3301
 import json
-import sys
 import textwrap
 from datetime import datetime
 from math import floor
@@ -14,8 +13,8 @@ from typing import (
     Literal,
     Optional,
     Tuple,
-    TypeVar,
     Union,
+    TypeVar,
 )
 from warnings import warn
 
@@ -27,13 +26,12 @@ import statsmodels.api as sm
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from .backend import PLOTLYJS_PATH, plots_backend
-from .config.openbb_styles import (
-    PLT_COLORWAY,
-    PLT_DECREASING_COLORWAY,
-    PLT_INCREASING_COLORWAY,
+from openbb_charting.backend.backend import PLOTLYJS_PATH, get_backend
+from openbb_charting.backend.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
+
+from openbb_charting.backend.chart_style import theme
 
 if TYPE_CHECKING:
     try:  # noqa: SIM105
@@ -45,237 +43,6 @@ if TYPE_CHECKING:
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
 
-class TerminalStyle:
-    """The class that helps with handling of style configurations.
-
-    It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
-    to the .pltstyle files. For `Plotly` and `Rich` this class serves custom
-    styles as python dictionaries.
-    """
-
-    STYLES_REPO = Path(__file__).parent.parent / "styles"
-    # TODO : this should be a user preference - get_current_user().preferences.USER_STYLES_DIRECTORY
-    USER_STYLES_DIRECTORY = STYLES_REPO
-
-    plt_styles_available: Dict[str, Path] = {}
-    plt_style: str = "dark"
-    plotly_template: Dict[str, Any] = {}
-    mapbox_style: str = "dark"
-
-    console_styles_available: Dict[str, Path] = {}
-    console_style: Dict[str, Any] = {}
-
-    line_color: str = ""
-    up_color: str = ""
-    down_color: str = ""
-    up_colorway: List[str] = []
-    down_colorway: List[str] = []
-    up_color_transparent: str = ""
-    down_color_transparent: str = ""
-
-    line_width: float = 1.5
-
-    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
-        """Create a singleton."""
-        if not hasattr(cls, "instance"):
-            cls.instance = super().__new__(cls)  # pylint: disable=E1120
-        return cls.instance
-
-    def __init__(
-        self,
-        plt_style: Optional[str] = "",
-        console_style: Optional[str] = "",
-    ):
-        """Initialize the class.
-
-        Parameters
-        ----------
-        plt_style : `str`, optional
-            The name of the Plotly style to use, by default ""
-        console_style : `str`, optional
-            The name of the Rich style to use, by default ""
-        """
-        self.plt_style = plt_style or self.plt_style
-        self.load_available_styles()
-        self.load_style(plt_style)
-        # self.apply_console_style(console_style)
-        self.apply_style()
-
-    def apply_console_style(self, style: Optional[str] = None) -> None:
-        """Apply the style to the console."""
-
-        if style:
-            if style in self.console_styles_available:
-                json_path: Optional[Path] = self.console_styles_available[style]
-            else:
-                self.load_available_styles()
-                if style in self.console_styles_available:
-                    json_path = self.console_styles_available[style]
-                else:
-                    warn(f"\nInvalid console style '{style}', using default.")
-                    json_path = self.console_styles_available.get("dark", None)
-
-            if json_path:
-                self.console_style = self.load_json_style(json_path)
-            else:
-                warn("Error loading default.")
-
-    def apply_style(self, style: Optional[str] = "") -> None:
-        """Apply the style to the libraries."""
-        style = style or self.plt_style
-
-        if style != self.plt_style:
-            self.load_style(style)
-
-        style = style.lower().replace("light", "white")  # type: ignore
-
-        if self.plt_style and self.plotly_template:
-            self.plotly_template.setdefault("layout", {}).setdefault(
-                "mapbox", {}
-            ).setdefault("style", "dark")
-            if "tables" in self.plt_styles_available:
-                tables = self.load_json_style(self.plt_styles_available["tables"])
-                pio.templates["openbb_tables"] = go.layout.Template(tables)
-            try:
-                pio.templates["openbb"] = go.layout.Template(self.plotly_template)
-            except ValueError as err:
-                if "plotly.graph_objs.Layout: 'legend2'" in str(err):
-                    warn(
-                        "[red]Warning: Plotly multiple legends are "
-                        "not supported in currently installed version.[/]\n\n"
-                        "[yellow]Please update plotly to version >= 5.15.0[/]\n"
-                        "[green]pip install plotly --upgrade[/]"
-                    )
-                    sys.exit(1)
-
-            if style in ["dark", "white"]:
-                pio.templates.default = f"plotly_{style}+openbb"
-                return
-
-            pio.templates.default = "openbb"
-            self.mapbox_style = (
-                self.plotly_template.setdefault("layout", {})
-                .setdefault("mapbox", {})
-                .setdefault("style", "dark")
-            )
-
-    def load_available_styles_from_folder(self, folder: Union[Path, str]) -> None:
-        """Load custom styles from folder.
-
-        Parses the styles/default and styles/user folders and loads style files.
-        To be recognized files need to follow a naming convention:
-        *.pltstyle        - plotly stylesheets
-        *.richstyle.json  - rich stylesheets
-
-        Parameters
-        ----------
-        folder : str
-            Path to the folder containing the stylesheets
-        """
-
-        if not isinstance(folder, Path) or not folder.exists():
-            return
-
-        for attr, ext in zip(
-            ["plt_styles_available", "console_styles_available"],
-            [".pltstyle", ".richstyle.json"],
-        ):
-            for file in folder.rglob(f"*{ext}"):
-                getattr(self, attr)[file.name.replace(ext, "")] = file
-
-    def load_available_styles(self) -> None:
-        """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.STYLES_REPO)
-        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
-
-    def load_json_style(self, file: Path) -> Dict[str, Any]:
-        """Load style from json file.
-
-        Parameters
-        ----------
-        file : Path
-            Path to the file containing the style
-
-        Returns
-        -------
-        Dict[str, Any]
-            Style as a dictionary
-        """
-        with open(file) as f:
-            return json.load(f)
-
-    def load_style(self, style: Optional[str] = "") -> None:
-        """Load style from file.
-
-        Parameters
-        ----------
-        style : str
-            Name of the style to load
-        """
-        style = style or self.plt_style
-
-        if style not in self.plt_styles_available:
-            warn(
-                f"[red]Plot Style {style} not found. Using default style.[/red]",
-            )
-            style = "dark"
-
-        self.load_plt_style(style)
-
-    def load_plt_style(self, style: str) -> None:
-        """Load Plotly style from file.
-
-        Parameters
-        ----------
-        style : str
-            Name of the style to load
-        """
-        self.plt_style = style
-        self.plotly_template = self.load_json_style(self.plt_styles_available[style])
-        line = self.plotly_template.pop("line", {})
-
-        self.up_color = line.get("up_color", "#00ACFF")
-        self.down_color = line.get("down_color", "#FF0000")
-        self.up_color_transparent = line.get(
-            "up_color_transparent", "rgba(0, 170, 255, 0.50)"
-        )
-        self.down_color_transparent = line.get(
-            "down_color_transparent", "rgba(230, 0, 57, 0.50)"
-        )
-        self.line_color = line.get("color", "#ffed00")
-        self.line_width = line.get("width", self.line_width)
-        self.down_colorway = line.get("down_colorway", PLT_DECREASING_COLORWAY)
-        self.up_colorway = line.get("up_colorway", PLT_INCREASING_COLORWAY)
-
-    def get_colors(self, reverse: bool = False) -> list:
-        """Get colors for the plot.
-
-        Parameters
-        ----------
-        reverse : bool, optional
-            Whether to reverse the colors, by default False
-
-        Returns
-        -------
-        list
-            List of colors e.g. ["#00ACFF", "#FF0000"]
-        """
-        colors = (
-            self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY).copy()
-        )
-        if reverse:
-            colors.reverse()
-        return colors
-
-
-# TODO : Add support for custom styles through user preferences
-theme = TerminalStyle(
-    "dark",  # get_current_user().preferences.CHART_STYLE
-    "dark",  # get_current_user().preferences.RICH_STYLE
-)
-
-
-# pylint: disable=R0913
 class OpenBBFigure(go.Figure):
     """Custom Figure class for OpenBB Terminal.
 
@@ -339,11 +106,13 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(**kwargs)
 
-        if plots_backend().isatty:
+        self._backend = get_backend()
+
+        if self._backend.isatty:
             self.update_layout(
                 margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
-                height=plots_backend().HEIGHT,
-                width=plots_backend().WIDTH,
+                height=self._backend.HEIGHT,
+                width=self._backend.WIDTH,
             )
 
     @property
@@ -1059,7 +828,7 @@ class OpenBBFigure(go.Figure):
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
         self._export_image = export_image
 
-        if export_image and not plots_backend().isatty:
+        if export_image and not self._backend.isatty:
             if isinstance(export_image, str):
                 export_image = Path(export_image).resolve()
             export_image.touch()
@@ -1077,7 +846,7 @@ class OpenBBFigure(go.Figure):
         )
 
         # Set modebar style
-        if plots_backend().isatty:
+        if self._backend.isatty:
             self.update_layout(  # type: ignore
                 newshape_line_color="gold"
                 if theme.mapbox_style == "dark"
@@ -1101,7 +870,7 @@ class OpenBBFigure(go.Figure):
         # return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
-        if plots_backend().isatty:
+        if self._backend.isatty:
             try:
                 # We check if we need to export the image
                 # This is done to avoid opening after exporting
@@ -1109,7 +878,7 @@ class OpenBBFigure(go.Figure):
                     self._exported = True
 
                 # We send the figure to the backend to be displayed
-                return plots_backend().send_figure(self, export_image)
+                return self._backend.send_figure(self, export_image)
             except Exception as e:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
@@ -1123,7 +892,7 @@ class OpenBBFigure(go.Figure):
 
                 # We check if any figures were initialized before the backend failed
                 # If so, we show them with the default plotly backend
-                queue = plots_backend().get_pending()
+                queue = self._backend.get_pending()
                 for pending in queue:
                     data = json.loads(pending).get("json_data", {})
                     if data.get("layout", {}):
@@ -1408,7 +1177,7 @@ class OpenBBFigure(go.Figure):
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
-        if not plots_backend().isatty and self.data[0].type != "table":
+        if not self._backend.isatty and self.data[0].type != "table":
             for key, max_val in zip(["l", "r", "b", "t"], [60, 60, 80, 40]):
                 if key in self.layout.margin and (
                     self.layout.margin[key] is None
@@ -1626,14 +1395,14 @@ class OpenBBFigure(go.Figure):
         )
 
         # We adjust margins
-        if plots_backend().isatty:
+        if self._backend.isatty:
             for key in ["l", "r", "b", "t", "pad"]:
                 if key in self.layout.margin and self.layout.margin[key] is not None:
                     self.layout.margin[key] += margin_add.get(key, 0)
                 else:
                     self.layout.margin[key] = margin_add.get(key, 0)
 
-        if not plots_backend().isatty:
+        if not self._backend.isatty:
             org_margin = self.layout.margin
             margin = dict(l=40, r=60, b=80, t=50)
             for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 50]):
@@ -1648,7 +1417,7 @@ class OpenBBFigure(go.Figure):
     def _set_watermark(self) -> None:
         """Set the watermark for OpenBB Terminal."""
         if (
-            not plots_backend().isatty
+            not self._backend.isatty
             # or not get_current_user().preferences.PLOT_ENABLE_PYWRY  # TODO : this should be a user preference
             or isinstance(self._export_image, Path)
             and self._export_image.suffix in [".svg", ".pdf"]
