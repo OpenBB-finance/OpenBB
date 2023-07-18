@@ -4,6 +4,13 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable
 
+from openbb_core.api.dependency.system import get_system_settings
+from openbb_core.app.command_runner import CommandRunnerSession
+from openbb_core.app.model.system_settings import SystemSettings
+from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.static.account import Account
+from openbb_core.app.static.coverage import Coverage
+
 
 def run_async(func: Callable, *args, **kwargs):
     try:
@@ -17,20 +24,15 @@ def run_async(func: Callable, *args, **kwargs):
 
 
 def create_app():
-    return App(command_runner_session=CommandRunnerSession())
-
-
-try:
-    from openbb_core.api.dependency.system import get_system_settings
-    from openbb_core.app.command_runner import CommandRunnerSession
-    from openbb_core.app.model.system_settings import SystemSettings
-    from openbb_core.app.model.user_settings import UserSettings
-    from openbb_core.app.static.account import Account
-    from openbb_core.app.static.coverage import Coverage
-    from openbb_core.app.static.package.MODULE_ import CLASS_
-except ImportError:
-    app = None
-else:
+    try:
+        from openbb_core.app.static.package.MODULE_ import (  # pylint: disable=import-outside-toplevel
+            CLASS_,
+        )
+    except ImportError as e:
+        # if this exception was raised, you should probably be doing:
+        # from openbb_core.app.static.package_builder import (PackageBuilder)
+        # PackageBuilder.build()
+        raise e
 
     class App(CLASS_):
         """App class."""
@@ -56,4 +58,4 @@ else:
         def coverage(self) -> Coverage:
             return self._coverage
 
-    app = create_app()
+    return App(command_runner_session=CommandRunnerSession())
