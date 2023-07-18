@@ -143,8 +143,8 @@ class ChartingManager:
             )
 
         if self._charting_extension == "openbb_charting":
-            from openbb_charting.backend.backend import (
-                create_backend,  # pylint: disable=import-outside-toplevel
+            from openbb_charting.backend.backend import (  # pylint: disable=import-outside-toplevel
+                create_backend,
             )
 
             create_backend(charting_settings=charting_settings)
