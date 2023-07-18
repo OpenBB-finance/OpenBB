@@ -249,17 +249,19 @@ class DocstringGenerator:
             return docstring
 
         doc_lines = docstring.split("\n")
-        skip_line = False
         cleaned_lines = []
+        skip_lines = False
 
         for line in doc_lines:
             stripped_line = line.strip()
+            parameter_word = stripped_line.split(" : ")[0]
 
-            if skip_line and stripped_line:
-                skip_line = False
-            elif stripped_line.split(" : ")[0] in standard_fields:
-                skip_line = True
-            else:
+            if parameter_word in standard_fields:
+                skip_lines = True
+            elif ":" in stripped_line and parameter_word not in standard_fields:
+                skip_lines = False
+
+            if not skip_lines:
                 cleaned_lines.append(line)
 
         for i, line in enumerate(cleaned_lines):
@@ -282,7 +284,6 @@ class DocstringGenerator:
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
             for section_name, section_docstring in provider_mapping.items():
-                #
                 missing_doc = "\n    Returns\n    -------\n\n        Documentation not available.\n\n"
                 section_docstring = (
                     section_docstring["docstring"]
