@@ -359,7 +359,9 @@ class OpenBBFigure(go.Figure):
                 width=plots_backend().WIDTH,
             )
 
-    def set_secondary_axis(self, **kwargs) -> None:
+    def set_secondary_axis(
+        self, title: str, row: Optional[int] = None, col: Optional[int] = None, **kwargs
+    ) -> "OpenBBFigure":
         """Set secondary axis.
 
         Parameters
@@ -368,15 +370,16 @@ class OpenBBFigure(go.Figure):
             Keyword arguments to pass to go.Figure.update_layout
         """
         axis = "yaxis"
-        fig = config_terminal.get_current_figure()
-        if fig is not None:
-            total_axes = len(fig.layout.yaxis)
+        title = kwargs.pop("title", "")
+        if (fig := config_terminal.get_current_figure()) is not None:
+            total_axes = max(2, len(list(fig.select_yaxes())))
             axis = f"yaxis{total_axes+1}"
             if config_terminal.make_new_axis():
                 kwargs["side"] = "left"
 
-        title = kwargs.pop("title", "")
-        self.update_layout(**{axis: dict(title=title, **kwargs)})
+            return self.update_layout(**{axis: dict(title=title, **kwargs)})
+
+        return self.update_yaxes(title=title, row=row, col=col, **kwargs)
 
     @property
     def subplots_kwargs(self):
