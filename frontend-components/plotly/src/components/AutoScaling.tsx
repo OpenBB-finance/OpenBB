@@ -211,7 +211,7 @@ export default async function autoScaling(
                 );
 
                 if (to_update.annotations === undefined) {
-                  to_update.annotations = [];
+                  to_update.annotations = graphs.layout.annotations;
                 }
 
                 to_update.annotations[annotation.index].ay = yshift_new;
