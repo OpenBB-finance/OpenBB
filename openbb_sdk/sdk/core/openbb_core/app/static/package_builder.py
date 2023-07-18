@@ -22,10 +22,9 @@ from typing import (
 )
 
 import pandas as pd
-from starlette.routing import BaseRoute
-
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
+from starlette.routing import BaseRoute
 
 
 class PackageBuilder:
@@ -282,9 +281,8 @@ class DocstringGenerator:
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
             for section_name, section_docstring in provider_mapping.items():
-                missing_doc = (
-                    "\n    Returns\n-------\n        Documentation not available.\n\n"
-                )
+                #
+                missing_doc = "\n    Returns\n    -------\n\n        Documentation not available.\n\n"
                 section_docstring = (
                     section_docstring["docstring"]
                     if section_docstring["docstring"]
