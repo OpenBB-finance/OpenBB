@@ -85,7 +85,6 @@ class PlotlyTA(PltTA):
     close_column: Optional[str] = "Close"
     has_volume: bool = True
     show_volume: bool = True
-    prepost: bool = False
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
@@ -141,7 +140,6 @@ class PlotlyTA(PltTA):
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
-        prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
@@ -163,8 +161,6 @@ class PlotlyTA(PltTA):
         )
         self.show_volume = volume and self.has_volume
 
-        self.prepost = prepost
-
         return self.plot_fig(
             fig=fig, symbol=symbol, candles=candles, volume_ticks_x=volume_ticks_x
         )
@@ -176,7 +172,6 @@ class PlotlyTA(PltTA):
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
-        prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
@@ -201,8 +196,6 @@ class PlotlyTA(PltTA):
             Plot a candlestick chart, by default True (if False, plots a line chart)
         volume : bool, optional
             Plot volume, by default True
-        prepost : bool, optional
-            Plot pre and post market data, by default False
         fig : OpenBBFigure, optional
             Plotly figure to plot on, by default None
         volume_ticks_x : int, optional
@@ -212,7 +205,7 @@ class PlotlyTA(PltTA):
             indicators = PLOTLY_TA.indicators
 
         return PlotlyTA().__plot__(
-            df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
+            df_stock, indicators, symbol, candles, volume, fig, volume_ticks_x
         )
 
     @staticmethod
