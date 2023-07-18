@@ -376,7 +376,7 @@ class OpenBBFigure(go.Figure):
             axis = f"yaxis{total_axes+1}"
             if config_terminal.make_new_axis():
                 kwargs["side"] = "left"
-
+            kwargs.pop("secondary_y", None)
             return self.update_layout(**{axis: dict(title=title, **kwargs)})
 
         return self.update_yaxes(title=title, row=row, col=col, **kwargs)
