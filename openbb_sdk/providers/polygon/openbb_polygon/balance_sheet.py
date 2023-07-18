@@ -73,6 +73,7 @@ class PolygonBalanceSheetFetcher(
             new = {"start_date": item["start_date"]}
             new["cik"] = item["cik"]
             bs = item["financials"]["balance_sheet"]
+            # TODO: Unpack this dynamically to avoid hardcoding.
             new["assets"] = bs["assets"].get("value")
             new["current_assets"] = bs["current_assets"].get("value")
             new["current_liabilities"] = bs["current_liabilities"].get("value")

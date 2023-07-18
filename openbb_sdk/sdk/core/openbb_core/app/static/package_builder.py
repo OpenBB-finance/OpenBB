@@ -266,12 +266,12 @@ class DocstringGenerator:
 
         for i, line in enumerate(cleaned_lines):
             try:
-                if line == "    ---------" and cleaned_lines[i + 1] == "    ":
+                if line == "---------" and cleaned_lines[i + 1] == "    ":
                     cleaned_lines[i] = "---------"
-                    cleaned_lines[i + 1] = "    All fields are standardized.\n"
+                    cleaned_lines[i + 1] = "All fields are standardized.\n"
                     break
             except IndexError:
-                cleaned_lines.append("    All fields are standardized.\n")
+                cleaned_lines.append("All fields are standardized.\n")
 
         return "\n".join(cleaned_lines)
 
@@ -284,7 +284,7 @@ class DocstringGenerator:
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
             for section_name, section_docstring in provider_mapping.items():
-                missing_doc = "\n    Returns\n    -------\n\n        Documentation not available.\n\n"
+                missing_doc = "\nReturns\n-------\nDocumentation not available.\n\n"
                 section_docstring = (
                     section_docstring["docstring"]
                     if section_docstring["docstring"]
@@ -297,7 +297,7 @@ class DocstringGenerator:
                         line[4:] for line in section_docstring.split("\n")[1:]
                     )
                     section_docstring = "\n".join(
-                        f"    {line}" for line in section_docstring.split("\n")
+                        f"{line}" for line in section_docstring.split("\n")
                     )
 
                     if provider != "Standard":
