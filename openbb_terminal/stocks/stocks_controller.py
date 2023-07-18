@@ -9,6 +9,7 @@ from typing import List, Optional
 
 import financedatabase as fd
 
+from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
     newsapi_view,
@@ -29,7 +30,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
-from openbb_terminal import config_terminal
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
