@@ -13,8 +13,8 @@ from typing import (
     Literal,
     Optional,
     Tuple,
-    Union,
     TypeVar,
+    Union,
 )
 from warnings import warn
 
@@ -23,15 +23,13 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
 import statsmodels.api as sm
-from plotly.subplots import make_subplots
-from scipy import stats
-
 from openbb_charting.backend.backend import PLOTLYJS_PATH, get_backend
+from openbb_charting.backend.chart_style import theme
 from openbb_charting.backend.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
-
-from openbb_charting.backend.chart_style import theme
+from plotly.subplots import make_subplots
+from scipy import stats
 
 if TYPE_CHECKING:
     try:  # noqa: SIM105

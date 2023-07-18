@@ -12,7 +12,6 @@ from openbb_charting.backend.chart_style import (
 )
 from openbb_charting.backend.openbb_figure import OpenBBFigure
 
-
 from .base import PltTA
 from .data_classes import ChartIndicators
 from .ta_helpers import check_columns

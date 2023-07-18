@@ -14,7 +14,6 @@ from warnings import warn
 
 import plotly.graph_objects as go
 import plotly.io as pio
-
 from openbb_charting.backend.config.openbb_styles import (
     PLT_COLORWAY,
     PLT_DECREASING_COLORWAY,
