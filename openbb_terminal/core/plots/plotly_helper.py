@@ -366,6 +366,12 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
+        title : str
+            Title of the axis
+        row : int, optional
+            Row of the axis, by default None
+        col : int, optional
+            Column of the axis, by default None
         **kwargs
             Keyword arguments to pass to go.Figure.update_layout
         """
