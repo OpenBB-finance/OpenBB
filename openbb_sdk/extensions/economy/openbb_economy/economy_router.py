@@ -46,22 +46,26 @@ def cpi_options(
     return CommandOutput(results=Empty())
 
 
-@router.command
+@router.command(model="MajorIndicesPrice")
 def index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> CommandOutput[Empty]:  # type: ignore
-    """Get index from yfinance."""
-    return CommandOutput(results=Empty())
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Get OHLCV data for an index."""
+    return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command
+@router.command(model="AvailableIndices")
 def available_indices(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> CommandOutput[Empty]:
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
     """AVAILABLE_INDICES."""
-    return CommandOutput(results=Empty())
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command
