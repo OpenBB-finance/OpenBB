@@ -333,7 +333,7 @@ class BaseController(metaclass=ABCMeta):
                                         zeroline=False,
                                         automargin=True,
                                         ticksuffix="       " * (i - 1) if i > 1 else "",
-                                        tickfont=dict(size=13),
+                                        tickfont=dict(size=18),
                                         title=dict(font=dict(size=15), standoff=0),
                                     ),
                                 }
