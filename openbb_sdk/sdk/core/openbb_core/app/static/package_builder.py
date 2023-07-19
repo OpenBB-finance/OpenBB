@@ -76,12 +76,6 @@ class PackageBuilder:
     def save_package(cls):
         print("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
-        code += (
-            "import warnings\n"
-            + "warnings.formatwarning = ("
-            + "lambda message, category, *args, **kwargs: f'{category.__name__}: {message}'\n"
-            + ")\n"
-        )
         cls.write_to_package(module_code=code, module_name="__init__")
 
     @classmethod

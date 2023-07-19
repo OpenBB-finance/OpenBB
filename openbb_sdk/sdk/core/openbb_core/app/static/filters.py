@@ -15,7 +15,7 @@ def filter_output(command_output: CommandOutput) -> CommandOutput:
     if command_output.warnings:
         for w in command_output.warnings:
             category = getattr(builtins, w.category, OpenBBWarning)
-            warnings.warn(w.message, category)
+            print(f"{category.__name__}: {w.message}")
 
     error = command_output.error
     if error:
