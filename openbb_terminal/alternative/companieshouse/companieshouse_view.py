@@ -11,6 +11,7 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +135,10 @@ def display_persons_with_significant_control(
 
 @log_start_end(log=logger)
 def display_filings(
-    company_number: str, category: str = "", start_index=0, export: str = ""
+    company_number: str,
+    category: str = "",
+    limit: int = 100,
+    export: str = "",
 ) -> Filing_data:
     """Display company's filing history.
 
@@ -144,20 +148,22 @@ def display_filings(
         company_number to retrieve filing history for
 
     """
+    start_index = 0
     results = companieshouse_model.get_filings(company_number, category, start_index)
 
     start = int(results.start_index)
 
     data = results
-    total = int(results.total_count)
+    total = int(results.total_count) if int(results.total_count) < limit else limit
 
     while start < total - 100:
         results = companieshouse_model.get_filings(
             company_number, start_index=start + 100
         )
-        data.filings = data.filings.append(results.filings)
+        data.filings = pd.concat([data.filings, results.filings], ignore_index=True)
         start = start + 100
 
+    data.filings = data.filings.head(limit)
     console.print(f"Retrieved {len(data.filings)} filings")
 
     print_rich_table(

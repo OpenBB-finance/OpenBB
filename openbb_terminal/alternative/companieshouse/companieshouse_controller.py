@@ -242,6 +242,17 @@ class CompaniesHouseController(BaseController):
             ],
         )
 
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="Number of entries to return",
+            type=check_positive,
+            required=False,
+            dest="limit",
+            metavar="limit",
+            default=100,
+        )
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -251,7 +262,7 @@ class CompaniesHouseController(BaseController):
                 category = ns_parser.category if ns_parser.category else ""
                 self.filingCategory = category
                 filing_data = companieshouse_view.display_filings(
-                    self.companyNo, category, export=ns_parser.export
+                    self.companyNo, category, ns_parser.limit, export=ns_parser.export
                 )
                 self.filing_total_count = filing_data.total_count
                 self.filing_end_index = filing_data.end_index
