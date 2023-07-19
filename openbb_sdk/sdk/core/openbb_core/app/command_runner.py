@@ -321,6 +321,10 @@ class StaticCommandRunner:
         # If we're on Jupyter we need to pop here because we will lose "chart" after
         # ParametersBuilder.build. This needs to be fixed in a way that chart is not
         # is added to the function signature and shared for jupyter and api
+        # We can check in the router decorator if the given function has a chart
+        # in the charting extension then we add it there. This way we can remove
+        # the chart parameter from the commands.py and packagebuilder, it will be
+        # added to the function signature in the router decorator
         chart = kwargs.pop("chart", False)
 
         kwargs = ParametersBuilder.build(
