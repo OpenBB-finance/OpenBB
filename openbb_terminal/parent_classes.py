@@ -58,6 +58,8 @@ from openbb_terminal.terminal_helper import (
     print_guest_block_msg,
 )
 
+from .helper_classes import TerminalStyle as _TerminalStyle
+
 logger = logging.getLogger(__name__)
 
 # pylint: disable=R0912
@@ -328,13 +330,21 @@ class BaseController(metaclass=ABCMeta):
                                     f"yaxis{i+1}": dict(
                                         side="left",
                                         overlaying="y",
-                                        showgrid=False,
+                                        showgrid=True,
                                         showline=False,
                                         zeroline=False,
                                         automargin=True,
                                         ticksuffix="       " * (i - 1) if i > 1 else "",
-                                        tickfont=dict(size=18),
-                                        title=dict(font=dict(size=15), standoff=0),
+                                        tickfont=dict(
+                                            size=18,
+                                            color=_TerminalStyle().get_colors()[i],
+                                        ),
+                                        title=dict(
+                                            font=dict(
+                                                size=15,
+                                            ),
+                                            standoff=0,
+                                        ),
                                     ),
                                 }
                             )

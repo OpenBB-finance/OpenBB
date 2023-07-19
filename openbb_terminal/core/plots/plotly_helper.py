@@ -339,9 +339,8 @@ class OpenBBFigure(go.Figure):
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
         fig = config_terminal.get_current_figure()
-        if fig is None:
-            if config_terminal.HOLD:
-                config_terminal.append_legend(config_terminal.last_legend)
+        if fig is None and config_terminal.HOLD:
+            config_terminal.append_legend(config_terminal.last_legend)
         if fig is not None:
             traces = len(fig.data)
             self.update_layout(
