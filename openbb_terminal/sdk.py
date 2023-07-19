@@ -214,9 +214,8 @@ class OpenBBSDK:
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
-            `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
+            `treasury`: Get treasury rates from Federal Reserve\n
             `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
-            `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
             `trust`: Trust in government refers to the share of people who report having confidence in\n
             `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
             `usbonds`: Scrape data for us bonds\n

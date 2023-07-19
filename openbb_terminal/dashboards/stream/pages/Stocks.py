@@ -136,7 +136,6 @@ def create_line(
 
 
 def show_fig(fig: OpenBBFigure, margin: bool = True, volume: bool = False):
-    fig.hide_holidays()
     fig.show(external=True, margin=margin)
     with_container = main_chart if not volume else volume_chart
     with with_container.container():
