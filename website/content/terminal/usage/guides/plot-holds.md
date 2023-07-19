@@ -64,3 +64,31 @@ An additional customization is the ability to add a custom title to the chart.  
 Which results in the following figure:
 
 ![hold on custom](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/793d8309-6e49-42ca-b9bd-ff0dad9da959)
+
+<details>
+<summary>Running with a routine</summary>
+This functionality is able to be used in a [script routine](https://docs.openbb.co/terminal/usage/guides/scripts-and-routines)
+
+The previous terminal example can be expressed as the following routine:
+```bash
+$STOCKS=AAPL,AMZN,MSFT,TSLA,GOOG
+stocks
+fa
+hold on --sameaxis
+foreach $$tick in $STOCKS:
+   income -t $$tick -l 40 -q --plot revenue --legend $$tick revenue
+end
+hold off--title FAANG Revenues 10 Year
+```
+</details>
+
+## Known Issues
+
+
+Unfortunately, there are some known issues with the hold functionality.  These are being worked on, and will be addressed in future releases.  The following are known issues:
+
+- When plotting charts,  if the x axes are not the same, there may be an undesired result.  For example, if looking at the `fixedincome/ycrv` function, the x axes is a number in years, so trying to plot a date along x will not work.
+- Candle charts are not supported within the hold state.  A work around to plot a close value would be to navigate to `qa/pick Close/line`, which will plot a line chart.
+- Figures that have subplots on their own are not supported.  This functionality is meant to overlay data on the same axes, so if there are multiple subplots, it is not supported.  An example would be a function like `ta/macd`.  The TA functions already have a multiple indicator functionality.
+- Running a single plot in the hold state messes with the figure layout and does not give the desired margin.
+- Time series data of varying frequencies may not produce smooth visuals.
