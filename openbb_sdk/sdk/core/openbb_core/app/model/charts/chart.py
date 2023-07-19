@@ -1,9 +1,8 @@
 from enum import Enum
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel
-
 from openbb_core.app.model.abstract.error import Error
+from pydantic import BaseModel
 
 
 class ChartFormat(str, Enum):

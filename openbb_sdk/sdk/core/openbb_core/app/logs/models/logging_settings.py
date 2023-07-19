@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import List, Optional
 
+from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 
 
 # pylint: disable=too-many-instance-attributes
