@@ -2,7 +2,6 @@ from importlib import import_module
 from typing import Callable, Generic, Optional, TypeVar
 
 import pkg_resources
-from openbb_charting.backend.backend import get_backend
 from openbb_core.app.model.chart import Chart, ChartFormat
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -146,6 +145,7 @@ class ChartingManager:
         if self._charting_extension == "openbb_charting":
             from openbb_charting.backend.backend import (  # pylint: disable=import-outside-toplevel
                 create_backend,
+                get_backend,
             )
 
             create_backend(charting_settings=charting_settings)
