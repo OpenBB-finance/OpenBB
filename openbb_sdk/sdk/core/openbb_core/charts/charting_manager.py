@@ -145,9 +145,11 @@ class ChartingManager:
         if self._charting_extension == "openbb_charting":
             from openbb_charting.backend.backend import (  # pylint: disable=import-outside-toplevel
                 create_backend,
+                get_backend,
             )
 
             create_backend(charting_settings=charting_settings)
+            get_backend().start()  # TODO: Add debug mode here
 
         chart_format = self.get_chart_format(self._charting_extension)
 
