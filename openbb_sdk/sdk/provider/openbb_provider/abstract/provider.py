@@ -63,9 +63,11 @@ class Provider:
         name: ProviderNameType,
         description: str,
         fetcher_list: List[Any],
+        credentials: bool,
     ) -> None:
         self.name = name
         self.description = description
+        self.credentials = credentials
         the_dict: Dict[str, Any] = {}
         for query in self.QUERIES:
             the_dict[query] = {getattr(x, query)().__name__: x for x in fetcher_list}

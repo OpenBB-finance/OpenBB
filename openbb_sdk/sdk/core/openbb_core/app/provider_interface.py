@@ -20,14 +20,10 @@ class DataclassField:
 class ExtraParams:
     """Extra params dataclass."""
 
-    pass
-
 
 @dataclass
 class StandardParams:
     """Standard params dataclass."""
-
-    pass
 
 
 @dataclass
@@ -40,13 +36,9 @@ class ProviderChoices:
 class StandardData(BaseModel):
     """Standard data model."""
 
-    pass
-
 
 class ExtraData(BaseModel):
     """Extra data model."""
-
-    pass
 
 
 class ProviderInterface:

@@ -38,4 +38,5 @@ polygon_provider = Provider(
         PolygonForexEODFetcher,
         PolygonForexPriceFetcher,
     ],
+    credentials=True,
 )

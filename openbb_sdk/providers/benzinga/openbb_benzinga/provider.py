@@ -17,4 +17,5 @@ benzinga_provider = Provider(
     name=ProviderNameType("benzinga"),
     description="Provider for Benzinga.",
     fetcher_list=[BenzingaGlobalNewsFetcher, BenzingaStockNewsFetcher],
+    credentials=True,
 )

@@ -13,4 +13,5 @@ fred_provider = Provider(
     name=ProviderNameType("fred"),
     description="Provider for FRED.",
     fetcher_list=[FREDCPIFetcher],
+    credentials=True,
 )

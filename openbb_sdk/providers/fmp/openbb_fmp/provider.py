@@ -54,6 +54,7 @@ from .treasury_rates import FMPTreasuryRatesFetcher
 fmp_provider = Provider(
     name=ProviderNameType("fmp"),
     description="Provider for FMP.",
+    credentials=True,
     fetcher_list=[
         FMPKeyExecutivesFetcher,
         FMPStockEODFetcher,

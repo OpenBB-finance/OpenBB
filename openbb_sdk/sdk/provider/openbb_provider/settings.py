@@ -2,13 +2,13 @@
 
 
 import os
-from typing import Optional
 
 from pydantic import BaseSettings
 from pydantic.error_wrappers import ValidationError
 
 
 def create_path(*path: str) -> str:
+    """Create a path from the root of the project."""
     base_path = os.path.dirname(os.path.abspath(__file__))
     in_between = os.path.dirname(base_path)
     default_path = os.path.join(in_between, *path)
@@ -16,16 +16,17 @@ def create_path(*path: str) -> str:
 
 
 class Settings(BaseSettings):
-    # TODO: Avoid using hardcoded values and add safer handling of the keys
-    FMP_API_KEY: Optional[str] = None
-    POLYGON_API_KEY: Optional[str] = None
-    BENZINGA_API_KEY: Optional[str] = None
-    FRED_API_KEY: Optional[str] = None
+    """Settings for the managing the openbb_provider package.
+
+    They are dynamically populated inside the ./registry.py file with the
+    adequate provider API key placeholders.
+    """
+
     DEBUG_MODE: bool = False
 
 
 try:
-    settings = Settings()  # type: ignore[call-arg]
+    settings = Settings()  # type: ignore[call-arg,misc,arg-type]
 except ValidationError:
     env_path = create_path(".env")
     settings = Settings(env_path)  # type: ignore[call-arg,misc,arg-type]

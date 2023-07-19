@@ -2,13 +2,14 @@
 
 
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from warnings import warn
 
 import pkg_resources
 
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import ProviderDataType
 from openbb_provider.abstract.provider import Provider, ProviderNameType
-from openbb_provider.settings import settings
+from openbb_provider.settings import Settings, settings
 
 orients = Literal["LIST", "RECORDS"]
 
@@ -216,6 +217,15 @@ class Builder:
         return self.provider_registry
 
 
+def update_settings(base_settings: Settings, extension) -> Settings:
+    """Update the settings with the API key placeholders."""
+    if getattr(extension, "credentials", False):
+        provider_name = extension.name.upper()
+        updated_settings = base_settings.copy(update={f"{provider_name}_API_KEY": None})
+
+    return updated_settings
+
+
 def load_extensions(
     entry_point_group: str = "openbb_provider_extension",
 ) -> Tuple[list, dict]:
@@ -240,13 +250,23 @@ def load_extensions(
 
     for extension in extensions:
         extension_name = extension.name
+        updated_settings = update_settings(settings, extension)
         try:
             if extension_name in ProviderNameType.__args__:
                 extension_api_keys[extension_name] = getattr(
-                    settings, f"{extension_name.upper()}_API_KEY"
+                    updated_settings, f"{extension_name.upper()}_API_KEY"
                 )
         except AttributeError as exc:
-            raise ValueError(f"API key for {extension_name} is not set.") from exc
+            if getattr(extension, "credentials", False):
+                warn(f"API key for {extension_name} is not set.", UserWarning)
+            elif getattr(extension, "credentials", False) is False:
+                # The extension does not require credentials, so we can pass.
+                pass
+            else:
+                raise ValueError(
+                    f"Credentials for {extension_name} are not set."
+                    "Please indicate if the extension requires credentials."
+                ) from exc
 
     return extensions, extension_api_keys
 
