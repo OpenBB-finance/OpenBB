@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, validator
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_sdk.providers.fred.openbb_fred.fred_helpers import (
+from providers.fred.openbb_fred.fred_helpers import (
     CPI_COUNTRIES,
     CPI_FREQUENCY,
     CPI_UNITS,
