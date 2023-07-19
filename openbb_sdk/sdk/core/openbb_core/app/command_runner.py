@@ -251,7 +251,9 @@ class StaticCommandRunner:
     ) -> CommandOutput:
         system_settings = execution_context.system_settings
 
+        # We pop here because we will loose "chart" after ParametersBuilder.build
         chart = kwargs.pop("chart", False)
+
         kwargs = ParametersBuilder.build(
             args=args,
             execution_context=execution_context,
