@@ -29,10 +29,11 @@ def create_app():
             CLASS_,
         )
     except ImportError as e:
-        # if this exception was raised, you should probably be doing:
-        # from openbb_core.app.static.package_builder import (PackageBuilder)
-        # PackageBuilder.build()
-        raise e
+        raise Exception(
+            "If you are seeing this exception, you should probably be doing: "
+            "from openbb_core.app.static.package_builder import PackageBuilder\n"
+            "PackageBuilder.build()"
+        ) from e
 
     class App(CLASS_):
         """App class."""
