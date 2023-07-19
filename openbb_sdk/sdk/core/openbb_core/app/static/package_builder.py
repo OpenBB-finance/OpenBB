@@ -196,7 +196,7 @@ class ClassDefinition:
     @staticmethod
     def build(path: str) -> str:
         class_name = PathHandler.build_module_class(path=path)
-        code = f'\nclass {class_name}(Container): # route = "{path}"\n'
+        code = f"\nclass {class_name}(Container):\n"
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
         child_path_list = PathHandler.get_child_path_list(
@@ -609,16 +609,22 @@ class PathHandler:
         return direct_children
 
     @staticmethod
-    def hash_path(path: str) -> str:
-        return str(path).replace("-", "_").replace("/", "_")
+    def clean_path(path: str) -> str:
+        if path.startswith("/"):
+            path = path[1:]
+        return path.replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:
-        return f"MODULE_{cls.hash_path(path=path)}"
+        if path == "":
+            return "root"
+        return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
-        return f"CLASS_{cls.hash_path(path=path)}"
+        if path == "":
+            return "Root"
+        return f"CLASS_{cls.clean_path(path=path)}"
 
 
 class Linters:

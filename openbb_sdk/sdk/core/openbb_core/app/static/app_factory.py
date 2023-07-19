@@ -25,8 +25,8 @@ def run_async(func: Callable, *args, **kwargs):
 
 def create_app():
     try:
-        from openbb_core.app.static.package.MODULE_ import (  # pylint: disable=import-outside-toplevel
-            CLASS_,
+        from openbb_core.app.static.package.root import (  # pylint: disable=import-outside-toplevel
+            Root,
         )
     except ImportError as e:
         raise Exception(
@@ -35,7 +35,7 @@ def create_app():
             "PackageBuilder.build()"
         ) from e
 
-    class App(CLASS_):
+    class App(Root):
         """App class."""
 
         def __init__(self, command_runner_session):
