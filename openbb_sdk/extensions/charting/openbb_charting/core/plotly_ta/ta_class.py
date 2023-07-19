@@ -123,7 +123,6 @@ class PlotlyTA(PltTA):
         """Setup theme for charting"""
         return ChartStyle(
             charting_settings.chart_style,
-            charting_settings.rich_style,
             charting_settings.user_styles_directory,
         )
 

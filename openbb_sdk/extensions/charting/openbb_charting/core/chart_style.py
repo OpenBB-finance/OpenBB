@@ -37,9 +37,6 @@ class ChartStyle:
     plotly_template: Dict[str, Any] = {}
     mapbox_style: str = "dark"
 
-    console_styles_available: Dict[str, Path] = {}
-    console_style: Dict[str, Any] = {}
-
     line_color: str = ""
     up_color: str = ""
     down_color: str = ""
@@ -61,7 +58,6 @@ class ChartStyle:
     def __init__(
         self,
         plt_style: Optional[str] = "",
-        console_style: Optional[str] = "",
         user_styles_directory: Optional[Union[str, Path]] = None,
     ):
         """Initialize the class.
@@ -81,27 +77,7 @@ class ChartStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-        self.apply_console_style(console_style)
         self.apply_style()
-
-    def apply_console_style(self, style: Optional[str] = None) -> None:
-        """Apply the style to the console."""
-
-        if style:
-            if style in self.console_styles_available:
-                json_path: Optional[Path] = self.console_styles_available[style]
-            else:
-                self.load_available_styles()
-                if style in self.console_styles_available:
-                    json_path = self.console_styles_available[style]
-                else:
-                    warn(f"\nInvalid console style '{style}', using default.")
-                    json_path = self.console_styles_available.get("dark", None)
-
-            if json_path:
-                self.console_style = self.load_json_style(json_path)
-            else:
-                warn("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""

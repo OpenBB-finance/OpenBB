@@ -45,4 +45,3 @@ class ChartingSettings:
         self.user_styles_directory = user_settings.preferences.user_styles_directory
         # Theme
         self.chart_style = user_settings.preferences.chart_style
-        self.rich_style = user_settings.preferences.rich_style

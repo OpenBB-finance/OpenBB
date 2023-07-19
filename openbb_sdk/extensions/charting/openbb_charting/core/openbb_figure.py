@@ -100,7 +100,6 @@ class OpenBBFigure(go.Figure):
 
         self._theme = ChartStyle(
             self._charting_settings.chart_style,
-            self._charting_settings.rich_style,
             self._charting_settings.user_styles_directory,
         )
 
