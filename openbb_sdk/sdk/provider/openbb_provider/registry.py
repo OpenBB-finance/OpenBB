@@ -223,7 +223,8 @@ def update_settings(base_settings: Settings, extension) -> Settings:
         provider_name = extension.name.upper()
         updated_settings = base_settings.copy(update={f"{provider_name}_API_KEY": None})
 
-    return updated_settings
+        return updated_settings
+    return base_settings
 
 
 def load_extensions(
