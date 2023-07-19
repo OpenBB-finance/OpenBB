@@ -249,10 +249,3 @@ class ChartStyle:
         if reverse:
             colors.reverse()
         return colors
-
-
-# TODO : Add support for custom styles through user preferences
-theme = ChartStyle(
-    "dark",  # get_current_user().preferences.CHART_STYLE
-    "dark",  # get_current_user().preferences.RICH_STYLE
-)

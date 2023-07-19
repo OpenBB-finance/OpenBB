@@ -7,9 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
-from openbb_charting.core.chart_style import (
-    theme,
-)
+from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
@@ -83,7 +81,7 @@ class PlotlyTA(PltTA):
     >>> fig2.show()
     """
 
-    inchart_colors = theme.get_colors()
+    inchart_colors: Optional[List[str]] = None
     plugins: List[Type[PltTA]] = []
     df_ta: pd.DataFrame = None
     close_column: Optional[str] = "close"
@@ -91,11 +89,13 @@ class PlotlyTA(PltTA):
     show_volume: bool = True
     prepost: bool = False
     charting_settings: ChartingSettings = ChartingSettings()
+    theme: Optional[ChartStyle] = None
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
         cls.charting_settings = kwargs.pop("charting_settings", cls.charting_settings)
-        cls.inchart_colors = theme.get_colors()
+        cls.theme = cls.setup_theme(cls.charting_settings)
+        cls.inchart_colors = cls.theme.get_colors()
 
         global PLOTLY_TA  # pylint: disable=global-statement # noqa
         if PLOTLY_TA is None:
@@ -117,6 +117,15 @@ class PlotlyTA(PltTA):
         else:
             self.df_fib = None
             super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def setup_theme(charting_settings: ChartingSettings) -> ChartStyle:
+        """Setup theme for charting"""
+        return ChartStyle(
+            charting_settings.chart_style,
+            charting_settings.rich_style,
+            charting_settings.user_styles_directory,
+        )
 
     @property
     def ma_mode(self) -> List[str]:
@@ -396,7 +405,7 @@ class PlotlyTA(PltTA):
                 secondary_y=False,
             )
             fig.update_layout(yaxis=dict(nticks=15))
-            self.inchart_colors = theme.get_colors()[1:]
+            self.inchart_colors = self.theme.get_colors()[1:]
 
         fig.set_title(symbol, x=0.5, y=0.98, xanchor="center", yanchor="top")
         return fig

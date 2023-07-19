@@ -1,7 +1,4 @@
 import pandas as pd
-from openbb_charting.core.chart_style import (
-    theme,
-)
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import (
     PltTA,
@@ -31,7 +28,7 @@ class Volatility(PltTA):
             x=df_ta.index,
             y=df_ta[columns_regex(df_ta, "ATR")[0]].values,
             mode="lines",
-            line=dict(width=1, color=theme.get_colors()[1]),
+            line=dict(width=1, color=fig.theme.get_colors()[1]),
             row=subplot_row,
             col=1,
             secondary_y=False,
@@ -46,7 +43,7 @@ class Volatility(PltTA):
             xshift=-6,
             y=0.98,
             font_size=14,
-            font_color=theme.get_colors()[1],
+            font_color=fig.theme.get_colors()[1],
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
@@ -56,7 +53,7 @@ class Volatility(PltTA):
     def plot_bbands(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds bollinger bands to plotly figure"""
 
-        bbands_opacity = 0.8 if theme.plt_style == "light" else 1
+        bbands_opacity = 0.8 if fig.theme.plt_style == "light" else 1
 
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBU')[0]}",
@@ -64,7 +61,7 @@ class Volatility(PltTA):
             y=df_ta[columns_regex(df_ta, "BBU")[0]].values,
             opacity=bbands_opacity,
             mode="lines",
-            line=dict(width=1, color=theme.up_color),
+            line=dict(width=1, color=fig.theme.up_color),
             row=1,
             col=1,
             secondary_y=False,
@@ -75,7 +72,7 @@ class Volatility(PltTA):
             y=df_ta[columns_regex(df_ta, "BBL")[0]].values,
             opacity=bbands_opacity,
             mode="lines",
-            line=dict(width=1, color=theme.down_color),
+            line=dict(width=1, color=fig.theme.down_color),
             row=1,
             col=1,
             secondary_y=False,
@@ -86,7 +83,7 @@ class Volatility(PltTA):
             y=df_ta[columns_regex(df_ta, "BBM")[0]].values,
             opacity=1,
             mode="lines",
-            line=dict(width=1, color=theme.get_colors()[1], dash="dash"),
+            line=dict(width=1, color=fig.theme.get_colors()[1], dash="dash"),
             row=1,
             col=1,
             secondary_y=False,
@@ -106,7 +103,7 @@ class Volatility(PltTA):
             yshift=-inchart_index * 18,
             y=0.98,
             font_size=14,
-            font_color=theme.get_colors()[1],
+            font_color=fig.theme.get_colors()[1],
             opacity=0.9,
         )
 
@@ -116,7 +113,7 @@ class Volatility(PltTA):
     def plot_donchian(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds donchian channels to plotly figure"""
 
-        if theme.plt_style == "light":
+        if fig.theme.plt_style == "light":
             fillcolor = "rgba(239, 103, 137, 0.05)"
             donchian_opacity = 0.4
         else:
@@ -176,7 +173,7 @@ class Volatility(PltTA):
         """Adds Keltner channels to plotly figure"""
         mamode = (self.params["kc"].get_argument_values("mamode") or "ema").lower()  # type: ignore
 
-        if theme.plt_style == "light":
+        if fig.theme.plt_style == "light":
             fillcolor = "rgba(239, 103, 137, 0.05)"
             kc_opacity = 0.4
         else:

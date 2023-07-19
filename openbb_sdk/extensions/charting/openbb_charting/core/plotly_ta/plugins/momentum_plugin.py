@@ -1,8 +1,5 @@
 import pandas as pd
 import pandas_ta as ta
-from openbb_charting.core.chart_style import (
-    theme,
-)
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import (
     PltTA,
@@ -48,7 +45,7 @@ class Momentum(PltTA):
         fig.add_hrect(
             y0=100,
             y1=dmax,
-            fillcolor=theme.down_color,
+            fillcolor=fig.theme.down_color,
             opacity=0.2,
             layer="below",
             line_width=0,
@@ -59,7 +56,7 @@ class Momentum(PltTA):
         fig.add_hrect(
             y0=-100,
             y1=dmin,
-            fillcolor=theme.up_color,
+            fillcolor=fig.theme.up_color,
             opacity=0.2,
             layer="below",
             line_width=0,
@@ -71,7 +68,7 @@ class Momentum(PltTA):
             y=100,
             opacity=1,
             layer="below",
-            line=dict(width=2, color=theme.down_color, dash="dash"),
+            line=dict(width=2, color=fig.theme.down_color, dash="dash"),
             row=subplot_row,
             col=1,
             secondary_y=False,
@@ -80,7 +77,7 @@ class Momentum(PltTA):
             y=-100,
             opacity=1,
             layer="below",
-            line=dict(width=2, color=theme.up_color, dash="dash"),
+            line=dict(width=2, color=fig.theme.up_color, dash="dash"),
             row=subplot_row,
             col=1,
             secondary_y=False,
@@ -215,7 +212,7 @@ class Momentum(PltTA):
             mode="text",
             text=demark["down"],
             textposition="bottom center",
-            textfont=dict(color=theme.down_color, size=14.5),
+            textfont=dict(color=fig.theme.down_color, size=14.5),
             row=1,
             col=1,
             secondary_y=False,
@@ -227,7 +224,7 @@ class Momentum(PltTA):
             mode="text",
             text=demark["up"],
             textposition="top center",
-            textfont=dict(color=theme.up_color, size=14.5),
+            textfont=dict(color=fig.theme.up_color, size=14.5),
             row=1,
             col=1,
             secondary_y=False,
@@ -304,7 +301,7 @@ class Momentum(PltTA):
         fig.add_hrect(
             y0=2,
             y1=(dmax + 4),
-            fillcolor=theme.down_color,
+            fillcolor=fig.theme.down_color,
             opacity=0.2,
             layer="below",
             line_width=0,
@@ -315,7 +312,7 @@ class Momentum(PltTA):
         fig.add_hrect(
             y0=-2,
             y1=(dmin - 4),
-            fillcolor=theme.up_color,
+            fillcolor=fig.theme.up_color,
             opacity=0.2,
             layer="below",
             line_width=0,
@@ -325,20 +322,20 @@ class Momentum(PltTA):
         )
         fig.add_hline(
             y=2,
-            fillcolor=theme.down_color,
+            fillcolor=fig.theme.down_color,
             opacity=1,
             layer="below",
-            line=dict(width=2, color=theme.down_color, dash="dash"),
+            line=dict(width=2, color=fig.theme.down_color, dash="dash"),
             row=subplot_row,
             col=1,
             secondary_y=False,
         )
         fig.add_hline(
             y=-2,
-            fillcolor=theme.up_color,
+            fillcolor=fig.theme.up_color,
             opacity=1,
             layer="below",
-            line=dict(width=2, color=theme.up_color, dash="dash"),
+            line=dict(width=2, color=fig.theme.up_color, dash="dash"),
             row=subplot_row,
             col=1,
             secondary_y=False,
@@ -440,7 +437,7 @@ class Momentum(PltTA):
         fig.add_hrect(
             y0=70,
             y1=100,
-            fillcolor=theme.down_color,
+            fillcolor=fig.theme.down_color,
             opacity=0.2,
             layer="below",
             line_width=0,
@@ -451,7 +448,7 @@ class Momentum(PltTA):
         fig.add_hrect(
             y0=0,
             y1=30,
-            fillcolor=theme.up_color,
+            fillcolor=fig.theme.up_color,
             opacity=0.2,
             layer="below",
             line_width=0,
@@ -461,20 +458,20 @@ class Momentum(PltTA):
         )
         fig.add_hline(
             y=70,
-            fillcolor=theme.down_color,
+            fillcolor=fig.theme.down_color,
             opacity=1,
             layer="below",
-            line=dict(width=2, color=theme.down_color, dash="dash"),
+            line=dict(width=2, color=fig.theme.down_color, dash="dash"),
             row=subplot_row,
             col=1,
             secondary_y=False,
         )
         fig.add_hline(
             y=30,
-            fillcolor=theme.up_color,
+            fillcolor=fig.theme.up_color,
             opacity=1,
             layer="below",
-            line=dict(width=2, color=theme.up_color, dash="dash"),
+            line=dict(width=2, color=fig.theme.up_color, dash="dash"),
             row=subplot_row,
             col=1,
             secondary_y=False,

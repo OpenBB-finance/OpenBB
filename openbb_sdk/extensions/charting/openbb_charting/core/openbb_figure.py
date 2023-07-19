@@ -121,6 +121,11 @@ class OpenBBFigure(go.Figure):
             )
 
     @property
+    def theme(self):
+        """Theme property."""
+        return self._theme
+
+    @property
     def subplots_kwargs(self):
         """Get subplots kwargs property."""
         return self._subplots_kwargs
@@ -1457,9 +1462,6 @@ class OpenBBFigure(go.Figure):
     def _add_cmd_source(self, command_location: Optional[str] = "") -> None:
         """Set the watermark for OpenBB Terminal."""
         if command_location:
-            theme = ChartStyle(
-                self._charting_settings.chart_style, self._charting_settings.rich_style
-            )
             yaxis = self.layout.yaxis
             yaxis2 = self.layout.yaxis2 if hasattr(self.layout, "yaxis2") else None
             xshift = -70 if yaxis.side == "right" else -80
