@@ -4,6 +4,8 @@ __docformat__ = "numpy"
 import logging
 import os
 
+import pandas as pd
+
 from openbb_terminal.alternative.companieshouse import companieshouse_model
 from openbb_terminal.alternative.companieshouse.company import Company
 from openbb_terminal.alternative.companieshouse.filing_data import Filing_data
@@ -11,7 +13,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 
