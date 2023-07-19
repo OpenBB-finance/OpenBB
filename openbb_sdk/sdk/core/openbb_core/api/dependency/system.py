@@ -11,6 +11,11 @@ async def get_system_settings() -> SystemSettings:
     return deepcopy(__system_service.system_settings)
 
 
+def get_system_settings_sync() -> SystemSettings:
+    global __system_service  # noqa: PLW0602  # pylint: disable=global-variable-not-assigned
+    return __system_service.system_settings
+
+
 async def get_system_service() -> SystemService:
     global __system_service  # noqa: PLW0602  # pylint: disable=global-variable-not-assigned
     return __system_service

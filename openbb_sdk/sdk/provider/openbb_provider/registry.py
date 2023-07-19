@@ -107,9 +107,7 @@ class ProviderRegistry:
                 result = getattr(fetcher, data_name)(query, extra_params, api_key)
             return process(result, data_orientation)
         except Exception as e:
-            raise ProviderError(
-                f"The '{provider_name}' provider failed to fetch the data: {e}"
-            ) from e
+            raise ProviderError(e) from e
 
     def fetch(
         self,

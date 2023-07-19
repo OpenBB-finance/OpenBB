@@ -173,7 +173,7 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.filters import filter_inputs, filter_output\n"
+        code += "\nfrom openbb_core.app.static.filters import base_filter, filter_inputs, filter_output\n"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -492,7 +492,8 @@ class MethodDefinition:
     ) -> str:
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
-        code = "\n    @validate_arguments"
+        code = "\n    @base_filter"
+        code += "\n    @validate_arguments"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code

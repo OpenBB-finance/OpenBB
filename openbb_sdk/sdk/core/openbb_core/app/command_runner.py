@@ -19,6 +19,7 @@ from typing import (
 
 from pydantic import BaseConfig, Extra, create_model
 
+from openbb_core.api.dependency.system import get_system_settings_sync
 from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -257,7 +258,7 @@ class StaticCommandRunner:
         try:
             context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
                 warnings.catch_warnings(record=True)
-                if not system_settings.debug_mode
+                if not get_system_settings_sync().debug_mode
                 else nullcontext()
             )
 
@@ -275,8 +276,10 @@ class StaticCommandRunner:
                     command_output.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            command_output = CommandOutput(error=Error(message=str(e)))
-            if system_settings.debug_mode:
+            command_output = CommandOutput(
+                error=Error(message=str(e), error_kind=e.__class__.__name__)
+            )
+            if get_system_settings_sync().debug_mode:
                 raise
 
         return command_output
@@ -300,7 +303,7 @@ class StaticCommandRunner:
             )
         except Exception as e:
             command_output.chart = Chart(error=Error(message=str(e)))
-            if system_settings.debug_mode:
+            if get_system_settings_sync().debug_mode:
                 raise
 
     @classmethod
@@ -332,7 +335,7 @@ class StaticCommandRunner:
             kwargs=kwargs,
         )
 
-        if chart:
+        if chart and command_output.results:
             cls.__chart(
                 command_output=command_output,
                 user_settings=user_settings,

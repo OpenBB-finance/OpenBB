@@ -1,7 +1,28 @@
 import builtins
 
+from pydantic import ValidationError
+
+from openbb_core.api.dependency.system import get_system_settings_sync
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_output import CommandOutput
+
+
+def base_filter(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValidationError as e:
+            if get_system_settings_sync().debug_mode:
+                raise
+            print("ValidationError:\n")
+            for error in e.errors():
+                print(f"{error['loc'][-1]}: {error['msg']}")
+        except Exception as e:
+            if get_system_settings_sync().debug_mode:
+                raise
+            print(f"UnexpectedError: {e}")
+
+    return inner
 
 
 def filter_inputs(**kwargs) -> dict:
