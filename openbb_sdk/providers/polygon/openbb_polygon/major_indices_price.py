@@ -1,7 +1,6 @@
-"""Polygon major indices end of day fetcher."""
+"""Polygon major indices price fetcher."""
 
 # IMPORT STANDARD
-from datetime import datetime
 from typing import Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -14,8 +13,8 @@ from openbb_provider.models.major_indices_price import (
 )
 
 # IMPORT THIRD-PARTY
-from openbb_polygon.helpers import get_data
-from openbb_polygon.types import BaseStockData, BaseStockQueryParams
+from .helpers import get_data
+from .types import BaseStockData, BaseStockQueryParams
 
 
 class PolygonMajorIndicesPriceQueryParams(BaseStockQueryParams):
@@ -26,7 +25,7 @@ class PolygonMajorIndicesPriceQueryParams(BaseStockQueryParams):
     Parameters
     ----------
     symbol : str
-        The symbol of the stocks to fetch.
+        The symbol of the index.
     start_date : Union[date, datetime]
         The start date of the query.
     end_date : Union[date, datetime]
@@ -62,9 +61,7 @@ class PolygonMajorIndicesPriceFetcher(
     ) -> PolygonMajorIndicesPriceQueryParams:
         return PolygonMajorIndicesPriceQueryParams(
             symbol=query.symbol,
-            start_date=query.start_date,
-            end_date=query.end_date if query.end_date else datetime.now(),
-            **extra_params if extra_params else {},
+            **extra_params or {},
         )
 
     @staticmethod
@@ -73,7 +70,7 @@ class PolygonMajorIndicesPriceFetcher(
     ) -> List[PolygonMajorIndicesPriceData]:
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"I:{query.stocksTicker.upper()}/range/1/{query.timespan}/"
+            f"I:{query.stocksTicker.upper()}/range/1/{query.timespan.value}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"

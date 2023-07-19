@@ -9,6 +9,8 @@ from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 
 @dataclass
 class DataclassField:
+    """Dataclass field."""
+
     name: str
     type_: Any
     default: Any
@@ -16,24 +18,34 @@ class DataclassField:
 
 @dataclass
 class ExtraParams:
+    """Extra params dataclass."""
+
     pass
 
 
 @dataclass
 class StandardParams:
+    """Standard params dataclass."""
+
     pass
 
 
 @dataclass
 class ProviderChoices:
+    """Provider choices dataclass."""
+
     provider: Literal  # type: ignore
 
 
 class StandardData(BaseModel):
+    """Standard data model."""
+
     pass
 
 
 class ExtraData(BaseModel):
+    """Extra data model."""
+
     pass
 
 
@@ -72,26 +84,32 @@ class ProviderInterface:
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
+        """Dictionary of provider information."""
         return self.__map
 
     @property
     def model_providers(self) -> Dict[str, ProviderChoices]:
+        """Dictionary of provider choices by model."""
         return self.__model_providers_map
 
     @property
     def params(self) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
+        """Dictionary of params by model."""
         return self.__params
 
     @property
     def data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
+        """Dictionary of data by model."""
         return self.__data
 
     @property
     def merged_data(self) -> Dict[str, BaseModel]:
+        """Dictionary of data by model merged."""
         return self.__merged_data
 
     @property
     def providers_literal(self) -> type:
+        """Literal of provider names."""
         providers = []
         for _, provider in self.map.items():
             providers.extend(list(provider.keys()))
@@ -103,6 +121,7 @@ class ProviderInterface:
 
     @property
     def provider_choices(self) -> type:
+        """Dataclass with literal of provider names."""
         return make_dataclass(
             cls_name="ProviderChoices",
             fields=[("provider", self.providers_literal)],
@@ -111,9 +130,11 @@ class ProviderInterface:
 
     @property
     def models(self) -> List[str]:
+        """List of model names."""
         return list(self.__map.keys())
 
     def create_registry(self) -> ProviderRegistry:
+        """Create provider registry."""
         return build_provider_registry()
 
     @staticmethod
@@ -254,7 +275,7 @@ class ProviderInterface:
         This creates a dictionary of dataclasses that can be used as extra params.
 
         Example:
-
+        -------
         @dataclass
         class StockNews(StandardParams):
             symbols: str = Query(...)
@@ -267,7 +288,6 @@ class ProviderInterface:
             ...
             sort: str = Query(default=None, description="benzinga, polygon")
         """
-
         result: Dict = {}
 
         # TODO: Consider multiprocessing this loop to speed startup
@@ -295,12 +315,11 @@ class ProviderInterface:
         as provider choices.
 
         Example:
-
+        -------
         @dataclass
         class StockNews(ProviderChoices):
             provider: Literal["benzinga", "polygon"]
         """
-
         result: Dict = {}
 
         for model_name, providers in self.__map.items():
@@ -324,7 +343,7 @@ class ProviderInterface:
         This creates a dictionary of dataclasses that can be used as data.
 
         Example:
-
+        -------
         class StockEODData(StandardData):
             date: date
             open: PositiveFloat
@@ -357,7 +376,7 @@ class ProviderInterface:
     def __merge_data_dc(
         self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
     ) -> Dict[str, BaseModel]:
-        """Merge standard data with extra data into a single BaseModel"""
+        """Merge standard data with extra data into a single BaseModel."""
         result: Dict = {}
         for model_name, dataclasses in data.items():
             standard = dataclasses["standard"]
@@ -391,4 +410,5 @@ __provider_interface = ProviderInterface()
 
 
 def get_provider_interface() -> ProviderInterface:
+    """Get the provider interface."""
     return __provider_interface

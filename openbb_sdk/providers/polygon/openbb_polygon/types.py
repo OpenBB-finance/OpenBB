@@ -1,7 +1,7 @@
 """Polygon types helpers."""
 
 # IMPORT STANDARD
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from enum import Enum
 from typing import Literal, Optional, Union
 
@@ -95,8 +95,12 @@ class PolygonFundamentalQueryParams(QueryParams):
 
 class BaseStockQueryParams(QueryParams):
     stocksTicker: str = Field(alias="symbol")
-    start_date: Union[date, datetime]
-    end_date: Union[date, datetime]
+    start_date: Union[date, datetime] = Field(
+        default=datetime.now().date() - timedelta(days=8)
+    )
+    end_date: Union[date, datetime] = Field(
+        default=datetime.now().date() - timedelta(days=1)
+    )
     timespan: Timespan = Field(default=Timespan.day)
     sort: Literal["asc", "desc"] = Field(default="desc")
     limit: PositiveInt = Field(default=49999)

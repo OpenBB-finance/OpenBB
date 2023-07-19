@@ -8,6 +8,7 @@
 from openbb_provider.abstract.provider import Provider, ProviderNameType
 
 from .analyst_estimates import FMPAnalystEstimatesFetcher
+from .available_indices import FMPAvailableIndicesFetcher
 from .balance_sheet import FMPBalanceSheetFetcher
 from .cash_flow import FMPCashFlowStatementFetcher
 from .company_profile import FMPCompanyProfileFetcher
@@ -94,5 +95,6 @@ fmp_provider = Provider(
         FMPStockPeersFetcher,
         FMPStockMultiplesFetcher,
         FMPHistoricalEmployeesFetcher,
+        FMPAvailableIndicesFetcher,
     ],
 )

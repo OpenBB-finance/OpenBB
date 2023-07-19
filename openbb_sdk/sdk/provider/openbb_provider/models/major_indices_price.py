@@ -1,13 +1,11 @@
 """Major Indices Price Data Model."""
 
 
-from datetime import date, datetime
-from typing import Optional
+from datetime import datetime
 
-from pydantic import Field, PositiveFloat
+from pydantic import PositiveFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
@@ -17,18 +15,8 @@ class MajorIndicesPriceQueryParams(QueryParams, BaseSymbol):
     Parameter
     ---------
     symbol : str
-        The symbol of the company.
-    start_date : date
-        The start date of the query.
-    end_date : Optional[date]
-        The end date of the query.
+        The symbol of the index.
     """
-
-    # These fields only work with Polygon
-    start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
-    end_date: Optional[date] = Field(
-        description=DESCRIPTIONS.get("end_date", ""), default=date.today()
-    )
 
 
 class MajorIndicesPriceData(Data):

@@ -7,7 +7,7 @@ import pkg_resources
 
 
 def build_provider_name():
-    """Builds the provider name Literal from the entry points."""
+    """Build the provider name Literal from the entry points."""
     extension_names = []
 
     for entry_point in pkg_resources.iter_entry_points("openbb_provider_extension"):
@@ -26,10 +26,13 @@ ProviderName = build_provider_name()
 
 
 class ProviderNameType(type):
+    """Metaclass for ProviderName."""
+
     __args__ = ProviderName.__args__
     __str__ = ProviderName.__str__
 
     def __new__(mcs, value):
+        """Override __new__ to check if value is a valid provider name."""
         return value
 
     def __init__(cls, value):
@@ -38,16 +41,21 @@ class ProviderNameType(type):
         cls.value = value
 
     def __getstate__(cls):
+        """Override __getstate__ to return the value of the provider name."""
         return cls.value
 
     def __setstate__(cls, state):
+        """Override __setstate__ to set the value of the provider name."""
         cls.value = state
 
     def __repr__(cls):
+        """Override __repr__ to return the value of the provider name."""
         return f"ProviderName({cls.value})"
 
 
 class Provider:
+    """Abstract class for providers."""
+
     QUERIES = ["get_query_type", "get_provider_query_type"]
 
     def __init__(
