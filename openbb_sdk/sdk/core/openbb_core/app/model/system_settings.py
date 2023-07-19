@@ -59,6 +59,7 @@ class SystemSettings(Tagged):
     def __repr__(self) -> str:
         return (
             self.__class__.__name__
+            + " (runtime read-only)"
             + "\n\n"
             + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
         )
@@ -67,6 +68,12 @@ class SystemSettings(Tagged):
     def create_empty_json(path: Path) -> None:
         with open(path, mode="w") as file:
             json.dump({}, file)
+
+    @validator("debug_mode")
+    @classmethod
+    def validate_debug_mode(cls, v):
+        dm = os.getenv("DEBUG_MODE", "").lower() in ["true", "1"]
+        return bool(v or dm)
 
     @root_validator(allow_reuse=True)
     @classmethod
