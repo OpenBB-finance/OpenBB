@@ -118,7 +118,7 @@ class ChartingManager:
         """
 
         # Dynamically import the backend module
-        backend_module = import_module(f"{charting_extension}.core.backend")
+        backend_module = import_module(charting_extension)
 
         create_backend_func = getattr(backend_module, "create_backend")
         get_backend_func = getattr(backend_module, "get_backend")
