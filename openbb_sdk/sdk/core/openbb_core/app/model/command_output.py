@@ -14,6 +14,10 @@ T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
 
 
+class OpenBBError(Exception):
+    pass
+
+
 class CommandOutput(GenericModel, Generic[T], Tagged):
     results: Optional[T] = Field(
         default=None,
@@ -43,7 +47,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             Pandas dataframe.
         """
         if self.results is None:
-            raise ValueError("Results not found.")
+            raise OpenBBError("Results not found.")
 
         try:
             df = pd.DataFrame(self.dict()["results"])
@@ -80,13 +84,13 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             Plotly json.
         """
         if not self.chart:
-            raise ValueError("Chart not found.")
+            raise OpenBBError("Chart not found.")
         if not self.chart.format == "plotly":
-            raise ValueError("Chart is not in plotly format.")
+            raise OpenBBError("Chart is not in plotly format.")
         return self.chart.content
 
     def show(self):
         """Displays chart."""
         if not self.chart:
-            raise ValueError("Chart not found.")
+            raise OpenBBError("Chart not found.")
         self.chart.show()
