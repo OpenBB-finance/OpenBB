@@ -11,10 +11,9 @@ from openbb_provider.models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
+from pydantic import Field
 
 from .helpers import get_data_many
-
-from pydantic import Field
 
 
 class FMPAvailableIndicesQueryParams(QueryParams):
