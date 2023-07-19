@@ -1662,11 +1662,10 @@ def stocks_load(**kwargs):
     data = basemodel_to_df(
         kwargs["command_output_item"], index=kwargs.get("index", "date")
     )
-    ma = kwargs.get("ma", None)
-    prepost = kwargs.get("prepost", False)
-    symbol = kwargs.get("symbol", "")
-
-    data.name = f"{symbol} historical data"
+    standard_params = kwargs["standard_params"].__dict__
+    ma = standard_params.get("ma", None)
+    prepost = standard_params.get("prepost", False)
+    symbol = standard_params.get("symbol", "")
 
     ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
