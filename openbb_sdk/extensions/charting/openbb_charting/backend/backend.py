@@ -24,7 +24,7 @@ try:
 except ImportError as e:
     print(f"\033[91m{e}\033[0m")
     # pylint: disable=C0412
-    from .no_import import DummyBackend
+    from .dummy_backend import DummyBackend
 
     class PyWry(DummyBackend):  # type: ignore
         """Dummy backend for charts."""
