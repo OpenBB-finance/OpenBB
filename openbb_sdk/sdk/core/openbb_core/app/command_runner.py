@@ -241,27 +241,9 @@ class StaticCommandRunner:
         return result
 
     @classmethod
-    def __execute_func(
-        cls,
-        route: str,
-        args: Tuple[Any],
-        execution_context: ExecutionContext,
-        func: Callable,
-        kwargs: Dict[str, Any],
+    def __execute(
+        cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
     ) -> CommandOutput:
-        system_settings = execution_context.system_settings
-
-        # We pop here because we will loose "chart" after ParametersBuilder.build
-        chart = kwargs.pop("chart", False)
-
-        kwargs = ParametersBuilder.build(
-            args=args,
-            execution_context=execution_context,
-            func=func,
-            route=route,
-            kwargs=kwargs,
-        )
-
         try:
             with warnings.catch_warnings(record=True) as warning_list:
                 if system_settings.run_in_isolation:
@@ -277,26 +259,75 @@ class StaticCommandRunner:
                     command_output.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            # TODO: Raise exception in debug mode
-            # TODO: Save traceback to provide more detailed error
             command_output = CommandOutput(error=Error(message=str(e)))
+            if system_settings.debug_mode:
+                raise
 
+        return command_output
+
+    @classmethod
+    def __chart(
+        cls,
+        command_output: CommandOutput,
+        user_settings: UserSettings,
+        system_settings: SystemSettings,
+        route: str,
+        **kwargs,
+    ) -> None:
         try:
-            if chart:
-                command_output.chart = cls.charting_manager.chart(
-                    user_settings=execution_context.user_settings,
-                    system_settings=execution_context.system_settings,
-                    route=route,
-                    command_output_item=command_output.results,
-                    **kwargs,
-                )
+            command_output.chart = cls.charting_manager.chart(
+                user_settings=user_settings,
+                system_settings=system_settings,
+                route=route,
+                command_output_item=command_output.results,
+                **kwargs,
+            )
         except Exception as e:
-            # TODO: Raise exception in debug mode
             command_output.chart = Chart(error=Error(message=str(e)))
+            if system_settings.debug_mode:
+                raise
+
+    @classmethod
+    def __execute_func(
+        cls,
+        route: str,
+        args: Tuple[Any],
+        execution_context: ExecutionContext,
+        func: Callable,
+        kwargs: Dict[str, Any],
+    ) -> CommandOutput:
+        user_settings = execution_context.user_settings
+        system_settings = execution_context.system_settings
+
+        # We pop here because we will lose "chart" after ParametersBuilder.build
+        chart = kwargs.pop("chart", False)
+
+        kwargs = ParametersBuilder.build(
+            args=args,
+            execution_context=execution_context,
+            func=func,
+            route=route,
+            kwargs=kwargs,
+        )
+
+        command_output = cls.__execute(
+            system_settings=system_settings,
+            func=func,
+            kwargs=kwargs,
+        )
+
+        if chart:
+            cls.__chart(
+                command_output=command_output,
+                user_settings=user_settings,
+                system_settings=system_settings,
+                route=route,
+                **kwargs,
+            )
 
         cls.logging_manager.log(
-            user_settings=execution_context.user_settings,
-            system_settings=execution_context.system_settings,
+            user_settings=user_settings,
+            system_settings=system_settings,
             command_output=command_output,
             route=route,
             func=func,
