@@ -95,17 +95,18 @@ class PlotlyTA(PltTA):
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
+        cls.settings = kwargs.pop("charting_settings", cls.settings)
+        cls.inchart_colors = theme.get_colors()
+
         global PLOTLY_TA  # pylint: disable=global-statement # noqa
         if PLOTLY_TA is None:
             # Creates the instance of the class and loads the plugins
             # We set the global variable to the instance of the class so that
             # the plugins are only loaded once
             PLOTLY_TA = super().__new__(cls)
-            PLOTLY_TA._locate_plugins()
+            PLOTLY_TA._locate_plugins(cls.settings.debug_mode)
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
-        cls.settings = kwargs.pop("charting_settings", cls.settings)
-        cls.inchart_colors = theme.get_colors()
         return PLOTLY_TA
 
     def __init__(
@@ -225,36 +226,28 @@ class PlotlyTA(PltTA):
         )
 
     @staticmethod
-    def _locate_plugins() -> None:
+    def _locate_plugins(debug: Optional[bool] = False) -> None:
         """Locate all the plugins in the plugins folder"""
         path = (
             Path(sys.executable).parent
             if hasattr(sys, "frozen")
             else CHARTING_INSTALL_PATH
         )
-
-        # TODO : figure this out regarding the system preferences
-        # current_system = get_current_system()
-
-        # TODO : figure this out regarding the system preferences
-        # This is for debugging purposes
-        # if current_system.DEBUG_MODE:
-        #     console.print(f"[bold green]Loading plugins from {path}[/]")
-        #     console.print("[bold green]Plugins found:[/]")
+        if debug:
+            warnings.warn(f"[bold green]Loading plugins from {path}[/]")
+            warnings.warn("[bold green]Plugins found:[/]")
 
         for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
             python_path = plugin.relative_to(path).with_suffix("")
 
-            # TODO : figure this out regarding the system preferences
-            # This is for debugging purposes
-            # if current_system.DEBUG_MODE:
-            #     console.print(f"    [bold red]{plugin.name}[/]")
-            #     console.print(f"        [bold yellow]{python_path}[/]")
-            #     console.print(f"        [bold bright_cyan]{__package__}[/]")
-            #     console.print(f"        [bold magenta]{python_path.parts}[/]")
-            #     console.print(
-            #         f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
-            #     )
+            if debug:
+                warnings.warn(f"    [bold red]{plugin.name}[/]")
+                warnings.warn(f"        [bold yellow]{python_path}[/]")
+                warnings.warn(f"        [bold bright_cyan]{__package__}[/]")
+                warnings.warn(f"        [bold magenta]{python_path.parts}[/]")
+                warnings.warn(
+                    f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
+                )
 
             module = importlib.import_module(
                 ".".join(python_path.parts), package=__package__

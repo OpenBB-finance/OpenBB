@@ -149,7 +149,7 @@ class ChartingManager:
             )
 
             create_backend(charting_settings=charting_settings)
-            get_backend().start()  # TODO: Add debug mode here
+            get_backend().start(debug=charting_settings.debug_mode)
 
         chart_format = self.get_chart_format(self._charting_extension)
 

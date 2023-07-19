@@ -53,6 +53,8 @@ class SystemSettings(Tagged):
 
     # Others
     test_mode: bool = False
+    debug_mode: bool = False
+    headless: bool = False
 
     def __repr__(self) -> str:
         return (

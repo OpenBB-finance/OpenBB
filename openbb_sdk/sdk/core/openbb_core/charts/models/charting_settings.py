@@ -30,6 +30,7 @@ class ChartingSettings:
         self.python_version = system_settings.python_version
         self.test_mode = system_settings.test_mode
         self.app_id: str = get_app_id(user_data_directory)
+        self.debug_mode: bool = system_settings.debug_mode
         # User
         self.plot_pywry_width = user_settings.preferences.plot_pywry_width
         self.plot_pywry_height = user_settings.preferences.plot_pywry_height
