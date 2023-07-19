@@ -1,4 +1,4 @@
-from openbb_charting.backend.plotly_ta.ta_class import PlotlyTA
+from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.chart import ChartFormat
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df
