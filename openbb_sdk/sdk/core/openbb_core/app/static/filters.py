@@ -7,7 +7,7 @@ from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_output import CommandOutput
 
 
-def base_filter(func):
+def filter_call(func):
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
