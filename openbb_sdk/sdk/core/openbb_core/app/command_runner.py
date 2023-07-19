@@ -258,7 +258,7 @@ class StaticCommandRunner:
         try:
             context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
                 warnings.catch_warnings(record=True)
-                if not get_system_settings_sync().debug_mode
+                if not system_settings.debug_mode
                 else nullcontext()
             )
 
@@ -279,7 +279,7 @@ class StaticCommandRunner:
             command_output = CommandOutput(
                 error=Error(message=str(e), error_kind=e.__class__.__name__)
             )
-            if get_system_settings_sync().debug_mode:
+            if system_settings.debug_mode:
                 raise
 
         return command_output
@@ -303,7 +303,7 @@ class StaticCommandRunner:
             )
         except Exception as e:
             command_output.chart = Chart(error=Error(message=str(e)))
-            if get_system_settings_sync().debug_mode:
+            if system_settings.debug_mode:
                 raise
 
     @classmethod
@@ -318,7 +318,9 @@ class StaticCommandRunner:
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
-        # We pop here because we will lose "chart" after ParametersBuilder.build
+        # If we're on Jupyter we need to pop here because we will lose "chart" after
+        # ParametersBuilder.build. This needs to be fixed in a way that chart is not
+        # is added to the function signature and shared for jupyter and api
         chart = kwargs.pop("chart", False)
 
         kwargs = ParametersBuilder.build(
@@ -328,6 +330,10 @@ class StaticCommandRunner:
             route=route,
             kwargs=kwargs,
         )
+
+        # If we're on the api we need to remove "chart" here because the parameter is added on
+        # commands.py and the function signature does not expect "chart"
+        kwargs.pop("chart", None)
 
         command_output = cls.__execute(
             system_settings=system_settings,
@@ -435,7 +441,8 @@ class CommandRunner:
         **kwargs,
     ) -> JournalEntry:
         command_map = self._command_map
-        system_settings = self._system_settings
+        # Getting the most updated system settings to allow debug_mode without reload
+        system_settings = get_system_settings_sync()
         journal_service = self._journal_service
 
         execution_context = ExecutionContext(
