@@ -1653,6 +1653,12 @@ def stocks_options_vsurf(**kwargs):
 
 
 def stocks_load(**kwargs):
+    def handle_indicators(ma):
+        k = {}
+        if ma:
+            k["rma"] = dict(length=ma)
+        return k
+
     data = basemodel_to_df(
         kwargs["command_output_item"], index=kwargs.get("index", "date")
     )
@@ -1662,14 +1668,10 @@ def stocks_load(**kwargs):
 
     data.name = f"{symbol} historical data"
 
-    kwargs = {}
-    if ma:
-        kwargs["rma"] = dict(length=ma)
-
-    ta = PlotlyTA()
+    ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
         data,
-        indicators=dict(**kwargs),
+        indicators=dict(**handle_indicators(ma)),
         symbol=f"{symbol} historical data",
         prepost=prepost,
     )
@@ -1703,7 +1705,7 @@ def _ta_ma(ma_type: str, **kwargs):
     offset = kwargs.get("offset", 0)
     symbol = kwargs.get("symbol", "")
 
-    ta = PlotlyTA()
+    ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
         data,
         {f"{ma_type.lower()}": dict(length=window, offset=offset)},
@@ -1758,7 +1760,7 @@ def ta_aroon(**kwargs):
     scalar = kwargs.get("scalar", 100)
     symbol = kwargs.get("symbol", "")
 
-    ta = PlotlyTA()
+    ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
         data,
         dict(aroon=dict(length=length, scalar=scalar)),
@@ -1794,7 +1796,7 @@ def ta_macd(**kwargs):
     signal = kwargs.get("signal", 9)
     symbol = kwargs.get("symbol", "")
 
-    ta = PlotlyTA()
+    ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
         data,
         dict(macd=dict(fast=fast, slow=slow, signal=signal)),
@@ -1834,7 +1836,7 @@ def ta_adx(**kwargs):
     drift = kwargs.get("drift", 1)
     symbol = kwargs.get("symbol", "")
 
-    ta = PlotlyTA()
+    ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
         data,
         dict(adx=dict(length=length, scalar=scalar, drift=drift)),
@@ -1862,7 +1864,7 @@ def ta_rsi(**kwargs):
     drift = kwargs.get("drift", 1)
     symbol = kwargs.get("symbol", "")
 
-    ta = PlotlyTA()
+    ta = PlotlyTA(charting_settings=kwargs["charting_settings"])
     fig = ta.plot(
         data,
         dict(rsi=dict(length=window, scalar=scalar, drift=drift)),

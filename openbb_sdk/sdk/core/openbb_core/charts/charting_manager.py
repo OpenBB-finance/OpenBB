@@ -157,6 +157,7 @@ class ChartingManager:
         )
 
         kwargs["command_output_item"] = command_output_item
+        kwargs["charting_settings"] = charting_settings
 
         return Chart(
             content=charting_function(**kwargs),

@@ -12,6 +12,8 @@ from openbb_charting.backend.chart_style import (
 )
 from openbb_charting.backend.openbb_figure import OpenBBFigure
 
+from openbb_core.charts.models.charting_settings import ChartingSettings
+
 from .base import PltTA
 from .data_classes import ChartIndicators
 from .ta_helpers import check_columns
@@ -89,6 +91,7 @@ class PlotlyTA(PltTA):
     has_volume: bool = True
     show_volume: bool = True
     prepost: bool = False
+    settings: ChartingSettings = ChartingSettings()
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
@@ -101,10 +104,13 @@ class PlotlyTA(PltTA):
             PLOTLY_TA._locate_plugins()
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
+        cls.settings = kwargs.pop("charting_settings", cls.settings)
         cls.inchart_colors = theme.get_colors()
         return PLOTLY_TA
 
-    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
+    def __init__(
+        self, *args, charting_settings: Optional[ChartingSettings] = None, **kwargs
+    ):  # pylint: disable=unused-argument
         """This method is overridden to do nothing, except to clear the internal data structures."""
         if not args and not kwargs:
             self._clear_data()
