@@ -80,7 +80,7 @@ class PolygonForexEODFetcher(
         query: PolygonForexEODQueryParams, api_key: str
     ) -> List[PolygonForexEODData]:
         now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=7)).date()
+        start_date = query.start_date or (now - timedelta(days=5)).date()
         end_date = query.end_date or now.date()
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"

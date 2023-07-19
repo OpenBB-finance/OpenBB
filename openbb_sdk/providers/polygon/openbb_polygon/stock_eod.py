@@ -62,7 +62,7 @@ class PolygonStockEODFetcher(
         query: StockEODQueryParams, extra_params: Optional[Dict] = None
     ) -> PolygonStockEODQueryParams:
         now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=7)).date()
+        start_date = query.start_date or (now - timedelta(days=5)).date()
         end_date = query.end_date or now.date()
         return PolygonStockEODQueryParams(
             symbol=query.symbol,
