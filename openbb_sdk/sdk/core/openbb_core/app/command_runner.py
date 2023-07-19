@@ -1,11 +1,21 @@
 import inspect
 import multiprocessing
 import warnings
+from contextlib import nullcontext
 from copy import deepcopy
 from datetime import datetime
 from inspect import Parameter, signature
 from time import perf_counter_ns
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import (
+    Any,
+    Callable,
+    ContextManager,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
 
 from pydantic import BaseConfig, Extra, create_model
 
@@ -245,7 +255,13 @@ class StaticCommandRunner:
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
     ) -> CommandOutput:
         try:
-            with warnings.catch_warnings(record=True) as warning_list:
+            context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
+                warnings.catch_warnings(record=True)
+                if not system_settings.debug_mode
+                else nullcontext()
+            )
+
+            with context_manager as warning_list:
                 if system_settings.run_in_isolation:
                     command_output = cls.__run_in_isolation(func=func, kwargs=kwargs)
                 else:
