@@ -31,6 +31,7 @@ except ImportError as e:
 
 from svglib.svglib import svg2rlg
 
+from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
@@ -201,8 +202,10 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update(self.get_json_update(command_location))
-
+        if config_terminal.COMMAND_ON_CHART:
+            json_data.update(self.get_json_update(command_location))
+        else:
+            json_data.update(self.get_json_update(" "))
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,

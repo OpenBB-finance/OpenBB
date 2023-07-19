@@ -1158,7 +1158,6 @@ class OpenBBFigure(go.Figure):
                         if trace.name and "/" in trace.name:
                             continue
                         trace.name = f"{trace.name} {command_location}"
-
                     config_terminal.set_current_figure(self)
                     # We send the figure to the backend to be displayed
                     return None

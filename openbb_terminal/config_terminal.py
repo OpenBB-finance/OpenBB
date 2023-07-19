@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
 OpenBBFigureT = TypeVar("OpenBBFigureT", bound="OpenBBFigure")
 HOLD: bool = False
+COMMAND_ON_CHART: bool = True
 current_figure: Optional[OpenBBFigureT] = None  # type: ignore
 new_axis: bool = True
 legends = []

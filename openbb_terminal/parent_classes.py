@@ -197,7 +197,9 @@ class BaseController(metaclass=ABCMeta):
 
         self.SUPPORT_CHOICES = support_choices
 
-        self.HELP_CHOICES = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
+        self.HELP_CHOICES = {
+            c: None for c in ["on", "off", "-s", "--sameaxis", "--title"]
+        }
 
         # Add in news options
         news_choices = [
@@ -293,6 +295,14 @@ class BaseController(metaclass=ABCMeta):
             help="Put plots on the same axis.  Best when numbers are on similar scales",
             dest="axes",
         )
+        parser.add_argument(
+            "--title",
+            type=str,
+            default="",
+            dest="title",
+            nargs="+",
+            help="When using hold off, this sets the title for the figure.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-o")
 
@@ -303,6 +313,7 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             if ns_parser.option == "on":
                 config_terminal.HOLD = True
+                config_terminal.COMMAND_ON_CHART = False
                 if ns_parser.axes:
                     config_terminal.set_same_axis()
                 else:
@@ -312,7 +323,6 @@ class BaseController(metaclass=ABCMeta):
                 and config_terminal.get_current_figure() is not None
             ):
                 config_terminal.HOLD = False
-
                 # create a subplot
                 fig = config_terminal.get_current_figure()
                 if fig is None:
@@ -361,7 +371,9 @@ class BaseController(metaclass=ABCMeta):
                         if new_name:
                             trace.name = new_name
 
+                fig.update_layout(title=" ".join(ns_parser.title))
                 fig.show()
+                config_terminal.COMMAND_ON_CHART = True
 
                 config_terminal.set_current_figure(None)
                 config_terminal.reset_legend()
