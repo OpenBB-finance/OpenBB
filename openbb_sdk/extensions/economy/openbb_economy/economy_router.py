@@ -68,6 +68,17 @@ def available_indices(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(model="RiskPremium")
+def risk(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Market Risk Premium."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command
 def macro(
     cc: CommandContext,
