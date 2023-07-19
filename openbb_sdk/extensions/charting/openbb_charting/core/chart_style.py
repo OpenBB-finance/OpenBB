@@ -30,8 +30,7 @@ class ChartStyle:
     """
 
     STYLES_REPO = Path(__file__).parent.parent / "styles"
-    # TODO : this should be a user preference - get_current_user().preferences.USER_STYLES_DIRECTORY
-    USER_STYLES_DIRECTORY = STYLES_REPO
+    user_styles_directory = STYLES_REPO
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
@@ -51,6 +50,8 @@ class ChartStyle:
 
     line_width: float = 1.5
 
+    initialized: bool = False
+
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         """Create a singleton."""
         if not hasattr(cls, "instance"):
@@ -61,6 +62,7 @@ class ChartStyle:
         self,
         plt_style: Optional[str] = "",
         console_style: Optional[str] = "",
+        user_styles_directory: Optional[Union[str, Path]] = None,
     ):
         """Initialize the class.
 
@@ -71,6 +73,11 @@ class ChartStyle:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
+        if self.initialized:
+            return
+
+        self.initialized = True
+        self.user_styles_directory = user_styles_directory or self.user_styles_directory
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
@@ -162,7 +169,7 @@ class ChartStyle:
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
         self.load_available_styles_from_folder(self.STYLES_REPO)
-        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
+        self.load_available_styles_from_folder(self.user_styles_directory)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.

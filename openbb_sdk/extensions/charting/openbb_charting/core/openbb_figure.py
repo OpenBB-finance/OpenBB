@@ -24,7 +24,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 import statsmodels.api as sm
 from openbb_charting.core.backend import PLOTLYJS_PATH, get_backend
-from openbb_charting.core.chart_style import theme
+from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
@@ -96,8 +96,13 @@ class OpenBBFigure(go.Figure):
         self._cmd_xshift = 0
         self._bar_width = 0.15
         self._export_image: Optional[Union[Path, str]] = ""
-
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
+
+        self._theme = ChartStyle(
+            self._charting_settings.chart_style,
+            self._charting_settings.rich_style,
+            self._charting_settings.user_styles_directory,
+        )
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
@@ -231,9 +236,11 @@ class OpenBBFigure(go.Figure):
         secondary_y : `bool`, optional
             Whether to plot on secondary y axis, by default None
         """
+
         try:
             for column, color in zip(
-                ["OC_High_trend", "OC_Low_trend"], [theme.up_color, theme.down_color]
+                ["OC_High_trend", "OC_Low_trend"],
+                [self._theme.up_color, self._theme.down_color],
             ):
                 if column in data.columns:
                     name = column.split("_")[1].title()
@@ -296,6 +303,7 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column of the subplot, by default 1
         """
+
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
         def _validate_x(data: Union[np.ndarray, pd.Series, type[TimeSeriesT]]):
@@ -326,7 +334,9 @@ class OpenBBFigure(go.Figure):
         for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
             if not color_i:
                 color_i = (  # noqa: PLW2901
-                    theme.up_color if i % 2 == 0 else theme.down_color
+                    self._self._theme.up_color
+                    if i % 2 == 0
+                    else self._self._theme.down_color
                 )
 
             res_mean, res_std = np.mean(x_i), np.std(x_i)
@@ -372,7 +382,7 @@ class OpenBBFigure(go.Figure):
                     name=name_i if len(name) < 2 else name[1],
                     mode="markers",
                     marker=dict(
-                        color=theme.down_color,
+                        color=self._self._theme.down_color,
                         symbol="line-ns-open",
                         size=8,
                     ),
@@ -548,6 +558,7 @@ class OpenBBFigure(go.Figure):
         legendrank : `int`, optional
             Legend rank, by default None (e.g. 1 is above 2)
         """
+
         if line is None:
             line = {}
 
@@ -559,7 +570,7 @@ class OpenBBFigure(go.Figure):
             label=name,
             mode="lines",
             line_dash=line.get("dash", "solid"),
-            marker=dict(color=line.get("color", theme.line_color)),
+            marker=dict(color=line.get("color", self._theme.line_color)),
             legendrank=legendrank,
             **kwargs,
         )
@@ -585,6 +596,7 @@ class OpenBBFigure(go.Figure):
         legendrank : `int`, optional
             Legend rank, by default None (e.g. 1 is above 2)
         """
+
         if line is None:
             line = {}
 
@@ -596,7 +608,7 @@ class OpenBBFigure(go.Figure):
             label=name,
             mode="lines",
             line_dash=line.get("dash", "solid"),
-            marker=dict(color=line.get("color", theme.line_color)),
+            marker=dict(color=line.get("color", self._theme.line_color)),
             legendrank=legendrank,
             **kwargs,
         )
@@ -701,8 +713,11 @@ class OpenBBFigure(go.Figure):
         volume_ticks_x : int, optional
             Number to multiply volume, by default 7
         """
+
         colors = np.where(
-            df_stock.open < df_stock[close_col], theme.up_color, theme.down_color
+            df_stock.open < df_stock[close_col],
+            self._theme.up_color,
+            self._theme.down_color,
         )
         vol_scale = self.chart_volume_scaling(df_stock[volume_col], volume_ticks_x)
         self.add_bar(
@@ -824,6 +839,7 @@ class OpenBBFigure(go.Figure):
         bar_width : `float`, optional
             The width of the bars, by default 0.0001
         """
+
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
         self._export_image = export_image
@@ -849,13 +865,15 @@ class OpenBBFigure(go.Figure):
         if self._backend.isatty:
             self.update_layout(  # type: ignore
                 newshape_line_color="gold"
-                if theme.mapbox_style == "dark"
+                if self._theme.mapbox_style == "dark"
                 else "#0d0887",
                 modebar=dict(
                     orientation="v",
-                    bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
-                    color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
-                    activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
+                    bgcolor="#2A2A2A" if self._theme.mapbox_style == "dark" else "gray",
+                    color="#FFFFFF" if self._theme.mapbox_style == "dark" else "black",
+                    activecolor="#d1030d"
+                    if self._theme.mapbox_style == "dark"
+                    else "blue",
                 ),
                 spikedistance=2,
                 hoverdistance=2,
@@ -1438,8 +1456,10 @@ class OpenBBFigure(go.Figure):
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self, command_location: Optional[str] = "") -> None:
         """Set the watermark for OpenBB Terminal."""
-
         if command_location:
+            theme = ChartStyle(
+                self._charting_settings.chart_style, self._charting_settings.rich_style
+            )
             yaxis = self.layout.yaxis
             yaxis2 = self.layout.yaxis2 if hasattr(self.layout, "yaxis2") else None
             xshift = -70 if yaxis.side == "right" else -80
@@ -1471,7 +1491,7 @@ class OpenBBFigure(go.Figure):
                 text=command_location,
                 textangle=-90,
                 font_size=24,
-                font_color="gray" if theme.mapbox_style == "dark" else "black",
+                font_color="gray" if self._theme.mapbox_style == "dark" else "black",
                 opacity=0.5,
                 yanchor="middle",
                 xanchor="left",
@@ -1491,9 +1511,10 @@ class OpenBBFigure(go.Figure):
 
     def add_logscale_menus(self, yaxis: str = "yaxis") -> None:
         """Set the menus for the figure."""
+
         self._added_logscale = True
-        bg_color = "#000000" if theme.mapbox_style == "dark" else "#FFFFFF"  # type: ignore
-        font_color = "#FFFFFF" if theme.mapbox_style == "dark" else "#000000"  # type: ignore
+        bg_color = "#000000" if self._theme.mapbox_style == "dark" else "#FFFFFF"  # type: ignore
+        font_color = "#FFFFFF" if self._theme.mapbox_style == "dark" else "#000000"  # type: ignore
         self.update_layout(
             xaxis=dict(
                 rangeslider=dict(visible=False),

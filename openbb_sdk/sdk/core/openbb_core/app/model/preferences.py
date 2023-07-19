@@ -7,6 +7,7 @@ from pydantic import BaseModel, PositiveInt
 class Preferences(BaseModel):
     data_directory: str = str(Path.home() / "OpenBBUserData")
     export_directory: str = str(Path.home() / "OpenBBUserData" / "exports")
+    user_styles_directory: str = str(Path.home() / "OpenBBUserData" / "styles" / "user")
     charting_extension: Literal["openbb_charting"] = "openbb_charting"
     rich_style: str = "dark"
     chart_style: Literal["dark", "light"] = "dark"
