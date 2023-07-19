@@ -23,6 +23,7 @@ from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
+from openbb_terminal import config_terminal
 from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
@@ -56,6 +57,8 @@ from openbb_terminal.terminal_helper import (
     open_openbb_documentation,
     print_guest_block_msg,
 )
+
+from .helper_classes import TerminalStyle as _TerminalStyle
 
 logger = logging.getLogger(__name__)
 
@@ -108,6 +111,7 @@ class BaseController(metaclass=ABCMeta):
         "stop",
         "screenshot",
         "askobb",
+        "hold",
     ]
 
     if is_auth_enabled():
@@ -117,6 +121,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    HOLD_CHOICES: dict = {}
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
@@ -192,6 +197,10 @@ class BaseController(metaclass=ABCMeta):
 
         self.SUPPORT_CHOICES = support_choices
 
+        self.HELP_CHOICES = {
+            c: None for c in ["on", "off", "-s", "--sameaxis", "--title"]
+        }
+
         # Add in news options
         news_choices = [
             "--term",
@@ -261,6 +270,113 @@ class BaseController(metaclass=ABCMeta):
             old_class.queue = self.queue
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
+
+    def call_hold(self, other_args: List[str]) -> None:
+        self.save_class()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hold",
+            description="Turn on figure holding.  This will stop showing images until hold off is run.",
+        )
+        parser.add_argument(
+            "-o",
+            "--option",
+            choices=["on", "off"],
+            type=str,
+            default="off",
+            dest="option",
+        )
+        parser.add_argument(
+            "-s",
+            "--sameaxis",
+            action="store_true",
+            default=False,
+            help="Put plots on the same axis.  Best when numbers are on similar scales",
+            dest="axes",
+        )
+        parser.add_argument(
+            "--title",
+            type=str,
+            default="",
+            dest="title",
+            nargs="+",
+            help="When using hold off, this sets the title for the figure.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-o")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+        if ns_parser:
+            if ns_parser.option == "on":
+                config_terminal.HOLD = True
+                config_terminal.COMMAND_ON_CHART = False
+                if ns_parser.axes:
+                    config_terminal.set_same_axis()
+                else:
+                    config_terminal.set_new_axis()
+            if (
+                ns_parser.option == "off"
+                and config_terminal.get_current_figure() is not None
+            ):
+                config_terminal.HOLD = False
+                # create a subplot
+                fig = config_terminal.get_current_figure()
+                if fig is None:
+                    return
+                if not fig.has_subplots and not config_terminal.make_new_axis():
+                    fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
+
+                if config_terminal.make_new_axis():
+                    for i, trace in enumerate(fig.select_traces()):
+                        trace.yaxis = f"y{i+1}"
+
+                        if i != 0:
+                            fig.update_layout(
+                                {
+                                    f"yaxis{i+1}": dict(
+                                        side="left",
+                                        overlaying="y",
+                                        showgrid=True,
+                                        showline=False,
+                                        zeroline=False,
+                                        automargin=True,
+                                        ticksuffix="       " * (i - 1) if i > 1 else "",
+                                        tickfont=dict(
+                                            size=18,
+                                            color=_TerminalStyle().get_colors()[i],
+                                        ),
+                                        title=dict(
+                                            font=dict(
+                                                size=15,
+                                            ),
+                                            standoff=0,
+                                        ),
+                                    ),
+                                }
+                            )
+                    # pylint: disable=undefined-loop-variable
+                    fig.update_layout(margin=dict(l=30 * i))
+
+                else:
+                    fig.update_yaxes(title="")
+
+                if any(config_terminal.get_legends()):
+                    for trace, new_name in zip(
+                        fig.select_traces(), config_terminal.get_legends()
+                    ):
+                        if new_name:
+                            trace.name = new_name
+
+                fig.update_layout(title=" ".join(ns_parser.title))
+                fig.show()
+                config_terminal.COMMAND_ON_CHART = True
+
+                config_terminal.set_current_figure(None)
+                config_terminal.reset_legend()
 
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""
@@ -993,6 +1109,17 @@ class BaseController(metaclass=ABCMeta):
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
         )
+
+        if config_terminal.HOLD:
+            parser.add_argument(
+                "--legend",
+                type=str,
+                dest="hold_legend_str",
+                default="",
+                nargs="+",
+                help="Label for legend when hold is on.",
+            )
+
         if export_allowed > NO_EXPORT:
             choices_export = []
             help_export = "Does not export!"
@@ -1088,11 +1215,14 @@ class BaseController(metaclass=ABCMeta):
             console.print(f"[help]{txt_help}[/help]")
             return None
 
+        # This protects against the hidden loads in stocks/fa
+        if parser.prog != "load" and config_terminal.HOLD:
+            config_terminal.set_last_legend(" ".join(ns_parser.hold_legend_str))
+
         if l_unknown_args:
             console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}"
             )
-
         return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):

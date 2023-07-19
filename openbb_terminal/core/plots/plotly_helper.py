@@ -26,6 +26,7 @@ import statsmodels.api as sm
 from plotly.subplots import make_subplots
 from scipy import stats
 
+from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.config.paths import (
     STYLES_DIRECTORY_REPO,
@@ -317,6 +318,9 @@ class OpenBBFigure(go.Figure):
 
     def __init__(self, fig: Optional[go.Figure] = None, **kwargs) -> None:
         super().__init__()
+        if fig is None and config_terminal.current_figure and config_terminal.HOLD:
+            fig = config_terminal.current_figure
+
         if fig:
             self.__dict__ = fig.__dict__
 
@@ -334,6 +338,16 @@ class OpenBBFigure(go.Figure):
 
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
+        fig = config_terminal.get_current_figure()
+        if fig is None and config_terminal.HOLD:
+            config_terminal.append_legend(config_terminal.last_legend)
+        if fig is not None:
+            traces = len(fig.data)
+            self.update_layout(
+                {f"yaxis{traces+1}": dict(title=kwargs.pop("yaxis_title", ""))}
+            )
+            config_terminal.append_legend(config_terminal.last_legend)
+
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
         if yaxis := kwargs.pop("yaxis", None):
@@ -347,6 +361,34 @@ class OpenBBFigure(go.Figure):
                 height=plots_backend().HEIGHT,
                 width=plots_backend().WIDTH,
             )
+
+    def set_secondary_axis(
+        self, title: str, row: Optional[int] = None, col: Optional[int] = None, **kwargs
+    ) -> "OpenBBFigure":
+        """Set secondary axis.
+
+        Parameters
+        ----------
+        title : str
+            Title of the axis
+        row : int, optional
+            Row of the axis, by default None
+        col : int, optional
+            Column of the axis, by default None
+        **kwargs
+            Keyword arguments to pass to go.Figure.update_layout
+        """
+        axis = "yaxis"
+        title = kwargs.pop("title", "")
+        if (fig := config_terminal.get_current_figure()) is not None:
+            total_axes = max(2, len(list(fig.select_yaxes())))
+            axis = f"yaxis{total_axes+1}"
+            if config_terminal.make_new_axis():
+                kwargs["side"] = "left"
+            kwargs.pop("secondary_y", None)
+            return self.update_layout(**{axis: dict(title=title, **kwargs)})
+
+        return self.update_yaxes(title=title, row=row, col=col, **kwargs)
 
     @property
     def subplots_kwargs(self):
@@ -654,7 +696,7 @@ class OpenBBFigure(go.Figure):
                         col=col,
                     )
 
-                    max_y = max(max_y, max(y * 2))
+                    max_y = max(max_y, *(y * 2))
 
         self.update_yaxes(
             position=0.0,
@@ -753,7 +795,7 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column number, by default None
         """
-        self.update_yaxes(title=title, row=row, col=col, **kwargs)
+        self.set_secondary_axis(title=title, row=row, col=col, **kwargs)
         return self
 
     def add_hline_legend(
@@ -1108,8 +1150,17 @@ class OpenBBFigure(go.Figure):
                 # This is done to avoid opening after exporting
                 if export_image:
                     self._exported = True
+                if config_terminal.HOLD:
+                    # pylint: disable=import-outside-toplevel
+                    from openbb_terminal.helper_funcs import command_location
 
-                # We send the figure to the backend to be displayed
+                    for trace in self.select_traces():
+                        if trace.name and "/" in trace.name:
+                            continue
+                        trace.name = f"{trace.name} {command_location}"
+                    config_terminal.set_current_figure(self)
+                    # We send the figure to the backend to be displayed
+                    return None
                 return plots_backend().send_figure(self, export_image)
             except Exception:
                 # If the backend fails, we just show the figure normally
