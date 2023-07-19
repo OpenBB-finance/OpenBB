@@ -19,7 +19,6 @@ from typing import (
 
 from pydantic import BaseConfig, Extra, create_model
 
-from openbb_core.api.dependency.system import get_system_settings_sync
 from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -446,7 +445,7 @@ class CommandRunner:
     ) -> JournalEntry:
         command_map = self._command_map
         # Getting the most updated system settings to allow debug_mode without reload
-        system_settings = get_system_settings_sync()
+        system_settings = self._system_settings
         journal_service = self._journal_service
 
         execution_context = ExecutionContext(

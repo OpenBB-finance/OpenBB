@@ -2,23 +2,26 @@ import builtins
 
 from pydantic import ValidationError
 
-from openbb_core.api.dependency.system import get_system_settings_sync
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_output import CommandOutput
 
 
 def filter_call(func):
     def inner(*args, **kwargs):
+        self = args[0]
+        debug_mode = (
+            self._command_runner_session.command_runner.system_settings.debug_mode
+        )
         try:
             return func(*args, **kwargs)
         except ValidationError as e:
-            if get_system_settings_sync().debug_mode:
+            if debug_mode:
                 raise
             print("ValidationError:\n")
             for error in e.errors():
                 print(f"{error['loc'][-1]}: {error['msg']}")
         except Exception as e:
-            if get_system_settings_sync().debug_mode:
+            if debug_mode:
                 raise
             print(f"UnexpectedError: {e}")
 

@@ -1,6 +1,5 @@
 # pylint: disable=W0231:super-init-not-called
 
-from openbb_core.api.dependency.system import get_system_settings_sync
 from openbb_core.app.command_runner import CommandRunnerSession
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -38,7 +37,7 @@ def create_app():
 
         @property
         def system(self) -> SystemSettings:
-            return get_system_settings_sync()
+            return self._command_runner_session.command_runner.system_settings
 
         @property
         def coverage(self) -> Coverage:
