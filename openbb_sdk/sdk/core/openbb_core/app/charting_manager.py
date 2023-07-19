@@ -97,8 +97,34 @@ class ChartingManager:
         Given an extension name and a route, it returns the chart function.
         The module must contain the given route.
         """
+        adjusted_route = route.replace("/", "_")[1:]
         module = cls._get_extension_module(extension_name)
-        return getattr(module, route)
+        return getattr(module, adjusted_route)
+
+    @staticmethod
+    def handle_backend(charting_extension: str, charting_settings: ChartingSettings):
+        """
+        Handles the backend of the given charting extension.
+        This function that the module expose in its root (__init__.py) the following functions:
+            - `create_backend(charting_settings: ChartingSettings)`
+            - `get_backend()`
+
+        Parameters
+        ----------
+        charting_extension : str
+            Charting extension name.
+        charting_settings : ChartingSettings
+            Charting settings.
+        """
+
+        # Dynamically import the backend module
+        backend_module = import_module(charting_extension)
+
+        create_backend_func = getattr(backend_module, "create_backend")
+        get_backend_func = getattr(backend_module, "get_backend")
+
+        create_backend_func(charting_settings=charting_settings)
+        get_backend_func().start(debug=charting_settings.debug_mode)
 
     def chart(
         self,
@@ -118,6 +144,7 @@ class ChartingManager:
             - Route: `/ta/ema`
             - Charting function: `ta_ema()`
         Note that the route should be in its original format, since it will be converted inside this function.
+
         Parameters
         ----------
         user_settings : UserSettings
@@ -140,29 +167,15 @@ class ChartingManager:
 
         if not self._charting_extension_installed:
             raise ChartingManagerError(
-                f"Charting extension {self._charting_extension} is not installed"
+                f"Charting extension `{self._charting_extension}` is not installed"
             )
 
-        if self._charting_extension == "openbb_charting":
-            from openbb_charting.core.backend import (  # pylint: disable=import-outside-toplevel
-                create_backend,
-                get_backend,
-            )
-
-            create_backend(charting_settings=charting_settings)
-            get_backend().start(debug=charting_settings.debug_mode)
-
-        chart_format = self.get_chart_format(self._charting_extension)
-
-        adjusted_route = route.replace("/", "_")[1:]
-        charting_function = self.get_chart_function(
-            self._charting_extension, adjusted_route
-        )
+        self.handle_backend(self._charting_extension, charting_settings)
 
         kwargs["command_output_item"] = command_output_item
         kwargs["charting_settings"] = charting_settings
 
         return Chart(
-            content=charting_function(**kwargs),
-            format=chart_format,
+            content=self.get_chart_function(self._charting_extension, route)(**kwargs),
+            format=self.get_chart_format(self._charting_extension),
         )
