@@ -11,11 +11,11 @@ from openbb_core.app.model.user_settings import UserSettings
 # IMPORT INTERNAL
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
-from openbb_core.logs.formatters.formatter_with_exceptions import (
+from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
-from openbb_core.logs.handlers_manager import HandlersManager
-from openbb_core.logs.models.logging_settings import LoggingSettings
+from openbb_core.app.logs.handlers_manager import HandlersManager
+from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 # IMPORT THIRD-PARTY
 from pydantic.json import pydantic_encoder

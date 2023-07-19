@@ -4,14 +4,14 @@ import sys
 
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
-from openbb_core.logs.formatters.formatter_with_exceptions import (
+from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
-from openbb_core.logs.handlers.path_tracking_file_handler import (
+from openbb_core.app.logs.handlers.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-from openbb_core.logs.handlers.posthog_handler import PosthogHandler
-from openbb_core.logs.models.logging_settings import LoggingSettings
+from openbb_core.app.logs.handlers.posthog_handler import PosthogHandler
+from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 
 class HandlersManager:

@@ -23,7 +23,7 @@ from openbb_core.app.service.journal_service import JournalService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.logs.logging_manager import LoggingManager
+from openbb_core.app.logs.logging_manager import LoggingManager
 
 
 class ExecutionContext:

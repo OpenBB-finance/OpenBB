@@ -13,7 +13,7 @@ from openbb_core.app.constants import (
     USER_SETTINGS_PATH,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.logs.utils.system_utils import get_branch, get_commit_hash
+from openbb_core.app.logs.utils.system_utils import get_branch, get_commit_hash
 
 
 class SystemSettings(Tagged):

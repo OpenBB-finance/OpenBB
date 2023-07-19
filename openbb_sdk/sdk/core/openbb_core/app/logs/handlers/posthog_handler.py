@@ -7,10 +7,10 @@ from enum import Enum
 from typing import Any, Dict
 
 # IMPORT INTERNAL
-from openbb_core.logs.formatters.formatter_with_exceptions import (
+from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
-from openbb_core.logs.models.logging_settings import LoggingSettings
+from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 # IMPORT THIRD-PARTY
 from posthog import Posthog
