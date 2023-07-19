@@ -343,9 +343,18 @@ class BaseController(metaclass=ABCMeta):
 
                 else:
                     fig.update_yaxes(title="")
+
+                if any(config_terminal.get_legends()):
+                    for trace, new_name in zip(
+                        fig.select_traces(), config_terminal.get_legends()
+                    ):
+                        if new_name:
+                            trace.name = new_name
+
                 fig.show()
 
                 config_terminal.set_current_figure(None)
+                config_terminal.reset_legend()
 
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""
@@ -1078,6 +1087,17 @@ class BaseController(metaclass=ABCMeta):
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
         )
+
+        if config_terminal.HOLD:
+            parser.add_argument(
+                "--legend",
+                type=str,
+                dest="hold_legend_str",
+                default="",
+                nargs="+",
+                help="Label for legend when hold is on.",
+            )
+
         if export_allowed > NO_EXPORT:
             choices_export = []
             help_export = "Does not export!"
@@ -1173,11 +1193,14 @@ class BaseController(metaclass=ABCMeta):
             console.print(f"[help]{txt_help}[/help]")
             return None
 
+        # This protects against the hidden loads in stocks/fa
+        if parser.prog != "load" and config_terminal.HOLD:
+            config_terminal.set_last_legend(" ".join(ns_parser.hold_legend_str))
+
         if l_unknown_args:
             console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}"
             )
-
         return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):

@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import copy
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
@@ -27,16 +28,41 @@ OpenBBFigureT = TypeVar("OpenBBFigureT", bound="OpenBBFigure")
 HOLD: bool = False
 current_figure: Optional[OpenBBFigureT] = None  # type: ignore
 new_axis: bool = True
+legends = []
+last_legend = ""
+
+
+# pylint: disable=global-statement
+def set_last_legend(leg: str):
+    global last_legend
+    last_legend = copy.deepcopy(leg)
+
+
+def get_last_legend() -> str:
+    return copy.deepcopy(last_legend)
+
+
+def append_legend(append_leg: str):
+    global legends
+    legends.append(append_leg)
+    legends = copy.deepcopy(legends)
+
+
+def reset_legend():
+    global legends
+    legends = []
+
+
+def get_legends() -> list:
+    return legends
 
 
 def set_same_axis() -> None:
-    # pylint: disable=global-statement
     global new_axis
     new_axis = False
 
 
 def set_new_axis() -> None:
-    # pylint: disable=global-statement
     global new_axis
     new_axis = True
 
@@ -46,7 +72,6 @@ def make_new_axis() -> bool:
 
 
 def get_current_figure() -> Optional["OpenBBFigure"]:
-    # pylint: disable=global-statement
     return current_figure
 
 
