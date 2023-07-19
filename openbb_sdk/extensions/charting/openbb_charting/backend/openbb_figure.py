@@ -1437,12 +1437,8 @@ class OpenBBFigure(go.Figure):
             )
 
     # pylint: disable=import-outside-toplevel
-    def _add_cmd_source(self) -> None:
+    def _add_cmd_source(self, command_location: Optional[str] = "") -> None:
         """Set the watermark for OpenBB Terminal."""
-
-        # TODO: figure command_location thing out
-        # from openbb_terminal.helper_funcs import command_location
-        command_location = ""
 
         if command_location:
             yaxis = self.layout.yaxis
