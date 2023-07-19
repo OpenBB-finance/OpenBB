@@ -32,7 +32,7 @@ SCRIPT_TAGS = [
     "dark pool",
     "shorts",
     "insider",
-    "behavior analysis",
+    "behavioral analysis",
     "fundamental analysis",
     "technical analysis",
     "quantitative analysis",
