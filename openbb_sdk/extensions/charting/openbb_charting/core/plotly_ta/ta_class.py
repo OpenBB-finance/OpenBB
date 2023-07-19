@@ -7,12 +7,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
-from openbb_charting.backend.chart_style import (
+from openbb_charting.core.chart_style import (
     theme,
 )
-from openbb_charting.backend.openbb_figure import OpenBBFigure
-
-from openbb_core.charts.models.charting_settings import ChartingSettings
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 from .base import PltTA
 from .data_classes import ChartIndicators

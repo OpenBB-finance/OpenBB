@@ -7,7 +7,7 @@ from pydantic.generics import GenericModel
 from openbb_core.app.model.abstract.error import Error
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
-from openbb_core.app.model.chart import Chart
+from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import get_provider_interface
 
 T = TypeVar("T")
