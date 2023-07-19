@@ -3,7 +3,7 @@
 import json
 import sys
 import textwrap
-from datetime import datetime, timedelta
+from datetime import datetime
 from math import floor
 from pathlib import Path
 from typing import (
@@ -1117,7 +1117,7 @@ class OpenBBFigure(go.Figure):
         self.update_traces(marker_line_width=self.bar_width, selector=dict(type="bar"))
         self.update_traces(
             selector=dict(type="scatter", hovertemplate=None),
-            hovertemplate="%{y}<extra></extra>",
+            hovertemplate="%{y}",
         )
 
         # Set modebar style
@@ -1331,7 +1331,6 @@ class OpenBBFigure(go.Figure):
         """
         # We get the min and max dates
         dt_start, dt_end = df_data.index.min(), df_data.index.max()
-        rangebreaks: List[Dict[str, Any]] = []
 
         # if weekly or monthly data, we don't need to hide gaps
         # this prevents distortions in the plot
@@ -1340,7 +1339,6 @@ class OpenBBFigure(go.Figure):
             return
 
         # We get the missing days
-        is_daily = df_data.index[-1].time() == df_data.index[-2].time()
         dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
 
         # We get the dates that are missing
@@ -1349,16 +1347,18 @@ class OpenBBFigure(go.Figure):
         )
         dt_missing_days = pd.to_datetime(dt_missing_days)
 
-        rangebreaks = [dict(values=dt_missing_days)]
+        rangebreaks: List[Dict[str, Any]] = [dict(values=dt_missing_days)]
 
-        # We add a rangebreak if the first and second time are not the same
-        # since daily data will have the same time (00:00)
-        if not is_daily:
-            for i in range(len(df_data) - 1):
-                if df_data.index[i + 1] - df_data.index[i] > timedelta(hours=2):
-                    rangebreaks.insert(
-                        0, dict(bounds=[df_data.index[i], df_data.index[i + 1]])
-                    )
+        # We get the frequency of the data to hide intra-day gaps
+        if (freq := df_data.index[1] - df_data.index[0]).days == 0:
+            freq_mins = int(freq.seconds / 60)
+            break_values = (
+                df_data.resample(f"{freq_mins}T")
+                .max()
+                .index.union(df_data.index)
+                .difference(df_data.index)
+            )
+            rangebreaks = [dict(values=break_values, dvalue=freq_mins * 60 * 1000)]
 
         self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 

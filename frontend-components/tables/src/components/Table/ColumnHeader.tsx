@@ -72,7 +72,7 @@ function Filter({
 
   if (isProbablyDate && dateType === "number") {
     return (
-      <div className="flex gap-2 h-10">
+      <div className="flex gap-2 h-6">
         <input
           type={dateType}
           value={(columnFilterValue as [string, string])?.[0] ?? ""}
@@ -94,6 +94,7 @@ function Filter({
           )}
           placeholder={"Start year"}
           className="_input"
+          title="Start year"
         />
         <input
           type={dateType}
@@ -116,6 +117,7 @@ function Filter({
           )}
           placeholder={"End year"}
           className="_input"
+          title="End year"
         />
       </div>
     );
@@ -123,7 +125,7 @@ function Filter({
 
   if (isProbablyDate && dateType !== "number") {
     return (
-      <div className="flex gap-2 h-10">
+      <div className="flex gap-2 h-6">
         <input
           type={dateType}
           value={getTime((columnFilterValue as [string, string])?.[0]) ?? ""}
@@ -133,6 +135,7 @@ function Filter({
           }}
           placeholder={"Start date"}
           className="_input"
+          title="Start date"
         />
         <input
           type={dateType}
@@ -143,6 +146,7 @@ function Filter({
           }}
           placeholder={"End date"}
           className="_input"
+          title="End date"
         />
       </div>
     );
@@ -150,7 +154,7 @@ function Filter({
 
   if (areAllValuesNumber) {
     return (
-      <div className="flex gap-0.5 h-10">
+      <div className="flex gap-0.5 h-6">
         <input
           type="number"
           value={(columnFilterValue as [number, number])?.[0] ?? ""}
@@ -162,6 +166,7 @@ function Filter({
           }
           placeholder={"Min"}
           className="_input p-0.5"
+          title="Min"
         />
         <input
           type="number"
@@ -174,24 +179,26 @@ function Filter({
           }
           placeholder={"Max"}
           className="_input p-0.5"
+          title="Max"
         />
       </div>
     );
   }
   if (areAllValuesString) {
     return (
-      <div className="h-10">
+      <div className="h-6">
         <input
           type="text"
           value={(columnFilterValue ?? "") as string}
           onChange={(e) => column.setFilterValue(e.target.value)}
           placeholder={"Search..."}
           className="_input"
+          title="Search"
         />
       </div>
     );
   }
-  return <div className="h-10" />;
+  return <div className="h-6" />;
 }
 
 const reorderColumn = (
@@ -268,7 +275,7 @@ const DraggableColumnHeader: FC<{
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="8"
+                      width="6"
                       height="4"
                       fill="none"
                       viewBox="0 0 11 5"
@@ -284,7 +291,7 @@ const DraggableColumnHeader: FC<{
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="8"
+                      width="6"
                       height="4"
                       fill="none"
                       viewBox="0 0 11 5"
@@ -302,8 +309,8 @@ const DraggableColumnHeader: FC<{
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="17"
-                  height="16"
+                  width="12"
+                  height="11"
                   fill="none"
                   viewBox="0 0 17 16"
                 >
@@ -337,7 +344,7 @@ const DraggableColumnHeader: FC<{
         "left-0 z-50 bg-white dark:bg-grey-900": idx === 0 && lockFirstColumn,
       })}
       colSpan={header.colSpan}
-      style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
+      style={{ width: header.getSize() + 10, opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
     >
       {idx === 0 ? (
