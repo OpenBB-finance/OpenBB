@@ -19,7 +19,12 @@ def filter_output(command_output: CommandOutput) -> CommandOutput:
 
     error = command_output.error
     if error:
-        kind = error.error_kind or "Error"
+        kind = error.error_kind or "CommandError"
         print(f"{kind}: {error.message}")
+
+    chart = command_output.chart
+    if chart and chart.error:
+        kind = chart.error.error_kind or "ChartError"
+        print(f"{kind}: {chart.error.message}")
 
     return command_output
