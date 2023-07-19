@@ -14,7 +14,7 @@ from typing import Any, Dict, Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
-from openbb_core.charts.models.charting_settings import ChartingSettings
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from packaging import version
 from reportlab.graphics import renderPDF
 

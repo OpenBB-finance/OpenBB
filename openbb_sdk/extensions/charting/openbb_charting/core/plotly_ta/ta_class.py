@@ -11,7 +11,7 @@ from openbb_charting.core.chart_style import (
     theme,
 )
 from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_core.charts.models.charting_settings import ChartingSettings
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 from .base import PltTA
 from .data_classes import ChartIndicators

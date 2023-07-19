@@ -10,7 +10,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.model.abstract.warning import cast_warning
-from openbb_core.app.model.chart import Chart
+from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput, Error
 from openbb_core.app.model.journal import Journal
@@ -22,7 +22,7 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.journal_service import JournalService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
-from openbb_core.charts.charting_manager import ChartingManager
+from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.logs.logging_manager import LoggingManager
 
 
