@@ -28,6 +28,7 @@ from openbb_charting.core.chart_style import theme
 from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from plotly.subplots import make_subplots
 from scipy import stats
 
@@ -83,6 +84,7 @@ class OpenBBFigure(go.Figure):
         if fig:
             self.__dict__ = fig.__dict__
 
+        self._charting_settings = kwargs.pop("charting_settings", ChartingSettings())
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
         self._subplots_kwargs: Dict[str, Any] = kwargs.pop("subplots_kwargs", {})
         self._multi_rows = kwargs.pop("multi_rows", False)
@@ -862,10 +864,8 @@ class OpenBBFigure(go.Figure):
         if external or self._exported:
             return self  # type: ignore
 
-        # TODO : this need to be a system setting
-        # We check if in headless mode to return the JSON
-        # if get_current_system().HEADLESS:
-        # return self.to_json()
+        if self._charting_settings.headless:
+            return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
         if self._backend.isatty:
@@ -881,9 +881,8 @@ class OpenBBFigure(go.Figure):
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
 
-                # TODO : this need to be a system setting
-                # if get_current_system().DEBUG_MODE:
-                #     warn(f"Failed to show figure with backend: {e}")
+                if self._charting_settings.debug_mode:
+                    warn(f"Failed to show figure with backend: {e}")
                 warn(
                     f"Failed to show figure with backend: {e}"
                 )  # remove this line when the above lines are figured out
@@ -1416,7 +1415,7 @@ class OpenBBFigure(go.Figure):
         """Set the watermark for OpenBB Terminal."""
         if (
             not self._backend.isatty
-            # or not get_current_user().preferences.PLOT_ENABLE_PYWRY  # TODO : this should be a user preference
+            or not self._charting_settings.plot_enable_pywry
             or isinstance(self._export_image, Path)
             and self._export_image.suffix in [".svg", ".pdf"]
         ):

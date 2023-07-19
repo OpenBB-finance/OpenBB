@@ -90,11 +90,11 @@ class PlotlyTA(PltTA):
     has_volume: bool = True
     show_volume: bool = True
     prepost: bool = False
-    settings: ChartingSettings = ChartingSettings()
+    charting_settings: ChartingSettings = ChartingSettings()
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
-        cls.settings = kwargs.pop("charting_settings", cls.settings)
+        cls.charting_settings = kwargs.pop("charting_settings", cls.charting_settings)
         cls.inchart_colors = theme.get_colors()
 
         global PLOTLY_TA  # pylint: disable=global-statement # noqa
@@ -103,7 +103,7 @@ class PlotlyTA(PltTA):
             # We set the global variable to the instance of the class so that
             # the plugins are only loaded once
             PLOTLY_TA = super().__new__(cls)
-            PLOTLY_TA._locate_plugins(cls.settings.debug_mode)
+            PLOTLY_TA._locate_plugins(cls.charting_settings.debug_mode)
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
         return PLOTLY_TA
@@ -357,7 +357,8 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Plotly figure with candlestick/line chart and volume bar chart (if enabled)
         """
-        fig = OpenBBFigure.create_subplots(
+        fig = OpenBBFigure(charting_settings=self.charting_settings)
+        fig = fig.create_subplots(
             1,
             1,
             shared_xaxes=True,
@@ -533,8 +534,8 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Processed plotly figure
         """
-
-        new_subplot = OpenBBFigure.create_subplots(
+        new_subplot = OpenBBFigure(charting_settings=self.charting_settings)
+        new_subplot = fig.create_subplots(
             shared_xaxes=True, **self.get_fig_settings_dict()
         )
 

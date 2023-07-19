@@ -10,6 +10,7 @@ class Preferences(BaseModel):
     charting_extension: Literal["openbb_charting"] = "openbb_charting"
     rich_style: str = "dark"
     chart_style: Literal["dark", "light"] = "dark"
+    plot_enable_pywry: bool = True
     plot_pywry_width: PositiveInt = 1400
     plot_pywry_height: PositiveInt = 762
     plot_open_export: bool = (
