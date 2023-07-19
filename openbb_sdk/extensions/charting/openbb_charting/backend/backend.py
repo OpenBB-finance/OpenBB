@@ -501,7 +501,8 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 def create_backend(charting_settings: Optional[ChartingSettings] = None):
     charting_settings = charting_settings or ChartingSettings()
     global BACKEND  # pylint: disable=W0603 # noqa
-    BACKEND = Backend(charting_settings)
+    if BACKEND is None:
+        BACKEND = Backend(charting_settings)
 
 
 def get_backend() -> Backend:

@@ -2,6 +2,7 @@ from importlib import import_module
 from typing import Callable, Generic, Optional, TypeVar
 
 import pkg_resources
+from openbb_charting.backend.backend import get_backend
 from openbb_core.app.model.chart import Chart, ChartFormat
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -148,6 +149,7 @@ class ChartingManager:
             )
 
             create_backend(charting_settings=charting_settings)
+            get_backend().start()  # TODO: Add debug mode here
 
         chart_format = self.get_chart_format(self._charting_extension)
 
