@@ -62,3 +62,5 @@ An additional customization is the ability to add a custom title to the chart.  
 ```
 
 Which results in the following figure:
+
+![hold on custom](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/793d8309-6e49-42ca-b9bd-ff0dad9da959)
