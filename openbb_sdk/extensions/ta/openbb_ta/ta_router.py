@@ -2,7 +2,6 @@ from typing import List, Literal, Optional
 
 import pandas as pd
 from openbb_core.app.model.command_output import CommandOutput
-from openbb_core.app.model.export.plotly import Plotly
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -11,7 +10,6 @@ from openbb_core.app.utils import (
     get_target_column,
     get_target_columns,
 )
-from openbb_core.plots.plots import YTimeSeries, plot_timeseries
 from openbb_provider.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
@@ -397,28 +395,6 @@ def zlma(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> zlma_data = openbb.ta.zlma(data=stock_data.results, column="close", length=50, offset=0)
     """
-
-    def _zlma_export_plotly(
-        data: pd.DataFrame, zlma_data: pd.DataFrame, zlma_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        zlma_data = zlma_data[zlma_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=zlma_data, name="ZLMA", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     zlma_df = pd.DataFrame(df_target.ta.zlma(length=length, offset=offset)).dropna()
@@ -469,32 +445,6 @@ def aroon(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> aroon_data = openbb.ta.aroon(data=stock_data.results, length=25, scalar=100)
     """
-
-    def _aroon_export_plotly(
-        data: pd.DataFrame,
-        aroon_data: pd.DataFrame,
-        title: str,
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        aroon_up_data = aroon_data[aroon_data.columns[0]].tolist()
-        aroon_down_data = aroon_data[aroon_data.columns[1]].tolist()
-        aroon_osc_data = aroon_data[aroon_data.columns[2]].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=aroon_up_data, name="Aroon Up", color="blue"),
-                YTimeSeries(data=aroon_down_data, name="Aroon Down", color="red"),
-                YTimeSeries(data=aroon_osc_data, name="Aroon OSC", color="green"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     aroon_df = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
@@ -545,28 +495,6 @@ def sma(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> sma_data = openbb.ta.sma(data=stock_data.results,column="close",length=50,offset=0)
     """
-
-    def _sma_export_plotly(
-        data: pd.DataFrame, sma_data: pd.DataFrame, sma_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        sma_data = sma_data[sma_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=sma_data, name="SMA", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     sma_df = pd.DataFrame(df_target.ta.sma(length=length, offset=offset).dropna())
@@ -725,28 +653,6 @@ def macd(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> macd_data = openbb.ta.macd(data=stock_data.results,column="close",fast=12,slow=26,signal=9)
     """
-
-    def _macd_export_plotly(
-        data: pd.DataFrame, macd_data: pd.DataFrame, macd_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        macd_data = macd_data[macd_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=macd_data, name="MACD", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     macd_df = pd.DataFrame(
@@ -796,28 +702,6 @@ def hma(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> hma_data = openbb.ta.hma(data=stock_data.results,column="close",length=50,offset=0)
     """
-
-    def _hma_export_plotly(
-        data: pd.DataFrame, hma_data: pd.DataFrame, hma_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        hma_data = hma_data[hma_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=hma_data, name="HMA", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     hma_df = pd.DataFrame(df_target.ta.hma(length=length, offset=offset).dropna())
@@ -1067,30 +951,6 @@ def adx(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> adx_data = openbb.ta.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
     """
-
-    def _adx_export_plotly(data, column, adx_data, adx_columns, title) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[column].tolist()
-        a = adx_data[adx_columns[0]].tolist()
-        dmp = adx_data[adx_columns[1]].tolist()
-        dmn = adx_data[adx_columns[2]].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=a, name="ADX", color="red"),
-                YTimeSeries(data=dmp, name="DMP", color="green"),
-                YTimeSeries(data=dmn, name="DMN", color="orange"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     adx_df = pd.DataFrame(
@@ -1140,28 +1000,6 @@ def wma(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> wma_data = openbb.ta.wma(data=stock_data.results, column="close", length=50, offset=0)
     """
-
-    def _wma_export_plotly(
-        data: pd.DataFrame, wma_data: pd.DataFrame, wma_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        wma_data = wma_data[wma_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=wma_data, name="WMA", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     wma_df = pd.DataFrame(df_target.ta.wma(length=length, offset=offset).dropna())
@@ -1253,28 +1091,6 @@ def rsi(
     >>> stock_data = openbb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp").output
     >>> rsi_data = openbb.ta.rsi(data=stock_data.results, column="close", length=14, scalar=100.0, drift=1)
     """
-
-    def _rsi_export_plotly(
-        data: pd.DataFrame, rsi_data: pd.DataFrame, rsi_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        rsi_data = rsi_data[rsi_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=rsi_data, name="RSI", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     rsi_df = pd.DataFrame(
@@ -1584,28 +1400,6 @@ def ema(
     >>> ema_data = openbb.ta.ema(data=stock_data.results,column="close",length=50,offset=0)
 
     """
-
-    def _ema_export_plotly(
-        data: pd.DataFrame, ema_data: pd.DataFrame, ema_column: str, title: str
-    ) -> Plotly:
-        date_data = data.index.tolist()
-        close_data = data[target].tolist()
-        ema_data = ema_data[ema_column].tolist()
-
-        fig = plot_timeseries(
-            x=date_data,
-            y=[
-                YTimeSeries(data=close_data, name="Close", color="blue"),
-                YTimeSeries(data=ema_data, name="EMA", color="red"),
-            ],
-            title=title,
-            xaxis_title="Date",
-            yaxis_title="Price",
-            legend_title="Legend",
-        )
-
-        return Plotly(content=fig.to_plotly_json())
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     ema_df = pd.DataFrame(df_target.ta.ema(length=length, offset=offset).dropna())
