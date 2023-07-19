@@ -17,10 +17,6 @@ class Overlap(PltTA):
     __inchart__ = ["vwap"]
     __ma_mode__ = ["sma", "ema", "wma", "hma", "zlma", "rma"]
 
-    # TODO: Useless super delegation
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
     @indicator()
     def plot_ma(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds moving average to plotly figure"""

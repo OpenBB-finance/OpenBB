@@ -1,3 +1,6 @@
+import warnings
+
+import numpy as np
 import pandas as pd
 import pandas_ta as ta
 from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -9,20 +12,12 @@ from openbb_charting.core.plotly_ta.data_classes import (
     columns_regex,
 )
 
-# from openbb_ta.ta_helpers import clenow_momentum
-
 
 class Momentum(PltTA):
     """Momentum technical indicators."""
 
     __subplots__ = ["rsi", "macd", "stoch", "cci", "fisher", "cg"]
     __inchart__ = ["clenow", "demark", "ichimoku"]
-
-    # TODO: If we're just calling the parent class with the same args we don't need to
-    # define __init__ in the child class. Commenting this out to silence pylint complaints
-    #
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
 
     @indicator()
     def plot_cci(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
@@ -151,36 +146,46 @@ class Momentum(PltTA):
 
         return fig, subplot_row + 1
 
-    # @indicator()
-    # def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-    #     """Add current close price to plotly figure."""
-    #     window = self.params["clenow"].get_argument_values("window") or 90
-    #     _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
+    @indicator()
+    def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
+        """Add current close price to plotly figure."""
 
-    #     fig.add_scatter(
-    #         x=df_ta.index[-window:],  # type: ignore
-    #         y=pow(np.e, fit_data),
-    #         name="CLenow",
-    #         mode="lines",
-    #         line=dict(color=self.inchart_colors[inchart_index], width=2),
-    #         row=1,
-    #         col=1,
-    #         secondary_y=False,
-    #     )
-    #     fig.add_annotation(
-    #         xref="paper",
-    #         yref="paper",
-    #         text="<b>CLenow</b>",
-    #         x=0,
-    #         xanchor="right",
-    #         xshift=-6,
-    #         yshift=-inchart_index * 18,
-    #         y=0.98,
-    #         font_size=14,
-    #         font_color=self.inchart_colors[inchart_index],
-    #         opacity=1,
-    #     )
-    #     return fig, inchart_index + 1
+        try:
+            from openbb_ta.ta_helpers import clenow_momentum
+        except ImportError:
+            warnings.warn(
+                "In order to use the Clenow momentum indicator in your plot,"
+                " you need to install the `openbb_ta` package."
+            )
+            return fig, inchart_index
+
+        window = self.params["clenow"].get_argument_values("window") or 90
+        _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
+
+        fig.add_scatter(
+            x=df_ta.index[-window:],  # type: ignore
+            y=pow(np.e, fit_data),
+            name="CLenow",
+            mode="lines",
+            line=dict(color=self.inchart_colors[inchart_index], width=2),
+            row=1,
+            col=1,
+            secondary_y=False,
+        )
+        fig.add_annotation(
+            xref="paper",
+            yref="paper",
+            text="<b>CLenow</b>",
+            x=0,
+            xanchor="right",
+            xshift=-6,
+            yshift=-inchart_index * 18,
+            y=0.98,
+            font_size=14,
+            font_color=self.inchart_colors[inchart_index],
+            opacity=1,
+        )
+        return fig, inchart_index + 1
 
     @indicator()
     def plot_demark(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):

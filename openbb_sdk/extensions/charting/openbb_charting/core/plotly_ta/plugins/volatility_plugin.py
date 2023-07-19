@@ -15,10 +15,6 @@ class Volatility(PltTA):
     __inchart__ = ["bbands", "donchian", "kc"]
     __subplots__ = ["atr"]
 
-    # TODO: Useless super delegation
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
     @indicator()
     def plot_atr(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
         """Adds average true range to plotly figure"""

@@ -14,10 +14,6 @@ class Trend(PltTA):
 
     __subplots__ = ["adx", "aroon"]
 
-    # TODO: Useless super delegation
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
     @indicator()
     def plot_adx(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
         """Add ADX to plotly figure."""
