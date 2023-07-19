@@ -17,7 +17,9 @@ def filter_output(command_output: CommandOutput) -> CommandOutput:
             category = getattr(builtins, w.category, OpenBBWarning)
             warnings.warn(w.message, category)
 
-    if command_output.error:
-        raise Exception(command_output.error.message)
+    error = command_output.error
+    if error:
+        kind = error.error_kind or "Error"
+        print(f"{kind}: {error.message}")
 
     return command_output
