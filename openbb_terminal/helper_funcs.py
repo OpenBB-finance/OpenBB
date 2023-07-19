@@ -1523,8 +1523,6 @@ def export_data(
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
     """
-    if not figure:
-        figure = OpenBBFigure()
 
     if export_type:
         saved_path = compose_export_path(func_name, dir_path).resolve()
@@ -1603,6 +1601,9 @@ def export_data(
                             writer, sheet_name=sheet_name, index=True, header=True
                         )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+                if figure is None:
+                    console.print("No plot to export.")
+                    continue
                 figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
@@ -1610,7 +1611,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
-        figure._exported = True  # pylint: disable=protected-access
+        if figure is not None:
+            figure._exported = True  # pylint: disable=protected-access
 
 
 def get_rf() -> float:
