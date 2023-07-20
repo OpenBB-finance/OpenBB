@@ -18,6 +18,7 @@ dependencies:
   - lightgbm ==3.3.5
   # Optimization dependencies
   - cvxpy ==1.2.2
+  - chardet
   - pip:
     # Build dependencies
     - poetry ==1.4.0
