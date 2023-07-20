@@ -17,6 +17,8 @@ from openbb_core.app.provider_interface import (
 
 
 class Query:
+    """Query class."""
+
     def __init__(
         self,
         cc: CommandContext,
@@ -62,6 +64,7 @@ class Query:
 
     def to_query_params(self, standard_params: StandardParams) -> StandardParams:
         """Convert standard params to query params.
+
         This is essentially adding a suffix to the query name and assign it to __name__.
         """
         standard_params.__name__ = self.name + "QueryParams"  # type: ignore
@@ -69,10 +72,14 @@ class Query:
 
     def execute(self) -> BaseModel:
         """Execute the query."""
-
         registry = get_provider_interface().create_registry()
         creds = self.cc.user_settings.credentials
-        registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
+        # if the provider doesn't have an API key the getattr will raise an AttributeError
+        # we want to catch that and move on as we don't need an API key for all providers
+        try:
+            registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
+        except AttributeError:
+            pass
 
         query_params = self.to_query_params(self.standard_params)
 

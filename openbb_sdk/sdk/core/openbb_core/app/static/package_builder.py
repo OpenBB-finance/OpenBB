@@ -29,8 +29,11 @@ from openbb_core.app.router import RouterLoader
 
 
 class PackageBuilder:
+    """Build the static packages for the SDK."""
+
     @classmethod
     def build(cls, lint: bool = True) -> None:
+        """Build the static packages for the SDK."""
         print("\nBuilding package...\n")
         cls.save_module_map()
         cls.save_modules()
@@ -40,6 +43,7 @@ class PackageBuilder:
 
     @classmethod
     def save_module_map(cls):
+        """Save the module map."""
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
         module_map = {
@@ -54,6 +58,7 @@ class PackageBuilder:
 
     @classmethod
     def save_modules(cls):
+        """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
@@ -74,6 +79,7 @@ class PackageBuilder:
 
     @classmethod
     def save_package(cls):
+        """Save the package."""
         print("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         code += (
@@ -86,6 +92,7 @@ class PackageBuilder:
 
     @classmethod
     def run_linters(cls):
+        """Run the linters."""
         print("\nRunning linters...")
         Linters.black()
         Linters.ruff()
@@ -93,6 +100,7 @@ class PackageBuilder:
 
     @staticmethod
     def write_to_package(module_code: str, module_name, extension="py") -> None:
+        """Write the module to the package."""
         package_folder = Path(__file__).parent / "package"
         package_path = package_folder / f"{module_name}.{extension}"
 

@@ -33,7 +33,7 @@ class Fetcher(
 
     @staticmethod
     def extract_data(
-        query: ProviderQueryParamsType, api_key: Optional[str]
+        query: ProviderQueryParamsType, api_key: Optional[str] = None
     ) -> ReturnType:
         """Extract the data from the provider."""
         raise NotImplementedError("Method `extract_data` not implemented.")
@@ -48,7 +48,7 @@ class Fetcher(
         cls,
         query: QueryParamsType,
         extra_params: Optional[Dict],
-        api_key: Optional[str],
+        api_key: Optional[str] = None,
     ) -> UDataType:
         """Fetch data from a provider by using the OpenBB standard."""
         provider_query = cls.transform_query(query=query, extra_params=extra_params)
@@ -61,7 +61,7 @@ class Fetcher(
         cls,
         query: QueryParamsType,
         extra_params: Optional[Dict],
-        api_key: Optional[str],
+        api_key: Optional[str] = None,
     ) -> ReturnType:
         """Fetch data from a provider and return raw data from the provider."""
         provider_query = cls.transform_query(query=query, extra_params=extra_params)
@@ -70,7 +70,7 @@ class Fetcher(
 
     @classmethod
     def standardized(
-        cls, query: ProviderQueryParamsType, api_key: Optional[str]
+        cls, query: ProviderQueryParamsType, api_key: Optional[str] = None
     ) -> UDataType:
         """Use a provider-specific query to obtain standardized data."""
         provider_data = cls.extract_data(query=query, api_key=api_key)
@@ -79,7 +79,7 @@ class Fetcher(
 
     @classmethod
     def simple(
-        cls, query: ProviderQueryParamsType, api_key: Optional[str]
+        cls, query: ProviderQueryParamsType, api_key: Optional[str] = None
     ) -> ReturnType:
         """Use a provider-specific query to obtain raw data from the provider."""
         provider_data = cls.extract_data(query=query, api_key=api_key)

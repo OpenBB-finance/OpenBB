@@ -219,12 +219,37 @@ class Builder:
 
 def update_settings(base_settings: Settings, extension) -> Settings:
     """Update the settings with the API key placeholders."""
-    if getattr(extension, "credentials", False):
+    if getattr(extension, "required_credentials", None):
         provider_name = extension.name.upper()
-        updated_settings = base_settings.copy(update={f"{provider_name}_API_KEY": None})
+        for credential in extension.required_credentials:
+            credential = credential.upper()
+            # TODO: Find a way to avoid copying the settings in each iteration.
+            updated_settings = base_settings.copy(
+                update={f"{provider_name}_{credential}": None}
+            )
 
         return updated_settings
     return base_settings
+
+
+def register_extension(extension_name, updated_settings, extension, extension_api_keys):
+    try:
+        if extension_name in ProviderNameType.__args__:
+            extension_api_keys[extension_name] = getattr(
+                updated_settings, f"{extension_name.upper()}_API_KEY"
+            )
+    except AttributeError as exc:
+        if getattr(extension, "credentials", False):
+            warn(f"API key for {extension_name} is not set.", UserWarning)
+        elif getattr(extension, "credentials", False) is False:
+            # The extension does not require credentials, so we can pass.
+            pass
+        else:
+            raise ValueError(
+                f"Credentials for {extension_name} are not set."
+                "Please indicate if the extension requires credentials."
+            ) from exc
+    return extension_api_keys
 
 
 def load_extensions(
@@ -252,22 +277,10 @@ def load_extensions(
     for extension in extensions:
         extension_name = extension.name
         updated_settings = update_settings(settings, extension)
-        try:
-            if extension_name in ProviderNameType.__args__:
-                extension_api_keys[extension_name] = getattr(
-                    updated_settings, f"{extension_name.upper()}_API_KEY"
-                )
-        except AttributeError as exc:
-            if getattr(extension, "credentials", False):
-                warn(f"API key for {extension_name} is not set.", UserWarning)
-            elif getattr(extension, "credentials", False) is False:
-                # The extension does not require credentials, so we can pass.
-                pass
-            else:
-                raise ValueError(
-                    f"Credentials for {extension_name} are not set."
-                    "Please indicate if the extension requires credentials."
-                ) from exc
+
+        extension_api_keys = register_extension(
+            extension_name, updated_settings, extension, extension_api_keys
+        )
 
     return extensions, extension_api_keys
 

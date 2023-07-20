@@ -1,7 +1,7 @@
 """Abstract class for providers."""
 
 
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 import pkg_resources
 
@@ -63,11 +63,13 @@ class Provider:
         name: ProviderNameType,
         description: str,
         fetcher_list: List[Any],
-        credentials: bool,
+        # credentials: bool,
+        required_credentials: Optional[List[str]],
     ) -> None:
         self.name = name
         self.description = description
-        self.credentials = credentials
+        # self.credentials = credentials
+        self.required_credentials = required_credentials
         the_dict: Dict[str, Any] = {}
         for query in self.QUERIES:
             the_dict[query] = {getattr(x, query)().__name__: x for x in fetcher_list}

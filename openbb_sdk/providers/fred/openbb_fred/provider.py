@@ -12,6 +12,6 @@ from openbb_fred.cpi import FREDCPIFetcher
 fred_provider = Provider(
     name=ProviderNameType("fred"),
     description="Provider for FRED.",
+    required_credentials=["api_key"],
     fetcher_list=[FREDCPIFetcher],
-    credentials=True,
 )

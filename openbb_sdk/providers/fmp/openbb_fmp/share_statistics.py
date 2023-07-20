@@ -64,7 +64,7 @@ class FMPShareStatisticsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPShareStatisticsQueryParams, api_key: str
+        query: FMPShareStatisticsQueryParams, api_key: Optional[str] = None
     ) -> List[FMPShareStatisticsData]:
         url = create_url(4, "shares_float", api_key, query)
         return get_data_many(url, FMPShareStatisticsData)
