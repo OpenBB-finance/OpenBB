@@ -31,6 +31,7 @@ from .historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from .income_statement import FMPIncomeStatementFetcher
 from .institutional_ownership import FMPInstitutionalOwnershipFetcher
 from .key_metrics import FMPKeyMetricsFetcher
+from .major_indices_constituents import FMPMajorIndicesConstituentsFetcher
 from .major_indices_eod import FMPMajorIndicesEODFetcher
 from .major_indices_price import FMPMajorIndicesPriceFetcher
 from .price_target import FMPPriceTargetFetcher
@@ -98,5 +99,6 @@ fmp_provider = Provider(
         FMPHistoricalEmployeesFetcher,
         FMPAvailableIndicesFetcher,
         FMPRiskPremiumFetcher,
+        FMPMajorIndicesConstituentsFetcher,
     ],
 )
