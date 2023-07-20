@@ -39,8 +39,8 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
         with:
-          installer-url: https://repo.anaconda.com/miniconda/Miniconda3-py39_23.3.1-0-MacOSX-arm64.sh
-          auto-update-conda: false
+          miniconda-version: "latest"
+          auto-update-conda: true
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
@@ -192,8 +192,8 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
         with:
-          installer-url: https://repo.anaconda.com/miniconda/Miniconda3-py39_23.3.1-0-MacOSX-x86_64.sh
-          auto-update-conda: false
+          miniconda-version: "latest"
+          auto-update-conda: true
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
