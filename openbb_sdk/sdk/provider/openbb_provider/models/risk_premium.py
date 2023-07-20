@@ -3,9 +3,9 @@
 
 from typing import Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
-from pydantic import Field, PositiveFloat, NonNegativeFloat
+from openbb_provider.abstract.data import Data, QueryParams
 
 
 class RiskPremiumQueryParams(QueryParams):
