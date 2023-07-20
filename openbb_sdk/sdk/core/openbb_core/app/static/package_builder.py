@@ -461,6 +461,9 @@ class MethodDefinition:
         od = MethodDefinition.format_params(parameter_map=parameter_map)
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
+        func_params = func_params.replace(
+            "pandas.core.frame.DataFrame", "pandas.DataFrame"
+        )
 
         return func_params
 
@@ -493,7 +496,13 @@ class MethodDefinition:
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
-        code += "\n    @validate_arguments"
+
+        extra = (
+            "(config=dict(arbitrary_types_allowed=True))"
+            if "pandas.DataFrame" in func_params
+            else ""
+        )
+        code += f"\n    @validate_arguments{extra}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code

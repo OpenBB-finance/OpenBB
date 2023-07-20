@@ -1,9 +1,11 @@
 import builtins
 
+import pandas as pd
 from pydantic import ValidationError
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.utils import df_to_basemodel
 
 
 def filter_call(func):
@@ -30,6 +32,10 @@ def filter_call(func):
 
 def filter_inputs(**kwargs) -> dict:
     """Filter command inputs"""
+    for key, value in kwargs.items():
+        if isinstance(value, pd.core.frame.DataFrame):
+            kwargs[key] = df_to_basemodel(value, index=True)
+
     return kwargs
 
 
