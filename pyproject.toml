@@ -118,6 +118,7 @@ reportlab = "<4" #Pinning due to build error on MacOs
 arch = "^5.5.0"
 llama-index = "0.7.11"
 langchain = "0.0.237"
+ffn = "0.3.6"
 
 
 
