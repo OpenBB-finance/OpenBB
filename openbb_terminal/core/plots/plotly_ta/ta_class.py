@@ -146,7 +146,10 @@ class PlotlyTA(PltTA):
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
 
         if config_terminal.HOLD:
-            console.print("The previous command is not supported within hold on.")
+            console.print(
+                "The previous command is not supported within hold on.  Only the last command run"
+                "will be displayed when hold off is run."
+            )
 
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
