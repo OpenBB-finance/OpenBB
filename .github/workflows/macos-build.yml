@@ -39,6 +39,7 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
         with:
+          python-version: "3.9"
           miniconda-version: "latest"
           auto-update-conda: true
           channels: conda-forge,defaults
