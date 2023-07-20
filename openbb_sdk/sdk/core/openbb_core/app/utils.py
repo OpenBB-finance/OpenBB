@@ -23,9 +23,6 @@ def df_to_basemodel(
     return [Data(**d) for d in df.to_dict(orient="records")]
 
 
-# TODO: Move utils in common used in ta and qa to here
-
-
 def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
     """Get target column from time series data."""
     if target not in df.columns:
