@@ -63,8 +63,12 @@ class PolygonCashFlowStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonCashFlowStatementQueryParams, api_key: str
+        query: PolygonCashFlowStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
     ) -> List[PolygonCashFlowStatementData]:
+        if credentials:
+            api_key = credentials.get("POLYGON_API_KEY")
+
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"

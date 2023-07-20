@@ -69,8 +69,11 @@ class FMPForexEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPForexEODQueryParams, api_key: str
+        query: FMPForexEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPForexEODData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/historical-price-full/forex/{query.symbol}?&apikey={api_key}"
         return get_data_many(url, FMPForexEODData, "historical")

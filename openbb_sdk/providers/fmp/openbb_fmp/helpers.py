@@ -43,7 +43,7 @@ def get_data(url: str) -> Union[list, dict]:
 def create_url(
     version: int,
     endpoint: str,
-    api_key: str,
+    api_key: Optional[str],
     query: Optional[QueryParamsType] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:

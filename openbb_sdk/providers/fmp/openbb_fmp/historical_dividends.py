@@ -77,8 +77,11 @@ class FMPHistoricalDividendsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPHistoricalDividendsQueryParams, api_key: str
+        query: FMPHistoricalDividendsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPHistoricalDividendsData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         url = create_url(
             3, f"historical-price-full/stock_dividend/{query.symbol}", api_key
         )

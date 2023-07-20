@@ -72,8 +72,11 @@ class FMPAnalystEstimatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPAnalystEstimatesQueryParams, api_key: str
+        query: FMPAnalystEstimatesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPAnalystEstimatesData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )

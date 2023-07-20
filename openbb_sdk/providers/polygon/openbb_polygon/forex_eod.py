@@ -77,14 +77,17 @@ class PolygonForexEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonForexEODQueryParams, api_key: str
+        query: PolygonForexEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonForexEODData]:
+        if credentials:
+            api_key = credentials.get("POLYGON_API_KEY")
+
         now = datetime.now()
         start_date = query.start_date or (now - timedelta(days=7)).date()
         end_date = query.end_date or now.date()
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan.value}/"
+            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan}/"
             f"{start_date}/{end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"

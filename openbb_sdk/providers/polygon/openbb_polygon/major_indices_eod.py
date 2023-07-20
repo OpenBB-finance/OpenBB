@@ -69,8 +69,11 @@ class PolygonMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonMajorIndicesEODQueryParams, api_key: str
+        query: PolygonMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonMajorIndicesEODData]:
+        if credentials:
+            api_key = credentials.get("POLYGON_API_KEY")
+
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
             f"I:{query.stocksTicker.upper()}/range/1/{query.timespan}/"

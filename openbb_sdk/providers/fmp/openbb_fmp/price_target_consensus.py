@@ -64,8 +64,11 @@ class FMPPriceTargetConsensusFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetConsensusQueryParams, api_key: str
+        query: FMPPriceTargetConsensusQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPPriceTargetConsensusData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         url = create_url(4, "price-target-consensus", api_key, query)
         return get_data_many(url, FMPPriceTargetConsensusData)
 

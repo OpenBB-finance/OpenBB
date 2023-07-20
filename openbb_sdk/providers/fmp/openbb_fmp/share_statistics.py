@@ -64,8 +64,11 @@ class FMPShareStatisticsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPShareStatisticsQueryParams, api_key: Optional[str] = None
+        query: FMPShareStatisticsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPShareStatisticsData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         url = create_url(4, "shares_float", api_key, query)
         return get_data_many(url, FMPShareStatisticsData)
 

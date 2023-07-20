@@ -117,8 +117,11 @@ class FMPIncomeStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPIncomeStatementQueryParams, api_key: str
+        query: FMPIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPIncomeStatementData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         url = create_url(
             3, f"income-statement/{query.symbol}", api_key, query, ["symbol"]
         )

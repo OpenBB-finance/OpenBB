@@ -73,11 +73,14 @@ class PolygonStockEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonStockEODQueryParams, api_key: str
+        query: PolygonStockEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonStockEODData]:
+        if credentials:
+            api_key = credentials.get("POLYGON_API_KEY")
+
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.stocksTicker.upper()}/range/1/{query.timespan}/"
+            f"{query.stocksTicker.upper()}/range/1/{str(query.timespan.value)}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"

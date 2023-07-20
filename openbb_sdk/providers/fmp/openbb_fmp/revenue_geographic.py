@@ -59,8 +59,11 @@ class FMPRevenueGeographicFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRevenueGeographicQueryParams, api_key: str
+        query: FMPRevenueGeographicQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPRevenueGeographicData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
         data = get_data(url)

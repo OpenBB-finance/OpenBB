@@ -70,8 +70,11 @@ class PolygonStockPriceFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonStockPriceQueryParams, api_key: str
+        query: PolygonStockPriceQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonStockPriceData]:
+        if credentials:
+            api_key = credentials.get("POLYGON_API_KEY")
+
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
             f"{query.stocksTicker.upper()}/range/1/{query.timespan}/"

@@ -52,8 +52,11 @@ class FMPStockOwnershipFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockOwnershipQueryParams, api_key: str
+        query: FMPStockOwnershipQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPStockOwnershipData]:
+        if credentials:
+            api_key = credentials.get("FMP_API_KEY")
+
         url = create_url(
             4,
             "institutional-ownership/institutional-holders/symbol-ownership-percent",
