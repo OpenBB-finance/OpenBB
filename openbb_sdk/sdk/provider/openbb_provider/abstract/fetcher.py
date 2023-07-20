@@ -33,7 +33,7 @@ class Fetcher(
 
     @staticmethod
     def extract_data(
-        query: ProviderQueryParamsType, api_key: Optional[str] = None
+        query: ProviderQueryParamsType, credentials: Optional[Dict[str, str]]
     ) -> ReturnType:
         """Extract the data from the provider."""
         raise NotImplementedError("Method `extract_data` not implemented.")
@@ -48,42 +48,13 @@ class Fetcher(
         cls,
         query: QueryParamsType,
         extra_params: Optional[Dict],
-        api_key: Optional[str] = None,
+        credentials: Optional[Dict[str, str]] = None,
     ) -> UDataType:
         """Fetch data from a provider by using the OpenBB standard."""
         provider_query = cls.transform_query(query=query, extra_params=extra_params)
-        provider_data = cls.extract_data(query=provider_query, api_key=api_key)
+        provider_data = cls.extract_data(query=provider_query, credentials=credentials)
         data = cls.transform_data(data=provider_data)
         return data
-
-    @classmethod
-    def fetch_provider_data(
-        cls,
-        query: QueryParamsType,
-        extra_params: Optional[Dict],
-        api_key: Optional[str] = None,
-    ) -> ReturnType:
-        """Fetch data from a provider and return raw data from the provider."""
-        provider_query = cls.transform_query(query=query, extra_params=extra_params)
-        provider_data = cls.extract_data(query=provider_query, api_key=api_key)
-        return provider_data
-
-    @classmethod
-    def standardized(
-        cls, query: ProviderQueryParamsType, api_key: Optional[str] = None
-    ) -> UDataType:
-        """Use a provider-specific query to obtain standardized data."""
-        provider_data = cls.extract_data(query=query, api_key=api_key)
-        data = cls.transform_data(data=provider_data)
-        return data
-
-    @classmethod
-    def simple(
-        cls, query: ProviderQueryParamsType, api_key: Optional[str] = None
-    ) -> ReturnType:
-        """Use a provider-specific query to obtain raw data from the provider."""
-        provider_data = cls.extract_data(query=query, api_key=api_key)
-        return provider_data
 
     @classmethod
     def get_query_type(cls):

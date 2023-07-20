@@ -72,15 +72,8 @@ class Query:
 
     def execute(self) -> BaseModel:
         """Execute the query."""
-        registry = get_provider_interface().create_registry()
-        creds = self.cc.user_settings.credentials
-        # if the provider doesn't have an API key the getattr will raise an AttributeError
-        # we want to catch that and move on as we don't need an API key for all providers
-        try:
-            registry.api_keys[self.provider] = getattr(creds, self.provider + "_api_key")  # type: ignore
-        except AttributeError:
-            pass
-
+        registry = get_provider_interface().get_registry()
+        creds = self.cc.user_settings.credentials.dict()
         query_params = self.to_query_params(self.standard_params)
 
         filtered = (
@@ -92,7 +85,8 @@ class Query:
         return registry.fetch(
             provider_name=self.provider,  # type: ignore
             # TODO: provider_name should accept a general object, otherwise we need to import from provider.
-            query=query_params,  # type: ignore
+            query_params=query_params,  # type: ignore
             # TODO: query should accept a general object, otherwise we need to import from provider.
             extra_params=filtered,
+            credentials=creds,
         )

@@ -272,6 +272,7 @@ class StaticCommandRunner:
         except Exception as e:
             # TODO: Raise exception in debug mode
             # TODO: Save traceback to provide more detailed error
+            raise
             command_output = CommandOutput(error=Error(message=str(e)))
 
         cls.logging_manager.log(

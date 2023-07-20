@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class Credentials(BaseModel):
     fmp_api_key: Optional[str] = None
+    fmp_testing: Optional[str] = None
     polygon_api_key: Optional[str] = None
     benzinga_api_key: Optional[str] = None
     fred_api_key: Optional[str] = None

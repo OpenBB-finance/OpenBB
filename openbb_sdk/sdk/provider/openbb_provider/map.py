@@ -114,7 +114,7 @@ def build_query_params_mapping() -> Dict:
             }
         }
     """
-    provider_registry_mapping = provider_registry.provider_mapping
+    provider_registry_mapping = provider_registry.providers
     mapping = {}
     for provider in provider_registry_mapping.values():
         for fetcher in provider.fetcher_list:
@@ -165,7 +165,7 @@ def build_data_mapping() -> Dict:
             }
         }
     """
-    provider_registry_mapping = provider_registry.provider_mapping
+    provider_registry_mapping = provider_registry.providers
     mapping = {}
     for provider in provider_registry_mapping.values():
         for fetcher in provider.fetcher_list:
@@ -240,7 +240,7 @@ def build_docstring_mapping() -> Dict:
         }
     """
     mapping = {}
-    provider_registry_mapping = provider_registry.provider_mapping
+    provider_registry_mapping = provider_registry.providers
     for provider in provider_registry_mapping.values():
         for fetcher in provider.fetcher_list:
             provider_name = provider.name

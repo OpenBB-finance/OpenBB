@@ -3,7 +3,11 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
 from openbb_provider.map import build_provider_mapping
-from openbb_provider.registry import ProviderRegistry, build_provider_registry
+from openbb_provider.registry import (
+    ProviderRegistry,
+    build_provider_registry,
+    extensions_dict__,
+)
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 
 
@@ -125,9 +129,9 @@ class ProviderInterface:
         """List of model names."""
         return list(self.__map.keys())
 
-    def create_registry(self) -> ProviderRegistry:
+    def get_registry(self) -> ProviderRegistry:
         """Create provider registry."""
-        return build_provider_registry()
+        return build_provider_registry(extensions_dict__)
 
     @staticmethod
     def __merge_fields(
