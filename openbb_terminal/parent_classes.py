@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
 import numpy as np
+import openai
 import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
@@ -425,7 +426,6 @@ class BaseController(metaclass=ABCMeta):
                 console.print("[red]Please enter a prompt with more than 1 word[/red]")
             else:
                 api_key = get_current_user().credentials.API_OPENAI_KEY
-
                 if ns_parser.gpt_model == "gpt-4" and api_key == "REPLACE_ME":
                     console.print(
                         "[red]GPT-4 only available with local OPENAI Key.\n[/]"
@@ -443,6 +443,8 @@ class BaseController(metaclass=ABCMeta):
                             "[yellow]Using local OpenAI Key"
                             ".  Please remove from OpenBB Hub to query askobb remotely.[/]\n"
                         )
+                    # This is needed to avoid authentication error
+                    openai.api_key = api_key
                     response, source_nodes = query_LLM_local(
                         " ".join(ns_parser.question), ns_parser.gpt_model
                     )
