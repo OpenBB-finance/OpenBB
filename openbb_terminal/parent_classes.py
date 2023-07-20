@@ -81,11 +81,14 @@ CRYPTO_SOURCES = {
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
+
+# TODO: We should try to avoid these global variables
 RECORD_SESSION = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
 SESSION_RECORDED_DESCRIPTION = ""
 SESSION_RECORDED_TAGS = ""
+SESSION_RECORDED_PUBLIC = False
 
 
 class BaseController(metaclass=ABCMeta):
@@ -908,6 +911,14 @@ class BaseController(metaclass=ABCMeta):
             default="",
             nargs="+",
         )
+        parser.add_argument(
+            "-p",
+            "--public",
+            dest="public",
+            action="store_true",
+            help="Wether the routine should be public or not",
+            default=False,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_simple_args(parser, other_args)
@@ -917,6 +928,7 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_NAME
             global SESSION_RECORDED_DESCRIPTION
             global SESSION_RECORDED_TAGS
+            global SESSION_RECORDED_PUBLIC
 
             SESSION_RECORDED_NAME = (
                 ns_parser.name
@@ -926,6 +938,7 @@ class BaseController(metaclass=ABCMeta):
 
             SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
             SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
+            SESSION_RECORDED_PUBLIC = ns_parser.public
 
             console.print(
                 "[green]The session is successfully being recorded."
@@ -978,6 +991,7 @@ class BaseController(metaclass=ABCMeta):
                         "description": SESSION_RECORDED_DESCRIPTION,
                         "routine": routine,
                         "tags": SESSION_RECORDED_TAGS,
+                        "public": SESSION_RECORDED_PUBLIC,
                     }
                     response = Hub.upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
