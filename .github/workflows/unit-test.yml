@@ -161,6 +161,7 @@ jobs:
         run: |
           source $VENV
           pip list
+          pip3 install future
 
       - name: Run tests
         env:
