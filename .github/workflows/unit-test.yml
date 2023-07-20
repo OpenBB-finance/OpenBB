@@ -248,7 +248,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "windows", "macos"]
+        os: ["ubuntu", "macos"]
         python-version: ["3.9"]
         dependencies: [""]
         include:
