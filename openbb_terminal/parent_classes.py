@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
 import numpy as np
+import openai
 import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
@@ -318,65 +319,65 @@ class BaseController(metaclass=ABCMeta):
                     config_terminal.set_same_axis()
                 else:
                     config_terminal.set_new_axis()
-            if (
-                ns_parser.option == "off"
-                and config_terminal.get_current_figure() is not None
-            ):
+            if ns_parser.option == "off":
                 config_terminal.HOLD = False
-                # create a subplot
-                fig = config_terminal.get_current_figure()
-                if fig is None:
-                    return
-                if not fig.has_subplots and not config_terminal.make_new_axis():
-                    fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
+                if config_terminal.get_current_figure() is not None:
+                    # create a subplot
+                    fig = config_terminal.get_current_figure()
+                    if fig is None:
+                        return
+                    if not fig.has_subplots and not config_terminal.make_new_axis():
+                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
 
-                if config_terminal.make_new_axis():
-                    for i, trace in enumerate(fig.select_traces()):
-                        trace.yaxis = f"y{i+1}"
+                    if config_terminal.make_new_axis():
+                        for i, trace in enumerate(fig.select_traces()):
+                            trace.yaxis = f"y{i+1}"
 
-                        if i != 0:
-                            fig.update_layout(
-                                {
-                                    f"yaxis{i+1}": dict(
-                                        side="left",
-                                        overlaying="y",
-                                        showgrid=True,
-                                        showline=False,
-                                        zeroline=False,
-                                        automargin=True,
-                                        ticksuffix="       " * (i - 1) if i > 1 else "",
-                                        tickfont=dict(
-                                            size=18,
-                                            color=_TerminalStyle().get_colors()[i],
-                                        ),
-                                        title=dict(
-                                            font=dict(
-                                                size=15,
+                            if i != 0:
+                                fig.update_layout(
+                                    {
+                                        f"yaxis{i+1}": dict(
+                                            side="left",
+                                            overlaying="y",
+                                            showgrid=True,
+                                            showline=False,
+                                            zeroline=False,
+                                            automargin=True,
+                                            ticksuffix="       " * (i - 1)
+                                            if i > 1
+                                            else "",
+                                            tickfont=dict(
+                                                size=18,
+                                                color=_TerminalStyle().get_colors()[i],
                                             ),
-                                            standoff=0,
+                                            title=dict(
+                                                font=dict(
+                                                    size=15,
+                                                ),
+                                                standoff=0,
+                                            ),
                                         ),
-                                    ),
-                                }
-                            )
-                    # pylint: disable=undefined-loop-variable
-                    fig.update_layout(margin=dict(l=30 * i))
+                                    }
+                                )
+                        # pylint: disable=undefined-loop-variable
+                        fig.update_layout(margin=dict(l=30 * i))
 
-                else:
-                    fig.update_yaxes(title="")
+                    else:
+                        fig.update_yaxes(title="")
 
-                if any(config_terminal.get_legends()):
-                    for trace, new_name in zip(
-                        fig.select_traces(), config_terminal.get_legends()
-                    ):
-                        if new_name:
-                            trace.name = new_name
+                    if any(config_terminal.get_legends()):
+                        for trace, new_name in zip(
+                            fig.select_traces(), config_terminal.get_legends()
+                        ):
+                            if new_name:
+                                trace.name = new_name
 
-                fig.update_layout(title=" ".join(ns_parser.title))
-                fig.show()
-                config_terminal.COMMAND_ON_CHART = True
+                    fig.update_layout(title=" ".join(ns_parser.title))
+                    fig.show()
+                    config_terminal.COMMAND_ON_CHART = True
 
-                config_terminal.set_current_figure(None)
-                config_terminal.reset_legend()
+                    config_terminal.set_current_figure(None)
+                    config_terminal.reset_legend()
 
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""
@@ -425,7 +426,6 @@ class BaseController(metaclass=ABCMeta):
                 console.print("[red]Please enter a prompt with more than 1 word[/red]")
             else:
                 api_key = get_current_user().credentials.API_OPENAI_KEY
-
                 if ns_parser.gpt_model == "gpt-4" and api_key == "REPLACE_ME":
                     console.print(
                         "[red]GPT-4 only available with local OPENAI Key.\n[/]"
@@ -443,6 +443,8 @@ class BaseController(metaclass=ABCMeta):
                             "[yellow]Using local OpenAI Key"
                             ".  Please remove from OpenBB Hub to query askobb remotely.[/]\n"
                         )
+                    # This is needed to avoid authentication error
+                    openai.api_key = api_key
                     response, source_nodes = query_LLM_local(
                         " ".join(ns_parser.question), ns_parser.gpt_model
                     )
