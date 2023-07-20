@@ -33,7 +33,7 @@ def filter_call(func):
 def filter_inputs(**kwargs) -> dict:
     """Filter command inputs"""
     for key, value in kwargs.items():
-        if isinstance(value, pd.core.frame.DataFrame):
+        if isinstance(value, pd.DataFrame):
             kwargs[key] = df_to_basemodel(value, index=True)
 
     return kwargs
