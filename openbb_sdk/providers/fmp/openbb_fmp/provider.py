@@ -14,6 +14,7 @@ from .cash_flow import FMPCashFlowStatementFetcher
 from .company_profile import FMPCompanyProfileFetcher
 from .crypto_eod import FMPCryptoEODFetcher
 from .crypto_price import FMPCryptoPriceFetcher
+from .dividend_calendar import FMPDividendCalendarFetcher
 from .earnings_calendar import FMPEarningsCalendarFetcher
 from .earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from .esg_risk_rating import FMPESGRiskRatingFetcher
@@ -100,5 +101,6 @@ fmp_provider = Provider(
         FMPAvailableIndicesFetcher,
         FMPRiskPremiumFetcher,
         FMPMajorIndicesConstituentsFetcher,
+        FMPDividendCalendarFetcher,
     ],
 )
