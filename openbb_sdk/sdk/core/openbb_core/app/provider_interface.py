@@ -48,7 +48,7 @@ class ExtraData(BaseModel):
 class ProviderInterface:
     """Provider interface class. Provides access to 'openbb_provider' package information.
 
-    Attributes
+    Properties
     ----------
     map : Dict[str, Dict[str, Dict[str, Any]]]
         Dictionary of provider information.
