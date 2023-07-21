@@ -365,6 +365,13 @@ class StaticCommandRunner:
         return command_output
 
     @classmethod
+    def __update_managers_settings(
+        cls, system_settings: SystemSettings, user_settings: UserSettings
+    ):
+        cls.logging_manager.logging_settings = (system_settings, user_settings)
+        cls.charting_manager.charting_settings = (system_settings, user_settings)
+
+    @classmethod
     def run(
         cls,
         execution_context: ExecutionContext,
@@ -379,6 +386,10 @@ class StaticCommandRunner:
         journal = execution_context.journal
         route = execution_context.route
         journal_service = execution_context.journal_service
+
+        cls.__update_managers_settings(
+            execution_context.system_settings, execution_context.user_settings
+        )
 
         func = command_map.get_command(route=route)
 
