@@ -2,13 +2,14 @@
 import json
 import logging
 from enum import Enum
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, Tuple
 
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_core.app.logs.handlers_manager import HandlersManager
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -21,7 +22,7 @@ from openbb_core.app.service.user_service import UserService
 from pydantic.json import pydantic_encoder
 
 
-class LoggingManager:
+class LoggingManager(metaclass=SingletonMeta):
     def __init__(
         self,
         system_settings: Optional[SystemSettings] = None,
@@ -39,6 +40,18 @@ class LoggingManager:
         )
         self._handlers_manager = self._setup_handlers()
         self._log_startup()
+
+    @property
+    def logging_settings(self) -> LoggingSettings:
+        return self._logging_settings
+
+    @logging_settings.setter
+    def logging_settings(self, value: Tuple[SystemSettings, UserSettings]):
+        system_settings, user_settings = value
+        self._logging_settings = LoggingSettings(
+            user_settings=user_settings,
+            system_settings=system_settings,
+        )
 
     def _setup_handlers(self) -> HandlersManager:
         """Setup Logging"""
