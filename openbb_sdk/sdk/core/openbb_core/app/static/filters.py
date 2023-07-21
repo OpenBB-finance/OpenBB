@@ -9,6 +9,9 @@ from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.utils import df_to_basemodel
 
 
+class OpenBBError(Exception):
+    pass
+
 def filter_call(func):
     @wraps(wrapped=func)
     def inner(*args, **kwargs):
@@ -21,13 +24,14 @@ def filter_call(func):
         except ValidationError as e:
             if debug_mode:
                 raise
-            print("ValidationError:\n")
+
+            msg = ""
             for error in e.errors():
-                print(f"{error['loc'][-1]}: {error['msg']}")
+                msg += f"{error['loc'][-1]} -> {error['msg']}"
+
+            raise OpenBBError(msg) from e
         except Exception as e:
-            if debug_mode:
-                raise
-            print(f"UnexpectedError: {e}")
+            raise OpenBBError(e) from e
 
     return inner
 
@@ -50,12 +54,10 @@ def filter_output(command_output: CommandOutput) -> CommandOutput:
 
     error = command_output.error
     if error:
-        kind = error.error_kind or "CommandError"
-        print(f"{kind}: {error.message}")
+        raise OpenBBError(error.message)
 
     chart = command_output.chart
     if chart and chart.error:
-        kind = chart.error.error_kind or "ChartError"
-        print(f"{kind}: {chart.error.message}")
+        raise OpenBBError(chart.error.message)
 
     return command_output
