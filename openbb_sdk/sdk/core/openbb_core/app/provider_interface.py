@@ -2,7 +2,7 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
-from openbb_provider.map import build_model_mapping, build_credentials_mapping
+from openbb_provider.map import build_credentials_mapping, build_model_mapping
 from openbb_provider.registry import (
     ProviderRegistry,
     build_provider_registry,

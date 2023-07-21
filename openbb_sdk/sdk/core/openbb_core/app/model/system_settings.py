@@ -1,7 +1,7 @@
-from functools import partial
 import json
 import os
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
+from functools import partial
 from pathlib import Path
 from typing import List, Literal, Optional
 
@@ -15,7 +15,6 @@ from openbb_core.app.constants import (
 )
 from openbb_core.app.logs.utils.system_utils import get_branch, get_commit_hash
 from openbb_core.app.model.abstract.tagged import Tagged
-
 
 FrozenField = partial(Field, allow_mutation=False)
 
