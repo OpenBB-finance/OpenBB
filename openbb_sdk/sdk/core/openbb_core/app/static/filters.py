@@ -30,8 +30,6 @@ def filter_call(func):
                 msg += f"{error['loc'][-1]} -> {error['msg']}"
 
             raise OpenBBError(msg) from e
-        except Exception as e:
-            raise OpenBBError(e) from e
 
     return inner
 
