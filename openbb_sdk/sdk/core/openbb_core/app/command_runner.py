@@ -1,15 +1,19 @@
 import inspect
 import multiprocessing
 import warnings
+from contextlib import nullcontext
 from copy import deepcopy
 from datetime import datetime
 from inspect import Parameter, signature
 from time import perf_counter_ns
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
 from pydantic import BaseConfig, Extra, create_model
 
+from openbb_core.app.charting_manager import ChartingManager
+from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.warning import cast_warning
+from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput, Error
 from openbb_core.app.model.journal import Journal
@@ -21,7 +25,6 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.journal_service import JournalService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
-from openbb_core.logs.logging_manager import LoggingManager
 
 
 class ExecutionContext:
@@ -226,6 +229,7 @@ class ParametersBuilder:
 
 class StaticCommandRunner:
     logging_manager = LoggingManager()
+    charting_manager = ChartingManager()
 
     @staticmethod
     def __run_in_isolation(func, args=None, kwargs=None) -> CommandOutput:
@@ -238,25 +242,17 @@ class StaticCommandRunner:
         return result
 
     @classmethod
-    def __execute_func(
-        cls,
-        route: str,
-        args: Tuple[Any],
-        execution_context: ExecutionContext,
-        func: Callable,
-        kwargs: Dict[str, Any],
+    def __execute(
+        cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
     ) -> CommandOutput:
-        system_settings = execution_context.system_settings
-        kwargs = ParametersBuilder.build(
-            args=args,
-            execution_context=execution_context,
-            func=func,
-            route=route,
-            kwargs=kwargs,
-        )
-
         try:
-            with warnings.catch_warnings(record=True) as warning_list:
+            context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
+                warnings.catch_warnings(record=True)
+                if not system_settings.debug_mode
+                else nullcontext()
+            )
+
+            with context_manager as warning_list:
                 if system_settings.run_in_isolation:
                     command_output = cls.__run_in_isolation(func=func, kwargs=kwargs)
                 else:
@@ -270,14 +266,87 @@ class StaticCommandRunner:
                     command_output.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            # TODO: Raise exception in debug mode
-            # TODO: Save traceback to provide more detailed error
-            raise
-            command_output = CommandOutput(error=Error(message=str(e)))
+            command_output = CommandOutput(
+                error=Error(message=str(e), error_kind=e.__class__.__name__)
+            )
+            if system_settings.debug_mode:
+                raise
+
+        return command_output
+
+    @classmethod
+    def __chart(
+        cls,
+        command_output: CommandOutput,
+        user_settings: UserSettings,
+        system_settings: SystemSettings,
+        route: str,
+        **kwargs,
+    ) -> None:
+        try:
+            command_output.chart = cls.charting_manager.chart(
+                user_settings=user_settings,
+                system_settings=system_settings,
+                route=route,
+                command_output_item=command_output.results,
+                **kwargs,
+            )
+        except Exception as e:
+            command_output.chart = Chart(error=Error(message=str(e)))
+            if system_settings.debug_mode:
+                raise
+
+    @classmethod
+    def __execute_func(
+        cls,
+        route: str,
+        args: Tuple[Any],
+        execution_context: ExecutionContext,
+        func: Callable,
+        kwargs: Dict[str, Any],
+    ) -> CommandOutput:
+        user_settings = execution_context.user_settings
+        system_settings = execution_context.system_settings
+
+        # If we're on Jupyter we need to pop here because we will lose "chart" after
+        # ParametersBuilder.build. This needs to be fixed in a way that chart is not
+        # is added to the function signature and shared for jupyter and api
+        # We can check in the router decorator if the given function has a chart
+        # in the charting extension then we add it there. This way we can remove
+        # the chart parameter from the commands.py and packagebuilder, it will be
+        # added to the function signature in the router decorator
+        chart = kwargs.pop("chart", False)
+
+        kwargs = ParametersBuilder.build(
+            args=args,
+            execution_context=execution_context,
+            func=func,
+            route=route,
+            kwargs=kwargs,
+        )
+
+        # If we're on the api we need to remove "chart" here because the parameter is added on
+        # commands.py and the function signature does not expect "chart"
+        kwargs.pop("chart", None)
+
+        command_output = cls.__execute(
+            system_settings=system_settings,
+            func=func,
+            kwargs=kwargs,
+        )
+
+        if chart and command_output.results:
+            cls.__chart(
+                command_output=command_output,
+                user_settings=user_settings,
+                system_settings=system_settings,
+                route=route,
+                **kwargs,
+            )
 
         cls.logging_manager.log(
-            user_settings=execution_context.user_settings,
-            system_settings=execution_context.system_settings,
+            user_settings=user_settings,
+            system_settings=system_settings,
             command_output=command_output,
             route=route,
             func=func,
@@ -366,6 +435,7 @@ class CommandRunner:
         **kwargs,
     ) -> JournalEntry:
         command_map = self._command_map
+        # Getting the most updated system settings to allow debug_mode without reload
         system_settings = self._system_settings
         journal_service = self._journal_service
 

@@ -26,6 +26,17 @@ def corecpi(
     return CommandOutput(results=Empty())
 
 
+@router.command(model="MajorIndicesConstituents")
+def const(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """"""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 # pylint: disable=too-many-arguments
 @router.command(model="CPI")
 def cpi(
@@ -65,6 +76,17 @@ def available_indices(
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """AVAILABLE_INDICES."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
+@router.command(model="RiskPremium")
+def risk(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Market Risk Premium."""
     return CommandOutput(results=Query(**locals()).execute())
 
 

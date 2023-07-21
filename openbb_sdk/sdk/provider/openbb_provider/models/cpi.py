@@ -1,11 +1,7 @@
 from datetime import date as dateType
 from typing import Dict, List, Optional
 
-from openbb_fred.fred_helpers import (
-    CPI_COUNTRIES,
-    CPI_FREQUENCY,
-    CPI_UNITS,
-)
+from openbb_fred.fred_helpers import CPI_COUNTRIES, CPI_FREQUENCY, CPI_UNITS
 from pydantic import BaseModel, validator
 
 from openbb_provider.abstract.data import Data, QueryParams

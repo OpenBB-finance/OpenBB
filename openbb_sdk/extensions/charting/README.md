@@ -30,3 +30,26 @@ Arch Linux / Manjaro:
 
 Fedora:
 `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+
+## Usage
+
+To use the extension is as simple as running any of the OpenBB SDK endpoints with the `chart` argument equals to `True`.
+
+Here's an example how it would look like in a python interface:
+
+```python
+from openbb import obb
+stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp", chart=True)
+
+```
+
+Which would result in an `CommandOutput` object containing a `chart` attribute, which contains plotly json data.
+
+In order to actually display the chart, you need to call the `show()` method.
+
+```python
+stock_data.show()
+```
+
+> Note: The `show()` method is only going to work either in a Jupyter Notebook or in a standalone python script where a PyWry based backend is properly initialized.

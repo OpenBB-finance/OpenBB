@@ -33,10 +33,15 @@ def balance(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command
-def cal() -> CommandOutput[Empty]:  # type: ignore
-    """Dividend Calendar."""
-    return CommandOutput(results=Empty())
+@router.command(model="DividendCalendar")
+def cal(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Show Dividend Calendar for a given start and end dates."""
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command(model="CashFlowStatement")

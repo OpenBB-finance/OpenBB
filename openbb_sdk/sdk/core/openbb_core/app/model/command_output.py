@@ -1,4 +1,4 @@
-from typing import Dict, Generic, List, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Optional, TypeVar
 
 import pandas as pd
 from pydantic import Field
@@ -7,10 +7,15 @@ from pydantic.generics import GenericModel
 from openbb_core.app.model.abstract.error import Error
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
+from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import get_provider_interface
 
 T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
+
+
+class OpenBBError(Exception):
+    pass
 
 
 class CommandOutput(GenericModel, Generic[T], Tagged):
@@ -24,6 +29,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
     )
     warnings: Optional[List[Warning_]] = None
     error: Optional[Error] = None
+    chart: Optional[Chart] = None
 
     def __repr__(self) -> str:
         return (
@@ -41,7 +47,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             Pandas dataframe.
         """
         if self.results is None:
-            raise ValueError("Results not found.")
+            raise OpenBBError("Results not found.")
 
         try:
             df = pd.DataFrame(self.dict()["results"])
@@ -68,6 +74,23 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         return results
 
-    def to_chart(self):
-        """Converts results field to chart."""
-        raise NotImplementedError
+    def to_plotly_json(self) -> Optional[Dict[str, Any]]:
+        """
+        Outputs the plotly json.
+        It is a proxy to the `chart.content` attribute that contains it already.
+        Returns
+        -------
+        Optional[Dict[str, Any]]
+            Plotly json.
+        """
+        if not self.chart:
+            raise OpenBBError("Chart not found.")
+        if not self.chart.format == "plotly":
+            raise OpenBBError("Chart is not in plotly format.")
+        return self.chart.content
+
+    def show(self):
+        """Displays chart."""
+        if not self.chart:
+            raise OpenBBError("Chart not found.")
+        self.chart.show()

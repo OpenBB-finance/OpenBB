@@ -1,38 +1,25 @@
 # pylint: disable=W0231:super-init-not-called
 
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
-from typing import Callable
-
-
-def run_async(func: Callable, *args, **kwargs):
-    try:
-        asyncio.get_running_loop()
-        with ThreadPoolExecutor(1) as pool:
-            result = pool.submit(lambda: asyncio.run(func(*args, **kwargs))).result()
-    except RuntimeError:
-        result = asyncio.run(func(*args, **kwargs))
-
-    return result
+from openbb_core.app.command_runner import CommandRunnerSession
+from openbb_core.app.model.system_settings import SystemSettings
+from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.static.account import Account
+from openbb_core.app.static.coverage import Coverage
 
 
 def create_app():
-    return App(command_runner_session=CommandRunnerSession())
+    try:
+        from openbb_core.app.static.package.root import (  # pylint: disable=import-outside-toplevel
+            Root,
+        )
+    except ImportError as e:
+        raise Exception(
+            "If you are seeing this exception, you should probably be doing: "
+            "from openbb_core.app.static.package_builder import PackageBuilder\n"
+            "PackageBuilder.build()"
+        ) from e
 
-
-try:
-    from openbb_core.api.dependency.system import get_system_settings
-    from openbb_core.app.command_runner import CommandRunnerSession
-    from openbb_core.app.model.system_settings import SystemSettings
-    from openbb_core.app.model.user_settings import UserSettings
-    from openbb_core.app.static.account import Account
-    from openbb_core.app.static.coverage import Coverage
-    from openbb_core.app.static.package.MODULE_ import CLASS_
-except ImportError:
-    app = None
-else:
-
-    class App(CLASS_):
+    class App(Root):
         """App class."""
 
         def __init__(self, command_runner_session):
@@ -50,10 +37,10 @@ else:
 
         @property
         def system(self) -> SystemSettings:
-            return run_async(get_system_settings)
+            return self._command_runner_session.command_runner.system_settings
 
         @property
         def coverage(self) -> Coverage:
             return self._coverage
 
-    app = create_app()
+    return App(command_runner_session=CommandRunnerSession())

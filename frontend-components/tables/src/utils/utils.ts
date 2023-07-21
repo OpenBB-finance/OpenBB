@@ -27,9 +27,10 @@ export function formatNumberMagnitude(value: number | string, column?: string) {
       value.toString().split(".")[1]?.length || 0,
     );
     const toFixed = Math.min(4, decimalPlaces);
-    if (value < 1000) {
+    if (value < 5) {
       return value.toFixed(toFixed) || 0;
     }
+    value = Number(value.toFixed(2));
   }
 
   if (

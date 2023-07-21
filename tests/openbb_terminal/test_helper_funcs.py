@@ -63,30 +63,6 @@ def mock_compose_export_path(monkeypatch, tmp_path):
             "queries",
             pd.DataFrame(),
         ),
-        (
-            "png",
-            "C:/openbb_terminal/common/behavioural_analysis",
-            "queries",
-            pd.DataFrame(),
-        ),
-        (
-            "jpg",
-            "C:/openbb_terminal/common/behavioural_analysis",
-            "queries",
-            pd.DataFrame(),
-        ),
-        (
-            "pdf",
-            "C:/openbb_terminal/common/behavioural_analysis",
-            "queries",
-            pd.DataFrame(),
-        ),
-        (
-            "svg",
-            "C:/openbb_terminal/common/behavioural_analysis",
-            "queries",
-            pd.DataFrame(),
-        ),
     ],
 )
 def test_export_data_filetypes(

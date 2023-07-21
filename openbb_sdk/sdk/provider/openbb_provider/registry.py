@@ -9,6 +9,10 @@ from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.provider import Provider, ProviderNameType
 
 
+class ProviderError(Exception):
+    pass
+
+
 class ProviderRegistry:
     """A Provider Registry is the central executor for dynamically retrieving data."""
 
@@ -46,7 +50,9 @@ class ProviderRegistry:
             for k in required_credentials:
                 credential_value = credentials.get(k)
                 if k not in credentials or credential_value is None:
-                    raise ValueError(f"Missing credential {k} for {provider_name}.")
+                    raise ProviderError(
+                        f"Missing credential '{k}' for '{provider_name}'."
+                    )
 
                 result[k] = credential_value
 
@@ -59,9 +65,9 @@ class ProviderRegistry:
         ]  # TODO: Check if we really need to pass this "get_query_type"
         fetcher = fetch_dict.get(query_params.__name__)  # type: ignore
         if fetcher is None:
-            raise ValueError(
-                f"This query is not supported by the {provider.name} provider. "
-                f"Please try another provider: {ProviderNameType.__args__}"
+            raise ProviderError(
+                f"This query is not supported by the '{provider.name}' provider. "
+                f"Please try another provider: '{ProviderNameType.__args__}'"
             )
         return fetcher
 
@@ -82,9 +88,7 @@ class ProviderRegistry:
                 query_params, extra_params, loaded_credentials
             )
         except Exception as e:
-            raise RuntimeError(
-                f"The {provider_name} provider failed to fetch the data: {e}"
-            ) from e
+            raise ProviderError(e) from e
 
 
 def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any:

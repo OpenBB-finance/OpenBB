@@ -7,6 +7,8 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
+  Column,
+  Row,
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -157,8 +159,8 @@ export default function Table({
 
   //@ts-ignore
   const getColumnWidth = (rows, accessor, headerText) => {
-    const maxWidth = 200;
-    const magicSpacing = 12;
+    const maxWidth = 180;
+    const magicSpacing = 5;
     const cellLength = Math.max(
       //@ts-ignore
       ...rows.map((row) => getCellWidth(row, accessor)),
@@ -427,7 +429,7 @@ export default function Table({
             <div
               className="_header relative gap-4 py-2 text-center text-xs flex items-center justify-between px-4 text-white"
               style={{
-                fontSize: `${Number(fontSize) * 100}%`,
+                fontSize: `${Number(fontSize) * 90}%`,
               }}
             >
               <div className="w-1/3">
@@ -466,14 +468,14 @@ export default function Table({
                 </p>
               )} */}
             </div>
-            <div className="overflow-auto max-h-[calc(100vh-160px)] smh:max-h-[calc(100vh-95px)]">
-              <table
-                className="text-sm relative"
-                style={{
-                  fontSize: `${Number(fontSize) * 100}%`,
-                }}
-              >
-                <thead className="sticky top-0 bg-white dark:bg-grey-900">
+            <div className="overflow-auto max-h-[calc(100vh-170px)] smh:max-h-[calc(100vh-95px)]">
+              <table className="text-sm relative">
+                <thead
+                  className="sticky top-0 bg-white dark:bg-grey-900"
+                  style={{
+                    fontSize: `${Number(fontSize) * 75}%`,
+                  }}
+                >
                   {table.getHeaderGroups().map((headerGroup, idx) => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map((header, idx2) => {
@@ -498,6 +500,9 @@ export default function Table({
                       <tr
                         key={row.id}
                         className="!h-[64px] border-b border-grey-400"
+                        style={{
+                          fontSize: `${Number(fontSize) * 100}%`,
+                        }}
                       >
                         {row.getVisibleCells().map((cell, idx2) => {
                           return (
@@ -539,6 +544,7 @@ export default function Table({
                             className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10 p-4"
                             style={{
                               width: header.getSize(),
+                              fontSize: `${Number(fontSize) * 100}%`,
                             }}
                           >
                             {header.isPlaceholder
@@ -572,7 +578,7 @@ export default function Table({
                   <DialogPrimitive.Title className="uppercase font-bold tracking-widest">
                     Settings
                   </DialogPrimitive.Title>
-                  <div className="grid grid-cols-2 gap-4 mt-10 text-sm">
+                  <div className="grid grid-cols-2 gap-2 mt-10 text-sm">
                     {needsReorder && (
                       <button onClick={() => resetOrder()} className="_btn h-9">
                         Reset Order

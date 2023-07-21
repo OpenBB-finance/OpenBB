@@ -1,7 +1,8 @@
 # flake8: noqa
-from openbb_core.app.static.app_factory import app as obb
+from openbb_core.app.static.app_factory import create_app as __create_app
 
-sdk = obb
+sdk = __create_app()
+obb = sdk
 
 
 def _rebuild_python_interface() -> None:

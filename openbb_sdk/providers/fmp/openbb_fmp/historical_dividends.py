@@ -47,15 +47,15 @@ class FMPHistoricalDividendsData(Data):
 
     @validator("declarationDate", pre=True)
     def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
+        return datetime.strptime(v, "%Y-%m-%d") if v else None
 
     @validator("recordDate", pre=True)
     def record_date_validate(cls, v: str):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
+        return datetime.strptime(v, "%Y-%m-%d") if v else None
 
     @validator("paymentDate", pre=True)
     def payment_date_validate(cls, v: str):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d").date() if v else None
+        return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
 class FMPHistoricalDividendsFetcher(
