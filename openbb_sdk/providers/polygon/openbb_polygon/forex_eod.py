@@ -80,7 +80,7 @@ class PolygonForexEODFetcher(
         query: PolygonForexEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonForexEODData]:
         if credentials:
-            api_key = credentials.get("POLYGON_API_KEY")
+            api_key = credentials.get("polygon_api_key")
 
         now = datetime.now()
         start_date = query.start_date or (now - timedelta(days=7)).date()

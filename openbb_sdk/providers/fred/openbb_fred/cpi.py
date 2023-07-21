@@ -59,7 +59,7 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]]
     ) -> FREDCPIData:
         if credentials:
-            api_key = credentials.get("FRED_API_KEY")
+            api_key = credentials.get("fred_api_key")
 
         all_options = all_cpi_options(query.harmonized)
 

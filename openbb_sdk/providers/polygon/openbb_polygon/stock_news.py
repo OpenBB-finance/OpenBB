@@ -110,7 +110,7 @@ class PolygonStockNewsFetcher(
         query: PolygonStockNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonStockNewsData]:
         if credentials:
-            api_key = credentials.get("POLYGON_API_KEY")
+            api_key = credentials.get("polygon_api_key")
 
         base_url = "https://api.polygon.io/v2/reference/news"
         querystring = get_querystring(query.dict(), [])

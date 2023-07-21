@@ -70,7 +70,7 @@ class PolygonMajorIndicesPriceFetcher(
         credentials: Optional[Dict[str, str]],
     ) -> List[PolygonMajorIndicesPriceData]:
         if credentials:
-            api_key = credentials.get("POLYGON_API_KEY")
+            api_key = credentials.get("polygon_api_key")
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
