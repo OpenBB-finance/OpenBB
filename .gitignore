@@ -72,7 +72,6 @@ custom_imports/*/*.csv
 
 # cache
 cache/
-openbb_sdk/sdk/core/openbb_core/app/static/package/
 
 # lightning logs
 lightning_logs/
