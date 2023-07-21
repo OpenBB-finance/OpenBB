@@ -84,6 +84,7 @@ class ProviderRegistry:
         fetcher = self.get_fetcher(provider, query_params)
 
         try:
+            # TODO: Check if we really need to pass this "fetch_data"
             return getattr(fetcher, "fetch_data")(
                 query_params, extra_params, loaded_credentials
             )
