@@ -12,6 +12,7 @@ from openbb_core.app.utils import df_to_basemodel
 class OpenBBError(Exception):
     pass
 
+
 def filter_call(func):
     @wraps(wrapped=func)
     def inner(*args, **kwargs):
