@@ -110,7 +110,7 @@ class FMPInstitutionalOwnershipFetcher(
         credentials: Optional[Dict[str, str]],
     ) -> List[FMPInstitutionalOwnershipData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(4, "institutional-ownership/symbol-ownership", api_key, query)
         return get_data_many(url, FMPInstitutionalOwnershipData)

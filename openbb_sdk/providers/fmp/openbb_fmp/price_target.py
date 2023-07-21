@@ -62,7 +62,7 @@ class FMPPriceTargetFetcher(
         query: FMPPriceTargetQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPPriceTargetData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(4, "price-target", api_key, query)
         return get_data_many(url, FMPPriceTargetData)

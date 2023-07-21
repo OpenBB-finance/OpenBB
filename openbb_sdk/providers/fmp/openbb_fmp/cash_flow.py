@@ -122,7 +122,7 @@ class FMPCashFlowStatementFetcher(
         query: FMPCashFlowStatementQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPCashFlowStatementData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]

@@ -53,7 +53,7 @@ class FMPAvailableIndicesFetcher(
         query: FMPAvailableIndicesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPAvailableIndicesData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-indexes?apikey={api_key}"

@@ -84,9 +84,7 @@ class UserService:
             with path.open(mode="r") as file:
                 user_settings_json = file.read()
 
-            user_settings_dict = json.loads(user_settings_json)
-            user_settings_dict = {k.upper(): v for k, v in user_settings_dict.items()}
-            user_settings = UserSettings.parse_obj(user_settings_dict)
+            user_settings = UserSettings.parse_raw(user_settings_json)
         else:
             user_settings = UserSettings()
 

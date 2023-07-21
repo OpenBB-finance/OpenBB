@@ -70,7 +70,7 @@ class FMPTreasuryRatesFetcher(
         query: FMPTreasuryRatesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPTreasuryRatesData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         base_url = "https://financialmodelingprep.com/api/v4/"
         query_str = get_querystring(query.dict(), [])

@@ -62,7 +62,7 @@ class FMPEarningsCalendarFetcher(
         query: FMPEarningsCalendarQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPEarningsCalendarData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(
             3, f"historical/earning_calendar/{query.symbol}", api_key, query, ["symbol"]

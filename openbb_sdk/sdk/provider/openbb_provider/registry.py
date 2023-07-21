@@ -108,8 +108,9 @@ def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any
         if required_credentials:
             extensions_dict["credentials"][provider_name] = {}
             for credential in required_credentials:
-                credential_name = provider_name.upper() + "_" + credential.upper()
-                extensions_dict["credentials"][provider_name][credential_name] = None
+                if credential:
+                    credential_name = provider_name.lower() + "_" + credential.lower()
+                    extensions_dict["credentials"][provider_name][credential_name] = None
 
     return extensions_dict
 

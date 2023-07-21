@@ -81,7 +81,7 @@ class FMPExecutiveCompensationFetcher(
         credentials: Optional[Dict[str, str]],
     ) -> List[FMPExecutiveCompensationData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(4, "governance/executive_compensation", api_key, query)
         return get_data_many(url, FMPExecutiveCompensationData)

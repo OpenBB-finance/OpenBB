@@ -52,7 +52,7 @@ class FMPEarningsCallTranscriptFetcher(
         credentials: Optional[Dict[str, str]],
     ) -> List[FMPEarningsCallTranscriptData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(
             4,

@@ -89,7 +89,7 @@ class FMPStockEODFetcher(
         query: FMPStockEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPStockEODData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(), ["symbol"])

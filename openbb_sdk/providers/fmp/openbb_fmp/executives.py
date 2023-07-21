@@ -80,7 +80,7 @@ class FMPKeyExecutivesFetcher(
         query: FMPKeyExecutivesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPKeyExecutivesData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         base_url = "https://financialmodelingprep.com/api/v3/"
         request_url = f"{base_url}key-executives/{query.symbol}?apikey={api_key}"

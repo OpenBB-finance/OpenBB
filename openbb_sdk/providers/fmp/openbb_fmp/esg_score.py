@@ -55,7 +55,7 @@ class FMPESGScoreFetcher(
         query: FMPESGScoreQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPESGScoreData]:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         url = create_url(4, "esg-environmental-social-governance-data", api_key, query)
         return get_data_many(url, FMPESGScoreData)

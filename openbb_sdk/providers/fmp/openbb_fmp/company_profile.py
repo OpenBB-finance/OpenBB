@@ -91,7 +91,7 @@ class FMPCompanyProfileFetcher(
         query: FMPCompanyOverviewQueryParams, credentials: Optional[Dict[str, str]]
     ) -> FMPCompanyOverviewData:
         if credentials:
-            api_key = credentials.get("FMP_API_KEY")
+            api_key = credentials.get("fmp_api_key")
 
         base_url = "https://financialmodelingprep.com/api/v3/"
         request_url = f"{base_url}profile/{query.symbol}?apikey={api_key}"
