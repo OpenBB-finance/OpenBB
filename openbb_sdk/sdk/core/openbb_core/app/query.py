@@ -63,10 +63,7 @@ class Query:
         return filtered
 
     def to_query_params(self, standard_params: StandardParams) -> StandardParams:
-        """Convert standard params to query params.
-
-        This is essentially adding a suffix to the query name and assign it to __name__.
-        """
+        """Convert standard params to QueryParams like class."""
         standard_params.__name__ = self.name + "QueryParams"  # type: ignore
         return standard_params
 
@@ -83,10 +80,8 @@ class Query:
         )
 
         return registry.fetch(
-            provider_name=self.provider,  # type: ignore
-            # TODO: provider_name should accept a general object, otherwise we need to import from provider.
-            query_params=query_params,  # type: ignore
-            # TODO: query should accept a general object, otherwise we need to import from provider.
+            provider_name=self.provider,
+            query_params=query_params,
             extra_params=filtered,
             credentials=creds,
         )
