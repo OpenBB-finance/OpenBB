@@ -1,3 +1,4 @@
+from functools import partial
 import json
 import os
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
@@ -16,6 +17,9 @@ from openbb_core.app.logs.utils.system_utils import get_branch, get_commit_hash
 from openbb_core.app.model.abstract.tagged import Tagged
 
 
+FrozenField = partial(Field, allow_mutation=False)
+
+
 class SystemSettings(Tagged):
     run_in_isolation: bool = Field(
         default=False,
@@ -29,37 +33,37 @@ class SystemSettings(Tagged):
     )
 
     # System section
-    os: str = Field(default=str(pl.system()), allow_mutation=False)
-    python_version: str = Field(default=str(pl.python_version()), allow_mutation=False)
-    platform: str = Field(default=str(pl.platform()), allow_mutation=False)
+    os: str = FrozenField(default=str(pl.system()))
+    python_version: str = FrozenField(default=str(pl.python_version()))
+    platform: str = FrozenField(default=str(pl.platform()))
 
     # OpenBB section
     # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
-    version: str = Field(default="4.0.0dev", allow_mutation=False)
-    home_directory: str = Field(default=str(HOME_DIRECTORY), allow_mutation=False)
-    openbb_directory: str = Field(default=str(OPENBB_DIRECTORY), allow_mutation=False)
-    user_settings_path: str = Field(
+    version: str = FrozenField(default="4.0.0dev")
+    home_directory: str = FrozenField(default=str(HOME_DIRECTORY))
+    openbb_directory: str = FrozenField(default=str(OPENBB_DIRECTORY))
+    user_settings_path: str = FrozenField(
         default=str(USER_SETTINGS_PATH), allow_mutation=False
     )
-    system_settings_path: str = Field(
+    system_settings_path: str = FrozenField(
         default=str(SYSTEM_SETTINGS_PATH), allow_mutation=False
     )
 
     # Logging section
-    logging_app_name: str = Field(default="gst", allow_mutation=False)
-    logging_commit_hash: Optional[str] = Field(default=None, allow_mutation=False)
-    logging_branch: Optional[str] = Field(default=None, allow_mutation=False)
-    logging_frequency: Literal["D", "H", "M", "S"] = Field(
+    logging_app_name: str = FrozenField(default="gst")
+    logging_commit_hash: Optional[str] = FrozenField(default=None)
+    logging_branch: Optional[str] = FrozenField(default=None)
+    logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(
         default="H", allow_mutation=False
     )
-    logging_handlers: List[str] = Field(
+    logging_handlers: List[str] = FrozenField(
         default_factory=lambda: ["file"], allow_mutation=False
     )
-    logging_rolling_clock: bool = Field(default=False, allow_mutation=False)
-    logging_verbosity: int = Field(default=20, allow_mutation=False)
-    logging_sub_app: str = Field(default="sdk", allow_mutation=False)
-    logging_suppress: bool = Field(default=False, allow_mutation=False)
-    log_collect: bool = Field(default=True, allow_mutation=False)
+    logging_rolling_clock: bool = FrozenField(default=False)
+    logging_verbosity: int = FrozenField(default=20)
+    logging_sub_app: str = FrozenField(default="sdk")
+    logging_suppress: bool = FrozenField(default=False)
+    log_collect: bool = FrozenField(default=True)
 
     # Others
     test_mode: bool = False
