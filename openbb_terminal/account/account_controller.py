@@ -314,6 +314,14 @@ class AccountController(BaseController):
             default="",
             nargs="+",
         )
+        parser.add_argument(
+            "-p",
+            "--public",
+            dest="public",
+            action="store_true",
+            help="Whether the routine should be public or not",
+            default=False,
+        )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
@@ -341,6 +349,7 @@ class AccountController(BaseController):
                         "description": description,
                         "routine": routine,
                         "tags": tags,
+                        "public": ns_parser.public,
                     }
                     response = Hub.upload_routine(**kwargs)  # type: ignore
 
