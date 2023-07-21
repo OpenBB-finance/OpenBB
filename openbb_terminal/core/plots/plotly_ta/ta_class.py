@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal import OpenBBFigure, config_terminal, theme
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
@@ -144,6 +144,13 @@ class PlotlyTA(PltTA):
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
+
+        if config_terminal.HOLD:
+            console.print(
+                "The previous command is not supported within hold on.  Only the last command run"
+                "will be displayed when hold off is run."
+            )
+
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 
