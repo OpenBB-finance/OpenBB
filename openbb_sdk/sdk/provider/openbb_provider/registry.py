@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional
 import pkg_resources
 
 from openbb_provider.abstract.data import QueryParams
+from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.provider import Provider, ProviderNameType
 
 
@@ -35,7 +36,7 @@ class ProviderRegistry:
 
         return provider
 
-    def get_credentials(
+    def filter_credentials(
         self,
         provider_name: ProviderNameType,
         credentials: Optional[Dict[str, str]] = None,
@@ -58,7 +59,7 @@ class ProviderRegistry:
 
         return result
 
-    def get_fetcher(self, provider: Provider, query_params: QueryParams) -> Any:
+    def get_fetcher(self, provider: Provider, query_params: QueryParams) -> Fetcher:
         """Get a fetcher from the provider."""
         fetch_dict = provider.fetcher_dict[
             "get_query_type"
@@ -80,13 +81,13 @@ class ProviderRegistry:
     ):
         """Fetch data from a provider by using the OpenBB standard."""
         provider = self.get_provider(provider_name)
-        loaded_credentials = self.get_credentials(provider_name, credentials)
-        fetcher = self.get_fetcher(provider, query_params)
+        filtered_credentials = self.filter_credentials(provider_name, credentials)
+        Fetcher_ = self.get_fetcher(provider, query_params)
 
         try:
             # TODO: Check if we really need to pass this "fetch_data"
-            return getattr(fetcher, "fetch_data")(
-                query_params, extra_params, loaded_credentials
+            return getattr(Fetcher_, "fetch_data")(
+                query_params, extra_params, filtered_credentials
             )
         except Exception as e:
             raise ProviderError(e) from e
