@@ -274,7 +274,7 @@ def build_docstring_mapping() -> Dict:
     return mapping
 
 
-def get_credentials_mapping() -> Dict:
+def build_credentials_mapping() -> Dict:
     """Build a mapping of the provider registry credentials.
 
     Returns
@@ -296,7 +296,7 @@ def get_credentials_mapping() -> Dict:
     return mapping
 
 
-get_credentials_mapping()
+build_credentials_mapping()
 
 
 def build_model_mapping() -> Dict:

@@ -2,7 +2,7 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
-from openbb_provider.map import build_model_mapping, get_credentials_mapping
+from openbb_provider.map import build_model_mapping, build_credentials_mapping
 from openbb_provider.registry import (
     ProviderRegistry,
     build_provider_registry,
@@ -145,7 +145,7 @@ class ProviderInterface:
     def __get_credentials() -> Dict[str, Tuple[Optional[str], None]]:
         """Get credentials."""
         credentials: Dict[str, Tuple[Optional[str], None]] = {}
-        credentials_mapping = get_credentials_mapping()
+        credentials_mapping = build_credentials_mapping()
         for provider_credentials in credentials_mapping.values():
             for credential in provider_credentials:
                 credentials[credential] = (Optional[str], None)
