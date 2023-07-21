@@ -29,10 +29,10 @@ def get_data(url: str) -> Union[list, dict]:
     data = r.json()
     if r.status_code != 200:
         message = data.get("message", "unknown error")
-        raise RuntimeError(f"Error in FMP request: {message}")
+        raise RuntimeError(f"Error in FMP request -> {message}")
 
     if "Error Message" in data:
-        raise RuntimeError("FMP Error Message: " + data["Error Message"])
+        raise RuntimeError("FMP Error Message -> " + data["Error Message"])
 
     if len(data) == 0:
         raise RuntimeError("No results found. Try adjusting the query parameters.")
