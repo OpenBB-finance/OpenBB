@@ -296,9 +296,6 @@ def build_credentials_mapping() -> Dict:
     return mapping
 
 
-build_credentials_mapping()
-
-
 def build_model_mapping() -> Dict:
     """Build a mapping of the provider registry models.
 
