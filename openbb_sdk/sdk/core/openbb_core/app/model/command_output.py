@@ -7,8 +7,11 @@ from pydantic.generics import GenericModel
 from openbb_core.app.model.abstract.error import Error
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
-from openbb_core.app.model.charts.chart import Chart
+from openbb_core.app.model.charts.chart import Chart, ChartFormat
 from openbb_core.app.provider_interface import get_provider_interface
+
+
+from openbb_core.app.charting_manager import ChartingManager
 
 T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
@@ -74,20 +77,38 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         return results
 
-    def to_plotly_json(self) -> Optional[Dict[str, Any]]:
+    def to_plotly_json(
+        self, create_chart: bool = True, **kwargs
+    ) -> Optional[Dict[str, Any]]:
         """
-        Outputs the plotly json.
-        It is a proxy to the `chart.content` attribute that contains it already.
-        Returns
-        -------
-        Optional[Dict[str, Any]]
-            Plotly json.
+        Returns the plotly json representation of the chart.
+        If the chart was already computed it return the plotly json representation of the chart.
+        Otherwise it computes the chart based on the available data and provided kwargs.
+
+        Parameters
+        ----------
+        create_chart : bool, optional
+            If True, it creates the chart object and populates the respective field on the object, by default True.
+        **kwargs
+            Keyword arguments to be passed to the charting extension.
+            This implies that the user has to know the charting extension API; this is the case
+            because the charting extension may vary on user settings.
         """
-        if not self.chart:
-            raise OpenBBError("Chart not found.")
-        if not self.chart.format == "plotly":
-            raise OpenBBError("Chart is not in plotly format.")
-        return self.chart.content
+
+        if self.chart and not kwargs:
+            plotly_json = self.chart.content
+        else:
+            cm = ChartingManager()
+            kwargs["data"] = self.to_dataframe()
+            plotly_json = cm.to_plotly_json(**kwargs)
+
+            if create_chart:
+                try:
+                    self.chart = Chart(content=plotly_json, format=ChartFormat.plotly)
+                except Exception as e:
+                    self.chart = Chart(error=Error(message=str(e)))
+
+        return plotly_json
 
     def show(self):
         """Displays chart."""
