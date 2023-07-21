@@ -42,23 +42,15 @@ class SystemSettings(Tagged):
     version: str = FrozenField(default="4.0.0dev")
     home_directory: str = FrozenField(default=str(HOME_DIRECTORY))
     openbb_directory: str = FrozenField(default=str(OPENBB_DIRECTORY))
-    user_settings_path: str = FrozenField(
-        default=str(USER_SETTINGS_PATH), allow_mutation=False
-    )
-    system_settings_path: str = FrozenField(
-        default=str(SYSTEM_SETTINGS_PATH), allow_mutation=False
-    )
+    user_settings_path: str = FrozenField(default=str(USER_SETTINGS_PATH))
+    system_settings_path: str = FrozenField(default=str(SYSTEM_SETTINGS_PATH))
 
     # Logging section
     logging_app_name: str = FrozenField(default="gst")
     logging_commit_hash: Optional[str] = FrozenField(default=None)
     logging_branch: Optional[str] = FrozenField(default=None)
-    logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(
-        default="H", allow_mutation=False
-    )
-    logging_handlers: List[str] = FrozenField(
-        default_factory=lambda: ["file"], allow_mutation=False
-    )
+    logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(default="H")
+    logging_handlers: List[str] = FrozenField(default_factory=lambda: ["file"])
     logging_rolling_clock: bool = FrozenField(default=False)
     logging_verbosity: int = FrozenField(default=20)
     logging_sub_app: str = FrozenField(default="sdk")
