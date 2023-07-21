@@ -16,5 +16,6 @@ from openbb_benzinga.stock_news import BenzingaStockNewsFetcher
 benzinga_provider = Provider(
     name=ProviderNameType("benzinga"),
     description="Provider for Benzinga.",
+    required_credentials=["api_key"],
     fetcher_list=[BenzingaGlobalNewsFetcher, BenzingaStockNewsFetcher],
 )

@@ -18,6 +18,7 @@ T = TypeVar("T", bound=BaseModel)
 
 
 def get_data(url: str) -> Union[list, dict]:
+    """Get data from FMP endpoint."""
     try:
         r: Union[requests.Response, BasicResponse] = requests.get(url, timeout=10)
     except SSLError:
@@ -42,7 +43,7 @@ def get_data(url: str) -> Union[list, dict]:
 def create_url(
     version: int,
     endpoint: str,
-    api_key: str,
+    api_key: Optional[str],
     query: Optional[QueryParamsType] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
@@ -104,11 +105,20 @@ def get_data_one(url: str, to_schema: Type[T]) -> T:
     """Get data from FMP endpoint and convert to schema."""
     data = get_data(url)
     if isinstance(data, list):
-        raise ValueError("Expected dict with lists, got list")
-    return to_schema(**data)
+        if len(data) == 0:
+            raise ValueError("Expected dict, got empty list")
+
+        try:
+            data = {i: data[i] for i in range(len(data))} if len(data) > 1 else data[0]
+        except TypeError as e:
+            raise ValueError("Expected dict, got list of dicts") from e
+
+    return to_schema(**data)  # type: ignore
 
 
 class BaseStockPriceData(Data):
+    """Base Stock Price Data."""
+
     open: PositiveFloat
     high: PositiveFloat
     low: PositiveFloat
@@ -118,6 +128,7 @@ class BaseStockPriceData(Data):
 
     @validator("date", pre=True)
     def time_validate(cls, v: str) -> datetime:  # pylint: disable=E0213
+        """Validate the date."""
         if len(v) < 12:
             return datetime.strptime(v, "%Y-%m-%d")
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")

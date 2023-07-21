@@ -12,7 +12,7 @@ root_url = "https://api.stlouisfed.org/fred"
 
 
 class Fred:
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: Optional[str]):
         self.api_key = api_key
 
     def __fetch_data(self, url: str):

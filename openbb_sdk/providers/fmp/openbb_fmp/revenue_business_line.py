@@ -59,8 +59,11 @@ class FMPRevenueBusinessLineFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRevenueBusinessLineQueryParams, api_key: str
+        query: FMPRevenueBusinessLineQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPRevenueBusinessLineData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         # Type has to be ignored below because we are using something different than the literal type
         query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
         url = create_url(4, "revenue-product-segmentation", api_key, query)

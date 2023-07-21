@@ -24,6 +24,7 @@ from openbb_polygon.stock_price import PolygonStockPriceFetcher
 polygon_provider = Provider(
     name=ProviderNameType("polygon"),
     description="Provider for Polygon.",
+    required_credentials=["api_key"],
     fetcher_list=[
         PolygonStockEODFetcher,
         PolygonStockNewsFetcher,

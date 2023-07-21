@@ -60,8 +60,11 @@ class FMPMajorIndicesPriceFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesPriceQueryParams, api_key: str
+        query: FMPMajorIndicesPriceQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPMajorIndicesPriceData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         url = create_url(
             3, f"historical-chart/{query.interval}/%5E{query.symbol}", api_key
         )

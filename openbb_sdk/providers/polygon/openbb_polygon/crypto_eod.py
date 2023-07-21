@@ -73,11 +73,14 @@ class PolygonCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonCryptoEODQueryParams, api_key: str
+        query: PolygonCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonCryptoEODData]:
+        if credentials:
+            api_key = credentials.get("polygon_api_key")
+
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"X:{query.stocksTicker.upper()}/range/1/{query.timespan}/"
+            f"X:{query.stocksTicker.upper()}/range/1/{str(query.timespan.value)}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"

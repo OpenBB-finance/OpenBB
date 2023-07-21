@@ -98,8 +98,11 @@ class BenzingaGlobalNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: BenzingaGlobalNewsQueryParams, api_key: str
+        query: BenzingaGlobalNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[BenzingaGlobalNewsData]:
+        if credentials:
+            api_key = credentials.get("benzinga_api_key")
+
         base_url = "https://api.benzinga.com/api/v2/news"
         querystring = get_querystring(query.dict(), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"

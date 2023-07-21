@@ -87,8 +87,11 @@ class FMPMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesEODQueryParams, api_key: str
+        query: FMPMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPMajorIndicesEODData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         base_url = "https://financialmodelingprep.com/api/v3/"
         query_str = get_querystring(query.dict(), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
