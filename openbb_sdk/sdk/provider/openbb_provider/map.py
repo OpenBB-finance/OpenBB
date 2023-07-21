@@ -274,8 +274,33 @@ def build_docstring_mapping() -> Dict:
     return mapping
 
 
-def build_provider_mapping() -> Dict:
-    """Build a mapping of the provider registry.
+def get_credentials_mapping() -> Dict:
+    """Build a mapping of the provider registry credentials.
+
+    Returns
+    -------
+    Dict :
+        The mapping is a nested dictionary with the following structure:
+        {
+            "provider_name": [
+                "credential_name",
+                ...
+            ]
+        }
+        ...
+    """
+    mapping = {}
+    provider_registry_credentials = provider_registry.credentials
+    for provider, provider_credentials in provider_registry_credentials.items():
+        mapping[provider] = list(provider_credentials.keys())
+    return mapping
+
+
+get_credentials_mapping()
+
+
+def build_model_mapping() -> Dict:
+    """Build a mapping of the provider registry models.
 
     Returns
     -------
@@ -312,4 +337,4 @@ def build_provider_mapping() -> Dict:
     return mapping
 
 
-provider_mapping = build_provider_mapping()
+model_mapping = build_model_mapping()

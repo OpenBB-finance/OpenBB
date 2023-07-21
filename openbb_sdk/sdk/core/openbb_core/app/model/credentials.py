@@ -1,21 +1,27 @@
-from typing import Optional
+from pydantic import create_model
 
-from pydantic import BaseModel
+from openbb_core.app.provider_interface import get_provider_interface
+
+provider_credentials = get_provider_interface().credentials
 
 
-class Credentials(BaseModel):
-    fmp_api_key: Optional[str] = None
-    fmp_testing: Optional[str] = None
-    polygon_api_key: Optional[str] = None
-    benzinga_api_key: Optional[str] = None
-    fred_api_key: Optional[str] = None
+class Config:
+    validate_assignment = True
 
-    class Config:
-        validate_assignment = True
 
-    def __repr__(self) -> str:
-        return (
-            self.__class__.__name__
-            + "\n\n"
-            + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
-        )
+def __repr__(self) -> str:
+    return (
+        self.__class__.__name__
+        + "\n\n"
+        + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
+    )
+
+
+Credentials = create_model(  # type: ignore
+    "Credentials",
+    __config__=Config,
+    **provider_credentials,
+)
+
+
+Credentials.__repr__ = __repr__

@@ -234,8 +234,8 @@ class DocstringGenerator:
     def get_docstrings(query_mapping: dict) -> dict:
         """Get docstrings from the query mapping."""
         mapping = query_mapping.copy()
-        for _, provider_mapping in mapping.items():
-            for _, query_params_mapping in provider_mapping.items():
+        for _, model_mapping in mapping.items():
+            for _, query_params_mapping in model_mapping.items():
                 query_params_mapping.pop("fields", None)
         return mapping
 
@@ -288,10 +288,10 @@ class DocstringGenerator:
         cls, docstring: str, docstring_mapping: dict, model_name: str
     ) -> str:
         """Generate the docstring for the provider."""
-        for provider, provider_mapping in docstring_mapping.items():
+        for provider, model_mapping in docstring_mapping.items():
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
-            for section_name, section_docstring in provider_mapping.items():
+            for section_name, section_docstring in model_mapping.items():
                 missing_doc = "\nReturns\n-------\nDocumentation not available.\n\n"
                 section_docstring = (
                     section_docstring["docstring"]

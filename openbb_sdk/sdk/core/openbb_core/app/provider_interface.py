@@ -2,7 +2,7 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
-from openbb_provider.map import build_provider_mapping
+from openbb_provider.map import build_model_mapping, get_credentials_mapping
 from openbb_provider.registry import (
     ProviderRegistry,
     build_provider_registry,
@@ -72,16 +72,22 @@ class ProviderInterface:
     """
 
     def __init__(self) -> None:
-        self.__map = build_provider_mapping()
+        self.__map = build_model_mapping()
         self.__model_providers_map = self.__generate_model_providers_dc()
         self.__params = self.__generate_params_dc()
         self.__data = self.__generate_data_dc()
         self.__merged_data = self.__merge_data_dc(self.__data)
+        self.__credentials = self.__get_credentials()
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
         """Dictionary of provider information."""
         return self.__map
+
+    @property
+    def credentials(self) -> Dict[str, None]:
+        """Dictionary of credentials."""
+        return self.__credentials
 
     @property
     def model_providers(self) -> Dict[str, ProviderChoices]:
@@ -132,6 +138,17 @@ class ProviderInterface:
     def get_registry(self) -> ProviderRegistry:
         """Create provider registry."""
         return build_provider_registry(extensions_dict__)
+
+    @staticmethod
+    def __get_credentials() -> Dict[str, Tuple[Optional[str], None]]:
+        """Get credentials."""
+        credentials: Dict[str, Tuple[Optional[str], None]] = {}
+        credentials_mapping = get_credentials_mapping()
+        for provider_credentials in credentials_mapping.values():
+            for credential in provider_credentials:
+                credentials[credential] = (Optional[str], None)
+
+        return credentials
 
     @staticmethod
     def __merge_fields(

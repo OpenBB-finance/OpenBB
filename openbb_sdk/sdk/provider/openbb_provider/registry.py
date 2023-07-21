@@ -44,8 +44,8 @@ class ProviderRegistry:
         result: Dict[str, str] = {}
         if credentials is not None:
             for k in required_credentials:
-                credential_value = credentials.get(k.lower())
-                if k.lower() not in credentials or credential_value is None:
+                credential_value = credentials.get(k)
+                if k not in credentials or credential_value is None:
                     raise ValueError(f"Missing credential {k} for {provider_name}.")
 
                 result[k] = credential_value
