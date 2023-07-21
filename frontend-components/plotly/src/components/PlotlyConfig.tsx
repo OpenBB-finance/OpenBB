@@ -1,6 +1,8 @@
 import { Icons as PlotlyIcons } from "plotly.js-dist-min";
 import { downloadCSV, downloadImage } from "../utils/utils";
+import { useHotkeys } from "react-hotkeys-hook";
 import { ICONS } from "./Config";
+
 
 export function hideModebar(hide?: boolean) {
   return new Promise((resolve) => {
@@ -138,4 +140,79 @@ export function PlotConfig({
     ],
   };
   return CONFIG;
+}
+
+
+export function ChartHotkeys({
+  setModal,
+  Loading,
+  changeColor,
+  downloadFinished,
+}: {
+  setModal: (modal: { name: string; data?: any }) => void;
+  Loading: (change: boolean) => void;
+  changeColor: (change: boolean) => void;
+  downloadFinished: (change: boolean) => void;
+}) {
+  useHotkeys(
+    "ctrl+shift+t",
+    () => {
+      setModal({ name: "titleDialog" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+t",
+    () => {
+      setModal({ name: "textDialog" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+o",
+    () => {
+      setModal({ name: "overlayChart" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    ["ctrl+shift+h", "ctrl+h"],
+    () => {
+      hideModebar();
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+e",
+    () => {
+      changeColor(true);
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+shift+s",
+    async () => {
+      setModal({ name: "downloadCsv" });
+      await downloadCSV(
+        document.getElementById("plotlyChart") as any,
+        downloadFinished,
+      );
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+s",
+    async () => {
+      hideModebar();
+      downloadImage("MainChart", hideModebar, Loading, downloadFinished);
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+w",
+    () => {
+      window.close();
+    },
+    { preventDefault: true },
+  );
 }

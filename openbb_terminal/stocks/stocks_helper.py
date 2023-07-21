@@ -687,7 +687,7 @@ def display_candle(
         data["Close"] = data_["HA Close"]
         data.name = f"{symbol} - Heikin Ashi Candles"
 
-    fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
+    fig = PlotlyTA.plot(data, dict(**kwargs))
 
     if add_trend:
         fig.add_trend(data, secondary_y=False)
