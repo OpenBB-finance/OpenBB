@@ -4,7 +4,7 @@
 PYTHON_EXEC=$(which python)
 
 # Install all openbb extensions and providers
-find extensions providers -type f -name "pyproject.toml" -execdir sh -c '
+find extensions providers sdk -type f -name "pyproject.toml" -execdir sh -c '
     echo "Installing $(basename "$PWD")..."
     "$1" -m pip install -U -e "${PWD}"
     if [ $? -ne 0 ]; then

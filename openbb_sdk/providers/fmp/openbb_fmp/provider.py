@@ -14,6 +14,7 @@ from .cash_flow import FMPCashFlowStatementFetcher
 from .company_profile import FMPCompanyProfileFetcher
 from .crypto_eod import FMPCryptoEODFetcher
 from .crypto_price import FMPCryptoPriceFetcher
+from .dividend_calendar import FMPDividendCalendarFetcher
 from .earnings_calendar import FMPEarningsCalendarFetcher
 from .earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from .esg_risk_rating import FMPESGRiskRatingFetcher
@@ -31,6 +32,7 @@ from .historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from .income_statement import FMPIncomeStatementFetcher
 from .institutional_ownership import FMPInstitutionalOwnershipFetcher
 from .key_metrics import FMPKeyMetricsFetcher
+from .major_indices_constituents import FMPMajorIndicesConstituentsFetcher
 from .major_indices_eod import FMPMajorIndicesEODFetcher
 from .major_indices_price import FMPMajorIndicesPriceFetcher
 from .price_target import FMPPriceTargetFetcher
@@ -98,5 +100,7 @@ fmp_provider = Provider(
         FMPHistoricalEmployeesFetcher,
         FMPAvailableIndicesFetcher,
         FMPRiskPremiumFetcher,
+        FMPMajorIndicesConstituentsFetcher,
+        FMPDividendCalendarFetcher,
     ],
 )

@@ -1,7 +1,7 @@
 """FMP Major Indices Price fetcher."""
 
 # IMPORT STANDARD
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Literal
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import QueryParams
@@ -28,12 +28,13 @@ class FMPMajorIndicesPriceQueryParams(QueryParams, BaseSymbol):
     ---------
     symbol : str
         The symbol of the index.
-    interval : str (default = "1hour")
-        The interval of the index data to fetch. Possible values include "1min", "5min",
-        "15min", "30min", "1hour", "4hour".
+    interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour']
+        The interval of the index data to fetch. Default is '1hour`.
     """
 
-    interval: str = Field(default="1hour")
+    interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour"] = Field(
+        default="1hour"
+    )
 
 
 class FMPMajorIndicesPriceData(BaseStockPriceData):
