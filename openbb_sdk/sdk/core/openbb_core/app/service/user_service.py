@@ -1,4 +1,3 @@
-import json
 from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
