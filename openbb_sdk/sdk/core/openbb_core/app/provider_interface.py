@@ -69,8 +69,8 @@ class ProviderInterface:
 
     Methods
     -------
-    create_registry : Callable
-        Create provider registry
+    get_registry : ProviderRegistry
+        Get provider registry
     """
 
     def __init__(self) -> None:
@@ -138,7 +138,7 @@ class ProviderInterface:
         return list(self.__map.keys())
 
     def get_registry(self) -> ProviderRegistry:
-        """Create provider registry."""
+        """Get provider registry."""
         return build_provider_registry(extensions_dict__)
 
     @staticmethod
