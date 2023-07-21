@@ -56,6 +56,8 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
                 df.index = pd.to_datetime(df.index)
         except ValueError:
             df = pd.DataFrame(self.dict()["results"], index=["values"]).T
+        except Exception as e:
+            raise OpenBBError("Failed to convert results to dataframe.") from e
 
         return df
 
