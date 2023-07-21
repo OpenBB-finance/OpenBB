@@ -52,6 +52,8 @@ class ProviderInterface:
     ----------
     map : Dict[str, Dict[str, Dict[str, Any]]]
         Dictionary of provider information.
+    credentials: Dict[str, Tuple[Optional[str], None]]
+        Dictionary of credentials.
     model_providers : Dict[str, ProviderChoices]
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
@@ -85,8 +87,8 @@ class ProviderInterface:
         return self.__map
 
     @property
-    def credentials(self) -> Dict[str, None]:
-        """Dictionary of credentials."""
+    def credentials(self) -> Dict[str, Tuple[Optional[str], None]]:
+        """Dictionary of credentials by provider."""
         return self.__credentials
 
     @property
