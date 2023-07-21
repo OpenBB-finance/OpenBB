@@ -1,4 +1,5 @@
 import builtins
+from functools import wraps
 
 import pandas as pd
 from pydantic import ValidationError
@@ -9,6 +10,7 @@ from openbb_core.app.utils import df_to_basemodel
 
 
 def filter_call(func):
+    @wraps(wrapped=func)
     def inner(*args, **kwargs):
         self = args[0]
         debug_mode = (
