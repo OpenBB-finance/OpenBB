@@ -69,7 +69,9 @@ class Query:
 
     def execute(self) -> BaseModel:
         """Execute the query."""
-        registry = get_provider_interface().get_registry()
+
+        # TODO: Understand if we really need to create the registry in every call
+        registry = get_provider_interface().build_registry()
         creds = self.cc.user_settings.credentials.dict()
         query_params = self.to_query_params(self.standard_params)
 

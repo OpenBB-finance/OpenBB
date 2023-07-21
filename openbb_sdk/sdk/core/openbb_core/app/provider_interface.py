@@ -69,8 +69,8 @@ class ProviderInterface:
 
     Methods
     -------
-    get_registry : ProviderRegistry
-        Get provider registry
+    build_registry : ProviderRegistry
+        Build provider registry
     """
 
     def __init__(self) -> None:
@@ -137,8 +137,8 @@ class ProviderInterface:
         """List of model names."""
         return list(self.__map.keys())
 
-    def get_registry(self) -> ProviderRegistry:
-        """Get provider registry."""
+    def build_registry(self) -> ProviderRegistry:
+        """Build provider registry."""
         return build_provider_registry(extensions_dict__)
 
     @staticmethod
