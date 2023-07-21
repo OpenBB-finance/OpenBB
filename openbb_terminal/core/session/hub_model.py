@@ -396,6 +396,7 @@ def upload_config(
         return None
 
 
+# pylint: disable=too-many-arguments
 def upload_routine(
     auth_header: str,
     name: str = "",
