@@ -918,7 +918,7 @@ class BaseController(metaclass=ABCMeta):
             "--public",
             dest="public",
             action="store_true",
-            help="Wether the routine should be public or not",
+            help="Whether the routine should be public or not",
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:

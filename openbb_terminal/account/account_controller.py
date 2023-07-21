@@ -319,7 +319,7 @@ class AccountController(BaseController):
             "--public",
             dest="public",
             action="store_true",
-            help="Wether the routine should be public or not",
+            help="Whether the routine should be public or not",
             default=False,
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
