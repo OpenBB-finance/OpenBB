@@ -3,14 +3,14 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer
 
 # IMPORT INTERNAL
 from openbb_provider.models.dividend_calendar import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 
 # IMPORT THIRD-PARTY
 from pydantic import validator

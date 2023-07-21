@@ -7,16 +7,16 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
-    OpenBBFigure,
-    theme,
-)
-from openbb_core.app.paths import REPOSITORY_DIRECTORY
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 from .base import PltTA
 from .data_classes import ChartIndicators
 from .ta_helpers import check_columns
 
+OPENBB_CHARTING_EXTENSION_PATH = Path(__file__).parent.parent.parent
+CHARTING_INSTALL_PATH = OPENBB_CHARTING_EXTENSION_PATH.parent
 PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None
 
@@ -81,35 +81,50 @@ class PlotlyTA(PltTA):
     >>> fig2.show()
     """
 
-    inchart_colors = theme.get_colors()
+    inchart_colors: Optional[List[str]] = None
     plugins: List[Type[PltTA]] = []
     df_ta: pd.DataFrame = None
     close_column: Optional[str] = "close"
     has_volume: bool = True
     show_volume: bool = True
     prepost: bool = False
+    charting_settings: ChartingSettings = ChartingSettings()
+    theme: Optional[ChartStyle] = None
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
+        cls.charting_settings = kwargs.pop("charting_settings", cls.charting_settings)
+        cls.theme = cls.setup_theme(cls.charting_settings)
+        cls.inchart_colors = cls.theme.get_colors()
+
         global PLOTLY_TA  # pylint: disable=global-statement # noqa
         if PLOTLY_TA is None:
             # Creates the instance of the class and loads the plugins
             # We set the global variable to the instance of the class so that
             # the plugins are only loaded once
             PLOTLY_TA = super().__new__(cls)
-            PLOTLY_TA._locate_plugins()
+            PLOTLY_TA._locate_plugins(cls.charting_settings.debug_mode)
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
-        cls.inchart_colors = theme.get_colors()
         return PLOTLY_TA
 
-    def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
+    def __init__(
+        self, *args, charting_settings: Optional[ChartingSettings] = None, **kwargs
+    ):  # pylint: disable=unused-argument
         """This method is overridden to do nothing, except to clear the internal data structures."""
         if not args and not kwargs:
             self._clear_data()
         else:
             self.df_fib = None
             super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def setup_theme(charting_settings: ChartingSettings) -> ChartStyle:
+        """Setup theme for charting"""
+        return ChartStyle(
+            charting_settings.chart_style,
+            charting_settings.user_styles_directory,
+        )
 
     @property
     def ma_mode(self) -> List[str]:
@@ -218,35 +233,28 @@ class PlotlyTA(PltTA):
         )
 
     @staticmethod
-    def _locate_plugins() -> None:
+    def _locate_plugins(debug: Optional[bool] = False) -> None:
         """Locate all the plugins in the plugins folder"""
         path = (
             Path(sys.executable).parent
             if hasattr(sys, "frozen")
-            else REPOSITORY_DIRECTORY
+            else CHARTING_INSTALL_PATH
         )
-        # TODO : figure this out regarding the system preferences
-        # current_system = get_current_system()
-
-        # TODO : figure this out regarding the system preferences
-        # This is for debugging purposes
-        # if current_system.DEBUG_MODE:
-        #     console.print(f"[bold green]Loading plugins from {path}[/]")
-        #     console.print("[bold green]Plugins found:[/]")
+        if debug:
+            warnings.warn(f"[bold green]Loading plugins from {path}[/]")
+            warnings.warn("[bold green]Plugins found:[/]")
 
         for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
             python_path = plugin.relative_to(path).with_suffix("")
 
-            # TODO : figure this out regarding the system preferences
-            # This is for debugging purposes
-            # if current_system.DEBUG_MODE:
-            #     console.print(f"    [bold red]{plugin.name}[/]")
-            #     console.print(f"        [bold yellow]{python_path}[/]")
-            #     console.print(f"        [bold bright_cyan]{__package__}[/]")
-            #     console.print(f"        [bold magenta]{python_path.parts}[/]")
-            #     console.print(
-            #         f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
-            #     )
+            if debug:
+                warnings.warn(f"    [bold red]{plugin.name}[/]")
+                warnings.warn(f"        [bold yellow]{python_path}[/]")
+                warnings.warn(f"        [bold bright_cyan]{__package__}[/]")
+                warnings.warn(f"        [bold magenta]{python_path.parts}[/]")
+                warnings.warn(
+                    f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
+                )
 
             module = importlib.import_module(
                 ".".join(python_path.parts), package=__package__
@@ -357,7 +365,8 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Plotly figure with candlestick/line chart and volume bar chart (if enabled)
         """
-        fig = OpenBBFigure.create_subplots(
+        fig = OpenBBFigure(charting_settings=self.charting_settings)
+        fig = fig.create_subplots(
             1,
             1,
             shared_xaxes=True,
@@ -395,7 +404,7 @@ class PlotlyTA(PltTA):
                 secondary_y=False,
             )
             fig.update_layout(yaxis=dict(nticks=15))
-            self.inchart_colors = theme.get_colors()[1:]
+            self.inchart_colors = self.theme.get_colors()[1:]
 
         fig.set_title(symbol, x=0.5, y=0.98, xanchor="center", yanchor="top")
         return fig
@@ -533,8 +542,8 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Processed plotly figure
         """
-
-        new_subplot = OpenBBFigure.create_subplots(
+        new_subplot = OpenBBFigure(charting_settings=self.charting_settings)
+        new_subplot = fig.create_subplots(
             shared_xaxes=True, **self.get_fig_settings_dict()
         )
 

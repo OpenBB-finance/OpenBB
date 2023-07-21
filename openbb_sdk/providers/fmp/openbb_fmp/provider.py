@@ -37,9 +37,9 @@ from .major_indices_eod import FMPMajorIndicesEODFetcher
 from .major_indices_price import FMPMajorIndicesPriceFetcher
 from .price_target import FMPPriceTargetFetcher
 from .price_target_consensus import FMPPriceTargetConsensusFetcher
-from .risk_premium import FMPRiskPremiumFetcher
 from .revenue_business_line import FMPRevenueBusinessLineFetcher
 from .revenue_geographic import FMPRevenueGeographicFetcher
+from .risk_premium import FMPRiskPremiumFetcher
 from .sec_filings import FMPSECFilingsFetcher
 from .share_statistics import FMPShareStatisticsFetcher
 from .stock_eod import FMPStockEODFetcher

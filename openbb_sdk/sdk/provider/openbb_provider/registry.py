@@ -13,6 +13,10 @@ from openbb_provider.settings import settings
 orients = Literal["LIST", "RECORDS"]
 
 
+class ProviderError(Exception):
+    pass
+
+
 def process(
     data: Union[List[ProviderDataType], ProviderDataType], orientation: orients
 ) -> Any:
@@ -103,9 +107,7 @@ class ProviderRegistry:
                 result = getattr(fetcher, data_name)(query, extra_params, api_key)
             return process(result, data_orientation)
         except Exception as e:
-            raise RuntimeError(
-                f"The {provider_name} provider failed to fetch the data: {e}"
-            ) from e
+            raise ProviderError(e) from e
 
     def fetch(
         self,

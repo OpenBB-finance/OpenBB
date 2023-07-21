@@ -2,11 +2,9 @@
 import asyncio
 import atexit
 import json
-
-# import os  # noqa  # TODO: see commented out block below
+import os
 import re
-
-# import subprocess  # nosec: B404 # noqa  # TODO: see commented out block below
+import subprocess
 import sys
 import warnings
 from multiprocessing import current_process
@@ -16,6 +14,7 @@ from typing import Any, Dict, Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from packaging import version
 from reportlab.graphics import renderPDF
 
@@ -25,7 +24,7 @@ try:
 except ImportError as e:
     print(f"\033[91m{e}\033[0m")
     # pylint: disable=C0412
-    from .no_import import DummyBackend
+    from .dummy_backend import DummyBackend
 
     class PyWry(DummyBackend):  # type: ignore
         """Dummy backend for charts."""
@@ -64,10 +63,13 @@ class Backend(PyWry):
 
     def __init__(
         self,
+        charting_settings: ChartingSettings,
         daemon: bool = True,
         max_retries: int = 30,
         proc_name: str = "OpenBB Terminal",
     ):
+        self.charting_settings = charting_settings
+
         has_version = hasattr(PyWry, "__version__")
         init_kwargs: Dict[str, Any] = dict(daemon=daemon, max_retries=max_retries)
 
@@ -81,8 +83,6 @@ class Backend(PyWry):
         self.isatty = (
             not JUPYTER_NOTEBOOK
             and sys.stdin.isatty()
-            # TODO : figure this system preference - and not get_current_system().TEST_MODE
-            # TODO : figure this user preference - and not get_current_user().preferences.ENABLE_QUICK_EXIT
             and current_process().name == "MainProcess"
         )
         if has_version and PyWry.__version__ == "0.0.0":
@@ -95,10 +95,8 @@ class Backend(PyWry):
 
     def set_window_dimensions(self):
         """Set the window dimensions."""
-        # TODO : figure this user preferences
-        # current_user = get_current_user()
-        width = 1400  # current_user.preferences.PLOT_PYWRY_WIDTH or 1400
-        height = 762  # current_user.preferences.PLOT_PYWRY_HEIGHT or 762
+        width = self.charting_settings.plot_pywry_width or 1400
+        height = self.charting_settings.plot_pywry_height or 762
 
         self.WIDTH, self.HEIGHT = int(width), int(height)
 
@@ -142,46 +140,42 @@ class Backend(PyWry):
             return icon_path
         return None
 
-    # pylint: disable=W0613 # TODO : remove this once theme argument is used
     def get_json_update(
         self,
         cmd_loc: str,
         theme: Optional[str] = None,
     ) -> dict:
         """Get the json update for the backend."""
-        # TODO : figure this functions out (specially regarding the user and system settings)
 
-        # current_user = get_current_user()
-        # current_system = get_current_system()
-
-        # posthog: Dict[str, Any] = dict(collect_logs=current_system.LOG_COLLECT)
-        # if (
-        #     current_system.LOG_COLLECT
-        #     and current_user.profile.email
-        #     and not self.logged_in
-        # ):
-        #     self.logged_in = True
-        #     posthog.update(
-        #         dict(
-        #             user_id=current_user.profile.uuid,
-        #             email=current_user.profile.email,
-        #         )
-        #     )
+        posthog: Dict[str, Any] = dict(collect_logs=self.charting_settings.log_collect)
+        if (
+            self.charting_settings.log_collect
+            and self.charting_settings.user_uuid
+            and not self.logged_in
+        ):
+            self.logged_in = True
+            posthog.update(
+                dict(
+                    user_id=self.charting_settings.user_uuid,
+                    email=self.charting_settings.user_email,
+                )
+            )
 
         return dict(
-            # theme=theme or current_user.preferences.CHART_STYLE,
-            # log_id=current_system.LOGGING_APP_ID,
-            theme="dark",
+            theme=theme or self.charting_settings.chart_style,
+            log_id=self.charting_settings.app_id,
             pywry_version=self.__version__,
-            # terminal_version=current_system.VERSION,
-            # python_version=current_system.PYTHON_VERSION,
-            # posthog=posthog,
-            posthog=dict(),
+            terminal_version=self.charting_settings.version,
+            python_version=self.charting_settings.python_version,
+            posthog=posthog,
             command_location=cmd_loc,
         )
 
     def send_figure(
-        self, fig: go.Figure, export_image: Optional[Union[Path, str]] = ""
+        self,
+        fig: go.Figure,
+        export_image: Optional[Union[Path, str]] = "",
+        command_location: Optional[str] = "",
     ):
         """Send a Plotly figure to the backend.
 
@@ -191,13 +185,12 @@ class Backend(PyWry):
             Plotly figure to send to backend.
         export_image : str, optional
             Path to export image to, by default ""
+        command_location : str, optional
+            Location of the command, by default "".
+            We can use the route here to display it on the chart title.
         """
         self.check_backend()
         # pylint: disable=C0415
-
-        # TODO : check if we need the command_location
-        # from openbb_terminal.helper_funcs import command_location
-        command_location = ""
 
         title = "Interactive Chart"
 
@@ -246,13 +239,12 @@ class Backend(PyWry):
                 img_path.unlink(missing_ok=True)
                 renderPDF.drawToFile(drawing, str(export_image))
 
-            # TODO : figure out user preferences
-            # if get_current_user().preferences.PLOT_OPEN_EXPORT:
-            #     if sys.platform == "win32":
-            #         os.startfile(export_image)  # nosec: B606
-            #     else:
-            #         opener = "open" if sys.platform == "darwin" else "xdg-open"
-            #         subprocess.check_call([opener, export_image])  # nosec: B603
+            if self.charting_settings.plot_open_export:
+                if sys.platform == "win32":
+                    os.startfile(export_image)  # nosec: B606
+                else:
+                    opener = "open" if sys.platform == "darwin" else "xdg-open"
+                    subprocess.check_call([opener, export_image])  # nosec: B603
 
     def send_table(
         self,
@@ -260,6 +252,7 @@ class Backend(PyWry):
         title: str = "",
         source: str = "",
         theme: str = "dark",
+        command_location: Optional[str] = "",
     ):
         """Send table data to the backend to be displayed in a table.
 
@@ -299,11 +292,6 @@ class Backend(PyWry):
 
         # in case of a very small table we set a min width
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
-
-        # pylint: disable=C0415
-        # TODO : check if we need the command_location
-        # from openbb_terminal.helper_funcs import command_location
-        command_location = ""
 
         json_data = json.loads(df_table.to_json(orient="split", date_format="iso"))
         json_data.update(
@@ -362,9 +350,7 @@ class Backend(PyWry):
         return {
             "title": f"OpenBB - {title}",
             "icon": self.get_window_icon(),
-            "download_path": str(
-                Path.home() / "OpenBBUserData" / "exports"
-            ),  # TODO : figure out user preferences - str(get_current_user().preferences.USER_EXPORTS_DIRECTORY),
+            "download_path": str(self.charting_settings.user_exports_directory),
         }
 
     def start(self, debug: bool = False, headless: bool = False):
@@ -512,9 +498,14 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
     asyncio.run(download_plotly_js())
 
 
-def plots_backend() -> Backend:
-    """Get the backend."""
+def create_backend(charting_settings: Optional[ChartingSettings] = None):
+    charting_settings = charting_settings or ChartingSettings()
     global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
-        BACKEND = Backend()
+        BACKEND = Backend(charting_settings)
+
+
+def get_backend() -> Backend:
+    if BACKEND is None:
+        raise ValueError("Backend not created")
     return BACKEND

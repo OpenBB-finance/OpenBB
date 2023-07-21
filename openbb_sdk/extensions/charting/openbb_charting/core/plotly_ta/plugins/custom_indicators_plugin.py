@@ -1,24 +1,18 @@
+import warnings
 from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.config.openbb_styles import (
-    PLT_FIB_COLORWAY,
-)
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import OpenBBFigure
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
+from openbb_charting.core.config.openbb_styles import PLT_FIB_COLORWAY
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from openbb_ta.ta_helpers import calculate_fib_levels
 
 
 class Custom(PltTA):
     """Volatility technical indicators."""
-
-    # TODO: If we don't have custom code in the child's init, we don't need to override it
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
 
     @indicator()
     def plot_srlines(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
@@ -128,6 +122,16 @@ class Custom(PltTA):
     @indicator()
     def plot_fib(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Add fibonacci to plotly figure."""
+
+        try:
+            from openbb_ta.ta_helpers import calculate_fib_levels
+        except ImportError:
+            warnings.warn(
+                "In order to use the Fibonacci indicator in your plot,"
+                " you need to install the `openbb_ta` package."
+            )
+            return fig
+
         limit = self.params["fib"].get_argument_values("limit") or 120
         start_date = self.params["fib"].get_argument_values("start_date") or None
         end_date = self.params["fib"].get_argument_values("end_date") or None
@@ -138,7 +142,7 @@ class Custom(PltTA):
             min_pr,
             max_pr,
             lvl_text,
-        ) = calculate_fib_levels(df_ta, "FIIIIX", limit, start_date, end_date)
+        ) = calculate_fib_levels(df_ta, limit, start_date, end_date)
         levels = df_fib.Price
         fibs = [
             "<b>0</b>",

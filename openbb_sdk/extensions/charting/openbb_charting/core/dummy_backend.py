@@ -1,9 +1,12 @@
 import asyncio
+import warnings
 from queue import Queue
 from typing import List
 
 import dotenv
-from openbb_core.app.paths import SETTINGS_ENV_FILE
+from openbb_core.app.constants import OPENBB_DIRECTORY
+
+SETTINGS_ENV_FILE = OPENBB_DIRECTORY / ".env"
 
 pywry_missing = """
 [red]PyWry is not installed or missing required linux dependencies.[/]
@@ -57,29 +60,7 @@ class DummyBackend:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
 
-        # TODO : figure out how to handle this (lines 66 yo 84)
-
-        # current_user = get_current_user()
-
-        # # If pywry is not installed or missing required linux dependencies
-        # # we inform the user the required packages to install and revert
-        # # plotly default behaviour to open in browser.
-        # # We do this only once.
-        # if (
-        #     current_user.preferences.PLOT_ENABLE_PYWRY
-        #     and get_current_system().LOGGING_SUB_APP != "sdk"
-        # ):
-        #     warnings.warn(pywry_missing)
-        #     if input(
-        #         "If you prefer to continue without interactive plots/tables, "
-        #         "press [green]enter[/] or [red]ctrl+c[/] to exit."
-        #     ):
-        #         dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
-
-        # current_user.preferences.USE_INTERACTIVE_DF = False
-        # set_current_user(current_user)
-
-        # TODO : remove this line after the above is figured out
+        warnings.warn(pywry_missing)
         dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
 
     def close(self, reset: bool = False):  # pylint: disable=W0613

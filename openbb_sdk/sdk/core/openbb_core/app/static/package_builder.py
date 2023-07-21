@@ -76,12 +76,6 @@ class PackageBuilder:
     def save_package(cls):
         print("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
-        code += (
-            "import warnings\n"
-            + "warnings.formatwarning = ("
-            + "lambda message, category, *args, **kwargs: f'{category.__name__}: {message}'\n"
-            + ")\n"
-        )
         cls.write_to_package(module_code=code, module_name="__init__")
 
     @classmethod
@@ -179,7 +173,7 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.filters import filter_inputs, filter_output\n"
+        code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -196,7 +190,7 @@ class ClassDefinition:
     @staticmethod
     def build(path: str) -> str:
         class_name = PathHandler.build_module_class(path=path)
-        code = f'\nclass {class_name}(Container): # route = "{path}"\n'
+        code = f"\nclass {class_name}(Container):\n"
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
         child_path_list = PathHandler.get_child_path_list(
@@ -417,6 +411,12 @@ class MethodDefinition:
         }
 
         parameter_map.pop("cc", None)
+        parameter_map["chart"] = Parameter(
+            name="chart",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=bool,
+            default=False,
+        )
 
         formatted: Dict[str, Parameter] = {}
 
@@ -461,6 +461,9 @@ class MethodDefinition:
         od = MethodDefinition.format_params(parameter_map=parameter_map)
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
+        func_params = func_params.replace(
+            "pandas.core.frame.DataFrame", "pandas.DataFrame"
+        )
 
         return func_params
 
@@ -479,8 +482,10 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                inner_type = getattr(item_type, "__name__", "_name")
-                func_returns = f"CommandOutput[{item_type.__module__}.{inner_type}]"
+                # inner_type = getattr(item_type, "__name__", "_name")
+                func_returns = (
+                    f"CommandOutput[{item_type.__module__}.{item_type.__name__}]"
+                )
 
         return func_returns
 
@@ -490,7 +495,14 @@ class MethodDefinition:
     ) -> str:
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
-        code = "\n    @validate_arguments"
+        code = "\n    @filter_call"
+
+        extra = (
+            "(config=dict(arbitrary_types_allowed=True))"
+            if "pandas.DataFrame" in func_params
+            else ""
+        )
+        code += f"\n    @validate_arguments{extra}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
@@ -506,6 +518,12 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
+        parameter_map["chart"] = Parameter(
+            name="chart",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=bool,
+            default=False,
+        )
 
         code = "        inputs = filter_inputs(\n"
         for name, param in parameter_map.items():
@@ -595,16 +613,22 @@ class PathHandler:
         return direct_children
 
     @staticmethod
-    def hash_path(path: str) -> str:
-        return str(path).replace("-", "_").replace("/", "_")
+    def clean_path(path: str) -> str:
+        if path.startswith("/"):
+            path = path[1:]
+        return path.replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:
-        return f"MODULE_{cls.hash_path(path=path)}"
+        if path == "":
+            return "root"
+        return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
-        return f"CLASS_{cls.hash_path(path=path)}"
+        if path == "":
+            return "Root"
+        return f"CLASS_{cls.clean_path(path=path)}"
 
 
 class Linters:

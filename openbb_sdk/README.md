@@ -35,7 +35,7 @@ To develop you need:
 To install the SDK in the virtual environment from the repo root run:
 
 ```bash
-pip install ./openbb-sdk
+pip install ./openbb_sdk
 ```
 
 This will install the SDK and all the dependencies into the site-packages folder of the virtual environment.

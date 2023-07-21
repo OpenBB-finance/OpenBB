@@ -1,14 +1,12 @@
 import warnings
 
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
-    OpenBBFigure,
-)
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.data_classes import (
+from openbb_charting.core.plotly_ta.data_classes import (
     columns_regex,
 )
 
@@ -18,10 +16,6 @@ class Overlap(PltTA):
 
     __inchart__ = ["vwap"]
     __ma_mode__ = ["sma", "ema", "wma", "hma", "zlma", "rma"]
-
-    # TODO: Useless super delegation
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
 
     @indicator()
     def plot_ma(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):

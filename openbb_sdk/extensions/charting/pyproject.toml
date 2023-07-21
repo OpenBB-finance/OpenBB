@@ -17,10 +17,11 @@ pywry = "^0.5.13"
 svglib = "^1.5.1"
 aiohttp = "^3.8.4"
 nbformat = "^5.9.0"
+pandas-ta = "^0.3.14b0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-charts = "openbb_charting.charting.charting_router:router"
+openbb_charting = "openbb_charting.charting_router:router"

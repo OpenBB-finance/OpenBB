@@ -1,13 +1,10 @@
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
-    OpenBBFigure,
-    theme,
-)
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.data_classes import (
+from openbb_charting.core.plotly_ta.data_classes import (
     columns_regex,
 )
 
@@ -16,10 +13,6 @@ class Trend(PltTA):
     """Trend technical indicators."""
 
     __subplots__ = ["adx", "aroon"]
-
-    # TODO: Useless super delegation
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
 
     @indicator()
     def plot_adx(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
@@ -38,7 +31,7 @@ class Trend(PltTA):
         fig.add_scatter(
             name="+DI",
             mode="lines",
-            line=dict(width=1.5, color=theme.up_color),
+            line=dict(width=1.5, color=fig.theme.up_color),
             x=df_ta.index,
             y=df_ta[columns_regex(df_ta, "DMP")[0]].values,
             opacity=0.9,
@@ -49,7 +42,7 @@ class Trend(PltTA):
         fig.add_scatter(
             name="-DI",
             mode="lines",
-            line=dict(width=1.5, color=theme.down_color),
+            line=dict(width=1.5, color=fig.theme.down_color),
             x=df_ta.index,
             y=df_ta[columns_regex(df_ta, "DMN")[0]].values,
             opacity=0.9,
@@ -73,8 +66,8 @@ class Trend(PltTA):
             xref=f"x{subplot_row} domain",
             yref=f"y{subplot_row + 1} domain",
             text=(
-                f"<span style='color: {theme.up_color}'>D+</span><br>"
-                f"<span style='color: {theme.down_color}'>D-</span>"
+                f"<span style='color: {fig.theme.up_color}'>D+</span><br>"
+                f"<span style='color: {fig.theme.down_color}'>D-</span>"
             ),
             x=0,
             xanchor="right",
@@ -82,7 +75,7 @@ class Trend(PltTA):
             y=0.97,
             yshift=-20,
             font_size=14,
-            font_color=theme.up_color,
+            font_color=fig.theme.up_color,
         )
         fig.add_hline(
             y=25,
@@ -108,7 +101,7 @@ class Trend(PltTA):
         fig.add_scatter(
             name="Aroon Up",
             mode="lines",
-            line=dict(width=1.5, color=theme.up_color),
+            line=dict(width=1.5, color=fig.theme.up_color),
             x=df_ta.index,
             y=df_ta[aroon_up_col].values,
             opacity=0.9,
@@ -119,7 +112,7 @@ class Trend(PltTA):
         fig.add_scatter(
             name="Aroon Down",
             mode="lines",
-            line=dict(width=1.5, color=theme.down_color),
+            line=dict(width=1.5, color=fig.theme.down_color),
             x=df_ta.index,
             y=df_ta[aroon_down_col].values,
             opacity=0.9,
@@ -143,15 +136,15 @@ class Trend(PltTA):
             xref=f"x{subplot_row} domain",
             yref=f"y{subplot_row + 1} domain",
             text=(
-                f"<span style='color: {theme.up_color}'>↑</span><br>"
-                f"<span style='color: {theme.down_color}'>↓</span>"
+                f"<span style='color: {fig.theme.up_color}'>↑</span><br>"
+                f"<span style='color: {fig.theme.down_color}'>↓</span>"
             ),
             x=0,
             xanchor="right",
             xshift=-14,
             y=0.75,
             font_size=14,
-            font_color=theme.down_color,
+            font_color=fig.theme.down_color,
         )
         fig.add_hline(
             y=50,

@@ -1,13 +1,10 @@
 import pandas as pd
-from charting_extensions.openbb_custom.infrastructure.plotly_helper import (
-    OpenBBFigure,
-    theme,
-)
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.base import (
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from charting_extensions.openbb_custom.infrastructure.plotly_ta.data_classes import (
+from openbb_charting.core.plotly_ta.data_classes import (
     columns_regex,
 )
 
@@ -28,7 +25,7 @@ class Volume(PltTA):
         fig.add_scatter(
             name="AD",
             mode="lines",
-            line=dict(width=1.5, color=theme.get_colors()[1]),
+            line=dict(width=1.5, color=fig.theme.get_colors()[1]),
             x=df_ta.index,
             y=df_ta[ad_col].values,
             opacity=0.9,
@@ -57,7 +54,7 @@ class Volume(PltTA):
             xshift=-6,
             y=0.98,
             font_size=14,
-            font_color=theme.get_colors()[1],
+            font_color=fig.theme.get_colors()[1],
         )
         fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=3, autorange=True)
 
@@ -70,7 +67,7 @@ class Volume(PltTA):
         fig.add_scatter(
             name="ADOSC",
             mode="lines",
-            line=dict(width=1.5, color=theme.get_colors()[1]),
+            line=dict(width=1.5, color=fig.theme.get_colors()[1]),
             x=df_ta.index,
             y=df_ta[ad_col].values,
             opacity=0.9,
@@ -88,7 +85,7 @@ class Volume(PltTA):
             xshift=-6,
             y=0.98,
             font_size=14,
-            font_color=theme.get_colors()[1],
+            font_color=fig.theme.get_colors()[1],
         )
 
         return fig, subplot_row + 1
@@ -100,7 +97,7 @@ class Volume(PltTA):
         fig.add_scatter(
             name="OBV",
             mode="lines",
-            line=dict(width=1.5, color=theme.get_colors()[1]),
+            line=dict(width=1.5, color=fig.theme.get_colors()[1]),
             x=df_ta.index,
             y=df_ta[obv_col].values,
             opacity=0.9,
@@ -118,7 +115,7 @@ class Volume(PltTA):
             xshift=-6,
             y=0.98,
             font_size=14,
-            font_color=theme.get_colors()[1],
+            font_color=fig.theme.get_colors()[1],
         )
         fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 

@@ -6,7 +6,7 @@ from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_core.logs.models.logging_settings import LoggingSettings
+from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 
 class FormatterWithExceptions(logging.Formatter):

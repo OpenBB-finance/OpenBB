@@ -4,12 +4,11 @@
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.risk_premium import RiskPremiumData, RiskPremiumQueryParams
 
-from .helpers import get_data_many, create_url
+from .helpers import create_url, get_data_many
 
 
 class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
