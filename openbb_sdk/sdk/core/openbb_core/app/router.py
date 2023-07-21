@@ -100,13 +100,13 @@ class CommandValidator:
         sig = signature(func)
         parameter_map = sig.parameters
 
-        check_res = partial(
+        check_reserved = partial(
             cls.check_reserved_param, parameter_map=parameter_map, func=func, sig=sig
         )
-        check_res("cc", CommandContext)
-        check_res("provider_choices", ProviderChoices)
-        check_res("standard_params", StandardParams)
-        check_res("extra_params", ExtraParams)
+        check_reserved("cc", CommandContext)
+        check_reserved("provider_choices", ProviderChoices)
+        check_reserved("standard_params", StandardParams)
+        check_reserved("extra_params", ExtraParams)
 
         for parameter in parameter_map.values():
             if not cls.is_serializable_value_type(value_type=parameter.annotation):
