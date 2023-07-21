@@ -85,10 +85,7 @@ class ProviderRegistry:
         Fetcher_ = self.get_fetcher(provider, query_params)
 
         try:
-            # TODO: Check if we really need to pass this "fetch_data"
-            return getattr(Fetcher_, "fetch_data")(
-                query_params, extra_params, filtered_credentials
-            )
+            return Fetcher_.fetch_data(query_params, extra_params, filtered_credentials)
         except Exception as e:
             raise ProviderError(e) from e
 
