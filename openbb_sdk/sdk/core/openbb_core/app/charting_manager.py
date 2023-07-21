@@ -52,7 +52,7 @@ class ChartingManager:
 
     @staticmethod
     def check_charting_extension_installed(
-        charting_extension: str, plugin: Optional[str] = POETRY_PLUGIN
+        charting_extension: str, plugin: str = POETRY_PLUGIN
     ) -> bool:
         """
         Checks if charting extension is installed.
