@@ -1,13 +1,17 @@
 """Dividend Calendar data model."""
 
 
-from datetime import date as dateType, datetime, timedelta
+from datetime import (
+    date as dateType,
+    datetime,
+    timedelta,
+)
 from typing import Optional
+
+from pydantic import Field, NonNegativeFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.metadata import DESCRIPTIONS
-
-from pydantic import Field, NonNegativeFloat
 
 
 class DividendCalendarQueryParams(QueryParams):

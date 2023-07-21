@@ -2,7 +2,7 @@
 
 
 from datetime import date
-from typing import Optional, Literal, Union
+from typing import Literal, Optional, Union
 
 from pydantic import Field
 

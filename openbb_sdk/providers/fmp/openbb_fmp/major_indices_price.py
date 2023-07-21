@@ -1,7 +1,7 @@
 """FMP Major Indices Price fetcher."""
 
 # IMPORT STANDARD
-from typing import Dict, List, Optional, Literal
+from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import QueryParams
