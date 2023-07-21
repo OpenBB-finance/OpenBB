@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       screens: {
         smh: { raw: "(max-height: 450px)" },
+        mdl: { raw: "(min-width: 890px)" },
       },
       colors: {
         "grey-50": "#f6f6f6ff",
