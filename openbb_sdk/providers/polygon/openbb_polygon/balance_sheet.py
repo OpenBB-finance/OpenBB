@@ -58,8 +58,11 @@ class PolygonBalanceSheetFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonBalanceSheetQueryParams, api_key: str
+        query: PolygonBalanceSheetQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonBalanceSheetData]:
+        if credentials:
+            api_key = credentials.get("polygon_api_key")
+
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"

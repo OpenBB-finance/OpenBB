@@ -55,7 +55,12 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
         )
 
     @staticmethod
-    def extract_data(query: FREDCPIQueryParams, api_key: str) -> FREDCPIData:
+    def extract_data(
+        query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]]
+    ) -> FREDCPIData:
+        if credentials:
+            api_key = credentials.get("fred_api_key")
+
         all_options = all_cpi_options(query.harmonized)
 
         step_1 = [x for x in all_options if x["country"] in query.countries]

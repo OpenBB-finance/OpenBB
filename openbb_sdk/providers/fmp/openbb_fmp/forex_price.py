@@ -64,8 +64,11 @@ class FMPForexPriceFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPForexPriceQueryParams, api_key: str
+        query: FMPForexPriceQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPForexPriceData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         url = create_url(
             3, f"historical-chart/{query.interval}/{query.symbol}", api_key
         )

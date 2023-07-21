@@ -1,275 +1,134 @@
 """ProviderRegistry class and Builder class."""
 
 
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, Optional
 
 import pkg_resources
 
 from openbb_provider.abstract.data import QueryParams
-from openbb_provider.abstract.fetcher import ProviderDataType
 from openbb_provider.abstract.provider import Provider, ProviderNameType
-from openbb_provider.settings import settings
-
-orients = Literal["LIST", "RECORDS"]
 
 
 class ProviderError(Exception):
     pass
 
 
-def process(
-    data: Union[List[ProviderDataType], ProviderDataType], orientation: orients
-) -> Any:
-    """
-    Convert the data into the desired orientation.
-
-    Naming is based on the pandas to_dict() method:
-    https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.from_dict.html
-
-    Parameters
-    ----------
-    data: Union[List[ProviderDataType], ProviderDataType]
-        The data to be processed.
-    orientation: orients
-        The orientation of the data to be returned.
-
-    Returns
-    -------
-    Any
-        The processed data.
-    """
-    if not isinstance(data, list):
-        # TODO: how do we want to handle this?
-        return data
-    if orientation == "RECORDS":
-        return data
-    if orientation == "LIST":
-        layout = data[0].dict()
-        new_dict: Dict[str, list] = {x: [] for x in layout}
-        for item in data:
-            for key, value in item.dict().items():
-                new_dict[key].append(value)
-        return [new_dict]
-    raise ValueError(f"Orientation {orientation} is not supported.")
-
-
 class ProviderRegistry:
     """A Provider Registry is the central executor for dynamically retrieving data."""
 
     def __init__(self) -> None:
-        self.provider_mapping: Dict[ProviderNameType, Provider] = {}
-        self.api_keys: Dict[ProviderNameType, str] = {}
+        self.providers: Dict[ProviderNameType, Provider] = {}
+        self.credentials: Dict[ProviderNameType, Dict[str, None]] = {}
 
-    def add(self, provider: Provider) -> None:
-        """Add a provider to the ProviderRegistry."""
-        if provider.name not in self.provider_mapping:
-            self.provider_mapping[provider.name] = provider
-        else:
-            raise ValueError(
-                f"Provider {provider.name} is already in the ProviderRegistry."
-            )
+    def get_provider(self, provider_name: ProviderNameType) -> Provider:
+        """Get a provider from the registry."""
+        if not self.providers:
+            raise ValueError("No providers found, please confirm they are loaded.")
 
-    def __fetch_factory__(  # noqa: PLR0913
-        self,
-        provider_name: ProviderNameType,
-        query: QueryParams,
-        extra_params: Optional[Dict],
-        query_name: str,
-        data_name: str,  # type: ignore
-        data_orientation: orients,
-    ):
-        """Create method for fetching data from a provider."""
-        if not self.provider_mapping:
-            raise ValueError(
-                "Provider Mapping is empty. Please confirm plugins are loaded."
-            )
         try:
-            provider = self.provider_mapping[provider_name]
+            provider = self.providers[provider_name]
         except KeyError as e:
             raise ValueError(
                 f"{provider_name} is not part of the ProviderRegistry. "
-                f"Available providers are: {list(self.provider_mapping.keys())}"
+                f"Available providers are: {list(self.providers.keys())}"
             ) from e
-        api_key = self.api_keys[provider_name]
 
-        fetch_dict = provider.fetcher_dict[query_name]
-        fetcher = fetch_dict.get(query.__name__)  # type: ignore
+        return provider
+
+    def get_credentials(
+        self,
+        provider_name: ProviderNameType,
+        credentials: Optional[Dict[str, str]] = None,
+    ) -> Dict[str, str]:
+        required_credentials = self.credentials.get(provider_name)
+
+        if required_credentials is None:
+            return {}
+
+        result: Dict[str, str] = {}
+        if credentials is not None:
+            for k in required_credentials:
+                credential_value = credentials.get(k)
+                if k not in credentials or credential_value is None:
+                    raise ProviderError(
+                        f"Missing credential '{k}' for '{provider_name}'."
+                    )
+
+                result[k] = credential_value
+
+        return result
+
+    def get_fetcher(self, provider: Provider, query_params: QueryParams) -> Any:
+        """Get a fetcher from the provider."""
+        fetch_dict = provider.fetcher_dict[
+            "get_query_type"
+        ]  # TODO: Check if we really need to pass this "get_query_type"
+        fetcher = fetch_dict.get(query_params.__name__)  # type: ignore
         if fetcher is None:
-            raise ValueError(
-                f"This query is not supported by the {provider_name} provider. "
-                f"Please try another provider: {ProviderNameType.__args__}"
+            raise ProviderError(
+                f"This query is not supported by the '{provider.name}' provider. "
+                f"Please try another provider: '{ProviderNameType.__args__}'"
             )
-
-        try:
-            if data_name == "standardized":
-                result = getattr(fetcher, data_name)(query, api_key)
-            else:
-                result = getattr(fetcher, data_name)(query, extra_params, api_key)
-            return process(result, data_orientation)
-        except Exception as e:
-            raise ProviderError(e) from e
+        return fetcher
 
     def fetch(
         self,
         provider_name: ProviderNameType,
-        query: QueryParams,
+        query_params: QueryParams,
         extra_params: Optional[Dict] = None,
-        data_orientation: orients = "RECORDS",
+        credentials: Optional[Dict[str, str]] = None,
     ):
         """Fetch data from a provider by using the OpenBB standard."""
-        return self.__fetch_factory__(
-            provider_name,
-            query,
-            extra_params,
-            "get_query_type",
-            "fetch_data",
-            data_orientation,
-        )
+        provider = self.get_provider(provider_name)
+        loaded_credentials = self.get_credentials(provider_name, credentials)
+        fetcher = self.get_fetcher(provider, query_params)
 
-    def fetch_provider_data(
-        self,
-        provider_name: ProviderNameType,
-        query: QueryParams,
-        extra_params: Optional[Dict] = None,
-        data_orientation: orients = "RECORDS",
-    ):
-        """Fetch data from a provider by using provider-specific QueryParams."""
-        return self.__fetch_factory__(
-            provider_name,
-            query,
-            extra_params,
-            "get_query_type",
-            "fetch_provider_data",
-            data_orientation,
-        )
-
-    def standardized(
-        self,
-        provider_name: ProviderNameType,
-        query: QueryParams,
-        extra_params: Optional[Dict] = None,
-        data_orientation: orients = "RECORDS",
-    ):
-        """Obtain only standardized data from a provider by using the OpenBB standard."""
-        return self.__fetch_factory__(
-            provider_name,
-            query,
-            extra_params,
-            "get_provider_query_type",
-            "standardized",
-            data_orientation,
-        )
-
-    def simple(
-        self,
-        provider_name: ProviderNameType,
-        query: QueryParams,
-        extra_params: Optional[Dict] = None,
-        data_orientation: orients = "RECORDS",
-    ):
-        """Obtain raw data from a provider by only using provider-specific QueryParams."""
-        return self.__fetch_factory__(
-            provider_name,
-            query,
-            extra_params,
-            "get_provider_query_type",
-            "simple",
-            data_orientation,
-        )
-
-
-class Builder:
-    """Build out the provider table by adding providers and their API keys to it.
-
-    It can build multiple different types of Provider Registries with their own state.
-    """
-
-    def __init__(self) -> None:
-        self.provider_registry = ProviderRegistry()
-        self.api_keys: Dict[ProviderNameType, str] = {}
-
-    def add_providers(self, providers: List[Provider]):
-        """Add a list of providers to the ProviderRegistry."""
-        for provider in providers:
-            self.provider_registry.add(provider)
-        return f"{len(providers)} providers have been added."
-
-    def add_api_key(self, provider_name: ProviderNameType, api_key: str) -> str:
-        """Add an API key to the ProviderRegistry."""
-        if provider_name not in self.api_keys:
-            self.api_keys[provider_name] = api_key
-        else:
-            raise ValueError(
-                f"API key for {provider_name} is already in the ProviderRegistry."
+        try:
+            # TODO: Check if we really need to pass this "fetch_data"
+            return getattr(fetcher, "fetch_data")(
+                query_params, extra_params, loaded_credentials
             )
-
-        self.provider_registry.api_keys[provider_name] = api_key
-        return f"API key for {provider_name} has been added."
-
-    def add_keys(self, api_keys: Dict[ProviderNameType, str]) -> str:
-        """Add a dictionary of API keys to the ProviderRegistry."""
-        for provider_name, api_key in api_keys.items():
-            self.add_api_key(provider_name, api_key)
-
-        return f"{len(api_keys)} API keys have been added."
-
-    def build(self) -> ProviderRegistry:
-        """Build the ProviderRegistry."""
-        return self.provider_registry
+        except Exception as e:
+            raise ProviderError(e) from e
 
 
-def load_extensions(
-    entry_point_group: str = "openbb_provider_extension",
-) -> Tuple[list, dict]:
-    """Load extensions from entry points and their API keys from settings.
+def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any:
+    """Load extensions from entry points and their API keys from settings."""
 
-    Parameters
-    ----------
-    entry_point_group : str
-        The entry point group to load extensions from.
+    # TODO: Figure actual type for dict values Union[Provider, Dict[str, Dict[str, None]]]
 
-    Returns
-    -------
-    Tuple[list, dict]
-        A tuple of the extensions and their API keys.
-    """
-    extensions = []
-    extension_api_keys = {}
+    extensions_dict: Dict[str, Dict[str, Any]] = {}
+    extensions_dict["providers"] = {}
+    extensions_dict["credentials"] = {}
 
     entry_points = pkg_resources.iter_entry_points(entry_point_group)
     for entry_point in entry_points:
-        extensions.append(entry_point.load())
+        e = entry_point.load()
 
-    for extension in extensions:
-        extension_name = extension.name
-        try:
-            if extension_name in ProviderNameType.__args__:
-                extension_api_keys[extension_name] = getattr(
-                    settings, f"{extension_name.upper()}_API_KEY"
-                )
-        except AttributeError as exc:
-            raise ValueError(f"API key for {extension_name} is not set.") from exc
+        provider_name = str(e.name)
 
-    return extensions, extension_api_keys
+        extensions_dict["providers"][provider_name] = e
 
+        required_credentials = getattr(e, "required_credentials", None)
+        if required_credentials:
+            extensions_dict["credentials"][provider_name] = {}
+            for credential in required_credentials:
+                if credential:
+                    credential_name = provider_name.lower() + "_" + credential.lower()
+                    extensions_dict["credentials"][provider_name][
+                        credential_name
+                    ] = None
 
-def build_provider_registry() -> ProviderRegistry:
-    """Build a provider registry."""
-    provider_registry_builder = Builder()
-    extensions = []
-
-    entry_points = pkg_resources.iter_entry_points("openbb_provider_extension")
-    for entry_point in entry_points:
-        extensions.append(entry_point.load())
-
-    provider_registry_builder.add_providers(extensions)
-    return provider_registry_builder.build()
+    return extensions_dict
 
 
-entry_point_extensions, entry_point_extension_api_keys = load_extensions(
-    "openbb_provider_extension"
-)
-builder = Builder()
-builder.add_keys(entry_point_extension_api_keys)
-builder.add_providers(entry_point_extensions)
-provider_registry = builder.build()
+def build_provider_registry(extensions_dict: Any) -> ProviderRegistry:
+    """Build a ProviderRegistry from a list of extensions and their API keys."""
+    registry = ProviderRegistry()
+    registry.providers = extensions_dict["providers"]
+    registry.credentials = extensions_dict["credentials"]
+    return registry
+
+
+extensions_dict__ = load_extensions("openbb_provider_extension")
+provider_registry = build_provider_registry(extensions_dict=extensions_dict__)

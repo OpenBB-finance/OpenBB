@@ -48,8 +48,12 @@ class FMPEarningsCallTranscriptFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPEarningsCallTranscriptQueryParams, api_key: str
+        query: FMPEarningsCallTranscriptQueryParams,
+        credentials: Optional[Dict[str, str]],
     ) -> List[FMPEarningsCallTranscriptData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         url = create_url(
             4,
             f"batch_earning_call_transcript/{query.symbol}",

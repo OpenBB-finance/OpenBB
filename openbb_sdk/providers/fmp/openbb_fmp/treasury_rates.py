@@ -67,8 +67,11 @@ class FMPTreasuryRatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPTreasuryRatesQueryParams, api_key: str
+        query: FMPTreasuryRatesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPTreasuryRatesData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         base_url = "https://financialmodelingprep.com/api/v4/"
         query_str = get_querystring(query.dict(), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")

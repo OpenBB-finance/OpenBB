@@ -21,7 +21,7 @@ def get_data(url: str) -> dict:
         message = data.get("message")
         error = data.get("error")
         value = message or error
-        raise RuntimeError(f"Error in Benzinga request: {value}")
+        raise RuntimeError(f"Error in Benzinga request -> {value}")
 
     return r.json()
 

@@ -6,16 +6,7 @@ from copy import deepcopy
 from datetime import datetime
 from inspect import Parameter, signature
 from time import perf_counter_ns
-from typing import (
-    Any,
-    Callable,
-    ContextManager,
-    Dict,
-    List,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
 from pydantic import BaseConfig, Extra, create_model
 

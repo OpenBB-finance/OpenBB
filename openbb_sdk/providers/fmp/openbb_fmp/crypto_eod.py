@@ -86,8 +86,11 @@ class FMPCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCryptoEODQueryParams, api_key: str
+        query: FMPCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPCryptoEODData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         base_url = "https://financialmodelingprep.com/api/v3/"
         query_str = get_querystring(query.dict(), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")

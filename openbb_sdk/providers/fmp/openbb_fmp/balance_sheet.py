@@ -130,8 +130,11 @@ class FMPBalanceSheetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPBalanceSheetQueryParams, api_key: str
+        query: FMPBalanceSheetQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPBalanceSheetData]:
+        if credentials:
+            api_key = credentials.get("fmp_api_key")
+
         url = create_url(
             3, f"balance-sheet-statement/{query.symbol}", api_key, query, ["symbol"]
         )
