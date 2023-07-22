@@ -307,7 +307,7 @@ def get_nearest_expiration(options: Options, expiration: Optional[str] = "") -> 
     _expirations = pd.Series(pd.to_datetime(options.expirations))
     _expiration = pd.to_datetime(expiration)
     _nearest = pd.DataFrame(_expirations - _expiration)
-    _nearest_exp = abs(_nearest[0].astype(int)).idxmin()
+    _nearest_exp = abs(_nearest[0].astype("int64")).idxmin()
 
     return options.expirations[_nearest_exp]
 
@@ -1340,13 +1340,13 @@ def calculate_stats(options: Options, by: Optional[str] = "expiration") -> pd.Da
         chains[chains["optionType"] == "put"]
         .groupby(f"{by}")[["openInterest"]]
         .sum(numeric_only=True)
-        .astype(int)
+        .astype("int64")
     )
     stats["Calls OI"] = (
         chains[chains["optionType"] == "call"]
         .groupby(f"{by}")[["openInterest"]]
         .sum(numeric_only=True)
-        .astype(int)
+        .astype("int64")
     )
     stats["Total OI"] = stats["Calls OI"] + stats["Puts OI"]
     stats["OI Ratio"] = round(stats["Puts OI"] / stats["Calls OI"], 2)
@@ -1381,13 +1381,13 @@ def calculate_stats(options: Options, by: Optional[str] = "expiration") -> pd.Da
         chains[chains["optionType"] == "put"]
         .groupby(f"{by}")[["volume"]]
         .sum(numeric_only=True)
-        .astype(int)
+        .astype("int64")
     )
     stats["Calls Volume"] = (
         chains[chains["optionType"] == "call"]
         .groupby(f"{by}")
         .sum(numeric_only=True)[["volume"]]
-        .astype(int)
+        .astype("int64")
     )
     stats["Total Volume"] = stats["Calls Volume"] + stats["Puts Volume"]
     stats["Volume Ratio"] = round(stats["Puts Volume"] / stats["Calls Volume"], 2)
