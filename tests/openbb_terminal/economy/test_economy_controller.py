@@ -131,12 +131,7 @@ MOCK_DETAIL = {
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "queue, expected",
-    [
-        (["quit", "help"], ["help"])
-    ]
-)
+@pytest.mark.parametrize("queue, expected", [(["quit", "help"], ["help"])])
 def test_menu_with_queue(expected, mocker, queue):
     path_controller = "openbb_terminal.economy.economy_controller"
 
