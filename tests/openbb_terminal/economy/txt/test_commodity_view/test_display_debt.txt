@@ -23,7 +23,7 @@
 21     22           January 2023                         Indonesia            1431    518000000000     39.50
 22     23           30 June 2017                           Denmark           85700    492000000000    158.00
 23     24       1 September 2021                            Russia            3700    489000000000     32.00
-24     25         31 March 2022                             Turkey            5155    444000000000     55.00
+24     25          31 March 2022                            Turkey            5155    444000000000     55.00
 25     26      30 September 2022                         Argentina            6037    382000000000     79.30
 26     27         September 2022                            Greece           42800    350000000000    175.70
 27     28          December 2022                            Poland            9500    344000000000     49.30
@@ -104,7 +104,7 @@
 102   103  31 December 2016 est.                              Laos            1700     12000000000     53.00
 103   104  31 December 2016 est.                         Nicaragua            1800     11100000000     83.00
 104   105  31 December 2016 est.                          Zimbabwe             670     10900000000     77.00
-105   106         31 March 2020                         Luxembourg          114704     10600000000     22.10
+105   106          31 March 2020                        Luxembourg          114704     10600000000     22.10
 106   107       31 December 2020                           Albania            3634     10500000000     66.00
 107   108       31 December 2015                       Ivory Coast             420     10000000000     24.00
 108   109       31 December 2016                          Cambodia             600      9820000000     57.00
