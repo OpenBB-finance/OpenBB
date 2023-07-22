@@ -29,12 +29,12 @@ from openbb_core.app.router import RouterLoader
 
 
 class PackageBuilder:
-    """Build the static packages for the SDK."""
+    """Build the extension package for the SDK."""
 
     @classmethod
     def build(cls, lint: bool = True) -> None:
-        """Build the static packages for the SDK."""
-        print("\nBuilding package...\n")
+        """Build the extensions for the SDK."""
+        print("\nBuilding extension package...\n")
         cls.save_module_map()
         cls.save_modules()
         cls.save_package()

@@ -9,9 +9,8 @@ from openbb_core.app.static.coverage import Coverage
 
 def create_app():
     try:
-        from openbb_core.app.static.package.root import (  # pylint: disable=import-outside-toplevel
-            Root,
-        )
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.app.static.package.root import Root as Extensions
     except ImportError as e:
         raise Exception(
             "If you are seeing this exception, you should probably be doing: "
@@ -19,8 +18,24 @@ def create_app():
             "PackageBuilder.build()"
         ) from e
 
-    class App(Root):
-        """App class."""
+    class App(Extensions):
+        """Here you can access all the basic utility menus and extensions.
+
+        Basic utility menus:
+            - account
+            - settings
+            - system
+            - coverage
+
+        Built-in extensions:
+            - charting: utility extension common to all
+            - crypto
+            - economy
+            - fixedincome
+            - forex
+            - news
+            - stocks
+        """
 
         def __init__(self, command_runner_session):
             self._command_runner_session = command_runner_session
