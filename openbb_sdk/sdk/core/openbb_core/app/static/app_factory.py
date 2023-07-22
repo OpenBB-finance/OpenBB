@@ -10,7 +10,7 @@ from openbb_core.app.static.coverage import Coverage
 def create_app():
     try:
         # pylint: disable=import-outside-toplevel
-        from openbb_core.app.static.package.__root__ import Root as Extensions
+        from openbb_core.app.static.package.__extensions__ import Extensions
     except ImportError as e:
         raise Exception(
             "If you are seeing this exception, you should probably be doing: "
@@ -28,7 +28,7 @@ def create_app():
             - coverage
 
         Built-in extensions:
-            - charting: utility extension common to all
+            - charting: utility extension common to all built-in extensions
             - crypto
             - economy
             - fixedincome

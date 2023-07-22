@@ -34,7 +34,7 @@ class PackageBuilder:
     @classmethod
     def build(cls, lint: bool = True) -> None:
         """Build the extensions for the SDK."""
-        print("\nBuilding extension package...\n")
+        print("\nBuilding extensions package...\n")
         cls.save_module_map()
         cls.save_modules()
         cls.save_package()
@@ -629,13 +629,13 @@ class PathHandler:
     @classmethod
     def build_module_name(cls, path: str) -> str:
         if path == "":
-            return "__root__"
+            return "__extensions__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
         if path == "":
-            return "Root"
+            return "Extensions"
         return f"CLASS_{cls.clean_path(path=path)}"
 
 
