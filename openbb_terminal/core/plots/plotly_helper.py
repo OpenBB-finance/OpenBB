@@ -1300,9 +1300,10 @@ class OpenBBFigure(go.Figure):
                             "col": col,
                             "secondary_y": secondary_y,
                         }
-                        self._subplot_xdates.setdefault(row, {}).setdefault(
-                            col, []
-                        ).append(trace.x)
+                        if trace.type != "scatter":
+                            self._subplot_xdates.setdefault(row, {}).setdefault(
+                                col, []
+                            ).append(trace.x)
 
         # We convert the dateindex to a list of datetime objects if it's a numpy array
         if output is not None and isinstance(output[0], np.datetime64):
@@ -1350,7 +1351,8 @@ class OpenBBFigure(go.Figure):
         rangebreaks: List[Dict[str, Any]] = [dict(values=dt_missing_days)]
 
         # We get the frequency of the data to hide intra-day gaps
-        if (freq := df_data.index[1] - df_data.index[0]).days == 0:
+        if df_data.index[-1].time() != df_data.index[-2].time():
+            freq = df_data.index[1] - df_data.index[0]
             freq_mins = int(freq.seconds / 60)
             break_values = (
                 df_data.resample(f"{freq_mins}T")
