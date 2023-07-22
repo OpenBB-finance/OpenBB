@@ -10,7 +10,7 @@ from openbb_core.app.static.coverage import Coverage
 def create_app():
     try:
         # pylint: disable=import-outside-toplevel
-        from openbb_core.app.static.package.root import Root as Extensions
+        from openbb_core.app.static.package.__root__ import Root as Extensions
     except ImportError as e:
         raise Exception(
             "If you are seeing this exception, you should probably be doing: "
