@@ -5,6 +5,8 @@ import logging
 import os
 from typing import Optional, Union
 
+import pandas as pd
+
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
@@ -128,7 +130,7 @@ def display_defi_protocols(
 
 @log_start_end(log=logger)
 def display_historical_tvl(
-    dapps: str = "sushiswap",
+    dapps: str = "",
     export: Optional[str] = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
@@ -156,6 +158,7 @@ def display_historical_tvl(
             if dapp in available_protocols:
                 df = llama_model.get_defi_protocol(dapp)
                 df = df.query("`totalLiquidityUSD` > 0")
+                df.index = pd.DatetimeIndex(df.index.strftime("%Y-%m-%d"))
                 if not df.empty:
                     fig.add_scatter(
                         x=df.index,
