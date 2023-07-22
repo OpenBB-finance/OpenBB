@@ -493,7 +493,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 group="sector",
-                sortby="MarketCap",
+                sortby="Market Cap",
                 ascend=True,
                 export="csv",
                 sheet_name=None,
