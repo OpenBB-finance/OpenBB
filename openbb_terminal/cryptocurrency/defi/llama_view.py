@@ -168,7 +168,7 @@ def display_historical_tvl(
             else:
                 print(f"{dapp} not found\n")
         if export and export != "":
-            return export_data(
+            export_data(
                 export,
                 os.path.dirname(os.path.abspath(__file__)),
                 f"dtvl_{dapp}",
@@ -176,6 +176,7 @@ def display_historical_tvl(
                 sheet_name,
                 fig,
             )
+            return None
         return fig.show(external=external_axes)
     return None
 
@@ -208,7 +209,7 @@ def display_defi_tvl(
     df = df.tail(limit)
 
     if export and export != "":
-        return export_data(
+        export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "stvl",
@@ -216,7 +217,7 @@ def display_defi_tvl(
             sheet_name,
             fig,
         )
-
+        return None
     fig.add_scatter(x=df["date"], y=df["totalLiquidityUSD"], name="TVL")
 
     return fig.show(external=external_axes)
