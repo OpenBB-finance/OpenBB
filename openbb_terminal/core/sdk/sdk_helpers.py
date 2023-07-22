@@ -2,30 +2,22 @@
 
 
 import json
-
 from inspect import signature
-
 from logging import Logger, getLogger
-
 from typing import Any, Callable, Dict, Optional
 
-
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
-
 from openbb_terminal.core.sdk.sdk_init import (
     FORECASTING_TOOLKIT_ENABLED,
     FORECASTING_TOOLKIT_WARNING,
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
-
 from openbb_terminal.core.session.current_system import (
     get_current_system,
     set_system_variable,
 )
-
 from openbb_terminal.rich_config import console
-
 
 SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
 
