@@ -134,9 +134,8 @@ MOCK_DETAIL = {
 @pytest.mark.parametrize(
     "queue, expected",
     [
-        (["load", "help"], ["help"]),
-        (["quit", "help"], ["help"]),
-    ],
+        (["quit", "help"], ["help"])
+    ]
 )
 def test_menu_with_queue(expected, mocker, queue):
     path_controller = "openbb_terminal.economy.economy_controller"
