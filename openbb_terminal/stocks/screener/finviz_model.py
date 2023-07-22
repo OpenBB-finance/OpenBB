@@ -108,6 +108,7 @@ def get_screener_data(
     pd.DataFrame
         Dataframe with loaded filtered stocks
     """
+    df_screen = pd.DataFrame()
     if data_type == "overview":
         screen = overview.Overview()
     elif data_type == "valuation":
@@ -191,7 +192,6 @@ def get_screener_data(
     df_screen.columns = [val.strip("\n") for val in df_screen.columns]
     if "Company" in df_screen.columns:
         df_screen["Company"] = df_screen["Company"].str.replace(",", "")
-    df_screen.columns = df_screen.columns.str.strip()
     if data_type == "performance":
         df_screen = df_screen.rename(
             columns={
