@@ -191,6 +191,20 @@ def get_screener_data(
     df_screen.columns = [val.strip("\n") for val in df_screen.columns]
     if "Company" in df_screen.columns:
         df_screen["Company"] = df_screen["Company"].str.replace(",", "")
+    df_screen.columns = df_screen.columns.str.strip()
+    if data_type == "performance":
+        df_screen = df_screen.rename(
+            columns={
+                "Perf Week": "1W",
+                "Perf Month": "1M",
+                "Perf Quart": "3M",
+                "Perf Half": "6M",
+                "Perf Year": "1Y",
+                "Perf YTD": "YTD",
+                "Volatility W": "1W Volatility",
+                "Volatility M": "1M Volatility",
+            }
+        )
 
     return df_screen
 
