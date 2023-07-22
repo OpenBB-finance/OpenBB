@@ -158,7 +158,7 @@ from openbb_terminal.common.technical_analysis import (
 
 from openbb_terminal.cryptocurrency import (
     crypto_models,
-    pyth_model as crypto_pyth_model,
+    pyth_view as crypto_pyth_view,
 )
 
 
@@ -540,6 +540,7 @@ from openbb_terminal.stocks.options import (
     yfinance_model as stocks_options_yfinance_model,
     yfinance_view as stocks_options_yfinance_view,
 )
+
 
 from openbb_terminal.stocks.screener import (
     finviz_model as stocks_screener_finviz_model,
