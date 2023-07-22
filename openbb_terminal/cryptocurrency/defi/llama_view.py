@@ -130,7 +130,7 @@ def display_defi_protocols(
 
 @log_start_end(log=logger)
 def display_historical_tvl(
-    dapps: str = "",
+    dapps: str,
     export: Optional[str] = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
@@ -152,7 +152,7 @@ def display_historical_tvl(
     fig.set_title("TVL in dApps")
 
     available_protocols = read_data_file("defillama_dapps.json")
-
+    dapp: str = ""
     if isinstance(available_protocols, dict):
         for dapp in dapps.split(","):
             if dapp in available_protocols:

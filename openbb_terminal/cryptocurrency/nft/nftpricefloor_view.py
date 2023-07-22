@@ -5,8 +5,8 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import pandas as pd
 from typing import Optional, Union
+import pandas as pd
 
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.nft import nftpricefloor_model
