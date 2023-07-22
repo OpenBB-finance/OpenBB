@@ -128,7 +128,7 @@ class EconomyController(BaseController):
         "EPSpast5Y": "EPS past 5Y",
         "EPSnext5Y": "EPS next 5Y",
         "Salespast5Y": "Sales past 5Y",
-        "Change": "Chage",
+        "Change": "Change",
         "Volume": "Volume",
     }
     performance_sort_dict = {
