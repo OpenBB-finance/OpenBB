@@ -1349,7 +1349,7 @@ class OpenBBFigure(go.Figure):
         dt_missing_days = pd.to_datetime(dt_missing_days)
 
         if len(dt_missing_days) < 2_000:
-            rangebreaks: List[Dict[str, Any]] = [dict(values=dt_missing_days)]
+            rangebreaks = [dict(values=dt_missing_days)]
 
         # We get the frequency of the data to hide intra-day gaps
         if df_data.index[-1].time() != df_data.index[-2].time():
