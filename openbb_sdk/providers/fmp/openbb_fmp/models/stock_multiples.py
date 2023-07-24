@@ -9,8 +9,6 @@ from openbb_provider.models.stock_multiples import (
     StockMultiplesData,
     StockMultiplesQueryParams,
 )
-
-
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_one

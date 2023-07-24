@@ -11,8 +11,6 @@ from openbb_provider.models.major_indices_price import (
     MajorIndicesPriceData,
     MajorIndicesPriceQueryParams,
 )
-
-
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import BaseStockPriceData, create_url, get_data_many

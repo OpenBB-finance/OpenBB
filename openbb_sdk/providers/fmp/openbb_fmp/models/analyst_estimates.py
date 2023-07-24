@@ -12,7 +12,6 @@ from openbb_provider.models.analyst_estimates import (
     AnalystEstimatesQueryParams,
 )
 
-
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 

@@ -11,8 +11,6 @@ from openbb_provider.models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
 )
-
-
 from pydantic import Field, validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many

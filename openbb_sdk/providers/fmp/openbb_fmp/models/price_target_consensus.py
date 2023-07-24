@@ -12,7 +12,6 @@ from openbb_provider.models.price_target_consensus import (
     PriceTargetConsensusQueryParams,
 )
 
-
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 

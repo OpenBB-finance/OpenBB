@@ -8,8 +8,6 @@ from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
-
-
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
 
 from openbb_polygon.utils.helpers import get_data

@@ -11,8 +11,6 @@ from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-
-
 from pydantic import Field
 
 from openbb_polygon.utils.helpers import get_data

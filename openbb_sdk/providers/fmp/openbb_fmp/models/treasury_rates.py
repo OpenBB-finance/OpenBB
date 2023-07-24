@@ -11,8 +11,6 @@ from openbb_provider.models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
-
-
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import get_data_many

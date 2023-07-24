@@ -8,8 +8,6 @@ from openbb_provider.models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-
-
 from pydantic import Field
 
 from openbb_polygon.utils.helpers import get_data

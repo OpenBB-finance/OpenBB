@@ -13,7 +13,6 @@ from openbb_provider.models.company_overview import (
 
 from openbb_fmp.utils.helpers import get_data
 
-
 # This part is only provided by FMP and not by the other providers for now.
 
 

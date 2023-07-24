@@ -14,8 +14,6 @@ from openbb_provider.models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-
-
 from pydantic import Field, NonNegativeInt, root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many

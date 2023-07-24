@@ -6,8 +6,6 @@ from enum import Enum
 from typing import Literal, Optional, Union
 
 from openbb_provider.abstract.data import Data, QueryParams
-
-
 from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 

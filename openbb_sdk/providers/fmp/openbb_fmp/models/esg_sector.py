@@ -10,7 +10,6 @@ from openbb_provider.helpers import data_transformer
 from openbb_provider.models.esg_sector import ESGSectorData, ESGSectorQueryParams
 from pydantic import Field
 
-
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 current_year = date.today().year

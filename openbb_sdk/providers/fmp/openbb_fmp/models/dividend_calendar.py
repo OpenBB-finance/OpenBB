@@ -9,8 +9,6 @@ from openbb_provider.models.dividend_calendar import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )
-
-
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring

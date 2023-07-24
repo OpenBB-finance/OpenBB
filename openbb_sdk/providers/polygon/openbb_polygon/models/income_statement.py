@@ -11,8 +11,6 @@ from openbb_provider.models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-
-
 from pydantic import Field
 
 from openbb_polygon.utils.helpers import get_data

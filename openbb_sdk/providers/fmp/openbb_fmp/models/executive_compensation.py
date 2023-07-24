@@ -14,8 +14,6 @@ from openbb_provider.models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
 )
-
-
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many

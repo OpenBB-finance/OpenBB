@@ -8,8 +8,6 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.price_target import PriceTargetData, PriceTargetQueryParams
-
-
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
