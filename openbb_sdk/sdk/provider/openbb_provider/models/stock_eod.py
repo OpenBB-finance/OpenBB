@@ -58,5 +58,4 @@ class StockEODData(Data):
     high: PositiveFloat
     low: PositiveFloat
     close: PositiveFloat
-    adj_close: Optional[PositiveFloat]
     volume: PositiveFloat
