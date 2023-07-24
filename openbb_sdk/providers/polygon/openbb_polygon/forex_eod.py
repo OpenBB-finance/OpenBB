@@ -87,7 +87,7 @@ class PolygonForexEODFetcher(
         end_date = query.end_date or now.date()
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan}/"
+            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan._value_}/"
             f"{start_date}/{end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"

@@ -27,7 +27,10 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
     ---------
     symbol : str
         The symbol of the company.
+    period: Literal["quarter", "annual"]
+        The period of the analyst estimates.
     limit : int
+        The limit number of the amount of returned estimates.
     """
 
 
@@ -68,7 +71,9 @@ class FMPAnalystEstimatesFetcher(
     def transform_query(
         query: AnalystEstimatesQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPAnalystEstimatesQueryParams:
-        return FMPAnalystEstimatesQueryParams.parse_obj(query)
+        return FMPAnalystEstimatesQueryParams(
+            symbol=query.symbol, period=query.period, limit=query.limit
+        )
 
     @staticmethod
     def extract_data(

@@ -40,11 +40,11 @@ class StockInsiderTradingQueryParams(QueryParams):
         A-Award, C-Conversion, D-Return, E-ExpireShort, F-InKind, G-Gift, H-ExpireLong
         I-Discretionary, J-Other, L-Small, M-Exempt, O-OutOfTheMoneym P-Purchase
         S-Sale, U-Tender, W-Will, X-InTheMoney, Z-Trust
-    symbol : Optional[str]
+    symbol : str]
         The symbol of the company.
-    reportingCik : Optional[int]
+    reportingCik : int]
         The CIK of the reporting owner.
-    companyCik : Optional[int]
+    companyCik : int]
         The CIK of the company owner.
     page: int
         The page number to get
@@ -95,17 +95,17 @@ class StockInsiderTradingData(Data):
     """
 
     symbol: str
-    filingDate: datetime
-    transactionDate: date
-    reportingCik: int
-    transactionType: str
-    securitiesOwned: int
-    companyCik: int
-    reportingName: str
-    typeOfOwner: str
-    acquistionOrDisposition: str
-    formType: str
-    securitiesTransacted: float
+    filing_date: datetime
+    transaction_date: date
+    reporting_cik: int
+    transaction_type: str
+    securities_owned: int
+    company_cik: int
+    reporting_name: str
+    type_of_owner: str
+    acquistion_or_disposition: str
+    form_type: str
+    securities_transacted: float
     price: float
-    securityName: str
+    security_name: str
     link: str

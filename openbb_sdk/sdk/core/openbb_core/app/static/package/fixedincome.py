@@ -18,7 +18,7 @@ class CLASS_fixedincome(Container):
     def treasury(
         self,
         start_date: Optional[str] = None,
-        end_date: Optional[str] = "2023-07-21",
+        end_date: Optional[str] = "2023-07-24",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs

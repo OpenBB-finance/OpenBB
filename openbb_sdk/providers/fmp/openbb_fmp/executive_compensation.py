@@ -73,7 +73,7 @@ class FMPExecutiveCompensationFetcher(
     def transform_query(
         query: ExecutiveCompensationQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPExecutiveCompensationQueryParams:
-        return FMPExecutiveCompensationQueryParams.parse_obj(query)
+        return FMPExecutiveCompensationQueryParams(symbol=query.symbol)
 
     @staticmethod
     def extract_data(

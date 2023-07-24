@@ -30,9 +30,18 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         default=None,
         description="Provider name.",
     )
-    warnings: Optional[List[Warning_]] = None
-    error: Optional[Error] = None
-    chart: Optional[Chart] = None
+    warnings: Optional[List[Warning_]] = Field(
+        default=None,
+        description="List of warnings.",
+    )
+    error: Optional[Error] = Field(
+        default=None,
+        description="Exception caught.",
+    )
+    chart: Optional[Chart] = Field(
+        default=None,
+        description="Chart object.",
+    )
 
     def __repr__(self) -> str:
         return (
@@ -59,6 +68,8 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
                 df.index = pd.to_datetime(df.index)
         except ValueError:
             df = pd.DataFrame(self.dict()["results"], index=["values"]).T
+        except Exception as e:
+            raise OpenBBError("Failed to convert results to dataframe.") from e
 
         return df
 

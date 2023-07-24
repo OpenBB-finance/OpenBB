@@ -313,7 +313,7 @@ class StaticCommandRunner:
         # is added to the function signature and shared for jupyter and api
         # We can check in the router decorator if the given function has a chart
         # in the charting extension then we add it there. This way we can remove
-        # the chart parameter from the commands.py and packagebuilder, it will be
+        # the chart parameter from the commands.py and package_builder, it will be
         # added to the function signature in the router decorator
         chart = kwargs.pop("chart", False)
 

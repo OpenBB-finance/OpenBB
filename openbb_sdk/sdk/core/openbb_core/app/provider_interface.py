@@ -48,12 +48,12 @@ class ExtraData(BaseModel):
 class ProviderInterface:
     """Provider interface class. Provides access to 'openbb_provider' package information.
 
-    Attributes
+    Properties
     ----------
     map : Dict[str, Dict[str, Dict[str, Any]]]
         Dictionary of provider information.
-    credentials: Dict[str, Tuple[Optional[str], None]]
-        Dictionary of credentials.
+    required_credentials: Dict[str, Tuple[Optional[str], None]]
+        Dictionary of required_credentials.
     model_providers : Dict[str, ProviderChoices]
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
@@ -79,7 +79,7 @@ class ProviderInterface:
         self.__params = self.__generate_params_dc()
         self.__data = self.__generate_data_dc()
         self.__merged_data = self.__merge_data_dc(self.__data)
-        self.__credentials = self.__get_credentials()
+        self.__required_credentials = self.__get_required_credentials()
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
@@ -87,9 +87,9 @@ class ProviderInterface:
         return self.__map
 
     @property
-    def credentials(self) -> Dict[str, Tuple[Optional[str], None]]:
-        """Dictionary of credentials by provider."""
-        return self.__credentials
+    def required_credentials(self) -> Dict[str, Tuple[Optional[str], None]]:
+        """Dictionary of required credentials by provider."""
+        return self.__required_credentials
 
     @property
     def model_providers(self) -> Dict[str, ProviderChoices]:
@@ -142,15 +142,15 @@ class ProviderInterface:
         return build_provider_registry(extensions_dict__)
 
     @staticmethod
-    def __get_credentials() -> Dict[str, Tuple[Optional[str], None]]:
-        """Get credentials."""
-        credentials: Dict[str, Tuple[Optional[str], None]] = {}
+    def __get_required_credentials() -> Dict[str, Tuple[Optional[str], None]]:
+        """Get required credentials."""
+        required_credentials: Dict[str, Tuple[Optional[str], None]] = {}
         credentials_mapping = build_credentials_mapping()
-        for provider_credentials in credentials_mapping.values():
-            for credential in provider_credentials:
-                credentials[credential] = (Optional[str], None)
+        for credentials in credentials_mapping.values():
+            for c in credentials:
+                required_credentials[c] = (Optional[str], None)
 
-        return credentials
+        return required_credentials
 
     @staticmethod
     def __merge_fields(

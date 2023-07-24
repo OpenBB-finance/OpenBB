@@ -84,7 +84,7 @@ class FMPCompanyProfileFetcher(
     def transform_query(
         query: CompanyOverviewQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPCompanyOverviewQueryParams:
-        return FMPCompanyOverviewQueryParams.parse_obj(query)
+        return FMPCompanyOverviewQueryParams(symbol=query.symbol)
 
     @staticmethod
     def extract_data(

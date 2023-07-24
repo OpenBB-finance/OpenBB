@@ -10,7 +10,7 @@ from openbb_core.app.service.hub_service import HubService
 from openbb_core.app.service.user_service import UserService
 
 if TYPE_CHECKING:
-    from openbb_core.app.static.app_factory import App
+    from openbb_core.app.static.container import Container
 
 
 class OpenBBError(Exception):
@@ -18,7 +18,7 @@ class OpenBBError(Exception):
 
 
 class Account:
-    def __init__(self, app: "App"):
+    def __init__(self, app: "Container"):
         self._app = app
 
     def create_hub_service(

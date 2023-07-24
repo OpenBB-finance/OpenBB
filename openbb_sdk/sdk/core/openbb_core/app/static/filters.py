@@ -1,4 +1,5 @@
 import builtins
+from functools import wraps
 
 import pandas as pd
 from pydantic import ValidationError
@@ -8,7 +9,12 @@ from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.utils import df_to_basemodel
 
 
+class OpenBBError(Exception):
+    pass
+
+
 def filter_call(func):
+    @wraps(wrapped=func)
     def inner(*args, **kwargs):
         self = args[0]
         debug_mode = (
@@ -19,13 +25,12 @@ def filter_call(func):
         except ValidationError as e:
             if debug_mode:
                 raise
-            print("ValidationError:\n")
+
+            msg = ""
             for error in e.errors():
-                print(f"{error['loc'][-1]}: {error['msg']}")
-        except Exception as e:
-            if debug_mode:
-                raise
-            print(f"UnexpectedError: {e}")
+                msg += f"{error['loc'][-1]} -> {error['msg']}"
+
+            raise OpenBBError(msg) from e
 
     return inner
 
@@ -48,12 +53,10 @@ def filter_output(command_output: CommandOutput) -> CommandOutput:
 
     error = command_output.error
     if error:
-        kind = error.error_kind or "CommandError"
-        print(f"{kind}: {error.message}")
+        raise OpenBBError(error.message)
 
     chart = command_output.chart
     if chart and chart.error:
-        kind = chart.error.error_kind or "ChartError"
-        print(f"{kind}: {chart.error.message}")
+        raise OpenBBError(chart.error.message)
 
     return command_output
