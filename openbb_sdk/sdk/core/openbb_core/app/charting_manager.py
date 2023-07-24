@@ -1,12 +1,14 @@
 from importlib import import_module
-from typing import Callable, Generic, Optional, TypeVar
+from typing import Callable, Generic, Optional, Tuple, TypeVar
 
 import pkg_resources
 
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.charts.chart import Chart, ChartFormat
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 
 T = TypeVar("T")
@@ -18,7 +20,7 @@ class ChartingManagerError(Exception):
     pass
 
 
-class ChartingManager:
+class ChartingManager(metaclass=SingletonMeta):
     """
     Charting manager class.
     It is responsible for retrieving and executing the charting function, corresponding
@@ -42,12 +44,29 @@ class ChartingManager:
     def __init__(
         self,
         user_settings: Optional[UserSettings] = None,
+        system_settings: Optional[SystemSettings] = None,
     ) -> None:
         user_settings = user_settings or UserService().read_default_user_settings()
+        self._system_settings = (
+            system_settings or SystemService().read_default_system_settings()
+        )
 
+        self._charting_settings = ChartingSettings(user_settings, system_settings)
         self._charting_extension = user_settings.preferences.charting_extension
         self._charting_extension_installed = self.check_charting_extension_installed(
             self._charting_extension
+        )
+
+    @property
+    def charting_settings(self) -> ChartingSettings:
+        return self._charting_settings
+
+    @charting_settings.setter
+    def charting_settings(self, value: Tuple[SystemSettings, UserSettings]):
+        system_settings, user_settings = value
+        self._charting_settings = ChartingSettings(
+            user_settings=user_settings,
+            system_settings=system_settings,
         )
 
     @staticmethod
@@ -116,7 +135,6 @@ class ChartingManager:
         charting_settings : ChartingSettings
             Charting settings.
         """
-
         # Dynamically import the backend module
         backend_module = import_module(charting_extension)
 
@@ -125,6 +143,25 @@ class ChartingManager:
 
         create_backend_func(charting_settings=charting_settings)
         get_backend_func().start(debug=charting_settings.debug_mode)
+
+    def to_plotly_json(self, **kwargs) -> str:
+        """
+        Returns the plotly json representation of the chart.
+        """
+        if not self._charting_extension_installed:
+            raise ChartingManagerError(
+                f"Charting extension `{self._charting_extension}` is not installed"
+            )
+        self.handle_backend(self._charting_extension, self._charting_settings)
+
+        # Dynamically import the charting module
+        backend_module = import_module(self._charting_extension)
+        # Get the plotly json function from the charting module
+        to_plotly_json_func = getattr(backend_module, "to_plotly_json")
+        # Add the charting settings to the kwargs
+        kwargs["charting_settings"] = self._charting_settings
+
+        return to_plotly_json_func(**kwargs)
 
     def chart(
         self,
@@ -158,8 +195,7 @@ class ChartingManager:
         Chart
             Chart object.
         """
-        charting_settings = ChartingSettings(user_settings, system_settings)
-
+        self._charting_settings = ChartingSettings(user_settings, system_settings)
         self._charting_extension = user_settings.preferences.charting_extension
         self._charting_extension_installed = self.check_charting_extension_installed(
             self._charting_extension
@@ -170,10 +206,10 @@ class ChartingManager:
                 f"Charting extension `{self._charting_extension}` is not installed"
             )
 
-        self.handle_backend(self._charting_extension, charting_settings)
+        self.handle_backend(self._charting_extension, self._charting_settings)
 
         kwargs["command_output_item"] = command_output_item
-        kwargs["charting_settings"] = charting_settings
+        kwargs["charting_settings"] = self._charting_settings
 
         return Chart(
             content=self.get_chart_function(self._charting_extension, route)(**kwargs),
