@@ -191,11 +191,7 @@ def test_get_charges(mocker):
                     "contains_fixed_charge": True,
                     "contains_negative_pledge": True,
                 },
-                "persons_entitled": [
-                    {
-                        "name": "Astrazeneca Pensions Trustee Limited (And Its Successors in Title and Permitted Transferees)"
-                    }
-                ],
+                "persons_entitled": [{"name": "Astrazeneca Pensions Trustee Limited "}],
                 "transactions": [
                     {
                         "filing_type": "create-charge-with-deed",
