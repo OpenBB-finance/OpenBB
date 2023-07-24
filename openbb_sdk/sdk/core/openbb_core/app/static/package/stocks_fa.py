@@ -206,8 +206,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cal(
         self,
-        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 21),
-        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 21),
+        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 23),
+        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 23),
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -976,8 +976,8 @@ class CLASS_stocks_fa(Container):
 
         Parameter
         ---------
-        All fields are standardized.
-
+        period: Literal["quarter", "annual"]
+            The period of the analyst estimates.
 
         Returns
         -------
@@ -1291,11 +1291,11 @@ class CLASS_stocks_fa(Container):
             A-Award, C-Conversion, D-Return, E-ExpireShort, F-InKind, G-Gift, H-ExpireLong
             I-Discretionary, J-Other, L-Small, M-Exempt, O-OutOfTheMoneym P-Purchase
             S-Sale, U-Tender, W-Will, X-InTheMoney, Z-Trust
-        symbol : Optional[str]
+        symbol : str]
             The symbol of the company.
-        reportingCik : Optional[int]
+        reportingCik : int]
             The CIK of the reporting owner.
-        companyCik : Optional[int]
+        companyCik : int]
             The CIK of the company owner.
         page: int
             The page number to get
@@ -1345,7 +1345,7 @@ class CLASS_stocks_fa(Container):
             A-Award, C-Conversion, D-Return, E-ExpireShort, F-InKind, G-Gift, H-ExpireLong
             I-Discretionary, J-Other, L-Small, M-Exempt, O-OutOfTheMoneym P-Purchase
             S-Sale, U-Tender, W-Will, X-InTheMoney, Z-Trust
-        companyCik: Optional[str]
+        companyCik: str]
             The CIK of the company owner.
         page: int
             The page number to get
@@ -2537,7 +2537,8 @@ class CLASS_stocks_fa(Container):
 
         Parameter
         ---------
-        All fields are standardized.
+        year: int
+            The year of the transcript to get.
         """
         inputs = filter_inputs(
             provider_choices={

@@ -1,8 +1,10 @@
 """FMP Stock Insider Trading fetcher."""
 
 # IMPORT STANDARD
+from datetime import date, datetime
 from typing import Dict, List, Optional
 
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 
@@ -11,6 +13,7 @@ from openbb_provider.models.stock_insider_trading import (
     StockInsiderTradingData,
     StockInsiderTradingQueryParams,
 )
+from pydantic import Field
 
 # IMPORT THIRD-PARTY
 from .helpers import create_url, get_data_many
@@ -28,19 +31,35 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
         A-Award, C-Conversion, D-Return, E-ExpireShort, F-InKind, G-Gift, H-ExpireLong
         I-Discretionary, J-Other, L-Small, M-Exempt, O-OutOfTheMoneym P-Purchase
         S-Sale, U-Tender, W-Will, X-InTheMoney, Z-Trust
-    symbol : Optional[str]
+    symbol : str]
         The symbol of the company.
-    reportingCik : Optional[str]
+    reportingCik : str]
         The CIK of the reporting owner.
-    companyCik: Optional[str]
+    companyCik: str]
         The CIK of the company owner.
     page: int
         The page number to get
     """
 
 
-class FMPStockInsiderTradingData(StockInsiderTradingData):
+class FMPStockInsiderTradingData(Data):
     """FMP Stock Insider Trading data."""
+
+    symbol: str
+    filingDate: datetime = Field(alias="filing_date")
+    transactionDate: date = Field(alias="transaction_date")
+    reportingCik: int = Field(alias="reporting_cik")
+    transactionType: str = Field(alias="transaction_type")
+    securitiesOwned: int = Field(alias="securities_owned")
+    companyCik: int = Field(alias="company_cik")
+    reportingName: str = Field(alias="reporting_name")
+    typeOfOwner: str = Field(alias="type_of_owner")
+    acquistionOrDisposition: str = Field(alias="acquistion_or_disposition")
+    formType: str = Field(alias="form_type")
+    securitiesTransacted: float = Field(alias="securities_transacted")
+    price: float
+    securityName: str = Field(alias="security_name")
+    link: str
 
 
 class FMPStockInsiderTradingFetcher(
@@ -55,7 +74,13 @@ class FMPStockInsiderTradingFetcher(
     def transform_query(
         query: StockInsiderTradingQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPStockInsiderTradingQueryParams:
-        return FMPStockInsiderTradingQueryParams.parse_obj(query)
+        return FMPStockInsiderTradingQueryParams(
+            transactionType=query.transactionType,
+            symbol=query.symbol,
+            reportingCik=query.reportingCik,
+            companyCik=query.companyCik,
+            page=query.page,
+        )
 
     @staticmethod
     def extract_data(
