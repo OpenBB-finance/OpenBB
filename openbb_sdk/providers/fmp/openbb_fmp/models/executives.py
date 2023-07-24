@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 from openbb_provider.models.base import BaseSymbol
 from openbb_provider.models.key_executives import (
     KeyExecutivesData,
@@ -15,7 +15,7 @@ from openbb_provider.models.key_executives import (
 )
 
 # IMPORT THIRD-PARTY
-from .helpers import get_data
+from openbb_fmp.utils.helpers import get_data
 
 
 class FMPKeyExecutivesQueryParams(QueryParams, BaseSymbol):

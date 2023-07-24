@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 
 # IMPORT INTERNAL
 from openbb_provider.models.price_target_consensus import (
@@ -15,7 +15,7 @@ from openbb_provider.models.price_target_consensus import (
 )
 
 # IMPORT THIRD-PARTY
-from .helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class Interval(str, Enum):

@@ -9,7 +9,7 @@ from typing import Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 
 # IMPORT INTERNAL
 from openbb_provider.models.executive_compensation import (
@@ -20,7 +20,7 @@ from openbb_provider.models.executive_compensation import (
 # IMPORT THIRD-PARTY
 from pydantic import validator
 
-from .helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 # This part is only provided by FMP and not by the other providers for now.
 

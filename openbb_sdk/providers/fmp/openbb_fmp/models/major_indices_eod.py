@@ -7,7 +7,7 @@ from typing import Dict, List, Literal, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer, get_querystring
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
@@ -16,7 +16,7 @@ from openbb_provider.models.major_indices_eod import (
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, validator
 
-from .helpers import get_data_many
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPMajorIndicesEODQueryParams(QueryParams):

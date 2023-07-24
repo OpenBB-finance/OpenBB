@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 from openbb_provider.models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
@@ -15,7 +15,7 @@ from openbb_provider.models.major_indices_constituents import (
 # IMPORT THIRD-PARTY
 from pydantic import validator
 
-from .helpers import get_data_many
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams):

@@ -7,13 +7,13 @@ from typing import Dict, List, Literal, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 from openbb_provider.models.forex_price import ForexPriceData, ForexPriceQueryParams
 
 # IMPORT THIRD-PARTY
 from pydantic import Field
 
-from .helpers import BaseStockPriceData, create_url, get_data_many
+from openbb_fmp.utils.helpers import BaseStockPriceData, create_url, get_data_many
 
 
 class Interval(str, Enum):

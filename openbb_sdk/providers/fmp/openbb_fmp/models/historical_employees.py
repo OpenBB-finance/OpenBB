@@ -8,7 +8,7 @@ from openbb_provider.abstract.data import Data
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 from openbb_provider.models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
@@ -17,7 +17,7 @@ from openbb_provider.models.historical_employees import (
 # IMPORT THIRD-PARTY
 from pydantic import Field, validator
 
-from .helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):

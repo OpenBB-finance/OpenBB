@@ -6,10 +6,10 @@ from typing import Dict, List, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 from openbb_provider.models.forex_pairs import ForexPairsData, ForexPairsQueryParams
 
-from .helpers import get_data_many
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPForexPairsQueryParams(QueryParams):

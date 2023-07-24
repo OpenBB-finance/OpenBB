@@ -5,7 +5,7 @@ from typing import Dict, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 
 # IMPORT INTERNAL
 from openbb_provider.models.company_overview import (
@@ -13,7 +13,7 @@ from openbb_provider.models.company_overview import (
     CompanyOverviewQueryParams,
 )
 
-from .helpers import get_data
+from openbb_fmp.utils.helpers import get_data
 
 # IMPORT THIRD-PARTY
 

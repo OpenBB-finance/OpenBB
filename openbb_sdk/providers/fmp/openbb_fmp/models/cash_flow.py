@@ -10,7 +10,7 @@ from typing import Dict, List, Literal, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
+from openbb_provideropenbb_fmp.utils.helpers import data_transformer
 from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
@@ -19,7 +19,7 @@ from openbb_provider.models.cash_flows import (
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeInt, root_validator
 
-from .helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPCashFlowStatementQueryParams(QueryParams):
