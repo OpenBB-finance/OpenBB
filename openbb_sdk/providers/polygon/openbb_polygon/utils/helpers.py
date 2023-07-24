@@ -1,6 +1,3 @@
-# IMPORT STANDARD
-
-
 # IMPORT THIRD PARTY
 import requests
 

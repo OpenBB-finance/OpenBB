@@ -1,6 +1,5 @@
 """Benzinga provider module."""
 
-# IMPORT STANDARD
 
 # IMPORT THIRD-PARTY
 

@@ -1,6 +1,6 @@
 """FMP Major Indices end of day fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime
 from typing import Dict, List, Literal, Optional
 

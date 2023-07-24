@@ -1,6 +1,6 @@
 """FMP ESG Sector fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date
 from typing import Dict, List, Optional
 

@@ -1,6 +1,6 @@
 """FMP Forex available pairs fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL

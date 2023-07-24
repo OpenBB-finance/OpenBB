@@ -1,6 +1,6 @@
 """FMP Institutional Ownership Fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import (
     date as dateType,
     datetime,

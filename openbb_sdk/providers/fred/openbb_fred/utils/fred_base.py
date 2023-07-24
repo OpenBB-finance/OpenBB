@@ -1,4 +1,3 @@
-# IMPORT STANDARD
 from datetime import date
 from typing import Optional
 from urllib.parse import urlencode

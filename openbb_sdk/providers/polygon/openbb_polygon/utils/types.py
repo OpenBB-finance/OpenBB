@@ -1,6 +1,6 @@
 """Polygon types helpers."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime, timedelta
 from enum import Enum
 from typing import Literal, Optional, Union

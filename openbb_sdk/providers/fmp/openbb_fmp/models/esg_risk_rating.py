@@ -1,6 +1,6 @@
 """FMP ESG Risk Rating fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date
 from typing import Dict, List, Literal, Optional
 

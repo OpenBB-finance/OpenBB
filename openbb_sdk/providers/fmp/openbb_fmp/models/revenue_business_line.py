@@ -1,6 +1,6 @@
 """FMP Revenue Business Line Fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import datetime
 from typing import Dict, List, Optional
 

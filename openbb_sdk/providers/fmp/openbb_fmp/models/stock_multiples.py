@@ -1,6 +1,6 @@
 """FMP Stock Multiples Fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL

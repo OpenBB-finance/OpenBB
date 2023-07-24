@@ -1,6 +1,6 @@
 """FMP Company Overview Fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, Optional
 
 from openbb_provider.abstract.data import Data

@@ -1,6 +1,6 @@
 """FRED CPI Fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred

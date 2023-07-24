@@ -1,6 +1,6 @@
 """FRED provider module."""
 
-# IMPORT STANDARD
+
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
 from openbb_provider.abstract.provider import Provider

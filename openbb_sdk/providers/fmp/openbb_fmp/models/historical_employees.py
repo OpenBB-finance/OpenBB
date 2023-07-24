@@ -1,6 +1,6 @@
 """FMP Historical Employees fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime
 from typing import Dict, List, Optional
 

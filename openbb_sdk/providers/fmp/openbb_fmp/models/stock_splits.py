@@ -1,6 +1,6 @@
 """FMP Stock Splits Calendar fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date
 from typing import Dict, List, Optional
 

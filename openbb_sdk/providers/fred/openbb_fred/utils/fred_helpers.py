@@ -1,4 +1,3 @@
-# IMPORT STANDARD
 import csv
 from typing import List, Literal
 

@@ -1,6 +1,6 @@
 """FMP Earnings Calendar fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date as dateType
 from typing import Dict, List, Optional
 

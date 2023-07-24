@@ -1,5 +1,5 @@
 """FMP Historical Dividends fetcher."""
-# IMPORT STANDARD
+
 from datetime import (
     date as dateType,
     datetime,

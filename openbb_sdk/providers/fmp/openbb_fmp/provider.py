@@ -1,6 +1,5 @@
 """FMP Provider module."""
 
-# IMPORT STANDARD
 
 # IMPORT THIRD-PARTY
 

@@ -1,6 +1,5 @@
 """Polygon provider module."""
 
-# IMPORT STANDARD
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.provider import Provider

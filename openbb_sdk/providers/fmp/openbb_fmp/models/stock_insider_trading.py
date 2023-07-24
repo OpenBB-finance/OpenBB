@@ -1,6 +1,6 @@
 """FMP Stock Insider Trading fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime
 from typing import Dict, List, Optional
 

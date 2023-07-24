@@ -1,6 +1,6 @@
 """FMP Available Indices fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Optional
 
 # IMPORT INTERNAL

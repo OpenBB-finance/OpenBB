@@ -1,6 +1,6 @@
 """FMP Earnings Call Transcript fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Optional
 
 from openbb_provider.abstract.data import QueryParams

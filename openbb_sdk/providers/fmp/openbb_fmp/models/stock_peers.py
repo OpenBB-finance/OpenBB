@@ -1,6 +1,6 @@
 """FMP Stock Peers fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher

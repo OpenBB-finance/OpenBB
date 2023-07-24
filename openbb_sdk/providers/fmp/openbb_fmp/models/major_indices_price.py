@@ -1,6 +1,6 @@
 """FMP Major Indices Price fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Dict, List, Literal, Optional
 
 # IMPORT INTERNAL

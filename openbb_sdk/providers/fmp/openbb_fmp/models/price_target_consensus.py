@@ -1,6 +1,6 @@
 """FMP Price Target Consensus fetcher."""
 
-# IMPORT STANDARD
+
 from enum import Enum
 from typing import Dict, List, Optional
 

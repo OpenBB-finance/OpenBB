@@ -1,6 +1,6 @@
 """Polygon forex end of day fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Literal, Optional, Union
 

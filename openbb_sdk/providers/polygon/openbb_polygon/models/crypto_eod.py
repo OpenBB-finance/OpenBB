@@ -1,6 +1,6 @@
 """Polygon crypto end of day fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 

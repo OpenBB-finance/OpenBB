@@ -1,6 +1,6 @@
 """FMP Executive Compensation Fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import (
     date as dateType,
     datetime,

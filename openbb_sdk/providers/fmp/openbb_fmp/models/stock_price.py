@@ -1,6 +1,6 @@
 """FMP Stock Price fetcher."""
 
-# IMPORT STANDARD
+
 from enum import Enum
 from typing import Dict, List, Literal, Optional
 
