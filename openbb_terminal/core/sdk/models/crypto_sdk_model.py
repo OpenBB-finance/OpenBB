@@ -13,7 +13,7 @@ class CryptoRoot(Category):
         `chart`: Load data for Technical Analysis\n
         `find`: Find similar coin by coin name,symbol or id.\n
         `load`: Load crypto currency to get data for\n
-        `price`: Returns price and confidence interval from pyth live feed. [Source: Pyth]\n
+        `price`: Displays live price from pyth live feed [Source: https://pyth.network/]\n
     """
 
     _location_path = "crypto"
@@ -24,7 +24,7 @@ class CryptoRoot(Category):
         self.chart = lib.crypto_helpers.plot_chart
         self.find = lib.crypto_models.find
         self.load = lib.crypto_helpers.load
-        self.price = lib.crypto_pyth_model.get_price
+        self.price = lib.crypto_pyth_view.display_price
 
 
 class CryptoDueDiligence(Category):

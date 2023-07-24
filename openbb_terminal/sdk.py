@@ -121,7 +121,7 @@ class OpenBBSDK:
             `chart`: Load data for Technical Analysis\n
             `find`: Find similar coin by coin name,symbol or id.\n
             `load`: Load crypto currency to get data for\n
-            `price`: Returns price and confidence interval from pyth live feed. [Source: Pyth]\n
+            `price`: Displays live price from pyth live feed [Source: https://pyth.network/]\n
         """
 
         return ctrl.CryptoController()

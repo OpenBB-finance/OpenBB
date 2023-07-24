@@ -1153,7 +1153,7 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
     if not hasattr(parser, "target_dataset"):
         return False
     if not parser.target_dataset:  # type: ignore
-        console.print("[red]Please enter valid dataset.\n[/red]")
+        console.print("[red]Please select a valid dataset with the -d flag.\n[/red]")
         return False
     if "ignore_column" in args:
         return True
