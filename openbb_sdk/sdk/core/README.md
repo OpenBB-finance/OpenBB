@@ -298,6 +298,7 @@ sdk.account.logout()
 
 You can also use the dynamic version to consume the api endpoints from Python itself.
 In fact, the static version makes use of this feature to run each command. Take a look at the example below.
+
 ```python
 >>> from openbb_core.app.command_runner import CommandRunnerSession
 >>> crs = CommandRunnerSession()
@@ -334,8 +335,8 @@ provider: ...           # Provider name.
 warnings: ...           # List of warnings.
 error: ...              # Exception caught.
 chart: ...              # Chart object.
-
 ```
+
 ## 5. REST API
 
 OpenBB SDK comes with a ready to use Rest API built with FastAPI.
