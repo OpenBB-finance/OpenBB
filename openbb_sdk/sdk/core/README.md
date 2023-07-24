@@ -81,7 +81,9 @@ def some_command(
     pass
 ```
 
-If your command only makes use of a `openbb-provider` model, there is no need to repeat its structure in the parameters. Just pass the model name as an argument. This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`.
+If your command only makes use of a `openbb-provider` model, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
+
+This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`.
 
 ```python
 @router.command(model="StockEOD")
