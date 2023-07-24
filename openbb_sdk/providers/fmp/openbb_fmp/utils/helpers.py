@@ -7,8 +7,6 @@ from typing import List, Optional, Type, TypeVar, Union
 # IMPORT THIRD-PARTY
 import requests
 from openbb_provider.abstract.data import Data
-
-
 from openbb_provider.abstract.fetcher import QueryParamsType
 from openbb_provider.helpers import (
     BasicResponse,

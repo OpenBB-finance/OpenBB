@@ -4,7 +4,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.major_indices_constituents import (

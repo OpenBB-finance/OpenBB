@@ -10,8 +10,6 @@ from typing import Dict, List, Optional
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
-
-
 from openbb_provider.models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,

@@ -5,7 +5,6 @@ from datetime import date, datetime, timedelta
 from enum import Enum
 from typing import Literal, Optional, Union
 
-
 from openbb_provider.abstract.data import Data, QueryParams
 
 # IMPORT THIRD-PARTY
