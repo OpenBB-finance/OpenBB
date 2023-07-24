@@ -10,6 +10,7 @@
         - [4.1.1. Command output](#411-command-output)
         - [4.1.2. Utilities](#412-utilities)
         - [4.1.3. OpenBB Hub account](#413-openbb-hub-account)
+    - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
     - [5.1. Test users](#51-test-users)
   - [6. Front-end typing](#6-front-end-typing)
@@ -293,6 +294,48 @@ sdk.account.refresh()
 sdk.account.logout()
 ```
 
+## 4.2 Dynamic version
+
+You can also use the dynamic version to consume the api endpoints from Python itself.
+In fact, the static version makes use of this feature to run each command. Take a look at the example below.
+```python
+>>> from openbb_core.app.command_runner import CommandRunnerSession
+>>> crs = CommandRunnerSession()
+>>> response = crs.run(
+             "/stocks/load",
+             provider_choices={
+                 "provider": "fmp",
+             },
+             standard_params={
+                 "symbol": "TSLA",
+                 "start_date": "2023-07-01",
+                 "end_date": "2023-07-25",
+             },
+             extra_params={},
+             chart=True,
+         )
+>>> response
+JournalEntry
+
+id: ...                 # UUID Tag
+arguments: ...          # Arguments of the command.
+duration ...            # Execution duration in nano second of the command.
+output ...              # Output of the command.
+route: "'/stocks/load'" # Route of the command.
+timestamp: ...          # Execution starting timestamp.
+alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
+
+>>> response.output
+CommandOutput
+
+id: ...                 # UUID Tag
+results: ...            # Serializable results.
+provider: ...           # Provider name.
+warnings: ...           # List of warnings.
+error: ...              # Exception caught.
+chart: ...              # Chart object.
+
+```
 ## 5. REST API
 
 OpenBB SDK comes with a ready to use Rest API built with FastAPI.
