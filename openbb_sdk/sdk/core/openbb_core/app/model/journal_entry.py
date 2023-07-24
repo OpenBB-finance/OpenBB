@@ -23,3 +23,10 @@ class JournalEntry(Tagged):
         default_factory=list,
         description="List of alias to find a JournalEntry easier than with it's `tag`.",
     )
+
+    def __repr__(self) -> str:
+        return (
+            self.__class__.__name__
+            + "\n\n"
+            + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
+        )

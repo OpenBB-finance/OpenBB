@@ -55,7 +55,9 @@ class FMPRevenueGeographicFetcher(
     def transform_query(
         query: RevenueGeographicQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPRevenueGeographicQueryParams:
-        return FMPRevenueGeographicQueryParams.parse_obj(query)
+        return FMPRevenueGeographicQueryParams(
+            symbol=query.symbol, period=query.period, structure=query.structure
+        )
 
     @staticmethod
     def extract_data(

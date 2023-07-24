@@ -3,7 +3,7 @@
 # IMPORT STANDARD
 
 # IMPORT INTERNAL
-from openbb_provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider
 
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
@@ -22,7 +22,7 @@ from openbb_polygon.models.stock_price import PolygonStockPriceFetcher
 
 # mypy: disable-error-code="list-item"
 polygon_provider = Provider(
-    name=ProviderNameType("polygon"),
+    name="polygon",
     description="Provider for Polygon.",
     required_credentials=["api_key"],
     fetcher_list=[

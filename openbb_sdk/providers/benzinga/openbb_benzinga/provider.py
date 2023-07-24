@@ -5,7 +5,7 @@
 # IMPORT THIRD-PARTY
 
 # IMPORT INTERNAL
-from openbb_provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider
 
 from openbb_benzinga.models.global_news import BenzingaGlobalNewsFetcher
 from openbb_benzinga.models.stock_news import BenzingaStockNewsFetcher
@@ -14,7 +14,7 @@ from openbb_benzinga.models.stock_news import BenzingaStockNewsFetcher
 
 
 benzinga_provider = Provider(
-    name=ProviderNameType("benzinga"),
+    name="benzinga",
     description="Provider for Benzinga.",
     required_credentials=["api_key"],
     fetcher_list=[BenzingaGlobalNewsFetcher, BenzingaStockNewsFetcher],
