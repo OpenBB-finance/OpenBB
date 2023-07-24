@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional, Union
+import pandas as pd
 
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.nft import nftpricefloor_model
@@ -56,6 +57,9 @@ def display_collections(
         fig.set_title("Collections Floor Price" if show_fp else "Collections Sales")
         for collection in df["slug"].head(limit).values:
             df_collection = nftpricefloor_model.get_floor_price(collection)
+            df_collection.index = pd.DatetimeIndex(
+                df_collection.index.rename("date").strftime("%Y-%m-%d")
+            )
             if not df_collection.empty:
                 values = (
                     df_collection["floorEth"].values

@@ -1331,6 +1331,7 @@ class OpenBBFigure(go.Figure):
         """
         # We get the min and max dates
         dt_start, dt_end = df_data.index.min(), df_data.index.max()
+        rangebreaks: List[Dict[str, Any]] = []
 
         # if weekly or monthly data, we don't need to hide gaps
         # this prevents distortions in the plot
@@ -1347,10 +1348,12 @@ class OpenBBFigure(go.Figure):
         )
         dt_missing_days = pd.to_datetime(dt_missing_days)
 
-        rangebreaks: List[Dict[str, Any]] = [dict(values=dt_missing_days)]
+        if len(dt_missing_days) < 2_000:
+            rangebreaks = [dict(values=dt_missing_days)]
 
         # We get the frequency of the data to hide intra-day gaps
-        if (freq := df_data.index[1] - df_data.index[0]).days == 0:
+        if df_data.index[-1].time() != df_data.index[-2].time():
+            freq = df_data.index[1] - df_data.index[0]
             freq_mins = int(freq.seconds / 60)
             break_values = (
                 df_data.resample(f"{freq_mins}T")

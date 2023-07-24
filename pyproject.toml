@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.1.0"
+version = "3.2.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -110,7 +110,7 @@ intrinio-sdk = "^6.22.2"
 yahooquery = "^2.3.0"
 openai-whisper = {version = "^20230124", optional = true}
 setuptools-rust = {version = "^1.5.2", optional = true}
-transformers = {version = "^4.26.1", optional = true}
+transformers = {version = "4.27.1", optional = true}
 yt-dlp = {version = "^2023.2.17", optional = true}
 pydantic = "<2"
 posthog = "^3.0.1"
