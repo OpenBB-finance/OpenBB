@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Callable, Generic, Optional, TypeVar, Tuple
+from typing import Callable, Generic, Optional, Tuple, TypeVar
 
 import pkg_resources
 
@@ -8,8 +8,8 @@ from openbb_core.app.model.charts.chart import Chart, ChartFormat
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.service.user_service import UserService
 from openbb_core.app.service.system_service import SystemService
+from openbb_core.app.service.user_service import UserService
 
 T = TypeVar("T")
 

@@ -1,8 +1,8 @@
-from typing import Union, Optional, Dict, Any
+from typing import Any, Dict, Optional, Union
 
 import pandas as pd
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
+from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 
