@@ -253,7 +253,7 @@ sdk.settings.defaults
 
 Check your system settings. Most of the properties are read-only during runtime, so any changes there will be void.
 
-- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediatly.
+- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediately.
 
 ```python
 from openbb import sdk
