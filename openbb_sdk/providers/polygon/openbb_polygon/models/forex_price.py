@@ -13,8 +13,8 @@ from openbb_provider.models.forex_price import ForexPriceData, ForexPriceQueryPa
 # IMPORT THIRD-PARTY
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
 
-from openbb_polygon.helpers import get_data
-from openbb_polygon.types import BaseStockData, BaseStockQueryParams
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import BaseStockData, BaseStockQueryParams
 
 
 class PolygonForexPriceQueryParams(BaseStockQueryParams):

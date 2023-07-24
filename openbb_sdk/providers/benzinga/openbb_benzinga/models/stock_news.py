@@ -13,7 +13,7 @@ from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParam
 # IMPORT THIRD-PARTY
 from pydantic import Field
 
-from openbb_benzinga.helpers import BenzingaBaseNewsData, get_data
+from openbb_benzinga.utils.helpers import BenzingaBaseNewsData, get_data
 
 
 class BenzingaStockNewsQueryParams(QueryParams):

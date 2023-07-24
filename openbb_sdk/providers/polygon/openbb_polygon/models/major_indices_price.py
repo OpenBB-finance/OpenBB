@@ -13,8 +13,8 @@ from openbb_provider.models.major_indices_price import (
 )
 
 # IMPORT THIRD-PARTY
-from .helpers import get_data
-from .types import BaseStockData, BaseStockQueryParams
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import BaseStockData, BaseStockQueryParams
 
 
 class PolygonMajorIndicesPriceQueryParams(BaseStockQueryParams):

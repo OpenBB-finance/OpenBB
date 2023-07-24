@@ -14,8 +14,8 @@ from openbb_provider.models.balance_sheet import (
 # IMPORT THIRD-PARTY
 from pydantic import Field
 
-from openbb_polygon.helpers import get_data
-from openbb_polygon.types import PolygonFundamentalQueryParams
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 
 
 class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):

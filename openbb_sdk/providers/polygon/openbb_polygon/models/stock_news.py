@@ -13,7 +13,7 @@ from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParam
 # IMPORT THIRD-PARTY
 from pydantic import BaseModel, Field
 
-from openbb_polygon.helpers import get_data
+from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonStockNewsQueryParams(QueryParams):

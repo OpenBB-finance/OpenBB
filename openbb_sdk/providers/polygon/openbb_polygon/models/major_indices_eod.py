@@ -14,8 +14,8 @@ from openbb_provider.models.major_indices_eod import (
 )
 
 # IMPORT THIRD-PARTY
-from openbb_polygon.helpers import get_data
-from openbb_polygon.types import BaseStockData, BaseStockQueryParams
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import BaseStockData, BaseStockQueryParams
 
 
 class PolygonMajorIndicesEODQueryParams(BaseStockQueryParams):
