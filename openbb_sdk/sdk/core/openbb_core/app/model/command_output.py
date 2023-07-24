@@ -79,7 +79,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe()
+        df = self.to_dataframe().reset_index()
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()
