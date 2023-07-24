@@ -94,7 +94,6 @@ def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any
     """Load extensions from entry points and their API keys from settings."""
 
     # TODO: Figure actual type for dict values Union[Provider, Dict[str, Dict[str, None]]]
-    # Can we try to load the extensions directly into the ProviderRegistry? Let's try it.
 
     extensions_dict: Dict[str, Dict[str, Any]] = {}
     extensions_dict["providers"] = {}
