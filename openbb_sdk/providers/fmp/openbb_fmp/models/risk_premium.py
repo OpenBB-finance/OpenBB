@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provideropenbb_fmp.utils.helpers import data_transformer
+from openbb_provider.helpers import data_transformer
 from openbb_provider.models.risk_premium import RiskPremiumData, RiskPremiumQueryParams
 
 from openbb_fmp.utils.helpers import create_url, get_data_many

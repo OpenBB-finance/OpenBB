@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provideropenbb_fmp.utils.helpers import data_transformer
+from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_multiples import (
     StockMultiplesData,
     StockMultiplesQueryParams,

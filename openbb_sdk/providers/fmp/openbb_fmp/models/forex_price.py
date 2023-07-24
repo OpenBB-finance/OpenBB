@@ -7,7 +7,7 @@ from typing import Dict, List, Literal, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provideropenbb_fmp.utils.helpers import data_transformer
+from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_price import ForexPriceData, ForexPriceQueryParams
 
 # IMPORT THIRD-PARTY

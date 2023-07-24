@@ -10,7 +10,7 @@ from openbb_provider.abstract.data import Data
 
 # IMPORT INTERNAL
 from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provideropenbb_fmp.utils.helpers import (
+from openbb_provider.helpers import (
     BasicResponse,
     get_querystring,
     request,

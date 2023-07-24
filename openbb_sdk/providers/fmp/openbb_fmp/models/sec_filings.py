@@ -10,7 +10,7 @@ from typing import Dict, List, Optional
 # IMPORT INTERNAL
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provideropenbb_fmp.utils.helpers import data_transformer
+from openbb_provider.helpers import data_transformer
 from openbb_provider.models.sec_filings import SECFilingsData, SECFilingsQueryParams
 from pydantic import validator
 
