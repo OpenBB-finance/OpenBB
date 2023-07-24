@@ -131,13 +131,7 @@ MOCK_DETAIL = {
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "queue, expected",
-    [
-        (["load", "help"], ["help"]),
-        (["quit", "help"], ["help"]),
-    ],
-)
+@pytest.mark.parametrize("queue, expected", [(["quit", "help"], ["help"])])
 def test_menu_with_queue(expected, mocker, queue):
     path_controller = "openbb_terminal.economy.economy_controller"
 
@@ -493,7 +487,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 group="sector",
-                sortby="MarketCap",
+                sortby="Market Cap",
                 ascend=True,
                 export="csv",
                 sheet_name=None,
@@ -1189,9 +1183,8 @@ def test_call_index(mocker):
 
 MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
     {
-        "Nominal_3-month": {"2022-10-01": 3.87},
-        "Nominal_10-year": {"2022-10-01": 3.87},
-        "Long-term average_Longer than 10-year": {"2022-10-01": 1.9},
+        "3m": {"2022-10-01": 3.87},
+        "10y": {"2022-10-01": 3.87},
     },
     orient="index",
 )
@@ -1202,13 +1195,11 @@ MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
     "other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            ["-m=3m,10y", "-t=nominal,average", "-e=2022-11-04"],
-            "econdb_view.show_treasuries",
+            ["-m=3m,10y", "-e=2022-11-04"],
+            "fedreserve_view.show_treasuries",
             [],
             dict(
                 maturities=["3m", "10y"],
-                instruments=["nominal", "average"],
-                frequency="monthly",
                 start_date="1934-01-31",
                 end_date="2022-11-04",
                 raw=False,
@@ -1228,7 +1219,7 @@ def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mock
     mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
     # MOCK the econdb.get_aggregated_macro_data
     mocker.patch(
-        target=f"{path_controller}.econdb_model.get_treasuries",
+        target=f"{path_controller}.fedreserve_model.get_treasury_rates",
         return_value=MOCK_TREASURY_DEFAULT,
     )
     preferences = PreferencesModel(ENABLE_EXIT_AUTO_HELP=False)
@@ -1247,8 +1238,6 @@ def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mock
     controller = economy_controller.EconomyController(queue=None)
     controller.choices = {}
     controller.call_treasury(other_args)
-    assert "treasury" in controller.DATASETS
-    assert not controller.DATASETS["treasury"].empty
     if called_args or called_kwargs:
         mock.assert_called_once_with(*called_args, **called_kwargs)
     else:

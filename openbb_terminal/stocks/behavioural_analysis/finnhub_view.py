@@ -109,7 +109,6 @@ def display_stock_price_headlines_sentiment(
                 yaxis2_title="Headline Sentiment",
             )
             fig.bar_width = 5
-            fig.hide_date_gaps(df_stock, 1, 1, prepost=True)
 
             export_data(
                 export,

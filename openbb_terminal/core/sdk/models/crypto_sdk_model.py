@@ -13,7 +13,7 @@ class CryptoRoot(Category):
         `chart`: Load data for Technical Analysis\n
         `find`: Find similar coin by coin name,symbol or id.\n
         `load`: Load crypto currency to get data for\n
-        `price`: Returns price and confidence interval from pyth live feed. [Source: Pyth]\n
+        `price`: Displays live price from pyth live feed [Source: https://pyth.network/]\n
     """
 
     _location_path = "crypto"
@@ -24,7 +24,7 @@ class CryptoRoot(Category):
         self.chart = lib.crypto_helpers.plot_chart
         self.find = lib.crypto_models.find
         self.load = lib.crypto_helpers.load
-        self.price = lib.crypto_pyth_model.get_price
+        self.price = lib.crypto_pyth_view.display_price
 
 
 class CryptoDueDiligence(Category):
@@ -463,6 +463,8 @@ class CryptoOnChain(Category):
         `token_decimals`: Helper methods that gets token decimals number. [Source: Ethplorer]\n
         `top`: Get top 50 tokens. [Source: Ethplorer]\n
         `top_chart`: Display top ERC20 tokens [Source: Ethplorer]\n
+        `topledger`: Returns Topledger's Data for the given Organization's Slug[org_slug] based\n
+        `topledger_chart`: Display on-chain data from Topledger. [Source: Topledger]\n
         `ttcp`: Get most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `ttcp_chart`: Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `tv`: Get token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]\n
@@ -533,6 +535,8 @@ class CryptoOnChain(Category):
         self.token_decimals = lib.crypto_onchain_ethplorer_model.get_token_decimals
         self.top = lib.crypto_onchain_ethplorer_model.get_top_tokens
         self.top_chart = lib.crypto_onchain_ethplorer_view.display_top_tokens
+        self.topledger = lib.crypto_onchain_topledger_model.get_topledger_data
+        self.topledger_chart = lib.crypto_onchain_topledger_view.display_topledger_data
         self.ttcp = lib.crypto_onchain_bitquery_model.get_most_traded_pairs
         self.ttcp_chart = lib.crypto_onchain_bitquery_view.display_most_traded_pairs
         self.tv = lib.crypto_onchain_bitquery_model.get_token_volume_on_dexes

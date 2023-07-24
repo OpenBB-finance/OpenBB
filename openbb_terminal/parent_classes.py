@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
 import numpy as np
+import openai
 import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
@@ -23,6 +24,7 @@ from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
+from openbb_terminal import config_terminal
 from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
@@ -57,6 +59,8 @@ from openbb_terminal.terminal_helper import (
     print_guest_block_msg,
 )
 
+from .helper_classes import TerminalStyle as _TerminalStyle
+
 logger = logging.getLogger(__name__)
 
 # pylint: disable=R0912
@@ -78,11 +82,14 @@ CRYPTO_SOURCES = {
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
+
+# TODO: We should try to avoid these global variables
 RECORD_SESSION = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
 SESSION_RECORDED_DESCRIPTION = ""
 SESSION_RECORDED_TAGS = ""
+SESSION_RECORDED_PUBLIC = False
 
 
 class BaseController(metaclass=ABCMeta):
@@ -108,6 +115,7 @@ class BaseController(metaclass=ABCMeta):
         "stop",
         "screenshot",
         "askobb",
+        "hold",
     ]
 
     if is_auth_enabled():
@@ -117,6 +125,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    HOLD_CHOICES: dict = {}
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
@@ -192,6 +201,10 @@ class BaseController(metaclass=ABCMeta):
 
         self.SUPPORT_CHOICES = support_choices
 
+        self.HELP_CHOICES = {
+            c: None for c in ["on", "off", "-s", "--sameaxis", "--title"]
+        }
+
         # Add in news options
         news_choices = [
             "--term",
@@ -262,6 +275,113 @@ class BaseController(metaclass=ABCMeta):
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
 
+    def call_hold(self, other_args: List[str]) -> None:
+        self.save_class()
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hold",
+            description="Turn on figure holding.  This will stop showing images until hold off is run.",
+        )
+        parser.add_argument(
+            "-o",
+            "--option",
+            choices=["on", "off"],
+            type=str,
+            default="off",
+            dest="option",
+        )
+        parser.add_argument(
+            "-s",
+            "--sameaxis",
+            action="store_true",
+            default=False,
+            help="Put plots on the same axis.  Best when numbers are on similar scales",
+            dest="axes",
+        )
+        parser.add_argument(
+            "--title",
+            type=str,
+            default="",
+            dest="title",
+            nargs="+",
+            help="When using hold off, this sets the title for the figure.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-o")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+        if ns_parser:
+            if ns_parser.option == "on":
+                config_terminal.HOLD = True
+                config_terminal.COMMAND_ON_CHART = False
+                if ns_parser.axes:
+                    config_terminal.set_same_axis()
+                else:
+                    config_terminal.set_new_axis()
+            if ns_parser.option == "off":
+                config_terminal.HOLD = False
+                if config_terminal.get_current_figure() is not None:
+                    # create a subplot
+                    fig = config_terminal.get_current_figure()
+                    if fig is None:
+                        return
+                    if not fig.has_subplots and not config_terminal.make_new_axis():
+                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
+
+                    if config_terminal.make_new_axis():
+                        for i, trace in enumerate(fig.select_traces()):
+                            trace.yaxis = f"y{i+1}"
+
+                            if i != 0:
+                                fig.update_layout(
+                                    {
+                                        f"yaxis{i+1}": dict(
+                                            side="left",
+                                            overlaying="y",
+                                            showgrid=True,
+                                            showline=False,
+                                            zeroline=False,
+                                            automargin=True,
+                                            ticksuffix="       " * (i - 1)
+                                            if i > 1
+                                            else "",
+                                            tickfont=dict(
+                                                size=18,
+                                                color=_TerminalStyle().get_colors()[i],
+                                            ),
+                                            title=dict(
+                                                font=dict(
+                                                    size=15,
+                                                ),
+                                                standoff=0,
+                                            ),
+                                        ),
+                                    }
+                                )
+                        # pylint: disable=undefined-loop-variable
+                        fig.update_layout(margin=dict(l=30 * i))
+
+                    else:
+                        fig.update_yaxes(title="")
+
+                    if any(config_terminal.get_legends()):
+                        for trace, new_name in zip(
+                            fig.select_traces(), config_terminal.get_legends()
+                        ):
+                            if new_name:
+                                trace.name = new_name
+
+                    fig.update_layout(title=" ".join(ns_parser.title))
+                    fig.show()
+                    config_terminal.COMMAND_ON_CHART = True
+
+                    config_terminal.set_current_figure(None)
+                    config_terminal.reset_legend()
+
     def call_askobb(self, other_args: List[str]) -> None:
         """Accept user input as a string and return the most appropriate Terminal command"""
         self.save_class()
@@ -309,7 +429,6 @@ class BaseController(metaclass=ABCMeta):
                 console.print("[red]Please enter a prompt with more than 1 word[/red]")
             else:
                 api_key = get_current_user().credentials.API_OPENAI_KEY
-
                 if ns_parser.gpt_model == "gpt-4" and api_key == "REPLACE_ME":
                     console.print(
                         "[red]GPT-4 only available with local OPENAI Key.\n[/]"
@@ -327,6 +446,8 @@ class BaseController(metaclass=ABCMeta):
                             "[yellow]Using local OpenAI Key"
                             ".  Please remove from OpenBB Hub to query askobb remotely.[/]\n"
                         )
+                    # This is needed to avoid authentication error
+                    openai.api_key = api_key
                     response, source_nodes = query_LLM_local(
                         " ".join(ns_parser.question), ns_parser.gpt_model
                     )
@@ -792,6 +913,14 @@ class BaseController(metaclass=ABCMeta):
             default="",
             nargs="+",
         )
+        parser.add_argument(
+            "-p",
+            "--public",
+            dest="public",
+            action="store_true",
+            help="Whether the routine should be public or not",
+            default=False,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_simple_args(parser, other_args)
@@ -801,6 +930,7 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_NAME
             global SESSION_RECORDED_DESCRIPTION
             global SESSION_RECORDED_TAGS
+            global SESSION_RECORDED_PUBLIC
 
             SESSION_RECORDED_NAME = (
                 ns_parser.name
@@ -810,6 +940,7 @@ class BaseController(metaclass=ABCMeta):
 
             SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
             SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
+            SESSION_RECORDED_PUBLIC = ns_parser.public
 
             console.print(
                 "[green]The session is successfully being recorded."
@@ -862,6 +993,7 @@ class BaseController(metaclass=ABCMeta):
                         "description": SESSION_RECORDED_DESCRIPTION,
                         "routine": routine,
                         "tags": SESSION_RECORDED_TAGS,
+                        "public": SESSION_RECORDED_PUBLIC,
                     }
                     response = Hub.upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
@@ -993,6 +1125,17 @@ class BaseController(metaclass=ABCMeta):
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
         )
+
+        if config_terminal.HOLD:
+            parser.add_argument(
+                "--legend",
+                type=str,
+                dest="hold_legend_str",
+                default="",
+                nargs="+",
+                help="Label for legend when hold is on.",
+            )
+
         if export_allowed > NO_EXPORT:
             choices_export = []
             help_export = "Does not export!"
@@ -1088,11 +1231,14 @@ class BaseController(metaclass=ABCMeta):
             console.print(f"[help]{txt_help}[/help]")
             return None
 
+        # This protects against the hidden loads in stocks/fa
+        if parser.prog != "load" and config_terminal.HOLD:
+            config_terminal.set_last_legend(" ".join(ns_parser.hold_legend_str))
+
         if l_unknown_args:
             console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}"
             )
-
         return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):
@@ -1527,6 +1673,15 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 and ns_parser.vs == "usdt"
             ):
                 ns_parser.vs = "usd"
+            if ns_parser.source == "YahooFinance" and ns_parser.interval in [
+                "240",
+                "10080",
+                "43200",
+            ]:
+                console.print(
+                    f"[red]YahooFinance does not support {ns_parser.interval}min interval[/red]"
+                )
+                return
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
                 to_symbol=ns_parser.vs,
@@ -1543,6 +1698,9 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
+                self.data = (  # pylint: disable=attribute-defined-outside-init
+                    self.current_df.copy()
+                )
                 cryptocurrency_helpers.show_quick_performance(
                     self.current_df,
                     self.symbol,

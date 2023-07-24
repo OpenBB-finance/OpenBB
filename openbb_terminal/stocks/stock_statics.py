@@ -125,6 +125,11 @@ INCOME_PLOT = {
         "noninterest_expense": "noninterest_expense",
         "interest_and_dividend_income_operating": "interest_and_dividend_income_operating",
         "provision_for_loan_lease_and_other_losses": "provision_for_loan_lease_and_other_losses",
+        "income_loss_from_discontinued_operations_net_of_tax": "income_loss_from_discontinued_operations_net_of_tax",
+        "cost_of_revenue_services": "cost_of_revenue_services",
+        "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal": "income"
+        "_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",
+        "income_loss_from_equity_method_investments": "income_loss_from_equity_method_investments",
     },
     "YahooFinance": {
         "total_revenue": "total_revenue",
@@ -292,6 +297,7 @@ BALANCE_PLOT = {
         "fixed_assets": "fixed_assets",
         "other_than_fixed_noncurrent_assets": "other_than_fixed_non_current_assets",
         "liabilities_and_equity": "liabilities_and_equity",
+        "commitments_and_contingencies": "commitments_and_contingencies",
     },
     "YahooFinance": {
         "cash_and_cash_equivalents": "cash_and_cash_equivalents",

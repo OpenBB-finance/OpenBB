@@ -1,3 +1,4 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
   flexRender,
   getCoreRowModel,
@@ -6,31 +7,34 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
+  Column,
+  Row,
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useVirtual } from "react-virtual";
-import Select from "../Select";
-import {
-  formatNumberMagnitude,
-  fuzzyFilter,
-  isEqual,
-  includesDateNames,
-  formatNumberNoMagnitude,
-  includesPriceNames,
-} from "../../utils/utils";
-import DraggableColumnHeader, { magnitudeRegex } from "./ColumnHeader";
-import Pagination, { validatePageSize } from "./Pagination";
-import Export from "./Export";
-import Timestamp from "./Timestamp";
-import FilterColumns from "./FilterColumns";
 import xss from "xss";
-import useLocalStorage from "../../utils/useLocalStorage";
-import Toast from "../Toast";
 import useDarkMode from "../../utils/useDarkMode";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import useLocalStorage from "../../utils/useLocalStorage";
+import {
+  formatNumber,
+  formatNumberMagnitude,
+  formatNumberNoMagnitude,
+  fuzzyFilter,
+  includesDateNames,
+  includesPriceNames,
+  isEqual,
+} from "../../utils/utils";
 import CloseIcon from "../Icons/Close";
+import Select from "../Select";
+import Toast from "../Toast";
+import DraggableColumnHeader, {
+  isoYearRegex,
+  magnitudeRegex,
+} from "./ColumnHeader";
 import DownloadFinishedDialog from "./DownloadFinishedDialog";
+import Export from "./Export";
+import FilterColumns from "./FilterColumns";
+import Pagination, { validatePageSize } from "./Pagination";
 
 const date = new Date();
 
@@ -68,10 +72,14 @@ function getCellWidth(row, column) {
 
     const probablyLink = valueType === "string" && value.startsWith("http");
 
-    if (probablyLink) {
+    if (probablyLink || !probablyDate) {
       return value?.toString().length ?? 0;
     }
-    if (probablyDate) {
+    if (
+      probablyDate &&
+      !isNaN(new Date(value).getTime()) &&
+      !isoYearRegex.test(value?.toString())
+    ) {
       if (typeof value === "string") {
         return value?.toString().length ?? 0;
       }
@@ -87,8 +95,9 @@ function getCellWidth(row, column) {
           dateFormatted = date.toISOString().split("T")[0];
         } else {
           dateFormatted = date.toISOString();
-          dateFormatted =
-            `${dateFormatted.split("T")[0]} ${dateFormatted.split("T")[1].split(".")[0]}`;
+          dateFormatted = `${dateFormatted.split("T")[0]} ${
+            dateFormatted.split("T")[1].split(".")[0]
+          }`;
         }
 
         return dateFormatted?.toString().length ?? 0;
@@ -96,11 +105,8 @@ function getCellWidth(row, column) {
         return value?.toString().length ?? 0;
       }
     }
-    if (valueType === "number") {
-      return value?.toString().length ?? 0;
-    } else {
-      return value?.toString().length ?? 0;
-    }
+
+    return value?.toString().length ?? 0;
   } catch (e) {
     return 0;
   }
@@ -124,7 +130,7 @@ export default function Table({
   const [downloadFinished, setDownloadFinished] = useState(false);
   const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
-    colorTheme === "dark" ? true : false
+    colorTheme === "dark" ? true : false,
   );
   const toggleDarkMode = (checked: boolean) => {
     //@ts-ignore
@@ -135,7 +141,7 @@ export default function Table({
   const [currentPage, setCurrentPage] = useLocalStorage(
     "rowsPerPage",
     DEFAULT_ROWS_PER_PAGE,
-    validatePageSize
+    validatePageSize,
   );
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
   const [colors, setColors] = useLocalStorage("colors", false);
@@ -148,7 +154,7 @@ export default function Table({
     return acc;
   }, {});
   const [columnVisibility, setColumnVisibility] = useState(
-    defaultVisibleColumns
+    defaultVisibleColumns,
   );
 
   //@ts-ignore
@@ -158,8 +164,8 @@ export default function Table({
     const cellLength = Math.max(
       //@ts-ignore
       ...rows.map((row) => getCellWidth(row, accessor)),
-      headerText?.length ? headerText?.length + 8 : 0
-      );
+      headerText?.length ? headerText?.length + 8 : 0,
+    );
     return Math.min(maxWidth, cellLength * magicSpacing);
   };
 
@@ -167,6 +173,39 @@ export default function Table({
     () => [
       ...columns.map((column: any, index: number) => ({
         accessorKey: column,
+        accessorFn: (row: any) => {
+          const indexLabel = row.hasOwnProperty("index")
+            ? "index"
+            : row.hasOwnProperty("Index")
+            ? "Index"
+            : columns[0];
+          const indexValue = indexLabel ? row[indexLabel] : null;
+          const value = row[column];
+          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
+          const probablyDate =
+            only_numbers?.length >= 4 &&
+            (includesDateNames(column) ||
+              column.toLowerCase() === "index" ||
+              (indexValue &&
+                typeof indexValue === "string" &&
+                (indexValue.toLowerCase().includes("date") ||
+                  indexValue.toLowerCase().includes("time") ||
+                  indexValue.toLowerCase().includes("timestamp") ||
+                  indexValue.toLowerCase().includes("year") ||
+                  indexValue.toLowerCase().includes("month") ||
+                  indexValue.toLowerCase().includes("week") ||
+                  indexValue.toLowerCase().includes("hour") ||
+                  indexValue.toLowerCase().includes("minute"))));
+
+          if (probablyDate && isoYearRegex.test(value?.toString()))
+            return value;
+
+          if (probablyDate) {
+            if (typeof value === "number") return value;
+            return new Date(value).getTime();
+          }
+          return value;
+        },
         id: column,
         header: column,
         size: getColumnWidth(data, column, column),
@@ -203,14 +242,18 @@ export default function Table({
                 target="_blank"
                 rel="noreferrer"
               >
-                {value?.length > 25 ? value.substring(0, 25) + "..." : value}
+                {value?.length > 25 ? `${value.substring(0, 25)}...` : value}
               </a>
             );
           }
-          if (probablyDate) {
-            if (typeof value === "number") {
-              return <p>{value}</p>;
-            }
+          if (probablyDate && isoYearRegex.test(value?.toString())) {
+            return <p>{value}</p>;
+          }
+          if (
+            probablyDate &&
+            !isNaN(new Date(value).getTime()) &&
+            !isoYearRegex.test(value?.toString())
+          ) {
             if (typeof value === "string") {
               const date = value.split("T")[0];
               const time = value.split("T")[1]?.split(".")[0];
@@ -223,7 +266,6 @@ export default function Table({
                 </p>
               );
             }
-
             try {
               const date = new Date(value);
               let dateFormatted = "";
@@ -236,8 +278,9 @@ export default function Table({
                 dateFormatted = date.toISOString().split("T")[0];
               } else {
                 dateFormatted = date.toISOString();
-                dateFormatted =
-                  `${dateFormatted.split("T")[0]} ${dateFormatted.split("T")[1].split(".")[0]}`;
+                dateFormatted = `${dateFormatted.split("T")[0]} ${
+                  dateFormatted.split("T")[1].split(".")[0]
+                }`;
               }
 
               return <p>{dateFormatted}</p>;
@@ -251,7 +294,7 @@ export default function Table({
           ) {
             let valueFormatted = formatNumberMagnitude(value, column);
             const valueFormattedNoMagnitude = Number(
-              formatNumberNoMagnitude(value)
+              formatNumberNoMagnitude(value),
             );
 
             if (
@@ -274,6 +317,7 @@ export default function Table({
                   "text-[#F87171]": valueFormattedNoMagnitude < 0 && colors,
                   "text-[#404040]": valueFormattedNoMagnitude === 0 && colors,
                 })}
+                title={formatNumber(value).toString() ?? ""}
               >
                 {valueFormattedNoMagnitude !== 0
                   ? valueFormattedNoMagnitude > 0
@@ -289,13 +333,13 @@ export default function Table({
         },
       })),
     ],
-    [advanced, colors]
+    [advanced, colors],
   );
 
   const [lockFirstColumn, setLockFirstColumn] = useState(false);
 
   const [columnOrder, setColumnOrder] = useState(
-    rtColumns.map((column) => column.id as string)
+    rtColumns.map((column) => column.id as string),
   );
 
   const resetOrder = () =>
@@ -376,7 +420,7 @@ export default function Table({
         className={clsx("overflow-x-hidden h-screen")}
       >
         <div className="relative p-4" id="table">
-          <div className="absolute -inset-0.5 bg-gradient-to-r rounded-md blur-md from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
+          <div className="absolute -inset-0.5 bg-gradient-to-r rounded-md blur-md from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30" />
           <div
             className={
               "border border-grey-500/60 dark:border-grey-200/60 bg-white dark:bg-grey-900 rounded overflow-hidden relative z-20"
@@ -385,7 +429,7 @@ export default function Table({
             <div
               className="_header relative gap-4 py-2 text-center text-xs flex items-center justify-between px-4 text-white"
               style={{
-                fontSize: `${Number(fontSize) * 100}%`,
+                fontSize: `${Number(fontSize) * 90}%`,
               }}
             >
               <div className="w-1/3">
@@ -399,7 +443,7 @@ export default function Table({
                   <path
                     fill="#fff"
                     d="M61.283 3.965H33.608v27.757h25.699V19.826H37.561v-3.965H63.26V3.965h-1.977zM39.538 23.792h15.815v3.965H37.561v-3.965h1.977zM59.306 9.913v1.983H37.561V7.931h21.745v1.982zM33.606 0h-3.954v3.965H33.606V0zM25.7 3.966H0V15.86h25.7v3.965H3.953v11.896h25.7V3.966h-3.955zm0 21.808v1.983H7.907v-3.965h17.791v1.982zm0-15.86v1.982H3.953V7.931h21.745v1.982zM37.039 35.693v2.952l-.246-.246-.245-.245-.245-.247-.245-.246-.246-.246-.245-.245-.245-.247-.247-.246-.245-.246-.245-.246-.245-.246-.246-.246h-.49v3.936h.49v-3.198l.246.246.245.246.245.246.245.246.246.246.246.246.245.247.246.245.245.246.245.247.245.246.246.245.245.246h.245v-3.936h-.49zM44.938 37.17h-.491v-1.477h-2.944v3.937h3.93v-2.46h-.495zm-2.944-.246v-.739h1.962v.984h-1.962v-.245zm2.944.984v1.23h-2.944V37.66h2.944v.247zM52.835 37.17h-.49v-1.477h-2.946v3.937h3.925v-2.46h-.489zm-2.944-.246v-.739h1.963v.984h-1.965l.002-.245zm2.944.984v1.23H49.89V37.66h2.946v.247zM29.174 35.693H25.739v3.936H29.663v-.491H26.229v-.984h2.943v-.493H26.229v-1.476h3.434v-.492h-.489zM13.37 35.693H9.934v3.937h3.925v-3.937h-.49zm0 .738v2.709h-2.945v-2.955h2.943l.001.246zM21.276 35.693h-3.435v3.937h.491v-1.476h3.434v-2.461h-.49zm0 .738v1.23h-2.944v-1.476h2.944v.246z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <p className="font-bold w-1/3 flex flex-col gap-0.5 items-center">
@@ -424,14 +468,14 @@ export default function Table({
                 </p>
               )} */}
             </div>
-            <div className="overflow-auto max-h-[calc(100vh-160px)] smh:max-h-[calc(100vh-95px)]">
-              <table
-                className="text-sm relative"
-                style={{
-                  fontSize: `${Number(fontSize) * 100}%`,
-                }}
-              >
-                <thead className="sticky top-0 bg-white dark:bg-grey-900">
+            <div className="overflow-auto max-h-[calc(100vh-170px)] smh:max-h-[calc(100vh-95px)]">
+              <table className="text-sm relative">
+                <thead
+                  className="sticky top-0 bg-white dark:bg-grey-900"
+                  style={{
+                    fontSize: `${Number(fontSize) * 100}%`,
+                  }}
+                >
                   {table.getHeaderGroups().map((headerGroup, idx) => (
                     <tr key={headerGroup.id}>
                       {headerGroup.headers.map((header, idx2) => {
@@ -456,6 +500,9 @@ export default function Table({
                       <tr
                         key={row.id}
                         className="!h-[64px] border-b border-grey-400"
+                        style={{
+                          fontSize: `${Number(fontSize) * 100}%`,
+                        }}
                       >
                         {row.getVisibleCells().map((cell, idx2) => {
                           return (
@@ -469,7 +516,7 @@ export default function Table({
                                     idx % 2 === 1,
                                   "sticky left-0 z-10":
                                     idx2 === 0 && lockFirstColumn,
-                                }
+                                },
                               )}
                               style={{
                                 width: cell.column.getSize(),
@@ -477,7 +524,7 @@ export default function Table({
                             >
                               {flexRender(
                                 cell.column.columnDef.cell,
-                                cell.getContext()
+                                cell.getContext(),
                               )}
                             </td>
                           );
@@ -497,13 +544,14 @@ export default function Table({
                             className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10 p-4"
                             style={{
                               width: header.getSize(),
+                              fontSize: `${Number(fontSize) * 100}%`,
                             }}
                           >
                             {header.isPlaceholder
                               ? null
                               : flexRender(
                                   header.column.columnDef.footer,
-                                  header.getContext()
+                                  header.getContext(),
                                 )}
                           </th>
                         ))}
@@ -530,7 +578,7 @@ export default function Table({
                   <DialogPrimitive.Title className="uppercase font-bold tracking-widest">
                     Settings
                   </DialogPrimitive.Title>
-                  <div className="grid grid-cols-2 gap-4 mt-10 text-sm">
+                  <div className="grid grid-cols-2 gap-2 mt-10 text-sm">
                     {needsReorder && (
                       <button onClick={() => resetOrder()} className="_btn h-9">
                         Reset Order

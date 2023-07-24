@@ -420,7 +420,6 @@ en:
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
-  stocks/ta/rsp: relative strength percentile
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
@@ -442,6 +441,7 @@ en:
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
   stocks/ta/multi: plot multiple indicators on the same chart
+  stocks/ta/ichimoku: Ichimoku Kinko Hyo indicator
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker
@@ -539,6 +539,7 @@ en:
   crypto/onchain/btcblockdata: displays BTC single block data
   crypto/onchain/gwei: check current eth gas fees
   crypto/onchain/whales: check crypto wales transactions
+  crypto/onchain/topledger: get on-chain data from topledger
   crypto/onchain/lt: last trades by dex or month
   crypto/onchain/dvcp: daily volume for crypto pair
   crypto/onchain/tv: token volume on DEXes
@@ -767,8 +768,8 @@ en:
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
   economy/edebt: show external debt statistics for various countries
+  economy/usdli: Compare the USD Liquidity Index against a choice of indices
   economy/plot: plot data from the above commands together
-  economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data

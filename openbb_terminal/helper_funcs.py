@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.3
+GPT_INDEX_VER = 0.4
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -106,6 +106,8 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
+    if cmd_loc.split("/")[-1] == "hold":
+        return
     global command_location  # noqa
     command_location = cmd_loc
 
@@ -846,6 +848,8 @@ def us_market_holidays(years) -> list:
 
 def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return num
 
     if num == float("inf"):
         return "inf"
@@ -1519,8 +1523,6 @@ def export_data(
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
     """
-    if not figure:
-        figure = OpenBBFigure()
 
     if export_type:
         saved_path = compose_export_path(func_name, dir_path).resolve()
@@ -1599,6 +1601,9 @@ def export_data(
                             writer, sheet_name=sheet_name, index=True, header=True
                         )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+                if figure is None:
+                    console.print("No plot to export.")
+                    continue
                 figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
@@ -1606,7 +1611,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
-        figure._exported = True  # pylint: disable=protected-access
+        if figure is not None:
+            figure._exported = True  # pylint: disable=protected-access
 
 
 def get_rf() -> float:
@@ -2170,7 +2176,7 @@ def query_LLM_local(query_text, gpt_model):
     # define LLM
     llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
     # define prompt helper
-    prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
+    prompt_helper = PromptHelper(context_window=4096, num_output=256)
     service_context = ServiceContext.from_defaults(
         llm_predictor=llm_predictor, prompt_helper=prompt_helper
     )

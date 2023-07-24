@@ -411,7 +411,8 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"]
+      "tx": ["Ethplorer"],
+      "topledger": ["Topledger"]
     },
     "defi": {
       "newsletter": ["Substack"],
@@ -513,7 +514,7 @@
     "bigmac": ["Nasdaq"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
-    "rtps": ["AlphaVantage"],
+    "usdli": ["FRED"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
     "gdp": ["OECD"],
@@ -526,7 +527,7 @@
     "revenue": ["OECD"],
     "spending": ["OECD"],
     "trust": ["OECD"],
-    "treasury": ["EconDB"],
+    "treasury": ["FED"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },

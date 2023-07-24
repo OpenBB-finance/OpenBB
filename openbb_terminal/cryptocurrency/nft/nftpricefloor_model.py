@@ -65,5 +65,7 @@ def get_floor_price(slug: str) -> pd.DataFrame:
         )
         df = df.set_index("timestamps")
         df.index = pd.to_datetime(df.index * 1_000_000)
-        return df
+        df.index = pd.DatetimeIndex(df.index.rename("date").strftime("%Y-%m-%d"))
+        df = df.reset_index().drop_duplicates(subset=["date"])
+        return df.set_index("date")
     return pd.DataFrame()
