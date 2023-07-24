@@ -3,7 +3,7 @@
 
 # IMPORT THIRD-PARTY
 
-# IMPORT INTERNAL
+
 from openbb_provider.abstract.provider import Provider
 
 from openbb_benzinga.models.global_news import BenzingaGlobalNewsFetcher

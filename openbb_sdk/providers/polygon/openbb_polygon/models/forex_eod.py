@@ -4,7 +4,7 @@
 from datetime import date, datetime, timedelta
 from typing import Dict, List, Literal, Optional, Union
 
-# IMPORT INTERNAL
+
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer

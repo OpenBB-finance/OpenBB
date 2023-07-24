@@ -1,7 +1,6 @@
 """Polygon provider module."""
 
 
-# IMPORT INTERNAL
 from openbb_provider.abstract.provider import Provider
 
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher

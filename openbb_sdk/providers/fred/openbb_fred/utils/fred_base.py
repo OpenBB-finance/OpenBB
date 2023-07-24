@@ -5,7 +5,6 @@ from urllib.parse import urlencode
 # IMPORT THIRD-PARTY
 import requests
 
-# IMPORT INTERNAL
 
 root_url = "https://api.stlouisfed.org/fred"
 

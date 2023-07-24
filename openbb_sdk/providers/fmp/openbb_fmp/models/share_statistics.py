@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import Dict, List, Optional
 
-# IMPORT INTERNAL
+
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer

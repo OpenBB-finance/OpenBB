@@ -1,8 +1,6 @@
 # IMPORT THIRD PARTY
 import requests
 
-# IMPORT INTERNAL
-
 
 def get_data(url: str) -> dict:
     r = requests.get(url, timeout=10)

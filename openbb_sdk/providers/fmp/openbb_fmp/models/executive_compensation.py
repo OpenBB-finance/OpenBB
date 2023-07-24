@@ -11,7 +11,7 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 
-# IMPORT INTERNAL
+
 from openbb_provider.models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
