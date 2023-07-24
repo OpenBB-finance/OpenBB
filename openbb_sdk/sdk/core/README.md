@@ -160,15 +160,15 @@ output = sdk.stocks.load(
 
 ### 4.1.1. Command output
 
-**ATTRIBUTES**
+**PROPERTIES**
 
 Each command will always return a  `CommandOutput`. There you will find:
 
 - `results`: the data returned by the command, if any
 - `provider`: the external data source used to get the data, if any
-- `warnings`: a list of warnings caught during the command execution
-- `error`: any error that occurred during the command execution
-- `chart`: the formatted data used to display the results in a chart
+- `warnings`: a list of warnings caught during the command execution, if any
+- `error`: any error that occurred during the command execution, if any
+- `chart`: the formatted data used to display the results in a chart, if any
 
 **HELPERS**
 
@@ -204,7 +204,7 @@ date
 # Python Interpreter: opens a PyWry window with the chart
 ```
 
-- `to_plotly_json()`: proxy to `chart.content`
+- `to_plotly_json`: proxy to `chart.content`
 ```python
 >>> output.to_plotly_json()
 {'data':
