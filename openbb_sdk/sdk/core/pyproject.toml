@@ -10,7 +10,7 @@ packages = [{ include = "openbb_core" }]
 python = "^3.8"
 uvicorn = "^0.20.0"
 websockets = "^10.4"
-pandas = "^1.5.3"
+pandas = ">1.5.3"
 requests = "^2.28.2"
 html5lib = "^1.1"
 fastapi = "^0.95.2"
