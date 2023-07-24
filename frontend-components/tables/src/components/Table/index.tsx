@@ -159,8 +159,8 @@ export default function Table({
 
   //@ts-ignore
   const getColumnWidth = (rows, accessor, headerText) => {
-    const maxWidth = 180;
-    const magicSpacing = 5;
+    const maxWidth = 200;
+    const magicSpacing = 12;
     const cellLength = Math.max(
       //@ts-ignore
       ...rows.map((row) => getCellWidth(row, accessor)),
@@ -473,7 +473,7 @@ export default function Table({
                 <thead
                   className="sticky top-0 bg-white dark:bg-grey-900"
                   style={{
-                    fontSize: `${Number(fontSize) * 75}%`,
+                    fontSize: `${Number(fontSize) * 100}%`,
                   }}
                 >
                   {table.getHeaderGroups().map((headerGroup, idx) => (

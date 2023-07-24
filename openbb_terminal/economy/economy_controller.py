@@ -115,36 +115,36 @@ class EconomyController(BaseController):
     ]
     overview_options = ["indices", "usbonds", "glbonds", "currencies"]
     tyld_maturity = ["3m", "5y", "10y", "30y"]
-    valuation_sort_cols = [
-        "Name",
-        "MarketCap",
-        "P/E",
-        "FwdP/E",
-        "PEG",
-        "P/S",
-        "P/B",
-        "P/C",
-        "P/FCF",
-        "EPSpast5Y",
-        "EPSnext5Y",
-        "Salespast5Y",
-        "Change",
-        "Volume",
-    ]
-    performance_sort_list = [
-        "Name",
-        "Week",
-        "Month",
-        "3Month",
-        "6Month",
-        "1Year",
-        "YTD",
-        "Recom",
-        "AvgVolume",
-        "RelVolume",
-        "Change",
-        "Volume",
-    ]
+    valuation_sort_cols_dict = {
+        "Name": "Name",
+        "MarketCap": "Market Cap",
+        "P/E": "P/E",
+        "FwdP/E": "Fwd P/E",
+        "PEG": "PEG",
+        "P/S": "P/S",
+        "P/B": "P/B",
+        "P/C": "P/C",
+        "P/FCF": "P/FCF",
+        "EPSpast5Y": "EPS past 5Y",
+        "EPSnext5Y": "EPS next 5Y",
+        "Salespast5Y": "Sales past 5Y",
+        "Change": "Change",
+        "Volume": "Volume",
+    }
+    performance_sort_dict = {
+        "Name": "Name",
+        "1W": "1W",
+        "1M": "1M",
+        "3M": "3M",
+        "6M": "6M",
+        "1Y": "1Y",
+        "YTD": "YTD",
+        "Recom": "Recom",
+        "AvgVolume": "Avg Volume",
+        "RelVolume": "Rel Volume",
+        "Change": "Change",
+        "Volume": "Volume",
+    }
     index_interval = [
         "1m",
         "2m",
@@ -2213,7 +2213,7 @@ class EconomyController(BaseController):
             "--sortby",
             dest="sortby",
             type=str,
-            choices=self.valuation_sort_cols,
+            choices=list(self.valuation_sort_cols_dict.keys()),
             default="Name",
             help="Column to sort by",
         )
@@ -2243,7 +2243,7 @@ class EconomyController(BaseController):
             )
             finviz_view.display_valuation(
                 group=ns_group,
-                sortby=ns_parser.sortby,
+                sortby=self.valuation_sort_cols_dict[ns_parser.sortby],
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
@@ -2275,7 +2275,7 @@ class EconomyController(BaseController):
             "-s",
             "--sortby",
             dest="sortby",
-            choices=self.performance_sort_list,
+            choices=list(self.performance_sort_dict.keys()),
             default="Name",
             help="Column to sort by",
         )
@@ -2304,7 +2304,7 @@ class EconomyController(BaseController):
             )
             finviz_view.display_performance(
                 group=ns_group,
-                sortby=ns_parser.sortby,
+                sortby=self.performance_sort_dict[ns_parser.sortby],
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)

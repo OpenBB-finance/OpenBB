@@ -1,12 +1,12 @@
 # Table of contents
 
 - [Table of contents](#table-of-contents)
-- [provider](#provider)
+  - [provider](#provider)
   - [What is Data Standardization?](#what-is-data-standardization)
-- [Key Elements](#key-elements)
-- [Installation](#installation)
+  - [Key Elements](#key-elements)
+  - [Installation](#installation)
 
-# provider
+## provider
 
 The OpenBB Provider aims to give a coherent access to financial data providers by introducing standardization procedures.
 
@@ -26,7 +26,7 @@ Close for closing price column name in data from one provider might be coded as 
 **Data Cleaning**: we don’t remove errors and inconsistencies from data provider outputs.
 **Data Transformation & Data Integration**: both transforming data by processing it and integrating data from multiple providers together to harmonize datasets are functions of the SDK and are not handled on a provider level.
 
-# Key Elements
+## Key Elements
 
 - **QueryParams** : Are input parameters that are used for obtaining data. To load stock market data, we would have StockQueryParams, which would have fields like symbol, start date, and end date. You can find the standard query params inside the `./models` folder.
 - **Data** : Are outputs. Stock market data would be StockPriceData and have fields such as Open, High, Low, Close, and Volume. You can find the standard data models inside the `./models` folder.
@@ -34,7 +34,7 @@ Close for closing price column name in data from one provider might be coded as 
 - **Provider** : An object that is specific to a data provider (i.e. PolygonProvider) which holds Provider attributes and unites all of the provider's fetchers into a list.
 - **Provider Registry** : An aggregation of all the Provider objects and their API keys. It is the main point of usage and is responsible for dynamically serving the data by finding the correct Provider and Fetcher based on the given QueryParams.
 
-# Installation
+## Installation
 
 To install the provider, run the following command in this folder:
 

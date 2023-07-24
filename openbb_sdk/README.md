@@ -1,7 +1,6 @@
 # Table of contents
 
 - [Table of contents](#table-of-contents)
-- [OpenBB SDK](#openbb-sdk)
   - [Pre-requisites](#pre-requisites)
   - [Installation](#installation)
   - [API keys](#api-keys)
@@ -12,8 +11,6 @@
   - [API Usage](#api-usage)
   - [Docker](#docker)
   - [Development](#development)
-
-# OpenBB SDK
 
 ## Pre-requisites
 

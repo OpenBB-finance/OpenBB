@@ -92,7 +92,7 @@ def get_valuation_data(
     try:
         group = GROUPS[group]
         df_group = valuation.Valuation().screener_view(group=group)
-        df_group.columns = [col.replace(" ", "").strip() for col in df_group.columns]
+        df_group.columns = [col.strip() for col in df_group.columns]
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group.fillna("", inplace=True)
 
@@ -100,7 +100,7 @@ def get_valuation_data(
         if get_current_user().preferences.USE_INTERACTIVE_DF:
             return df_group
         print(df_group.head())
-        df_group["MarketCap"] = df_group["MarketCap"].apply(
+        df_group["Market Cap"] = df_group["Market Cap"].apply(
             lambda x: float(x.strip("B"))
             if x.endswith("B")
             else float(x.strip("M")) / 1000
@@ -146,18 +146,17 @@ def get_performance_data(
         df_group = performance.Performance().screener_view(group=group)
         df_group = df_group.rename(
             columns={
-                "Perf Week": "Week",
-                "Perf Month": "Month",
-                "Perf Quart": "3Month",
-                "Perf Half": "6Month",
-                "Perf Year": "1Year",
+                "Perf Week": "1W",
+                "Perf Month": "1M",
+                "Perf Quart": "3M",
+                "Perf Half": "6M",
+                "Perf Year": "1Y",
                 "Perf YTD": "YTD",
-                "Avg Volume": "AvgVolume",
-                "Rel Volume": "RelVolume",
+                "Avg Volume": "Avg Volume",
             }
         )
         df_group.columns = [col.strip() for col in df_group.columns]
-        df_group["Week"] = df_group["Week"].apply(lambda x: float(x.strip("%")) / 100)
+        df_group["1W"] = df_group["1W"].apply(lambda x: float(x.strip("%")) / 100)
         df_group = df_group.sort_values(by=sortby, ascending=ascend)
         df_group.fillna("", inplace=True)
 
@@ -166,9 +165,9 @@ def get_performance_data(
             return df_group
 
         df_group["Volume"] = df_group["Volume"] / 1_000_000
-        df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
+        df_group["Avg Volume"] = df_group["Avg Volume"] / 1_000_000
         df_group = df_group.rename(
-            columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
+            columns={"Volume": "Volume [1M]", "Avg Volume": "Avg Volume [1M]"}
         )
         return df_group
 

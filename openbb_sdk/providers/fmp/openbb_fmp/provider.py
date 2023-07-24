@@ -5,7 +5,7 @@
 # IMPORT THIRD-PARTY
 
 # IMPORT INTERNAL
-from openbb_provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider
 
 from .analyst_estimates import FMPAnalystEstimatesFetcher
 from .available_indices import FMPAvailableIndicesFetcher
@@ -55,7 +55,7 @@ from .treasury_rates import FMPTreasuryRatesFetcher
 # mypy: disable-error-code="list-item"
 
 fmp_provider = Provider(
-    name=ProviderNameType("fmp"),
+    name="fmp",
     description="Provider for FMP.",
     required_credentials=["api_key"],
     fetcher_list=[

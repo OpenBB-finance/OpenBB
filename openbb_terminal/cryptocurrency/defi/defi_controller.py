@@ -397,7 +397,7 @@ class DefiController(BaseController):
             "-d",
             "--dapps",
             dest="dapps",
-            type=str,
+            choices=["anchor", "sushiswap", "pancakeswap"],
             required="-h" not in other_args,
             help="dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap",
         )
@@ -405,11 +405,17 @@ class DefiController(BaseController):
             other_args.insert(0, "-d")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
-            llama_view.display_historical_tvl(dapps=ns_parser.dapps)
+            llama_view.display_historical_tvl(
+                dapps=ns_parser.dapps,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_ldapps(self, other_args: List[str]):

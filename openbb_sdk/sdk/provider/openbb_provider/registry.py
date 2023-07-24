@@ -7,7 +7,7 @@ import pkg_resources
 
 from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider
 
 
 class ProviderError(Exception):
@@ -18,10 +18,10 @@ class ProviderRegistry:
     """A Provider Registry is the central executor for dynamically retrieving data."""
 
     def __init__(self) -> None:
-        self.providers: Dict[ProviderNameType, Provider] = {}
-        self.credentials: Dict[ProviderNameType, Dict[str, None]] = {}
+        self.providers: Dict[str, Provider] = {}
+        self.credentials: Dict[str, Dict[str, None]] = {}
 
-    def get_provider(self, provider_name: ProviderNameType) -> Provider:
+    def get_provider(self, provider_name: str) -> Provider:
         """Get a provider from the registry."""
         if not self.providers:
             raise ValueError("No providers found, please confirm they are loaded.")
@@ -38,7 +38,7 @@ class ProviderRegistry:
 
     def filter_credentials(
         self,
-        provider_name: ProviderNameType,
+        provider_name: str,
         credentials: Optional[Dict[str, str]] = None,
     ) -> Dict[str, str]:
         required_credentials = self.credentials.get(provider_name)
@@ -68,13 +68,13 @@ class ProviderRegistry:
         if fetcher is None:
             raise ProviderError(
                 f"This query is not supported by the '{provider.name}' provider. "
-                f"Please try another provider: '{ProviderNameType.__args__}'"
+                f"Please try another provider: '{list(self.providers.keys())}'"
             )
         return fetcher
 
     def fetch(
         self,
-        provider_name: ProviderNameType,
+        provider_name: str,
         query_params: QueryParams,
         extra_params: Optional[Dict] = None,
         credentials: Optional[Dict[str, str]] = None,
@@ -94,6 +94,7 @@ def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any
     """Load extensions from entry points and their API keys from settings."""
 
     # TODO: Figure actual type for dict values Union[Provider, Dict[str, Dict[str, None]]]
+    # Can we try to load the extensions directly into the ProviderRegistry? Let's try it.
 
     extensions_dict: Dict[str, Dict[str, Any]] = {}
     extensions_dict["providers"] = {}
