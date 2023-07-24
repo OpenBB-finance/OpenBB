@@ -47,9 +47,7 @@ class Query:
 
         for k, v in original.items():
             f = fields[k]
-            providers = f.description.replace("Available for providers: ", "").split(
-                ", "
-            )
+            providers = f.title.replace("Available for providers: ", "").split(", ")
             if v != f.default:
                 if provider_name in providers:
                     filtered[k] = v

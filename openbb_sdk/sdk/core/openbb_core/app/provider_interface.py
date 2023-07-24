@@ -163,7 +163,7 @@ class ProviderInterface:
         if query:
             merged_default = Query(
                 default=current.default.default,
-                description=f"{current.default.description}, {incoming.default.description}",
+                title=f"{current.default.title}, {incoming.default.title}",
             )
         else:
             merged_default = current.default
@@ -184,17 +184,22 @@ class ProviderInterface:
     def __create_field(
         name: str,
         field: Dict[str, Any],
-        description: Optional[str] = None,
+        provider_name: Optional[str] = None,
         query: bool = False,
     ) -> DataclassField:
         new_name = name.replace(".", "_")
         type_ = field["type"]
+        description = field["description"]
 
         default = ... if field["required"] else field["default"]
         if query:
-            default = Query(default=default, description=description)
-        elif description:
-            default = Field(default=default, description=description)
+            default = Query(
+                default=default, title=provider_name, description=description
+            )
+        elif provider_name:
+            default = Field(
+                default=default, title=provider_name, description=description
+            )
 
         return DataclassField(new_name, type_, default)
 
@@ -229,12 +234,11 @@ class ProviderInterface:
                         else:
                             updated = incoming
 
-                        if not updated.default.description.startswith(
+                        if not updated.default.title.startswith(
                             "Available for providers:"
                         ):
-                            updated.default.description = (
-                                "Available for providers: "
-                                + updated.default.description
+                            updated.default.title = (
+                                "Available for providers: " + updated.default.title
                             )
 
                         extra[updated.name] = (
@@ -298,10 +302,10 @@ class ProviderInterface:
 
         @dataclass
         class StockNews(ExtraParams):
-            pageSize: int = Query(default=15, description="benzinga")
-            displayOutput: int = Query(default="headline", description="benzinga")
+            pageSize: int = Query(default=15, title="benzinga")
+            displayOutput: int = Query(default="headline", title="benzinga")
             ...
-            sort: str = Query(default=None, description="benzinga, polygon")
+            sort: str = Query(default=None, title="benzinga, polygon")
         """
         result: Dict = {}
 
@@ -404,9 +408,7 @@ class ProviderInterface:
             for name, field in fields.items():
                 fields_dict[name] = (
                     field.type_,
-                    Field(
-                        default=field.default, description=field.field_info.description
-                    ),
+                    Field(default=field.default, title=field.field_info.title),
                 )
 
             class Config(BaseConfig):
