@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-forex"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_forex" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = { path = "../../sdk/core" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+forex = "openbb_forex.forex_router:router"

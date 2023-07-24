@@ -160,8 +160,6 @@ async def plot_indicators(
     ):
         annotation.xshift += -5
 
-    fig.hide_holidays()
-
     y_min, y_max = data["Low"].min().min(), data["High"].max().max()
     y_range = y_max - y_min
     y_min -= y_range * 0.05

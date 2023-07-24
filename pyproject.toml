@@ -18,14 +18,14 @@ openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8.1,<3.11, !=3.9.7"
-scipy = "^1.9.3"
+scipy = "1.10.1" #Pinning on July 6 for pip issues
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
-requests = "^2.25.1"
+requests = "^2.31.0"
 alpha-vantage = "^2.3.1"
 finviz = "^1.4.6"
 bs4 = "^0.0.1"
-yfinance = "^0.2.12"
+yfinance = "^0.2.25"
 pmaw = "^3.0.0"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
@@ -65,7 +65,7 @@ pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
 rich = "^12.6.0"
 dnspython = "^2.1.0"
-python-dotenv = "^0.19.2"
+python-dotenv = "^1.0.0"
 Pygments = "^2.11.2"
 ascii-magic = "^1.6"
 squarify = "^0.4.3"
@@ -74,7 +74,7 @@ linearmodels = "^4.25"
 ipywidgets = "^8.0.2"
 Jinja2 = "^3.0.3"
 Riskfolio-Lib = {version = "^3.1.1", optional = true}
-ccxt = "^2.5.67"
+ccxt = "^4.0.33"
 html5lib = "^1.1"
 feedparser = "^6.0.10"
 pyinstaller = {version = "^4.10", optional = true}
@@ -100,7 +100,7 @@ grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
-streamlit = "^1.22.0"
+streamlit = "^1.24.1"
 pywry = "^0.5.13"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
@@ -112,12 +112,13 @@ openai-whisper = {version = "^20230124", optional = true}
 setuptools-rust = {version = "^1.5.2", optional = true}
 transformers = {version = "^4.26.1", optional = true}
 yt-dlp = {version = "^2023.2.17", optional = true}
-pydantic = "^1.10.5"
+pydantic = "<2"
 posthog = "^3.0.1"
 reportlab = "<4" #Pinning due to build error on MacOs
 arch = "^5.5.0"
-llama-index = "^0.6.20"
-langchain = "^0.0.191"
+llama-index = "0.7.11"
+langchain = "0.0.237"
+ffn = "0.3.6"
 
 
 

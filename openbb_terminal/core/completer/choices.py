@@ -305,6 +305,7 @@ def build_controller_choice_map(controller) -> dict:
     controller_choice_map: dict = {c: {} for c in controller.controller_choices}
     controller_choice_map["support"] = controller.SUPPORT_CHOICES
     controller_choice_map["about"] = controller.ABOUT_CHOICES
+    controller_choice_map["hold"] = controller.HELP_CHOICES
 
     for command in command_list:
         try:

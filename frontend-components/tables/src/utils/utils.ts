@@ -27,9 +27,10 @@ export function formatNumberMagnitude(value: number | string, column?: string) {
       value.toString().split(".")[1]?.length || 0,
     );
     const toFixed = Math.min(4, decimalPlaces);
-    if (value < 1000) {
+    if (value < 5) {
       return value.toFixed(toFixed) || 0;
     }
+    value = Number(value.toFixed(2));
   }
 
   if (
@@ -38,12 +39,21 @@ export function formatNumberMagnitude(value: number | string, column?: string) {
   ) {
     const magnitude = Math.min(4, Math.floor(Math.log10(Math.abs(value)) / 3));
     const suffix = ["", "K", "M", "B", "T"][magnitude];
-    const formatted = (value / 10 ** (magnitude * 3)).toFixed(2);
-    return `${formatted} ${suffix}`;
+    const formatted = (value / 10 ** (magnitude * 3)).toFixed(3);
+    return `${formatted.replace(/\.?0+$/, "")} ${suffix}`;
   }
 
+  if (value > 1000 || value < -1000) return formatNumber(value);
+
+  return value;
+}
+
+export function formatNumber(value: number) {
   if (value > 1000 || value < -1000) {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const parts = value.toString().split(".");
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const decimalPart = parts[1] ? `.${parts[1]}` : "";
+    return `${integerPart}${decimalPart}`;
   }
 
   return value;
@@ -56,7 +66,7 @@ export function includesDateNames(column: string) {
 }
 
 export function includesPriceNames(column: string) {
-  return ["price", "open", "close", "high", "low"].some((priceName) =>
+  return ["price", "open", "close"].some((priceName) =>
     column?.toLowerCase().includes(priceName),
   );
 }

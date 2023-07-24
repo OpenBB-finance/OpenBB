@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-news"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_news" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = { path = "../../sdk/core" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+news = "openbb_news.news_router:router"

@@ -79,6 +79,7 @@ def display_info(
     coin = gecko.Coin(cg_id)
 
     df = wrap_text_in_df(coin.get_base_info(), w=80)
+    df = df.applymap(lambda x: x if not isinstance(x, dict) else "")
 
     print_rich_table(
         df,

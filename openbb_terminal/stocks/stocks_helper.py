@@ -24,7 +24,7 @@ from scipy import stats
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.helper_funcs import print_rich_table, request
+from openbb_terminal.helper_funcs import get_user_timezone, print_rich_table, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
@@ -380,7 +380,9 @@ def load(  # pylint: disable=too-many-return-statements
             )
 
         elif source == "Intrinio":
-            df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
+            df_stock_candidate = load_stock_intrinio(
+                symbol, start_date, end_date, weekly, monthly
+            )
 
         elif source == "DataBento":
             df_stock_candidate = databento_model.get_historical_stock(
@@ -514,7 +516,7 @@ def load(  # pylint: disable=too-many-return-statements
 
             df_stock_candidate.index = (
                 df_stock_candidate.index.tz_localize(tz="UTC")
-                .tz_convert("US/Eastern")
+                .tz_convert(get_user_timezone())
                 .tz_localize(None)
             )
             s_start_dt = df_stock_candidate.index[0]
@@ -533,7 +535,7 @@ def load(  # pylint: disable=too-many-return-statements
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_convert(
-                "US/Eastern"
+                get_user_timezone()
             ).tz_localize(None)
 
             s_start_dt = df_stock_candidate.index[0]
@@ -685,7 +687,7 @@ def display_candle(
         data["Close"] = data_["HA Close"]
         data.name = f"{symbol} - Heikin Ashi Candles"
 
-    fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
+    fig = PlotlyTA.plot(data, dict(**kwargs))
 
     if add_trend:
         fig.add_trend(data, secondary_y=False)

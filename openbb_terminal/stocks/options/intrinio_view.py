@@ -95,7 +95,6 @@ def display_historical(
         secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
-    fig.hide_holidays()
 
     if export:
         export_data(
@@ -225,7 +224,6 @@ def view_historical_greeks(
             side="right",
         ),
     )
-    fig.hide_holidays()
 
     export_data(
         export,

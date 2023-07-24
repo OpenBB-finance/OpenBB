@@ -24,7 +24,6 @@
 - [overview](/sdk/reference/economy/overview)
 - [perfmap](/sdk/reference/economy/perfmap)
 - [performance](/sdk/reference/economy/performance)
-- [rtps](/sdk/reference/economy/rtps)
 - [search_index](/sdk/reference/economy/search_index)
 - [spectrum](/sdk/reference/economy/spectrum)
 - [treasury](/sdk/reference/economy/treasury)

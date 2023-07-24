@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-crypto"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_crypto" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = { path = "../../sdk/core" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+crypto = "openbb_crypto.crypto_router:router"

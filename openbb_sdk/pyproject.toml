@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "openbb-sdk"
+version = "4.0.0"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-provider = { path = "./sdk/provider" }
+openbb-core = { path = "./sdk/core" }
+openbb-stocks = { path = "./extensions/stocks" }
+openbb-crypto = { path = "./extensions/crypto" }
+openbb-forex = { path = "./extensions/forex" }
+openbb-news = { path = "./extensions/news" }
+openbb-economy = { path = "./extensions/economy" }
+openbb-fixedincome = { path = "./extensions/fixedincome" }
+openbb-charting = { path = "./extensions/charting"}
+openbb-benzinga = { path = "./providers/benzinga" }
+openbb-fmp = { path = "./providers/fmp" }
+openbb-polygon = { path = "./providers/polygon" }
+openbb-fred = { path = "./providers/fred" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

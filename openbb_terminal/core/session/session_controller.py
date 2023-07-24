@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from prompt_toolkit import PromptSession
 
@@ -98,7 +98,12 @@ def pywry_login(welcome: bool = True):
         ):
             response[new_key] = response.pop(r_key, None)
 
-        if remember := response.get("remember", False):
+        response["primary_usage"] = response.get("primary_usage", None) or "personal"
+
+        if remember := (
+            response.get("remember", False) or response.get("is_oauth", False)
+        ):
+            response["remember"] = remember
             Local.save_session(response)
 
         return login_and_launch(response, remember)
@@ -129,10 +134,14 @@ def prompt_cli(welcome: bool = True):
             return login_and_launch(session, remember)
 
 
-def launch_terminal():
+# pylint: disable=inconsistent-return-statements
+def launch_terminal(debug: bool = False, queue: Optional[List[str]] = None):
     """Launch terminal"""
     # pylint: disable=import-outside-toplevel
     from openbb_terminal import terminal_controller
+
+    if queue:
+        return terminal_controller.main(debug, queue, module="")
 
     terminal_controller.parse_args_and_run()
 
@@ -156,13 +165,18 @@ def login_and_launch(session: dict, remember: bool = False):
         pywry_login(welcome=True)
 
 
-def main(session: Optional[Dict] = None, welcome: bool = True, prompt: bool = True):
+def main(
+    session: Optional[Dict] = None,
+    welcome: bool = True,
+    prompt: bool = True,
+    queue: Optional[List[str]] = None,
+):
     """Main function"""
 
     local_session = Local.get_session() if session is None else session
 
     if not local_session and not prompt:
-        launch_terminal()
+        launch_terminal(queue=queue)
     elif local_session:
         login_and_launch(session=local_session, remember=True)
     else:

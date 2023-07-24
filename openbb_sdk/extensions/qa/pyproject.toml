@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "openbb-qa"
+version = "0.1.0"
+description = "Quantitative Analysis for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_qa" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
+openbb-core = { path = "../../sdk/core" }
+scipy = "^1.10.1"
+statsmodels = "^0.14.0"
+pandas-ta = "^0.3.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+qa = "openbb_qa.qa_router:router"

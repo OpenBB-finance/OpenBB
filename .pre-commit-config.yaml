@@ -24,9 +24,11 @@ repos:
         entry: codespell
         args:
           [
-            "--ignore-words-list=VAI,MIS,shs,gard,te,commun,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot",
+            "--ignore-words-list=VAI,MIS,shs,gard,te,commun,parana,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
+            "-x=openbb_terminal/economy/fedreserve_model.py",
+            "-x=.github/workflows/linting.yml"
           ]
   - repo: local
     hooks:
@@ -47,7 +49,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint openbb_terminal terminal.py tests -j 0
+        entry: pylint
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
@@ -59,13 +61,9 @@ repos:
             "--baseline",
             ".secrets.baseline",
             "--exclude-files",
-            "cassettes/*",
-            "--exclude-files",
-            "record/*",
-            "--exclude-files",
-            "website/content/api/*",
+            "cassettes/.*|record/.*|website/content/api/.*|openbb_sdk/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_sdk/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
-        exclude: package.lock.json
+    exclude: package.lock.json
   - repo: local
     hooks:
       - id: reserved_args
@@ -73,3 +71,4 @@ repos:
         entry: python custom_pre_commit/check_reserved_args.py
         language: system
         types: [python]
+        files: .*_controller\.py$

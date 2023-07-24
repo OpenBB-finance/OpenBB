@@ -8,6 +8,7 @@ import subprocess  # nosec: B404
 import sys
 from multiprocessing import current_process
 from pathlib import Path
+from threading import Thread
 from typing import Any, Dict, Optional, Union
 
 import aiohttp
@@ -30,6 +31,7 @@ except ImportError as e:
 
 from svglib.svglib import svg2rlg
 
+from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
@@ -200,8 +202,10 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update(self.get_json_update(command_location))
-
+        if config_terminal.COMMAND_ON_CHART:
+            json_data.update(self.get_json_update(command_location))
+        else:
+            json_data.update(self.get_json_update(" "))
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,
@@ -490,14 +494,15 @@ async def download_plotly_js():
         print(f"Error downloading plotly.js: {err}")
 
 
-# To avoid having plotly.js in the repo, we download it if it's not present
-if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
-    asyncio.run(download_plotly_js())
-
-
 def plots_backend() -> Backend:
     """Get the backend."""
     global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
         BACKEND = Backend()
     return BACKEND
+
+
+# To avoid having plotly.js in the repo, we download it if it's not present
+if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
+    # We run this in a thread so we don't block the main thread
+    Thread(target=asyncio.run, args=(download_plotly_js(),)).start()
