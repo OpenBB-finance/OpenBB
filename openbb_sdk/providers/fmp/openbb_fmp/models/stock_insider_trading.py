@@ -13,7 +13,7 @@ from openbb_provider.models.stock_insider_trading import (
 )
 from pydantic import Field
 
-# IMPORT THIRD-PARTY
+
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 

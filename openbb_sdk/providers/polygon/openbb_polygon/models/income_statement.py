@@ -12,7 +12,7 @@ from openbb_provider.models.income_statement import (
     IncomeStatementQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from pydantic import Field
 
 from openbb_polygon.utils.helpers import get_data

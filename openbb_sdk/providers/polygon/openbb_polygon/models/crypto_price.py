@@ -8,7 +8,7 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.crypto_price import CryptoPriceData, CryptoPriceQueryParams
 
-# IMPORT THIRD-PARTY
+
 from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
 
 from openbb_polygon.utils.helpers import get_data

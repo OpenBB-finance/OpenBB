@@ -1,8 +1,6 @@
 import csv
 from typing import List, Literal
 
-# IMPORT THIRD-PARTY
-
 
 CPI_COUNTRIES = Literal[
     "australia",

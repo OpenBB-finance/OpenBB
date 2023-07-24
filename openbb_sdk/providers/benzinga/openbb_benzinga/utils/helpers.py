@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import List
 
-# IMPORT THIRD-PARTY
+
 import requests
 from openbb_provider.abstract.data import Data
 from pydantic import BaseModel, Field, validator

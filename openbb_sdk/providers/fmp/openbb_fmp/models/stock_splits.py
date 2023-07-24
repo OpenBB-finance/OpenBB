@@ -11,7 +11,7 @@ from openbb_provider.models.stock_splits import (
     StockSplitCalendarQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 

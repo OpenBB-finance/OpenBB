@@ -9,7 +9,7 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
 
-# IMPORT THIRD-PARTY
+
 from pydantic import Field, validator
 
 from openbb_fmp.utils.helpers import get_data_many

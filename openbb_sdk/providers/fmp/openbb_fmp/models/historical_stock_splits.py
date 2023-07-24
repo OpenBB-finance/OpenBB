@@ -10,7 +10,7 @@ from openbb_provider.models.historical_stock_splits import (
     HistoricalStockSplitsQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 

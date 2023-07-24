@@ -11,7 +11,7 @@ from openbb_provider.models.revenue_business_line import (
     RevenueBusinessLineQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data

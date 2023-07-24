@@ -12,7 +12,7 @@ from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from pydantic import Field, NonNegativeInt, validator
 
 from openbb_fmp.utils.helpers import get_data_many

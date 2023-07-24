@@ -13,7 +13,7 @@ from openbb_provider.models.key_executives import (
     KeyExecutivesQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from openbb_fmp.utils.helpers import get_data
 
 

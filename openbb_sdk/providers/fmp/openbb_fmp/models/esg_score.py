@@ -10,7 +10,7 @@ from openbb_provider.helpers import data_transformer
 from openbb_provider.models.esg_score import ESGScoreData, ESGScoreQueryParams
 from pydantic import Field
 
-# IMPORT THIRD-PARTY
+
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 

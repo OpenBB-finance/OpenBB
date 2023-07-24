@@ -9,7 +9,7 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
 
-# IMPORT THIRD-PARTY
+
 from pydantic import Field, NonNegativeInt
 
 from openbb_fmp.utils.helpers import create_url, get_data_many

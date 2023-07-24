@@ -1,8 +1,6 @@
 """FRED provider module."""
 
 
-# IMPORT THIRD-PARTY
-
 from openbb_provider.abstract.provider import Provider
 
 from openbb_fred.models.cpi import FREDCPIFetcher

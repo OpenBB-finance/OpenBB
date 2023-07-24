@@ -16,7 +16,6 @@ from openbb_polygon.models.stock_eod import PolygonStockEODFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 from openbb_polygon.models.stock_price import PolygonStockPriceFetcher
 
-# IMPORT THIRD-PARTY
 
 # mypy: disable-error-code="list-item"
 polygon_provider = Provider(

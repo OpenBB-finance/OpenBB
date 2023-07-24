@@ -12,7 +12,7 @@ from openbb_provider.models.cash_flows import (
     CashFlowStatementQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from pydantic import Field
 
 from openbb_polygon.utils.helpers import get_data

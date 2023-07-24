@@ -12,7 +12,7 @@ from openbb_provider.models.earnings_calendar import (
     EarningsCalendarQueryParams,
 )
 
-# IMPORT THIRD-PARTY
+
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
