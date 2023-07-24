@@ -160,8 +160,6 @@ output = sdk.stocks.load(
 
 ### 4.1.1. Command output
 
-**PROPERTIES**
-
 Each command will always return a  `CommandOutput`. There you will find:
 
 - `results`: the data returned by the command, if any
