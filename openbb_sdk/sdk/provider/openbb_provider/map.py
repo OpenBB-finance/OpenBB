@@ -332,6 +332,3 @@ def build_model_mapping() -> Dict:
             }
 
     return mapping
-
-
-model_mapping = build_model_mapping()
