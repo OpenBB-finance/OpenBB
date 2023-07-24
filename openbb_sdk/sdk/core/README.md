@@ -321,7 +321,7 @@ id: ...                 # UUID Tag
 arguments: ...          # Arguments of the command.
 duration ...            # Execution duration in nano second of the command.
 output ...              # Output of the command.
-route: "'/stocks/load'" # Route of the command.
+route: "/stocks/load"   # Route of the command.
 timestamp: ...          # Execution starting timestamp.
 alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
 
