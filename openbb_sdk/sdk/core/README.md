@@ -162,11 +162,11 @@ output = sdk.stocks.load(
 
 Each command will always return a  `CommandOutput`. There you will find:
 
-- `results`: the data returned by the command, if any
-- `provider`: the chart data and format, if any, if any
-- `warnings`: a list of warnings caught during the command execution, if any
-- `error`: an `Error` with any exception that occurred during the command execution, if any
-- `chart`: a `Chart` with chart data and format, if any
+- `results`: the data returned by the command `None`
+- `provider`: the provider name (only available provider names allowed) used to get the data or `None`
+- `warnings`: `List[Warning_]` with warnings caught during the command execution or `None`
+- `error`: an `Error` with any exception that occurred during the command execution or `None`
+- `chart`: a `Chart` with chart data and format or `None`
 
 **HELPERS**
 
