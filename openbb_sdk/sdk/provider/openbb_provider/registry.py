@@ -15,7 +15,7 @@ class ProviderError(Exception):
 
 
 class ProviderRegistry:
-    """A Provider Registry is the central executor for dynamically retrieving data."""
+    """A Provider Registry a class that holds all the providers and their credentials."""
 
     def __init__(self) -> None:
         self.providers: Dict[str, Provider] = {}
