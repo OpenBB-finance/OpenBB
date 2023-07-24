@@ -1,14 +1,10 @@
 """Benzinga provider module."""
 
-# IMPORT STANDARD
 
-# IMPORT THIRD-PARTY
-
-# IMPORT INTERNAL
 from openbb_provider.abstract.provider import Provider
 
-from openbb_benzinga.global_news import BenzingaGlobalNewsFetcher
-from openbb_benzinga.stock_news import BenzingaStockNewsFetcher
+from openbb_benzinga.models.global_news import BenzingaGlobalNewsFetcher
+from openbb_benzinga.models.stock_news import BenzingaStockNewsFetcher
 
 # mypy: disable-error-code="list-item"
 
