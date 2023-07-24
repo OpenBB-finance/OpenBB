@@ -248,9 +248,6 @@ sdk.system
 
 **COVERAGE**
 ```python
-from openbb import sdk
-
-# Commands
 >>> sdk.coverage.commands
 {
     '/crypto/load': ['fmp', 'polygon'],
@@ -258,9 +255,10 @@ from openbb import sdk
     '/economy/cpi': ['fred'],
     ...
 }
+```
 
-# Providers
-sdk.coverage.providers
+```python
+>>> sdk.coverage.providers
 {
     'fmp':
     [
