@@ -14,12 +14,18 @@ class ProviderError(Exception):
     pass
 
 
+# TODO: This ProviderRegistry needs some refactoring. The two attributes partially
+# repeat themselves.
+
+
 class ProviderRegistry:
     """A Provider Registry a class that holds all the providers and their credentials."""
 
-    def __init__(self) -> None:
-        self.providers: Dict[str, Provider] = {}
-        self.credentials: Dict[str, Dict[str, None]] = {}
+    def __init__(
+        self, providers: Dict[str, Provider], credentials: Dict[str, Dict[str, None]]
+    ) -> None:
+        self.providers: Dict[str, Provider] = providers
+        self.credentials: Dict[str, Dict[str, None]] = credentials
 
     def get_provider(self, provider_name: str) -> Provider:
         """Get a provider from the registry."""
@@ -90,10 +96,12 @@ class ProviderRegistry:
             raise ProviderError(e) from e
 
 
-def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any:
+def load_extensions(
+    entry_point_group: str = "openbb_provider_extension",
+) -> Dict[str, Dict[str, Any]]:
     """Load extensions from entry points and their API keys from settings."""
 
-    # TODO: Figure actual type for dict values Union[Provider, Dict[str, Dict[str, None]]]
+    # TODO: This function is overcomplicated and needs refactoring.
 
     extensions_dict: Dict[str, Dict[str, Any]] = {}
     extensions_dict["providers"] = {}
@@ -120,12 +128,13 @@ def load_extensions(entry_point_group: str = "openbb_provider_extension") -> Any
     return extensions_dict
 
 
-def build_provider_registry(extensions_dict: Any) -> ProviderRegistry:
+def build_provider_registry(
+    extensions_dict: Dict[str, Dict[str, Any]]
+) -> ProviderRegistry:
     """Build a ProviderRegistry from a list of extensions and their API keys."""
-    registry = ProviderRegistry()
-    registry.providers = extensions_dict["providers"]
-    registry.credentials = extensions_dict["credentials"]
-    return registry
+    return ProviderRegistry(
+        extensions_dict["providers"], extensions_dict["credentials"]
+    )
 
 
 extensions_dict__ = load_extensions("openbb_provider_extension")
