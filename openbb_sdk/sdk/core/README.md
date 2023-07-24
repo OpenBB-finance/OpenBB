@@ -5,14 +5,14 @@
   - [1. Introduction](#1-introduction)
   - [2. How to install?](#2-how-to-install)
   - [3. How to add an extension?](#3-how-to-add-an-extension)
-  - [4. Usage](#4-usage)
-    - [4.1. Static version](#41-static-version)
-        - [4.1.1. Command output](#411-command-output)
-        - [4.1.2. Utilities](#412-utilities)
-        - [4.1.3. OpenBB Hub account](#413-openbb-hub-account)
-    - [4.2 Dynamic version](#42-dynamic-version)
+- [4. Usage](#4-usage)
+  - [4.1 Static version](#41-static-version)
+    - [4.1.1. Command output](#411-command-output)
+    - [4.1.2. Utilities](#412-utilities)
+    - [4.1.3. OpenBB Hub account](#413-openbb-hub-account)
+  - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
-    - [5.1. Test users](#51-test-users)
+  - [5.1 Test users](#51-test-users)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -239,7 +239,7 @@ sdk.settings.defaults
 
 Check your system settings. Most of the properties are read-only during runtime, so any changes there will be void.
 
-- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediatly.
+- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediately.
 
 ```python
 from openbb import sdk
