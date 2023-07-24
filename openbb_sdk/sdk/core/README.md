@@ -166,7 +166,7 @@ Each command will always return a  `CommandOutput`. There you will find:
 - `provider`: the external data source used to get the data, if any
 - `warnings`: a list of warnings caught during the command execution, if any
 - `error`: any error that occurred during the command execution, if any
-- `chart`: the formatted data used to display the results in a chart, if any
+- `chart`: the chart data and format, if any
 
 **HELPERS**
 
