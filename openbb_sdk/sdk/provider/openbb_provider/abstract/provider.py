@@ -14,8 +14,8 @@ class Provider:
         self,
         name: str,
         description: str,
-        fetcher_list: List[Fetcher],
         required_credentials: Optional[List[str]],
+        fetcher_list: List[Fetcher],
     ) -> None:
         """Initialize the provider.
 
