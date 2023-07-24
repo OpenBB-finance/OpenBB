@@ -23,11 +23,57 @@ from pydantic.json import pydantic_encoder
 
 
 class LoggingManager(metaclass=SingletonMeta):
+    """
+    Logging Manager class responsible for managing logging settings and handling logs.
+
+    Attributes
+    ----------
+    _user_settings : Optional[UserSettings]
+        User Settings object.
+    _system_settings : Optional[SystemSettings]
+        System Settings object.
+    _logging_settings : LoggingSettings
+        LoggingSettings object containing the current logging settings.
+    _handlers_manager : HandlersManager
+        HandlersManager object managing logging handlers.
+
+    Methods
+    -------
+    __init__(system_settings, user_settings)
+        Logging Manager Constructor.
+
+    log(user_settings, system_settings, command_output, route, func, kwargs)
+        Log command output and relevant information.
+
+    logging_settings
+        Property to access the current logging settings.
+
+    logging_settings.setter
+        Setter method to update the logging settings.
+
+    _setup_handlers()
+        Setup Logging Handlers.
+
+    _log_startup()
+        Log startup information.
+    """
+
     def __init__(
         self,
         system_settings: Optional[SystemSettings] = None,
         user_settings: Optional[UserSettings] = None,
     ) -> None:
+        """
+        Logging Manager Constructor
+        Sets up the logging settings and handlers and then logs the startup information.
+
+        Parameters
+        ----------
+        system_settings : Optional[SystemSettings], optional
+            System Settings, by default None
+        user_settings : Optional[UserSettings], optional
+            User Settings, by default None
+        """
         self._user_settings = (
             user_settings or UserService().read_default_user_settings()
         )
@@ -43,10 +89,26 @@ class LoggingManager(metaclass=SingletonMeta):
 
     @property
     def logging_settings(self) -> LoggingSettings:
+        """
+        Current logging settings.
+
+        Returns
+        -------
+        LoggingSettings
+            LoggingSettings object containing the current logging settings.
+        """
         return self._logging_settings
 
     @logging_settings.setter
     def logging_settings(self, value: Tuple[SystemSettings, UserSettings]):
+        """
+        Setter for updating the logging settings.
+
+        Parameters
+        ----------
+        value : Tuple[SystemSettings, UserSettings]
+            Tuple containing updated SystemSettings and UserSettings.
+        """
         system_settings, user_settings = value
         self._logging_settings = LoggingSettings(
             user_settings=user_settings,
@@ -54,7 +116,14 @@ class LoggingManager(metaclass=SingletonMeta):
         )
 
     def _setup_handlers(self) -> HandlersManager:
-        """Setup Logging"""
+        """
+        Setup Logging Handlers.
+
+        Returns
+        -------
+        HandlersManager
+            Handlers Manager object.
+        """
         logger = logging.getLogger(__name__)
         logging.basicConfig(
             level=self._logging_settings.verbosity,
@@ -76,6 +145,10 @@ class LoggingManager(metaclass=SingletonMeta):
         return handlers_manager
 
     def _log_startup(self) -> None:
+        """
+        Log startup information.
+        """
+
         def check_credentials_defined(credentials: Dict[str, Any]):
             class CredentialsDefinition(Enum):
                 defined = "defined"
@@ -114,6 +187,24 @@ class LoggingManager(metaclass=SingletonMeta):
         func: Callable,
         kwargs: Dict[str, Any],
     ):
+        """
+        Log command output and relevant information.
+
+        Parameters
+        ----------
+        user_settings : UserSettings
+            User Settings object.
+        system_settings : SystemSettings
+            System Settings object.
+        command_output : CommandOutput
+            CommandOutput object containing command output and error information.
+        route : str
+            Route for the command.
+        func : Callable
+            Callable representing the executed function.
+        kwargs : Dict[str, Any]
+            Keyword arguments passed to the function.
+        """
         self._user_settings = user_settings
         self._system_settings = system_settings
         self._logging_settings = LoggingSettings(

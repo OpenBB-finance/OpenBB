@@ -16,6 +16,37 @@ def to_plotly_json(
     prepost: bool = False,
     volume_ticks_x: int = 7,
 ) -> str:
+    """
+    Returns the plotly json representation of the chart.
+    This function is used so it can be called at the module level and used out of the box,
+    which allows some more flexibility, ease of use and doesn't require the user to know
+    about the PlotlyTA class.
+
+    Parameters
+    ----------
+    charting_settings : ChartingSettings
+        Charting settings.
+    data : Union[pd.DataFrame, pd.Series]
+        Data to be plotted.
+    indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
+        Indicators to be plotted, by default None
+    symbol : str, optional
+        Symbol to be plotted, by default ""
+    candles : bool, optional
+        If True, candles will be plotted, by default True
+    volume : bool, optional
+        If True, volume will be plotted, by default True
+    prepost : bool, optional
+        If True, prepost will be plotted, by default False
+    volume_ticks_x : int, optional
+        Volume ticks, by default 7
+
+    Returns
+    -------
+    str
+        Plotly json representation of the chart.
+    """
+
     ta = PlotlyTA(charting_settings=charting_settings)
     fig = ta.plot(
         df_stock=data,
