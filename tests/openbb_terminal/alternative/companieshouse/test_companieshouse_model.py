@@ -167,6 +167,59 @@ def test_get_officers(mocker):
     assert result["Officer Role"].iloc[0] == "director"
 
 
+def test_get_charges(mocker):
+    mock_response = mocker.Mock()
+    mock_response.json.return_value = {
+        "etag": "0921370a2f5d8d191cc0c96de8de4ad7acdf68db",
+        "total_count": 1,
+        "unfiltered_count": 1,
+        "satisfied_count": 0,
+        "part_satisfied_count": 0,
+        "items": [
+            {
+                "etag": "679e0c72b80543b2dc390b3d102163cf6cb89430",
+                "charge_code": "027235340001",
+                "classification": {
+                    "type": "charge-description",
+                    "description": "A registered charge",
+                },
+                "charge_number": 1,
+                "status": "outstanding",
+                "delivered_on": "2014-12-04",
+                "created_on": "2014-11-26",
+                "particulars": {
+                    "contains_fixed_charge": True,
+                    "contains_negative_pledge": True,
+                },
+                "persons_entitled": [
+                    {
+                        "name": "Astrazeneca Pensions Trustee Limited (And Its Successors in Title and Permitted Transferees)"
+                    }
+                ],
+                "transactions": [
+                    {
+                        "filing_type": "create-charge-with-deed",
+                        "delivered_on": "2014-12-04",
+                        "links": {
+                            "filing": "/company/02723534/filing-history/MzExMzExMzg3N2FkaXF6a2N4"
+                        },
+                    }
+                ],
+                "links": {
+                    "self": "/company/02723534/charges/ObJFuAILDHfp00ro3wjqXEonL7k"
+                },
+            }
+        ],
+    }
+
+    mocker.patch.object(requests, "get", return_value=mock_response)
+
+    # Call the function that makes a request to the remote API
+    result = companieshouse_model.get_charges("13090621")
+
+    assert len(result) == 1
+
+
 def test_get_filings(mocker):
     mock_response = mocker.Mock()
     mock_response.json.return_value = {
