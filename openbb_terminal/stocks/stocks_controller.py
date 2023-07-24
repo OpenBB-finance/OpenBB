@@ -9,6 +9,7 @@ from typing import List, Optional
 
 import financedatabase as fd
 
+from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
     newsapi_view,
@@ -462,6 +463,10 @@ class StocksController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=20,
         )
+        if config_terminal.HOLD:
+            console.print("[red]Hold functionality not supported with candle.[/]")
+            return
+
         if ns_parser:
             figure_export = None
             if ns_parser.ticker:

@@ -441,6 +441,7 @@ en:
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
   stocks/ta/multi: plot multiple indicators on the same chart
+  stocks/ta/ichimoku: Ichimoku Kinko Hyo indicator
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker

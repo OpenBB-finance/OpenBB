@@ -442,6 +442,7 @@ def test_call_upload(mocker, test_user):
         description="abc",
         routine="do something",
         tags="stocks",
+        public=False,
     )
 
 

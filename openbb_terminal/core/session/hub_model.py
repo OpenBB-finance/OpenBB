@@ -396,6 +396,7 @@ def upload_config(
         return None
 
 
+# pylint: disable=too-many-arguments
 def upload_routine(
     auth_header: str,
     name: str = "",
@@ -403,6 +404,7 @@ def upload_routine(
     routine: str = "",
     override: bool = False,
     tags: str = "",
+    public: bool = False,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
@@ -420,6 +422,8 @@ def upload_routine(
         Whether to override the routine if it already exists.
     tags : str
         The tags of the routine.
+    public : bool
+        Whether to make the routine public or not.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
@@ -430,7 +434,6 @@ def upload_routine(
     Optional[requests.Response]
         The response from the post request.
     """
-
     data = {
         "name": name,
         "description": description,
@@ -438,7 +441,7 @@ def upload_routine(
         "override": override,
         "tags": tags,
         "version": get_current_system().VERSION,
-        "public": False,
+        "public": public,
     }
 
     try:

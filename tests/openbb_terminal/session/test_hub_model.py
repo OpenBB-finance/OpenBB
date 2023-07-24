@@ -534,14 +534,45 @@ def test_clear_user_configs_exception():
 
 
 @pytest.mark.parametrize(
-    "auth_header, name, description, routine, override, base_url, timeout, status_code",
+    "auth_header, name, description, routine, override, tags, public, base_url, timeout, status_code",
     [
-        ("auth_header", "name", "description", "routine", True, "base_url", 10, 200),
-        ("auth_header", "name", "description", "routine", False, "base_url", 10, 400),
+        (
+            "auth_header",
+            "name",
+            "description",
+            "routine",
+            True,
+            "TEST_TAG",
+            True,
+            "base_url",
+            10,
+            200,
+        ),
+        (
+            "auth_header",
+            "name",
+            "description",
+            "routine",
+            False,
+            "TEST_TAG",
+            False,
+            "base_url",
+            10,
+            400,
+        ),
     ],
 )
 def test_upload_routine(
-    auth_header, name, description, routine, override, base_url, timeout, status_code
+    auth_header,
+    name,
+    description,
+    routine,
+    override,
+    tags,
+    public,
+    base_url,
+    timeout,
+    status_code,
 ):
     mock_response = MagicMock(spec=requests.Response)
     mock_response.status_code = status_code
@@ -555,6 +586,8 @@ def test_upload_routine(
             name=name,
             description=description,
             routine=routine,
+            tags=tags,
+            public=public,
             override=override,
             base_url=base_url,
             timeout=timeout,

@@ -3,7 +3,7 @@
 import json
 import sys
 import textwrap
-from datetime import datetime, timedelta
+from datetime import datetime
 from math import floor
 from pathlib import Path
 from typing import (
@@ -26,6 +26,7 @@ import statsmodels.api as sm
 from plotly.subplots import make_subplots
 from scipy import stats
 
+from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.config.paths import (
     STYLES_DIRECTORY_REPO,
@@ -317,6 +318,9 @@ class OpenBBFigure(go.Figure):
 
     def __init__(self, fig: Optional[go.Figure] = None, **kwargs) -> None:
         super().__init__()
+        if fig is None and config_terminal.current_figure and config_terminal.HOLD:
+            fig = config_terminal.current_figure
+
         if fig:
             self.__dict__ = fig.__dict__
 
@@ -334,6 +338,16 @@ class OpenBBFigure(go.Figure):
 
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
+        fig = config_terminal.get_current_figure()
+        if fig is None and config_terminal.HOLD:
+            config_terminal.append_legend(config_terminal.last_legend)
+        if fig is not None:
+            traces = len(fig.data)
+            self.update_layout(
+                {f"yaxis{traces+1}": dict(title=kwargs.pop("yaxis_title", ""))}
+            )
+            config_terminal.append_legend(config_terminal.last_legend)
+
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
         if yaxis := kwargs.pop("yaxis", None):
@@ -347,6 +361,34 @@ class OpenBBFigure(go.Figure):
                 height=plots_backend().HEIGHT,
                 width=plots_backend().WIDTH,
             )
+
+    def set_secondary_axis(
+        self, title: str, row: Optional[int] = None, col: Optional[int] = None, **kwargs
+    ) -> "OpenBBFigure":
+        """Set secondary axis.
+
+        Parameters
+        ----------
+        title : str
+            Title of the axis
+        row : int, optional
+            Row of the axis, by default None
+        col : int, optional
+            Column of the axis, by default None
+        **kwargs
+            Keyword arguments to pass to go.Figure.update_layout
+        """
+        axis = "yaxis"
+        title = kwargs.pop("title", "")
+        if (fig := config_terminal.get_current_figure()) is not None:
+            total_axes = max(2, len(list(fig.select_yaxes())))
+            axis = f"yaxis{total_axes+1}"
+            if config_terminal.make_new_axis():
+                kwargs["side"] = "left"
+            kwargs.pop("secondary_y", None)
+            return self.update_layout(**{axis: dict(title=title, **kwargs)})
+
+        return self.update_yaxes(title=title, row=row, col=col, **kwargs)
 
     @property
     def subplots_kwargs(self):
@@ -654,7 +696,7 @@ class OpenBBFigure(go.Figure):
                         col=col,
                     )
 
-                    max_y = max(max_y, max(y * 2))
+                    max_y = max(max_y, *(y * 2))
 
         self.update_yaxes(
             position=0.0,
@@ -753,7 +795,7 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column number, by default None
         """
-        self.update_yaxes(title=title, row=row, col=col, **kwargs)
+        self.set_secondary_axis(title=title, row=row, col=col, **kwargs)
         return self
 
     def add_hline_legend(
@@ -1075,7 +1117,7 @@ class OpenBBFigure(go.Figure):
         self.update_traces(marker_line_width=self.bar_width, selector=dict(type="bar"))
         self.update_traces(
             selector=dict(type="scatter", hovertemplate=None),
-            hovertemplate="%{y}<extra></extra>",
+            hovertemplate="%{y}",
         )
 
         # Set modebar style
@@ -1108,8 +1150,17 @@ class OpenBBFigure(go.Figure):
                 # This is done to avoid opening after exporting
                 if export_image:
                     self._exported = True
+                if config_terminal.HOLD:
+                    # pylint: disable=import-outside-toplevel
+                    from openbb_terminal.helper_funcs import command_location
 
-                # We send the figure to the backend to be displayed
+                    for trace in self.select_traces():
+                        if trace.name and "/" in trace.name:
+                            continue
+                        trace.name = f"{trace.name} {command_location}"
+                    config_terminal.set_current_figure(self)
+                    # We send the figure to the backend to be displayed
+                    return None
                 return plots_backend().send_figure(self, export_image)
             except Exception:
                 # If the backend fails, we just show the figure normally
@@ -1280,7 +1331,6 @@ class OpenBBFigure(go.Figure):
         """
         # We get the min and max dates
         dt_start, dt_end = df_data.index.min(), df_data.index.max()
-        rangebreaks: List[Dict[str, Any]] = []
 
         # if weekly or monthly data, we don't need to hide gaps
         # this prevents distortions in the plot
@@ -1289,7 +1339,6 @@ class OpenBBFigure(go.Figure):
             return
 
         # We get the missing days
-        is_daily = df_data.index[-1].time() == df_data.index[-2].time()
         dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
 
         # We get the dates that are missing
@@ -1298,16 +1347,18 @@ class OpenBBFigure(go.Figure):
         )
         dt_missing_days = pd.to_datetime(dt_missing_days)
 
-        rangebreaks = [dict(values=dt_missing_days)]
+        rangebreaks: List[Dict[str, Any]] = [dict(values=dt_missing_days)]
 
-        # We add a rangebreak if the first and second time are not the same
-        # since daily data will have the same time (00:00)
-        if not is_daily:
-            for i in range(len(df_data) - 1):
-                if df_data.index[i + 1] - df_data.index[i] > timedelta(hours=2):
-                    rangebreaks.insert(
-                        0, dict(bounds=[df_data.index[i], df_data.index[i + 1]])
-                    )
+        # We get the frequency of the data to hide intra-day gaps
+        if (freq := df_data.index[1] - df_data.index[0]).days == 0:
+            freq_mins = int(freq.seconds / 60)
+            break_values = (
+                df_data.resample(f"{freq_mins}T")
+                .max()
+                .index.union(df_data.index)
+                .difference(df_data.index)
+            )
+            rangebreaks = [dict(values=break_values, dvalue=freq_mins * 60 * 1000)]
 
         self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 

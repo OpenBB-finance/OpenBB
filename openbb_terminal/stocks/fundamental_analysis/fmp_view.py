@@ -303,7 +303,7 @@ def display_income_statement(
                     x=income_plot_data.index,
                     y=income_plot_data[plot[0]],
                     mode="lines",
-                    name=plot[0].replace("_", ""),
+                    name=f'{symbol.upper()} {plot[0].replace("_", "")}',
                 )
                 fig.set_title(title)
 
@@ -314,7 +314,7 @@ def display_income_statement(
                         x=income_plot_data.index,
                         y=income_plot_data[plot[i]],
                         mode="lines",
-                        name=plot[i].replace("_", ""),
+                        name=f'{symbol.upper()} {plot[i].replace("_", "")}',
                         row=i + 1,
                         col=1,
                     )
@@ -404,7 +404,7 @@ def display_balance_sheet(
                     x=balance_plot_data.index,
                     y=balance_plot_data[plot[0]],
                     mode="lines",
-                    name=plot[0].replace("_", " "),
+                    name=f'{symbol.upper()} {plot[0].replace("_", " ")}',
                 )
                 fig.set_title(
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
@@ -418,7 +418,7 @@ def display_balance_sheet(
                         x=balance_plot_data.index,
                         y=balance_plot_data[plot[i]],
                         mode="lines",
-                        name=plot[i].replace("_", " "),
+                        name=f'{symbol.upper()} {plot[i].replace("_", " ")}',
                         row=i + 1,
                         col=1,
                     )
@@ -506,7 +506,7 @@ def display_cash_flow(
                     x=cash_plot_data.index,
                     y=cash_plot_data[plot[0]],
                     mode="lines",
-                    name=plot[0].replace("_", " "),
+                    name=f'{symbol.upper()} {plot[0].replace("_", " ")}',
                 )
                 fig.set_title(
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
@@ -520,7 +520,7 @@ def display_cash_flow(
                         x=cash_plot_data.index,
                         y=cash_plot_data[plot[i]],
                         mode="lines",
-                        name=plot[i].replace("_", " "),
+                        name=f'{symbol.upper()} {plot[i].replace("_", " ")}',
                         row=i + 1,
                         col=1,
                     )
