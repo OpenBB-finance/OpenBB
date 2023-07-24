@@ -306,8 +306,7 @@ class PlotlyTA(PltTA):
                 **self.indicators.get_options_dict(indicator.name) or {},
             )
             if not isinstance(output, bool):
-                # output = output.dropna()
-                output.dropna(inplace=True)
+                output = output.dropna()
 
                 if output is None or output.empty:
                     output = False
