@@ -171,7 +171,7 @@ class PlotlyTA(PltTA):
 
         self.indicators = indicators
         self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
-        self.df_stock = df_stock
+        self.df_stock = df_stock.sort_index(ascending=True)
         self.close_column = check_columns(self.df_stock)
         self.params = self.indicators.get_params()
 
@@ -306,7 +306,8 @@ class PlotlyTA(PltTA):
                 **self.indicators.get_options_dict(indicator.name) or {},
             )
             if not isinstance(output, bool):
-                output = output.dropna()
+                # output = output.dropna()
+                output.dropna(inplace=True)
 
                 if output is None or output.empty:
                     output = False
@@ -434,7 +435,6 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Plotly figure with candlestick/line chart and volume bar chart (if enabled)
         """
-
         self.df_ta = self.calculate_indicators()
 
         symbol = (
