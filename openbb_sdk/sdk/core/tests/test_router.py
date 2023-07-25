@@ -1,8 +1,16 @@
 """Test router.py file."""
 # pylint: disable=redefined-outer-name
+# pylint: disable=unused-argument
+
 
 import pytest
+from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
 from openbb_core.app.router import (
     CommandMap,
     CommandValidator,
@@ -123,6 +131,22 @@ def test_router_init(router):
     assert router
 
 
+def test_command(router):
+    """Test command."""
+
+    @router.command
+    def valid_function() -> CommandOutput[int]:
+        return CommandOutput(results=[1, 2, 3])
+
+    assert valid_function
+
+
+def test_include_router(router):
+    """Test include_router."""
+    some_router = Router()
+    assert router.include_router(some_router) is None
+
+
 @pytest.fixture(scope="module")
 def router_loader():
     """Set up router_loader."""
@@ -143,6 +167,88 @@ def signature_inspector():
 def test_signature_inspector_init(signature_inspector):
     """Test init."""
     assert signature_inspector
+
+
+def test_complete_signature(signature_inspector):
+    """Test complete_signature."""
+
+    def sample_function(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> CommandOutput:
+        pass
+
+    model = "StockEOD"
+
+    assert signature_inspector.complete_signature(sample_function, model)
+
+
+def test_complete_signature_error(signature_inspector):
+    """Test complete_signature."""
+
+    def valid_function() -> CommandOutput[int]:
+        return CommandOutput(results=[1, 2, 3])
+
+    with pytest.raises(AttributeError):
+        signature_inspector.complete_signature(valid_function, "invalid_model")
+
+
+def test_validate_signature(signature_inspector):
+    """Test validate_signature."""
+
+    def sample_function(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> CommandOutput:
+        pass
+
+    expected_signature = {
+        "cc": CommandContext,
+        "provider_choices": ProviderChoices,
+        "standard_params": StandardParams,
+        "extra_params": ExtraParams,
+    }
+
+    assert (
+        signature_inspector.validate_signature(sample_function, expected_signature)
+        is None
+    )
+
+
+def test_inject_dependency(signature_inspector):
+    """Test inject_dependency."""
+
+    def sample_function(
+        cc: CommandContext,
+        provider_choices: ProviderChoices,
+        standard_params: StandardParams,
+        extra_params: ExtraParams,
+    ) -> CommandOutput:
+        pass
+
+    assert signature_inspector.inject_dependency(sample_function, "cc", CommandContext)
+
+
+def test_get_description(signature_inspector):
+    """Test get_description."""
+
+    def some_function():
+        """Some function."""
+
+    assert signature_inspector.get_description(some_function) == some_function.__doc__
+
+
+def test_get_description_no_doc(signature_inspector):
+    """Test get_description."""
+
+    def some_function():
+        pass
+
+    assert signature_inspector.get_description(some_function) == ""
 
 
 @pytest.fixture(scope="module")
