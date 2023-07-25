@@ -42,8 +42,11 @@ class ArgparseTranslator:
         self.type_hints = get_type_hints(func)
 
         self.parser = argparse.ArgumentParser(
-            description=func.__doc__, formatter_class=argparse.RawTextHelpFormatter
+            description=func.__doc__,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         )
+
+        self._generate_argparse_arguments(self.signature.parameters)
 
     @staticmethod
     def _param_is_default(param: inspect.Parameter) -> bool:
@@ -176,6 +179,24 @@ class ArgparseTranslator:
 
         return kwargs
 
+    def execute_func(
+        self,
+        args: Optional[argparse.Namespace] = None,
+    ) -> Any:
+        kwargs = self._unflatten_args(vars(args))
+        kwargs = self._update_with_custom_types(kwargs)
+        return self.func(**kwargs)
+
+    def parse_args_and_execute(self) -> Any:
+        """
+        Parses the arguments and executes the original function.
+
+        Returns:
+            Any: The return value of the original function.
+        """
+        args = self.parser.parse_args()
+        return self.execute_func(args)
+
     def translate(self) -> Callable:
         """
         Wraps the original function with an argparse program.
@@ -183,12 +204,20 @@ class ArgparseTranslator:
         Returns:
             Callable: The original function wrapped with an argparse program.
         """
-        self._generate_argparse_arguments(self.signature.parameters)
 
         def wrapper_func():
-            args = self.parser.parse_args()
-            kwargs = self._unflatten_args(vars(args))
-            kwargs = self._update_with_custom_types(kwargs)
-            return self.func(**kwargs)
+            return self.parse_args_and_execute()
 
         return wrapper_func
+
+
+# def hello_world(name: str, age: int):
+#     print(f"Hello {name}! You are {age} years old.")
+
+
+# translator = ArgparseTranslator(hello_world)
+# parser = translator.parser
+# parsed_args = parser.parse_args()
+# print(parsed_args)
+
+# translator.execute_func(parsed_args)

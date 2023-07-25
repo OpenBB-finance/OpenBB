@@ -31,6 +31,8 @@ from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
+from argparse_translator.argparse_translator import ArgparseTranslator
+
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
 logger = logging.getLogger(__name__)
@@ -149,6 +151,22 @@ class StocksController(StockBaseController):
         """Class specific component of load command"""
         with suppress_stdout():
             self.call_load(other_args)
+
+    def call_load(self, other_args: List[str]):
+        """Process load command."""
+
+        def hello_world(name: str, age: int):
+            print(f"Hello {name}! You are {age} years old.")
+
+        print(other_args)
+
+        translator = ArgparseTranslator(hello_world)
+        parser = translator.parser
+
+        print("here")
+
+        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
+            print("not bad")
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
