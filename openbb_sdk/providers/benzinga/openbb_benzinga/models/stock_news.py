@@ -7,9 +7,9 @@ from typing import Dict, List, Literal, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
-from pydantic import Field
+from pydantic import Field, validator
 
-from openbb_benzinga.utils.helpers import BenzingaBaseNewsData, get_data
+from openbb_benzinga.utils.helpers import BenzingaImage, get_data
 
 
 class BenzingaStockNewsQueryParams(StockNewsQueryParams):
@@ -76,8 +76,19 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     )
 
 
-class BenzingaStockNewsData(BenzingaBaseNewsData):
+class BenzingaStockNewsData(StockNewsData):
     """Benzinga Stock News data."""
+
+    class Config:
+        fields = {"date": "created", "text": "body"}
+
+    image: List[BenzingaImage] = Field(
+        description="The images associated with the news."
+    )
+
+    @validator("date", pre=True)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
 
 class BenzingaStockNewsFetcher(

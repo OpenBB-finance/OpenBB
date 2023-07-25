@@ -7,9 +7,10 @@ from typing import Dict, List, Literal, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
-from pydantic import Field
+from openbb_provider.models.stock_news import StockNewsData
+from pydantic import Field, validator
 
-from openbb_benzinga.utils.helpers import BenzingaBaseNewsData, get_data
+from openbb_benzinga.utils.helpers import BenzingaImage, get_data
 
 
 class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
@@ -79,8 +80,17 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     )
 
 
-class BenzingaGlobalNewsData(BenzingaBaseNewsData):
-    url: str
+class BenzingaGlobalNewsData(StockNewsData):
+    """Benzinga Global News data."""
+
+    class Config:
+        fields = {"date": "created", "text": "body"}
+
+    image: List[BenzingaImage] = Field(description="The images associated with the news.")
+
+    @validator("date", pre=True)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
 
 class BenzingaGlobalNewsFetcher(
@@ -107,7 +117,7 @@ class BenzingaGlobalNewsFetcher(
             api_key = credentials.get("benzinga_api_key")
 
         base_url = "https://api.benzinga.com/api/v2/news"
-        querystring = get_querystring(query.dict(), [])
+        querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
         data = get_data(request_url)
 

@@ -1,7 +1,7 @@
 """Stock News Data Model."""
 
 
-from datetime import date
+from datetime import date as dateType
 from typing import Optional
 
 from pydantic import Field, NonNegativeInt, validator
@@ -29,24 +29,9 @@ class StockNewsQueryParams(QueryParams):
 
 
 class StockNewsData(Data):
-    """Stock News data.
+    """Stock News data."""
 
-    Returns
-    -------
-    date : date
-        The published date of the news.
-    title : str
-        The title of the news.
-    image : Optional[str]
-        The image URL of the news.
-    text : str
-        The text/body of the news.
-    url : str
-        The URL of the news.
-    """
-
-    date: date
-    title: str
-    image: Optional[str]
-    text: Optional[str]
-    url: str
+    date: dateType = Field(description="The published date of the news.")
+    title: str = Field(description="The title of the news.")
+    text: Optional[str] = Field(default=None, description="The text/body of the news.")
+    url: str = Field(description="The URL of the news.")

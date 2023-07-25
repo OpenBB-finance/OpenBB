@@ -1,7 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 
-
 from openbb_core.app.static.container import Container
 
 
