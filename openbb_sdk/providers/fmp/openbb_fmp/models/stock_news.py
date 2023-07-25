@@ -4,33 +4,23 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
-from pydantic import Field, NonNegativeInt
+from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPStockNewsQueryParams(QueryParams):
+class FMPStockNewsQueryParams(StockNewsQueryParams):
     """FMP Stock News query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
-
-    Parameter
-    ---------
-    symbols : str
-        The symbols of the companies.
-    page : int (default: 0)
-        The page of the data to retrieve.
-    limit : Optional[int]
-        The limit of the data to retrieve.
     """
 
-    tickers: str = Field(min_length=1, alias="symbols")
-    page: int = Field(default=0)
-    limit: Optional[NonNegativeInt]
+    class Config:
+        fields = {"symbols": "tickers"}
 
 
 class FMPStockNewsData(Data):
@@ -56,7 +46,7 @@ class FMPStockNewsFetcher(
         query: StockNewsQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPStockNewsQueryParams:
         return FMPStockNewsQueryParams(
-            symbols=query.symbols,
+            tickers=query.symbols,
             page=query.page,
             **extra_params if extra_params else {}
         )

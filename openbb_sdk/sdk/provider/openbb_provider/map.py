@@ -84,21 +84,21 @@ def _extract_fields(
     provider_dict: Dict = {}
     standard_dict: Dict = {}
 
-    for field in provider_fields:
-        provider_dict[provider_fields[field].alias] = {
-            "type": provider_fields[field].annotation,
-            "default": provider_fields[field].default,
-            "required": provider_fields[field].required,
-            "description": provider_fields[field].field_info.description,
-        }
-
-    for field in standard_fields:
-        standard_dict[standard_fields[field].alias] = {
-            "type": standard_fields[field].annotation,
-            "default": standard_fields[field].default,
-            "required": standard_fields[field].required,
-            "description": standard_fields[field].field_info.description,
-        }
+    for k, v in provider_fields.items():
+        if k in standard_fields:
+            standard_dict[k] = {
+                "type": v.annotation,
+                "default": v.default,
+                "required": v.required,
+                "description": v.field_info.description,
+            }
+        else:
+            provider_dict[k] = {
+                "type": v.annotation,
+                "default": v.default,
+                "required": v.required,
+                "description": v.field_info.description,
+            }
 
     return provider_dict, standard_dict
 

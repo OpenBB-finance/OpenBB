@@ -4,28 +4,24 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import Field, validator
+from pydantic import Field, NonNegativeInt, validator
 
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
 class StockNewsQueryParams(QueryParams):
-    """Stock news query.
-
-
-    Parameter
-    ---------
-    symbols : str
-        The symbols of the company.
-    page : int
-        The page of the stock news to be retrieved.
-    """
+    """Stock news query."""
 
     symbols: str = Field(
         min_length=1, description=QUERY_DESCRIPTIONS.get("symbols", "")
     )
-    page: int = Field(default=0)
+    page: int = Field(
+        default=0, description="The page of the stock news to be retrieved."
+    )
+    limit: Optional[NonNegativeInt] = Field(
+        default=15, description="The number of results to return per page."
+    )
 
     @validator("symbols", pre=True)
     def time_validate(cls, v: str):  # pylint: disable=E0213
