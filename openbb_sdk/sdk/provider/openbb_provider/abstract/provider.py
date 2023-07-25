@@ -14,8 +14,8 @@ class Provider:
         self,
         name: str,
         description: str,
-        fetcher_list: List[Fetcher],
         required_credentials: Optional[List[str]],
+        fetcher_list: List[Fetcher],
     ) -> None:
         """Initialize the provider.
 
@@ -25,13 +25,13 @@ class Provider:
             The name of the provider.
         description : str
             The description of the provider.
-        fetcher_list : List[Fetcher]
-            The list of fetchers that the provider supports.
         required_credentials : Optional[List[str]]
             The list of required credentials for the provider.
             For example, ["api_key", "api_secret"] which would be used inside
             the fetcher to get the credentials from the credentials dict.
             For example credentials.get("PROVIDER_API_KEY").
+        fetcher_list : List[Fetcher]
+            The list of fetchers that the provider supports.
         """
         self.name = name
         self.description = description

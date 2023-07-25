@@ -629,13 +629,13 @@ class PathHandler:
     @classmethod
     def build_module_name(cls, path: str) -> str:
         if path == "":
-            return "app"
+            return "__commands__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
         if path == "":
-            return "App"
+            return "Commands"
         return f"CLASS_{cls.clean_path(path=path)}"
 
 
