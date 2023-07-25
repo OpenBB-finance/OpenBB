@@ -69,18 +69,20 @@ class CPIQueryParams(QueryParams):
     countries: List[CPI_COUNTRIES] = Field(
         description=QUERY_DESCRIPTIONS.get("countries")
     )
-    units: CPI_UNITS = Field("growth_same", description=QUERY_DESCRIPTIONS.get("units"))
+    units: CPI_UNITS = Field(
+        default="growth_same", description=QUERY_DESCRIPTIONS.get("units")
+    )
     frequency: CPI_FREQUENCY = Field(
-        "monthly", description=QUERY_DESCRIPTIONS.get("frequency")
+        default="monthly", description=QUERY_DESCRIPTIONS.get("frequency")
     )
     harmonized: bool = Field(
-        False, description="Whether you wish to obtain harmonized data."
+        default=False, description="Whether you wish to obtain harmonized data."
     )
     start_date: Optional[dateType] = Field(
-        None, description=QUERY_DESCRIPTIONS.get("start_date")
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )
     end_date: Optional[dateType] = Field(
-        None, description=QUERY_DESCRIPTIONS.get("end_date")
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
 
 
