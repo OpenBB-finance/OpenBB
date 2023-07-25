@@ -1,61 +1,55 @@
 """FMP Cryptos end of day fetcher."""
 
 
-from datetime import date, datetime
-from typing import Dict, List, Literal, Optional
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
-from pydantic import Field, NonNegativeInt, validator
+from openbb_provider.metadata import DATA_DESCRIPTIONS
+from pydantic import Field, validator, NonNegativeInt
 
 from openbb_fmp.utils.helpers import get_data_many
 
 
-class FMPCryptoEODQueryParams(QueryParams):
-    """FMP Crypto end of day query.
+class FMPCryptoEODQueryParams(CryptoEODQueryParams):
+    """FMP Crypto end of day Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/#Cryptocurrencies
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    start_date : date
-        The start date of the stock data from which to retrieve the data.
-    end_date : date
-        The end date of the stock data up to which to retrieve the data.
-    timeseries : Optional[int]
-        The number of days to look back.
-    serietype : Optional[Literal["line"]]
-        The type of the series. Only "line" is supported.
+    Source: https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
     """
 
-    symbol: str = Field(min_length=1)
-    serietype: Optional[Literal["line"]]
-    start_date: date
-    end_date: date
-    timeseries: Optional[NonNegativeInt]  # Number of days to looks back
+    timeseries: Optional[NonNegativeInt] = Field(
+        default=None, description="Number of days to look back."
+    )
 
 
-class FMPCryptoEODData(Data):
-    date: datetime
-    open: float
-    high: float
-    low: float
-    close: float
-    adjClose: float = Field(alias="adj_close")
-    volume: float
-    unadjustedVolume: float
-    change: float
-    changePercent: float
-    vwap: float
-    label: str
-    changeOverTime: float
+class FMPCryptoEODData(CryptoEODData):
+    """FMP Crypto end of day Data."""
+
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    adjClose: float = Field(
+        description="Adjusted Close Price of the symbol.", alias="adj_close"
+    )
+    unadjustedVolume: float = Field(
+        description="Unadjusted volume of the symbol.", alias="unadjusted_volume"
+    )
+    change: float = Field(
+        description="Change in the price of the symbol from the previous day.",
+        alias="change",
+    )
+    changePercent: float = Field(
+        description="Change \% in the price of the symbol.", alias="change_percent"
+    )
+    vwap: float = Field(description="Volume Weighted Average Price of the symbol.")
+    label: str = Field(description="Human readable format of the date.")
+    changeOverTime: float = Field(
+        description="Change \% in the price of the symbol over a period of time.",
+        alias="change_over_time",
+    )
 
     @validator("date", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -71,14 +65,14 @@ class FMPCryptoEODFetcher(
     def transform_query(
         query: CryptoEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPCryptoEODQueryParams:
-        now = datetime.now()
-        start_date = query.start_date if query.start_date else now
-        end_date = query.end_date if query.end_date else now
+        now = datetime.now().date()
+        start_date = query.start_date or (now - timedelta(days=7))
+        end_date = query.end_date or now
         return FMPCryptoEODQueryParams(
             symbol=query.symbol,
             start_date=start_date,
             end_date=end_date,
-            **extra_params if extra_params else {},
+            **extra_params or {},
         )
 
     @staticmethod
