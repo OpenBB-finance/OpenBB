@@ -83,9 +83,10 @@ def show_treasuries(
     )
 
     for col in treasury_data.columns:
+        non_nan = treasury_data[col].notna()
         fig.add_scatter(
-            x=treasury_data.index,
-            y=treasury_data[col],
+            x=treasury_data.index[non_nan],
+            y=treasury_data[col][non_nan],
             mode="lines",
             name=col.replace("m", " Month").replace("y", " Year"),
         )

@@ -254,8 +254,6 @@ jobs:
         include:
           - os: ubuntu
             python: 3.9
-          - os: windows
-            python: 3.9
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
