@@ -158,6 +158,11 @@ def test_router_loader_init(router_loader):
     assert router_loader
 
 
+def test_from_extensions(router_loader):
+    """Test from_extensions."""
+    assert router_loader.from_extensions()
+
+
 @pytest.fixture(scope="module")
 def signature_inspector():
     """Set up signature_inspector."""
