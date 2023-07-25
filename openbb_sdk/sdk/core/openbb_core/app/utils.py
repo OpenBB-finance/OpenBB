@@ -14,6 +14,9 @@ def basemodel_to_df(
     df = pd.DataFrame([d.dict() for d in data_list])
     if index and index in df.columns:
         df = df.set_index(index)
+        if df.index.name == "date":
+            df.index = pd.to_datetime(df.index)
+            df.sort_index(axis=0, inplace=True)
     return df
 
 

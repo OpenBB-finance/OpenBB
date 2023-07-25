@@ -81,10 +81,6 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             else:
                 df = basemodel_to_df(self.results, "date")
 
-            if df.index.name == "date":
-                df.index = pd.to_datetime(df.index)
-                df.sort_index(axis=0, inplace=True)
-
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
 
