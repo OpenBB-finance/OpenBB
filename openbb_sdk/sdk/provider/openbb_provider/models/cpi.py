@@ -85,6 +85,8 @@ class CPIQueryParams(QueryParams):
 
 
 class CPIData(Data):
+    """CPI data."""
+
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     realtime_start: dateType = Field(
         description="The date the data was updated."

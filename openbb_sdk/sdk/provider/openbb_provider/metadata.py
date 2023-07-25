@@ -9,9 +9,9 @@ QUERY_DESCRIPTIONS = {
     "period": "Period of the data to return (quarterly or annually).",
     "date": "A specific date to get data for.",
     "limit": "The number of data entries to return.",
-    "countries": "The country or countries you want to get data.",
-    "units": "The units you want to see.",
-    "frequency": "The frequency you want to see.",
+    "countries": "The country or countries to get data.",
+    "units": "The data units.",
+    "frequency": "The data time frequency.",
 }
 
 DATA_DESCRIPTIONS = {
