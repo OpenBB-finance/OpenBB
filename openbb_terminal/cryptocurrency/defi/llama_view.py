@@ -5,6 +5,8 @@ import logging
 import os
 from typing import Optional, Union
 
+import pandas as pd
+
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
@@ -128,8 +130,8 @@ def display_defi_protocols(
 
 @log_start_end(log=logger)
 def display_historical_tvl(
-    dapps: str = "",
-    export: str = "",
+    dapps: str,
+    export: Optional[str] = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
@@ -150,11 +152,13 @@ def display_historical_tvl(
     fig.set_title("TVL in dApps")
 
     available_protocols = read_data_file("defillama_dapps.json")
-
+    dapp: str = ""
     if isinstance(available_protocols, dict):
         for dapp in dapps.split(","):
             if dapp in available_protocols:
                 df = llama_model.get_defi_protocol(dapp)
+                df = df.query("`totalLiquidityUSD` > 0")
+                df.index = pd.DatetimeIndex(df.index.strftime("%Y-%m-%d"))
                 if not df.empty:
                     fig.add_scatter(
                         x=df.index,
@@ -163,25 +167,24 @@ def display_historical_tvl(
                     )
             else:
                 print(f"{dapp} not found\n")
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "dtvl",
-            None,
-            sheet_name,
-            fig,
-        )
-
+        if export and export != "":
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"dtvl_{dapp}",
+                df,
+                sheet_name,
+                fig,
+            )
+            return None
         return fig.show(external=external_axes)
-
     return None
 
 
 @log_start_end(log=logger)
 def display_defi_tvl(
     limit: int = 5,
-    export: str = "",
+    export: Optional[str] = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
@@ -205,15 +208,16 @@ def display_defi_tvl(
     df_data = df.copy()
     df = df.tail(limit)
 
+    if export and export != "":
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "stvl",
+            df_data,
+            sheet_name,
+            fig,
+        )
+        return None
     fig.add_scatter(x=df["date"], y=df["totalLiquidityUSD"], name="TVL")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "stvl",
-        df_data,
-        sheet_name,
-        fig,
-    )
 
     return fig.show(external=external_axes)

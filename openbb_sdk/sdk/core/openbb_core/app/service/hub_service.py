@@ -178,7 +178,8 @@ class HubService:
         )
         if response.status_code == 200:
             user_settings = response.json()
-            return HubUserSettings.parse_obj(user_settings)
+            filtered = {k: v for k, v in user_settings.items() if v is not None}
+            return HubUserSettings.parse_obj(filtered)
         status_code = response.status_code
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)

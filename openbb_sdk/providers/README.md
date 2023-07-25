@@ -11,7 +11,6 @@ All currently supported providers are listed below.
 | [Benzinga](./benzinga/README.md) |
 | [FRED](./fred/README.md) |
 
-
 ## Default Provider Configuration
 
 To configure the default providers for each route, edit the `.openbb_sdk/user_settings.json` file in your home directory by adding the `defaults` section, a `routes` subsection and for every route, the default provider desired. A sample is shown below.
@@ -38,7 +37,7 @@ To configure the default providers for each route, edit the `.openbb_sdk/user_se
 
 Every provider is located within a folder, with the following structure:
 
-```
+```{.bash}
 openbb_sdk
 └───providers
     └───<provider_name>

@@ -1,18 +1,27 @@
 # THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE
 
-
 - [THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE](#this-readme-is-a-work-in-progress-and-can-be-very-much-out-of-date-refresh-the-page-until-this-banner-is-gone)
   - [1. Introduction](#1-introduction)
   - [2. How to install?](#2-how-to-install)
+    - [Git clone](#git-clone)
+    - [Install](#install)
   - [3. How to add an extension?](#3-how-to-add-an-extension)
+    - [Project](#project)
+    - [Command](#command)
+    - [Entrypoint](#entrypoint)
+    - [Install extension](#install-extension)
   - [4. Usage](#4-usage)
-    - [4.1. Static version](#41-static-version)
-        - [4.1.1. Command output](#411-command-output)
-        - [4.1.2. Utilities](#412-utilities)
-        - [4.1.3. OpenBB Hub account](#413-openbb-hub-account)
-    - [4.2 Dynamic version](#42-dynamic-version)
+  - [4.1 Static version](#41-static-version)
+    - [4.1.1. Command output](#411-command-output)
+      - [Helpers](#helpers)
+    - [4.1.2. Utilities](#412-utilities)
+      - [Settings](#settings)
+      - [System](#system)
+      - [Coverage](#coverage)
+    - [4.1.3. OpenBB Hub account](#413-openbb-hub-account)
+  - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
-    - [5.1. Test users](#51-test-users)
+  - [5.1 Test users](#51-test-users)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -25,10 +34,9 @@ These functions are special:
 - They will be automatically turned into REST API endpoint
 - They allow sharing data between commands
 
-
 ## 2. How to install?
 
-**GIT CLONE**
+### Git clone
 
 Git clone the repository:
 
@@ -36,7 +44,7 @@ Git clone the repository:
 git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
 ```
 
-**INSTALL**
+### Install
 
 Go to `openbb_sdk` folder and install the package.
 
@@ -45,10 +53,9 @@ cd openbb_sdk
 poetry install
 ```
 
-
 ## 3. How to add an extension?
 
-**PROJECT**
+### Project
 
 Build a Python package:
 
@@ -56,7 +63,7 @@ Build a Python package:
 poetry new openbb-sdk-my_extension
 ```
 
-**COMMAND**
+### Command
 
 Add a router and a command.
 
@@ -74,7 +81,10 @@ def some_command(
     pass
 ```
 
-If your command only makes use of a `openbb-provider` model, there is no need to repeat its structure in the parameters. Just pass the model name as an argument. This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`.
+If your command only makes use of a `openbb-provider` model, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
+
+This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`.
+
 ```python
 @router.command(model="StockEOD")
 def load(
@@ -87,7 +97,7 @@ def load(
     return CommandOutput(results=Query(**locals()).execute())
 ```
 
-**ENTRYPOINT**
+### Entrypoint
 
 Add an entrypoint for the extension inside your `pyproject.toml` file.
 
@@ -99,7 +109,7 @@ packages = [{include = "openbb_sdk_my_extension"}]
 extension_name_space = "my_extension.extension_router:router"
 ```
 
-**INSTALL**
+### Install extension
 
 Install your extension.
 
@@ -108,11 +118,11 @@ cd openbb_sdk_my_extension
 poetry install
 ```
 
-# 4. Usage
+## 4. Usage
 
 Update the settings
 
-```
+```{json}
 # FILE <your_home_directory>/.openbb_sdk/user_settings.json
 {
     "credentials": {
@@ -136,7 +146,7 @@ Update the settings
 }
 ```
 
-```
+```{json}
 # FILE <your_home_directory>/.openbb_sdk/system_settings.json
 {
     "run_in_isolation": null,
@@ -169,11 +179,12 @@ Each command will always return a  `CommandOutput`. There you will find:
 - `error`: an `Error` with any exception that occurred during the command execution or `None`
 - `chart`: a `Chart` with chart data and format or `None`
 
-**HELPERS**
+#### Helpers
 
 To help you manipulate or visualize the data we make some helpers available.
 
 - `to_dataframe`: transforms `results` into a pandas DataFrame
+
 ```python
 >>> output.to_dataframe()
               open    high       low   close   adj_close    ...
@@ -184,6 +195,7 @@ date
 ```
 
 - `to_dict`: transforms `results` into a dict of lists
+
 ```python
 >>> output.to_dict()
 {
@@ -197,6 +209,7 @@ date
 ```
 
 - `show`: displays `chart.content` to a chart
+
 ```python
 >>> output.show()
 # Jupyter Notebook: inline chart
@@ -204,6 +217,7 @@ date
 ```
 
 - `to_plotly_json`: proxy to `chart.content`
+
 ```python
 >>> output.to_plotly_json()
 {'data':
@@ -222,9 +236,9 @@ date
 
 ### 4.1.2. Utilities
 
-**SETTINGS**
+#### Settings
 
-These are your user settings, you can change them at anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
+These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
 
 ```python
 from openbb import sdk
@@ -235,11 +249,11 @@ sdk.settings.preferences
 sdk.settings.defaults
 ```
 
-**SYSTEM**
+#### System
 
 Check your system settings. Most of the properties are read-only during runtime, so any changes there will be void.
 
-- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediatly.
+- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediately.
 
 ```python
 from openbb import sdk
@@ -247,7 +261,10 @@ from openbb import sdk
 sdk.system
 ```
 
-**COVERAGE**
+#### Coverage
+
+Obtain the coverage of providers and commands.
+
 ```python
 >>> sdk.coverage.commands
 {
@@ -275,6 +292,8 @@ sdk.system
 
 ### 4.1.3. OpenBB Hub account
 
+You can login to your OpenBB Hub account and save your credentials there. This way you can access them from any device.
+
 ```python
 from openbb import sdk
 
@@ -297,6 +316,7 @@ sdk.account.logout()
 ## 4.2 Dynamic version
 
 You can also use the dynamic version to consume the api endpoints from Python itself.
+
 In fact, the static version makes use of this feature to run each command. Take a look at the example below.
 
 ```python
@@ -341,7 +361,7 @@ chart: ...              # Chart object.
 
 OpenBB SDK comes with a ready to use Rest API built with FastAPI.
 
-```
+```{json}
 # FILE <your_home_directory>/.openbb_sdk/user_settings.json
 {
     "credentials": {
@@ -365,7 +385,7 @@ OpenBB SDK comes with a ready to use Rest API built with FastAPI.
 }
 ```
 
-```
+```{json}
 # FILE <your_home_directory>/.openbb_sdk/system_settings.json
 {
     "run_in_isolation": null,
@@ -384,11 +404,12 @@ uvicorn openbb_core.api.rest_api:app --reload
 There are 2 default users for testing purpose:
 
 User "openbb"
+
 - username : openbb
 - password : openbb
 
-
 User "finance"
+
 - username : finance
 - password : finance
 
@@ -397,8 +418,9 @@ User "finance"
 Here are libraries to get frontend typing.
 
 openapi-typescript + openapi-fetch
-- https://github.com/drwpow/openapi-typescript
 
+- <https://github.com/drwpow/openapi-typescript>
 
 openapi-generator
-- https://fastapi.tiangolo.com/advanced/generate-clients/
+
+- <https://fastapi.tiangolo.com/advanced/generate-clients/>

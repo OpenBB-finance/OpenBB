@@ -425,9 +425,9 @@ def get_usd_liquidity(overlay: str = "", show: bool = False) -> pd.DataFrame:
         )
 
     data = pd.DataFrame()
-    data["WALCL"] = get_series_data("WALCL").astype(int) * 1000000
-    data["WLRRAL"] = get_series_data("WLRRAL").astype(int) * 1000000
-    data["WDTGAL"] = get_series_data("WDTGAL").astype(int) * 1000000
+    data["WALCL"] = get_series_data("WALCL").astype("int64") * 1000000
+    data["WLRRAL"] = get_series_data("WLRRAL").astype("int64") * 1000000
+    data["WDTGAL"] = get_series_data("WDTGAL").astype("int64") * 1000000
     data["USD Liquidity Index (Billions of USD)"] = round(
         (data["WALCL"] - data["WLRRAL"] - data["WDTGAL"]) / 1000000000, 2
     )

@@ -1,28 +1,24 @@
 """Polygon provider module."""
 
-# IMPORT STANDARD
 
-# IMPORT INTERNAL
-from openbb_provider.abstract.provider import Provider, ProviderNameType
+from openbb_provider.abstract.provider import Provider
 
-from openbb_polygon.balance_sheet import PolygonBalanceSheetFetcher
-from openbb_polygon.cash_flow import PolygonCashFlowStatementFetcher
-from openbb_polygon.crypto_eod import PolygonCryptoEODFetcher
-from openbb_polygon.crypto_price import PolygonCryptoPriceFetcher
-from openbb_polygon.forex_eod import PolygonForexEODFetcher
-from openbb_polygon.forex_price import PolygonForexPriceFetcher
-from openbb_polygon.income_statement import PolygonIncomeStatementFetcher
-from openbb_polygon.major_indices_eod import PolygonMajorIndicesEODFetcher
-from openbb_polygon.major_indices_price import PolygonMajorIndicesPriceFetcher
-from openbb_polygon.stock_eod import PolygonStockEODFetcher
-from openbb_polygon.stock_news import PolygonStockNewsFetcher
-from openbb_polygon.stock_price import PolygonStockPriceFetcher
-
-# IMPORT THIRD-PARTY
+from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
+from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
+from openbb_polygon.models.crypto_eod import PolygonCryptoEODFetcher
+from openbb_polygon.models.crypto_price import PolygonCryptoPriceFetcher
+from openbb_polygon.models.forex_eod import PolygonForexEODFetcher
+from openbb_polygon.models.forex_price import PolygonForexPriceFetcher
+from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
+from openbb_polygon.models.major_indices_eod import PolygonMajorIndicesEODFetcher
+from openbb_polygon.models.major_indices_price import PolygonMajorIndicesPriceFetcher
+from openbb_polygon.models.stock_eod import PolygonStockEODFetcher
+from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
+from openbb_polygon.models.stock_price import PolygonStockPriceFetcher
 
 # mypy: disable-error-code="list-item"
 polygon_provider = Provider(
-    name=ProviderNameType("polygon"),
+    name="polygon",
     description="Provider for Polygon.",
     required_credentials=["api_key"],
     fetcher_list=[
