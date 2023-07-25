@@ -38,14 +38,27 @@ def _get_data_fields(fetcher) -> Tuple[Dict, Dict]:
     Tuple[Dict, Dict]
         A tuple of the provider-specific and standardized data fields.
     """
+    # TODO: this is a hacky way to get the fields, but it works for now
+    # if we split data into standard and extra, should be easier
     try:
         provider_fields = (fetcher.get_provider_data_type()).__fields__
     except AttributeError:
-        provider_fields = (fetcher.get_provider_data_type().__args__[0]).__fields__
+        try:
+            provider_fields = (fetcher.get_provider_data_type().__args__[0]).__fields__
+        except AttributeError:
+            provider_fields = (
+                (fetcher.get_data_type().__args__[-1]).__args__[0].__fields__
+            )
+
     try:
         standard_fields = (fetcher.get_data_type()).__fields__
     except AttributeError:
-        standard_fields = (fetcher.get_data_type().__args__[0]).__fields__
+        try:
+            standard_fields = (fetcher.get_data_type().__args__[0]).__fields__
+        except AttributeError:
+            standard_fields = (
+                (fetcher.get_data_type().__args__[-1]).__args__[0].__fields__
+            )
 
     return provider_fields, standard_fields
 

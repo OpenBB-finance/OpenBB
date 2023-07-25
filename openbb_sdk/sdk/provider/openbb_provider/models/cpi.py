@@ -1,8 +1,8 @@
 from datetime import date as dateType
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, CPI_FREQUENCY, CPI_UNITS
-from pydantic import BaseModel, validator
+from pydantic import validator
 
 from openbb_provider.abstract.data import Data, QueryParams
 
@@ -35,10 +35,10 @@ class CPIQueryParams(QueryParams):
     end_date: Optional[dateType]
 
 
-class CPIDataPoint(BaseModel):
+class CPIData(Data):
+    date: dateType
     realtime_start: dateType
     realtime_end: dateType
-    date: dateType
     value: float
 
     @validator("value", pre=True)
@@ -46,8 +46,3 @@ class CPIDataPoint(BaseModel):
         if v == ".":
             return 0.0
         return float(v)
-
-
-class CPIData(Data):
-    # I don't love this, but the keys are dynamic based on input so I don't know another way
-    data: Dict[str, List[CPIDataPoint]]

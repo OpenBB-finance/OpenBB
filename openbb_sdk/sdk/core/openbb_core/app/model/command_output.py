@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 import pandas as pd
 from pydantic import Field
@@ -10,6 +10,7 @@ from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart, ChartFormat
 from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.utils import basemodel_to_df
 
 T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
@@ -48,26 +49,37 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
         )
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def to_dataframe(self, concat: bool = True) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
         """Converts results field to pandas dataframe.
+
+        Parameters
+        ----------
+        concat : bool, optional
+            If True, it concatenates the dataframes, by default True.
 
         Returns
         -------
-        pd.DataFrame
-            Pandas dataframe.
+        Union[pd.DataFrame, Dict[str, pd.DataFrame]]
+            Pandas dataframe or dictionary of dataframes.
         """
         if self.results is None:
             raise OpenBBError("Results not found.")
 
         try:
-            df = pd.DataFrame(self.dict()["results"])
-            if "date" in df.columns:
-                df = df.set_index("date")
-                df.index = pd.to_datetime(df.index)
-        except ValueError:
-            df = pd.DataFrame(self.dict()["results"], index=["values"]).T
+            if isinstance(self.results, dict) and all(
+                isinstance(v, list) for v in self.results.values()
+            ):
+                dict_of_df = {
+                    k: basemodel_to_df(v, "date") for k, v in self.results.items()
+                }
+                df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
+
+            elif isinstance(self.results, list):
+                df = basemodel_to_df(self.results, "date")
+            else:
+                df = basemodel_to_df(self.results, "date")
         except Exception as e:
-            raise OpenBBError("Failed to convert results to dataframe.") from e
+            raise OpenBBError("Failed to convert results to DataFrame.") from e
 
         return df
 
@@ -79,7 +91,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe()
+        df = self.to_dataframe().reset_index()
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()

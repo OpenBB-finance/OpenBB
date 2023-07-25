@@ -6,29 +6,11 @@ from typing import Dict, List, Optional
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
-from openbb_provider.models.cpi import CPIData, CPIDataPoint, CPIQueryParams
+from openbb_provider.models.cpi import CPIData, CPIQueryParams
 
 
 class FREDCPIQueryParams(CPIQueryParams):
-    """CPI query.
-    When other provders are added, this will probably need less strict types
-
-    Parameter
-    ---------
-    countries: List[CPI_COUNTRIES]
-        The country or countries you want to see.
-    units: List[CPI_UNITS]
-        The units you want to see, can be "growth_previous", "growth_same" or "index_2015".
-    frequency: List[CPI_FREQUENCY]
-        The frequency you want to see, either "annual", monthly" or "quarterly".
-    harmonized: bool
-        Whether you wish to obtain harmonized data.
-    start_date: Optional[date]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[date]
-        End date, formatted YYYY-MM-DD
-    """
+    """CPI query."""
 
 
 class FREDCPIData(CPIData):
@@ -53,7 +35,7 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
     @staticmethod
     def extract_data(
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]]
-    ) -> FREDCPIData:
+    ) -> Dict[str, List[CPIData]]:
         if credentials:
             api_key = credentials.get("fred_api_key")
 
@@ -63,20 +45,17 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
         step_2 = [x for x in step_1 if x["units"] == query.units]
         step_3 = [x for x in step_2 if x["frequency"] == query.frequency]
 
-        if not step_3:
-            FREDCPIData(data={})
-
         series_dict = {}
 
         fred = Fred(api_key)
         for item in step_3:
             loc = f"{item['country']}-{item['frequency']}-{item['units']}"
             temp = fred.get_series(item["series_id"], query.start_date, query.end_date)
-            clean_temp = [CPIDataPoint(**x) for x in temp]
+            clean_temp = [FREDCPIData(**x) for x in temp]
             series_dict[loc] = clean_temp
 
-        return FREDCPIData(data=series_dict)
+        return series_dict
 
     @staticmethod
-    def transform_data(data: List[FREDCPIData]) -> List[CPIData]:
-        return data_transformer(data, CPIData)
+    def transform_data(data: Dict[str, List[CPIData]]) -> Dict[str, List[CPIData]]:
+        return data

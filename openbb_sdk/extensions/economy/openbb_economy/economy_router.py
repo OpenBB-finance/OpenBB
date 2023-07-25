@@ -33,11 +33,10 @@ def const(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
-    """"""
+    """Get the constituents of an index."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
-# pylint: disable=too-many-arguments
 @router.command(model="CPI")
 def cpi(
     cc: CommandContext,

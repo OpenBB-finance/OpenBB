@@ -4,9 +4,14 @@ import pandas as pd
 from openbb_provider.abstract.data import Data
 
 
-def basemodel_to_df(data: List[Data], index: Optional[str] = None) -> pd.DataFrame:
+def basemodel_to_df(
+    data: Union[List[Data], Data], index: Optional[str] = None
+) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
-    df = pd.DataFrame([d.dict() for d in data])
+
+    data_list = [data] if not isinstance(data, list) else data
+
+    df = pd.DataFrame([d.dict() for d in data_list])
     if index and index in df.columns:
         df = df.set_index(index)
     return df
