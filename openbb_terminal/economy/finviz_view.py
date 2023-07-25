@@ -91,7 +91,16 @@ def display_performance(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
     df_group = finviz_model.get_performance_data(group, sortby, ascend)
-    df_group = df_group.rename(columns={"Name": ""})
+    df_group = df_group.rename(
+        columns={
+            "Name": "",
+            "Week": "1W",
+            "Month": "1M",
+            "3Month": "3M",
+            "6Month": "6M",
+            "1Year": "1Y",
+        }
+    )
     if df_group.empty:
         return
     print_rich_table(

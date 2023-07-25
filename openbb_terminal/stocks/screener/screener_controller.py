@@ -540,7 +540,7 @@ class ScreenerController(BaseController):
             choices=screener_helper.finviz_choices("performance"),
             type=str.lower,
             dest="sort",
-            default="perfytd",
+            default="ytd",
             metavar="SORTBY",
             help="Sort elements of the table.",
         )
