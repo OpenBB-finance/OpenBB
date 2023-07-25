@@ -107,7 +107,7 @@ class BenzingaStockNewsFetcher(
             api_key = credentials.get("benzinga_api_key")
 
         base_url = "https://api.benzinga.com/api/v2/news"
-        querystring = get_querystring(query.dict(), [])
+        querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
         data = get_data(request_url)
 

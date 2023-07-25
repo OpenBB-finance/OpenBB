@@ -189,6 +189,7 @@ class CLASS_stocks(Container):
         self,
         symbols: str,
         page: int = 0,
+        limit: int = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs
@@ -319,6 +320,7 @@ class CLASS_stocks(Container):
             standard_params={
                 "symbols": symbols,
                 "page": page,
+                "limit": limit,
             },
             extra_params=kwargs,
             chart=chart,
