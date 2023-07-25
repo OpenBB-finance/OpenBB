@@ -7,7 +7,7 @@ from typing import Optional
 from pydantic import Field, PositiveFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
@@ -25,9 +25,9 @@ class StockPriceQueryParams(QueryParams, BaseSymbol):
     """
 
     # These fields only work with Polygon
-    start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
+    start_date: date = Field(description=QUERY_DESCRIPTIONS.get("start_date", ""))
     end_date: Optional[date] = Field(
-        description=DESCRIPTIONS.get("end_date", ""), default=date.today()
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=date.today()
     )
 
 

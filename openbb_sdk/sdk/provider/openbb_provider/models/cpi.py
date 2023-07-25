@@ -1,9 +1,10 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional
 
-from pydantic import validator
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 CPI_COUNTRIES = Literal[
     "australia",
@@ -63,31 +64,24 @@ CPI_FREQUENCY = Literal["monthly", "quarterly", "annual"]
 
 
 class CPIQueryParams(QueryParams):
-    """CPI query.
-    When other provders are added, this will probably need less strict types
+    """CPI query."""
 
-    Parameter
-    ---------
-    countries: List[CPI_COUNTRIES]
-        The country or countries you want to see.
-    units: List[CPI_UNITS]
-        The units you want to see, can be "growth_previous", "growth_same" or "index_2015".
-    frequency: List[CPI_FREQUENCY]
-        The frequency you want to see, either "annual", monthly" or "quarterly".
-    harmonized: bool
-        Whether you wish to obtain harmonized data.
-    start_date: Optional[date]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[date]
-        End date, formatted YYYY-MM-DD
-    """
-
-    countries: List[CPI_COUNTRIES]
-    units: CPI_UNITS = "growth_same"
-    frequency: CPI_FREQUENCY = "monthly"
-    harmonized: bool = False
-    start_date: Optional[dateType]
-    end_date: Optional[dateType]
+    countries: List[CPI_COUNTRIES] = Field(
+        description=QUERY_DESCRIPTIONS.get("countries")
+    )
+    units: CPI_UNITS = Field("growth_same", description=QUERY_DESCRIPTIONS.get("units"))
+    frequency: CPI_FREQUENCY = Field(
+        "monthly", description=QUERY_DESCRIPTIONS.get("frequency")
+    )
+    harmonized: bool = Field(
+        False, description="Whether you wish to obtain harmonized data."
+    )
+    start_date: Optional[dateType] = Field(
+        None, description=QUERY_DESCRIPTIONS.get("start_date")
+    )
+    end_date: Optional[dateType] = Field(
+        None, description=QUERY_DESCRIPTIONS.get("end_date")
+    )
 
 
 class CPIData(Data):

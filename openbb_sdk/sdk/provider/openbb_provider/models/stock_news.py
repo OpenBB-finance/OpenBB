@@ -7,7 +7,7 @@ from typing import Optional
 from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
 class StockNewsQueryParams(QueryParams):
@@ -22,7 +22,9 @@ class StockNewsQueryParams(QueryParams):
         The page of the stock news to be retrieved.
     """
 
-    symbols: str = Field(min_length=1, description=DESCRIPTIONS.get("symbols", ""))
+    symbols: str = Field(
+        min_length=1, description=QUERY_DESCRIPTIONS.get("symbols", "")
+    )
     page: int = Field(default=0)
 
     @validator("symbols", pre=True)

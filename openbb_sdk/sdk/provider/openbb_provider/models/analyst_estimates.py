@@ -7,7 +7,7 @@ from typing import Literal
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
@@ -15,15 +15,15 @@ class AnalystEstimatesQueryParams(QueryParams, BaseSymbol):
     """Analyst Estimates query."""
 
     period: Literal["quarterly", "annually"] = Field(
-        default="annually", description=DESCRIPTIONS.get("period", "")
+        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
     )
-    limit: int = Field(default=30, description=DESCRIPTIONS.get("limit", ""))
+    limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
 
 class AnalystEstimatesData(Data, BaseSymbol):
     """Analyst estimates data."""
 
-    date: dateType = Field(description=DESCRIPTIONS.get("date", ""))
+    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
     estimated_revenue_low: int = Field(description="The estimated revenue low.")
     estimated_revenue_high: int = Field(description="The estimated revenue high.")
     estimated_revenue_avg: int = Field(description="The estimated revenue average.")

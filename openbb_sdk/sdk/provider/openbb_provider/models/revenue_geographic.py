@@ -7,7 +7,7 @@ from typing import Literal, Optional
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
@@ -25,7 +25,7 @@ class RevenueGeographicQueryParams(QueryParams, BaseSymbol):
     """
 
     period: Literal["quarterly", "annually"] = Field(
-        default="quarterly", description=DESCRIPTIONS.get("period", "")
+        default="quarterly", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     structure: Literal["hierarchical", "flat"] = Field(
         default="flat"

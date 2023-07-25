@@ -11,7 +11,7 @@ from typing import Optional
 from pydantic import Field, NonNegativeFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
 class DividendCalendarQueryParams(QueryParams):
@@ -31,11 +31,11 @@ class DividendCalendarQueryParams(QueryParams):
     """
 
     start_date: Optional[dateType] = Field(
-        description=DESCRIPTIONS.get("start_date", ""),
+        description=QUERY_DESCRIPTIONS.get("start_date", ""),
         default=datetime.now().date() - timedelta(days=31),
     )
     end_date: Optional[dateType] = Field(
-        description=DESCRIPTIONS.get("end_date", ""),
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
         default=datetime.now().date() - timedelta(days=1),
     )
 

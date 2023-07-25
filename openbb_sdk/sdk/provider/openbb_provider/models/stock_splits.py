@@ -7,7 +7,7 @@ from typing import Optional
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
 class StockSplitCalendarQueryParams(QueryParams):
@@ -22,10 +22,10 @@ class StockSplitCalendarQueryParams(QueryParams):
     """
 
     start_date: Optional[dateType] = Field(
-        description=DESCRIPTIONS.get("start_date", ""), default=None
+        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
     end_date: Optional[dateType] = Field(
-        description=DESCRIPTIONS.get("end_date", ""), default=None
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
 
