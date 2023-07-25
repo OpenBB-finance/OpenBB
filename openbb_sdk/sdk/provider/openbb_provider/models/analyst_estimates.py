@@ -4,11 +4,11 @@
 from datetime import date as dateType
 from typing import Literal
 
-from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.models.base import BaseSymbol
-from openbb_provider.metadata import DESCRIPTIONS
-
 from pydantic import Field
+
+from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.models.base import BaseSymbol
 
 
 class AnalystEstimatesQueryParams(QueryParams, BaseSymbol):
