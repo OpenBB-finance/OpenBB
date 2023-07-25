@@ -237,7 +237,7 @@ def test_get_description(signature_inspector):
     """Test get_description."""
 
     def some_function():
-        """Some function."""
+        """Mock function."""
 
     assert signature_inspector.get_description(some_function) == some_function.__doc__
 
@@ -260,3 +260,43 @@ def command_map():
 def test_command_map_init(command_map):
     """Test init."""
     assert command_map
+
+
+def test_map(command_map):
+    """Test map."""
+    assert isinstance(command_map.map, dict)
+
+
+def test_provider_coverage(command_map):
+    """Test provider_coverage."""
+    assert isinstance(command_map.provider_coverage, dict)
+
+
+def test_command_coverage(command_map):
+    """Test command_coverage."""
+    assert isinstance(command_map.command_coverage, dict)
+
+
+def test_get_command_map(command_map, router):
+    """Test get_command_map."""
+    command_map = command_map.get_command_map(router)
+    assert isinstance(command_map, dict)
+    assert len(command_map) > 0
+
+
+def test_get_provider_coverage(command_map, router):
+    """Test get_provider_coverage."""
+    provider_coverage = command_map.get_provider_coverage(router)
+    assert isinstance(provider_coverage, dict)
+
+
+def test_get_command_coverage(command_map, router):
+    """Test get_command_coverage."""
+    command_coverage = command_map.get_command_coverage(router)
+    assert isinstance(command_coverage, dict)
+
+
+def test_get_command(command_map):
+    """Test get_command."""
+    command = command_map.get_command("stocks/load")
+    assert command is None
