@@ -26,6 +26,7 @@ openbb-provider = { path = "../provider" }
 
 [tool.poetry.group.dev.dependencies]
 openbb-provider = { path = "../provider" }
+pytest = "^6.2.2"
 
 [build-system]
 requires = ["poetry-core"]
