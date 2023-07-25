@@ -15,7 +15,7 @@ QUERY_DESCRIPTIONS = {
 }
 
 DATA_DESCRIPTIONS = {
-    "symbol": "Symbol to get data for.",
+    "symbol": "Symbol representing the entity requested in the data.",
     "date": "The date of the data.",
     "open": "The open price of the symbol.",
     "high": "The high price of the symbol.",
