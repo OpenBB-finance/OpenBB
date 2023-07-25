@@ -1,10 +1,65 @@
 from datetime import date as dateType
-from typing import List, Optional
+from typing import List, Literal, Optional
 
-from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, CPI_FREQUENCY, CPI_UNITS
 from pydantic import validator
 
 from openbb_provider.abstract.data import Data, QueryParams
+
+CPI_COUNTRIES = Literal[
+    "australia",
+    "austria",
+    "belgium",
+    "brazil",
+    "bulgaria",
+    "canada",
+    "chile",
+    "china",
+    "croatia",
+    "cyprus",
+    "czech_republic",
+    "denmark",
+    "estonia",
+    "euro_area",
+    "finland",
+    "france",
+    "germany",
+    "greece",
+    "hungary",
+    "iceland",
+    "india",
+    "indonesia",
+    "ireland",
+    "israel",
+    "italy",
+    "japan",
+    "korea",
+    "latvia",
+    "lithuania",
+    "luxembourg",
+    "malta",
+    "mexico",
+    "netherlands",
+    "new_zealand",
+    "norway",
+    "poland",
+    "portugal",
+    "romania",
+    "russian_federation",
+    "slovak_republic",
+    "slovakia",
+    "slovenia",
+    "south_africa",
+    "spain",
+    "sweden",
+    "switzerland",
+    "turkey",
+    "united_kingdom",
+    "united_states",
+]
+
+CPI_UNITS = Literal["growth_previous", "growth_same", "index_2015"]
+
+CPI_FREQUENCY = Literal["monthly", "quarterly", "annual"]
 
 
 class CPIQueryParams(QueryParams):
