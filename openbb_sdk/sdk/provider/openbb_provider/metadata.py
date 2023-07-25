@@ -8,4 +8,5 @@ DESCRIPTIONS = {
     "monthly": "Whether to return monthly data.",
     "period": "Period of the data to return (quarterly or annually).",
     "date": "A specific date to get data for.",
+    "limit": "The number of data entries to return.",
 }
