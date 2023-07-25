@@ -15,12 +15,14 @@ class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/general-news-api/
     """
 
+
 class FMPGlobalNewsData(GlobalNewsData):
     # publishedDate: datetime = Field(alias="date")
     class Config:
-        fields = {'date': 'publishedDate'}
+        fields = {"date": "publishedDate"}
 
     site: str = Field(description="The site of the news.")
+
 
 class FMPGlobalNewsFetcher(
     Fetcher[
