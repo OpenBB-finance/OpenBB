@@ -3,7 +3,6 @@
 
 from typing import Dict, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.company_overview import (
@@ -17,58 +16,35 @@ from openbb_fmp.utils.helpers import get_data
 
 
 class FMPCompanyOverviewQueryParams(CompanyOverviewQueryParams):
-    """FMP Company Overview query.
+    """FMP Company Overview Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/companies-key-stats-free-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPCompanyOverviewData(Data):
-    symbol: str
-    price: float
-    beta: float
-    volAvg: int
-    mktCap: int
-    lastDiv: float
-    range: str
-    changes: float
-    companyName: str
-    currency: str
-    cik: Optional[str]
-    isin: Optional[str]
-    cusip: Optional[str]
-    exchange: str
-    exchangeShortName: str
-    industry: str
-    website: str
-    description: str
-    ceo: str
-    sector: str
-    country: str
-    fullTimeEmployees: str
-    phone: str
-    address: str
-    city: str
-    state: str
-    zip: str
-    dcfDiff: float
-    dcf: float
-    image: str
-    ipoDate: str
-    defaultImage: bool
-    isEtf: bool
-    isActivelyTrading: bool
-    isAdr: bool
-    isFund: bool
+class FMPCompanyOverviewData(CompanyOverviewData):
+    """FMP Company Overview Data."""
+
+    class Config:
+        fields = {
+            "vol_avg": "volAvg",
+            "mkt_cap": "mktCap",
+            "last_div": "lastDiv",
+            "company_name": "companyName",
+            "exchange_short_name": "exchangeShortName",
+            "full_time_employees": "fullTimeEmployees",
+            "dcf_diff": "dcfDiff",
+            "ipo_date": "ipoDate",
+            "default_image": "defaultImage",
+            "is_etf": "isEtf",
+            "is_actively_trading": "isActivelyTrading",
+            "is_adr": "isAdr",
+            "is_fund": "isFund",
+        }
 
 
-class FMPCompanyProfileFetcher(
-    Fetcher[  # type: ignore
+class FMPCompanyOverviewFetcher(
+    Fetcher[
         CompanyOverviewQueryParams,
         CompanyOverviewData,
         FMPCompanyOverviewQueryParams,

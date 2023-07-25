@@ -7,7 +7,7 @@ from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
-from openbb_fmp.models.company_profile import FMPCompanyProfileFetcher
+from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_eod import FMPCryptoEODFetcher
 from openbb_fmp.models.crypto_price import FMPCryptoPriceFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
@@ -69,7 +69,7 @@ fmp_provider = Provider(
         FMPRevenueGeographicFetcher,
         FMPRevenueBusinessLineFetcher,
         FMPInstitutionalOwnershipFetcher,
-        FMPCompanyProfileFetcher,
+        FMPCompanyOverviewFetcher,
         FMPStockInsiderTradingFetcher,
         FMPStockOwnershipFetcher,
         FMPESGScoreFetcher,
