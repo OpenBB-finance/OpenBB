@@ -193,6 +193,8 @@ class ProviderInterface:
 
         default = ... if field["required"] else field["default"]
         if query:
+            # We need to use query if we want the field description to show up in the
+            # swagger, it's a fastapi limitation
             default = Query(
                 default=default, title=provider_name, description=description
             )
@@ -260,7 +262,7 @@ class ProviderInterface:
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
                 for name, field in model_details["Data"]["fields"].items():
-                    incoming = cls.__create_field(name, field, provider_name)
+                    incoming = cls.__create_field(name, field, "standard")
 
                     standard[incoming.name] = (
                         incoming.name,
@@ -408,7 +410,11 @@ class ProviderInterface:
             for name, field in fields.items():
                 fields_dict[name] = (
                     field.type_,
-                    Field(default=field.default, title=field.field_info.title),
+                    Field(
+                        default=field.default,
+                        title=field.field_info.title,
+                        description=field.field_info.description,
+                    ),
                 )
 
             class Config(BaseConfig):
