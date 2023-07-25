@@ -4,7 +4,7 @@ from typing import List, Literal, Optional
 from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import QUERY_DESCRIPTIONS
+from openbb_provider.metadata import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 CPI_COUNTRIES = Literal[
     "australia",
@@ -85,10 +85,14 @@ class CPIQueryParams(QueryParams):
 
 
 class CPIData(Data):
-    date: dateType
-    realtime_start: dateType
-    realtime_end: dateType
-    value: float
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
+    realtime_start: dateType = Field(
+        description="The date the data was updated."
+    )  # TODO: What is this?
+    realtime_end: dateType = Field(
+        description="The date the data was updated."
+    )  # TODO: What is this?
+    value: float = Field(description="The value of the data.")
 
     @validator("value", pre=True)
     def value_validate(cls, v: str):  # pylint: disable=E0213
