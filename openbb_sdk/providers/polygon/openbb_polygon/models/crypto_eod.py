@@ -6,9 +6,9 @@ from typing import Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
-from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
 from openbb_provider.metadata import QUERY_DESCRIPTIONS
-from pydantic import Field, validator, PositiveFloat, PositiveInt
+from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 

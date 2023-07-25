@@ -86,7 +86,9 @@ class BenzingaGlobalNewsData(StockNewsData):
     class Config:
         fields = {"date": "created", "text": "body"}
 
-    image: List[BenzingaImage] = Field(description="The images associated with the news.")
+    image: List[BenzingaImage] = Field(
+        description="The images associated with the news."
+    )
 
     @validator("date", pre=True)
     def time_validate(cls, v):  # pylint: disable=E0213

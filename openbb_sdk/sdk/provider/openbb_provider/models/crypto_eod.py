@@ -7,7 +7,7 @@ from typing import Optional
 from pydantic import Field, PositiveFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
+from openbb_provider.metadata import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 

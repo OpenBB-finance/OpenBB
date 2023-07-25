@@ -6,9 +6,9 @@ from typing import Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
-from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
 from openbb_provider.metadata import DATA_DESCRIPTIONS
-from pydantic import Field, validator, NonNegativeInt
+from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from pydantic import Field, NonNegativeInt, validator
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -39,12 +39,12 @@ class FMPCryptoEODData(CryptoEODData):
         alias="change",
     )
     changePercent: float = Field(
-        description="Change \% in the price of the symbol.", alias="change_percent"
+        description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
     vwap: float = Field(description="Volume Weighted Average Price of the symbol.")
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
-        description="Change \% in the price of the symbol over a period of time.",
+        description=r"Change \% in the price of the symbol over a period of time.",
         alias="change_over_time",
     )
 
