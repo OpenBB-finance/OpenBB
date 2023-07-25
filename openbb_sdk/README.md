@@ -37,16 +37,6 @@ pip install ./openbb_sdk
 
 This will install the SDK and all the dependencies into the site-packages folder of the virtual environment.
 
-While we're still developing it is required to create the static python interface:
-
-```python
-import openbb
-openbb._rebuild_python_interface()
-exit()
-```
-
-Right now you need to do this before the first launch and every time you install or uninstall a new extension.
-
 ## API keys
 
 To connect to APIs you need to provide the API keys. Here 3 options how you can provide them:
@@ -143,3 +133,13 @@ From the root of the OpenBB Terminal repo run:
 When developing a specific extension cd into the extension folder and run:
 
 `pip install -U -e .`
+
+While we're still developing it is required to create the static python interface:
+
+```python
+import openbb
+openbb._rebuild_python_interface()
+exit()
+```
+
+Right now you need to do this before the first launch and every time you install or uninstall a new extension.

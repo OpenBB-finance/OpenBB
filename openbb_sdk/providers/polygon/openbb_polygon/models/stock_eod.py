@@ -64,7 +64,7 @@ class PolygonStockEODFetcher(
             symbol=query.symbol,
             start_date=start_date,
             end_date=end_date,
-            **extra_params if extra_params else {},
+            **extra_params or {},
         )
 
     @staticmethod

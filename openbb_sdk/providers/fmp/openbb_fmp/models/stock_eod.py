@@ -1,10 +1,9 @@
 """FMP Stocks end of day fetcher."""
 
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from typing import Dict, List, Literal, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
@@ -13,7 +12,7 @@ from pydantic import Field, NonNegativeInt, validator
 from openbb_fmp.utils.helpers import get_data_many
 
 
-class FMPStockEODQueryParams(QueryParams):
+class FMPStockEODQueryParams(StockEODQueryParams):
     """FMP Stock end of day query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
@@ -32,21 +31,15 @@ class FMPStockEODQueryParams(QueryParams):
         The type of the series. Only "line" is supported.
     """
 
-    symbol: str = Field(min_length=1)
+    # symbol: str = Field(min_length=1)
     series_type: Optional[Literal["line"]]
-    start_date: date
-    end_date: date
+    # start_date: date
+    # end_date: date
     timeseries: Optional[NonNegativeInt]  # Number of days to looks back
 
 
-class FMPStockEODData(Data):
-    date: datetime
-    open: float
-    high: float
-    low: float
-    close: float
+class FMPStockEODData(StockEODData):
     adjClose: float = Field(alias="adj_close")
-    volume: float
     unadjustedVolume: float
     change: float
     changePercent: float
@@ -72,13 +65,13 @@ class FMPStockEODFetcher(
         query: StockEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPStockEODQueryParams:
         now = datetime.now()
-        start_date = query.start_date if query.start_date else now - timedelta(days=5)
-        end_date = query.end_date if query.end_date else now
+        start_date = query.start_date or (now - timedelta(days=5))
+        end_date = query.end_date or now
         return FMPStockEODQueryParams(
             symbol=query.symbol,
             start_date=start_date,
             end_date=end_date,
-            **extra_params if extra_params else {},
+            **extra_params or {},
         )
 
     @staticmethod
