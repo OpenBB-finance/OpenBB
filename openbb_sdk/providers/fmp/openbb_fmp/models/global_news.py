@@ -1,40 +1,26 @@
 """FMP Global News fetcher."""
 
-
-from datetime import datetime
 from typing import Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPGlobalNewsQueryParams(QueryParams):
+class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
     """FMP Global News query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/general-news-api/
-
-    Parameter
-    ---------
-    page : int (default: 0)
-        The page of the data to retrieve.
     """
 
-    page: int = Field(default=0)
+class FMPGlobalNewsData(GlobalNewsData):
+    # publishedDate: datetime = Field(alias="date")
+    class Config:
+        fields = {'date': 'publishedDate'}
 
-
-class FMPGlobalNewsData(Data):
-    publishedDate: datetime = Field(alias="date")
-    title: str
-    image: str
-    text: str
-    url: str
-    site: str
-
+    site: str = Field(description="The site of the news.")
 
 class FMPGlobalNewsFetcher(
     Fetcher[
@@ -62,4 +48,4 @@ class FMPGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(data: List[FMPGlobalNewsData]) -> List[GlobalNewsData]:
-        return data_transformer(data, GlobalNewsData)
+        return data

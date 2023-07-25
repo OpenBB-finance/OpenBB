@@ -51,9 +51,9 @@ class Fetcher(
         credentials: Optional[Dict[str, str]] = None,
     ) -> UDataType:
         """Fetch data from a provider by using the OpenBB standard."""
-        provider_query = cls.transform_query(query=query, extra_params=extra_params)
-        provider_data = cls.extract_data(query=provider_query, credentials=credentials)
-        data = cls.transform_data(data=provider_data)
+        query = cls.transform_query(query=query, extra_params=extra_params)
+        data = cls.extract_data(query=query, credentials=credentials)
+        # data = cls.transform_data(data=data)
         return data
 
     @classmethod
