@@ -10,7 +10,7 @@ from typing import Optional
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
 class TreasuryRatesQueryParams(QueryParams):
@@ -25,11 +25,11 @@ class TreasuryRatesQueryParams(QueryParams):
     """
 
     start_date: Optional[str] = Field(
-        default=None, description=DESCRIPTIONS["start_date"]
+        default=None, description=QUERY_DESCRIPTIONS["start_date"]
     )
     end_date: Optional[str] = Field(
         default=datetime.today().strftime("%Y-%m-%d"),
-        description=DESCRIPTIONS["end_date"],
+        description=QUERY_DESCRIPTIONS["end_date"],
     )
 
 

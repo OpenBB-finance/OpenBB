@@ -49,7 +49,9 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
         )
 
-    def to_dataframe(self, concat: bool = True) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
+    def to_dataframe(
+        self, concat: bool = True
+    ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
         """Converts results field to pandas dataframe.
 
         Parameters
@@ -78,6 +80,11 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
                 df = basemodel_to_df(self.results, "date")
             else:
                 df = basemodel_to_df(self.results, "date")
+
+            if df.index.name == "date":
+                df.index = pd.to_datetime(df.index)
+                df.sort_index(axis=0, inplace=True)
+
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
 

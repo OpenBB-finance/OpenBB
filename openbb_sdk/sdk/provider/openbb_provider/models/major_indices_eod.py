@@ -7,7 +7,7 @@ from typing import Optional
 from pydantic import Field, PositiveFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
@@ -24,9 +24,9 @@ class MajorIndicesEODQueryParams(QueryParams, BaseSymbol):
         The end date of the stock data up to which to retrieve the data.
     """
 
-    start_date: date = Field(description=DESCRIPTIONS.get("start_date", ""))
+    start_date: date = Field(description=QUERY_DESCRIPTIONS.get("start_date", ""))
     end_date: Optional[date] = Field(
-        description=DESCRIPTIONS.get("end_date", ""), default=date.today()
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=date.today()
     )
 
 

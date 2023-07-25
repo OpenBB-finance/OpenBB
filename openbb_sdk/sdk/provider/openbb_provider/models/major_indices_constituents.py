@@ -7,7 +7,7 @@ from typing import Literal, Optional, Union
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
 class MajorIndicesConstituentsQueryParams(QueryParams):
@@ -20,7 +20,7 @@ class MajorIndicesConstituentsQueryParams(QueryParams):
     """
 
     index: Literal["nasdaq", "sp500", "dowjones"] = Field(
-        description=DESCRIPTIONS.get("index", ""),
+        description=QUERY_DESCRIPTIONS.get("index", ""),
         default="dowjones",
     )
 

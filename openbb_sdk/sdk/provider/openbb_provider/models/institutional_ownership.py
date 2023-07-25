@@ -7,7 +7,7 @@ from typing import Optional
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
@@ -27,7 +27,7 @@ class InstitutionalOwnershipQueryParams(QueryParams, BaseSymbol):
     include_current_quarter: bool = Field(
         default=False, description="Include current quarter data."
     )
-    date: Optional[dateType] = Field(description=DESCRIPTIONS.get("date", ""))
+    date: Optional[dateType] = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
 
 
 class InstitutionalOwnershipData(Data):
