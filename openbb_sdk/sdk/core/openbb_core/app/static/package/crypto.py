@@ -17,8 +17,8 @@ class CLASS_crypto(Container):
     def load(
         self,
         symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        start_date: Union[datetime.date, str],
+        end_date: Union[datetime.date, str],
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs

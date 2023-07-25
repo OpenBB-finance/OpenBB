@@ -4,6 +4,7 @@ import datetime
 import typing
 from typing import Literal, Optional, Union
 
+import pydantic
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -189,7 +190,7 @@ class CLASS_stocks(Container):
         self,
         symbols: str,
         page: int = 0,
-        limit: int = 15,
+        limit: Optional[pydantic.types.NonNegativeInt] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs
@@ -200,14 +201,6 @@ class CLASS_stocks(Container):
 
         Standard
         ========
-
-
-        Parameter
-        ---------
-        symbols : str
-            The symbols of the company.
-        page : int
-            The page of the stock news to be retrieved.
 
 
         Returns
@@ -228,50 +221,11 @@ class CLASS_stocks(Container):
 
         Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
 
-        Parameter
-        ---------
-        symbols: str
-            The symbols of the companies.
-        pageSize : int (default: 15)
-            The number of results to return per page.
-        headline : str
-            The type of data to return. Options are "headline", "summary", "full", "all".
-        date : Optional[datetime]
-            The date of the news to retrieve.
-        dateFrom : Optional[datetime]
-            The start date of the news to retrieve.
-        dateTo : Optional[datetime]
-            The end date of the news to retrieve.
-        updatedSince : Optional[int]
-            The number of seconds since the news was updated.
-        publishedSince : Optional[int]
-            The number of seconds since the news was published.
-        sort : Optional[str]
-            The order in which to sort the news. Options are:
-            "published_at", "updated_at", "title", "author", "channel", "ticker", "topic", "content_type".
-        isin : Optional[str]
-            The ISIN of the news to retrieve.
-        cusip : Optional[str]
-            The CUSIP of the news to retrieve.
-        channels : Optional[str]
-            The channels of the news to retrieve.
-        topics : Optional[str]
-            The topics of the news to retrieve.
-        authors : Optional[str]
-            The authors of the news to retrieve.
-        content_types : Optional[str]
-            The content types of the news to retrieve.
-
 
         fmp
         ===
 
         Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
-
-        Parameter
-        ---------
-        limit : Optional[int]
-            The limit of the data to retrieve.
 
 
         Returns
@@ -308,8 +262,6 @@ class CLASS_stocks(Container):
             Greater than or equal, by default None
         order : Literal["asc", "desc"], optional
             The sort order of the query, by default None
-        limit : int, optional
-            The limit of the query, by default 100
         sort : str, optional
             The sort of the query, by default None
         """

@@ -36,8 +36,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
+        symbol: Optional[str] = None,
+        period: Literal["annual", "quarter"] = "annual",
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -206,8 +206,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cal(
         self,
-        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 23),
-        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 23),
+        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 24),
+        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 24),
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -286,8 +286,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
+        symbol: Optional[str] = None,
+        period: Literal["annual", "quarter"] = "annual",
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -533,8 +533,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def comsplit(
         self,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        start_date: Union[datetime.date, str],
+        end_date: Union[datetime.date, str],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -899,7 +899,7 @@ class CLASS_stocks_fa(Container):
     def est(
         self,
         symbol: str,
-        period: Literal["quarter", "annual"] = "annual",
+        period: Literal["quarterly", "annually"] = "annually",
         limit: int = 30,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -912,76 +912,11 @@ class CLASS_stocks_fa(Container):
         Standard
         ========
 
-        Parameter
-        ---------
-        symbol : str
-            The symbol of the company.
-        period : Literal["quarter", "annual"]
-            The period of the analyst estimates.
-        limit : int
-            The limit of the analyst estimates.
-
-
-        Returns
-        -------
-        symbol : str
-            The symbol of the asset.
-        date : date
-            The date of the analyst estimates.
-        estimated_revenue_low : int
-            The estimated revenue low of the analyst estimates.
-        estimated_revenue_high : int
-            The estimated revenue high of the analyst estimates.
-        estimated_revenue_avg : int
-            The estimated revenue average of the analyst estimates.
-        estimated_ebitda_low : int
-            The estimated EBITDA low of the analyst estimates.
-        estimated_ebitda_high : int
-            The estimated EBITDA high of the analyst estimates.
-        estimated_ebitda_avg : int
-            The estimated EBITDA average of the analyst estimates.
-        estimated_ebit_low : int
-            The estimated EBIT low of the analyst estimates.
-        estimated_ebit_high : int
-            The estimated EBIT high of the analyst estimates.
-        estimated_ebit_avg : int
-            The estimated EBIT average of the analyst estimates.
-        estimated_net_income_low : int
-            The estimated net income low of the analyst estimates.
-        estimated_net_income_high : int
-            The estimated net income high of the analyst estimates.
-        estimated_net_income_avg : int
-            The estimated net income average of the analyst estimates.
-        estimated_sga_expense_low : int
-            The estimated SGA expense low of the analyst estimates.
-        estimated_sga_expense_high : int
-            The estimated SGA expense high of the analyst estimates.
-        estimated_sga_expense_avg : int
-            The estimated SGA expense average of the analyst estimates.
-        estimated_eps_avg : float
-            The estimated EPS average of the analyst estimates.
-        estimated_eps_high : float
-            The estimated EPS high of the analyst estimates.
-        estimated_eps_low : float
-            The estimated EPS low of the analyst estimates.
-        number_analyst_estimated_revenue : int
-            The number of analysts who estimated revenue of the analyst estimates.
-        number_analysts_estimated_eps : int
-            The number of analysts who estimated EPS of the analyst estimates.
 
         fmp
         ===
 
         Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
-
-        Parameter
-        ---------
-        period: Literal["quarter", "annual"]
-            The period of the analyst estimates.
-
-        Returns
-        -------
-        Documentation not available.
         """
         inputs = filter_inputs(
             provider_choices={
@@ -1091,8 +1026,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
+        symbol: Optional[str] = None,
+        period: Literal["annual", "quarter"] = "annual",
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -1393,7 +1328,7 @@ class CLASS_stocks_fa(Container):
     def metrics(
         self,
         symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
+        period: Literal["quarter", "annual"] = "annual",
         limit: Optional[int] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -1706,100 +1641,13 @@ class CLASS_stocks_fa(Container):
         Standard
         ========
 
-        Parameter
-        ---------
-        symbol : str
-            The symbol of the company.
 
-
-        Returns
-        -------
-        symbol : str
-            The symbol of the company.
-        price : float
-            The price of the company.
-        beta : float
-            The beta of the company.
-        vol_avg : int
-            The volume average of the company.
-        mkt_cap : int
-            The market capitalization of the company.
-        last_div : float
-            The last dividend of the company.
-        range : str
-            The range of the company.
-        changes : float
-            The changes of the company.
-        company_name : str
-            The company name of the company.
-        currency : str
-            The currency of the company.
-        cik : Optional[str]
-            The CIK of the company.
-        isin : Optional[str]
-            The ISIN of the company.
-        cusip : Optional[str]
-            The CUSIP of the company.
-        exchange : str
-            The exchange of the company.
-        exchange_short_name : str
-            The exchange short name of the company.
-        industry : str
-            The industry of the company.
-        website : str
-            The website of the company.
-        description : str
-            The description of the company.
-        ceo : str
-            The CEO of the company.
-        sector : str
-            The sector of the company.
-        country : str
-            The country of the company.
-        full_time_employees : str
-            The full time employees of the company.
-        phone : str
-            The phone of the company.
-        address : str
-            The address of the company.
-        city : str
-            The city of the company.
-        state : str
-            The state of the company.
-        zip : str
-            The zip of the company.
-        dcf_diff : float
-            The discounted cash flow difference of the company.
-        dcf : float
-            The discounted cash flow of the company.
-        image : str
-            The image of the company.
-        ipo_date : date
-            The IPO date of the company.
-        default_image : bool
-            If the image is the default image.
-        is_etf : bool
-            If the company is an ETF.
-        is_actively_trading : bool
-            If the company is actively trading.
-        is_adr : bool
-            If the company is an ADR.
-        is_fund : bool
-            If the company is a fund.
+        Returns the profile of a given company.
 
         fmp
         ===
 
         Source: https://site.financialmodelingprep.com/developer/docs/companies-key-stats-free-api/
-
-        Parameter
-        ---------
-        All fields are standardized.
-
-
-        Returns
-        -------
-        Documentation not available.
         """
         inputs = filter_inputs(
             provider_choices={
@@ -1824,7 +1672,6 @@ class CLASS_stocks_fa(Container):
     def own(
         self,
         symbol: str,
-        include_current_quarter: bool = False,
         date: Optional[datetime.date] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -1909,8 +1756,8 @@ class CLASS_stocks_fa(Container):
 
         Parameter
         ---------
-        All fields are standardized.
-
+        include_current_quarter : bool
+            Whether to include the current quarter. Default is False.
 
         Returns
         -------
@@ -1922,7 +1769,6 @@ class CLASS_stocks_fa(Container):
             },
             standard_params={
                 "symbol": symbol,
-                "include_current_quarter": include_current_quarter,
                 "date": date,
             },
             extra_params=kwargs,
