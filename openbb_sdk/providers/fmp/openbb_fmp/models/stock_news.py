@@ -48,6 +48,7 @@ class FMPStockNewsFetcher(
         return FMPStockNewsQueryParams(
             tickers=query.symbols,
             page=query.page,
+            limit=query.limit,
             **extra_params if extra_params else {}
         )
 

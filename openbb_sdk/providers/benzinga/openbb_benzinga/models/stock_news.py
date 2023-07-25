@@ -95,6 +95,7 @@ class BenzingaStockNewsFetcher(
         return BenzingaStockNewsQueryParams(
             page=query.page,
             tickers=query.symbols,  # type: ignore
+            pageSize=query.limit,
             **extra_params if extra_params else {},
         )
 
