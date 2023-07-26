@@ -27,11 +27,11 @@ TEST_HEADER_TOKEN = [
 
 
 def create_token(delta: int = 0):
-    """Create a JWT token with a payload that expires in `delta` seconds."""
+    """Create a JWT token with a payload that expires in `delta` days."""
     return jwt.encode(
         claims={
             "some": "claim",
-            "exp": (datetime.now() + timedelta(seconds=delta)).timestamp(),
+            "exp": (datetime.today() + timedelta(days=delta)).timestamp(),
         },
         key="secret",
         algorithm="HS256",
