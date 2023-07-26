@@ -1,8 +1,11 @@
 import json
+from datetime import datetime, timedelta
 from unittest.mock import MagicMock, patch
 
+import jwt
 import pytest
 import requests
+from jwt import DecodeError, ExpiredSignatureError
 
 from openbb_terminal.core.session import hub_model
 
@@ -22,6 +25,18 @@ TEST_EMAIL_PASSWORD = [
 TEST_HEADER_TOKEN = [
     ("Bearer test_token", "test_token"),
 ]
+
+
+def create_token(delta: int = 0):
+    """Create a JWT token with a payload that expires in `delta` seconds."""
+    return jwt.encode(
+        payload={
+            "some": "payload",
+            "exp": (datetime.now() + timedelta(seconds=delta)).timestamp(),
+        },
+        key="secret",
+        algorithm="HS256",
+    )
 
 
 @pytest.mark.parametrize("email, password", TEST_EMAIL_PASSWORD)
@@ -62,10 +77,30 @@ def test_create_session_exception(email, password):
         assert response is None
 
 
+@pytest.mark.parametrize(
+    ("test_type", "token"),
+    [
+        ("invalid", "random"),
+        ("expired", create_token(0)),
+        ("valid", create_token(3600)),
+    ],
+)
+def test_check_token_expiration(test_type, token):
+    if test_type == "invalid":
+        with pytest.raises(DecodeError):
+            hub_model.check_token_expiration(token)
+    elif test_type == "expired":
+        with pytest.raises(ExpiredSignatureError):
+            hub_model.check_token_expiration(token)
+    elif test_type == "valid":
+        hub_model.check_token_expiration(token)
+
+
 @pytest.mark.parametrize("token", [("test_token")])
-def test_create_session_from_token_success(token):
+def test_create_session_from_token_success(mocker, token):
     with patch("requests.post") as mock_post:
         mock_post.return_value.json.return_value = TEST_RESPONSE
+        mocker.patch("openbb_terminal.core.session.hub_model.check_token_expiration")
         response = hub_model.create_session_from_token(token)
         assert response.json() == TEST_RESPONSE
 

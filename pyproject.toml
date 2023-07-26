@@ -121,6 +121,7 @@ langchain = "0.0.237"
 ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
+pyjwt = "^2.8.0"
 
 
 

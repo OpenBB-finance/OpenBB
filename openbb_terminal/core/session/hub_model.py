@@ -1,6 +1,7 @@
 import json
 from typing import Any, Dict, List, Literal, Optional
 
+import jwt
 import requests
 
 from openbb_terminal.core.session.constants import (
@@ -53,6 +54,17 @@ def create_session(
         return None
 
 
+def check_token_expiration(token: str):
+    """Raises ExpiredSignatureError if the token is expired."""
+    header_data = jwt.get_unverified_header(token)
+
+    jwt.decode(
+        token,
+        algorithms=[header_data["alg"]],
+        options={"verify_signature": False, "verify_exp": True},
+    )
+
+
 def create_session_from_token(
     token: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
 ):
@@ -67,11 +79,16 @@ def create_session_from_token(
     timeout : int
         The timeout, by default TIMEOUT
     """
+
     try:
+        check_token_expiration(token)
         data = {
             "token": token,
         }
         return requests.post(url=base_url + "sdk/login", json=data, timeout=timeout)
+    except jwt.exceptions.ExpiredSignatureError:
+        console.print("\n[red]Token expired.[/red]")
+        return None
     except requests.exceptions.ConnectionError:
         console.print("\n[red]Connection error.[/red]")
         return None
