@@ -80,7 +80,7 @@ def test_create_session_exception(email, password):
     ("test_type", "token"),
     [
         ("invalid", "random"),
-        ("expired", create_token(0)),
+        ("expired", create_token(-10)),
         ("valid", create_token(3600)),
     ],
 )
