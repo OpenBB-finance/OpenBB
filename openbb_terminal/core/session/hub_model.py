@@ -66,7 +66,7 @@ def check_token_expiration(token: str):
         options={"verify_signature": False, "verify_exp": True},
     )
     expiration_time = datetime.datetime.fromtimestamp(tok["exp"])
-    print(f"Token expires at {expiration_time}")
+    console.print(f"Token expires at {expiration_time}")
 
 
 def create_session_from_token(
