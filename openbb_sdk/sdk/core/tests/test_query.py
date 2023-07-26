@@ -15,6 +15,31 @@ from openbb_core.app.query import Query
 from pydantic import BaseModel
 
 
+def create_mock_query():
+    """Mock query."""
+
+    class StockEOD:
+        """Mock StockEOD class."""
+
+        start_date = "2020-01-01"
+        end_date = "2020-01-05"
+        symbol = "AAPL"
+
+    return StockEOD()
+
+
+def create_mock_extra_params():
+    """Mock ExtraParams dataclass."""
+
+    @dataclass
+    class StockEOD:
+        """Mock ExtraParams dataclass."""
+
+        sort: str = "desc"
+
+    return StockEOD()
+
+
 @pytest.fixture(scope="module")
 def query():
     """Set up query."""
@@ -33,29 +58,16 @@ def test_init(query):
 
 def test_to_query_params(query):
     """Test to_query_params."""
+    standard_params = create_mock_query()
 
-    class StockEOD:
-        """Mock StockEOD class."""
-
-        open: float = 0.0
-        high: float = 0.0
-
-    standard_params = StockEOD()
     assert query.to_query_params(standard_params)
 
 
 def test_filter_extra_params(query):
     """Test filter_extra_params."""
-
-    @dataclass
-    class StockEOD:
-        """Mock ExtraParams dataclass."""
-
-        sort: str = "desc"
-
-    extra_params = StockEOD()
+    extra_params = create_mock_extra_params()
     extra_params = query.filter_extra_params(extra_params, "fmp")
-    print(extra_params)
+
     assert isinstance(extra_params, dict)
     assert len(extra_params) == 0
 
@@ -86,31 +98,6 @@ def mock_registry():
             mock_registry
         )
         yield mock_registry
-
-
-def create_mock_query():
-    """Mock query."""
-
-    class StockEOD:
-        """Mock StockEOD class."""
-
-        start_date = "2020-01-01"
-        end_date = "2020-01-05"
-        symbol = "AAPL"
-
-    return StockEOD()
-
-
-def create_mock_extra_params():
-    """Mock ExtraParams dataclass."""
-
-    @dataclass
-    class StockEOD:
-        """Mock ExtraParams dataclass."""
-
-        sort: str = "desc"
-
-    return StockEOD()
 
 
 @pytest.fixture
