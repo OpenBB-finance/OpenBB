@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import Any, Dict, List, Literal, Optional
 
@@ -58,12 +59,14 @@ def check_token_expiration(token: str):
     """Raises ExpiredSignatureError if the token is expired."""
     header_data = jwt.get_unverified_header(token)
 
-    jwt.decode(
+    tok = jwt.decode(
         token,
         key="",
         algorithms=[header_data["alg"]],
         options={"verify_signature": False, "verify_exp": True},
     )
+    expiration_time = datetime.datetime.fromtimestamp(tok["exp"])
+    print(f"Token expires at {expiration_time}")
 
 
 def create_session_from_token(
