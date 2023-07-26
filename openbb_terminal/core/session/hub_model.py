@@ -91,7 +91,9 @@ def create_session_from_token(
         }
         return requests.post(url=base_url + "sdk/login", json=data, timeout=timeout)
     except jwt.ExpiredSignatureError:
-        console.print("\n[red]Token expired.[/red]")
+        console.print(
+            "\n[red]Token expired. Please regenerate on the OpenBB Hub (my.openbb.co).[/red]"
+        )
         return None
     except requests.exceptions.ConnectionError:
         console.print("\n[red]Connection error.[/red]")
