@@ -76,12 +76,21 @@ def test_create_session_exception(email, password):
         assert response is None
 
 
+# Github actions fails this test so I hard coded the test tokens
+# expired: create_token(-10)
+# valid: create_token(3600)
 @pytest.mark.parametrize(
     ("test_type", "token"),
     [
         ("invalid", "random"),
-        ("expired", create_token(-10)),
-        ("valid", create_token(3600)),
+        (
+            "expired",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoiY2xhaW0iLCJleHAiOjE2ODk1MjgyMTEuMTQ3MjgxfQ.W6ElBpX19SToo3vAwfV7U9S-LdKELXzvoTD6grMVh9I",
+        ),
+        (
+            "valid",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoiY2xhaW0iLCJleHAiOjIwMDE0MzIyMDkuNzEzODIxfQ.lSS9OAtwpzqma7xiP3vMDdrDaeCj8vsWKwRC1lSiRFA",
+        ),
     ],
 )
 def test_check_token_expiration(test_type, token):
