@@ -2,10 +2,9 @@ import json
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock, patch
 
-import jwt
 import pytest
 import requests
-from jwt import DecodeError, ExpiredSignatureError
+from jose import JWTError, jwt
 
 from openbb_terminal.core.session import hub_model
 
@@ -30,8 +29,8 @@ TEST_HEADER_TOKEN = [
 def create_token(delta: int = 0):
     """Create a JWT token with a payload that expires in `delta` seconds."""
     return jwt.encode(
-        payload={
-            "some": "payload",
+        claims={
+            "some": "claim",
             "exp": (datetime.now() + timedelta(seconds=delta)).timestamp(),
         },
         key="secret",
@@ -87,10 +86,10 @@ def test_create_session_exception(email, password):
 )
 def test_check_token_expiration(test_type, token):
     if test_type == "invalid":
-        with pytest.raises(DecodeError):
+        with pytest.raises(JWTError):
             hub_model.check_token_expiration(token)
     elif test_type == "expired":
-        with pytest.raises(ExpiredSignatureError):
+        with pytest.raises(jwt.ExpiredSignatureError):
             hub_model.check_token_expiration(token)
     elif test_type == "valid":
         hub_model.check_token_expiration(token)

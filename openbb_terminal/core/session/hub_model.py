@@ -1,7 +1,7 @@
 import json
 from typing import Any, Dict, List, Literal, Optional
 
-import jwt
+from jose import jwt, JWTError
 import requests
 
 from openbb_terminal.core.session.constants import (
@@ -60,6 +60,7 @@ def check_token_expiration(token: str):
 
     jwt.decode(
         token,
+        key="",
         algorithms=[header_data["alg"]],
         options={"verify_signature": False, "verify_exp": True},
     )
@@ -86,7 +87,7 @@ def create_session_from_token(
             "token": token,
         }
         return requests.post(url=base_url + "sdk/login", json=data, timeout=timeout)
-    except jwt.exceptions.ExpiredSignatureError:
+    except jwt.ExpiredSignatureError:
         console.print("\n[red]Token expired.[/red]")
         return None
     except requests.exceptions.ConnectionError:
