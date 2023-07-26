@@ -1,3 +1,4 @@
+"""App factory."""
 # pylint: disable=W0231:super-init-not-called
 
 from openbb_core.app.command_runner import CommandRunnerSession
@@ -8,6 +9,7 @@ from openbb_core.app.static.coverage import Coverage
 
 
 def create_app():
+    """Create the app."""
     try:
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.static.package.__commands__ import Commands
