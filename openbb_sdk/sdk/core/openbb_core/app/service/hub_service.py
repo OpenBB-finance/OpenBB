@@ -116,7 +116,7 @@ class HubService:
 
     @classmethod
     def check_token_expiration(cls, token: str) -> None:
-        """Check token expiration."""
+        """Check token expiration, raises exception if expired."""
         try:
             header_data = jwt.get_unverified_header(token)
             jwt.decode(
