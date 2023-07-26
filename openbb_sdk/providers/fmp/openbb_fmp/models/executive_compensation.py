@@ -1,13 +1,9 @@
 """FMP Executive Compensation Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import datetime
 from typing import Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.executive_compensation import (
@@ -18,43 +14,36 @@ from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
-# This part is only provided by FMP and not by the other providers for now.
+# This endpoint is only provided by FMP and not by the other providers for now.
 
 
 class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
-    """FMP Executive Compensation query.
+    """FMP Executive Compensation Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/executive-compensation-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPExecutiveCompensationData(Data):
-    cik: Optional[str]
-    symbol: str
-    filingDate: dateType
-    acceptedDate: dateType
-    nameAndPosition: str
-    year: int
-    salary: float
-    bonus: float
-    stock_award: float
-    incentive_plan_compensation: float
-    all_other_compensation: float
-    total: float
-    url: str
+class FMPExecutiveCompensationData(ExecutiveCompensationData):
+    """FMP Executive Compensation Data."""
 
-    @validator("acceptedDate", pre=True)
-    def convert_accepted_date(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+    class Config:
+        fields = {
+            "filing_date": "filingDate",
+            "accepted_date": "acceptedDate",
+            "name_and_position": "nameAndPosition",
+            "stock_award": "stockAward",
+            "incentive_plan_compensation": "incentivePlanCompensation",
+            "all_other_compensation": "allOtherCompensation",
+        }
 
-    @validator("filingDate", pre=True)
-    def convert_filing_date(cls, v):  # pylint: disable=E0213
+    @validator("filingDate", pre=True, check_fields=False)
+    def filing_date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
+
+    @validator("acceptedDate", pre=True, check_fields=False)
+    def accepted_date_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPExecutiveCompensationFetcher(
