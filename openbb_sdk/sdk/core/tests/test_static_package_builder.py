@@ -16,6 +16,7 @@ from openbb_core.app.static.package_builder import (
     Parameter,
     PathHandler,
 )
+from pydantic import Field
 
 
 @pytest.fixture(scope="module")
@@ -144,11 +145,22 @@ def test_get_default(method_definition):
     """Test get default."""
 
     class TestField:
-        default = 42
+        default = Field(default=42)
 
     field = TestField()
     result = method_definition.get_default(field)
     assert result == 42
+
+
+def test_get_default_none(method_definition):
+    """Test get default."""
+
+    class TestField:
+        default = 42
+
+    field = TestField()
+    result = method_definition.get_default(field)
+    assert result is None
 
 
 def test_get_default_default_value(method_definition):
@@ -159,7 +171,7 @@ def test_get_default_default_value(method_definition):
 
     field = TestField()
     result = method_definition.get_default(field)
-    assert result == _empty
+    assert result is None
 
 
 def test_get_default_no_default(method_definition):

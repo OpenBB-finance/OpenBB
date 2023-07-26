@@ -390,10 +390,11 @@ class MethodDefinition:
         if field_default is None or field_default is MISSING:
             return Parameter.empty
 
-        if field_default is not Ellipsis:
-            return field_default
+        default_default = getattr(field_default, "default", None)
+        if default_default is MISSING or default_default is Ellipsis:
+            return Parameter.empty
 
-        return Parameter.empty
+        return default_default
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
