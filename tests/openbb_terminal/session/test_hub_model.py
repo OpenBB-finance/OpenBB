@@ -78,7 +78,7 @@ def test_create_session_exception(email, password):
 
 # Github actions fails this test so I hard coded the test tokens
 # expired: create_token(-10)
-# valid: create_token(3600)
+# valid: create_token(3600) this will fail in 2033 contact me by then
 @pytest.mark.parametrize(
     ("test_type", "token"),
     [
