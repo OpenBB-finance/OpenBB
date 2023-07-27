@@ -8,6 +8,9 @@ from typing import (
     List,
     Optional,
     Type,
+    Union,
+    Literal,
+    Tuple,
     get_args,
     get_origin,
     get_type_hints,
@@ -30,7 +33,7 @@ class ArgparseActionType(Enum):
 
 
 class ArgparseTranslator:
-    def __init__(self, func: Callable, add_help: Optional[bool] = False):
+    def __init__(self, func: Callable, add_help: Optional[bool] = True):
         """
         Initializes the ArgparseTranslator.
 
@@ -61,13 +64,37 @@ class ArgparseTranslator:
             return ArgparseActionType.store_true.value
         return ArgparseActionType.store.value
 
-    def _get_type(self, param: inspect.Parameter):
+    def _get_type_and_choices(
+        self, param: inspect.Parameter
+    ) -> Tuple[Type[Any], Tuple[Any, ...]]:
         param_type = self.type_hints[param.name]
+        type_origin = get_origin(param_type)
 
-        if get_origin(param_type) is list:  # TODO: dict should also go here
-            return get_args(param_type)[0]
+        choices = ()
 
-        return param_type
+        if type_origin is list:  # TODO: dict should also go here
+            param_type = get_args(param_type)[0]
+        if type_origin is Union:
+            # if str type is available on Union, use it
+            if str in get_args(param_type):
+                param_type = str
+
+            # check if it's an Optional, which would be a Union with NoneType
+            if type(None) in get_args(param_type):
+                # remove NoneType from the args
+                args = [arg for arg in get_args(param_type) if arg != type(None)]
+                # if there is only one arg left, use it
+                if len(args) > 1:
+                    raise ValueError(
+                        "Union with NoneType should have only one type left"
+                    )
+                param_type = args[0]
+
+                if get_origin(param_type) is Literal:
+                    choices = get_args(param_type)
+                    param_type = type(choices[0])
+
+        return param_type, choices
 
     @staticmethod
     def _split_annotation(
@@ -101,7 +128,11 @@ class ArgparseTranslator:
 
     def _generate_argparse_arguments(self, parameters) -> None:
         for param in parameters.values():
-            param_type = self._get_type(param)
+            # TODO : how to handle kwargs?
+            if param.name == "kwargs":
+                continue
+
+            param_type, choices = self._get_type_and_choices(param)
 
             # if the param is a custom type, we need to flatten it
             if inspect.isclass(param_type) and issubclass(param_type, BaseModel):
@@ -143,15 +174,27 @@ class ArgparseTranslator:
                 # the custom type itself should not be added as an argument
                 continue
 
+            kwargs = {
+                "type": param_type,
+                "dest": param.name,
+                "default": param.default,
+                "required": not self._param_is_default(param),
+                "action": self._get_action_type(param),
+                "help": self._get_argument_help(param),
+                "nargs": self._get_nargs(param),
+            }
+
+            if choices:
+                kwargs["choices"] = choices
+
+            if param_type == bool:
+                # store_true action does not accept the bellow kwargs
+                kwargs.pop("type")
+                kwargs.pop("nargs")
+
             self.parser.add_argument(
                 f"--{param.name}",
-                type=param_type,
-                dest=param.name,
-                default=param.default,
-                required=not self._param_is_default(param),
-                action=self._get_action_type(param),
-                help=self._get_argument_help(param),
-                nargs=self._get_nargs(param),
+                **kwargs,
             )
 
     @staticmethod
@@ -174,7 +217,10 @@ class ArgparseTranslator:
         # for each argument in the signature that is a custom type, we need to
         # update the kwargs with the custom type kwargs
         for param in self.signature.parameters.values():
-            param_type = self._get_type(param)
+            # TODO : how to handle kwargs?
+            if param.name == "kwargs":
+                continue
+            param_type, _ = self._get_type_and_choices(param)
             if inspect.isclass(param_type) and issubclass(param_type, BaseModel):
                 custom_type_kwargs = kwargs[param.name]
                 kwargs[param.name] = param_type(**custom_type_kwargs)
@@ -214,13 +260,9 @@ class ArgparseTranslator:
         return wrapper_func
 
 
-# def hello_world(name: str, age: int):
-#     print(f"Hello {name}! You are {age} years old.")
+# from openbb_sdk.openbb import obb
 
-
-# translator = ArgparseTranslator(hello_world)
-# parser = translator.parser
-# parsed_args = parser.parse_args()
-# print(parsed_args)
-
-# translator.execute_func(parsed_args)
+# translator = ArgparseTranslator(obb.stocks.load)
+# stocks_load = translator.translate()
+# result = stocks_load()
+# print(result)
