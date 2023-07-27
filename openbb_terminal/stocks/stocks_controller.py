@@ -9,6 +9,7 @@ from typing import List, Optional
 
 import financedatabase as fd
 
+from argparse_translator.argparse_translator import ArgparseTranslator
 from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
@@ -30,8 +31,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
-
-from argparse_translator.argparse_translator import ArgparseTranslator
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -158,15 +157,11 @@ class StocksController(StockBaseController):
         def hello_world(name: str, age: int):
             print(f"Hello {name}! You are {age} years old.")
 
-        print(other_args)
-
         translator = ArgparseTranslator(hello_world)
         parser = translator.parser
 
-        print("here")
-
         if ns_parser := self.parse_known_args_and_warn(parser, other_args):
-            print("not bad")
+            translator.execute_func(parsed_args=ns_parser)
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):

@@ -30,12 +30,13 @@ class ArgparseActionType(Enum):
 
 
 class ArgparseTranslator:
-    def __init__(self, func: Callable):
+    def __init__(self, func: Callable, add_help: Optional[bool] = False):
         """
         Initializes the ArgparseTranslator.
 
         Args:
             func (Callable): The function to translate into an argparse program.
+            add_help (Optional[bool], optional): Whether to add the help argument. Defaults to False.
         """
         self.func = func
         self.signature = inspect.signature(func)
@@ -44,6 +45,7 @@ class ArgparseTranslator:
         self.parser = argparse.ArgumentParser(
             description=func.__doc__,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=add_help,
         )
 
         self._generate_argparse_arguments(self.signature.parameters)
@@ -181,10 +183,11 @@ class ArgparseTranslator:
 
     def execute_func(
         self,
-        args: Optional[argparse.Namespace] = None,
+        parsed_args: Optional[argparse.Namespace] = None,
     ) -> Any:
-        kwargs = self._unflatten_args(vars(args))
+        kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
+        kwargs.pop("help", None)
         return self.func(**kwargs)
 
     def parse_args_and_execute(self) -> Any:
@@ -194,8 +197,8 @@ class ArgparseTranslator:
         Returns:
             Any: The return value of the original function.
         """
-        args = self.parser.parse_args()
-        return self.execute_func(args)
+        parsed_args = self.parser.parse_args()
+        return self.execute_func(parsed_args)
 
     def translate(self) -> Callable:
         """

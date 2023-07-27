@@ -12,6 +12,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
+from io import StringIO
 from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
@@ -1122,9 +1123,14 @@ class BaseController(metaclass=ABCMeta):
         ns_parser:
             Namespace with parsed arguments
         """
-        parser.add_argument(
-            "-h", "--help", action="store_true", help="show this help message"
-        )
+
+        # only add the help argument if it's not already there
+        usage = StringIO()
+        parser.print_usage(file=usage)
+        if "[-h]" not in usage.getvalue():
+            parser.add_argument(
+                "-h", "--help", action="store_true", help="show this help message"
+            )
 
         if config_terminal.HOLD:
             parser.add_argument(

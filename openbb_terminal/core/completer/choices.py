@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
+from io import StringIO
 from os import environ
 from types import MethodType
 from typing import Callable, List
@@ -37,9 +38,15 @@ def __mock_parse_known_args_and_warn(
     """
 
     _ = other_args
-    parser.add_argument(
-        "-h", "--help", action="store_true", help="show this help message"
-    )
+
+    # only add the help argument if it's not already there
+    usage = StringIO()
+    parser.print_usage(file=usage)
+    if "[-h]" not in usage.getvalue():
+        parser.add_argument(
+            "-h", "--help", action="store_true", help="show this help message"
+        )
+
     if export_allowed > 0:
         choices_export = []
         help_export = "Does not export!"
