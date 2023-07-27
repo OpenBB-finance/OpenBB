@@ -9,7 +9,7 @@ from typing import List, Optional
 
 import financedatabase as fd
 
-from argparse_translator.argparse_translator import ArgparseTranslator
+from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 from openbb_sdk.openbb import obb
@@ -36,6 +36,8 @@ from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
+
+stocks_translations = ArgparseClassProcessor(obb.stocks, "stocks")
 
 
 class StocksController(StockBaseController):
@@ -155,7 +157,7 @@ class StocksController(StockBaseController):
     def call_load(self, other_args: List[str]):
         """Process load command."""
 
-        translator = ArgparseTranslator(func=obb.stocks.load, add_help=False)
+        translator = stocks_translations.get_translator(menu="stocks", command="load")
         parser = translator.parser
 
         if ns_parser := self.parse_known_args_and_warn(parser, other_args):
@@ -167,14 +169,14 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.symbol
                 self.stock = c_out.to_dataframe()
 
-                # TODO : temporary workarround
+                # TODO : temporary workaround
                 # core gives all columns lower case and terminal expects 1st letter upper case
                 # upper case first letter of all columns
                 self.stock.columns = [
                     x[0].upper() + x[1:] for x in self.stock.columns.tolist()
                 ]
-
-                c_out.show()
+                if ns_parser.chart:
+                    c_out.show()
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):

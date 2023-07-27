@@ -190,7 +190,7 @@ class ArgparseTranslator:
                 kwargs["choices"] = choices
 
             if param_type == bool:
-                # store_true action does not accept the bellow kwargs
+                # store_true action does not accept the below kwargs
                 kwargs.pop("type")
                 kwargs.pop("nargs")
 

@@ -1,6 +1,10 @@
 import sys
 from multiprocessing import freeze_support
 
+# TODO : importing the sdk-core here trying to get the obb object to be available
+# so it doesn't take a lot when accessing a menu for the first time
+# is it good or is it bad?
+from openbb_sdk.openbb import obb
 import openbb_terminal.config_terminal as cfg
 
 # pylint:disable=unused-import,import-outside-toplevel
