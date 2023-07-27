@@ -20,38 +20,10 @@ class CLASS_news(Container):
         self,
         page: pydantic.types.NonNegativeInt = 0,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Optional[Literal["benzinga"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Global News.
-
-        Available providers: benzinga, fmp
-
-        Standard
-        ========
-
-
-        benzinga
-        ========
-
-        Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
-
-
-        Returns
-        -------
-        Documentation not available.
-
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/general-news-api/
-
-
-        Returns
-        -------
-        Documentation not available.
-        """
+        """Global News."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

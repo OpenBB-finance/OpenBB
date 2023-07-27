@@ -1,5 +1,6 @@
-from openbb_provider.abstract.provider import Provider
 import pkg_resources
+
+from openbb_provider.abstract.provider import Provider
 
 
 class Registry:

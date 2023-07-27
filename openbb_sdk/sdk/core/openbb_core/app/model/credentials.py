@@ -1,5 +1,6 @@
 from typing import Dict, List, Optional, Tuple
-from pydantic import create_model, Extra
+
+from pydantic import create_model
 
 from openbb_core.app.provider_interface import get_provider_interface
 
