@@ -46,6 +46,7 @@ class PolygonCryptoEODData(CryptoEODData):
             "volume": "v",
         }
 
+    t: datetime = Field(description="The timestamp of the data.")
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )
