@@ -2,47 +2,61 @@
 
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
+from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
-
 from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import BaseStockData, BaseStockQueryParams
+
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 
-class PolygonStockEODQueryParams(BaseStockQueryParams):
-    """Polygon stocks end of day query.
+class PolygonStockEODQueryParams(StockEODQueryParams):
+    """Polygon stocks end of day Query.
 
     Source: https://polygon.io/docs/stocks/getting-started
-
-    Parameters
-    ----------
-    symbol : str
-        The symbol of the stocks to fetch.
-    start_date : Union[date, datetime]
-        The start date of the query.
-    end_date : Union[date, datetime]
-        The end date of the query.
-    timespan : Timespan, optional
-        The timespan of the query, by default Timespan.day
-    sort : Literal["asc", "desc"], optional
-        The sort order of the query, by default "desc"
-    limit : PositiveInt, optional
-        The limit of the query, by default 49999
-    adjusted : bool, optional
-        Whether the query is adjusted, by default True
-    multiplier : PositiveInt, optional
-        The multiplier of the query, by default 1
     """
 
+    timespan: Literal[
+        "minute", "hour", "day", "week", "month", "quarter", "year"
+    ] = Field(default="day", description="The timespan of the data.")
+    sort: Literal["asc", "desc"] = Field(
+        default="desc", description="Sort order of the data."
+    )
+    limit: PositiveInt = Field(
+        default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
+    adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
+    multiplier: PositiveInt = Field(
+        default=1, description="The multiplier of the timespan."
+    )
 
-class PolygonStockEODData(BaseStockData):
-    v: NonNegativeFloat = Field(alias="volume")
-    n: PositiveInt
-    vw: Optional[PositiveFloat]
+
+class PolygonStockEODData(StockEODData):
+    """Polygon stocks end of day Data."""
+
+    class Config:
+        fields = {
+            "open": "o",
+            "high": "h",
+            "low": "l",
+            "close": "c",
+            "volume": "v",
+        }
+
+    t: datetime = Field(description="The timestamp of the data.")
+    n: PositiveInt = Field(
+        description="The number of transactions for the symbol in the time period."
+    )
+    vw: PositiveFloat = Field(
+        description="The volume weighted average price of the symbol."
+    )
+
+    @validator("t", pre=True, check_fields=False)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonStockEODFetcher(
@@ -57,9 +71,9 @@ class PolygonStockEODFetcher(
     def transform_query(
         query: StockEODQueryParams, extra_params: Optional[Dict] = None
     ) -> PolygonStockEODQueryParams:
-        now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=5)).date()
-        end_date = query.end_date or now.date()
+        now = datetime.now().date()
+        start_date = query.start_date or (now - timedelta(days=7))
+        end_date = query.end_date or now
         return PolygonStockEODQueryParams(
             symbol=query.symbol,
             start_date=start_date,
@@ -76,7 +90,7 @@ class PolygonStockEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.stocksTicker.upper()}/range/1/{str(query.timespan.value)}/"
+            f"{query.symbol}/range/1/{str(query.timespan)}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"
