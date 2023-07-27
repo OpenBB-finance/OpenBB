@@ -111,7 +111,6 @@ class BenzingaGlobalNewsFetcher(
     def extract_data(
         query: BenzingaGlobalNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[BenzingaGlobalNewsData]:
-        print(query)
         api_key = credentials.get("benzinga_api_key") or ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
@@ -129,5 +128,3 @@ class BenzingaGlobalNewsFetcher(
         data: List[BenzingaGlobalNewsData],
     ) -> List[BenzingaGlobalNewsData]:
         return data
-        processors = {"image": lambda x: "" if x == [] else x[0].url}
-        return data_transformer(data, BenzingaGlobalNewsData, processors)
