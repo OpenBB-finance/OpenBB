@@ -8,6 +8,7 @@ from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.crypto_eod import PolygonCryptoEODFetcher
 from openbb_polygon.models.crypto_price import PolygonCryptoPriceFetcher
 from openbb_polygon.models.forex_eod import PolygonForexEODFetcher
+from openbb_polygon.models.forex_pairs import PolygonForexPairsFetcher
 from openbb_polygon.models.forex_price import PolygonForexPriceFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
 from openbb_polygon.models.major_indices_eod import PolygonMajorIndicesEODFetcher
@@ -34,5 +35,6 @@ polygon_provider = Provider(
         PolygonMajorIndicesPriceFetcher,
         PolygonForexEODFetcher,
         PolygonForexPriceFetcher,
+        PolygonForexPairsFetcher,
     ],
 )
