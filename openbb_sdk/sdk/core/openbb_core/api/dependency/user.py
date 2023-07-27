@@ -1,3 +1,4 @@
+"""User dependency."""
 from datetime import datetime, timedelta
 from typing import Annotated, Optional
 
@@ -22,10 +23,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_password(plain_password, hashed_password):
+    """Verify password."""
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password):
+    """Get password hash."""
     return pwd_context.hash(password)
 
 
@@ -34,6 +37,7 @@ def authenticate_user(
     username: str,
     user_service: UserService,
 ) -> Optional[UserSettings]:
+    """Authenticate user."""
     user = user_service.user_settings_repository.read_by_profile(
         filter_list=[("username", username)],
     )
@@ -52,6 +56,7 @@ def create_access_token(
     sub: str,
     expiration_delta: Optional[timedelta] = None,
 ) -> AccessToken:
+    """Create access token."""
     if expiration_delta is None:
         expiration_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
@@ -67,6 +72,7 @@ def create_jwt_token(
     key=SECRET_KEY,
     algorithm=ALGORITHM,
 ) -> str:
+    """Create JWT token."""
     claims = access_token.dict()
     encoded_jwt = jwt.encode(claims=claims, key=key, algorithm=algorithm)
     return encoded_jwt
@@ -75,6 +81,7 @@ def create_jwt_token(
 async def get_user_service(
     system_settings: Annotated[SystemSettings, Depends(get_system_settings)]
 ) -> UserService:
+    """Get user service."""
     global __user_service  # pylint: disable=global-statement
 
     if __user_service is None:
@@ -92,6 +99,7 @@ async def get_user(
     jwt_token: Annotated[str, Depends(oauth2_scheme)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ):
+    """Get user."""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
