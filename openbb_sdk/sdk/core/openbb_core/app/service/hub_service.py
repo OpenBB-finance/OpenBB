@@ -2,6 +2,7 @@ from typing import Optional
 
 import requests
 from fastapi import HTTPException
+from jose import JWTError, jwt
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from openbb_core.app.model.hub.hub_session import HubSession
@@ -114,10 +115,28 @@ class HubService:
         raise HTTPException(status_code, detail)
 
     @classmethod
+    def check_token_expiration(cls, token: str) -> None:
+        """Check token expiration, raises exception if expired."""
+        try:
+            header_data = jwt.get_unverified_header(token)
+            jwt.decode(
+                token,
+                key="secret",
+                algorithms=[header_data["alg"]],
+                options={"verify_signature": False, "verify_exp": True},
+            )
+        except jwt.ExpiredSignatureError as e:
+            raise OpenBBError("SDK personal access token expired.") from e
+        except JWTError as e:
+            raise OpenBBError("Failed to decode SDK token.") from e
+
+    @classmethod
     def get_session_from_sdk_token(cls, token: str) -> HubSession:
         """Get session from SDK personal access token."""
         if not token:
             raise OpenBBError("SDK personal access token not found.")
+
+        cls.check_token_expiration(token)
 
         response = requests.post(
             url=cls.BASE_URL + "/sdk/login",
