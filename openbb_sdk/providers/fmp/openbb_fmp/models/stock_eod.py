@@ -1,54 +1,55 @@
 """FMP Stocks end of day fetcher."""
 
 
-from datetime import datetime, timedelta
-from typing import Dict, List, Literal, Optional
+from datetime import datetime
+from typing import Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from pydantic import Field, NonNegativeInt, validator
-
 from openbb_fmp.utils.helpers import get_data_many
+
+from pydantic import Field, NonNegativeInt, validator
 
 
 class FMPStockEODQueryParams(StockEODQueryParams):
-    """FMP Stock end of day query.
+    """FMP Stock end of day Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    start_date : date
-        The start date of the stock data from which to retrieve the data.
-    end_date : date
-        The end date of the stock data up to which to retrieve the data.
-    timeseries : Optional[int]
-        The number of days to look back.
-    series_type : Optional[Literal["line"]]
-        The type of the series. Only "line" is supported.
     """
 
-    # symbol: str = Field(min_length=1)
-    series_type: Optional[Literal["line"]]
-    # start_date: date
-    # end_date: date
-    timeseries: Optional[NonNegativeInt]  # Number of days to looks back
+    timeseries: Optional[NonNegativeInt] = Field(
+        default=None, description="Number of days to look back."
+    )
 
 
 class FMPStockEODData(StockEODData):
-    adjClose: float = Field(alias="adj_close")
-    unadjustedVolume: float
-    change: float
-    changePercent: float
-    vwap: float
-    label: str
-    changeOverTime: float
+    """FMP Stock end of day Data."""
+
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    adjClose: float = Field(
+        description="Adjusted Close Price of the symbol.", alias="adj_close"
+    )
+    unadjustedVolume: float = Field(
+        description="Unadjusted volume of the symbol.", alias="unadjusted_volume"
+    )
+    change: float = Field(
+        description="Change in the price of the symbol from the previous day.",
+        alias="change",
+    )
+    changePercent: float = Field(
+        description=r"Change \% in the price of the symbol.", alias="change_percent"
+    )
+    vwap: float = Field(description="Volume Weighted Average Price of the symbol.")
+    label: str = Field(description="Human readable format of the date.")
+    changeOverTime: float = Field(
+        description=r"Change \% in the price of the symbol over a period of time.",
+        alias="change_over_time",
+    )
 
     @validator("date", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -64,13 +65,10 @@ class FMPStockEODFetcher(
     def transform_query(
         query: StockEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPStockEODQueryParams:
-        now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=5))
-        end_date = query.end_date or now
         return FMPStockEODQueryParams(
             symbol=query.symbol,
-            start_date=start_date,
-            end_date=end_date,
+            start_date=query.start_date,
+            end_date=query.end_date,
             **extra_params or {},
         )
 
@@ -85,6 +83,7 @@ class FMPStockEODFetcher(
         query_str = get_querystring(query.dict(), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
+
         return get_data_many(url, FMPStockEODData, "historical")
 
     @staticmethod

@@ -1,48 +1,34 @@
 """Forex aggregate end of day price data model."""
 
 
-from datetime import datetime
+from datetime import date
 from typing import Optional
-
-from pydantic import NonNegativeFloat, PositiveFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.models.base import BaseSymbol
+from openbb_provider.metadata import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
+
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
 
 class ForexEODQueryParams(QueryParams, BaseSymbol):
-    """Forex end of day query.
+    """Forex end of day Query."""
 
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the forex currency pair.
-    """
+    start_date: Optional[date] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", ""),
+    )
+    end_date: Optional[date] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
+    )
 
 
 class ForexEODData(Data):
-    """Forex end of day price data.
+    """Forex end of day price Data."""
 
-    Returns
-    -------
-    date : datetime
-        The date of the forex currency pair.
-    open : PositiveFloat
-        The open price of the forex currency pair.
-    high : PositiveFloat
-        The high price of the forex currency pair.
-    low : PositiveFloat
-        The low price of the forex currency pair.
-    close : PositiveFloat
-        The close price of the forex currency pair.
-    adj_close : Optional[PositiveFloat]
-        The adjusted close price of the forex currency pair.
-    """
-
-    date: datetime
-    open: PositiveFloat
-    high: PositiveFloat
-    low: PositiveFloat
-    close: PositiveFloat
-    adj_close: Optional[PositiveFloat]
-    volume: NonNegativeFloat
+    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: NonNegativeFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))

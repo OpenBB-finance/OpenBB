@@ -1,7 +1,7 @@
 """FMP Cryptos end of day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -65,13 +65,10 @@ class FMPCryptoEODFetcher(
     def transform_query(
         query: CryptoEODQueryParams, extra_params: Optional[Dict] = None
     ) -> FMPCryptoEODQueryParams:
-        now = datetime.now().date()
-        start_date = query.start_date or (now - timedelta(days=7))
-        end_date = query.end_date or now
         return FMPCryptoEODQueryParams(
             symbol=query.symbol,
-            start_date=start_date,
-            end_date=end_date,
+            start_date=query.start_date,
+            end_date=query.end_date,
             **extra_params or {},
         )
 
@@ -85,7 +82,8 @@ class FMPCryptoEODFetcher(
         base_url = "https://financialmodelingprep.com/api/v3/"
         query_str = get_querystring(query.dict(), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
-        url = f"{base_url}historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}historical-price-full/crypto/{query.symbol}?{query_str}&apikey={api_key}"
+
         return get_data_many(url, FMPCryptoEODData, "historical")
 
     @staticmethod

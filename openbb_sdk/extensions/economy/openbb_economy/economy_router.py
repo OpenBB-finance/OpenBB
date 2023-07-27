@@ -56,7 +56,7 @@ def cpi_options(
     return CommandOutput(results=Empty())
 
 
-@router.command(model="MajorIndicesPrice")
+@router.command(model="MajorIndicesEOD")
 def index(
     cc: CommandContext,
     provider_choices: ProviderChoices,

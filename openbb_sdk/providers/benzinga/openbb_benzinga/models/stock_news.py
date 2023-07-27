@@ -100,8 +100,15 @@ class BenzingaStockNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaStockNewsQueryParams:
-        return BenzingaStockNewsQueryParams(**params)
+    def transform_query(
+        query: StockNewsQueryParams, extra_params: Optional[Dict] = None
+    ) -> BenzingaStockNewsQueryParams:
+        return BenzingaStockNewsQueryParams(
+            page=query.page,
+            symbols=query.symbols,  # type: ignore
+            limit=query.limit,
+            **extra_params if extra_params else {},
+        )
 
     @staticmethod
     def extract_data(

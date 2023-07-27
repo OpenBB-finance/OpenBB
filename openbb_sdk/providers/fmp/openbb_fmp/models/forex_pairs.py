@@ -3,24 +3,35 @@
 
 from typing import Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_pairs import ForexPairsData, ForexPairsQueryParams
 
 from openbb_fmp.utils.helpers import get_data_many
 
+from pydantic import Field
 
-class FMPForexPairsQueryParams(QueryParams):
-    """FMP Forex available pairs query.
+
+class FMPForexPairsQueryParams(ForexPairsQueryParams):
+    """FMP Forex available pairs Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
-
     """
 
 
-class FMPForexPairsData(Data):
-    """FMP Forex available pairs data."""
+class FMPForexPairsData(ForexPairsData):
+    """FMP Forex available pairs Data."""
+
+    symbol: str = Field(description="The symbol of the currency pair.")
+    currency: str = Field(description="The base currency of the currency pair.")
+    stockExchange: Optional[str] = Field(
+        description="The stock exchange of the currency pair.",
+        alias="stock_exchange",
+    )
+    exchange_short_name: Optional[str] = Field(
+        description="The short name of the stock exchange of the currency pair.",
+        alias="exchange_short_name",
+    )
 
 
 class FMPForexPairsFetcher(
@@ -46,6 +57,7 @@ class FMPForexPairsFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
+
         return get_data_many(url, FMPForexPairsData)
 
     @staticmethod
