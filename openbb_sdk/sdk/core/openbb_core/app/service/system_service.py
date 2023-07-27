@@ -6,6 +6,8 @@ from openbb_core.app.model.system_settings import SystemSettings
 
 
 class SystemService:
+    """System service."""
+
     SYSTEM_SETTINGS_PATH = SYSTEM_SETTINGS_PATH
     SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {"run_in_isolation", "dbms_uri"}
 
@@ -13,6 +15,7 @@ class SystemService:
     def read_default_system_settings(
         cls, path: Optional[Path] = None
     ) -> SystemSettings:
+        """Read default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
         if path.exists():
@@ -31,6 +34,7 @@ class SystemService:
         system_settings: SystemSettings,
         path: Optional[Path] = None,
     ) -> None:
+        """Write default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
         system_settings_json = system_settings.json(
@@ -50,13 +54,16 @@ class SystemService:
 
     @property
     def system_settings(self) -> SystemSettings:
+        """Get system settings."""
         return self._system_settings
 
     @system_settings.setter
     def system_settings(self, system_settings: SystemSettings) -> None:
+        """Set system settings."""
         self._system_settings = system_settings
 
     def refresh_system_settings(self) -> SystemSettings:
+        """Refresh system settings."""
         self._system_settings = self.read_default_system_settings()
 
         return self._system_settings
