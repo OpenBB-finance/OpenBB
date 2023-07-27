@@ -2,13 +2,10 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
-from openbb_provider.map import build_credentials_mapping, build_model_mapping
-from openbb_provider.registry import (
-    ProviderRegistry,
-    build_provider_registry,
-    extensions_dict__,
-)
+from openbb_provider.query_executor import QueryExecutor
+from openbb_provider.registry_map import RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
+from pydantic.fields import ModelField
 
 
 @dataclass
@@ -73,55 +70,51 @@ class ProviderInterface:
         Build provider registry
     """
 
-    def __init__(self) -> None:
-        self.__map = build_model_mapping()
-        self.__model_providers_map = self.__generate_model_providers_dc()
-        self.__params = self.__generate_params_dc()
-        self.__data = self.__generate_data_dc()
-        self.__merged_data = self.__merge_data_dc(self.__data)
-        self.__required_credentials = self.__get_required_credentials()
+    def __init__(self, registry_map: Optional[RegistryMap] = None) -> None:
+        """Initialize provider interface."""
+        self._registry_map = registry_map or RegistryMap()
+        self._map = self._registry_map.map
+        # self._map = build_model_mapping()
+        self._model_providers_map = self._generate_model_providers_dc()
+        self._params = self._generate_params_dc()
+        self._data = self._generate_data_dc()
+        self._merged_data = self._merge_data_dc(self._data)
+        self._required_credentials = self._get_required_credentials()
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
         """Dictionary of provider information."""
-        return self.__map
+        return self._map
 
     @property
-    def required_credentials(self) -> Dict[str, Tuple[Optional[str], None]]:
+    def required_credentials(self) -> Dict[str, Dict[str, str]]:
         """Dictionary of required credentials by provider."""
-        return self.__required_credentials
+        return self._required_credentials
 
     @property
     def model_providers(self) -> Dict[str, ProviderChoices]:
         """Dictionary of provider choices by model."""
-        return self.__model_providers_map
+        return self._model_providers_map
 
     @property
     def params(self) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Dictionary of params by model."""
-        return self.__params
+        return self._params
 
     @property
     def data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Dictionary of data by model."""
-        return self.__data
+        return self._data
 
     @property
     def merged_data(self) -> Dict[str, BaseModel]:
         """Dictionary of data by model merged."""
-        return self.__merged_data
+        return self._merged_data
 
     @property
     def providers_literal(self) -> type:
         """Literal of provider names."""
-        providers = []
-        for _, provider in self.map.items():
-            providers.extend(list(provider.keys()))
-        providers = list(set(providers))
-        if "openbb" in providers:
-            providers.remove("openbb")
-
-        return Literal[tuple(providers)]  # type: ignore
+        return Literal[tuple(self._registry_map.available_providers)]  # type: ignore
 
     @property
     def provider_choices(self) -> type:
@@ -135,25 +128,18 @@ class ProviderInterface:
     @property
     def models(self) -> List[str]:
         """List of model names."""
-        return list(self.__map.keys())
+        return self._registry_map.models
 
-    def build_registry(self) -> ProviderRegistry:
-        """Build provider registry."""
-        return build_provider_registry(extensions_dict__)
+    def create_executor(self) -> QueryExecutor:
+        """Get query executor."""
+        return QueryExecutor(self._registry_map.registry)
 
-    @staticmethod
-    def __get_required_credentials() -> Dict[str, Tuple[Optional[str], None]]:
+    def _get_required_credentials(self) -> List[str]:
         """Get required credentials."""
-        required_credentials: Dict[str, Tuple[Optional[str], None]] = {}
-        credentials_mapping = build_credentials_mapping()
-        for credentials in credentials_mapping.values():
-            for c in credentials:
-                required_credentials[c] = (Optional[str], None)
-
-        return required_credentials
+        return self._registry_map.required_credentials
 
     @staticmethod
-    def __merge_fields(
+    def _merge_fields(
         current: DataclassField, incoming: DataclassField, query: bool = False
     ) -> DataclassField:
         current_name = current.name
@@ -181,17 +167,17 @@ class ProviderInterface:
         )
 
     @staticmethod
-    def __create_field(
+    def _create_field(
         name: str,
-        field: Dict[str, Any],
+        field: ModelField,
         provider_name: Optional[str] = None,
         query: bool = False,
     ) -> DataclassField:
         new_name = name.replace(".", "_")
-        type_ = field["type"]
-        description = field["description"]
+        type_ = field.type_
+        description = field.field_info.description
 
-        default = ... if field["required"] else field["default"]
+        default = ... if field.required else field.default
         if query:
             # We need to use query if we want the field description to show up in the
             # swagger, it's a fastapi limitation
@@ -206,7 +192,7 @@ class ProviderInterface:
         return DataclassField(new_name, type_, default)
 
     @classmethod
-    def __extract_params(
+    def _extract_params(
         cls,
         providers: Any,
     ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
@@ -215,8 +201,8 @@ class ProviderInterface:
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
-                for name, field in model_details["QueryParams"]["fields"].items():
-                    incoming = cls.__create_field(name, field, query=True)
+                for name, field in model_details["QueryParams"].items():
+                    incoming = cls._create_field(name, field, query=True)
 
                     standard[incoming.name] = (
                         incoming.name,
@@ -224,15 +210,15 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                for name, field in model_details["QueryParams"]["fields"].items():
-                    if name not in providers["openbb"]["QueryParams"]["fields"]:
-                        incoming = cls.__create_field(
+                for name, field in model_details["QueryParams"].items():
+                    if name not in providers["openbb"]["QueryParams"]:
+                        incoming = cls._create_field(
                             name, field, provider_name, query=True
                         )
 
                         if incoming.name in extra:
                             current = DataclassField(*extra[incoming.name])
-                            updated = cls.__merge_fields(current, incoming, query=True)
+                            updated = cls._merge_fields(current, incoming, query=True)
                         else:
                             updated = incoming
 
@@ -252,7 +238,7 @@ class ProviderInterface:
         return standard, extra
 
     @classmethod
-    def __extract_data(
+    def _extract_data(
         cls,
         providers: Any,
     ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
@@ -261,8 +247,8 @@ class ProviderInterface:
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
-                for name, field in model_details["Data"]["fields"].items():
-                    incoming = cls.__create_field(name, field, "standard")
+                for name, field in model_details["Data"].items():
+                    incoming = cls._create_field(name, field, "openbb")
 
                     standard[incoming.name] = (
                         incoming.name,
@@ -270,13 +256,13 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                for name, field in model_details["Data"]["fields"].items():
-                    if name not in providers["openbb"]["Data"]["fields"]:
-                        incoming = cls.__create_field(name, field, provider_name)
+                for name, field in model_details["Data"].items():
+                    if name not in providers["openbb"]["Data"]:
+                        incoming = cls._create_field(name, field, provider_name)
 
                         if incoming.name in extra:
                             current = DataclassField(*extra[incoming.name])
-                            updated = cls.__merge_fields(current, incoming)
+                            updated = cls._merge_fields(current, incoming)
                         else:
                             updated = incoming
 
@@ -288,7 +274,7 @@ class ProviderInterface:
 
         return standard, extra
 
-    def __generate_params_dc(
+    def _generate_params_dc(
         self,
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Generate dataclasses for params.
@@ -312,8 +298,8 @@ class ProviderInterface:
         result: Dict = {}
 
         # TODO: Consider multiprocessing this loop to speed startup
-        for model_name, providers in self.__map.items():
-            standard, extra = self.__extract_params(providers)
+        for model_name, providers in self._map.items():
+            standard, extra = self._extract_params(providers)
 
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
@@ -329,7 +315,7 @@ class ProviderInterface:
             }
         return result
 
-    def __generate_model_providers_dc(self) -> Dict[str, ProviderChoices]:
+    def _generate_model_providers_dc(self) -> Dict[str, ProviderChoices]:
         """Generate dataclasses for provider choices by model.
 
         This creates a dictionary that maps model names to dataclasses that can be used
@@ -343,7 +329,7 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        for model_name, providers in self.__map.items():
+        for model_name, providers in self._map.items():
             choices = list(providers.keys())
             if "openbb" in choices:
                 choices.remove("openbb")
@@ -356,7 +342,7 @@ class ProviderInterface:
 
         return result
 
-    def __generate_data_dc(
+    def _generate_data_dc(
         self,
     ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Generate dataclasses for data.
@@ -377,8 +363,8 @@ class ProviderInterface:
         result: Dict = {}
 
         # TODO: Consider multiprocessing this loop to speed startup
-        for model_name, providers in self.__map.items():
-            standard, extra = self.__extract_data(providers)
+        for model_name, providers in self._map.items():
+            standard, extra = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
                     cls_name=model_name,
@@ -394,7 +380,7 @@ class ProviderInterface:
 
         return result
 
-    def __merge_data_dc(
+    def _merge_data_dc(
         self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
     ) -> Dict[str, BaseModel]:
         """Merge standard data with extra data into a single BaseModel."""

@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
@@ -104,19 +104,15 @@ class BenzingaGlobalNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: GlobalNewsQueryParams, extra_params: Optional[Dict] = None
-    ) -> BenzingaGlobalNewsQueryParams:
-        return BenzingaGlobalNewsQueryParams(
-            page=query.page, **extra_params if extra_params else {}
-        )
+    def transform_query(params: Dict[str, Any]) -> BenzingaGlobalNewsQueryParams:
+        return BenzingaGlobalNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: BenzingaGlobalNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[BenzingaGlobalNewsData]:
-        if credentials:
-            api_key = credentials.get("benzinga_api_key")
+        print(query)
+        api_key = credentials.get("benzinga_api_key") or ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
         querystring = get_querystring(query.dict(by_alias=True), [])
@@ -131,6 +127,7 @@ class BenzingaGlobalNewsFetcher(
     @staticmethod
     def transform_data(
         data: List[BenzingaGlobalNewsData],
-    ) -> List[GlobalNewsData]:
+    ) -> List[BenzingaGlobalNewsData]:
+        return data
         processors = {"image": lambda x: "" if x == [] else x[0].url}
-        return data_transformer(data, GlobalNewsData, processors)
+        return data_transformer(data, BenzingaGlobalNewsData, processors)

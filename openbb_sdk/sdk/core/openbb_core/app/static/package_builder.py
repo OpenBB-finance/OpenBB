@@ -565,10 +565,10 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        if model_name:
-            func = DocstringGenerator.generate_command_docstring(
-                func=func, model_name=model_name
-            )
+        # if model_name:
+        #     func = DocstringGenerator.generate_command_docstring(
+        #         func=func, model_name=model_name
+        #     )
 
         code = cls.build_command_method_signature(
             func_name=func_name,

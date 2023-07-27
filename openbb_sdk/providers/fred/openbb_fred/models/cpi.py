@@ -1,7 +1,7 @@
 """FRED CPI Fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
@@ -19,18 +19,8 @@ class FREDCPIData(CPIData):
 
 class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCPIData]):
     @staticmethod
-    def transform_query(
-        query: CPIQueryParams, extra_params: Optional[Dict] = None
-    ) -> FREDCPIQueryParams:
-        return FREDCPIQueryParams(
-            countries=query.countries,
-            units=query.units,
-            frequency=query.frequency,
-            harmonized=query.harmonized,
-            start_date=query.start_date,
-            end_date=query.end_date,
-            **extra_params if extra_params else {},
-        )
+    def transform_query(params: Dict[str, Any]) -> FREDCPIQueryParams:
+        return FREDCPIQueryParams(**params)
 
     @staticmethod
     def extract_data(

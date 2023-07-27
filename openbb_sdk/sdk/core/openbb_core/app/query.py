@@ -60,28 +60,19 @@ class Query:
 
         return filtered
 
-    def to_query_params(self, standard_params: StandardParams) -> StandardParams:
-        """Convert standard params to QueryParams like class."""
-        standard_params.__name__ = self.name + "QueryParams"  # type: ignore
-        return standard_params
-
-    def execute(self) -> BaseModel:
+    def execute(self) -> Any:
         """Execute the query."""
-
-        # TODO: Understand if we really need to create the registry in every call
-        registry = get_provider_interface().build_registry()
-        creds = self.cc.user_settings.credentials.dict()
-        query_params = self.to_query_params(self.standard_params)
-
-        filtered = (
+        executor = get_provider_interface().create_executor()
+        standard_dict = asdict(self.standard_params)
+        extra_dict = (
             self.filter_extra_params(self.extra_params, self.provider)
             if self.extra_params
-            else None
+            else {}
         )
 
-        return registry.fetch(
+        return executor.execute(
             provider_name=self.provider,
-            query_params=query_params,
-            extra_params=filtered,
-            credentials=creds,
+            model_name=self.name,
+            params={**standard_dict, **extra_dict},
+            credentials=self.cc.user_settings.credentials.dict(),
         )
