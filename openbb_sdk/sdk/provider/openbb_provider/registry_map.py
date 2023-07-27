@@ -5,7 +5,7 @@ from openbb_provider.registry import Registry, RegistryLoader
 
 
 class RegistryMap:
-    """Class to store information about providers in a register."""
+    """Class to store information about providers in the registry."""
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
         self._registry = registry or RegistryLoader.from_extensions()

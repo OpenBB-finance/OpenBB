@@ -10,7 +10,7 @@ DataType = TypeVar("DataType", bound=Data)
 ProviderQueryParamsType = TypeVar("ProviderQueryParamsType", bound=QueryParams)
 ProviderDataType = TypeVar("ProviderDataType", bound=Data)
 ReturnType = Union[List[ProviderDataType], ProviderDataType]
-UDataType = Union[List[DataType], DataType]
+GenericDataType = Union[DataType, List[DataType], Dict[str, DataType]]
 
 
 class Fetcher(
@@ -36,7 +36,7 @@ class Fetcher(
         raise NotImplementedError
 
     @staticmethod
-    def transform_data(data: ReturnType) -> UDataType:
+    def transform_data(data: ReturnType) -> GenericDataType:
         """Transform the provider-specific data to the standard data."""
         raise NotImplementedError
 
@@ -45,7 +45,7 @@ class Fetcher(
         cls,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
-    ) -> UDataType:
+    ) -> GenericDataType:
         """Fetch data from a provider by using the OpenBB standard."""
         provider_query = cls.transform_query(params=params)
         provider_data = cls.extract_data(query=provider_query, credentials=credentials)

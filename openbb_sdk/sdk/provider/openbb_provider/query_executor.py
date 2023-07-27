@@ -1,4 +1,6 @@
 from typing import Any, Dict, Optional
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.fetcher import GenericDataType, UDataType
 
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
@@ -9,26 +11,34 @@ class ProviderError(Exception):
 
 
 class QueryExecutor:
-    """Class to execute queries from providers"""
+    """Class to execute queries from providers."""
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
         self.registry = registry or RegistryLoader.from_extensions()
 
     def get_provider(self, provider_name: str):
         """Get a provider from the registry."""
-        # raise exception if provider not found
-        return self.registry.providers[provider_name.lower()]
+        name = provider_name.lower()
+        if name not in self.registry.providers:
+            raise ProviderError(
+                f"Provider '{name}' not found in the registry."
+                f"Available providers: {list(self.registry.providers.keys())}"
+            )
+        return self.registry.providers[name]
 
     def get_fetcher(self, provider: Provider, model_name: str):
-        """Get a fetcher from a provider"""
-        # raise exception if fetcher not found
+        """Get a fetcher from a provider."""
         fetcher_name = (provider.name + model_name + "fetcher").lower()
+        if fetcher_name not in provider.fetcher_dict:
+            raise ProviderError(
+                f"Fetcher not found for model '{model_name}' in provider '{provider.name}'."
+            )
         return provider.fetcher_dict[fetcher_name]
 
     def match_credentials(
         self, provider: Provider, credentials: Optional[Dict[str, str]]
     ) -> Dict[str, str]:
-        """Filter received credentials to match provider requirements"""
+        """Filter received credentials to match provider requirements."""
         if provider.required_credentials is None:
             return {}
 
@@ -51,9 +61,25 @@ class QueryExecutor:
         model_name: str,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
-    ):
-        """Execute query"""
+    ) -> GenericDataType:
+        """Execute query.
 
+        Parameters
+        ----------
+        provider_name : str
+            Name of the provider.
+        model_name : str
+            Name of the model.
+        params : Dict[str, Any]
+            Query parameters.
+        credentials : Optional[Dict[str, str]], optional
+            Credentials for the provider, by default None
+
+        Returns
+        -------
+        GenericDataType
+            Query result.
+        """
         provider = self.get_provider(provider_name)
         Fetcher_ = self.get_fetcher(provider, model_name)
         matched_credentials = self.match_credentials(provider, credentials)
