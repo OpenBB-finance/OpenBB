@@ -213,6 +213,13 @@ class ProviderInterface:
             else:
                 for name, field in model_details["QueryParams"].items():
                     if name not in providers["openbb"]["QueryParams"]:
+
+
+                        # TODO: We should consider forcing extra_params to
+                        # be Optional here, in case someone forgets to add
+                        # it on the model. Otherwise the Validation layer
+                        # will block running the command.
+
                         incoming = cls._create_field(
                             name, field, provider_name, query=True
                         )
