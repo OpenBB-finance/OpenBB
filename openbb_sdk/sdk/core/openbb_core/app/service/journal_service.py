@@ -1,3 +1,4 @@
+"""Journal service."""
 from typing import Optional
 
 from openbb_core.app.repository.abstract.journal_entry_repository import (
@@ -92,12 +93,15 @@ class JournalService:
 
     @property
     def mongodb_client(self) -> Optional[MongoClient]:
+        """Return mongodb client."""
         return self._mongodb_client
 
     @property
     def journal_entry_repository(self) -> AbstractJournalEntryRepository:
+        """Return journal entry repository."""
         return self._journal_entry_repository
 
     @property
     def journal_repository(self) -> AbstractJournalRepository:
+        """Return journal repository."""
         return self._journal_repository

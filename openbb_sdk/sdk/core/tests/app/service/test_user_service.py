@@ -1,4 +1,4 @@
-"""Test the ../app/service/user_service.py module."""
+"""Test the user_service.py module."""
 
 from pathlib import Path
 from unittest.mock import MagicMock

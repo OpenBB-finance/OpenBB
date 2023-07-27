@@ -1,4 +1,4 @@
-"""Test the app/static/package_builder.py file."""
+"""Test the package_builder.py file."""
 # pylint: disable=redefined-outer-name
 
 from dataclasses import dataclass

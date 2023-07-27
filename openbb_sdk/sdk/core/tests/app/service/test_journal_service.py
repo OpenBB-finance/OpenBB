@@ -1,4 +1,4 @@
-"""Test the ../openbb_core/app/service/journal_service.py module."""
+"""Test the journal_service.py module."""
 # pylint: disable=redefined-outer-name
 
 from unittest.mock import MagicMock
