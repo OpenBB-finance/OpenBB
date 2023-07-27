@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.helpers import get_querystring
 from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
 from openbb_provider.models.stock_news import StockNewsData
 from pydantic import Field, validator

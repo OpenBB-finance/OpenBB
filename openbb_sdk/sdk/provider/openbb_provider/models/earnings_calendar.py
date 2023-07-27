@@ -4,11 +4,11 @@
 from datetime import date as dateType
 from typing import Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.models.base import BaseSymbol
-from openbb_provider.metadata import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
-
 from pydantic import Field, NonNegativeFloat
+
+from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.metadata import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_provider.models.base import BaseSymbol
 
 
 class EarningsCalendarQueryParams(QueryParams, BaseSymbol):

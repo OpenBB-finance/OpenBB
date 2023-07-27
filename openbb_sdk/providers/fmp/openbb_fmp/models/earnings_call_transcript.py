@@ -10,10 +10,9 @@ from openbb_provider.models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
-
-from pydantic import validator
 
 
 class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):

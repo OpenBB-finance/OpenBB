@@ -1,7 +1,6 @@
 from typing import Any, Dict, Optional
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import GenericDataType, UDataType
 
+from openbb_provider.abstract.fetcher import GenericDataType
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
 
