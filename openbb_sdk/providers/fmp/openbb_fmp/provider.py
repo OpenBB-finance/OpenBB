@@ -9,7 +9,6 @@ from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_eod import FMPCryptoEODFetcher
-from openbb_fmp.models.crypto_price import FMPCryptoPriceFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
@@ -20,7 +19,6 @@ from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFet
 from openbb_fmp.models.executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.forex_eod import FMPForexEODFetcher
 from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
-from openbb_fmp.models.forex_price import FMPForexPriceFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
@@ -32,7 +30,6 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_eod import FMPMajorIndicesEODFetcher
-from openbb_fmp.models.major_indices_price import FMPMajorIndicesPriceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -46,7 +43,6 @@ from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
-from openbb_fmp.models.stock_price import FMPStockPriceFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
@@ -75,7 +71,6 @@ fmp_provider = Provider(
         FMPESGScoreFetcher,
         FMPESGSectorFetcher,
         FMPESGRiskRatingFetcher,
-        FMPStockPriceFetcher,
         FMPPriceTargetConsensusFetcher,
         FMPPriceTargetFetcher,
         FMPAnalystEstimatesFetcher,
@@ -88,11 +83,8 @@ fmp_provider = Provider(
         FMPSECFilingsFetcher,
         FMPTreasuryRatesFetcher,
         FMPExecutiveCompensationFetcher,
-        FMPCryptoPriceFetcher,
         FMPCryptoEODFetcher,
-        FMPMajorIndicesPriceFetcher,
         FMPForexEODFetcher,
-        FMPForexPriceFetcher,
         FMPForexPairsFetcher,
         FMPStockPeersFetcher,
         FMPStockMultiplesFetcher,
