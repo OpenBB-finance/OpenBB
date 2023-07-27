@@ -6,10 +6,9 @@ from typing import Dict, List, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_pairs import ForexPairsData, ForexPairsQueryParams
+from pydantic import Field
 
 from openbb_fmp.utils.helpers import get_data_many
-
-from pydantic import Field
 
 
 class FMPForexPairsQueryParams(ForexPairsQueryParams):

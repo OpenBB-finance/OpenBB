@@ -8,9 +8,9 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
 from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from openbb_polygon.utils.helpers import get_data
-
 from pydantic import Field, PositiveFloat, PositiveInt, validator
+
+from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonStockEODQueryParams(StockEODQueryParams):

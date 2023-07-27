@@ -11,9 +11,9 @@ from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_many
-
 from pydantic import Field, NonNegativeInt, validator
+
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):

@@ -1,12 +1,9 @@
 """Benzinga Helpers."""
 
 
-from datetime import datetime
-from typing import List
 
 import requests
-from openbb_provider.abstract.data import Data
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel
 
 
 def get_data(url: str) -> dict:

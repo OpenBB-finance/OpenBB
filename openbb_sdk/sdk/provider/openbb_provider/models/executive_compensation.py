@@ -1,13 +1,16 @@
 """Executive Compensation Data Model."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
+
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
 from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.models.base import BaseSymbol
-
-from pydantic import Field, PositiveFloat, NonNegativeFloat
 
 
 class ExecutiveCompensationQueryParams(QueryParams, BaseSymbol):
