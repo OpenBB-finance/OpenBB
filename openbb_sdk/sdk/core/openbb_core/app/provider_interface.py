@@ -174,7 +174,8 @@ class ProviderInterface:
         query: bool = False,
     ) -> DataclassField:
         new_name = name.replace(".", "_")
-        type_ = field.type_
+        # field.outer_type_ and field.type_ don't work for nested types
+        type_ = field.annotation
         description = field.field_info.description
 
         default = ... if field.required else field.default
