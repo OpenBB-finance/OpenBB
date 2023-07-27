@@ -22,35 +22,7 @@ class CLASS_stocks_ca(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Company peers.
-
-        Available providers: fmp,
-
-        Standard
-        ========
-
-        Parameter
-        ---------
-        symbol: str
-            The symbol of the company.
-
-
-        Returns
-        -------
-        symbol : str
-            The symbol of the company to retrieve the stock peers of.
-        peers_list : List[str]
-            A list of stock peers based on sector, exchange and market cap
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Peers
-
-        Parameter
-        ---------
-        All fields are standardized.
-        """
+        """Company peers."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

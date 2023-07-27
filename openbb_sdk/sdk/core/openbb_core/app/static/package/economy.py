@@ -19,7 +19,7 @@ class CLASS_economy(Container):
     def corecpi(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """CORECPI."""
         inputs = filter_inputs(
@@ -45,49 +45,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Get the constituents of an index.
-
-        Available providers: fmp,
-
-        Standard
-        ========
-
-        Parameter
-        ---------
-        index : Literal['nasdaq', 'sp500', 'dowjones']
-            The index for which we want to fetch the constituents. Default is 'dowjones'.
-
-
-        Returns
-        -------
-        symbol : str
-            The symbol of the constituent company in the index.
-        name : str
-            The name of the constituent company in the index.
-        sector : str
-            The sector the constituent company in the index belongs to.
-        subSector : str
-            The sub-sector the constituent company in the index belongs to.
-        headQuarter : str
-            The location of the headquarter of the constituent company in the index.
-        dateFirstAdded : date
-            The date the constituent company was added to the index.
-        cik : int
-            The Central Index Key of the constituent company in the index.
-        founded : date
-            The founding year of the constituent company in the index.
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/list-of-dow-companies-api/
-                https://site.financialmodelingprep.com/developer/docs/list-of-sp-500-companies-api/
-                https://site.financialmodelingprep.com/developer/docs/list-of-nasdaq-companies-api/
-
-        Parameter
-        ---------
-        All fields are standardized.
-        """
+        """Get the constituents of an index."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -172,34 +130,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """CPI.
-
-        Available providers: fred,
-
-        Standard
-        ========
-
-        bytes_or_buffer[, encoding[, errors]]) -> str
-
-        te a new string object from the given object. If encoding or
-        rs is specified, then the object must expose a data buffer
-         will be decoded using the given encoding and error handler.
-        rwise, returns the result of object.__str__() (if defined)
-        epr(object).
-        ding defaults to sys.getdefaultencoding().
-        rs defaults to 'strict'.
-        fred
-        ====
-
-        bytes_or_buffer[, encoding[, errors]]) -> str
-
-        te a new string object from the given object. If encoding or
-        rs is specified, then the object must expose a data buffer
-         will be decoded using the given encoding and error handler.
-        rwise, returns the result of object.__str__() (if defined)
-        epr(object).
-        ding defaults to sys.getdefaultencoding().
-        rs defaults to 'strict'."""
+        """CPI."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -228,7 +159,7 @@ class CLASS_economy(Container):
     def cpi_options(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """Get the options for v3 cpi(options=True)"""
         inputs = filter_inputs(
@@ -254,65 +185,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Get OHLCV data for an index.
-
-        Available providers: fmp, polygon
-
-        Standard
-        ========
-
-        Parameter
-        ---------
-        symbol : str
-            The symbol of the index.
-
-
-        Returns
-        -------
-        open : PositiveFloat
-            The open price of the stock.
-        high : PositiveFloat
-            The high price of the stock.
-        low : PositiveFloat
-            The low price of the stock.
-        close : PositiveFloat
-            The close price of the stock.
-        date : datetime
-            The date of the stock.
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/#Historical-stock-index-prices
-
-        Parameter
-        ---------
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour']
-            The interval of the index data to fetch. Default is '1hour`.
-
-
-        polygon
-        =======
-
-        Source: https://polygon.io/docs/indices/getting-started
-
-        Parameters
-        ----------
-        start_date : Union[date, datetime]
-            The start date of the query.
-        end_date : Union[date, datetime]
-            The end date of the query.
-        timespan : Timespan, optional
-            The timespan of the query, by default Timespan.day
-        sort : Literal["asc", "desc"], optional
-            The sort order of the query, by default "desc"
-        limit : PositiveInt, optional
-            The limit of the query, by default 49999
-        adjusted : bool, optional
-            Whether the query is adjusted, by default True
-        multiplier : PositiveInt, optional
-            The multiplier of the query, by default 1
-        """
+        """Get OHLCV data for an index."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -336,21 +209,7 @@ class CLASS_economy(Container):
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> CommandOutput[typing.List]:
-        """AVAILABLE_INDICES.
-
-        Available providers: fmp,
-
-        Standard
-        ========
-
-
-        Returns the major indices from Dow Jones, Nasdaq and, S&P 500.
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/#Historical-stock-index-prices
-        """
+        """AVAILABLE_INDICES."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -372,27 +231,7 @@ class CLASS_economy(Container):
     def risk(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> CommandOutput[typing.List]:
-        """Market Risk Premium.
-
-        Available providers: fmp,
-
-        Standard
-        ========
-
-
-        Returns
-        -------
-        country : str
-        continent : str
-        totalEquityRiskPremium : PositiveFloat
-        countryRiskPremium : PositiveFloat
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/market-risk-premium-api/
-
-        """
+        """Market Risk Premium."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -414,7 +253,7 @@ class CLASS_economy(Container):
     def macro(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """Query EconDB for macro data."""
         inputs = filter_inputs(
@@ -436,7 +275,7 @@ class CLASS_economy(Container):
     def macro_countries(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """MACRO_COUNTRIES."""
         inputs = filter_inputs(
@@ -458,7 +297,7 @@ class CLASS_economy(Container):
     def macro_parameters(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """MACRO_PARAMETERS."""
         inputs = filter_inputs(
@@ -480,7 +319,7 @@ class CLASS_economy(Container):
     def balance(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """BALANCE."""
         inputs = filter_inputs(
@@ -502,7 +341,7 @@ class CLASS_economy(Container):
     def bigmac(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """BIGMAC."""
         inputs = filter_inputs(
@@ -524,7 +363,7 @@ class CLASS_economy(Container):
     def country_codes(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """COUNTRY_CODES."""
         inputs = filter_inputs(
@@ -546,7 +385,7 @@ class CLASS_economy(Container):
     def currencies(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """CURRENCIES."""
         inputs = filter_inputs(
@@ -568,7 +407,7 @@ class CLASS_economy(Container):
     def debt(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """DEBT."""
         inputs = filter_inputs(
@@ -590,7 +429,7 @@ class CLASS_economy(Container):
     def events(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """EVENTS."""
         inputs = filter_inputs(
@@ -612,7 +451,7 @@ class CLASS_economy(Container):
     def fgdp(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FGDP."""
         inputs = filter_inputs(
@@ -634,7 +473,7 @@ class CLASS_economy(Container):
     def fred(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FRED."""
         inputs = filter_inputs(
@@ -656,7 +495,7 @@ class CLASS_economy(Container):
     def fred_search(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FRED Search (was fred_notes)."""
         inputs = filter_inputs(
@@ -678,7 +517,7 @@ class CLASS_economy(Container):
     def futures(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FUTURES. 2 sources"""
         inputs = filter_inputs(
@@ -700,7 +539,7 @@ class CLASS_economy(Container):
     def gdp(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """GDP."""
         inputs = filter_inputs(
@@ -722,7 +561,7 @@ class CLASS_economy(Container):
     def glbonds(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """GLBONDS."""
         inputs = filter_inputs(
@@ -744,7 +583,7 @@ class CLASS_economy(Container):
     def indices(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """INDICES."""
         inputs = filter_inputs(
@@ -766,7 +605,7 @@ class CLASS_economy(Container):
     def overview(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """OVERVIEW."""
         inputs = filter_inputs(
@@ -788,7 +627,7 @@ class CLASS_economy(Container):
     def perfmap(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """PERFMAP."""
         inputs = filter_inputs(
@@ -810,7 +649,7 @@ class CLASS_economy(Container):
     def performance(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """PERFORMANCE."""
         inputs = filter_inputs(
@@ -832,7 +671,7 @@ class CLASS_economy(Container):
     def revenue(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """REVENUE."""
         inputs = filter_inputs(
@@ -854,7 +693,7 @@ class CLASS_economy(Container):
     def rgdp(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """RGDP."""
         inputs = filter_inputs(
@@ -876,7 +715,7 @@ class CLASS_economy(Container):
     def rtps(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """RTPS."""
         inputs = filter_inputs(
@@ -898,7 +737,7 @@ class CLASS_economy(Container):
     def search_index(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """SEARCH_INDEX."""
         inputs = filter_inputs(
@@ -920,7 +759,7 @@ class CLASS_economy(Container):
     def spending(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """SPENDING."""
         inputs = filter_inputs(
@@ -942,7 +781,7 @@ class CLASS_economy(Container):
     def trust(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """TRUST."""
         inputs = filter_inputs(
@@ -964,7 +803,7 @@ class CLASS_economy(Container):
     def usbonds(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """USBONDS."""
         inputs = filter_inputs(
@@ -986,7 +825,7 @@ class CLASS_economy(Container):
     def valuation(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "benzinga", "fred"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """VALUATION."""
         inputs = filter_inputs(

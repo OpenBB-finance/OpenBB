@@ -23,54 +23,7 @@ class CLASS_stocks_dd(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """SEC Filings.
-
-        Available providers: fmp,
-
-        Standard
-        ========
-        Parameter
-        ---------
-        symbol : str
-            The symbol of the company.
-        type : str
-            The type of the SEC filing form. (full list: https://www.sec.gov/forms)
-        page : int
-            The page of the results.
-        limit : int
-            The limit of the results.
-
-
-        Returns
-        -------
-        symbol : str
-            The symbol of the stock.
-        filling_date : date
-            The filling date of the SEC filing.
-        accepted_date : date
-            The accepted date of the SEC filing.
-        cik : str
-            The CIK of the SEC filing.
-        type : str
-            The type of the SEC filing.
-        link : str
-            The link of the SEC filing.
-        final_link : str
-            The final link of the SEC filing.
-
-        fmp
-        ===
-
-        Source: https://site.financialmodelingprep.com/developer/docs/sec-filings-api/
-
-        Parameter
-        ---------
-            The type of the SEC filing form. (full list: https://www.sec.gov/forms)
-
-        Returns
-        -------
-        Documentation not available.
-        """
+        """SEC Filings."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
