@@ -1,7 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import datetime
 import typing
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -14,7 +15,10 @@ class CLASS_forex(Container):
     @filter_call
     @validate_arguments
     def pairs(
-        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
+        self,
+        chart: bool = False,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs."""
         inputs = filter_inputs(
@@ -38,6 +42,8 @@ class CLASS_forex(Container):
     def load(
         self,
         symbol: str,
+        start_date: Union[datetime.date, None, str] = None,
+        end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -49,6 +55,8 @@ class CLASS_forex(Container):
             },
             standard_params={
                 "symbol": symbol,
+                "start_date": start_date,
+                "end_date": end_date,
             },
             extra_params=kwargs,
             chart=chart,

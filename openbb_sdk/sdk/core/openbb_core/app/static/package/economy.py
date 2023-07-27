@@ -181,6 +181,8 @@ class CLASS_economy(Container):
     def index(
         self,
         symbol: str,
+        start_date: Union[datetime.date, None, str] = None,
+        end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -192,6 +194,8 @@ class CLASS_economy(Container):
             },
             standard_params={
                 "symbol": symbol,
+                "start_date": start_date,
+                "end_date": end_date,
             },
             extra_params=kwargs,
             chart=chart,

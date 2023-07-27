@@ -26,15 +26,3 @@ def get_data(url: str) -> dict:
 class BenzingaImage(BaseModel):
     size: str
     url: str
-
-
-class BenzingaBaseNewsData(Data):
-    created: datetime = Field(alias="date")
-    title: str
-    image: List[BenzingaImage]
-    body: str = Field(alias="text")
-    url: str
-
-    @validator("created", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
