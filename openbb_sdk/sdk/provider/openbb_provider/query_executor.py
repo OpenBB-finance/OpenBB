@@ -66,13 +66,14 @@ class QueryExecutor:
         Parameters
         ----------
         provider_name : str
-            Name of the provider.
+            Name of the provider, for example: "fmp".
         model_name : str
-            Name of the model.
+            Name of the model, for example: "StockEOD".
         params : Dict[str, Any]
-            Query parameters.
+            Query parameters, for example: {"symbol": "AAPL"}
         credentials : Optional[Dict[str, str]], optional
             Credentials for the provider, by default None
+            For example, {"fmp_api_key": "1234"}.
 
         Returns
         -------
