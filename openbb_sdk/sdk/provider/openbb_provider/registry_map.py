@@ -42,7 +42,7 @@ class RegistryMap:
         return cred_list
 
     def get_available_providers(self) -> List[str]:
-        return list(self._registry.providers.keys())
+        return sorted(list(self._registry.providers.keys()))
 
     def get_map(self) -> Dict[str, List[str]]:
         map_ = {}
