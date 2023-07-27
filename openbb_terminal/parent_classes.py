@@ -1211,6 +1211,16 @@ class BaseController(metaclass=ABCMeta):
         if current_user.preferences.USE_CLEAR_AFTER_CMD:
             system_clear()
 
+        if "--help" in other_args or "-h" in other_args:
+            txt_help = parser.format_help() + "\n"
+            if parser.prog != "about":
+                txt_help += (
+                    f"For more information and examples, use 'about {parser.prog}' "
+                    f"to access the related guide.\n"
+                )
+            console.print(f"[help]{txt_help}[/help]")
+            return None
+
         try:
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
@@ -1225,16 +1235,6 @@ class BaseController(metaclass=ABCMeta):
         except SystemExit:
             # In case the command has required argument that isn't specified
 
-            return None
-
-        if ns_parser.help:
-            txt_help = parser.format_help() + "\n"
-            if parser.prog != "about":
-                txt_help += (
-                    f"For more information and examples, use 'about {parser.prog}' "
-                    f"to access the related guide.\n"
-                )
-            console.print(f"[help]{txt_help}[/help]")
             return None
 
         # This protects against the hidden loads in stocks/fa

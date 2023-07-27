@@ -6,11 +6,11 @@ from typing import (
     Callable,
     Dict,
     List,
+    Literal,
     Optional,
+    Tuple,
     Type,
     Union,
-    Literal,
-    Tuple,
     get_args,
     get_origin,
     get_type_hints,
@@ -47,7 +47,7 @@ class ArgparseTranslator:
 
         self.parser = argparse.ArgumentParser(
             description=func.__doc__,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            formatter_class=argparse.RawTextHelpFormatter,
             add_help=add_help,
         )
 
@@ -129,6 +129,8 @@ class ArgparseTranslator:
     def _generate_argparse_arguments(self, parameters) -> None:
         for param in parameters.values():
             # TODO : how to handle kwargs?
+            # it's possible to add unknown arguments when parsing as follows:
+            # args, unknown_args = parser.parse_known_args()
             if param.name == "kwargs":
                 continue
 

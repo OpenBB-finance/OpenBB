@@ -10,6 +10,9 @@ from typing import List, Optional
 import financedatabase as fd
 
 from argparse_translator.argparse_translator import ArgparseTranslator
+
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
+from openbb_sdk.openbb import obb
 from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
@@ -31,8 +34,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
-
-# pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
 logger = logging.getLogger(__name__)
 
@@ -154,14 +155,26 @@ class StocksController(StockBaseController):
     def call_load(self, other_args: List[str]):
         """Process load command."""
 
-        def hello_world(name: str, age: int):
-            print(f"Hello {name}! You are {age} years old.")
-
-        translator = ArgparseTranslator(hello_world)
+        translator = ArgparseTranslator(func=obb.stocks.load, add_help=False)
         parser = translator.parser
 
         if ns_parser := self.parse_known_args_and_warn(parser, other_args):
-            translator.execute_func(parsed_args=ns_parser)
+            c_out = translator.execute_func(parsed_args=ns_parser)
+
+            if c_out.error:
+                console.print(f"[red]{c_out.error}[/]\n")
+            else:
+                self.ticker = ns_parser.symbol
+                self.stock = c_out.to_dataframe()
+
+                # TODO : temporary workarround
+                # core gives all columns lower case and terminal expects 1st letter upper case
+                # upper case first letter of all columns
+                self.stock.columns = [
+                    x[0].upper() + x[1:] for x in self.stock.columns.tolist()
+                ]
+
+                c_out.show()
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
