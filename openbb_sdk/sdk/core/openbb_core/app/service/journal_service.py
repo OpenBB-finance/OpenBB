@@ -22,8 +22,11 @@ from pymongo.mongo_client import MongoClient
 
 
 class JournalService:
+    """Journal service."""
+
     @staticmethod
     def valid_client(mongodb_client: Optional[MongoClient] = None) -> bool:
+        """Check if the client is valid."""
         if mongodb_client is None:
             return False
 
@@ -41,6 +44,7 @@ class JournalService:
         mongodb_client: Optional[MongoClient] = None,
         journal_entry_repository: Optional[AbstractJournalEntryRepository] = None,
     ) -> AbstractJournalEntryRepository:
+        """Build journal entry repository."""
         if journal_entry_repository:
             pass
         elif mongodb_client and valid_client:
@@ -57,6 +61,7 @@ class JournalService:
         mongodb_client: Optional[MongoClient] = None,
         journal_repository: Optional[AbstractJournalRepository] = None,
     ) -> AbstractJournalRepository:
+        """Build journal repository."""
         if journal_repository:
             pass
         elif mongodb_client and valid_client:
