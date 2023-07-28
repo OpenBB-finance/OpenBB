@@ -15,6 +15,7 @@ from typing import (
     get_origin,
     get_type_hints,
 )
+from copy import deepcopy
 
 from pydantic import BaseModel
 from typing_extensions import Annotated
@@ -45,13 +46,18 @@ class ArgparseTranslator:
         self.signature = inspect.signature(func)
         self.type_hints = get_type_hints(func)
 
-        self.parser = argparse.ArgumentParser(
+        self._parser = argparse.ArgumentParser(
+            prog=func.__name__,
             description=func.__doc__,
             formatter_class=argparse.RawTextHelpFormatter,
             add_help=add_help,
         )
 
         self._generate_argparse_arguments(self.signature.parameters)
+
+    @property
+    def parser(self) -> argparse.ArgumentParser:
+        return deepcopy(self._parser)
 
     @staticmethod
     def _param_is_default(param: inspect.Parameter) -> bool:
@@ -194,7 +200,7 @@ class ArgparseTranslator:
                 kwargs.pop("type")
                 kwargs.pop("nargs")
 
-            self.parser.add_argument(
+            self._parser.add_argument(
                 f"--{param.name}",
                 **kwargs,
             )
@@ -235,7 +241,14 @@ class ArgparseTranslator:
     ) -> Any:
         kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
-        kwargs.pop("help", None)
+
+        # remove kwargs that doesn't match the signature
+        kwargs = {
+            key: value
+            for key, value in kwargs.items()
+            if key in self.signature.parameters
+        }
+
         return self.func(**kwargs)
 
     def parse_args_and_execute(self) -> Any:
@@ -245,7 +258,7 @@ class ArgparseTranslator:
         Returns:
             Any: The return value of the original function.
         """
-        parsed_args = self.parser.parse_args()
+        parsed_args = self._parser.parse_args()
         return self.execute_func(parsed_args)
 
     def translate(self) -> Callable:

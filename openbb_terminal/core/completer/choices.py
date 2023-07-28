@@ -39,13 +39,9 @@ def __mock_parse_known_args_and_warn(
 
     _ = other_args
 
-    # only add the help argument if it's not already there
-    usage = StringIO()
-    parser.print_usage(file=usage)
-    if "[-h]" not in usage.getvalue():
-        parser.add_argument(
-            "-h", "--help", action="store_true", help="show this help message"
-        )
+    parser.add_argument(
+        "-h", "--help", action="store_true", help="show this help message"
+    )
 
     if export_allowed > 0:
         choices_export = []
@@ -271,8 +267,10 @@ def _get_argument_parser(
         for patched_function in patched_function_list:
             call_count += patched_function.call_count
             if patched_function.call_count == 1:
-                args = patched_function.call_args.args
-                argument_parser = args[0]
+                args, kwargs = patched_function.call_args
+                argument_parser = (
+                    kwargs["parser"] if kwargs.get("parser", None) else args[0]
+                )
 
         if call_count != 1:
             raise AssertionError(

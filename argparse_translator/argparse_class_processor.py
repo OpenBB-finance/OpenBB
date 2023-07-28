@@ -1,5 +1,5 @@
 import inspect
-from typing import Type
+from typing import Type, Dict
 
 from argparse_translator.argparse_translator import ArgparseTranslator
 
@@ -9,7 +9,7 @@ class ArgparseClassProcessor:
     Process a target class to create ArgparseTranslators for its methods.
     """
 
-    def __init__(self, target_class: Type, menu_designation: str):
+    def __init__(self, target_class: Type, menu_designation: str, add_help: bool):
         """
         Initialize the ArgparseClassProcessor.
 
@@ -20,9 +20,12 @@ class ArgparseClassProcessor:
         menu_designation : str
             The designation for the menu level associated with the target class.
         """
-        self._target_class = target_class
-        self._menu_designation = menu_designation
-        self._translators = {self._menu_designation: {}}
+        self._target_class: Type = target_class
+        self._menu_designation: str = menu_designation
+        self._add_help: bool = add_help
+        self._translators: Dict[str, Dict[str, ArgparseTranslator]] = {
+            self._menu_designation: {}
+        }
 
         self._process_methods()
 
@@ -33,7 +36,10 @@ class ArgparseClassProcessor:
         for name, method in inspect.getmembers(self._target_class, inspect.ismethod):
             if name.startswith("__"):
                 continue
-            self._translators[self._menu_designation][name] = ArgparseTranslator(method)
+
+            self._translators[self._menu_designation][name] = ArgparseTranslator(
+                func=method, add_help=self._add_help
+            )
 
     def get_translator(self, menu: str, command: str) -> ArgparseTranslator:
         """

@@ -37,7 +37,9 @@ from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
-stocks_translations = ArgparseClassProcessor(obb.stocks, "stocks")
+stocks_translations = ArgparseClassProcessor(
+    target_class=obb.stocks, menu_designation="stocks", add_help=False
+)
 
 
 class StocksController(StockBaseController):
@@ -156,7 +158,6 @@ class StocksController(StockBaseController):
 
     def call_load(self, other_args: List[str]):
         """Process load command."""
-
         translator = stocks_translations.get_translator(menu="stocks", command="load")
         parser = translator.parser
 
@@ -181,127 +182,21 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="search",
-            description="Show companies matching the search query, country, sector, industry and/or exchange. "
-            "Note that by default only the United States exchanges are searched which tend to contain the most "
-            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
-        )
-        parser.add_argument(
-            "-q",
-            "--query",
-            action="store",
-            dest="query",
-            type=str.lower,
-            default="",
-            nargs="+",
-            help="The search term used to find company tickers",
-        )
-        clean_countries = [x.lower().replace(" ", "_") for x in self.country]
-        parser.add_argument(
-            "-c",
-            "--country",
-            default="",
-            choices=clean_countries,
-            dest="country",
-            metavar="country",
-            type=str.lower,
-            help="Search by country to find stocks matching the criteria",
-        )
-        parser.add_argument(
-            "-s",
-            "--sector",
-            default="",
-            choices=stocks_helper.format_parse_choices(self.sector),
-            type=str.lower,
-            metavar="sector",
-            dest="sector",
-            help="Search by sector to find stocks matching the criteria",
-        )
-        parser.add_argument(
-            "--industrygroup",
-            default="",
-            choices=stocks_helper.format_parse_choices(self.industry_group),
-            type=str.lower,
-            metavar="industry_group",
-            dest="industry_group",
-            help="Search by industry group to find stocks matching the criteria",
-        )
-        parser.add_argument(
-            "-i",
-            "--industry",
-            default="",
-            choices=stocks_helper.format_parse_choices(self.industry),
-            type=str.lower,
-            metavar="industry",
-            dest="industry",
-            help="Search by industry to find stocks matching the criteria",
-        )
-        parser.add_argument(
-            "-e",
-            "--exchange",
-            default="",
-            choices=stocks_helper.format_parse_choices(self.exchange),
-            type=str.lower,
-            metavar="exchange",
-            dest="exchange",
-            help="Search by a specific exchange to find stocks matching the criteria",
-        )
-        parser.add_argument(
-            "--exchangecountry",
-            default="",
-            choices=stocks_helper.format_parse_choices(
-                list(stocks_helper.market_coverage_suffix.keys())
-            ),
-            type=str.lower,
-            metavar="exchange_country",
-            dest="exchange_country",
-            help="Search by a specific country and all its exchanges to find stocks matching the criteria",
-        )
-        parser.add_argument(
-            "-a",
-            "--all-exchanges",
-            default=False,
-            action="store_true",
-            dest="all_exchanges",
-            help="Whether to search all exchanges, without this option only the United States market is searched.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-q")
+        translator = stocks_translations.get_translator(menu="stocks", command="search")
+        parser = translator.parser
+
         if ns_parser := self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser=parser,
+            other_args=other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=10,
         ):
-            # Mapping
-            sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
-            industry = stocks_helper.map_parse_choices(self.industry)[
-                ns_parser.industry
-            ]
-            industry_group = stocks_helper.map_parse_choices(self.industry_group)[
-                ns_parser.industry_group
-            ]
-            exchange = stocks_helper.map_parse_choices(self.exchange)[
-                ns_parser.exchange
-            ]
-            exchange_country = stocks_helper.map_parse_choices(
-                list(stocks_helper.market_coverage_suffix.keys())
-            )[ns_parser.exchange_country]
+            c_out = translator.execute_func(parsed_args=ns_parser)
 
-            stocks_helper.search(
-                query=" ".join(ns_parser.query),
-                country=ns_parser.country,
-                sector=sector,
-                industry_group=industry_group,
-                industry=industry,
-                exchange=exchange,
-                exchange_country=exchange_country,
-                all_exchanges=ns_parser.all_exchanges,
-                limit=ns_parser.limit,
-            )
+            if c_out.error:
+                console.print(f"[red]{c_out.error}[/]\n")
+            else:
+                console.print(c_out.results)
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):

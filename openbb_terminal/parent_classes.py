@@ -1124,13 +1124,9 @@ class BaseController(metaclass=ABCMeta):
             Namespace with parsed arguments
         """
 
-        # only add the help argument if it's not already there
-        usage = StringIO()
-        parser.print_usage(file=usage)
-        if "[-h]" not in usage.getvalue():
-            parser.add_argument(
-                "-h", "--help", action="store_true", help="show this help message"
-            )
+        parser.add_argument(
+            "-h", "--help", action="store_true", help="show this help message"
+        )
 
         if config_terminal.HOLD:
             parser.add_argument(
