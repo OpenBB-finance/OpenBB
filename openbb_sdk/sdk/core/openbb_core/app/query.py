@@ -23,7 +23,7 @@ class Query:
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
         extra_params: ExtraParams,
-        provider_interface: Optional[ProviderInterface] = None,
+        provider_interface: Optional[ProviderInterface] = None
     ) -> None:
         """Initialize Query class."""
         self.cc = cc
