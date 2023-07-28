@@ -24,14 +24,14 @@ class Query:
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
         extra_params: ExtraParams,
-        executor: Optional[QueryExecutor] = None,
+        query_executor: Optional[QueryExecutor] = None,
     ) -> None:
         self.cc = cc
         self.provider = str(provider_choices.provider)
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__
-        self.executor = executor or QueryExecutor()
+        self.query_executor = query_executor or QueryExecutor()
 
     @staticmethod
     def filter_extra_params(
@@ -70,7 +70,7 @@ class Query:
             else {}
         )
 
-        return self.executor.execute(
+        return self.query_executor.execute(
             provider_name=self.provider,
             model_name=self.name,
             params={**standard_dict, **extra_dict},
