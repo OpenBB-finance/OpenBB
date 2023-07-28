@@ -9,11 +9,10 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
+    ProviderInterface,
     StandardParams,
     get_provider_interface,
 )
-from openbb_provider.query_executor import QueryExecutor
-
 
 class Query:
     """Query class."""
@@ -24,7 +23,7 @@ class Query:
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
         extra_params: ExtraParams,
-        query_executor: Optional[QueryExecutor] = None,
+        provider_interface: Optional[ProviderInterface] = None,
     ) -> None:
         """Initialize Query class."""
         self.cc = cc
@@ -32,10 +31,10 @@ class Query:
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__
-        self.query_executor = query_executor or QueryExecutor()
+        self.provider_interface = provider_interface or get_provider_interface()
 
-    @staticmethod
     def filter_extra_params(
+        self,
         extra_params: ExtraParams,
         provider_name: str,
     ) -> Dict[str, Any]:
@@ -43,9 +42,8 @@ class Query:
         original = asdict(extra_params)
         filtered = {}
 
-        provider_interface = get_provider_interface()
         query = extra_params.__class__.__name__
-        fields = asdict(provider_interface.params[query]["extra"]())  # type: ignore
+        fields = asdict(self.provider_interface.params[query]["extra"]())  # type: ignore
 
         for k, v in original.items():
             f = fields[k]
@@ -70,8 +68,9 @@ class Query:
             if self.extra_params
             else {}
         )
+        query_executor = self.provider_interface.create_executor()
 
-        return self.query_executor.execute(
+        return query_executor.execute(
             provider_name=self.provider,
             model_name=self.name,
             params={**standard_dict, **extra_dict},
