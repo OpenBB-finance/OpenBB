@@ -1,0 +1,25 @@
+name: My Workflow
+
+on:
+  pull_request:
+    branches:
+      - feature/openbb-sdk-v4
+
+
+jobs:
+    unit_tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+              with:
+                ref: ${{ github.event.pull_request.head.ref }}
+            - name: Install dependencies
+                run: |
+                  python -m venv .venv
+                  source .venv/bin/activate
+                  pip install ./openbb_sdk
+                  pip install pytest
+            - name: Run tests
+                run: |
+                    pytest openbb_sdk/sdk/core/tests
