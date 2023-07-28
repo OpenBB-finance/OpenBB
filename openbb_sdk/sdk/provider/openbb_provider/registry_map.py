@@ -23,7 +23,7 @@ class RegistryMap:
         return self._available_providers
 
     @property
-    def required_credentials(self) -> Dict[str, List[str]]:
+    def required_credentials(self) -> List[str]:
         return self._required_credentials
 
     @property
@@ -44,15 +44,15 @@ class RegistryMap:
     def get_available_providers(self) -> List[str]:
         return sorted(list(self._registry.providers.keys()))
 
-    def get_map(self) -> Dict[str, List[str]]:
+    def get_map(self) -> Dict:
         map_ = {}
 
         for p in self._registry.providers:
             for fetcher in self._registry.providers[p].fetcher_dict.values():
                 f = fetcher()
                 model_name = self.extract_model_name(f)
-                standard_query, extra_query = self.extract_fields(f, "query_params")
-                standard_data, extra_data = self.extract_fields(f, "data")
+                standard_query, extra_query = self.extract_info(f, "query_params")
+                standard_data, extra_data = self.extract_info(f, "data")
 
                 if model_name not in map_:
                     map_[model_name] = {}
@@ -78,17 +78,21 @@ class RegistryMap:
         return fetcher.query_params_type.__name__.replace("QueryParams", "")
 
     @staticmethod
-    def extract_fields(fetcher: Fetcher, type_: Literal["query_params", "data"]):
-        standard_fields = getattr(fetcher, f"{type_}_type").__fields__
-        extra_fields = getattr(fetcher, f"provider_{type_}_type").__fields__
+    def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]):
 
-        standard = {}
-        extra = {}
+        standard = getattr(fetcher, f"{type_}_type")
+        extra = getattr(fetcher, f"provider_{type_}_type")
+
+        standard_info = {"fields": {}, "docstring": standard.__doc__}
+        extra_info = {"fields": {}, "docstring": extra.__doc__}
+
+        standard_fields = standard.__fields__
+        extra_fields = extra.__fields__
 
         for name, field in extra_fields.items():
             if name in standard_fields:
-                standard[name] = field
+                standard_info["fields"][name] = field
             else:
-                extra[name] = field
+                extra_info["fields"][name] = field
 
-        return standard, extra
+        return standard_info, extra_info

@@ -87,7 +87,7 @@ class ProviderInterface:
         return self._map
 
     @property
-    def required_credentials(self) -> Dict[str, Dict[str, str]]:
+    def required_credentials(self) -> List[str]:
         """Dictionary of required credentials by provider."""
         return self._required_credentials
 
@@ -202,7 +202,7 @@ class ProviderInterface:
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
-                for name, field in model_details["QueryParams"].items():
+                for name, field in model_details["QueryParams"]["fields"].items():
                     incoming = cls._create_field(name, field, query=True)
 
                     standard[incoming.name] = (
@@ -211,8 +211,8 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                for name, field in model_details["QueryParams"].items():
-                    if name not in providers["openbb"]["QueryParams"]:
+                for name, field in model_details["QueryParams"]["fields"].items():
+                    if name not in providers["openbb"]["QueryParams"]["fields"]:
 
 
                         # TODO: We should consider forcing extra_params to
@@ -255,7 +255,7 @@ class ProviderInterface:
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
-                for name, field in model_details["Data"].items():
+                for name, field in model_details["Data"]["fields"].items():
                     incoming = cls._create_field(name, field, "openbb")
 
                     standard[incoming.name] = (
@@ -264,8 +264,8 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                for name, field in model_details["Data"].items():
-                    if name not in providers["openbb"]["Data"]:
+                for name, field in model_details["Data"]["fields"].items():
+                    if name not in providers["openbb"]["Data"]["fields"]:
                         incoming = cls._create_field(name, field, provider_name)
 
                         if incoming.name in extra:
