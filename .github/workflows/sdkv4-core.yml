@@ -5,20 +5,29 @@ on:
     branches:
       - feature/openbb-sdk-v4
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+    cancel-in-progress: true
+
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
+    strategy:
+        fail-fast: false
+        matrix:
+          python_version:
+            ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Install dependencies
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install nox
+      - name: Install Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v4
+        with:
+            python-version: ${{ matrix.python_version }}
+            cache: "pip"
+
       - name: Run tests
         run: |
-          source .venv/bin/activate
-          nox -s tests
+          nox -s tests --python ${{ matrix.python_version }}
