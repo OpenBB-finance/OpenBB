@@ -1,5 +1,6 @@
 import argparse
 import inspect
+from copy import deepcopy
 from enum import Enum
 from typing import (
     Any,
@@ -15,7 +16,6 @@ from typing import (
     get_origin,
     get_type_hints,
 )
-from copy import deepcopy
 
 from pydantic import BaseModel
 from typing_extensions import Annotated

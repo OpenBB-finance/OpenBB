@@ -1,5 +1,5 @@
 import inspect
-from typing import Type, Dict
+from typing import Dict, Type
 
 from argparse_translator.argparse_translator import ArgparseTranslator
 

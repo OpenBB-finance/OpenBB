@@ -1,7 +1,6 @@
 from argparse import ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
-from io import StringIO
 from os import environ
 from types import MethodType
 from typing import Callable, List
