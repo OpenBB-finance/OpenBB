@@ -9,7 +9,6 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
-    ProviderInterface,
     StandardParams,
     get_provider_interface,
 )
@@ -23,7 +22,6 @@ class Query:
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
         extra_params: ExtraParams,
-        provider_interface: Optional[ProviderInterface] = None
     ) -> None:
         """Initialize Query class."""
         self.cc = cc
@@ -31,7 +29,7 @@ class Query:
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__
-        self.provider_interface = provider_interface or get_provider_interface()
+        self.provider_interface = get_provider_interface()
 
     def filter_extra_params(
         self,
