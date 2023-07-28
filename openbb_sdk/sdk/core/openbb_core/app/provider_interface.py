@@ -287,7 +287,8 @@ class ProviderInterface:
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Generate dataclasses for params.
 
-        This creates a dictionary of dataclasses that can be used as extra params.
+        This creates a dictionary of dataclasses that can be inject as a FastAPI
+        dependency.
 
         Example:
         -------
@@ -326,8 +327,8 @@ class ProviderInterface:
     def _generate_model_providers_dc(self) -> Dict[str, ProviderChoices]:
         """Generate dataclasses for provider choices by model.
 
-        This creates a dictionary that maps model names to dataclasses that can be used
-        as provider choices.
+        This creates a dictionary that maps model names to dataclasses that can be
+        injected as a FastAPI dependency.
 
         Example:
         -------
@@ -355,7 +356,7 @@ class ProviderInterface:
     ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Generate dataclasses for data.
 
-        This creates a dictionary of dataclasses that can be used as data.
+        This creates a dictionary of dataclasses.
 
         Example:
         -------
@@ -391,7 +392,8 @@ class ProviderInterface:
     def _merge_data_dc(
         self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
     ) -> Dict[str, BaseModel]:
-        """Merge standard data with extra data into a single BaseModel."""
+        """Merge standard data with extra data into a single BaseModel to benzinga
+        injected as FastAPI dependency."""
         result: Dict = {}
         for model_name, dataclasses in data.items():
             standard = dataclasses["standard"]
