@@ -1,4 +1,4 @@
-"""Helper functions for the builtin extensions."""
+"""Query class."""
 
 import warnings
 from dataclasses import asdict
@@ -26,6 +26,7 @@ class Query:
         extra_params: ExtraParams,
         query_executor: Optional[QueryExecutor] = None,
     ) -> None:
+        """Initialize Query class."""
         self.cc = cc
         self.provider = str(provider_choices.provider)
         self.standard_params = standard_params
