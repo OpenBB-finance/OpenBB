@@ -4,6 +4,7 @@ from pathlib import Path
 
 import streamlit.web.bootstrap
 
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import set_preference
 
@@ -13,8 +14,6 @@ set_preference("PLOT_ENABLE_PYWRY", "False")
 
 
 def main():
-    from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
-
     # pylint: disable=E1101,W0212
     parent_path = Path(sys._MEIPASS) if hasattr(sys, "frozen") else REPOSITORY_DIRECTORY  # type: ignore
     filepath = Path(__file__).parent / "stream" / "Forecasting.py"
