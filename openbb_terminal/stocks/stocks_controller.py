@@ -25,7 +25,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
@@ -45,6 +45,7 @@ class StocksController(StockBaseController):
         "tob",
         "candle",
         "news",
+        "multiples",
         "resources",
         "codes",
     ]
@@ -119,6 +120,7 @@ class StocksController(StockBaseController):
         mt.add_cmd("candle", self.ticker)
         mt.add_cmd("codes", self.ticker)
         mt.add_cmd("news", self.ticker)
+        mt.add_cmd("multiples", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -175,53 +177,197 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="search")
-        parser = translator.parser
-
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="search",
+            description="Show companies matching the search query, country, sector, industry and/or exchange. "
+            "Note that by default only the United States exchanges are searched which tend to contain the most "
+            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
+        )
+        parser.add_argument(
+            "-q",
+            "--query",
+            action="store",
+            dest="query",
+            type=str.lower,
+            default="",
+            nargs="+",
+            help="The search term used to find company tickers",
+        )
+        clean_countries = [x.lower().replace(" ", "_") for x in self.country]
+        parser.add_argument(
+            "-c",
+            "--country",
+            default="",
+            choices=clean_countries,
+            dest="country",
+            metavar="country",
+            type=str.lower,
+            help="Search by country to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "-s",
+            "--sector",
+            default="",
+            choices=stocks_helper.format_parse_choices(self.sector),
+            type=str.lower,
+            metavar="sector",
+            dest="sector",
+            help="Search by sector to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "--industrygroup",
+            default="",
+            choices=stocks_helper.format_parse_choices(self.industry_group),
+            type=str.lower,
+            metavar="industry_group",
+            dest="industry_group",
+            help="Search by industry group to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "-i",
+            "--industry",
+            default="",
+            choices=stocks_helper.format_parse_choices(self.industry),
+            type=str.lower,
+            metavar="industry",
+            dest="industry",
+            help="Search by industry to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            default="",
+            choices=stocks_helper.format_parse_choices(self.exchange),
+            type=str.lower,
+            metavar="exchange",
+            dest="exchange",
+            help="Search by a specific exchange to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "--exchangecountry",
+            default="",
+            choices=stocks_helper.format_parse_choices(
+                list(stocks_helper.market_coverage_suffix.keys())
+            ),
+            type=str.lower,
+            metavar="exchange_country",
+            dest="exchange_country",
+            help="Search by a specific country and all its exchanges to find stocks matching the criteria",
+        )
+        parser.add_argument(
+            "-a",
+            "--all-exchanges",
+            default=False,
+            action="store_true",
+            dest="all_exchanges",
+            help="Whether to search all exchanges, without this option only the United States market is searched.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-q")
         if ns_parser := self.parse_known_args_and_warn(
-            parser=parser,
-            other_args=other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
             limit=10,
         ):
-            c_out = translator.execute_func(parsed_args=ns_parser)
+            # Mapping
+            sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
+            industry = stocks_helper.map_parse_choices(self.industry)[
+                ns_parser.industry
+            ]
+            industry_group = stocks_helper.map_parse_choices(self.industry_group)[
+                ns_parser.industry_group
+            ]
+            exchange = stocks_helper.map_parse_choices(self.exchange)[
+                ns_parser.exchange
+            ]
+            exchange_country = stocks_helper.map_parse_choices(
+                list(stocks_helper.market_coverage_suffix.keys())
+            )[ns_parser.exchange_country]
 
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
-            else:
-                console.print(c_out.results)
+            stocks_helper.search(
+                query=" ".join(ns_parser.query),
+                country=ns_parser.country,
+                sector=sector,
+                industry_group=industry_group,
+                industry=industry,
+                exchange=exchange,
+                exchange_country=exchange_country,
+                all_exchanges=ns_parser.all_exchanges,
+                limit=ns_parser.limit,
+            )
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
         """Process tob command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="tob")
-        parser = translator.parser
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tob",
+            description="Get top of book for loaded ticker from selected exchange",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            required=all(x not in other_args for x in ["-h", "--help"])
+            and not self.ticker,
+            help="Ticker to get data for",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            default="BZX",
+            choices=self.TOB_EXCHANGES,
+            type=str,
+            dest="exchange",
+        )
 
+        if not self.ticker and other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         if ns_parser := self.parse_known_args_and_warn(parser, other_args):
-            c_out = translator.execute_func(parsed_args=ns_parser)
-
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
-            else:
-                console.print(c_out.results)
+            ticker = ns_parser.s_ticker or self.ticker
+            cboe_view.display_top_of_book(ticker, ns_parser.exchange)
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="quote")
-        parser = translator.parser
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description="Current quote for the loaded stock ticker.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            required=False,
+            default=self.ticker,
+            help="Get a quote for a specific ticker, or comma-separated list of tickers.",
+        )
 
-        if ns_parser := self.parse_known_args_and_warn(
-            parser=parser,
-            other_args=other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-        ):
-            c_out = translator.execute_func(parsed_args=ns_parser)
+        # For the case where a user uses: 'quote BB'
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            tickers = ns_parser.s_ticker.split(",")
+            if ns_parser.s_ticker and len(tickers) == 1:
+                self.ticker = ns_parser.s_ticker
+                self.custom_load_wrapper([self.ticker])
 
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
-            else:
-                console.print(c_out.results)
+            stocks_view.display_quote(
+                tickers,
+                ns_parser.export,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+            )
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -421,6 +567,28 @@ class StocksController(StockBaseController):
                 console.print(c_out.results)
 
                 if ns_parser.chart:
+                    # TODO : charting needs to be implemented on the sdk
+                    c_out.show()
+
+    @log_start_end(log=logger)
+    def call_multiples(self, other_args: List[str]):
+        translator = stocks_translations.get_translator(
+            menu="stocks", command="multiples"
+        )
+        parser = translator.parser
+
+        if ns_parser := self.parse_known_args_and_warn(
+            parser=parser, other_args=other_args
+        ):
+            c_out = translator.execute_func(parsed_args=ns_parser)
+
+            if c_out.error:
+                console.print(f"[red]{c_out.error}[/]\n")
+            else:
+                console.print(c_out.results)
+
+                if ns_parser.chart:
+                    # TODO : charting needs to be implemented on the sdk
                     c_out.show()
 
     @log_start_end(log=logger)

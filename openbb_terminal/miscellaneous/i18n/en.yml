@@ -123,6 +123,7 @@ en:
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
   askobb: BETA FEATURE - Ask OpenBB LLM for the data you are interested in
+  stocks/multiples: get valuation multiples for a stock ticker
   stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
