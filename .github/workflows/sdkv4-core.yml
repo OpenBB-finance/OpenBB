@@ -30,4 +30,5 @@ jobs:
 
       - name: Run tests
         run: |
+          pip install nox
           nox -s tests --python ${{ matrix.python_version }}
