@@ -403,7 +403,7 @@ class ProviderInterface:
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
             for name, field in fields.items():
                 fields_dict[name] = (
-                    field.type_,
+                    field.annotation,
                     Field(
                         default=field.default,
                         title=field.field_info.title,
