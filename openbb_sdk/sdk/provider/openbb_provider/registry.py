@@ -1,3 +1,4 @@
+from typing import Dict
 import pkg_resources
 
 from openbb_provider.abstract.provider import Provider
@@ -7,7 +8,7 @@ class Registry:
     """Class to maintain registry of providers"""
 
     def __init__(self) -> None:
-        self._providers = {}
+        self._providers: Dict[str, Provider] = {}
 
     @property
     def providers(self):
