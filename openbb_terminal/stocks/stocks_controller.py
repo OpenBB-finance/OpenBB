@@ -196,77 +196,39 @@ class StocksController(StockBaseController):
             if c_out.error:
                 console.print(f"[red]{c_out.error}[/]\n")
             else:
-                console.print(c_out.results)
+                console.print(c_out.results.dict())
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
         """Process tob command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tob",
-            description="Get top of book for loaded ticker from selected exchange",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required=all(x not in other_args for x in ["-h", "--help"])
-            and not self.ticker,
-            help="Ticker to get data for",
-        )
-        parser.add_argument(
-            "-e",
-            "--exchange",
-            default="BZX",
-            choices=self.TOB_EXCHANGES,
-            type=str,
-            dest="exchange",
-        )
+        translator = stocks_translations.get_translator(menu="stocks", command="tob")
+        parser = translator.parser
 
-        if not self.ticker and other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
         if ns_parser := self.parse_known_args_and_warn(parser, other_args):
-            ticker = ns_parser.s_ticker or self.ticker
-            cboe_view.display_top_of_book(ticker, ns_parser.exchange)
+            c_out = translator.execute_func(parsed_args=ns_parser)
+
+            if c_out.error:
+                console.print(f"[red]{c_out.error}[/]\n")
+            else:
+                console.print(c_out.results.dict())
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="quote",
-            description="Current quote for the loaded stock ticker.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="s_ticker",
-            required=False,
-            default=self.ticker,
-            help="Get a quote for a specific ticker, or comma-separated list of tickers.",
-        )
+        translator = stocks_translations.get_translator(menu="stocks", command="tob")
+        parser = translator.parser
 
-        # For the case where a user uses: 'quote BB'
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            tickers = ns_parser.s_ticker.split(",")
-            if ns_parser.s_ticker and len(tickers) == 1:
-                self.ticker = ns_parser.s_ticker
-                self.custom_load_wrapper([self.ticker])
+        if ns_parser := self.parse_known_args_and_warn(
+            parser=parser,
+            other_args=other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+        ):
+            c_out = translator.execute_func(parsed_args=ns_parser)
 
-            stocks_view.display_quote(
-                tickers,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-            )
+            if c_out.error:
+                console.print(f"[red]{c_out.error}[/]\n")
+            else:
+                console.print(c_out.results.dict())
 
     @log_start_end(log=logger)
     def call_codes(self, _):
