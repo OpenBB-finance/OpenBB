@@ -2,7 +2,7 @@
 
 import warnings
 from dataclasses import asdict
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -12,6 +12,7 @@ from openbb_core.app.provider_interface import (
     StandardParams,
     get_provider_interface,
 )
+from openbb_provider.query_executor import QueryExecutor
 
 
 class Query:
@@ -23,12 +24,14 @@ class Query:
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
         extra_params: ExtraParams,
+        executor: Optional[QueryExecutor] = None,
     ) -> None:
         self.cc = cc
         self.provider = str(provider_choices.provider)
         self.standard_params = standard_params
         self.extra_params = extra_params
         self.name = self.standard_params.__class__.__name__
+        self.executor = executor or QueryExecutor()
 
     @staticmethod
     def filter_extra_params(
@@ -60,7 +63,6 @@ class Query:
 
     def execute(self) -> Any:
         """Execute the query."""
-        executor = get_provider_interface().create_executor()
         standard_dict = asdict(self.standard_params)
         extra_dict = (
             self.filter_extra_params(self.extra_params, self.provider)
@@ -68,7 +70,7 @@ class Query:
             else {}
         )
 
-        return executor.execute(
+        return self.executor.execute(
             provider_name=self.provider,
             model_name=self.name,
             params={**standard_dict, **extra_dict},

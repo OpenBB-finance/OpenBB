@@ -2,7 +2,6 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
-from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
@@ -74,7 +73,6 @@ class ProviderInterface:
         """Initialize provider interface."""
         self._registry_map = registry_map or RegistryMap()
         self._map = self._registry_map.map
-        # self._map = build_model_mapping()
         self._model_providers_map = self._generate_model_providers_dc()
         self._params = self._generate_params_dc()
         self._data = self._generate_data_dc()
@@ -129,10 +127,6 @@ class ProviderInterface:
     def models(self) -> List[str]:
         """List of model names."""
         return self._registry_map.models
-
-    def create_executor(self) -> QueryExecutor:
-        """Get query executor."""
-        return QueryExecutor(self._registry_map.registry)
 
     def _get_required_credentials(self) -> List[str]:
         """Get required credentials."""
