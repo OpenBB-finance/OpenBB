@@ -12,6 +12,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
+from io import StringIO
 from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
@@ -1189,17 +1190,26 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-        sources = get_ordered_list_sources(f"{cls.PATH}{parser.prog}")
-        # Allow to change source if there is more than one
-        if len(sources) > 1:
-            parser.add_argument(
-                "--source",
-                action="store",
-                dest="source",
-                choices=sources,
-                default=sources[0],  # the first source from the list is the default
-                help="Data source to select from",
-            )
+
+        # TODO : this is a temporary workaround
+        # ideally, we should drop `source` argument
+
+        result = StringIO()
+        parser.print_help(file=result)
+        has_provider = "--provider" in result.getvalue()
+
+        if not has_provider:
+            sources = get_ordered_list_sources(f"{cls.PATH}{parser.prog}")
+            # Allow to change source if there is more than one
+            if len(sources) > 1:
+                parser.add_argument(
+                    "--source",
+                    action="store",
+                    dest="source",
+                    choices=sources,
+                    default=sources[0],  # the first source from the list is the default
+                    help="Data source to select from",
+                )
 
         current_user = get_current_user()
 

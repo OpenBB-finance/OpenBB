@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from datetime import datetime, timedelta
 from typing import List, Optional
 
 import financedatabase as fd
@@ -14,11 +13,6 @@ from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 from openbb_sdk.openbb import obb
 from openbb_terminal import config_terminal
-from openbb_terminal.common import (
-    feedparser_view,
-    newsapi_view,
-    ultima_newsmonitor_view,
-)
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -27,7 +21,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
-    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -196,7 +189,7 @@ class StocksController(StockBaseController):
             if c_out.error:
                 console.print(f"[red]{c_out.error}[/]\n")
             else:
-                console.print(c_out.results.dict())
+                console.print(c_out.results)
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
@@ -210,12 +203,12 @@ class StocksController(StockBaseController):
             if c_out.error:
                 console.print(f"[red]{c_out.error}[/]\n")
             else:
-                console.print(c_out.results.dict())
+                console.print(c_out.results)
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="tob")
+        translator = stocks_translations.get_translator(menu="stocks", command="quote")
         parser = translator.parser
 
         if ns_parser := self.parse_known_args_and_warn(
@@ -228,7 +221,7 @@ class StocksController(StockBaseController):
             if c_out.error:
                 console.print(f"[red]{c_out.error}[/]\n")
             else:
-                console.print(c_out.results.dict())
+                console.print(c_out.results)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -411,96 +404,24 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="news",
-            description="latest news of the company",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required=not any(x in other_args for x in ["-h", "--help"])
-            and not self.ticker,
-            help="Ticker to get data for",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            action="store",
-            dest="n_start_date",
-            type=valid_date,
-            default=datetime.now() - timedelta(days=7),
-            help="The starting date (format YYYY-MM-DD) to search articles from",
-        )
-        parser.add_argument(
-            "-o",
-            "--oldest",
-            action="store_false",
-            dest="n_oldest",
-            default=True,
-            help="Show oldest articles first",
-        )
-        parser.add_argument(
-            "-s",
-            "--sources",
-            dest="sources",
-            type=str,
-            default="",
-            help="Show news only from the sources specified (e.g bloomberg,reuters)",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
-        )
-        if ns_parser:
-            if ns_parser.ticker:
-                self.ticker = ns_parser.ticker
-                self.custom_load_wrapper([self.ticker])
-            if self.ticker:
-                if ns_parser.source == "NewsApi":
-                    newsapi_view.display_news(
-                        query=self.ticker,
-                        limit=ns_parser.limit,
-                        start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
-                        show_newest=ns_parser.n_oldest,
-                        sources=ns_parser.sources,
-                    )
-                elif str(ns_parser.source).lower() == "ultima":
-                    query = str(self.ticker).upper()
-                    if query not in ultima_newsmonitor_view.supported_terms():
-                        console.print(
-                            "[red]Ticker not supported by Ultima Insights News Monitor. Falling back to default.\n[/red]"
-                        )
-                        feedparser_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
-                    else:
-                        ultima_newsmonitor_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
-                elif ns_parser.source == "Feedparser":
-                    feedparser_view.display_news(
-                        term=self.ticker,
-                        sources=ns_parser.sources,
-                        limit=ns_parser.limit,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
+        translator = stocks_translations.get_translator(menu="stocks", command="news")
+        parser = translator.parser
+
+        if ns_parser := self.parse_known_args_and_warn(
+            parser=parser,
+            other_args=other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
+        ):
+            c_out = translator.execute_func(parsed_args=ns_parser)
+
+            if c_out.error:
+                console.print(f"[red]{c_out.error}[/]\n")
             else:
-                console.print("Use 'load <ticker>' prior to this command!")
+                console.print(c_out.results)
+
+                if ns_parser.chart:
+                    c_out.show()
 
     @log_start_end(log=logger)
     def call_disc(self, _):
