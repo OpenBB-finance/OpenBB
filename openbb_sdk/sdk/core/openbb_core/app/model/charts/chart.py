@@ -20,6 +20,9 @@ class Chart(BaseModel):
     def show(self):
         """Shows the chart in PyWry, browser or notebook."""
 
+        # TODO : this method should be handled by the ChartingManager so that
+        # this model class doesn't have specific knowledge on the charting extension
+
         # pylint: disable=import-outside-toplevel
         if self.format == ChartFormat.plotly:
             from openbb_charting.core.openbb_figure import OpenBBFigure
