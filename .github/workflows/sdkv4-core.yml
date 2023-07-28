@@ -21,4 +21,5 @@ jobs:
           pip install pytest
       - name: Run tests
         run: |
+          source .venv/bin/activate
           pytest openbb_sdk/sdk/core/tests
