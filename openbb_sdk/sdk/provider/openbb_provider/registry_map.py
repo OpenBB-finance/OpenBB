@@ -1,8 +1,9 @@
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
 
+MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
 
 class RegistryMap:
     """Class to store information about providers in the registry."""
@@ -27,7 +28,7 @@ class RegistryMap:
         return self._required_credentials
 
     @property
-    def map(self) -> Dict[str, List[str]]:
+    def map(self) -> MapType:
         return self._map
 
     @property
@@ -35,6 +36,7 @@ class RegistryMap:
         return self._models
 
     def get_required_credentials(self) -> List[str]:
+        """Get list of required credentials."""
         cred_list = []
         for provider in self._registry.providers.values():
             for c in provider.formatted_credentials:
@@ -42,10 +44,12 @@ class RegistryMap:
         return cred_list
 
     def get_available_providers(self) -> List[str]:
+        """Get list of available providers."""
         return sorted(list(self._registry.providers.keys()))
 
-    def get_map(self) -> Dict:
-        map_ = {}
+    def get_map(self) -> MapType:
+        """Generate map for the provider package."""
+        map_: MapType = {}
 
         for p in self._registry.providers:
             for fetcher in self._registry.providers[p].fetcher_dict.values():
@@ -68,18 +72,20 @@ class RegistryMap:
 
         return map_
 
-    def get_models(self, map_: Dict[str, List[str]]) -> List[str]:
+    def get_models(self, map_: MapType) -> List[str]:
+        """Get available models."""
         return list(map_.keys())
 
     @staticmethod
     def extract_model_name(fetcher: Fetcher) -> str:
+        """Extract the model name from fetcher."""
         # TODO: We should have a better way to extract the model name.
         # This looks fragile, but it's the best we can do for now.
         return fetcher.query_params_type.__name__.replace("QueryParams", "")
 
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]):
-
+        """Extract info (fields and docstring) from fetcher query params or data."""
         standard = getattr(fetcher, f"{type_}_type")
         extra = getattr(fetcher, f"provider_{type_}_type")
 
