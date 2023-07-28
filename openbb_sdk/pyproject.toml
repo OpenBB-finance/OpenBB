@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"
+python = ">=3.8,<=3.12"
 openbb-provider = { path = "./sdk/provider" }
 openbb-core = { path = "./sdk/core" }
 openbb-stocks = { path = "./extensions/stocks" }
