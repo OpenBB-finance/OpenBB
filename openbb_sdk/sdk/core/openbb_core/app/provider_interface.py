@@ -177,7 +177,9 @@ class ProviderInterface:
         force_optional: bool = False,
     ) -> DataclassField:
         new_name = name.replace(".", "_")
-        type_ = field.outer_type_  # field.type_ don't work for nested types
+        # field.type_ don't work for nested types
+        # field.outer_type_ don't work for Optional nested types
+        type_ = field.annotation
         description = field.field_info.description
 
         if field.required:
@@ -413,7 +415,7 @@ class ProviderInterface:
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
             for name, field in fields.items():
                 fields_dict[name] = (
-                    field.outer_type_,
+                    field.annotation,
                     Field(
                         default=field.default,
                         title=field.field_info.title,
