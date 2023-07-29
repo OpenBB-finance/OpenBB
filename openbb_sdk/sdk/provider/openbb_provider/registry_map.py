@@ -11,9 +11,9 @@ class RegistryMap:
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
         self._registry = registry or RegistryLoader.from_extensions()
-        self._required_credentials = self.get_required_credentials()
-        self._available_providers = self.get_available_providers()
-        self._map = self.get_map()
+        self._required_credentials = self.get_required_credentials(self._registry)
+        self._available_providers = self.get_available_providers(self._registry)
+        self._map = self.get_map(self._registry)
         self._models = self.get_models(self._map)
 
     @property
@@ -36,26 +36,25 @@ class RegistryMap:
     def models(self) -> List[str]:
         return self._models
 
-    def get_required_credentials(self) -> List[str]:
+    def get_required_credentials(self, registry: Registry) -> List[str]:
         """Get list of required credentials."""
         cred_list = []
-        for provider in self._registry.providers.values():
+        for provider in registry.providers.values():
             for c in provider.required_credentials:
                 cred_list.append(c)
         return cred_list
 
-    def get_available_providers(self) -> List[str]:
+    def get_available_providers(self, registry: Registry) -> List[str]:
         """Get list of available providers."""
-        return sorted(list(self._registry.providers.keys()))
+        return sorted(list(registry.providers.keys()))
 
-    def get_map(self) -> MapType:
+    def get_map(self, registry: Registry) -> MapType:
         """Generate map for the provider package."""
         map_: MapType = {}
 
-        for p in self._registry.providers:
-            for fetcher in self._registry.providers[p].fetcher_dict.values():
+        for p in registry.providers:
+            for model_name, fetcher in registry.providers[p].fetcher_dict.items():
                 f = fetcher()
-                model_name = self.extract_model_name(f)
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
 
@@ -76,13 +75,6 @@ class RegistryMap:
     def get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
         return list(map_.keys())
-
-    @staticmethod
-    def extract_model_name(fetcher: Fetcher) -> str:
-        """Extract the model name from fetcher."""
-        # TODO: We should have a better way to extract the model name.
-        # This looks fragile, but it's the best we can do for now.
-        return fetcher.query_params_type.__name__.replace("QueryParams", "")
 
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]):
