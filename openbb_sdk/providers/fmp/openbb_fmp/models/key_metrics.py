@@ -110,11 +110,11 @@ class FMPKeyMetricsFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
-        return FMPKeyMetricsQueryParams(
-            symbol=query.symbol,
-            limit=query.limit,
-            period="annual" if query.period == "annually" else "quarter",
+        transformed_params = params
+        transformed_params["period"] = (
+            "annual" if params.get("period", "") == "annually" else "quarter"
         )
+        return FMPKeyMetricsQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

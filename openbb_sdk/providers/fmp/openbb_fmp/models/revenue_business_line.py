@@ -49,8 +49,11 @@ class FMPRevenueBusinessLineFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRevenueBusinessLineQueryParams:
         # Type has to be ignored below because we are using something different than the literal type
-        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
-        return FMPRevenueBusinessLineQueryParams(**params)
+        transformed_params = params
+        transformed_params["period"] = (
+            "annual" if params.get("period", "") == "annually" else "quarter"
+        )
+        return FMPRevenueBusinessLineQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

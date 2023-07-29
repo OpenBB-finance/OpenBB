@@ -48,8 +48,11 @@ class FMPRevenueGeographicFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRevenueGeographicQueryParams:
-        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
-        return FMPRevenueGeographicQueryParams(**params)
+        transformed_params = params
+        transformed_params["period"] = (
+            "annual" if params.get("period", "") == "annually" else "quarter"
+        )
+        return FMPRevenueGeographicQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

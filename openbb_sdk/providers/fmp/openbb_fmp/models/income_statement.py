@@ -105,10 +105,11 @@ class FMPIncomeStatementFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementQueryParams:
-        period: PeriodType = "annual" if query.period == "annually" else "quarter"
-        return FMPIncomeStatementQueryParams(
-            symbol=query.symbol, period=period, **extra_params if extra_params else {}
+        transformed_params = params
+        transformed_params["period"] = (
+            "annual" if params.get("period", "") == "annually" else "quarter"
         )
+        return FMPIncomeStatementQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

@@ -107,10 +107,11 @@ class FMPCashFlowStatementFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
-        period = "annual" if query.period == "annually" else "quarter"
-        return FMPCashFlowStatementQueryParams(
-            symbol=query.symbol, period=period, **extra_params if extra_params else {}  # type: ignore
+        transformed_params = params
+        transformed_params["period"] = (
+            "annual" if params.get("period", "") == "annually" else "quarter"
         )
+        return FMPCashFlowStatementQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
