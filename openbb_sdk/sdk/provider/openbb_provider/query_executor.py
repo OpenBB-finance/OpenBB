@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 
-from openbb_provider.abstract.fetcher import GenericDataType
+from openbb_provider.abstract.fetcher import Fetcher, GenericDataType
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
 
@@ -15,7 +15,7 @@ class QueryExecutor:
     def __init__(self, registry: Optional[Registry] = None) -> None:
         self.registry = registry or RegistryLoader.from_extensions()
 
-    def get_provider(self, provider_name: str):
+    def get_provider(self, provider_name: str) -> Provider:
         """Get a provider from the registry."""
         name = provider_name.lower()
         if name not in self.registry.providers:
@@ -25,7 +25,7 @@ class QueryExecutor:
             )
         return self.registry.providers[name]
 
-    def get_fetcher(self, provider: Provider, model_name: str):
+    def get_fetcher(self, provider: Provider, model_name: str) -> Fetcher:
         """Get a fetcher from a provider."""
         if model_name not in provider.fetcher_dict:
             raise ProviderError(
@@ -54,12 +54,6 @@ class QueryExecutor:
         credentials: Optional[Dict[str, str]] = None,
     ) -> GenericDataType:
         """Execute query.
-
-        We do this in 4 steps:
-        1. Get the 'Provider' class for 'provider_name'
-        2. Verify if credentials match provider requirements
-        3. Get the provider fetcher for 'model_name'
-        4. The fetcher fetches the data
 
         Parameters
         ----------
