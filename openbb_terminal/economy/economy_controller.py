@@ -52,6 +52,8 @@ from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
+gdp_units_dict = {"USD": "MLN_USD", "USD_CAP": "USD_CAP"}
+
 
 class EconomyController(BaseController):
     """Economy Controller class"""
@@ -596,9 +598,9 @@ class EconomyController(BaseController):
             "--units",
             type=str,
             dest="units",
-            help="Use either USD_CAP (US dollars per capita) or MLN_USD (millions of US dollars)",
-            choices=["USD_CAP", "MLN_USD"],
-            default="USD_CAP",
+            help="Use either USD or USD_CAP (USD Per Capita)",
+            choices=["USD", "USD_CAP"],
+            default="USD",
         )
 
         parser.add_argument(

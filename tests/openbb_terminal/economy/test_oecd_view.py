@@ -5,7 +5,7 @@ import pytest
 from openbb_terminal.economy import oecd_view
 
 
-@pytest.mark.record_http
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "countries, kwargs",
     [
