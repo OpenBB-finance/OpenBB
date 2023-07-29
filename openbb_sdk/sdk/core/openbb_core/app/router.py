@@ -1,4 +1,5 @@
 import sys
+import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
 from types import MappingProxyType
@@ -15,8 +16,6 @@ from typing import (
     get_type_hints,
     overload,
 )
-import warnings
-from openbb_core.app.model.abstract.warning import OpenBBWarning
 
 import pkg_resources
 from fastapi import APIRouter, Depends
@@ -24,6 +23,7 @@ from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
 
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.provider_interface import (
