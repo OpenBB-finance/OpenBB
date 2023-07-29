@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
@@ -107,9 +107,7 @@ class FMPCashFlowStatementFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: CashFlowStatementQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPCashFlowStatementQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
         period = "annual" if query.period == "annually" else "quarter"
         return FMPCashFlowStatementQueryParams(
             symbol=query.symbol, period=period, **extra_params if extra_params else {}  # type: ignore
@@ -129,5 +127,5 @@ class FMPCashFlowStatementFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPCashFlowStatementData],
-    ) -> List[CashFlowStatementData]:
-        return data_transformer(data, CashFlowStatementData)
+    ) -> List[FMPCashFlowStatementData]:
+        return data
