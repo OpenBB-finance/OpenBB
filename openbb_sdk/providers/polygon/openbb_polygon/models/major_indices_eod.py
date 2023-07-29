@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.metadata import QUERY_DESCRIPTIONS
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,

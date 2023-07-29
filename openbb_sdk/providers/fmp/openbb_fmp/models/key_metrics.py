@@ -5,8 +5,8 @@ from datetime import date as dateType
 from typing import Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.helpers import data_transformer
 from openbb_provider.models.key_metrics import KeyMetricsData, KeyMetricsQueryParams
 from pydantic import Field
