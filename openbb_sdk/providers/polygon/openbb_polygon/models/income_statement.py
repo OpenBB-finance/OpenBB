@@ -73,8 +73,7 @@ class PolygonIncomeStatementFetcher(
     def extract_data(
         query: PolygonIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonIncomeStatementData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(), [])

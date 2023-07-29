@@ -2,7 +2,7 @@
 
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
@@ -68,28 +68,26 @@ class PolygonForexEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ForexEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonForexEODQueryParams:
-        return PolygonForexEODQueryParams(
-            symbol=query.symbol,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonForexEODQueryParams:
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return PolygonForexEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
         query: PolygonForexEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonForexEODData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=7)).date()
-        end_date = query.end_date or now.date()
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
             f"C:{query.symbol}/range/1/{query.timespan}/"
-            f"{start_date}/{end_date}?adjusted={query.adjusted}"
+            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"
         )
@@ -105,5 +103,5 @@ class PolygonForexEODFetcher(
         return [PolygonForexEODData(**d) for d in data]
 
     @staticmethod
-    def transform_data(data: List[PolygonForexEODData]) -> List[ForexEODData]:
-        return data_transformer(data, ForexEODData)
+    def transform_data(data: List[PolygonForexEODData]) -> List[PolygonForexEODData]:
+        return data

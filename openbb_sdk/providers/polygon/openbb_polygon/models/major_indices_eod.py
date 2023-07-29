@@ -2,7 +2,7 @@
 
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
@@ -71,25 +71,21 @@ class PolygonMajorIndicesEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: MajorIndicesEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonMajorIndicesEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonMajorIndicesEODQueryParams:
         now = datetime.now().date()
-        start_date = query.start_date or (now - timedelta(days=7))
-        end_date = query.end_date or now
-        return PolygonMajorIndicesEODQueryParams(
-            symbol=query.symbol,
-            start_date=start_date,
-            end_date=end_date,
-            **extra_params or {},
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return PolygonMajorIndicesEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
         query: PolygonMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonMajorIndicesEODData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
@@ -112,5 +108,5 @@ class PolygonMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(
         data: List[PolygonMajorIndicesEODData],
-    ) -> List[MajorIndicesEODData]:
-        return data_transformer(data, MajorIndicesEODData)
+    ) -> List[PolygonMajorIndicesEODData]:
+        return data

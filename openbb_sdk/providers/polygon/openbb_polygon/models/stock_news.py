@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
@@ -90,22 +90,15 @@ class PolygonStockNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockNewsQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonStockNewsQueryParams:
-        return PolygonStockNewsQueryParams(
-            ticker=query.symbols,
-            page=query.page,
-            limit=query.limit,
-            **extra_params if extra_params else {},
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonStockNewsQueryParams:
+        return PolygonStockNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: PolygonStockNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonStockNewsData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
         querystring = get_querystring(query.dict(by_alias=True), [])

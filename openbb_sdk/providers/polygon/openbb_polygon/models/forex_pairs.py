@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
@@ -88,19 +88,14 @@ class PolygonForexPairsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ForexPairsQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonForexPairsQueryParams:
-        return PolygonForexPairsQueryParams(
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
+        return PolygonForexPairsQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: PolygonForexPairsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonForexPairsData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
         tickers = f"ticker=C:{query.symbol}" if query.symbol else ""
         request_url = (
@@ -135,5 +130,5 @@ class PolygonForexPairsFetcher(
         return all_data
 
     @staticmethod
-    def transform_data(data: List[PolygonForexPairsData]) -> List[ForexPairsData]:
-        return data_transformer(data, ForexPairsData)
+    def transform_data(data: List[PolygonForexPairsData]) -> List[PolygonForexPairsData]:
+        return data
