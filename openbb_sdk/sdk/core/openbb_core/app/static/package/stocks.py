@@ -87,7 +87,7 @@ class CLASS_stocks(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Load stock data for a specific ticker."""
