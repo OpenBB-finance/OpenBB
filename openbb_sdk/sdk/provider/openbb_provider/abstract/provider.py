@@ -20,7 +20,7 @@ class Provider:
         self.description = description
 
         if required_credentials is None:
-            self.required_credentials = required_credentials
+            self.required_credentials: List = []
         else:
             self.required_credentials = []
             for rq in required_credentials:
