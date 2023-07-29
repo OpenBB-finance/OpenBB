@@ -19,8 +19,10 @@ class Provider:
         self.name = name
         self.description = description
 
-        self.required_credentials = []
-        if required_credentials is not None:
+        if required_credentials is None:
+            self.required_credentials = required_credentials
+        else:
+            self.required_credentials = []
             for rq in required_credentials:
                 self.required_credentials.append(f"{self.name.lower()}_{rq}")
 
