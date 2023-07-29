@@ -2,7 +2,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, validator
 
-from openbb_provider.abstract.data import QueryParams
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 
