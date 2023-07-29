@@ -171,13 +171,23 @@ class ProviderInterface:
         field: ModelField,
         provider_name: Optional[str] = None,
         query: bool = False,
+        force_optional: bool = False
     ) -> DataclassField:
         new_name = name.replace(".", "_")
-        # field.outer_type_ and field.type_ don't work for nested types
-        type_ = field.annotation
+        type_ = field.outer_type_ # field.type_ don't work for nested types
         description = field.field_info.description
 
-        default = ... if field.required else field.default
+        if field.required:
+            if force_optional:
+                type_ = Optional[type_]
+                default = None
+            else:
+                default = ...
+        else:
+            default = field.default
+
+
+
         if query:
             # We need to use query if we want the field description to show up in the
             # swagger, it's a fastapi limitation
@@ -196,6 +206,7 @@ class ProviderInterface:
         cls,
         providers: Any,
     ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
+        """Extract parameters from map."""
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
@@ -212,15 +223,8 @@ class ProviderInterface:
             else:
                 for name, field in model_details["QueryParams"]["fields"].items():
                     if name not in providers["openbb"]["QueryParams"]["fields"]:
-
-
-                        # TODO: We should consider forcing extra_params to
-                        # be Optional here, in case someone forgets to add
-                        # it on the model. Otherwise the Validation layer
-                        # will block running the command.
-
                         incoming = cls._create_field(
-                            name, field, provider_name, query=True
+                            name, field, provider_name, query=True, force_optional=True
                         )
 
                         if incoming.name in extra:
@@ -265,7 +269,7 @@ class ProviderInterface:
             else:
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
-                        incoming = cls._create_field(name, field, provider_name)
+                        incoming = cls._create_field(name, field, provider_name, force_optional=True)
 
                         if incoming.name in extra:
                             current = DataclassField(*extra[incoming.name])
@@ -286,7 +290,7 @@ class ProviderInterface:
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Generate dataclasses for params.
 
-        This creates a dictionary of dataclasses that can be inject as a FastAPI
+        This creates a dictionary of dataclasses that can be injected as a FastAPI
         dependency.
 
         Example:
@@ -404,7 +408,7 @@ class ProviderInterface:
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
             for name, field in fields.items():
                 fields_dict[name] = (
-                    field.annotation,
+                    field.outer_type_,
                     Field(
                         default=field.default,
                         title=field.field_info.title,
