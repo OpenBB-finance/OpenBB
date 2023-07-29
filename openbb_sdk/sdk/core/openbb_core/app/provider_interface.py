@@ -427,10 +427,10 @@ class ProviderInterface:
 
         return result
 
-    def _get_provider_literal(self, available_providers) -> type:
+    def _get_provider_literal(self, available_providers: List[str]) -> type:
         return Literal[tuple(available_providers)]  # type: ignore
 
-    def _get_provider_choices(self, providers_literal) -> type:
+    def _get_provider_choices(self, providers_literal: type) -> type:
         return make_dataclass(
             cls_name="ProviderChoices",
             fields=[("provider", providers_literal)],
