@@ -55,11 +55,11 @@ class ProviderInterface:
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
         Dictionary of params by model.
-    merged_data : Dict[str, Type[BaseModel]]
+    merged_data : Dict[str, BaseModel]
         Dictionary of data by model.
     providers_literal : type
         Literal of provider names.
-    provider_choices : Type[ProviderChoices]
+    provider_choices : ProviderChoices
         Dataclass with literal of provider names.
     models : List[str]
         List of model names.
@@ -117,7 +117,7 @@ class ProviderInterface:
         return self._data
 
     @property
-    def merged_data(self) -> Dict[str, Type[BaseModel]]:
+    def merged_data(self) -> Dict[str, BaseModel]:
         """Dictionary of data by model merged."""
         return self._merged_data
 
@@ -127,7 +127,7 @@ class ProviderInterface:
         return self._providers_literal
 
     @property
-    def provider_choices(self) -> Type[ProviderChoices]:
+    def provider_choices(self) -> ProviderChoices:
         """Dataclass with literal of provider names."""
         return self._provider_choices
 
@@ -399,7 +399,7 @@ class ProviderInterface:
 
     def _merge_data_dc(
         self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
-    ) -> Dict[str, Type[BaseModel]]:
+    ) -> Dict[str, BaseModel]:
         """Merge standard data with extra data into a single BaseModel to benzinga
         injected as FastAPI dependency."""
         result: Dict = {}
@@ -435,7 +435,7 @@ class ProviderInterface:
     def _get_provider_literal(self, available_providers: List[str]) -> type:
         return Literal[tuple(available_providers)]  # type: ignore
 
-    def _get_provider_choices(self, providers_literal: type) -> Type[ProviderChoices]:
+    def _get_provider_choices(self, providers_literal: type) -> ProviderChoices:
         return make_dataclass(
             cls_name="ProviderChoices",
             fields=[("provider", providers_literal)],
