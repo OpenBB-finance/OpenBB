@@ -44,7 +44,7 @@ class QueryExecutor:
             credentials = {}
 
         result: Dict[str, str] = {}
-        for c in provider.formatted_credentials:
+        for c in provider.required_credentials:
             credential_value = credentials.get(c)
             if c not in credentials or credential_value is None:
                 raise ProviderError(f"Missing credential '{c}' for '{provider.name}'.")

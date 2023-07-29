@@ -40,7 +40,7 @@ class RegistryMap:
         """Get list of required credentials."""
         cred_list = []
         for provider in self._registry.providers.values():
-            for c in provider.formatted_credentials:
+            for c in provider.required_credentials:
                 cred_list.append(c)
         return cred_list
 

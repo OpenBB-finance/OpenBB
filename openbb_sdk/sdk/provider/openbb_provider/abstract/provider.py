@@ -19,10 +19,9 @@ class Provider:
         self.name = name
         self.description = description
 
-        self.required_credentials = required_credentials
-        self.formatted_credentials = []
+        self.required_credentials = []
         if required_credentials is not None:
             for rq in required_credentials:
-                self.formatted_credentials.append(f"{self.name.lower()}_{rq}")
+                self.required_credentials.append(f"{self.name.lower()}_{rq}")
 
         self.fetcher_dict = fetcher_dict

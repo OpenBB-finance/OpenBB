@@ -80,7 +80,6 @@ class ProviderInterface:
         self._params = self._generate_params_dc(self._registry_map)
         self._data = self._generate_data_dc(self._registry_map)
         self._merged_data = self._merge_data_dc(self._data)
-        self._required_credentials = self._registry_map.required_credentials
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
         )
@@ -94,7 +93,7 @@ class ProviderInterface:
     @property
     def required_credentials(self) -> List[str]:
         """Dictionary of required credentials by provider."""
-        return self._required_credentials
+        return self._registry_map.required_credentials
 
     @property
     def model_providers(self) -> Dict[str, ProviderChoices]:
