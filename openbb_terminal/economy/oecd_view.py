@@ -32,7 +32,7 @@ YAXIS_TITLES = {
 
 @log_start_end(log=logger)
 def plot_gdp(
-    countries: Optional[List[str]] = "united_states",
+    countries: Optional[str] = "united_states",
     units: str = "USD",
     start_date: str = "",
     end_date: str = "",
@@ -79,7 +79,7 @@ def plot_gdp(
     Union[OpenBBFigure, None]
         OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
-    countries = [countries] if isinstance(countries, str) else countries  # type: ignore[list-item]
+    countries = [countries] if isinstance(countries, str) else countries  # type: ignore[assignment]
 
     if units not in ["USD", "USD_CAP"]:
         console.print(

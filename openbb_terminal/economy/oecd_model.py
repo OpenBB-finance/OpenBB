@@ -473,7 +473,7 @@ def no_data_message(error: str):
 
 @log_start_end(log=logger)
 def get_gdp(
-    countries: Optional[List[str]] = "united_states",
+    countries: Optional[str] = "united_states",
     units: str = "USD",
     start_date="",
     end_date="",
@@ -526,7 +526,7 @@ def get_gdp(
         )
         units = "USD"
 
-    countries = [countries] if isinstance(countries, str) else countries  # type: ignore[list-item]
+    countries = [countries] if isinstance(countries, str) else countries  # type: ignore[assignment]
 
     df = pd.DataFrame()
 
