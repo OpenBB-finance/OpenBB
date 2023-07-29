@@ -74,11 +74,17 @@ class ProviderInterface:
         """Initialize provider interface."""
         self._registry_map = registry_map or RegistryMap()
         self._map = self._registry_map.map
-        self._model_providers_map = self._generate_model_providers_dc()
-        self._params = self._generate_params_dc()
-        self._data = self._generate_data_dc()
+        self._model_providers_map = self._generate_model_providers_dc(
+            self._registry_map
+        )
+        self._params = self._generate_params_dc(self._registry_map)
+        self._data = self._generate_data_dc(self._registry_map)
         self._merged_data = self._merge_data_dc(self._data)
-        self._required_credentials = self._get_required_credentials()
+        self._required_credentials = self._registry_map.required_credentials
+        self._providers_literal = self._get_provider_literal(
+            self._registry_map.available_providers
+        )
+        self._provider_choices = self._get_provider_choices(self._providers_literal)
 
     @property
     def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
@@ -113,16 +119,12 @@ class ProviderInterface:
     @property
     def providers_literal(self) -> type:
         """Literal of provider names."""
-        return Literal[tuple(self._registry_map.available_providers)]  # type: ignore
+        return self._providers_literal
 
     @property
     def provider_choices(self) -> type:
         """Dataclass with literal of provider names."""
-        return make_dataclass(
-            cls_name="ProviderChoices",
-            fields=[("provider", self.providers_literal)],
-            bases=(ProviderChoices,),
-        )
+        return self._provider_choices
 
     @property
     def models(self) -> List[str]:
@@ -132,10 +134,6 @@ class ProviderInterface:
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
         return QueryExecutor(self._registry_map.registry)
-
-    def _get_required_credentials(self) -> List[str]:
-        """Get required credentials."""
-        return self._registry_map.required_credentials
 
     @staticmethod
     def _merge_fields(
@@ -286,7 +284,7 @@ class ProviderInterface:
         return standard, extra
 
     def _generate_params_dc(
-        self,
+        self, registry_map: RegistryMap
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Generate dataclasses for params.
 
@@ -310,7 +308,7 @@ class ProviderInterface:
         result: Dict = {}
 
         # TODO: Consider multiprocessing this loop to speed startup
-        for model_name, providers in self._map.items():
+        for model_name, providers in registry_map.map.items():
             standard, extra = self._extract_params(providers)
 
             result[model_name] = {
@@ -327,7 +325,9 @@ class ProviderInterface:
             }
         return result
 
-    def _generate_model_providers_dc(self) -> Dict[str, ProviderChoices]:
+    def _generate_model_providers_dc(
+        self, registry_map: RegistryMap
+    ) -> Dict[str, ProviderChoices]:
         """Generate dataclasses for provider choices by model.
 
         This creates a dictionary that maps model names to dataclasses that can be
@@ -341,7 +341,7 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        for model_name, providers in self._map.items():
+        for model_name, providers in registry_map.map.items():
             choices = list(providers.keys())
             if "openbb" in choices:
                 choices.remove("openbb")
@@ -355,7 +355,7 @@ class ProviderInterface:
         return result
 
     def _generate_data_dc(
-        self,
+        self, registry_map: RegistryMap
     ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Generate dataclasses for data.
 
@@ -375,7 +375,7 @@ class ProviderInterface:
         result: Dict = {}
 
         # TODO: Consider multiprocessing this loop to speed startup
-        for model_name, providers in self._map.items():
+        for model_name, providers in registry_map.map.items():
             standard, extra = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
@@ -426,6 +426,16 @@ class ProviderInterface:
             )
 
         return result
+
+    def _get_provider_literal(self, available_providers) -> type:
+        return Literal[tuple(available_providers)]  # type: ignore
+
+    def _get_provider_choices(self, providers_literal) -> type:
+        return make_dataclass(
+            cls_name="ProviderChoices",
+            fields=[("provider", providers_literal)],
+            bases=(ProviderChoices,),
+        )
 
 
 __provider_interface = ProviderInterface()
