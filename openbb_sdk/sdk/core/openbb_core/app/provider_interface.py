@@ -206,7 +206,7 @@ class ProviderInterface:
     def _extract_params(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
+    ) -> Tuple[Dict[str, Tuple[str, type, Any]], Dict[str, Tuple[str, type, Any]]]:
         """Extract parameters from map."""
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
@@ -253,7 +253,7 @@ class ProviderInterface:
     def _extract_data(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, Any, Any]], Dict[str, Tuple[str, Any, Any]]]:
+    ) -> Tuple[Dict[str, Tuple[str, type, Any]], Dict[str, Tuple[str, type, Any]]]:
         standard: Dict[str, Tuple[str, Any, Any]] = {}
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
