@@ -4,6 +4,8 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict
 
+from openbb_provider.abstract.fetcher import GenericDataType
+
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.provider_interface import (
@@ -12,7 +14,6 @@ from openbb_core.app.provider_interface import (
     StandardParams,
     get_provider_interface,
 )
-from openbb_provider.abstract.fetcher import GenericDataType
 
 
 class Query:

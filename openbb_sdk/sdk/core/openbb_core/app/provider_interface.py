@@ -1,9 +1,9 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
-from openbb_provider.registry_map import RegistryMap, MapType
+from openbb_provider.registry_map import MapType, RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 

@@ -1,4 +1,5 @@
 from typing import Dict
+
 import pkg_resources
 
 from openbb_provider.abstract.provider import Provider
