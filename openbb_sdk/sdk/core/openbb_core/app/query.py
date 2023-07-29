@@ -13,6 +13,7 @@ from openbb_core.app.provider_interface import (
     get_provider_interface,
 )
 
+
 class Query:
     """Query class."""
 

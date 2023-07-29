@@ -11,5 +11,5 @@ fred_provider = Provider(
     name="fred",
     description="Provider for FRED.",
     required_credentials=["api_key"],
-    fetcher_list=[FREDCPIFetcher],
+    fetcher_dict={"CPI": FREDCPIFetcher},
 )

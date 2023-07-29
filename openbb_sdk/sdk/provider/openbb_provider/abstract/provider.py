@@ -13,7 +13,7 @@ class Provider:
         name: str,
         description: str,
         required_credentials: Optional[List[str]],
-        fetcher_list: List[Fetcher],
+        fetcher_dict: Dict[str, Fetcher],
     ) -> None:
         """Initialize the provider."""
         self.name = name
@@ -25,9 +25,4 @@ class Provider:
             for rq in required_credentials:
                 self.formatted_credentials.append(f"{self.name.lower()}_{rq}")
 
-        self.fetcher_list = fetcher_list
-        self.fetcher_dict: Dict[str, Fetcher] = {}
-
-        for fetcher in fetcher_list:
-            model_name = fetcher().query_params_type.__name__.replace("QueryParams", "")
-            self.fetcher_dict[model_name] = fetcher
+        self.fetcher_dict = fetcher_dict

@@ -1,7 +1,6 @@
 """Benzinga Helpers."""
 
 
-
 import requests
 from pydantic import BaseModel
 

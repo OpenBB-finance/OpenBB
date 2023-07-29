@@ -171,10 +171,10 @@ class ProviderInterface:
         field: ModelField,
         provider_name: Optional[str] = None,
         query: bool = False,
-        force_optional: bool = False
+        force_optional: bool = False,
     ) -> DataclassField:
         new_name = name.replace(".", "_")
-        type_ = field.outer_type_ # field.type_ don't work for nested types
+        type_ = field.outer_type_  # field.type_ don't work for nested types
         description = field.field_info.description
 
         if field.required:
@@ -185,8 +185,6 @@ class ProviderInterface:
                 default = ...
         else:
             default = field.default
-
-
 
         if query:
             # We need to use query if we want the field description to show up in the
@@ -269,7 +267,9 @@ class ProviderInterface:
             else:
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
-                        incoming = cls._create_field(name, field, provider_name, force_optional=True)
+                        incoming = cls._create_field(
+                            name, field, provider_name, force_optional=True
+                        )
 
                         if incoming.name in extra:
                             current = DataclassField(*extra[incoming.name])

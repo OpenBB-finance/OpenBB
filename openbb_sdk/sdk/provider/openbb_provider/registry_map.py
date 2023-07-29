@@ -5,6 +5,7 @@ from openbb_provider.registry import Registry, RegistryLoader
 
 MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
 
+
 class RegistryMap:
     """Class to store information about providers in the registry."""
 

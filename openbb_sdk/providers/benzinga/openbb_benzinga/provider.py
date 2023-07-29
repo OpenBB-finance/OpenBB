@@ -13,5 +13,8 @@ benzinga_provider = Provider(
     name="benzinga",
     description="Provider for Benzinga.",
     required_credentials=["api_key"],
-    fetcher_list=[BenzingaGlobalNewsFetcher, BenzingaStockNewsFetcher],
+    fetcher_dict={
+        "GlobalNews": BenzingaGlobalNewsFetcher,
+        "StockNews": BenzingaStockNewsFetcher,
+    },
 )
