@@ -57,17 +57,20 @@ class RegistryMap:
                 f = fetcher()
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
+                return_type = f.return_type
 
                 if model_name not in map_:
                     map_[model_name] = {}
                     map_[model_name]["openbb"] = {
                         "QueryParams": standard_query,
                         "Data": standard_data,
+                        "ReturnType": return_type,
                     }
 
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
                     "Data": extra_data,
+                    "ReturnType": return_type,
                 }
 
         return map_
