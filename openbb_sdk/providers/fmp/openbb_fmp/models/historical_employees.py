@@ -74,8 +74,7 @@ class FMPHistoricalEmployeesFetcher(
     def extract_data(
         query: FMPHistoricalEmployeesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPHistoricalEmployeesData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "historical/employee_count", api_key, query)
         return get_data_many(url, FMPHistoricalEmployeesData)

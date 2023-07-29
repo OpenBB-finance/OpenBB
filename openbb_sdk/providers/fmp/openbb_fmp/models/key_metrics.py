@@ -123,8 +123,7 @@ class FMPKeyMetricsFetcher(
     def extract_data(
         query: FMPKeyMetricsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPKeyMetricsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]

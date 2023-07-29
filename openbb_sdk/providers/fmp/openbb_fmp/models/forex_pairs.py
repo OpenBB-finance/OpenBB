@@ -51,8 +51,7 @@ class FMPForexPairsFetcher(
     def extract_data(
         query: FMPForexPairsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPForexPairsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"

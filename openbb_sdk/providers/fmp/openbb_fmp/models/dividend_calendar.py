@@ -75,8 +75,7 @@ class FMPDividendCalendarFetcher(
     def extract_data(
         query: FMPDividendCalendarQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPDividendCalendarData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(), [])

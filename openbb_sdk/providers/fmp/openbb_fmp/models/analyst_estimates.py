@@ -1,7 +1,7 @@
 """FMP Analyst Estimates fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
@@ -57,19 +57,14 @@ class FMPAnalystEstimatesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: AnalystEstimatesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPAnalystEstimatesQueryParams:
-        return FMPAnalystEstimatesQueryParams(
-            symbol=query.symbol, period=query.period, limit=query.limit
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPAnalystEstimatesQueryParams:
+        return FMPAnalystEstimatesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPAnalystEstimatesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPAnalystEstimatesData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "quarter" if query.period == "quarterly" else "annual"
 
@@ -81,5 +76,5 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPAnalystEstimatesData],
-    ) -> List[AnalystEstimatesData]:
-        return data_transformer(data, AnalystEstimatesData)
+    ) -> List[FMPAnalystEstimatesData]:
+        return data

@@ -46,8 +46,7 @@ class FMPStockPeersFetcher(
     def extract_data(
         query: FMPStockPeersQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPStockPeersData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "stock_peers", api_key, query)
         return get_data_many(url, FMPStockPeersData)

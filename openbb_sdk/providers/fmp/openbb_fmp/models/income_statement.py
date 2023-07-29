@@ -117,8 +117,7 @@ class FMPIncomeStatementFetcher(
     def extract_data(
         query: FMPIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPIncomeStatementData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"income-statement/{query.symbol}", api_key, query, ["symbol"]

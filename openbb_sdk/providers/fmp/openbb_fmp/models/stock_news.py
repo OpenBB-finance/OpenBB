@@ -56,8 +56,7 @@ class FMPStockNewsFetcher(
     def extract_data(
         query: FMPStockNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPStockNewsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(3, "stock_news", api_key, query)
         return get_data_many(url, FMPStockNewsData)

@@ -61,8 +61,7 @@ class FMPESGRiskRatingFetcher(
     def extract_data(
         query: FMPESGRiskRatingQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPESGRiskRatingData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4, "esg-environmental-social-governance-data-ratings", api_key, query

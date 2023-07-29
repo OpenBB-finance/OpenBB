@@ -68,8 +68,7 @@ class FMPSECFilingsFetcher(
     def extract_data(
         query: FMPSECFilingsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPSECFilingsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"sec_filings/{query.symbol}", api_key, query, exclude=["symbol"]

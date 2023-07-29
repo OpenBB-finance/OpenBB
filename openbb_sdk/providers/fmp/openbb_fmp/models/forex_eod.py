@@ -74,8 +74,7 @@ class FMPForexEODFetcher(
     def extract_data(
         query: FMPForexEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPForexEODData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(), ["symbol"])

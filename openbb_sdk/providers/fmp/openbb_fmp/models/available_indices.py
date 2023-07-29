@@ -1,7 +1,7 @@
 """FMP Available Indices fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer
@@ -39,17 +39,14 @@ class FMPAvailableIndicesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: AvailableIndicesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPAvailableIndicesQueryParams:
-        return FMPAvailableIndicesQueryParams()
+    def transform_query(params: Dict[str, Any]) -> FMPAvailableIndicesQueryParams:
+        return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPAvailableIndicesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPAvailableIndicesData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-indexes?apikey={api_key}"
@@ -58,5 +55,5 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPAvailableIndicesData],
-    ) -> List[AvailableIndicesData]:
-        return data_transformer(data, AvailableIndicesData)
+    ) -> List[FMPAvailableIndicesData]:
+        return data
