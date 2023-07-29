@@ -27,12 +27,11 @@ class QueryExecutor:
 
     def get_fetcher(self, provider: Provider, model_name: str):
         """Get a fetcher from a provider."""
-        fetcher_name = (provider.name + model_name + "fetcher").lower()
-        if fetcher_name not in provider.fetcher_dict:
+        if model_name not in provider.fetcher_dict:
             raise ProviderError(
                 f"Fetcher not found for model '{model_name}' in provider '{provider.name}'."
             )
-        return provider.fetcher_dict[fetcher_name]
+        return provider.fetcher_dict[model_name]
 
     def match_credentials(
         self, provider: Provider, credentials: Optional[Dict[str, str]]

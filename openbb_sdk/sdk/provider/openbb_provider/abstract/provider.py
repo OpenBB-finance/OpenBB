@@ -18,13 +18,21 @@ class Provider:
         """Initialize the provider."""
         self.name = name
         self.description = description
+
         self.required_credentials = required_credentials
         self.formatted_credentials = []
         if required_credentials is not None:
             for rq in required_credentials:
                 self.formatted_credentials.append(f"{self.name.lower()}_{rq}")
+
         self.fetcher_list = fetcher_list
         self.fetcher_dict: Dict[str, Fetcher] = {}
-        self.fetcher_dict = {
-            str(fetcher.__name__).lower(): fetcher for fetcher in fetcher_list
-        }
+
+        for fetcher in fetcher_list:
+            try:
+                model_name = fetcher().model_name
+            except NotImplementedError as e:
+                raise NotImplementedError(
+                    f"'model_name' not explicitly declared for '{fetcher.__name__}'."
+                ) from e
+            self.fetcher_dict[model_name] = fetcher

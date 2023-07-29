@@ -24,6 +24,11 @@ class Fetcher(
 ):
     """Abstract class for the fetcher."""
 
+    @property
+    @abstractmethod
+    def model_name(self) -> str:
+        raise NotImplementedError
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> ProviderQueryParamsType:
         """Transform the params to the provider-specific query."""
@@ -54,28 +59,24 @@ class Fetcher(
         return data
 
     @property
-    @abstractmethod
     def query_params_type(self):
         """Get the type of the query."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[0]
 
     @property
-    @abstractmethod
     def data_type(self):
         """Get the type of the data."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[1]
 
     @property
-    @abstractmethod
     def provider_query_params_type(self):
         """Get the type of the provider query."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[2]
 
     @property
-    @abstractmethod
     def provider_data_type(self):
         """Get the type of the provider data."""
         # pylint: disable=E1101
