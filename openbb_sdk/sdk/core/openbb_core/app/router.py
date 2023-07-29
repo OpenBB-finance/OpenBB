@@ -19,6 +19,7 @@ from typing import (
 
 import pkg_resources
 from fastapi import APIRouter, Depends
+from openbb_provider.abstract.fetcher import GenericDataType
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
@@ -260,7 +261,7 @@ class SignatureInspector:
             )
 
             data_type = provider_interface.merged_data[model]
-            func.__annotations__["return"] = CommandOutput[List[data_type]]  # type: ignore
+            func.__annotations__["return"] = CommandOutput[GenericDataType[data_type]]
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices
