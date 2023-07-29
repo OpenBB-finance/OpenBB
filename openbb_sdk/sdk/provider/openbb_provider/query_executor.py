@@ -55,6 +55,12 @@ class QueryExecutor:
     ) -> GenericDataType:
         """Execute query.
 
+        We do this in 4 steps:
+        1. Get the 'Provider' class for 'provider_name'
+        2. Verify if credentials match provider requirements
+        3. Get the provider fetcher for 'model_name'
+        4. The fetcher fetches the data
+
         Parameters
         ----------
         provider_name : str
