@@ -127,7 +127,7 @@ class ProviderInterface:
         return self._providers_literal
 
     @property
-    def provider_choices(self) -> ProviderChoices:
+    def provider_choices(self) -> type:
         """Dataclass with literal of provider names."""
         return self._provider_choices
 
@@ -437,7 +437,7 @@ class ProviderInterface:
     def _get_provider_literal(self, available_providers: List[str]) -> type:
         return Literal[tuple(available_providers)]  # type: ignore
 
-    def _get_provider_choices(self, providers_literal: type) -> ProviderChoices:
+    def _get_provider_choices(self, providers_literal: type) -> type:
         return make_dataclass(
             cls_name="ProviderChoices",
             fields=[("provider", providers_literal)],
