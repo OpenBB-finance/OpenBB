@@ -62,7 +62,6 @@ class PolygonCashFlowStatementFetcher(
         query: PolygonCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
     ) -> List[PolygonCashFlowStatementData]:
-
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"

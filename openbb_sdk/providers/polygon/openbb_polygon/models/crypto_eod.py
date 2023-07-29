@@ -82,7 +82,6 @@ class PolygonCryptoEODFetcher(
     def extract_data(
         query: PolygonCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonCryptoEODData]:
-
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (

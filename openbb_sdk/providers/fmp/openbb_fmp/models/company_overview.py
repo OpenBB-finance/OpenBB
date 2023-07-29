@@ -1,10 +1,9 @@
 """FMP Company Overview Fetcher."""
 
 
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
@@ -52,10 +51,8 @@ class FMPCompanyOverviewFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: CompanyOverviewQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPCompanyOverviewQueryParams:
-        return FMPCompanyOverviewQueryParams(symbol=query.symbol)
+    def transform_query(params: Dict[str, Any]) -> FMPCompanyOverviewQueryParams:
+        return FMPCompanyOverviewQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -74,6 +71,6 @@ class FMPCompanyOverviewFetcher(
     @staticmethod
     def transform_data(  # type: ignore
         data: FMPCompanyOverviewData,
-    ) -> CompanyOverviewData:
+    ) -> FMPCompanyOverviewData:
         # Need to update transform_data to return a non list version of list isn't used
-        return data_transformer(data, CompanyOverviewData)  # type: ignore
+        return data  # type: ignore

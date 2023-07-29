@@ -1,10 +1,9 @@
 """FMP Dividend Calendar fetcher."""
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.dividend_calendar import (
     DividendCalendarData,
     DividendCalendarQueryParams,
@@ -61,15 +60,15 @@ class FMPDividendCalendarFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: DividendCalendarQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPDividendCalendarQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPDividendCalendarQueryParams:
         now = datetime.now().date()
-        return FMPDividendCalendarQueryParams(
-            start_date=query.start_date or (now - timedelta(days=31)),
-            end_date=query.end_date or (now - timedelta(days=1)),
-            **extra_params or {},
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=31)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now - timedelta(days=1)
+        return FMPDividendCalendarQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -78,7 +77,7 @@ class FMPDividendCalendarFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(), [])
+        query_str = get_querystring(query.dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/stock_dividend_calendar?{query_str}&apikey={api_key}"
         return get_data_many(url, FMPDividendCalendarData)
@@ -86,5 +85,5 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPDividendCalendarData],
-    ) -> List[DividendCalendarData]:
-        return data_transformer(data, DividendCalendarData)
+    ) -> List[FMPDividendCalendarData]:
+        return data

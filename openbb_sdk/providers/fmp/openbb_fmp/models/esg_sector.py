@@ -2,12 +2,11 @@
 
 
 from datetime import date
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.esg_sector import ESGSectorData, ESGSectorQueryParams
 from pydantic import Field
 
@@ -45,10 +44,8 @@ class FMPESGSectorFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ESGSectorQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPESGSectorQueryParams:
-        return FMPESGSectorQueryParams(year=query.year)
+    def transform_query(params: Dict[str, Any]) -> FMPESGSectorQueryParams:
+        return FMPESGSectorQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -62,5 +59,5 @@ class FMPESGSectorFetcher(
         return get_data_many(url, FMPESGSectorData)
 
     @staticmethod
-    def transform_data(data: List[FMPESGSectorData]) -> List[ESGSectorData]:
-        return data_transformer(data, ESGSectorData)
+    def transform_data(data: List[FMPESGSectorData]) -> List[FMPESGSectorData]:
+        return data

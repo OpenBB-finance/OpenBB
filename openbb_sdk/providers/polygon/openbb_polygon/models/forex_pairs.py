@@ -129,5 +129,7 @@ class PolygonForexPairsFetcher(
         return all_data
 
     @staticmethod
-    def transform_data(data: List[PolygonForexPairsData]) -> List[PolygonForexPairsData]:
+    def transform_data(
+        data: List[PolygonForexPairsData],
+    ) -> List[PolygonForexPairsData]:
         return data
