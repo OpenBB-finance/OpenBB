@@ -260,6 +260,8 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
+            # TODO: Implement the output structure in each endpoint and then just fill
+            # the genertic with `data_type`
             data_type = provider_interface.merged_data[model]
             func.__annotations__["return"] = CommandOutput[GenericDataType[data_type]]
         elif (
