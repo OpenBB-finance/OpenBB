@@ -52,8 +52,6 @@ from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
-gdp_units_dict = {"USD": "MLN_USD", "USD_CAP": "USD_CAP"}
-
 
 class EconomyController(BaseController):
     """Economy Controller class"""
