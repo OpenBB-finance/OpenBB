@@ -70,9 +70,15 @@ class ProviderInterface:
         Build provider registry
     """
 
-    def __init__(self, registry_map: Optional[RegistryMap] = None) -> None:
+    def __init__(
+        self,
+        registry_map: Optional[RegistryMap] = None,
+        query_executor: Optional[QueryExecutor] = None,
+    ) -> None:
         """Initialize provider interface."""
         self._registry_map = registry_map or RegistryMap()
+        self._query_executor = query_executor or QueryExecutor
+
         self._map = self._registry_map.map
         self._model_providers_map = self._generate_model_providers_dc(
             self._registry_map
@@ -132,7 +138,7 @@ class ProviderInterface:
 
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
-        return QueryExecutor(self._registry_map.registry)
+        return self._query_executor(self._registry_map.registry)
 
     @staticmethod
     def _merge_fields(
