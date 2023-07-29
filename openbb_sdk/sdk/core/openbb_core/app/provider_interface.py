@@ -1,9 +1,9 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
-from openbb_provider.registry_map import RegistryMap
+from openbb_provider.registry_map import RegistryMap, MapType
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 
@@ -18,20 +18,13 @@ class DataclassField:
 
 
 @dataclass
-class ExtraParams:
-    """Extra params dataclass."""
-
-
-@dataclass
 class StandardParams:
     """Standard params dataclass."""
 
 
 @dataclass
-class ProviderChoices:
-    """Provider choices dataclass."""
-
-    provider: Literal  # type: ignore
+class ExtraParams:
+    """Extra params dataclass."""
 
 
 class StandardData(BaseModel):
@@ -42,32 +35,39 @@ class ExtraData(BaseModel):
     """Extra data model."""
 
 
+@dataclass
+class ProviderChoices:
+    """Provider choices dataclass."""
+
+    provider: Literal  # type: ignore
+
+
 class ProviderInterface:
     """Provider interface class. Provides access to 'openbb_provider' package information.
 
     Properties
     ----------
-    map : Dict[str, Dict[str, Dict[str, Any]]]
+    map : MapType
         Dictionary of provider information.
-    required_credentials: Dict[str, Tuple[Optional[str], None]]
-        Dictionary of required_credentials.
+    required_credentials: List[str]
+        List of required_credentials.
     model_providers : Dict[str, ProviderChoices]
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
         Dictionary of params by model.
-    merged_data : Dict[str, BaseModel]
+    merged_data : Dict[str, Type[BaseModel]]
         Dictionary of data by model.
     providers_literal : type
         Literal of provider names.
-    provider_choices : type
+    provider_choices : Type[ProviderChoices]
         Dataclass with literal of provider names.
     models : List[str]
         List of model names.
 
     Methods
     -------
-    build_registry : ProviderRegistry
-        Build provider registry
+    create_executor : QueryExecutor
+        Create a query executor
     """
 
     def __init__(
@@ -92,7 +92,7 @@ class ProviderInterface:
         self._provider_choices = self._get_provider_choices(self._providers_literal)
 
     @property
-    def map(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
+    def map(self) -> MapType:
         """Dictionary of provider information."""
         return self._map
 
@@ -117,7 +117,7 @@ class ProviderInterface:
         return self._data
 
     @property
-    def merged_data(self) -> Dict[str, BaseModel]:
+    def merged_data(self) -> Dict[str, Type[BaseModel]]:
         """Dictionary of data by model merged."""
         return self._merged_data
 
@@ -127,7 +127,7 @@ class ProviderInterface:
         return self._providers_literal
 
     @property
-    def provider_choices(self) -> type:
+    def provider_choices(self) -> Type[ProviderChoices]:
         """Dataclass with literal of provider names."""
         return self._provider_choices
 
@@ -399,7 +399,7 @@ class ProviderInterface:
 
     def _merge_data_dc(
         self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
-    ) -> Dict[str, BaseModel]:
+    ) -> Dict[str, Type[BaseModel]]:
         """Merge standard data with extra data into a single BaseModel to benzinga
         injected as FastAPI dependency."""
         result: Dict = {}
@@ -435,7 +435,7 @@ class ProviderInterface:
     def _get_provider_literal(self, available_providers: List[str]) -> type:
         return Literal[tuple(available_providers)]  # type: ignore
 
-    def _get_provider_choices(self, providers_literal: type) -> type:
+    def _get_provider_choices(self, providers_literal: type) -> Type[ProviderChoices]:
         return make_dataclass(
             cls_name="ProviderChoices",
             fields=[("provider", providers_literal)],
