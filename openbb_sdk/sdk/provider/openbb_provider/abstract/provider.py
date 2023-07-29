@@ -29,10 +29,5 @@ class Provider:
         self.fetcher_dict: Dict[str, Fetcher] = {}
 
         for fetcher in fetcher_list:
-            try:
-                model_name = fetcher().model_name
-            except NotImplementedError as e:
-                raise NotImplementedError(
-                    f"'model_name' not explicitly declared for '{fetcher.__name__}'."
-                ) from e
+            model_name = fetcher().query_params_type.__name__.replace("QueryParams", "")
             self.fetcher_dict[model_name] = fetcher
