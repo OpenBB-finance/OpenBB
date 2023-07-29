@@ -26,8 +26,8 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
     def extract_data(
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]]
     ) -> Dict[str, List[CPIData]]:
-        if credentials:
-            api_key = credentials.get("fred_api_key")
+
+        api_key = credentials.get("fred_api_key") if credentials else ""
 
         all_options = all_cpi_options(query.harmonized)
 
