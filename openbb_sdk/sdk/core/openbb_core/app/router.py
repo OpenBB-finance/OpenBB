@@ -15,6 +15,8 @@ from typing import (
     get_type_hints,
     overload,
 )
+import warnings
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 
 import pkg_resources
 from fastapi import APIRouter, Depends
@@ -178,7 +180,7 @@ class Router:
         self,
         func: Optional[Callable[P, CommandOutput]] = None,
         **kwargs,
-    ) -> Callable:
+    ) -> Optional[Callable]:
         if func is None:
             return lambda f: self.command(f, **kwargs)
 
@@ -190,15 +192,15 @@ class Router:
             kwargs["openapi_extra"] = {"model": model}
 
         func = SignatureInspector.complete_signature(func, model)
+        if func is not None:
+            CommandValidator.check(func=func)
 
-        CommandValidator.check(func=func)
+            kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
+            kwargs["endpoint"] = func
+            kwargs["methods"] = kwargs.get("methods", ["GET"])
+            kwargs["description"] = SignatureInspector.get_description(func)
 
-        kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
-        kwargs["endpoint"] = func
-        kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = SignatureInspector.get_description(func)
-
-        api_router.add_api_route(**kwargs)
+            api_router.add_api_route(**kwargs)
 
         return func
 
@@ -217,14 +219,18 @@ class SignatureInspector:
     @classmethod
     def complete_signature(
         cls, func: Callable[P, CommandOutput], model: str
-    ) -> Callable[P, CommandOutput]:
+    ) -> Optional[Callable[P, CommandOutput]]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
         if model:
             if model not in provider_interface.models:
-                raise AttributeError(
-                    f"Invalid model: '{model}'. Check available models in ProviderInterface().models"
+                warnings.warn(
+                    message=f"\nInvalid api route '/{func.__name__}'.\n"
+                    f"Model '{model}' not found.\n\n"
+                    "Check available models in ProviderInterface().models",
+                    category=OpenBBWarning,
                 )
+                return None
 
             cls.validate_signature(
                 func,
