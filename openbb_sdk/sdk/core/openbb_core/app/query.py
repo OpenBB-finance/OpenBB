@@ -12,6 +12,7 @@ from openbb_core.app.provider_interface import (
     StandardParams,
     get_provider_interface,
 )
+from openbb_provider.abstract.fetcher import GenericDataType
 
 
 class Query:
@@ -59,7 +60,7 @@ class Query:
 
         return filtered
 
-    def execute(self) -> Any:
+    def execute(self) -> GenericDataType:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
