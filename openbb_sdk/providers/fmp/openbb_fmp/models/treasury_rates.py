@@ -69,7 +69,7 @@ class FMPTreasuryRatesFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v4/"
-        query_str = get_querystring(query.dict(), [])
+        query_str = get_querystring(query.dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
         return get_data_many(url, FMPTreasuryRatesData)

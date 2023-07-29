@@ -82,7 +82,7 @@ class FMPMajorIndicesEODFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(), ["symbol"])
+        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/historical-price-full/index/%5E{query.symbol}?{query_str}&apikey={api_key}"
 

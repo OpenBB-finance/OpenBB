@@ -69,7 +69,7 @@ def create_url(
         The querystring.
 
     """
-    the_dict = {} if not query else query.dict()
+    the_dict = {} if not query else query.dict(by_alias=True)
     query_string = get_querystring(the_dict, exclude or [])
     base_url = f"https://financialmodelingprep.com/api/v{version}/"
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
