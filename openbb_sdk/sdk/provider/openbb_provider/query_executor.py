@@ -33,25 +33,18 @@ class QueryExecutor:
             )
         return provider.fetcher_dict[model_name]
 
-    def match_credentials(
-        self, provider: Provider, credentials: Optional[Dict[str, str]]
-    ) -> Dict[str, str]:
-        """Filter received credentials to match provider requirements."""
-        if provider.required_credentials is None:
-            return {}
-
-        if credentials is None:
-            credentials = {}
-
-        result: Dict[str, str] = {}
-        for c in provider.required_credentials:
-            credential_value = credentials.get(c)
-            if c not in credentials or credential_value is None:
-                raise ProviderError(f"Missing credential '{c}' for '{provider.name}'.")
-
-            result[c] = credential_value
-
-        return result
+    @staticmethod
+    def verify_credentials(provider: Provider, credentials: Optional[Dict[str, str]]):
+        """Verify credentials to match provider requirements."""
+        if provider.required_credentials is not None:
+            if credentials is None:
+                credentials = {}
+            for c in provider.required_credentials:
+                credential_value = credentials.get(c)
+                if c not in credentials or credential_value is None:
+                    raise ProviderError(
+                        f"Missing credential '{c}' for '{provider.name}'."
+                    )
 
     def execute(
         self,
@@ -80,10 +73,10 @@ class QueryExecutor:
             Query result.
         """
         provider = self.get_provider(provider_name)
+        self.verify_credentials(provider, credentials)
         Fetcher_ = self.get_fetcher(provider, model_name)
-        matched_credentials = self.match_credentials(provider, credentials)
 
         try:
-            return Fetcher_.fetch_data(params, matched_credentials)
+            return Fetcher_.fetch_data(params, credentials)
         except Exception as e:
             raise ProviderError(e) from e
