@@ -5,7 +5,8 @@ from datetime import date, datetime, timedelta
 from enum import Enum
 from typing import Literal, Optional, Union
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 
