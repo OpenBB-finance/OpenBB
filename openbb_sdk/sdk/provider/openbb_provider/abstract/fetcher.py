@@ -1,7 +1,6 @@
 """Abstract class for the fetcher."""
 
 
-from abc import abstractmethod
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 from openbb_provider.abstract.data import Data, QueryParams
@@ -23,11 +22,6 @@ class Fetcher(
     ]
 ):
     """Abstract class for the fetcher."""
-
-    @property
-    @abstractmethod
-    def model_name(self) -> str:
-        raise NotImplementedError
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> ProviderQueryParamsType:
