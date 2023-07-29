@@ -11,10 +11,10 @@ class RegistryMap:
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
         self._registry = registry or RegistryLoader.from_extensions()
-        self._required_credentials = self.get_required_credentials(self._registry)
-        self._available_providers = self.get_available_providers(self._registry)
-        self._map = self.get_map(self._registry)
-        self._models = self.get_models(self._map)
+        self._required_credentials = self._get_required_credentials(self._registry)
+        self._available_providers = self._get_available_providers(self._registry)
+        self._map = self._get_map(self._registry)
+        self._models = self._get_models(self._map)
 
     @property
     def registry(self) -> Registry:
@@ -36,7 +36,7 @@ class RegistryMap:
     def models(self) -> List[str]:
         return self._models
 
-    def get_required_credentials(self, registry: Registry) -> List[str]:
+    def _get_required_credentials(self, registry: Registry) -> List[str]:
         """Get list of required credentials."""
         cred_list = []
         for provider in registry.providers.values():
@@ -44,11 +44,11 @@ class RegistryMap:
                 cred_list.append(c)
         return cred_list
 
-    def get_available_providers(self, registry: Registry) -> List[str]:
+    def _get_available_providers(self, registry: Registry) -> List[str]:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def get_map(self, registry: Registry) -> MapType:
+    def _get_map(self, registry: Registry) -> MapType:
         """Generate map for the provider package."""
         map_: MapType = {}
 
@@ -72,7 +72,7 @@ class RegistryMap:
 
         return map_
 
-    def get_models(self, map_: MapType) -> List[str]:
+    def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
         return list(map_.keys())
 
