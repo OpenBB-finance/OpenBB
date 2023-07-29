@@ -5,7 +5,8 @@ from datetime import date, datetime
 from enum import Enum
 from typing import List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 
 
 class TransactionTypes(str, Enum):

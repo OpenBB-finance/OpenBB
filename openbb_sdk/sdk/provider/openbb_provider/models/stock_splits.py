@@ -6,7 +6,8 @@ from typing import Optional
 
 from pydantic import Field
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.metadata import QUERY_DESCRIPTIONS
 
 

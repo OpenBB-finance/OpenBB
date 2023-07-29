@@ -3,7 +3,8 @@
 
 from pydantic import Field
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 
 
 class ForexPairsQueryParams(QueryParams):

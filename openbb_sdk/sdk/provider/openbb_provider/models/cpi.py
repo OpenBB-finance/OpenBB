@@ -3,7 +3,8 @@ from typing import List, Literal, Optional
 
 from pydantic import Field, validator
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.metadata import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 CPI_COUNTRIES = Literal[

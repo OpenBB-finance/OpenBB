@@ -4,7 +4,8 @@
 from datetime import date as DateType
 from typing import Literal, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
 
 

@@ -3,7 +3,8 @@
 
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 
 QueryParamsType = TypeVar("QueryParamsType", bound=QueryParams)
 DataType = TypeVar("DataType", bound=Data)
