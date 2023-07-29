@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
@@ -100,15 +100,8 @@ class BenzingaStockNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockNewsQueryParams, extra_params: Optional[Dict] = None
-    ) -> BenzingaStockNewsQueryParams:
-        return BenzingaStockNewsQueryParams(
-            page=query.page,
-            symbols=query.symbols,  # type: ignore
-            limit=query.limit,
-            **extra_params if extra_params else {},
-        )
+    def transform_query(params: Dict[str, Any]) -> BenzingaStockNewsQueryParams:
+        return BenzingaStockNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -128,6 +121,6 @@ class BenzingaStockNewsFetcher(
         return [BenzingaStockNewsData(**d) for d in data]
 
     @staticmethod
-    def transform_data(data: List[BenzingaStockNewsData]) -> List[StockNewsData]:
+    def transform_data(data: List[BenzingaStockNewsData]) -> List[BenzingaStockNewsData]:
         processors = {"image": lambda x: "" if x == [] else x[0].url}
-        return data_transformer(data, StockNewsData, processors)
+        return data
