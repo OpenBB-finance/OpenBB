@@ -2,10 +2,9 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
@@ -48,10 +47,10 @@ class FMPRevenueBusinessLineFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: RevenueBusinessLineQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPRevenueBusinessLineQueryParams:
-        return FMPRevenueBusinessLineQueryParams.parse_obj(query)
+    def transform_query(params: Dict[str, Any]) -> FMPRevenueBusinessLineQueryParams:
+        # Type has to be ignored below because we are using something different than the literal type
+        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
+        return FMPRevenueBusinessLineQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -59,8 +58,6 @@ class FMPRevenueBusinessLineFetcher(
     ) -> List[FMPRevenueBusinessLineData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        # Type has to be ignored below because we are using something different than the literal type
-        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
         url = create_url(4, "revenue-product-segmentation", api_key, query)
         data = get_data(url)
         if isinstance(data, dict):
@@ -79,5 +76,5 @@ class FMPRevenueBusinessLineFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPRevenueBusinessLineData],
-    ) -> List[RevenueBusinessLineData]:
-        return data_transformer(data, RevenueBusinessLineData)
+    ) -> List[FMPRevenueBusinessLineData]:
+        return data

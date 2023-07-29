@@ -2,10 +2,9 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
@@ -60,15 +59,8 @@ class FMPForexEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ForexEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPForexEODQueryParams:
-        return FMPForexEODQueryParams(
-            symbol=query.symbol,
-            start_date=query.start_date,
-            end_date=query.end_date,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPForexEODQueryParams:
+        return FMPForexEODQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -84,5 +76,5 @@ class FMPForexEODFetcher(
         return get_data_many(url, FMPForexEODData, "historical")
 
     @staticmethod
-    def transform_data(data: List[FMPForexEODData]) -> List[ForexEODData]:
-        return data_transformer(data, ForexEODData)
+    def transform_data(data: List[FMPForexEODData]) -> List[FMPForexEODData]:
+        return data

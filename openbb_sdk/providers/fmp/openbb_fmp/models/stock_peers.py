@@ -1,10 +1,9 @@
 """FMP Stock Peers fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -37,10 +36,8 @@ class FMPStockPeersFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockPeersQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPStockPeersQueryParams:
-        return FMPStockPeersQueryParams(symbol=query.symbol, **extra_params or {})
+    def transform_query(params: Dict[str, Any]) -> FMPStockPeersQueryParams:
+        return FMPStockPeersQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -52,5 +49,5 @@ class FMPStockPeersFetcher(
         return get_data_many(url, FMPStockPeersData)
 
     @staticmethod
-    def transform_data(data: List[FMPStockPeersData]) -> List[StockPeersData]:
-        return data_transformer(data, StockPeersData)
+    def transform_data(data: List[FMPStockPeersData]) -> List[FMPStockPeersData]:
+        return data

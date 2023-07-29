@@ -2,11 +2,10 @@
 
 
 from datetime import date, datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
@@ -63,12 +62,8 @@ class FMPHistoricalEmployeesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: HistoricalEmployeesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPHistoricalEmployeesQueryParams:
-        return FMPHistoricalEmployeesQueryParams(
-            symbol=query.symbol, **extra_params or {}
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPHistoricalEmployeesQueryParams:
+        return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -82,5 +77,5 @@ class FMPHistoricalEmployeesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPHistoricalEmployeesData],
-    ) -> List[HistoricalEmployeesData]:
-        return data_transformer(data, HistoricalEmployeesData)
+    ) -> List[FMPHistoricalEmployeesData]:
+        return data

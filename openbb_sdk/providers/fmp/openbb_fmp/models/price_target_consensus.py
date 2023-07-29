@@ -2,11 +2,10 @@
 
 
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.price_target_consensus import (
     PriceTargetConsensusData,
     PriceTargetConsensusQueryParams,
@@ -54,10 +53,8 @@ class FMPPriceTargetConsensusFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: PriceTargetConsensusQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPPriceTargetConsensusQueryParams:
-        return FMPPriceTargetConsensusQueryParams(symbol=query.symbol)
+    def transform_query(params: Dict[str, Any]) -> FMPPriceTargetConsensusQueryParams:
+        return FMPPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -71,5 +68,5 @@ class FMPPriceTargetConsensusFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPPriceTargetConsensusData],
-    ) -> List[PriceTargetConsensusData]:
-        return data_transformer(data, PriceTargetConsensusData)
+    ) -> List[FMPPriceTargetConsensusData]:
+        return data

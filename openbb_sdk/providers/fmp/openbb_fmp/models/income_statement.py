@@ -5,12 +5,11 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
@@ -105,9 +104,7 @@ class FMPIncomeStatementFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: IncomeStatementQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPIncomeStatementQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementQueryParams:
         period: PeriodType = "annual" if query.period == "annually" else "quarter"
         return FMPIncomeStatementQueryParams(
             symbol=query.symbol, period=period, **extra_params if extra_params else {}
@@ -127,5 +124,5 @@ class FMPIncomeStatementFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPIncomeStatementData],
-    ) -> List[IncomeStatementData]:
-        return data_transformer(data, IncomeStatementData)
+    ) -> List[FMPIncomeStatementData]:
+        return data

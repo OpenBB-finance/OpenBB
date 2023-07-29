@@ -2,10 +2,9 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
@@ -59,12 +58,9 @@ class FMPMajorIndicesConstituentsFetcher(
 ):
     @staticmethod
     def transform_query(
-        query: MajorIndicesConstituentsQueryParams, extra_params: Optional[Dict] = None
+        params: Dict[str, Any]
     ) -> FMPMajorIndicesConstituentsQueryParams:
-        return FMPMajorIndicesConstituentsQueryParams(
-            index=query.index,
-            **extra_params or {},
-        )
+        return FMPMajorIndicesConstituentsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -77,5 +73,5 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPMajorIndicesConstituentsData],
-    ) -> List[MajorIndicesConstituentsData]:
-        return data_transformer(data, MajorIndicesConstituentsData)
+    ) -> List[FMPMajorIndicesConstituentsData]:
+        return data

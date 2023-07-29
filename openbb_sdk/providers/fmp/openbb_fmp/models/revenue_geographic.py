@@ -2,10 +2,9 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.revenue_geographic import (
     RevenueGeographicData,
     RevenueGeographicQueryParams,
@@ -48,12 +47,9 @@ class FMPRevenueGeographicFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: RevenueGeographicQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPRevenueGeographicQueryParams:
-        return FMPRevenueGeographicQueryParams(
-            symbol=query.symbol, period=query.period, structure=query.structure
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPRevenueGeographicQueryParams:
+        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
+        return FMPRevenueGeographicQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -61,7 +57,6 @@ class FMPRevenueGeographicFetcher(
     ) -> List[FMPRevenueGeographicData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
         data = get_data(url)
         if isinstance(data, dict):
@@ -94,6 +89,6 @@ class FMPRevenueGeographicFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPRevenueGeographicData],
-    ) -> List[RevenueGeographicData]:
+    ) -> List[FMPRevenueGeographicData]:
         # Parse data to RevenueGeographicData
-        return data_transformer(data, RevenueGeographicData)
+        return data

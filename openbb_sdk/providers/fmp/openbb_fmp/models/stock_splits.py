@@ -2,10 +2,9 @@
 
 
 from datetime import date
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_splits import (
     StockSplitCalendarData,
     StockSplitCalendarQueryParams,
@@ -44,16 +43,16 @@ class FMPStockSplitCalendarFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockSplitCalendarQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPStockSplitCalendarQueryParams:
-        now = date.today()
-        start_date = query.start_date if query.start_date else now
-        end_date = query.end_date if query.end_date else now
-        return FMPStockSplitCalendarQueryParams(
-            start_date=start_date,
-            end_date=end_date,
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPStockSplitCalendarQueryParams:
+        today = date.today()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = today
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = today
+
+        return FMPStockSplitCalendarQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -68,5 +67,5 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPStockSplitCalendarData],
-    ) -> List[StockSplitCalendarData]:
-        return data_transformer(data, StockSplitCalendarData)
+    ) -> List[FMPStockSplitCalendarData]:
+        return data

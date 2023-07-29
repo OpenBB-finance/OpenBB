@@ -2,12 +2,11 @@
 
 
 from datetime import date as dateType
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.key_metrics import KeyMetricsData, KeyMetricsQueryParams
 from pydantic import Field
 
@@ -110,9 +109,7 @@ class FMPKeyMetricsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: KeyMetricsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPKeyMetricsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
         return FMPKeyMetricsQueryParams(
             symbol=query.symbol,
             limit=query.limit,
@@ -131,5 +128,5 @@ class FMPKeyMetricsFetcher(
         return get_data_many(url, FMPKeyMetricsData)
 
     @staticmethod
-    def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:
-        return data_transformer(data, KeyMetricsData)
+    def transform_data(data: List[FMPKeyMetricsData]) -> List[FMPKeyMetricsData]:
+        return data

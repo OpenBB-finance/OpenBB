@@ -2,10 +2,9 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
@@ -55,10 +54,8 @@ class FMPExecutiveCompensationFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ExecutiveCompensationQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPExecutiveCompensationQueryParams:
-        return FMPExecutiveCompensationQueryParams(symbol=query.symbol)
+    def transform_query(params: Dict[str, Any]) -> FMPExecutiveCompensationQueryParams:
+        return FMPExecutiveCompensationQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -73,5 +70,5 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPExecutiveCompensationData],
-    ) -> List[ExecutiveCompensationData]:
-        return data_transformer(data, ExecutiveCompensationData)
+    ) -> List[FMPExecutiveCompensationData]:
+        return data

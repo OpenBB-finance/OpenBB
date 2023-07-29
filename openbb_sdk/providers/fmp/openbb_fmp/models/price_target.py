@@ -2,11 +2,10 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.price_target import PriceTargetData, PriceTargetQueryParams
 from pydantic import Field
 
@@ -48,10 +47,8 @@ class FMPPriceTargetFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: PriceTargetQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPPriceTargetQueryParams:
-        return FMPPriceTargetQueryParams.parse_obj(query)
+    def transform_query(params: Dict[str, Any]) -> FMPPriceTargetQueryParams:
+        return FMPPriceTargetQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -63,5 +60,5 @@ class FMPPriceTargetFetcher(
         return get_data_many(url, FMPPriceTargetData)
 
     @staticmethod
-    def transform_data(data: List[FMPPriceTargetData]) -> List[PriceTargetData]:
-        return data_transformer(data, PriceTargetData)
+    def transform_data(data: List[FMPPriceTargetData]) -> List[FMPPriceTargetData]:
+        return data

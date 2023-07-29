@@ -2,10 +2,10 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.helpers import get_querystring
 from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
@@ -65,15 +65,8 @@ class FMPMajorIndicesEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: MajorIndicesEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPMajorIndicesEODQueryParams:
-        return FMPMajorIndicesEODQueryParams(
-            symbol=query.symbol,
-            start_date=query.start_date,
-            end_date=query.end_date,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesEODQueryParams:
+        return FMPMajorIndicesEODQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -89,5 +82,7 @@ class FMPMajorIndicesEODFetcher(
         return get_data_many(url, FMPMajorIndicesEODData, "historical")
 
     @staticmethod
-    def transform_data(data: List[FMPMajorIndicesEODData]) -> List[MajorIndicesEODData]:
-        return data_transformer(data, MajorIndicesEODData)
+    def transform_data(
+        data: List[FMPMajorIndicesEODData],
+    ) -> List[FMPMajorIndicesEODData]:
+        return data

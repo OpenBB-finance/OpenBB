@@ -5,12 +5,11 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.base import BaseSymbol
 from openbb_provider.models.share_statistics import (
     ShareStatisticsData,
@@ -55,10 +54,8 @@ class FMPShareStatisticsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ShareStatisticsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPShareStatisticsQueryParams:
-        return FMPShareStatisticsQueryParams(symbol=query.symbol)
+    def transform_query(params: Dict[str, Any]) -> FMPShareStatisticsQueryParams:
+        return FMPShareStatisticsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -72,5 +69,5 @@ class FMPShareStatisticsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPShareStatisticsData],
-    ) -> List[ShareStatisticsData]:
-        return data_transformer(data, ShareStatisticsData)
+    ) -> List[FMPShareStatisticsData]:
+        return data

@@ -1,6 +1,6 @@
 """FMP Global News fetcher."""
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
@@ -33,10 +33,8 @@ class FMPGlobalNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: GlobalNewsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPGlobalNewsQueryParams:
-        return FMPGlobalNewsQueryParams(page=query.page)
+    def transform_query(params: Dict[str, Any]) -> FMPGlobalNewsQueryParams:
+        return FMPGlobalNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -48,5 +46,5 @@ class FMPGlobalNewsFetcher(
         return get_data_many(url, FMPGlobalNewsData)
 
     @staticmethod
-    def transform_data(data: List[FMPGlobalNewsData]) -> List[GlobalNewsData]:
+    def transform_data(data: List[FMPGlobalNewsData]) -> List[FMPGlobalNewsData]:
         return data

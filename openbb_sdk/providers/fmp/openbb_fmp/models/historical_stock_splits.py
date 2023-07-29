@@ -1,10 +1,9 @@
 """FMP Historical Stock Splits fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.historical_stock_splits import (
     HistoricalStockSplitsData,
     HistoricalStockSplitsQueryParams,
@@ -38,10 +37,8 @@ class FMPHistoricalStockSplitsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: HistoricalStockSplitsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPHistoricalStockSplitsQueryParams:
-        return FMPHistoricalStockSplitsQueryParams(symbol=query.symbol)
+    def transform_query(params: Dict[str, Any]) -> FMPHistoricalStockSplitsQueryParams:
+        return FMPHistoricalStockSplitsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -58,5 +55,5 @@ class FMPHistoricalStockSplitsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPHistoricalStockSplitsData],
-    ) -> List[HistoricalStockSplitsData]:
-        return data_transformer(data, HistoricalStockSplitsData)
+    ) -> List[FMPHistoricalStockSplitsData]:
+        return data

@@ -2,11 +2,11 @@
 
 
 from datetime import date as dateType
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.helpers import get_querystring
 from openbb_provider.models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
@@ -55,12 +55,8 @@ class FMPTreasuryRatesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: TreasuryRatesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPTreasuryRatesQueryParams:
-        return FMPTreasuryRatesQueryParams(
-            start_date=query.start_date, end_date=query.end_date
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPTreasuryRatesQueryParams:
+        return FMPTreasuryRatesQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -75,5 +71,5 @@ class FMPTreasuryRatesFetcher(
         return get_data_many(url, FMPTreasuryRatesData)
 
     @staticmethod
-    def transform_data(data: List[FMPTreasuryRatesData]) -> List[TreasuryRatesData]:
-        return data_transformer(data, TreasuryRatesData)
+    def transform_data(data: List[FMPTreasuryRatesData]) -> List[FMPTreasuryRatesData]:
+        return data

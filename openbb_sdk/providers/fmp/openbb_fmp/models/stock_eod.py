@@ -2,10 +2,10 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.helpers import get_querystring
 from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
 from pydantic import Field, NonNegativeInt, validator
@@ -62,15 +62,8 @@ class FMPStockEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPStockEODQueryParams:
-        return FMPStockEODQueryParams(
-            symbol=query.symbol,
-            start_date=query.start_date,
-            end_date=query.end_date,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
+        return FMPStockEODQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -86,5 +79,5 @@ class FMPStockEODFetcher(
         return get_data_many(url, FMPStockEODData, "historical")
 
     @staticmethod
-    def transform_data(data: List[FMPStockEODData]) -> List[StockEODData]:
-        return data_transformer(data, StockEODData)
+    def transform_data(data: List[FMPStockEODData]) -> List[FMPStockEODData]:
+        return data

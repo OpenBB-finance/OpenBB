@@ -1,10 +1,9 @@
 """FMP Forex available pairs fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_pairs import ForexPairsData, ForexPairsQueryParams
 from pydantic import Field
 
@@ -42,10 +41,8 @@ class FMPForexPairsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ForexPairsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPForexPairsQueryParams:
-        return FMPForexPairsQueryParams()
+    def transform_query(params: Dict[str, Any]) -> FMPForexPairsQueryParams:
+        return FMPForexPairsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -59,5 +56,5 @@ class FMPForexPairsFetcher(
         return get_data_many(url, FMPForexPairsData)
 
     @staticmethod
-    def transform_data(data: List[FMPForexPairsData]) -> List[ForexPairsData]:
-        return data_transformer(data, ForexPairsData)
+    def transform_data(data: List[FMPForexPairsData]) -> List[FMPForexPairsData]:
+        return data

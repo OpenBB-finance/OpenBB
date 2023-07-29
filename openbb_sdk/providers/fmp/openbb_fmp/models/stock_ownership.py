@@ -1,10 +1,9 @@
 """FMP Stock Ownership fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_ownership import (
     StockOwnershipData,
     StockOwnershipQueryParams,
@@ -42,10 +41,8 @@ class FMPStockOwnershipFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockOwnershipQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPStockOwnershipQueryParams:
-        return FMPStockOwnershipQueryParams.parse_obj(query)
+    def transform_query(params: Dict[str, Any]) -> FMPStockOwnershipQueryParams:
+        return FMPStockOwnershipQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -62,5 +59,7 @@ class FMPStockOwnershipFetcher(
         return get_data_many(url, FMPStockOwnershipData)
 
     @staticmethod
-    def transform_data(data: List[FMPStockOwnershipData]) -> List[StockOwnershipData]:
-        return data_transformer(data, StockOwnershipData)
+    def transform_data(
+        data: List[FMPStockOwnershipData],
+    ) -> List[FMPStockOwnershipData]:
+        return data

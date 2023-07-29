@@ -4,11 +4,10 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
@@ -63,13 +62,8 @@ class FMPHistoricalDividendsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: HistoricalDividendsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPHistoricalDividendsQueryParams:
-        return FMPHistoricalDividendsQueryParams(
-            symbol=query.symbol,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPHistoricalDividendsQueryParams:
+        return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -85,5 +79,5 @@ class FMPHistoricalDividendsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPHistoricalDividendsData],
-    ) -> List[HistoricalDividendsData]:
-        return data_transformer(data, HistoricalDividendsData)
+    ) -> List[FMPHistoricalDividendsData]:
+        return data

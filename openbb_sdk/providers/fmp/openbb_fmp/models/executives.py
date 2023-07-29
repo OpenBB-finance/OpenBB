@@ -2,12 +2,11 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.base import BaseSymbol
 from openbb_provider.models.key_executives import (
     KeyExecutivesData,
@@ -62,17 +61,8 @@ class FMPKeyExecutivesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: KeyExecutivesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPKeyExecutivesQueryParams:
-        return FMPKeyExecutivesQueryParams(
-            symbol=query.symbol,
-            key_executive_name=query.key_executive_name,
-            key_executive_title=query.key_executive_title,
-            key_executive_title_since=query.key_executive_title_since,
-            key_executive_year_born=query.key_executive_year_born,
-            key_executive_gender=query.key_executive_gender,
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPKeyExecutivesQueryParams:
+        return FMPKeyExecutivesQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -104,5 +94,5 @@ class FMPKeyExecutivesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPKeyExecutivesData],
-    ) -> List[KeyExecutivesData]:
-        return data_transformer(data, KeyExecutivesData)
+    ) -> List[FMPKeyExecutivesData]:
+        return data

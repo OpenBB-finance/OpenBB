@@ -2,11 +2,10 @@
 
 
 from datetime import date, datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_insider_trading import (
     StockInsiderTradingData,
     StockInsiderTradingQueryParams,
@@ -68,16 +67,8 @@ class FMPStockInsiderTradingFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockInsiderTradingQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPStockInsiderTradingQueryParams:
-        return FMPStockInsiderTradingQueryParams(
-            transactionType=query.transactionType,
-            symbol=query.symbol,
-            reportingCik=query.reportingCik,
-            companyCik=query.companyCik,
-            page=query.page,
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPStockInsiderTradingQueryParams:
+        return FMPStockInsiderTradingQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -93,5 +84,5 @@ class FMPStockInsiderTradingFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPStockInsiderTradingData],
-    ) -> List[StockInsiderTradingData]:
-        return data_transformer(data, StockInsiderTradingData)
+    ) -> List[FMPStockInsiderTradingData]:
+        return data

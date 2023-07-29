@@ -1,10 +1,9 @@
 """FMP Stock Multiples Fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_multiples import (
     StockMultiplesData,
     StockMultiplesQueryParams,
@@ -133,12 +132,8 @@ class FMPStockMultiplesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockMultiplesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPStockMultiplesQueryParams:
-        return FMPStockMultiplesQueryParams(
-            symbol=query.symbol, limit=query.limit, **extra_params or {}
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPStockMultiplesQueryParams:
+        return FMPStockMultiplesQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -152,5 +147,7 @@ class FMPStockMultiplesFetcher(
         return get_data_one(url, FMPStockMultiplesData)
 
     @staticmethod
-    def transform_data(data: List[FMPStockMultiplesData]) -> List[StockMultiplesData]:
-        return data_transformer(data, StockMultiplesData)
+    def transform_data(
+        data: List[FMPStockMultiplesData],
+    ) -> List[FMPStockMultiplesData]:
+        return data
