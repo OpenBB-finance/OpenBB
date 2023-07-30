@@ -1,12 +1,14 @@
 """FRED CPI Fetcher."""
 
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, TypeVar
 
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.cpi import CPIData, CPIQueryParams
+
+# T = TypeVar("T")
 
 
 class FREDCPIQueryParams(CPIQueryParams):
@@ -18,6 +20,11 @@ class FREDCPIData(CPIData):
 
 
 class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCPIData]):
+
+    # TODO: This would be in the map and provide the correct return type
+    # to the api
+    # generic_return_type = Dict[str, List[T]]
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDCPIQueryParams:
         return FREDCPIQueryParams(**params)
@@ -46,5 +53,7 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
         return series_dict
 
     @staticmethod
-    def transform_data(data: Dict[str, List[FREDCPIData]]) -> Dict[str, List[FREDCPIData]]:
+    def transform_data(
+        data: Dict[str, List[FREDCPIData]]
+    ) -> Dict[str, List[FREDCPIData]]:
         return data
