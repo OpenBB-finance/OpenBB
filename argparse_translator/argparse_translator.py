@@ -23,7 +23,7 @@ from typing_extensions import Annotated
 SEP = "__"
 
 
-class ArgparseCustomArgument(BaseModel):
+class OpenBBCustomArgument(BaseModel):
     help: Optional[str] = None
     # action: Optional[Any] = None
 
@@ -105,14 +105,14 @@ class ArgparseTranslator:
     @staticmethod
     def _split_annotation(
         base_annotation: Type[Any],
-    ) -> tuple[Type[Any], List[ArgparseCustomArgument]]:
+    ) -> tuple[Type[Any], List[OpenBBCustomArgument]]:
         if get_origin(base_annotation) is not Annotated:
             return base_annotation, []
         base_annotation, *maybe_custom_annotations = get_args(base_annotation)
         return base_annotation, [
             annotation
             for annotation in maybe_custom_annotations
-            if isinstance(annotation, ArgparseCustomArgument)
+            if isinstance(annotation, OpenBBCustomArgument)
         ]
 
     @classmethod
@@ -162,7 +162,7 @@ class ArgparseTranslator:
                         name=f"{param.name}{SEP}{child_param.name}",
                         annotation=Annotated[
                             child_param.annotation,
-                            ArgparseCustomArgument(
+                            OpenBBCustomArgument(
                                 help=param_type.schema()["properties"][
                                     child_param.name
                                 ].get("help", None)
