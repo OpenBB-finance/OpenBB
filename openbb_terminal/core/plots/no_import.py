@@ -72,11 +72,11 @@ class DummyBackend:
             and get_current_system().LOGGING_SUB_APP != "sdk"
         ):
             console.print(pywry_missing)
-            if console.input(
-                "If you prefer to continue without interactive plots/tables, "
-                "press [green]enter[/] or [red]ctrl+c[/] to exit."
-            ):
-                dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
+            console.print(
+                "\n\nContinuing with default plotly behaviour (open in browser).",
+                style="yellow",
+            )
+            dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
 
         current_user.preferences.USE_INTERACTIVE_DF = False
         set_current_user(current_user)
