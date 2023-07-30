@@ -57,7 +57,7 @@ class RegistryMap:
                 f = fetcher()
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
-                return_type = f.return_type
+                return_info = self.extract_return_info(f)
 
                 if model_name not in map_:
                     map_[model_name] = {}
@@ -69,7 +69,7 @@ class RegistryMap:
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
                     "Data": extra_data,
-                    "ReturnType": return_type,
+                    "Return": return_info,
                 }
 
         return map_
@@ -97,3 +97,13 @@ class RegistryMap:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info
+
+
+    @staticmethod
+    def extract_return_info(fetcher: Fetcher):
+        """Extract return info from fetcher."""
+
+        data_type = getattr(fetcher, "provider_data_type")
+        return_type = fetcher.return_type
+
+        return (data_type, return_type)
