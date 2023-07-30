@@ -77,8 +77,6 @@ class Fetcher(
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[3]
 
-    @property
-    def return_type(self):
-        """Get the type of the return."""
-        # pylint: disable=E1101
-        return self.transform_data.__annotations__["return"]
+    # TODO: Create abstract class attribute for generic return type
+    # @property
+    # def generic_return_type(self):

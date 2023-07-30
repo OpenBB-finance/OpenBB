@@ -19,7 +19,6 @@ from typing import (
 
 import pkg_resources
 from fastapi import APIRouter, Depends
-from openbb_provider.abstract.fetcher import GenericDataType
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
@@ -260,10 +259,9 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            # TODO: Implement the output structure in each endpoint and then just fill
-            # the genertic with `data_type`
-            data_type = provider_interface.merged_data[model]
-            func.__annotations__["return"] = CommandOutput[GenericDataType[data_type]]
+            ReturnModel = provider_interface.merged_return[model]
+            func.__annotations__["return"] = CommandOutput[ReturnModel]  # type: ignore
+
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices

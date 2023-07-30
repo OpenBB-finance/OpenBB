@@ -1,7 +1,8 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
+from openbb_provider.abstract.fetcher import GenericDataType
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
@@ -55,7 +56,7 @@ class ProviderInterface:
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
         Dictionary of params by model.
-    merged_data : Dict[str, BaseModel]
+    merged_return : Dict[str, Type[BaseModel]]
         Dictionary of data by model.
     providers_literal : type
         Literal of provider names.
@@ -85,7 +86,7 @@ class ProviderInterface:
         )
         self._params = self._generate_params_dc(self._registry_map)
         self._data = self._generate_data_dc(self._registry_map)
-        self._merged_data = self._merge_data_dc(self._data)
+        self._merged_return = self._merged_return_model(self._data)
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
         )
@@ -117,9 +118,9 @@ class ProviderInterface:
         return self._data
 
     @property
-    def merged_data(self) -> Dict[str, BaseModel]:
+    def merged_return(self) -> Dict[str, Type[BaseModel]]:
         """Dictionary of data by model merged."""
-        return self._merged_data
+        return self._merged_return
 
     @property
     def providers_literal(self) -> type:
@@ -399,9 +400,9 @@ class ProviderInterface:
 
         return result
 
-    def _merge_data_dc(
+    def _merged_return_model(
         self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
-    ) -> Dict[str, BaseModel]:
+    ) -> Dict[str, Type[BaseModel]]:
         """Merge standard data with extra data into a single BaseModel to benzinga
         injected as FastAPI dependency."""
         result: Dict = {}
@@ -426,11 +427,16 @@ class ProviderInterface:
             class Config(BaseConfig):
                 extra = Extra.allow
 
-            result[model_name] = create_model(  # type: ignore
+            model = create_model(  # type: ignore
                 model_name,
                 __config__=Config,
                 **fields_dict,  # type: ignore
             )
+
+            # TODO: Get GenericDataType depending on the model
+            # The info needs to be in the registry_map
+            # instead of hardcoding it with Union[..., List[...], Dict[str, ...]]
+            result[model_name] = GenericDataType[model]
 
         return result
 

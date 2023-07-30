@@ -42,9 +42,7 @@ class QueryExecutor:
             for c in provider.required_credentials:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
-                    raise ProviderError(
-                        f"Missing credential '{c}'."
-                    )
+                    raise ProviderError(f"Missing credential '{c}'.")
 
     def execute(
         self,
