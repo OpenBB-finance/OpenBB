@@ -891,7 +891,7 @@ def calculate_vertical_call_spread(
     breakeven_price = bought + spread_cost[0]
     max_profit = sold - bought - spread_cost[0]
     call_spread_: dict[str, Any] = {}
-    if sold != bought and spread_cost != 0:
+    if sold != bought and spread_cost[0] != 0:
         # Includees the as-of date if it is historical EOD data.
         if (
             options.source == "Intrinio"
