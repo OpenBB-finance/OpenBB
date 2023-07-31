@@ -13,7 +13,7 @@ from pydantic import BaseModel
 router = Router(prefix="")
 
 
-# Remove this once the placeholders are replaced with real commands
+# Remove this once the placeholders are replaced with real commands.
 
 # pylint: disable=unused-argument
 
