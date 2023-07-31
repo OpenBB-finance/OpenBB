@@ -184,7 +184,7 @@ class ProviderInterface:
 
         if field.required:
             if force_optional:
-                type_ = Optional[type_]
+                type_ = Optional[type_]  # type: ignore
                 default = None
             else:
                 default = ...

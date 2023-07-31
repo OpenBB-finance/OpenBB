@@ -78,9 +78,9 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
                         df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
 
                 else:
-                    df = basemodel_to_df(res, "date")
+                    df = basemodel_to_df(res, "date")  # type: ignore
             else:
-                df = basemodel_to_df(res, "date")
+                df = basemodel_to_df(res, "date")  # type: ignore
 
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
@@ -95,7 +95,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe().reset_index()
+        df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()
