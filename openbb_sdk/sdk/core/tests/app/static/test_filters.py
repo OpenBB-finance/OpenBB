@@ -1,4 +1,4 @@
-"""Test the app/static/filters.py file."""
+"""Test the filters.py file."""
 
 import pytest
 from openbb_core.app.model.command_output import CommandOutput

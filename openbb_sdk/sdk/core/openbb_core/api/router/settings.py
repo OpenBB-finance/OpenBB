@@ -1,11 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from openbb_core.api.dependency.user import (
-    UserService,
-    get_user,
-    get_user_service,
-)
+from openbb_core.api.dependency.user import UserService, get_user, get_user_service
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
 
@@ -16,6 +12,7 @@ router = APIRouter(prefix="/settings", tags=["Settings"])
 async def read_users_settings(
     user_settings: Annotated[UserSettings, Depends(get_user)],
 ) -> UserSettings:
+    """Read users settings."""
     return user_settings
 
 
@@ -25,6 +22,7 @@ async def patch_user_credentials(
     user_settings: Annotated[UserSettings, Depends(get_user)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
+    """Patch user credentials."""
     current = user_settings.credentials.dict()
     incoming = credentials.dict(exclude_none=True)
     current.update(incoming)

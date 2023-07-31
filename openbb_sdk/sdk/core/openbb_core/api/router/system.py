@@ -1,3 +1,4 @@
+"""System router."""
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -11,4 +12,5 @@ router = APIRouter(prefix="/system", tags=["System"])
 async def get_system_model(
     system_settings: Annotated[SystemSettings, Depends(get_system_settings)],
 ) -> SystemSettings:
+    """Get system model."""
     return system_settings

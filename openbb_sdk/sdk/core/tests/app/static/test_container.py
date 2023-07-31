@@ -1,4 +1,4 @@
-"""Test the app/static/container.py file."""
+"""Test the container.py file."""
 
 from openbb_core.app.static.container import Container
 

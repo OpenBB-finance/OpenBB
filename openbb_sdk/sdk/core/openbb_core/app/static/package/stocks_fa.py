@@ -206,8 +206,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cal(
         self,
-        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 23),
-        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 23),
+        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 25),
+        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 25),
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
