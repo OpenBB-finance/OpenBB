@@ -144,7 +144,7 @@ class FMPStockMultiplesFetcher(
         url = create_url(
             3, f"key-metrics-ttm/{query.symbol}", api_key, query, exclude=["symbol"]
         )
-        return get_data_one(url, FMPStockMultiplesData)
+        return [get_data_one(url, FMPStockMultiplesData)]
 
     @staticmethod
     def transform_data(
