@@ -30,7 +30,7 @@ class ChartStyle:
     """
 
     STYLES_REPO = Path(__file__).parent.parent / "styles"
-    user_styles_directory = STYLES_REPO
+    user_styles_directory: Path = STYLES_REPO
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
@@ -58,7 +58,7 @@ class ChartStyle:
     def __init__(
         self,
         plt_style: Optional[str] = "",
-        user_styles_directory: Optional[Union[str, Path]] = None,
+        user_styles_directory: Optional[Path] = None,
     ):
         """Initialize the class.
 
