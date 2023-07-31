@@ -84,7 +84,7 @@ class ProviderInterface:
         self._model_providers_map = self._generate_model_providers_dc(self._map)
         self._params = self._generate_params_dc(self._map)
         self._data = self._generate_data_dc(self._map)
-        self._merged_return_model = self._merge_return_model(self._map, self._data)
+        self._merged_return_model = self._merge_return_model(self._data)
 
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
@@ -398,7 +398,6 @@ class ProviderInterface:
 
     def _merge_return_model(
         self,
-        map_: MapType,
         data: Dict[str, Dict[str, Union[StandardData, ExtraData]]],
     ) -> Dict[str, Type[BaseModel]]:
         """Merge standard data with extra data into a single BaseModel to be injected as FastAPI dependency."""
@@ -430,12 +429,9 @@ class ProviderInterface:
                 **fields_dict,  # type: ignore
             )
 
-            ReturnType = map_[model_name]["openbb"]["ReturnType"]
-            n_params = len(getattr(ReturnType, "__parameters__", ()))
-            if n_params:
-                result[model_name] = ReturnType[tuple([ReturnModel] * n_params)]  # type: ignore
-            else:
-                result[model_name] = ReturnModel
+            # TODO: If we want to support multiple return schemas, we need
+            # to change this `List` to the schema type
+            result[model_name] = List[ReturnModel]  # type: ignore
 
         return result
 

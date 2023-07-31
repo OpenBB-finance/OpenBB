@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Literal, Optional, TypeVar, Union
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
@@ -57,23 +57,18 @@ class RegistryMap:
                 f = fetcher()
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
-                return_type = self.extract_return_type(f)
 
                 if model_name not in map_:
                     map_[model_name] = {}
                     map_[model_name]["openbb"] = {
                         "QueryParams": standard_query,
                         "Data": standard_data,
-                        "ReturnType": None,
                     }
 
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
                     "Data": extra_data,
-                    "ReturnType": return_type,
                 }
-
-        map_ = self.fill_standard_return_type(map_)
 
         return map_
 
@@ -100,29 +95,3 @@ class RegistryMap:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info
-
-    @staticmethod
-    def extract_return_type(fetcher: Fetcher):
-        """Extract return info from fetcher."""
-        return getattr(fetcher, "generic_return_type", None)
-
-    @staticmethod
-    def fill_standard_return_type(map_: MapType) -> MapType:
-        """Fill standard return type."""
-
-        T = TypeVar("T")
-        GenericDataType = Union[T, List[T], Dict[str, T]]
-
-        for model_name, providers in map_.items():
-            types_list = []
-            for info in providers.values():
-                ret = info["ReturnType"]
-                if ret:
-                    types_list.append(ret)
-
-            if types_list:
-                map_[model_name]["openbb"]["ReturnType"] = Union[tuple(types_list)]  # type: ignore
-            else:
-                map_[model_name]["openbb"]["ReturnType"] = GenericDataType
-
-        return map_

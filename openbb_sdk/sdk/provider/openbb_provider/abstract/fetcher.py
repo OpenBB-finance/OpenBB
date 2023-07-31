@@ -76,9 +76,3 @@ class Fetcher(
         """Get the type of the provider data."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[3]
-
-    # @property
-    # @abstractmethod
-    # def generic_return_type(self):
-    #     """Get the type of the generic return."""
-    #     raise NotImplementedError
