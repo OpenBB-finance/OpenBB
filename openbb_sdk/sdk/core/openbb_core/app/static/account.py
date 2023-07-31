@@ -24,12 +24,13 @@ class Account:
             container._command_runner_session.command_runner.system_settings.openbb_directory
         )
 
-    def create_hub_service(
+    def _create_hub_service(
         self,
         email: Optional[str] = None,
         password: Optional[str] = None,
         sdk_token: Optional[str] = None,
     ) -> HubService:
+        """Create hub service to handle connection."""
         if email is None and password is None and sdk_token is None:
             session_file = Path(self._openbb_directory, ".sdk_hub_session.json")
             if not session_file.exists():
@@ -70,7 +71,7 @@ class Account:
         UserSettings
             User settings: profile, credentials, preferences
         """
-        hs = self.create_hub_service(email, password, sdk_token)
+        hs = self._create_hub_service(email, password, sdk_token)
         incoming = hs.pull()
         updated = UserService.update_default(incoming)
         self._container._command_runner_session = CommandRunnerSession(
