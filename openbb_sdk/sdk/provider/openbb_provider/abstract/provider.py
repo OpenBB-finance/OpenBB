@@ -1,6 +1,6 @@
 """Abstract class for providers."""
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Type
 
 from openbb_provider.abstract.fetcher import Fetcher
 
@@ -13,7 +13,7 @@ class Provider:
         name: str,
         description: str,
         required_credentials: Optional[List[str]],
-        fetcher_dict: Dict[str, Fetcher],
+        fetcher_dict: Dict[str, Type[Fetcher]],
     ) -> None:
         """Initialize the provider."""
         self.name = name
