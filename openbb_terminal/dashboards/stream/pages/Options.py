@@ -20,6 +20,7 @@ EXCEPTIONS = ["NDX", "RUT"]
 analysis_type: str = ""
 strike_price: float = 0
 moneyness: float = 0
+strangle_moneyness: float = 0
 price_data = pd.DataFrame()
 strategy_data = pd.DataFrame()
 title: str = ""
@@ -89,7 +90,10 @@ def load_data(ticker):
 
 with st.sidebar:
     ticker = st.selectbox(
-        label="Ticker", options=symbol_choices["Symbol"].tolist(), index=default_symbol
+        label="Ticker",
+        options=symbol_choices["Symbol"].tolist(),
+        index=default_symbol,
+        key="ticker",
     )
     df = load_data(ticker)
     chains_df = df.chains
@@ -119,14 +123,18 @@ with st.sidebar:
         st.write("Call Volume: ", format(net_calls_vol, ","))
         st.write("Put Volume: ", format(net_puts_vol, ","))
         st.write("Put/Call Ratio: ", str(pcr_ratio))
-        analysis_type = st.selectbox("Analysis Type", options=["Charts", "Tables"])
+        analysis_type = st.selectbox(
+            "Analysis Type", options=["Charts", "Tables"], key="analysis_type"
+        )
         if analysis_type == "Tables":
             table_choices = ["Chains", "Stats"]
             table_choice = st.selectbox("Table Type", options=table_choices)
             if table_choice == "Chains":
                 chains_selections = ["% OTM", "Delta", "None"]
                 chains_select = st.selectbox(
-                    "Limit Range of Results", options=chains_selections
+                    "Limit Range of Results",
+                    options=chains_selections,
+                    key="chains_select",
                 )
                 if chains_select == "% OTM":
                     chains_moneyness: float = st.number_input(
@@ -146,34 +154,42 @@ with st.sidebar:
                         step=0.05,
                     )
                 chains_choice = st.selectbox(
-                    "Chain Type", options=["Calls", "Puts", "Both"]
+                    "Chain Type", options=["Calls", "Puts", "Both"], key="chains_choice"
                 )
                 expiration_choices = ["All"]
                 expiration_choices.extend(df.expirations)
                 expiration_choice = st.selectbox(
-                    "Expiration Date", options=expiration_choices
+                    "Expiration Date",
+                    options=expiration_choices,
+                    key="expiration_choice",
                 )
         if analysis_type == "Charts":
             stats_type: str = ""
             chart_data_type = st.selectbox(
                 "Chart Data Type",
                 options=["Stats", "Strikes", "Strategies", "Volatility"],
+                key="chart_data_type",
             )
             expiry = "All"
             if chart_data_type == "Stats":
                 stats_type = st.selectbox(
-                    "Stat Type", options=["Open Interest", "Volume", "Ratios"]
+                    "Stat Type",
+                    options=["Open Interest", "Volume", "Ratios"],
+                    key="stats_type",
                 )
             if stats_type == "Open Interest" or stats_type == "Volume":
-                is_percent = st.checkbox("Percent of Total", value=False)
+                is_percent = st.checkbox(
+                    "Percent of Total", value=False, key="is_percent"
+                )
                 if is_percent is False and stats_type == "Open Interest":
                     expiries = ["All"]
                     expiries.extend(df.expirations)
-                    expiry = st.selectbox("Expiry", options=expiries)
+                    expiry = st.selectbox("Expiry", options=expiries, key="expiry")
             if chart_data_type == "Strikes":
                 strike_choice = st.selectbox(
                     "Strike Selection Type",
                     options=(["Single Strike", "Separate Calls and Puts", "% OTM"]),
+                    key="strike_choice",
                 )
                 if strike_choice == "Separate Calls and Puts":
                     _default_call = get_nearest_call_strike(
@@ -192,11 +208,17 @@ with st.sidebar:
                     col1, col2 = st.columns(2)
                     with col1:
                         _call = st.selectbox(
-                            "Call Strike", options=df.strikes, index=default_call
+                            "Call Strike",
+                            options=df.strikes,
+                            index=default_call,
+                            key="call_strike",
                         )
                     with col2:
                         _put = st.selectbox(
-                            "Put Strike", options=df.strikes, index=default_put
+                            "Put Strike",
+                            options=df.strikes,
+                            index=default_put,
+                            key="put_strike",
                         )
                     _strikes = {"call": _call, "put": _put}
                 if strike_choice == "% OTM":
@@ -206,6 +228,7 @@ with st.sidebar:
                         max_value=99.99,
                         value=2.0,
                         step=0.25,
+                        key="moneyness",
                     )
                     _strikes = get_nearest_otm_strike(df, moneyness)
                 if strike_choice == "Single Strike":
@@ -217,10 +240,15 @@ with st.sidebar:
                         _strikes[_strikes == default_strike_price].index[0]
                     )
                     strike_price = st.selectbox(
-                        "Strike Price", options=df.strikes, index=default_strike
+                        "Strike Price",
+                        options=df.strikes,
+                        index=default_strike,
+                        key="strike_price",
                     )
                 strike_data_point = st.selectbox(
-                    "Data Point", options=list(target_column.keys())
+                    "Data Point",
+                    options=list(target_column.keys()),
+                    key="strike_data_point",
                 )
 
             if chart_data_type == "Strategies":
@@ -237,14 +265,16 @@ with st.sidebar:
                             "Vertical Put",
                         ]
                     ),
+                    key="strategy_choice",
                 )
                 if strategy_choice == "Strangle":
-                    moneyness: float = st.number_input(
+                    strangle_moneyness: float = st.number_input(
                         label="% OTM Moneyness",
                         min_value=0.01,
                         max_value=99.99,
                         value=2.0,
                         step=0.25,
+                        key="strangle_moneyness",
                     )
                 if strategy_choice == "Straddle":
                     default_strike_price = get_nearest_call_strike(
@@ -254,7 +284,10 @@ with st.sidebar:
                         _strikes[_strikes == default_strike_price].index[0]
                     )
                     straddle_strike: float = st.selectbox(
-                        "Strike Price", options=df.strikes, index=default_strike
+                        "Strike Price",
+                        options=df.strikes,
+                        index=default_strike,
+                        key="straddle_strike",
                     )
                 if (
                     strategy_choice == "Synthetic Long"
@@ -267,7 +300,10 @@ with st.sidebar:
                         _strikes[_strikes == default_strike_price].index[0]
                     )
                     synthetic_strike = st.selectbox(
-                        "Strike Price", options=df.strikes, index=default_strike
+                        "Strike Price",
+                        options=df.strikes,
+                        index=default_strike,
+                        key="synthetic_strike",
                     )
                 if (
                     strategy_choice == "Vertical Call"
@@ -294,37 +330,44 @@ with st.sidebar:
                             "Sold Strike Price",
                             options=df.strikes,
                             index=default_strike1,
+                            key="strike1",
                         )
                     with col2:
                         strike2 = st.selectbox(
                             "Bought Strike Price",
                             options=df.strikes,
                             index=default_strike2,
+                            key="strike2",
                         )
 
                 strategy_target_column = st.selectbox(
-                    "Data Type", options=list(strategy_target_column_dict.keys())
+                    "Data Type",
+                    options=list(strategy_target_column_dict.keys()),
+                    key="strategy_target_column",
                 )
 
             if chart_data_type == "Volatility":
                 vol_choices = ["Smile", "Skew", "Surface"]
                 vol_choice = st.selectbox(
-                    "Volatility Type", options=vol_choices, index=0
+                    "Volatility Type", options=vol_choices, index=0, key="vol_choice"
                 )
                 if vol_choice == "Smile" or vol_choice == "Skew":
                     if vol_choice == "Smile":
                         col1, col2 = st.columns(2)
                         with col1:
-                            with_volume = st.checkbox("With Volume", value=False)
+                            with_volume = st.checkbox(
+                                "With Volume", value=False, key="with_volume"
+                            )
                         with col2:
-                            with_oi = st.checkbox("With OI", value=False)
+                            with_oi = st.checkbox("With OI", value=False, key="with_oi")
                     if vol_choice == "Skew":
-                        otm_only = st.checkbox("OTM Only", value=False)
+                        otm_only = st.checkbox("OTM Only", value=False, key="otm_only")
                     with st.expander("Select Expiration Dates"):
                         expiration_choice = st.multiselect(
                             "Expiration Date",
                             options=df.expirations,
                             default=df.expirations[2],
+                            key="expiration_choice",
                         )
                 if vol_choice == "Surface":
                     surface_choices = [
@@ -334,7 +377,10 @@ with st.sidebar:
                         "ITM Only",
                     ]
                     surface_choice = st.selectbox(
-                        "Surface Type", options=surface_choices, index=2
+                        "Surface Type",
+                        options=surface_choices,
+                        index=2,
+                        key="surface_choice",
                     )
     else:
         st.write("Please enter a valid symbol.")
@@ -574,8 +620,8 @@ if (
     and ticker_good is True
 ):
     if strategy_choice == "Strangle":
-        title = f"Cost of {df.symbol} Strangle  @ {moneyness}% OTM"
-        strategy_data = df.get_strategies(strangle_moneyness=moneyness)
+        title = f"Cost of {df.symbol} Strangle  @ {strangle_moneyness}% OTM"
+        strategy_data = df.get_strategies(strangle_moneyness=strangle_moneyness)
 
     if strategy_choice == "Straddle":
         title = f"Cost of {df.symbol} Straddle  @ ${straddle_strike} Strike"
@@ -685,13 +731,19 @@ if (
         with col1:
             near_dte_limit = int(
                 st.select_slider(
-                    "Near DTE Boundary", options=dte_ranges, value=dte_ranges[0]
+                    "Near DTE Boundary",
+                    options=dte_ranges,
+                    value=dte_ranges[0],
+                    key="near_dte_limit",
                 )
             )
         with col2:
             far_dte_limit = int(
                 st.select_slider(
-                    "Far DTE Boundary", options=dte_ranges, value=dte_ranges[-1]
+                    "Far DTE Boundary",
+                    options=dte_ranges,
+                    value=dte_ranges[-1],
+                    key="far_dte_limit",
                 )
             )
         near = near_dte_limit if near_dte_limit < far_dte_limit else far_dte_limit
@@ -702,13 +754,19 @@ if (
         with col3:
             lower_strike = float(
                 st.select_slider(
-                    "Lower Strike", options=df.strikes, value=df.strikes[0]
+                    "Lower Strike",
+                    options=df.strikes,
+                    value=df.strikes[0],
+                    key="lower_strike",
                 )
             )
         with col4:
             upper_strike = float(
                 st.select_slider(
-                    "Upper Strike", options=df.strikes, value=df.strikes[-1]
+                    "Upper Strike",
+                    options=df.strikes,
+                    value=df.strikes[-1],
+                    key="upper_strike",
                 )
             )
         lower = lower_strike if lower_strike < upper_strike else upper_strike
