@@ -16,9 +16,9 @@ class Config:
 
 def format_map(
     required_credentials: List[str],
-) -> Dict[str, Tuple[type, None]]:
+) -> Dict[str, Tuple[object, None]]:
     """Format credentials map to be used in the Credentials model"""
-    formatted: Dict[str, Tuple[Optional[str], None]] = {}
+    formatted: Dict[str, Tuple[object, None]] = {}
     for c in required_credentials:
         formatted[c] = (Optional[str], None)
 
