@@ -90,7 +90,7 @@ class PolygonStockNewsFetcher(
     ]
 ):
     T = TypeVar("T")
-    generic_return_type = Dict[str, List[T]]
+    generic_return_type = List[T]
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonStockNewsQueryParams:
