@@ -259,7 +259,7 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            ReturnModel = provider_interface.merged_return[model]
+            ReturnModel = provider_interface.merged_return_model[model]
             func.__annotations__["return"] = CommandOutput[ReturnModel]  # type: ignore
 
         elif (

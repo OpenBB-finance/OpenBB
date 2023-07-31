@@ -124,5 +124,5 @@ class BenzingaStockNewsFetcher(
     def transform_data(
         data: List[BenzingaStockNewsData],
     ) -> List[BenzingaStockNewsData]:
-        {"image": lambda x: "" if x == [] else x[0].url}
+        # {"image": lambda x: "" if x == [] else x[0].url}
         return data

@@ -64,6 +64,7 @@ class RegistryMap:
                     map_[model_name]["openbb"] = {
                         "QueryParams": standard_query,
                         "Data": standard_data,
+                        "ReturnType": None,
                     }
 
                 map_[model_name][p] = {

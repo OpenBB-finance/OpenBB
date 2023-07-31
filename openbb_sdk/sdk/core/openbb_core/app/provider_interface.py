@@ -81,12 +81,15 @@ class ProviderInterface:
         self._query_executor = query_executor or QueryExecutor
 
         self._map = self._registry_map.map
-        self._model_providers_map = self._generate_model_providers_dc(
-            self._registry_map
+        # TODO: Try these 4 methods in a single iteration
+        self._model_providers_map = self._generate_model_providers_dc(self._map)
+        self._params = self._generate_params_dc(self._map)
+        self._data = self._generate_data_dc(self._map)
+        self._merged_return_type = self._merge_return_type(self._map)
+        self._merged_return_model = self._merge_return_model(
+            self._merged_return_type, self._data
         )
-        self._params = self._generate_params_dc(self._registry_map)
-        self._data = self._generate_data_dc(self._registry_map)
-        self._merged_return = self._merged_return_model(self._data)
+
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
         )
@@ -118,9 +121,14 @@ class ProviderInterface:
         return self._data
 
     @property
-    def merged_return(self) -> Dict[str, Type[BaseModel]]:
+    def merged_return_type(self) -> Dict[str, type]:
         """Dictionary of data by model merged."""
-        return self._merged_return
+        return self._merged_return_type
+
+    @property
+    def merged_return_model(self) -> Dict[str, Type[BaseModel]]:
+        """Dictionary of data by model merged."""
+        return self._merged_return_model
 
     @property
     def providers_literal(self) -> type:
@@ -292,7 +300,7 @@ class ProviderInterface:
         return standard, extra
 
     def _generate_params_dc(
-        self, registry_map: RegistryMap
+        self, map_: MapType
     ) -> Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]:
         """Generate dataclasses for params.
 
@@ -316,7 +324,7 @@ class ProviderInterface:
         result: Dict = {}
 
         # TODO: Consider multiprocessing this loop to speed startup
-        for model_name, providers in registry_map.map.items():
+        for model_name, providers in map_.items():
             standard, extra = self._extract_params(providers)
 
             result[model_name] = {
@@ -333,9 +341,7 @@ class ProviderInterface:
             }
         return result
 
-    def _generate_model_providers_dc(
-        self, registry_map: RegistryMap
-    ) -> Dict[str, ProviderChoices]:
+    def _generate_model_providers_dc(self, map_: MapType) -> Dict[str, ProviderChoices]:
         """Generate dataclasses for provider choices by model.
 
         This creates a dictionary that maps model names to dataclasses that can be
@@ -349,7 +355,7 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        for model_name, providers in registry_map.map.items():
+        for model_name, providers in map_.items():
             choices = list(providers.keys())
             if "openbb" in choices:
                 choices.remove("openbb")
@@ -363,7 +369,7 @@ class ProviderInterface:
         return result
 
     def _generate_data_dc(
-        self, registry_map: RegistryMap
+        self, map_: MapType
     ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Generate dataclasses for data.
 
@@ -382,8 +388,7 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        # TODO: Consider multiprocessing this loop to speed startup
-        for model_name, providers in registry_map.map.items():
+        for model_name, providers in map_.items():
             standard, extra = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
@@ -400,11 +405,27 @@ class ProviderInterface:
 
         return result
 
-    def _merged_return_model(
-        self, data: Dict[str, Dict[str, Union[StandardData, ExtraData]]]
+    def _merge_return_type(self, map_: MapType) -> Dict[str, type]:
+        """Merge return generic types."""
+        returns: Dict[str, Any] = {}
+        for model_name, providers in map_.items():
+            types_list = []
+            for info in providers.values():
+                ret = info["ReturnType"]
+                if ret:
+                    types_list.append(ret)
+
+            if types_list:
+                returns[model_name] = Union[*types_list]  # type: ignore
+
+        return returns
+
+    def _merge_return_model(
+        self,
+        merged_return_type: Dict[str, type],
+        data: Dict[str, Dict[str, Union[StandardData, ExtraData]]],
     ) -> Dict[str, Type[BaseModel]]:
-        """Merge standard data with extra data into a single BaseModel to benzinga
-        injected as FastAPI dependency."""
+        """Merge standard data with extra data into a single BaseModel to be injected as FastAPI dependency."""
         result: Dict = {}
         for model_name, dataclasses in data.items():
             standard = dataclasses["standard"]
@@ -427,16 +448,14 @@ class ProviderInterface:
             class Config(BaseConfig):
                 extra = Extra.allow
 
-            model = create_model(  # type: ignore
+            ReturnModel = create_model(  # type: ignore
                 model_name,
                 __config__=Config,
                 **fields_dict,  # type: ignore
             )
 
-            # TODO: Get GenericDataType depending on the model
-            # The info needs to be in the registry_map
-            # instead of hardcoding it with Union[..., List[...], Dict[str, ...]]
-            result[model_name] = GenericDataType[model]
+            ReturnType = merged_return_type.get(model_name, GenericDataType)
+            result[model_name] = ReturnType[ReturnModel]  # type: ignore
 
         return result
 
