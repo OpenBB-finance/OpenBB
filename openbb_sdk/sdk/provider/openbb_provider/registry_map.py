@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, TypeVar, Union
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
@@ -73,6 +73,8 @@ class RegistryMap:
                     "ReturnType": return_type,
                 }
 
+        map_ = self.fill_standard_return_type(map_)
+
         return map_
 
     def _get_models(self, map_: MapType) -> List[str]:
@@ -103,3 +105,24 @@ class RegistryMap:
     def extract_return_type(fetcher: Fetcher):
         """Extract return info from fetcher."""
         return getattr(fetcher, "generic_return_type", None)
+
+    @staticmethod
+    def fill_standard_return_type(map_: MapType) -> MapType:
+        """Fill standard return type."""
+
+        T = TypeVar("T")
+        GenericDataType = Union[T, List[T], Dict[str, T]]
+
+        for model_name, providers in map_.items():
+            types_list = []
+            for info in providers.values():
+                ret = info["ReturnType"]
+                if ret:
+                    types_list.append(ret)
+
+            if types_list:
+                map_[model_name]["openbb"]["ReturnType"] = Union[tuple(types_list)]  # type: ignore
+            else:
+                map_[model_name]["openbb"]["ReturnType"] = GenericDataType
+
+        return map_

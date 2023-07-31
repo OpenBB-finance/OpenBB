@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, TypeVar
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
@@ -89,6 +89,9 @@ class PolygonStockNewsFetcher(
         PolygonStockNewsData,
     ]
 ):
+    T = TypeVar("T")
+    generic_return_type = Dict[str, List[T]]
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonStockNewsQueryParams:
         return PolygonStockNewsQueryParams(**params)

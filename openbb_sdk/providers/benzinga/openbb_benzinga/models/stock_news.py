@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, TypeVar
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import get_querystring
@@ -100,6 +100,9 @@ class BenzingaStockNewsFetcher(
         BenzingaStockNewsData,
     ]
 ):
+    T = TypeVar("T")
+    generic_return_type = List[T]
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> BenzingaStockNewsQueryParams:
         return BenzingaStockNewsQueryParams(**params)

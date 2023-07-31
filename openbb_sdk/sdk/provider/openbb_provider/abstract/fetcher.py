@@ -1,7 +1,6 @@
 """Abstract class for the fetcher."""
 
 
-from abc import abstractmethod
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 from openbb_provider.abstract.data import Data

@@ -2,7 +2,6 @@ from dataclasses import dataclass, make_dataclass
 from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
-from openbb_provider.abstract.fetcher import GenericDataType
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
@@ -85,10 +84,7 @@ class ProviderInterface:
         self._model_providers_map = self._generate_model_providers_dc(self._map)
         self._params = self._generate_params_dc(self._map)
         self._data = self._generate_data_dc(self._map)
-        self._merged_return_type = self._merge_return_type(self._map)
-        self._merged_return_model = self._merge_return_model(
-            self._merged_return_type, self._data
-        )
+        self._merged_return_model = self._merge_return_model(self._map, self._data)
 
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
@@ -119,11 +115,6 @@ class ProviderInterface:
     def data(self) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Dictionary of data by model."""
         return self._data
-
-    @property
-    def merged_return_type(self) -> Dict[str, type]:
-        """Dictionary of data by model merged."""
-        return self._merged_return_type
 
     @property
     def merged_return_model(self) -> Dict[str, Type[BaseModel]]:
@@ -405,24 +396,9 @@ class ProviderInterface:
 
         return result
 
-    def _merge_return_type(self, map_: MapType) -> Dict[str, type]:
-        """Merge return generic types."""
-        returns: Dict[str, Any] = {}
-        for model_name, providers in map_.items():
-            types_list = []
-            for info in providers.values():
-                ret = info["ReturnType"]
-                if ret:
-                    types_list.append(ret)
-
-            if types_list:
-                returns[model_name] = Union[tuple(types_list)]  # type: ignore
-
-        return returns
-
     def _merge_return_model(
         self,
-        merged_return_type: Dict[str, type],
+        map_: MapType,
         data: Dict[str, Dict[str, Union[StandardData, ExtraData]]],
     ) -> Dict[str, Type[BaseModel]]:
         """Merge standard data with extra data into a single BaseModel to be injected as FastAPI dependency."""
@@ -454,9 +430,12 @@ class ProviderInterface:
                 **fields_dict,  # type: ignore
             )
 
-            ReturnType = merged_return_type.get(model_name, GenericDataType)
+            ReturnType = map_[model_name]["openbb"]["ReturnType"]
             n_params = len(getattr(ReturnType, "__parameters__", ()))
-            result[model_name] = ReturnType[tuple([ReturnModel] * n_params)]  # type: ignore
+            if n_params:
+                result[model_name] = ReturnType[tuple([ReturnModel] * n_params)]  # type: ignore
+            else:
+                result[model_name] = ReturnModel
 
         return result
 

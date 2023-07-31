@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, TypeVar
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
@@ -40,6 +40,9 @@ class FMPStockNewsFetcher(
         FMPStockNewsData,
     ]
 ):
+    T = TypeVar("T")
+    generic_return_type = List[T]
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockNewsQueryParams:
         return FMPStockNewsQueryParams(**params)
