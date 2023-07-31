@@ -38,7 +38,7 @@ target_column: dict[str, str] = {
     "Vega": "vega",
 }
 strategy_target_column_dict = {
-    "Cost of Postion": "Cost",
+    "Cost of Position": "Cost",
     "Cost as % of Underlying": "Cost Percent",
 }
 surface_choice_dict = {
