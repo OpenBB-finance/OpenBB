@@ -1,6 +1,9 @@
+from typing import Dict
+
+
 class SingletonMeta(type):
     # TODO : check if we want to update this to be thread safe
-    _instances = {}
+    _instances: Dict[object, object] = {}
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:

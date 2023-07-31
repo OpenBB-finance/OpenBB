@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Type
 
 from openbb_provider.abstract.fetcher import Fetcher, GenericDataType
 from openbb_provider.abstract.provider import Provider
@@ -25,7 +25,7 @@ class QueryExecutor:
             )
         return self.registry.providers[name]
 
-    def get_fetcher(self, provider: Provider, model_name: str) -> Fetcher:
+    def get_fetcher(self, provider: Provider, model_name: str) -> Type[Fetcher]:
         """Get a fetcher from a provider."""
         if model_name not in provider.fetcher_dict:
             raise ProviderError(

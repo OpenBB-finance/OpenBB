@@ -4,8 +4,6 @@ import warnings
 from dataclasses import asdict
 from typing import Any, Dict
 
-from openbb_provider.abstract.fetcher import GenericDataType
-
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.provider_interface import (
@@ -61,7 +59,7 @@ class Query:
 
         return filtered
 
-    def execute(self) -> GenericDataType:
+    def execute(self) -> Any:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
