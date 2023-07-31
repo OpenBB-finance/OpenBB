@@ -242,9 +242,10 @@ class StaticCommandRunner:
         return result
 
     @classmethod
-    def __execute(
+    def __command(
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
     ) -> CommandOutput:
+        """Run a command and return the output"""
         try:
             context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
                 warnings.catch_warnings(record=True)
@@ -283,6 +284,7 @@ class StaticCommandRunner:
         route: str,
         **kwargs,
     ) -> None:
+        """Create a chart from the command output"""
         try:
             command_output.chart = cls.charting_manager.chart(
                 user_settings=user_settings,
@@ -305,12 +307,13 @@ class StaticCommandRunner:
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> CommandOutput:
+        """Execute a function and return the output"""
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
         # If we're on Jupyter we need to pop here because we will lose "chart" after
-        # ParametersBuilder.build. This needs to be fixed in a way that chart is not
-        # is added to the function signature and shared for jupyter and api
+        # ParametersBuilder.build. This needs to be fixed in a way that chart is
+        # added to the function signature and shared for jupyter and api
         # We can check in the router decorator if the given function has a chart
         # in the charting extension then we add it there. This way we can remove
         # the chart parameter from the commands.py and package_builder, it will be
@@ -329,7 +332,7 @@ class StaticCommandRunner:
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
 
-        command_output = cls.__execute(
+        command_output = cls.__command(
             system_settings=system_settings,
             func=func,
             kwargs=kwargs,
