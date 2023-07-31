@@ -6,7 +6,9 @@ from openbb_provider.abstract.provider import Provider
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
+from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
+from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_eod import FMPCryptoEODFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
@@ -24,6 +26,7 @@ from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
+from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
 from openbb_fmp.models.major_indices_constituents import (
@@ -58,8 +61,11 @@ fmp_provider = Provider(
         "GlobalNews": FMPGlobalNewsFetcher,
         "StockNews": FMPStockNewsFetcher,
         "IncomeStatement": FMPIncomeStatementFetcher,
+        "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,
         "BalanceSheet": FMPBalanceSheetFetcher,
+        "BalanceSheetGrowth": FMPBalanceSheetGrowthFetcher,
         "CashFlowStatement": FMPCashFlowStatementFetcher,
+        "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
         "ShareStatistics": FMPShareStatisticsFetcher,
         "MajorIndicesEOD": FMPMajorIndicesEODFetcher,
         "RevenueGeographic": FMPRevenueGeographicFetcher,

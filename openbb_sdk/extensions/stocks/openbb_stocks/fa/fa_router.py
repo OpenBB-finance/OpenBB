@@ -33,6 +33,17 @@ def balance(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(model="BalanceSheetGrowth")
+def balance_growth(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Balance Sheet Statement Growth."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command(model="DividendCalendar")
 def cal(
     cc: CommandContext,
@@ -52,6 +63,17 @@ def cash(
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Cash Flow Statement."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
+@router.command(model="CashFlowStatementGrowth")
+def cash_growth(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Cash Flow Statement Growth."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
@@ -188,6 +210,17 @@ def income(
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Income Statement."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
+@router.command(model="IncomeStatementGrowth")
+def income_growth(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Income Statement Growth."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
