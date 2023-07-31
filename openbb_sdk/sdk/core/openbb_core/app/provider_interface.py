@@ -55,8 +55,8 @@ class ProviderInterface:
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
         Dictionary of params by model.
-    merged_return : Dict[str, Type[BaseModel]]
-        Dictionary of data by model.
+    return_schema : Dict[str, Type[BaseModel]]
+        Dictionary of return data schema by model.
     providers_literal : type
         Literal of provider names.
     provider_choices : ProviderChoices
@@ -84,7 +84,7 @@ class ProviderInterface:
         self._model_providers_map = self._generate_model_providers_dc(self._map)
         self._params = self._generate_params_dc(self._map)
         self._data = self._generate_data_dc(self._map)
-        self._merged_return_model = self._merge_return_model(self._data)
+        self._return_schema = self._merge_return_model(self._data)
 
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
@@ -117,9 +117,9 @@ class ProviderInterface:
         return self._data
 
     @property
-    def merged_return_model(self) -> Dict[str, Type[BaseModel]]:
+    def return_schema(self) -> Dict[str, Type[BaseModel]]:
         """Dictionary of data by model merged."""
-        return self._merged_return_model
+        return self._return_schema
 
     @property
     def providers_literal(self) -> type:
