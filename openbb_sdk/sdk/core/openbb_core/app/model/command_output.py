@@ -68,18 +68,19 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             raise OpenBBError("Results not found.")
 
         try:
-            if isinstance(self.results, dict) and all(
-                isinstance(v, list) for v in self.results.values()
-            ):
-                dict_of_df = {
-                    k: basemodel_to_df(v, "date") for k, v in self.results.items()
-                }
-                df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
+            res = self.results
+            if isinstance(res, list):
+                if isinstance(res[0], dict):
+                    for r in res:
+                        dict_of_df = {
+                            k: basemodel_to_df(v, "date") for k, v in r.items()
+                        }
+                        df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
 
-            elif isinstance(self.results, list):
-                df = basemodel_to_df(self.results, "date")
+                else:
+                    df = basemodel_to_df(res, "date")
             else:
-                df = basemodel_to_df(self.results, "date")
+                df = basemodel_to_df(res, "date")
 
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
