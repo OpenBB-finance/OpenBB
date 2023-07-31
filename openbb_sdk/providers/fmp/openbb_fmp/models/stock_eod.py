@@ -1,7 +1,7 @@
 """FMP Stocks end of day fetcher."""
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -63,7 +63,15 @@ class FMPStockEODFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
-        return FMPStockEODQueryParams(**params)
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
+        return FMPStockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
