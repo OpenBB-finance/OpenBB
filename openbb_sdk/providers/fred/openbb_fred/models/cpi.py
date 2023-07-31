@@ -29,7 +29,7 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
     @staticmethod
     def extract_data(
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]]
-    ) -> Dict[str, List[FREDCPIData]]:
+    ) -> List[Dict[str, List[FREDCPIData]]]:
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         all_options = all_cpi_options(query.harmonized)
@@ -47,10 +47,10 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
             clean_temp = [FREDCPIData(**x) for x in temp]
             series_dict[loc] = clean_temp
 
-        return series_dict
+        return [series_dict]
 
     @staticmethod
     def transform_data(
-        data: Dict[str, List[FREDCPIData]]
-    ) -> Dict[str, List[FREDCPIData]]:
+        data: List[Dict[str, List[FREDCPIData]]]
+    ) -> List[Dict[str, List[FREDCPIData]]]:
         return data
