@@ -340,9 +340,8 @@ with st.sidebar:
         st.write("Please enter a valid symbol.")
         ticker_good = False
 
+
 if analysis_type == "Tables" and table_choice == "Chains" and ticker_good is True:
-    # if chains_otm is False:
-    #    chains_df = df.chains[df.chains["expiration"] == expiration_choice]
     if chains_select == "% OTM":
         upper = chains_strikes["call"]
         lower = chains_strikes["put"]
@@ -480,7 +479,14 @@ if analysis_type == "Charts" and ticker_good is True and chart_data_type == "Sta
             )
         )
         ratios_fig = format_plotly(ratios_fig)
-        st.plotly_chart(ratios_fig, use_container_width=True)
+        st.plotly_chart(
+            ratios_fig,
+            use_container_width=True,
+            config=dict(
+                scrollZoom=True,
+                displaylogo=False,
+            ),
+        )
 
 if analysis_type == "Charts" and chart_data_type == "Strikes" and ticker_good is True:
     title = f"{strike_data_point} of {df.symbol} Options @ ${strike_price} Strike Price"
@@ -553,7 +559,14 @@ if analysis_type == "Charts" and chart_data_type == "Strikes" and ticker_good is
         ),
     )
     fig_price_data = format_plotly(fig_price_data)
-    st.plotly_chart(fig_price_data, use_container_width=True)
+    st.plotly_chart(
+        fig_price_data,
+        use_container_width=True,
+        config=dict(
+            scrollZoom=True,
+            displaylogo=False,
+        ),
+    )
 
 if (
     analysis_type == "Charts"
@@ -603,7 +616,14 @@ if (
     fig_strategy.update_xaxes(type="category")
     fig_strategy.update_layout(title=dict(text=title, x=0.5, y=0.97))
     fig_strategy = format_plotly(fig_strategy)
-    st.plotly_chart(fig_strategy, use_container_width=True)
+    st.plotly_chart(
+        fig_strategy,
+        use_container_width=True,
+        config=dict(
+            scrollZoom=True,
+            displaylogo=False,
+        ),
+    )
 
 if (
     analysis_type == "Charts"
@@ -627,7 +647,14 @@ if (
                 orientation="h", yanchor="top", y=1.025, xanchor="center", x=0.5
             )
         )
-        st.plotly_chart(smile_fig, use_container_width=True)
+        st.plotly_chart(
+            smile_fig,
+            use_container_width=True,
+            config=dict(
+                scrollZoom=True,
+                displaylogo=False,
+            ),
+        )
     if vol_choice == "Skew":
         if len(expiration_choice) == 0:
             expiration_choice = df.expirations[2]
@@ -644,7 +671,14 @@ if (
                 orientation="h", yanchor="top", y=1.025, xanchor="center", x=0.5
             )
         )
-        st.plotly_chart(skew_fig, use_container_width=True)
+        st.plotly_chart(
+            skew_fig,
+            use_container_width=True,
+            config=dict(
+                scrollZoom=True,
+                displaylogo=False,
+            ),
+        )
     if vol_choice == "Surface":
         dte_ranges = df.chains.dte.unique().tolist()
         col1, col2, col3, col4 = st.columns(4)
