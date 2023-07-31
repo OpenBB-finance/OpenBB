@@ -1,6 +1,4 @@
 """Polygon provider module."""
-
-
 from openbb_provider.abstract.provider import Provider
 
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
@@ -13,7 +11,6 @@ from openbb_polygon.models.major_indices_eod import PolygonMajorIndicesEODFetche
 from openbb_polygon.models.stock_eod import PolygonStockEODFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
-# mypy: disable-error-code="list-item"
 polygon_provider = Provider(
     name="polygon",
     description="Provider for Polygon.",

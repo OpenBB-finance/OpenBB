@@ -1,6 +1,4 @@
 """FMP Provider module."""
-
-
 from openbb_provider.abstract.provider import Provider
 
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
@@ -48,8 +46,6 @@ from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
-
-# mypy: disable-error-code="list-item"
 
 fmp_provider = Provider(
     name="fmp",
