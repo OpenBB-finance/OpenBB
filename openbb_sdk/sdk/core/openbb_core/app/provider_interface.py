@@ -416,7 +416,7 @@ class ProviderInterface:
                     types_list.append(ret)
 
             if types_list:
-                returns[model_name] = Union[*types_list]  # type: ignore
+                returns[model_name] = Union[tuple(types_list)]  # type: ignore
 
         return returns
 
@@ -455,7 +455,8 @@ class ProviderInterface:
             )
 
             ReturnType = merged_return_type.get(model_name, GenericDataType)
-            result[model_name] = ReturnType[ReturnModel]  # type: ignore
+            n_params = len(getattr(ReturnType, "__parameters__", ()))
+            result[model_name] = ReturnType[tuple([ReturnModel] * n_params)]  # type: ignore
 
         return result
 

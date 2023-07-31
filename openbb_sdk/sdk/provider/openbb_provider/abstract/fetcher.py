@@ -1,6 +1,7 @@
 """Abstract class for the fetcher."""
 
 
+from abc import abstractmethod
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 from openbb_provider.abstract.data import Data
@@ -77,6 +78,8 @@ class Fetcher(
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[3]
 
-    # TODO: Create abstract class attribute for generic return type
     # @property
+    # @abstractmethod
     # def generic_return_type(self):
+    #     """Get the type of the generic return."""
+    #     raise NotImplementedError
