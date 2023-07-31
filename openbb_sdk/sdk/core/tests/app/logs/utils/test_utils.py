@@ -1,10 +1,9 @@
-import pytest
 import uuid
 from pathlib import Path
-
 from unittest.mock import patch
 
-from openbb_core.app.logs.utils.utils import get_session_id, get_app_id, get_log_dir
+import pytest
+from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 
 ## get_session_id
 

@@ -2,6 +2,7 @@ import os
 import tempfile
 from pathlib import Path
 from time import time
+from unittest.mock import MagicMock
 
 import pytest
 from openbb_core.app.logs.utils.expired_files import (
@@ -9,8 +10,6 @@ from openbb_core.app.logs.utils.expired_files import (
     get_timestamp_from_x_days,
     remove_file_list,
 )
-
-from unittest.mock import MagicMock
 
 
 @pytest.fixture

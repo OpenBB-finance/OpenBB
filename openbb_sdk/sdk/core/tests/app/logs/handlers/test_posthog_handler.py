@@ -1,11 +1,11 @@
+import logging
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 from openbb_core.app.logs.handlers.posthog_handler import (
     PosthogHandler,
 )
-import logging
 
 
 class MockLoggingSettings:
