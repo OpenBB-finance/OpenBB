@@ -138,5 +138,5 @@ class FMPBalanceSheetFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPBalanceSheetData],
-    ) -> List[BalanceSheetData]:
+    ) -> List[FMPBalanceSheetData]:
         return data

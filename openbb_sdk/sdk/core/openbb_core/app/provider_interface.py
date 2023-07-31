@@ -138,7 +138,7 @@ class ProviderInterface:
 
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
-        return self._query_executor(self._registry_map.registry)
+        return self._query_executor(self._registry_map.registry)  # type: ignore
 
     @staticmethod
     def _merge_fields(
