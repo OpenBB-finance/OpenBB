@@ -37,7 +37,7 @@ def test_get_timestamp_from_x_days():
 # Test case when all files are expired
 def test_all_files_expired(temp_test_files):
     temp_dir, temp_files = temp_test_files
-    before_timestamp = time() + 3 * 86400  # timestmap 3 days from now
+    before_timestamp = time() + 3 * 86400  # timestamp 3 days from now
     expired_files = get_expired_file_list(Path(temp_dir), before_timestamp)
     assert set(expired_files) == set(temp_files)
 
@@ -57,10 +57,10 @@ def test_some_files_expired(temp_test_files):
     # add temp file to temp_dir with timestamp in the future
     temp_file = Path(temp_dir) / "file4.txt"
     temp_file.touch()
-    time_in_future = time() + 4 * 86400  # timestmap 4 days from now
+    time_in_future = time() + 4 * 86400  # timestamp 4 days from now
     os.utime(temp_file, times=(time_in_future, time_in_future))
 
-    before_timestamp = time() + 3 * 86400  # timestmap 3 days from now
+    before_timestamp = time() + 3 * 86400  # timestamp 3 days from now
     expired_files = get_expired_file_list(Path(temp_dir), before_timestamp)
     assert len(expired_files) == 3
 
