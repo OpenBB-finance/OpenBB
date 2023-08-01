@@ -98,7 +98,7 @@ class PolygonMajorIndicesEODFetcher(
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 
-        if "results" not in data.keys() or len(data["results"]) == 0:
+        if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
         data = data["results"]
