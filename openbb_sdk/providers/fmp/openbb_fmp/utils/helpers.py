@@ -10,7 +10,6 @@ import requests
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import QueryParamsType
 from openbb_provider.helpers import (
-    BasicResponse,
     get_querystring,
 )
 from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
