@@ -181,7 +181,7 @@ export default function Table({
             : columns[0];
           const indexValue = indexLabel ? row[indexLabel] : null;
           const value = row[column];
-          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
+          const only_numbers = value?.toString()?.split(".")?.pop()?.replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
             only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
@@ -219,7 +219,7 @@ export default function Table({
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
-          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
+          const only_numbers = value?.toString()?.split(".")?.pop()?.replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
             only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
