@@ -15,8 +15,8 @@ class Registry:
     def providers(self):
         return self._providers
 
-    def include_provider(self, name: str, provider: Provider) -> None:
-        self._providers[name.lower()] = provider
+    def include_provider(self, provider: Provider) -> None:
+        self._providers[provider.name.lower()] = provider
 
 
 class ExtensionError(Exception):
@@ -30,7 +30,6 @@ class RegistryLoader:
         for entry_point in pkg_resources.iter_entry_points("openbb_provider_extension"):
             try:
                 registry.include_provider(
-                    name=entry_point.name,
                     provider=entry_point.load(),
                 )
             except Exception as e:
