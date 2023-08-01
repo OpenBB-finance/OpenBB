@@ -84,7 +84,7 @@ class ProviderInterface:
         self._model_providers_map = self._generate_model_providers_dc(self._map)
         self._params = self._generate_params_dc(self._map)
         self._data = self._generate_data_dc(self._map)
-        self._return_schema = self._merge_return_model(self._data)
+        self._return_schema = self._generate_return_schema(self._data)
 
         self._providers_literal = self._get_provider_literal(
             self._registry_map.available_providers
@@ -396,7 +396,7 @@ class ProviderInterface:
 
         return result
 
-    def _merge_return_model(
+    def _generate_return_schema(
         self,
         data: Dict[str, Dict[str, Union[StandardData, ExtraData]]],
     ) -> Dict[str, Type[BaseModel]]:
