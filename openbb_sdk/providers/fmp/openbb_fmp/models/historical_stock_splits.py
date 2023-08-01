@@ -1,6 +1,7 @@
 """FMP Historical Stock Splits fetcher."""
 
 
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -11,21 +12,22 @@ from openbb_provider.models.historical_stock_splits import (
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
+from pydantic import validator
+
 
 class FMPHistoricalStockSplitsQueryParams(HistoricalStockSplitsQueryParams):
-    """FMP Historical Stock Splits query.
+    """FMP Historical Stock Splits Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/historical-stock-splits-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
 class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
-    """FMP Historical Stock Splits data."""
+    """FMP Historical Stock Splits Data."""
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v: str):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
 class FMPHistoricalStockSplitsFetcher(
