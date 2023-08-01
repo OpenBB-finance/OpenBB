@@ -3,12 +3,12 @@
 
 from datetime import date as dateType
 
-from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.abstract.data import Data
-from openbb_provider.models.base import BaseSymbol
-from openbb_provider.metadata import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
-
 from pydantic import Field
+
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.metadata import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_provider.models.base import BaseSymbol
 
 
 class CashFlowStatementGrowthQueryParams(QueryParams, BaseSymbol):

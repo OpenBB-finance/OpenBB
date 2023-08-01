@@ -9,9 +9,9 @@ from openbb_provider.models.income_statement_growth import (
     IncomeStatementGrowthData,
     IncomeStatementGrowthQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
-
 from pydantic import validator
+
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):

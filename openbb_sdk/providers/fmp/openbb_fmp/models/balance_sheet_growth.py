@@ -9,9 +9,9 @@ from openbb_provider.models.balance_sheet_growth import (
     BalanceSheetGrowthData,
     BalanceSheetGrowthQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
-
 from pydantic import validator
+
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
