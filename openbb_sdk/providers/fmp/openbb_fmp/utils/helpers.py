@@ -1,7 +1,9 @@
 """FMP Helpers Module."""
 
 
+import json
 from datetime import datetime
+from io import StringIO
 from typing import List, Optional, Type, TypeVar, Union
 
 import requests
@@ -15,6 +17,17 @@ from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
+
+
+class BasicResponse:
+    def __init__(self, response: StringIO):
+        # Find a way to get the status code
+        self.status_code = 200
+        response.seek(0)
+        self.text = response.read()
+
+    def json(self) -> dict:
+        return json.loads(self.text)
 
 
 def request(url: str) -> BasicResponse:
