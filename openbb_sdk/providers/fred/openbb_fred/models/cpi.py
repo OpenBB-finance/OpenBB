@@ -8,8 +8,6 @@ from openbb_fred.utils.fred_helpers import all_cpi_options
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.cpi import CPIData, CPIQueryParams
 
-# T = TypeVar("T")
-
 
 class FREDCPIQueryParams(CPIQueryParams):
     """CPI query."""
