@@ -32,15 +32,6 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return "&".join([f"{k}={v}" for k, v in params.items()])
 
 
-def extract_data(schema, data: list):
-    new_data: Dict[str, list] = {x: [] for x in schema.__fields__}
-    for item in data:
-        for key, value in item.items():
-            if key in new_data:
-                new_data[key].append(value)
-    return schema(**new_data)
-
-
 def process(
     row: ProviderDataType, key: str, processors: Optional[Dict[str, Callable]] = None
 ):
