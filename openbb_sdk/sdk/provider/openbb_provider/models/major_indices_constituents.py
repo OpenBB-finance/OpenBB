@@ -4,55 +4,41 @@
 from datetime import date
 from typing import Literal, Optional, Union
 
-from pydantic import Field
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.metadata import QUERY_DESCRIPTIONS
+from openbb_provider.models.base import BaseSymbol
+
+from pydantic import Field
 
 
 class MajorIndicesConstituentsQueryParams(QueryParams):
-    """Major Indices Constituents query.
-
-    Parameter
-    ---------
-    index : Literal['nasdaq', 'sp500', 'dowjones']
-        The index for which we want to fetch the constituents. Default is 'dowjones'.
-    """
+    """Major Indices Constituents Query."""
 
     index: Literal["nasdaq", "sp500", "dowjones"] = Field(
-        description=QUERY_DESCRIPTIONS.get("index", ""),
         default="dowjones",
+        description="The index for which we want to fetch the constituents.",
     )
 
 
-class MajorIndicesConstituentsData(Data):
-    """Major Indices Constituents price data.
+class MajorIndicesConstituentsData(Data, BaseSymbol):
+    """Major Indices Constituents Data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the constituent company in the index.
-    name : str
-        The name of the constituent company in the index.
-    sector : str
-        The sector the constituent company in the index belongs to.
-    subSector : str
-        The sub-sector the constituent company in the index belongs to.
-    headQuarter : str
-        The location of the headquarter of the constituent company in the index.
-    dateFirstAdded : date
-        The date the constituent company was added to the index.
-    cik : int
-        The Central Index Key of the constituent company in the index.
-    founded : date
-        The founding year of the constituent company in the index.
-    """
-
-    name: str
-    sector: str
-    subSector: Optional[str] = Field(alias="sub_sector")
-    headQuarter: Optional[str] = Field(alias="headquarter")
-    dateFirstAdded: Optional[Union[date, str]] = Field(alias="date_first_added")
-    cik: int
-    founded: Union[date, str]
+    name: str = Field(description="The name of the constituent company in the index.")
+    sector: str = Field(
+        description="The sector the constituent company in the index belongs to."
+    )
+    sub_sector: Optional[str] = Field(
+        description="The sub-sector the constituent company in the index belongs to."
+    )
+    headquarter: Optional[str] = Field(
+        description="The location of the headquarter of the constituent company in the index."
+    )
+    date_first_added: Optional[Union[date, str]] = Field(
+        description="The date the constituent company was added to the index."
+    )
+    cik: int = Field(
+        description="The Central Index Key of the constituent company in the index."
+    )
+    founded: Union[date, str] = Field(
+        description="The founding year of the constituent company in the index."
+    )
