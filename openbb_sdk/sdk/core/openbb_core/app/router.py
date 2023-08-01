@@ -321,7 +321,9 @@ class CommandMap:
         self._provider_coverage = self.get_provider_coverage(
             router=self._router, sep=coverage_sep
         )
-        self._command_coverage = self.get_command_coverage(router=self._router, sep=sep)
+        self._command_coverage = self.get_command_coverage(
+            router=self._router, sep=coverage_sep
+        )
 
     @property
     def map(self) -> Dict[str, Callable]:
