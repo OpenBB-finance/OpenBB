@@ -23,4 +23,5 @@ DATA_DESCRIPTIONS = {
     "close": "The close price of the symbol.",
     "volume": "The volume of the symbol.",
     "adj_close": "The adjusted close price of the symbol.",
+    "vwap": "Volume Weighted Average Price of the symbol.",
 }

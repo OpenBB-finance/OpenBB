@@ -1,6 +1,6 @@
 {
     "crypto_load": "/crypto/load",
-    "__commands__": "",
+    "__extensions__": "",
     "crypto": "/crypto",
     "economy_corecpi": "/economy/corecpi",
     "economy": "/economy",

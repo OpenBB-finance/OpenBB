@@ -1,11 +1,10 @@
 """FMP Forex end of day fetcher."""
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
 
@@ -22,7 +21,6 @@ class FMPForexEODQueryParams(ForexEODQueryParams):
 class FMPForexEODData(ForexEODData):
     """FMP Forex end of day Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     adjClose: float = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
     )
@@ -35,9 +33,6 @@ class FMPForexEODData(ForexEODData):
     )
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
-    )
-    vwap: Optional[float] = Field(
-        description="Volume Weighted Average Price of the symbol."
     )
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
@@ -60,7 +55,14 @@ class FMPForexEODFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPForexEODQueryParams:
-        return FMPForexEODQueryParams(**params)
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return FMPForexEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

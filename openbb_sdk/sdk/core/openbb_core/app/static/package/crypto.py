@@ -57,6 +57,8 @@ class CLASS_crypto(Container):
 
         CryptoEOD
         ---------
+        date : datetime
+            The date of the data.
         open : PositiveFloat
             The open price of the symbol.
         high : PositiveFloat
@@ -67,6 +69,8 @@ class CLASS_crypto(Container):
             The close price of the symbol.
         volume : PositiveFloat
             The volume of the symbol.
+        vwap : PositiveFloat
+            Volume Weighted Average Price of the symbol.
 
         fmp
         ===
@@ -79,8 +83,6 @@ class CLASS_crypto(Container):
 
         CryptoEOD
         ---------
-        date : datetime
-            The date of the data.
         adjClose : float
             Adjusted Close Price of the symbol.
         unadjustedVolume : float
@@ -89,8 +91,6 @@ class CLASS_crypto(Container):
             Change in the price of the symbol from the previous day.
         changePercent : float
             Change \% in the price of the symbol.
-        vwap : float
-            Volume Weighted Average Price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
@@ -115,12 +115,8 @@ class CLASS_crypto(Container):
 
         CryptoEOD
         ---------
-        t : datetime
-            The timestamp of the data.
         n : PositiveInt
-            The number of transactions for the symbol in the time period.
-        vw : PositiveFloat
-            The volume weighted average price of the symbol."""
+            The number of transactions for the symbol in the time period."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

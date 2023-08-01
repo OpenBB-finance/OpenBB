@@ -10,7 +10,7 @@ from openbb_core.app.static.coverage import Coverage
 def create_app():
     try:
         # pylint: disable=import-outside-toplevel
-        from openbb_core.app.static.package.__commands__ import Commands
+        from openbb_core.app.static.package.__extensions__ import Extensions
     except ImportError as e:
         raise Exception(
             "If you are seeing this exception, you should probably be doing: "
@@ -18,7 +18,7 @@ def create_app():
             "PackageBuilder.build()"
         ) from e
 
-    class App(Commands):
+    class App(Extensions):
         """Here you can access all the basic utility menus and extensions.
 
         Basic utility menus:

@@ -1123,11 +1123,19 @@ class CLASS_stocks_fa(Container):
         HistoricalDividends
         -------------------
         date : date
-            None
+            The date of the historical dividends.
         label : str
-            None
+            The label of the historical dividends.
+        adj_dividend : float
+            The adjusted dividend of the historical dividends.
         dividend : float
-            None
+            The dividend of the historical dividends.
+        record_date : Optional[date]
+            The record date of the historical dividends.
+        payment_date : Optional[date]
+            The payment date of the historical dividends.
+        declaration_date : Optional[date]
+            The declaration date of the historical dividends.
 
         fmp
         ===
@@ -1139,14 +1147,7 @@ class CLASS_stocks_fa(Container):
 
         HistoricalDividends
         -------------------
-        adjDividend : float
-            None
-        recordDate : Optional[date]
-            None
-        paymentDate : Optional[date]
-            None
-        declarationDate : Optional[date]
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2565,6 +2566,7 @@ class CLASS_stocks_fa(Container):
     def own(
         self,
         symbol: str,
+        include_current_quarter: bool = False,
         date: Optional[datetime.date] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -2582,8 +2584,10 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
+        include_current_quarter : bool
+            Include current quarter data.
         date : Optional[date]
-            None
+            A specific date to get data for.
 
         Returns
         -------
@@ -2603,95 +2607,96 @@ class CLASS_stocks_fa(Container):
         InstitutionalOwnership
         ----------------------
         symbol : ConstrainedStrValue
-            None
-        cik : ConstrainedStrValue
-            None
+            Symbol to get data for.
+        cik : Optional[str]
+            The CIK of the company.
         date : date
-            None
+            The date of the data.
+        investors_holding : int
+            The number of investors holding the stock.
+        last_investors_holding : int
+            The number of investors holding the stock in the last quarter.
+        investors_holding_change : int
+            The change in the number of investors holding the stock.
+        number_of_13f_shares : Optional[int]
+            The number of 13F shares.
+        last_number_of_13f_shares : Optional[int]
+            The number of 13F shares in the last quarter.
+        number_of_13f_shares_change : Optional[int]
+            The change in the number of 13F shares.
+        total_invested : float
+            The total amount invested.
+        last_total_invested : float
+            The total amount invested in the last quarter.
+        total_invested_change : float
+            The change in the total amount invested.
+        ownership_percent : float
+            The ownership percent.
+        last_ownership_percent : float
+            The ownership percent in the last quarter.
+        ownership_percent_change : float
+            The change in the ownership percent.
+        new_positions : int
+            The number of new positions.
+        last_new_positions : int
+            The number of new positions in the last quarter.
+        new_positions_change : int
+            he change in the number of new positions.
+        increased_positions : int
+            The number of increased positions.
+        last_increased_positions : int
+            The number of increased positions in the last quarter.
+        increased_positions_change : int
+            The change in the number of increased positions.
+        closed_positions : int
+            The number of closed positions.
+        last_closed_positions : int
+            The number of closed positions in the last quarter.
+        closed_positions_change : int
+            The change in the number of closed positions.
+        reduced_positions : int
+            The number of reduced positions.
+        last_reduced_positions : int
+            The number of reduced positions in the last quarter.
+        reduced_positions_change : int
+            The change in the number of reduced positions.
+        total_calls : int
+            Total number of call options contracts traded for Apple Inc. on the specified date.
+        last_total_calls : int
+            Total number of call options contracts traded for Apple Inc. on the previous reporting date.
+        total_calls_change : int
+            Change in the total number of call options contracts traded between the current and previous reporting dates.
+        total_puts : int
+            Total number of put options contracts traded for Apple Inc. on the specified date.
+        last_total_puts : int
+            Total number of put options contracts traded for Apple Inc. on the previous reporting date.
+        total_puts_change : int
+            Change in the total number of put options contracts traded between the current and previous reporting dates.
+        put_call_ratio : float
+            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
+        last_put_call_ratio : float
+            The put-call ratio on the previous reporting date.
+        put_call_ratio_change : float
+            Change in the put-call ratio between the current and previous reporting dates.
 
         fmp
         ===
 
         Parameters
         ----------
-        includeCurrentQuarter : bool
-            None
+        All fields are standardized.
 
 
         InstitutionalOwnership
         ----------------------
-        investorsHolding : int
-            None
-        lastInvestorsHolding : int
-            None
-        investorsHoldingChange : int
-            None
-        numberOf13Fshares : int
-            None
-        lastNumberOf13Fshares : int
-            None
-        numberOf13FsharesChange : int
-            None
-        totalInvested : float
-            None
-        lastTotalInvested : float
-            None
-        totalInvestedChange : float
-            None
-        ownershipPercent : float
-            None
-        lastOwnershipPercent : float
-            None
-        ownershipPercentChange : float
-            None
-        newPositions : int
-            None
-        lastNewPositions : int
-            None
-        newPositionsChange : int
-            None
-        increasedPositions : int
-            None
-        lastIncreasedPositions : int
-            None
-        increasedPositionsChange : int
-            None
-        closedPositions : int
-            None
-        lastClosedPositions : int
-            None
-        closedPositionsChange : int
-            None
-        reducedPositions : int
-            None
-        lastReducedPositions : int
-            None
-        reducedPositionsChange : int
-            None
-        totalCalls : int
-            None
-        lastTotalCalls : int
-            None
-        totalCallsChange : int
-            None
-        totalPuts : int
-            None
-        lastTotalPuts : int
-            None
-        totalPutsChange : int
-            None
-        putCallRatio : float
-            None
-        lastPutCallRatio : float
-            None
-        putCallRatioChange : float
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
                 "symbol": symbol,
+                "include_current_quarter": include_current_quarter,
                 "date": date,
             },
             extra_params=kwargs,
