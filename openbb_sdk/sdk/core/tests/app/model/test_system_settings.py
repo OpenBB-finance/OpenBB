@@ -1,7 +1,8 @@
-from openbb_core.app.model.system_settings import SystemSettings
 import os
-import pytest
 from unittest.mock import patch
+
+import pytest
+from openbb_core.app.model.system_settings import SystemSettings
 
 
 def test_system_settings():
