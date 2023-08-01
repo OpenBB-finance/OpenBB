@@ -16,7 +16,6 @@ from openbb_fmp.models.esg_risk_rating import FMPESGRiskRatingFetcher
 from openbb_fmp.models.esg_score import FMPESGScoreFetcher
 from openbb_fmp.models.esg_sector import FMPESGSectorFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
-from openbb_fmp.models.executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.forex_eod import FMPForexEODFetcher
 from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
@@ -26,6 +25,7 @@ from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFe
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
+from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
 from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
