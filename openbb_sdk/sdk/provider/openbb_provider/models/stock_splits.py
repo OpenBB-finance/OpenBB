@@ -12,15 +12,7 @@ from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 
 
 class StockSplitCalendarQueryParams(QueryParams):
-    """Stock Split Calendar query model.
-
-    Parameter
-    ---------
-    start_date : date
-        The start date of the stock splits from which to retrieve the data.
-    end_date : date
-        The end date of the stock splits up to which to retrieve the data.
-    """
+    """Stock Split Calendar query model."""
 
     start_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -31,24 +23,10 @@ class StockSplitCalendarQueryParams(QueryParams):
 
 
 class StockSplitCalendarData(Data):
-    """Stock Split Calendar data.
+    """Stock Split Calendar data."""
 
-    Returns
-    -------
-    date : date
-        The date of the stock splits.
-    label : str
-        The label of the stock splits.
-    symbol : str
-        The symbol of the company.
-    numerator : float
-        The numerator of the stock splits.
-    denominator : float
-        The denominator of the stock splits.
-    """
-
-    date: dateType
-    label: str
-    symbol: str
-    numerator: float
-    denominator: float
+    date: dateType = Field(description="The date of the stock splits.")
+    label: str = Field(description="The label of the stock splits.")
+    symbol: str = Field(description="The symbol of the company.")
+    numerator: float = Field(description="The numerator of the stock splits.")
+    denominator: float = Field(description="The denominator of the stock splits.")

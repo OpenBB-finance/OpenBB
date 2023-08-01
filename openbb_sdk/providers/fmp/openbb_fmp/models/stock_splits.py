@@ -17,17 +17,7 @@ class FMPStockSplitCalendarQueryParams(StockSplitCalendarQueryParams):
     """FMP Stock Split Calendar query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
-
-    Parameter
-    ---------
-    start_date : date
-        The start date of the stock splits from which to retrieve the data.
-    end_date : date
-        The end date of the stock splits up to which to retrieve the data.
     """
-
-    start_date: date
-    end_date: date
 
 
 class FMPStockSplitCalendarData(StockSplitCalendarData):

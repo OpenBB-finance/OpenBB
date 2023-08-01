@@ -4,7 +4,6 @@ import datetime
 import typing
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -970,8 +969,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def comsplit(
         self,
-        start_date: Union[datetime.date, str],
-        end_date: Union[datetime.date, str],
+        start_date: Union[datetime.date, None, str] = None,
+        end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -986,10 +985,10 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        start_date : date
-            None
-        end_date : date
-            None
+        start_date : Optional[date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[date]
+            End date of the data, in YYYY-MM-DD format.
 
         Returns
         -------
@@ -1009,15 +1008,15 @@ class CLASS_stocks_fa(Container):
         StockSplitCalendar
         ------------------
         date : date
-            None
+            The date of the stock splits.
         label : str
-            None
+            The label of the stock splits.
         symbol : str
-            None
+            The symbol of the company.
         numerator : float
-            None
+            The numerator of the stock splits.
         denominator : float
-            None
+            The denominator of the stock splits.
 
         fmp
         ===
@@ -1980,13 +1979,34 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def ins(
         self,
-        transactionType: List[
-            openbb_provider.models.stock_insider_trading.TransactionTypes
-        ] = [],
-        symbol: Optional[str] = None,
+        symbol: str,
+        transactionType: Optional[
+            List[
+                Literal[
+                    "A-Award",
+                    "C-Conversion",
+                    "D-Return",
+                    "E-ExpireShort",
+                    "F-InKind",
+                    "G-Gift",
+                    "H-ExpireLong",
+                    "I-Discretionary",
+                    "J-Other",
+                    "L-Small",
+                    "M-Exempt",
+                    "O-OutOfTheMoney",
+                    "P-Purchase",
+                    "S-Sale",
+                    "U-Tender",
+                    "W-Will",
+                    "X-InTheMoney",
+                    "Z-Trust",
+                ]
+            ]
+        ] = ["P-Purchase"],
         reportingCik: Optional[int] = None,
         companyCik: Optional[int] = None,
-        page: int = 0,
+        page: Optional[int] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2001,16 +2021,16 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        transactionType : List[TransactionTypes]
-            None
-        symbol : Optional[str]
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
+            The type of the transaction.
         reportingCik : Optional[int]
-            None
+            The CIK of the reporting owner.
         companyCik : Optional[int]
-            None
-        page : int
-            None
+            The CIK of the company owner.
+        page : Optional[int]
+            The page number of the data to fetch.
 
         Returns
         -------
@@ -2029,12 +2049,36 @@ class CLASS_stocks_fa(Container):
 
         StockInsiderTrading
         -------------------
-        symbol : str
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        filing_date : datetime
+            The filing date of the stock insider trading.
+        transaction_date : date
+            The transaction date of the stock insider trading.
+        reporting_cik : int
+            The reporting CIK of the stock insider trading.
+        transaction_type : str
+            The transaction type of the stock insider trading.
+        securities_owned : int
+            The securities owned of the stock insider trading.
+        company_cik : int
+            The company CIK of the stock insider trading.
+        reporting_name : str
+            The reporting name of the stock insider trading.
+        type_of_owner : str
+            The type of owner of the stock insider trading.
+        acquistion_or_disposition : str
+            The acquistion or disposition of the stock insider trading.
+        form_type : str
+            The form type of the stock insider trading.
+        securities_transacted : float
+            The securities transacted of the stock insider trading.
         price : float
-            None
+            The price of the stock insider trading.
+        security_name : str
+            The security name of the stock insider trading.
         link : str
-            None
+            The link of the stock insider trading.
 
         fmp
         ===
@@ -2046,37 +2090,14 @@ class CLASS_stocks_fa(Container):
 
         StockInsiderTrading
         -------------------
-        filingDate : datetime
-            None
-        transactionDate : date
-            None
-        reportingCik : int
-            None
-        transactionType : str
-            None
-        securitiesOwned : int
-            None
-        companyCik : int
-            None
-        reportingName : str
-            None
-        typeOfOwner : str
-            None
-        acquistionOrDisposition : str
-            None
-        formType : str
-            None
-        securitiesTransacted : float
-            None
-        securityName : str
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "transactionType": transactionType,
                 "symbol": symbol,
+                "transactionType": transactionType,
                 "reportingCik": reportingCik,
                 "companyCik": companyCik,
                 "page": page,
