@@ -1,9 +1,8 @@
-from openbb_core.app.model.command_output import CommandOutput, OpenBBError, Chart
+from unittest.mock import MagicMock, patch
 
-import pytest
 import pandas as pd
-
-from unittest.mock import patch, MagicMock
+import pytest
+from openbb_core.app.model.command_output import Chart, CommandOutput, OpenBBError
 
 
 def test_command_output():

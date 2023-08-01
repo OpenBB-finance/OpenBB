@@ -1,7 +1,7 @@
 from openbb_core.app.model.command_context import (
     CommandContext,
-    UserSettings,
     SystemSettings,
+    UserSettings,
 )
 
 

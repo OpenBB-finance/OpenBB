@@ -1,6 +1,6 @@
-from openbb_core.app.model.user_settings import UserSettings
-
 from unittest.mock import MagicMock
+
+from openbb_core.app.model.user_settings import UserSettings
 
 
 def test_user_settings():

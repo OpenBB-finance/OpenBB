@@ -1,6 +1,5 @@
-from unittest.mock import patch
-
 import typing
+from unittest.mock import patch
 
 
 def test_credentials():

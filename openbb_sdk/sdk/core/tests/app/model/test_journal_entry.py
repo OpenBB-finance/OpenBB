@@ -1,8 +1,6 @@
-from openbb_core.app.model.journal_entry import JournalEntry
-
-from unittest.mock import Mock
-
 import datetime
+
+from openbb_core.app.model.journal_entry import JournalEntry
 
 
 def test_journal_entry():
