@@ -13,12 +13,17 @@ class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
     """FMP Risk Premium query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/market-risk-premium-api/
-
     """
 
 
 class FMPRiskPremiumData(RiskPremiumData):
     """FMP Risk Premium data."""
+
+    class Config:
+        fields = {
+            "total_equity_risk_premium": "totalEquityRiskPremium",
+            "country_risk_premium": "countryRiskPremium",
+        }
 
 
 class FMPRiskPremiumFetcher(
@@ -38,7 +43,9 @@ class FMPRiskPremiumFetcher(
         query: FMPRiskPremiumQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPRiskPremiumData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
+
         url = create_url(4, "market_risk_premium", api_key)
+
         return get_data_many(url, FMPRiskPremiumData)
 
     @staticmethod

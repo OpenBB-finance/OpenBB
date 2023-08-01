@@ -3,28 +3,24 @@
 
 from typing import Optional
 
-from pydantic import Field, NonNegativeFloat, PositiveFloat
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
+from pydantic import Field, NonNegativeFloat, PositiveFloat
+
 
 class RiskPremiumQueryParams(QueryParams):
-    """Risk Premium query."""
+    """Risk Premium Query."""
 
 
 class RiskPremiumData(Data):
-    """Risk Premium data.
+    """Risk Premium Data."""
 
-    Returns
-    -------
-    country : str
-    continent : str
-    totalEquityRiskPremium : PositiveFloat
-    countryRiskPremium : PositiveFloat
-    """
-
-    country: str
-    continent: Optional[str]
-    totalEquityRiskPremium: PositiveFloat = Field(alias="total_equity_risk_premium")
-    countryRiskPremium: NonNegativeFloat = Field(alias="country_risk_premium")
+    country: str = Field(description="Market country.")
+    continent: Optional[str] = Field(description="Continent of the country.")
+    total_equity_risk_premium: PositiveFloat = Field(
+        description="The total equity risk premium for the country."
+    )
+    country_risk_premium: NonNegativeFloat = Field(
+        description="The country-specific risk premium."
+    )
