@@ -1313,11 +1313,23 @@ class CLASS_stocks_fa(Container):
         HistoricalEmployees
         -------------------
         symbol : ConstrainedStrValue
-            None
+            Symbol to get data for.
         cik : int
-            None
+            The CIK of the company to retrieve the historical employees of.
+        acceptance_time : datetime
+            The time of acceptance of the company employee.
+        period_of_report : date
+            The date of reporting of the company employee.
+        company_name : str
+            The registered name of the company to retrieve the historical employees of.
+        form_type : str
+            The form type of the company employee.
+        filing_date : date
+            The filing date of the company employee
+        employee_count : int
+            The count of employees of the company.
         source : str
-            None
+            The source URL which retrieves this data for the company.
 
         fmp
         ===
@@ -1329,18 +1341,7 @@ class CLASS_stocks_fa(Container):
 
         HistoricalEmployees
         -------------------
-        acceptanceTime : datetime
-            None
-        periodOfReport : date
-            None
-        companyName : str
-            None
-        formType : str
-            None
-        filingDate : date
-            None
-        employeeCount : int
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2307,11 +2308,6 @@ class CLASS_stocks_fa(Container):
     def mgmt(
         self,
         symbol: str,
-        key_executive_name: Optional[str] = None,
-        key_executive_title: Optional[str] = None,
-        key_executive_title_since: Optional[datetime.datetime] = None,
-        key_executive_year_born: Optional[datetime.datetime] = None,
-        key_executive_gender: Optional[str] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2328,16 +2324,6 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
-        key_executive_name : Optional[str]
-            None
-        key_executive_title : Optional[str]
-            None
-        key_executive_title_since : Optional[datetime]
-            None
-        key_executive_year_born : Optional[datetime]
-            None
-        key_executive_gender : Optional[str]
-            None
 
         Returns
         -------
@@ -2356,12 +2342,20 @@ class CLASS_stocks_fa(Container):
 
         KeyExecutives
         -------------
-        name : str
-            None
         title : str
-            None
+            Designation of the key executive.
+        name : str
+            Name of the key executive.
+        pay : Optional[int]
+            Pay of the key executive.
+        currency_pay : str
+            The currency of the pay.
         gender : Optional[str]
-            None
+            Gender of the key executive.
+        year_born : Optional[str]
+            Birth year of the key executive.
+        title_since : Optional[int]
+            Date the tile was held since.
 
         fmp
         ===
@@ -2373,21 +2367,13 @@ class CLASS_stocks_fa(Container):
 
         KeyExecutives
         -------------
-        titleSince : Optional[datetime]
-            None
-        yearBorn : Optional[datetime]
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
                 "symbol": symbol,
-                "key_executive_name": key_executive_name,
-                "key_executive_title": key_executive_title,
-                "key_executive_title_since": key_executive_title_since,
-                "key_executive_year_born": key_executive_year_born,
-                "key_executive_gender": key_executive_gender,
             },
             extra_params=kwargs,
             chart=chart,
@@ -3294,13 +3280,13 @@ class CLASS_stocks_fa(Container):
         HistoricalStockSplits
         ---------------------
         date : date
-            None
+            The date of the data.
         label : str
-            None
+            The label of the historical stock splits.
         numerator : float
-            None
+            The numerator of the historical stock splits.
         denominator : float
-            None
+            The denominator of the historical stock splits.
 
         fmp
         ===

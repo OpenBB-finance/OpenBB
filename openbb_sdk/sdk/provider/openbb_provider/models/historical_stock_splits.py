@@ -3,12 +3,12 @@
 
 from datetime import date as dateType
 
+from pydantic import Field
+
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.models.base import BaseSymbol
 from openbb_provider.metadata import DATA_DESCRIPTIONS
-
-from pydantic import Field
+from openbb_provider.models.base import BaseSymbol
 
 
 class HistoricalStockSplitsQueryParams(QueryParams, BaseSymbol):
