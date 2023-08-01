@@ -1,7 +1,7 @@
 """Stock aggregate end of day price data model."""
 
 
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 
 from pydantic import Field, PositiveFloat
@@ -28,8 +28,12 @@ class StockEODQueryParams(QueryParams, BaseSymbol):
 class StockEODData(Data):
     """Stock end of day price Data."""
 
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: PositiveFloat = Field(
+        description="Volume Weighted Average Price of the symbol."
+    )

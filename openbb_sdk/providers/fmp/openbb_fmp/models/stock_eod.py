@@ -6,7 +6,6 @@ from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import get_querystring
-from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
 from pydantic import Field, NonNegativeInt, validator
 
@@ -27,7 +26,6 @@ class FMPStockEODQueryParams(StockEODQueryParams):
 class FMPStockEODData(StockEODData):
     """FMP Stock end of day Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     adjClose: float = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
     )
@@ -41,14 +39,14 @@ class FMPStockEODData(StockEODData):
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
-    vwap: float = Field(description="Volume Weighted Average Price of the symbol.")
+
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
         alias="change_over_time",
     )
 
-    @validator("date", pre=True)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 

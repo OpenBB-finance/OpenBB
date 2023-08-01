@@ -9,10 +9,9 @@ from openbb_provider.models.key_executives import (
     KeyExecutivesData,
     KeyExecutivesQueryParams,
 )
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import get_data_many
-
-from pydantic import validator
 
 
 class FMPKeyExecutivesQueryParams(KeyExecutivesQueryParams):
