@@ -48,3 +48,8 @@ def test_chart_config_validation():
 
     assert chart.content == content
     assert chart.format == chart_format
+
+
+def test_show():
+    # TODO : add test after the function is properly refactored
+    pass
