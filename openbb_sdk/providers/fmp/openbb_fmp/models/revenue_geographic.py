@@ -9,10 +9,9 @@ from openbb_provider.models.revenue_geographic import (
     RevenueGeographicData,
     RevenueGeographicQueryParams,
 )
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data
-
-from pydantic import validator
 
 
 class FMPRevenueGeographicQueryParams(RevenueGeographicQueryParams):

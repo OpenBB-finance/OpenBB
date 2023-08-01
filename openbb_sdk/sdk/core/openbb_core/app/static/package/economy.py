@@ -56,7 +56,7 @@ class CLASS_economy(Container):
         provider: Literal[fmp]
             The provider to use for the query.
         index : Literal['nasdaq', 'sp500', 'dowjones']
-
+            The index for which we want to fetch the constituents.
 
         Returns
         -------
@@ -75,20 +75,22 @@ class CLASS_economy(Container):
 
         MajorIndicesConstituents
         ------------------------
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
         name : str
-            None
+            The name of the constituent company in the index.
         sector : str
-            None
-        subSector : Optional[str]
-            None
-        headQuarter : Optional[str]
-            None
-        dateFirstAdded : Union[date, str, NoneType]
-            None
+            The sector the constituent company in the index belongs to.
+        sub_sector : Optional[str]
+            The sub-sector the constituent company in the index belongs to.
+        headquarter : Optional[str]
+            The location of the headquarter of the constituent company in the index.
+        date_first_added : Union[date, str, NoneType]
+            The date the constituent company was added to the index.
         cik : int
-            None
+            The Central Index Key of the constituent company in the index.
         founded : Union[date, str]
-            None
+            The founding year of the constituent company in the index.
 
         fmp
         ===
@@ -526,13 +528,13 @@ class CLASS_economy(Container):
         RiskPremium
         -----------
         country : str
-            None
+            Market country.
         continent : Optional[str]
-            None
-        totalEquityRiskPremium : PositiveFloat
-            None
-        countryRiskPremium : NonNegativeFloat
-            None
+            Continent of the country.
+        total_equity_risk_premium : PositiveFloat
+            The total equity risk premium for the country.
+        country_risk_premium : NonNegativeFloat
+            The country-specific risk premium.
 
         fmp
         ===

@@ -121,7 +121,7 @@
     "stocks_fa_split": "/stocks/fa/split",
     "stocks_fa_supplier": "/stocks/fa/supplier",
     "stocks_fa_transcript": "/stocks/fa/transcript",
-    "stocks_ca_get": "/stocks/ca/get",
+    "stocks_ca_peers": "/stocks/ca/peers",
     "stocks_ca": "/stocks/ca",
     "stocks_ca_balance": "/stocks/ca/balance",
     "stocks_ca_cashflow": "/stocks/ca/cashflow",

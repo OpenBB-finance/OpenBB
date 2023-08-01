@@ -6,10 +6,9 @@ from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.sec_filings import SECFilingsData, SECFilingsQueryParams
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
-
-from pydantic import validator
 
 
 class FMPSECFilingsQueryParams(SECFilingsQueryParams):

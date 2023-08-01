@@ -2749,8 +2749,16 @@ class CLASS_stocks_fa(Container):
 
         PriceTargetConsensus
         --------------------
-        symbol : str
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        target_high : float
+            The high target of the price target consensus.
+        target_low : float
+            The low target of the price target consensus.
+        target_consensus : float
+            The consensus target of the price target consensus.
+        target_median : float
+            The median target of the price target consensus.
 
         fmp
         ===
@@ -2762,14 +2770,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTargetConsensus
         --------------------
-        targetHigh : float
-            None
-        targetLow : float
-            None
-        targetConsensus : float
-            None
-        targetMedian : float
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2827,8 +2828,28 @@ class CLASS_stocks_fa(Container):
 
         PriceTarget
         -----------
-        symbol : str
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        published_date : datetime
+            The published date of the price target.
+        news_url : str
+            The news URL of the price target.
+        news_title : Optional[str]
+            The news title of the price target.
+        analyst_name : Optional[str]
+            The analyst name of the price target.
+        price_target : float
+            The price target of the price target.
+        adj_price_target : float
+            The adjusted price target of the price target.
+        price_when_posted : float
+            The price when posted of the price target.
+        news_publisher : str
+            The news publisher of the price target.
+        news_base_url : str
+            The news base URL of the price target.
+        analyst_company : str
+            The analyst company of the price target.
 
         fmp
         ===
@@ -2840,26 +2861,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTarget
         -----------
-        publishedDate : datetime
-            None
-        newsURL : str
-            None
-        newsTitle : Optional[str]
-            None
-        analystName : Optional[str]
-            None
-        priceTarget : float
-            None
-        adjPriceTarget : float
-            None
-        priceWhenPosted : float
-            None
-        newsPublisher : str
-            None
-        newsBaseURL : str
-            None
-        analystCompany : str
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2934,7 +2936,7 @@ class CLASS_stocks_fa(Container):
     def revgeo(
         self,
         symbol: str,
-        period: Literal["quarterly", "annually"] = "quarterly",
+        period: Literal["quarterly", "annually"] = "annually",
         structure: Literal["hierarchical", "flat"] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -2955,7 +2957,7 @@ class CLASS_stocks_fa(Container):
         period : Literal['quarterly', 'annually']
             Period of the data to return (quarterly or annually).
         structure : Literal['hierarchical', 'flat']
-            None
+            The structure of the returned data.
 
         Returns
         -------
@@ -2975,17 +2977,17 @@ class CLASS_stocks_fa(Container):
         RevenueGeographic
         -----------------
         date : date
-            None
+            The date of the data.
         americas : Optional[int]
-            None
+            The revenue from the the American segment.
         europe : Optional[int]
-            None
+            The revenue from the the European segment.
         greater_china : Optional[int]
-            None
+            The revenue from the the Greater China segment.
         japan : Optional[int]
-            None
+            The revenue from the the Japan segment.
         rest_of_asia_pacific : Optional[int]
-            None
+            The revenue from the the Rest of Asia Pacific segment.
 
         fmp
         ===
@@ -3023,7 +3025,7 @@ class CLASS_stocks_fa(Container):
     def revseg(
         self,
         symbol: str,
-        period: Literal["quarterly", "annually"] = "quarterly",
+        period: Literal["quarterly", "annually"] = "annually",
         structure: Literal["hierarchical", "flat"] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -3044,7 +3046,7 @@ class CLASS_stocks_fa(Container):
         period : Literal['quarterly', 'annually']
             Period of the data to return (quarterly or annually).
         structure : Literal['hierarchical', 'flat']
-            None
+            The structure of the returned data.
 
         Returns
         -------
@@ -3064,9 +3066,9 @@ class CLASS_stocks_fa(Container):
         RevenueBusinessLine
         -------------------
         date : date
-            None
-        data_and_service : Mapping[str, int]
-            None
+            The date of the data.
+        business_line : Mapping[str, int]
+            Day level data containing the revenue of the business line.
 
         fmp
         ===
@@ -3204,12 +3206,18 @@ class CLASS_stocks_fa(Container):
 
         ShareStatistics
         ---------------
-        symbol : str
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
         date : date
-            None
+            A specific date to get data for.
+        free_float : float
+            The percentage of unrestricted shares of a publicly-traded company.
+        float_shares : float
+            The number of shares available for trading by the general public.
+        outstanding_shares : float
+            The total number of shares of a publicly-traded company.
         source : str
-            None
+            Source of the received data.
 
         fmp
         ===
@@ -3221,12 +3229,7 @@ class CLASS_stocks_fa(Container):
 
         ShareStatistics
         ---------------
-        freeFloat : float
-            None
-        floatShares : float
-            None
-        outstandingShares : float
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

@@ -15,16 +15,16 @@ class FMPStockPeersQueryParams(StockPeersQueryParams):
     """FMP Stock Peers query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Peers
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
 class FMPStockPeersData(StockPeersData):
     """FMP Stock Peers data."""
+
+    class Config:
+        fields = {
+            "peers_list": "peersList",
+        }
 
 
 class FMPStockPeersFetcher(

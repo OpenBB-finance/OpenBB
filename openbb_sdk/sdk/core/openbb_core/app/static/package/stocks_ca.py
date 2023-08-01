@@ -15,7 +15,7 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_stocks_ca(Container):
     @filter_call
     @validate_arguments
-    def get(
+    def peers(
         self,
         symbol: str,
         chart: bool = False,
@@ -53,9 +53,9 @@ class CLASS_stocks_ca(Container):
         StockPeers
         ----------
         symbol : str
-            None
+            Symbol representing the entity requested in the data.
         peers_list : Optional[List[str]]
-            None
+            A list of stock peers based on sector, exchange and market cap.
 
         fmp
         ===
@@ -80,7 +80,7 @@ class CLASS_stocks_ca(Container):
         )
 
         o = self._command_runner_session.run(
-            "/stocks/ca/get",
+            "/stocks/ca/peers",
             **inputs,
         ).output
 
