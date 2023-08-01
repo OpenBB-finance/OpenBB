@@ -5,7 +5,7 @@
 from openbb_core.app.static.container import Container
 
 
-class Commands(Container):
+class Extensions(Container):
     @property
     def crypto(self):  # route = "/crypto"
         from openbb_core.app.static.package import crypto
