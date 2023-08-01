@@ -7,7 +7,7 @@ from openbb_provider.abstract.fetcher import Fetcher
 
 class Provider:
     """This class serves as provider extensions entry point and must be
-    implemented by each provider."""
+    created by each provider."""
 
     def __init__(
         self,
