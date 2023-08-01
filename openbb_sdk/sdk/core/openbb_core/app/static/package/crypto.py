@@ -23,7 +23,7 @@ class CLASS_crypto(Container):
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Crypto Intraday Price.
+        r"""Crypto Intraday Price.
 
 
         openbb
@@ -88,13 +88,13 @@ class CLASS_crypto(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \\% in the price of the symbol.
+            Change \% in the price of the symbol.
         vwap : float
             Volume Weighted Average Price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time.
+            Change \% in the price of the symbol over a period of time.
 
         polygon
         =======
