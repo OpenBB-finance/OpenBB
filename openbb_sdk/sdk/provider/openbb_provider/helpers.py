@@ -120,23 +120,3 @@ class BasicResponse:
 
     def json(self) -> dict:
         return json.loads(self.text)
-
-
-def request(url: str) -> BasicResponse:
-    """
-    Request function for PyScript. Pass in Method and make sure to await!
-    Parameters:
-    -----------
-    url: str
-        URL to make request to
-
-    Return:
-    -------
-    response: BasicRequest
-        BasicRequest object with status_code and text attributes
-    """
-    # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url
-
-    response = open_url(url)
-    return BasicResponse(response)

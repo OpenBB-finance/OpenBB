@@ -10,12 +10,31 @@ from openbb_provider.abstract.fetcher import QueryParamsType
 from openbb_provider.helpers import (
     BasicResponse,
     get_querystring,
-    request,
 )
 from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
+
+
+def request(url: str) -> BasicResponse:
+    """
+    Request function for PyScript. Pass in Method and make sure to await!
+    Parameters:
+    -----------
+    url: str
+        URL to make request to
+
+    Return:
+    -------
+    response: BasicRequest
+        BasicRequest object with status_code and text attributes
+    """
+    # pylint: disable=import-outside-toplevel
+    from pyodide.http import open_url
+
+    response = open_url(url)
+    return BasicResponse(response)
 
 
 def get_data(url: str) -> Union[list, dict]:
