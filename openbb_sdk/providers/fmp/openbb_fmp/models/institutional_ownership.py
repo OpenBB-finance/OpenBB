@@ -7,9 +7,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
 from openbb_provider.models.institutional_ownership import (
     InstitutionalOwnershipData,
@@ -20,62 +18,52 @@ from pydantic import Field, validator
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPInstitutionalOwnershipQueryParams(QueryParams, BaseSymbol):
-    """FMP Institutional Ownership QueryParams.
+class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
+    """FMP Institutional Ownership Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/institutional-stock-ownership-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company if cik is not provided.
-    include_current_quarter : bool
-        Whether to include the current quarter. Default is False.
-    date : Optional[dateType]
-        A specific date to get data for.
     """
 
-    includeCurrentQuarter: bool = Field(default=False, alias="include_current_quarter")
-    date: Optional[dateType]
 
+class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
+    """FMP Institutional Ownership Data."""
 
-class FMPInstitutionalOwnershipData(Data):
-    symbol: str = Field(min_length=1)
-    cik: str = Field(min_length=1)
-    date: dateType
-    investorsHolding: int
-    lastInvestorsHolding: int
-    investorsHoldingChange: int
-    numberOf13Fshares: int
-    lastNumberOf13Fshares: int
-    numberOf13FsharesChange: int
-    totalInvested: float
-    lastTotalInvested: float
-    totalInvestedChange: float
-    ownershipPercent: float
-    lastOwnershipPercent: float
-    ownershipPercentChange: float
-    newPositions: int
-    lastNewPositions: int
-    newPositionsChange: int
-    increasedPositions: int
-    lastIncreasedPositions: int
-    increasedPositionsChange: int
-    closedPositions: int
-    lastClosedPositions: int
-    closedPositionsChange: int
-    reducedPositions: int
-    lastReducedPositions: int
-    reducedPositionsChange: int
-    totalCalls: int
-    lastTotalCalls: int
-    totalCallsChange: int
-    totalPuts: int
-    lastTotalPuts: int
-    totalPutsChange: int
-    putCallRatio: float
-    lastPutCallRatio: float
-    putCallRatioChange: float
+    class Config:
+        fields = {
+            "investors_holding": "investorsHolding",
+            "last_investors_holding": "lastInvestorsHolding",
+            "investors_holding_change": "investorsHoldingChange",
+            "number_of_13f_shares": "numberOf13Fshares",
+            "last_number_of_13f_shares": "lastNumberOf13Fshares",
+            "number_of_13f_shares_change": "numberOf13FsharesChange",
+            "total_invested": "totalInvested",
+            "last_total_invested": "lastTotalInvested",
+            "total_invested_change": "totalInvestedChange",
+            "ownership_percent": "ownershipPercent",
+            "last_ownership_percent": "lastOwnershipPercent",
+            "ownership_percent_change": "ownershipPercentChange",
+            "new_positions": "newPositions",
+            "last_new_positions": "lastNewPositions",
+            "new_positions_change": "newPositionsChange",
+            "increased_positions": "increasedPositions",
+            "last_increased_positions": "lastIncreasedPositions",
+            "increased_positions_change": "increasedPositionsChange",
+            "closed_positions": "closedPositions",
+            "last_closed_positions": "lastClosedPositions",
+            "closed_positions_change": "closedPositionsChange",
+            "reduced_positions": "reducedPositions",
+            "last_reduced_positions": "lastReducedPositions",
+            "reduced_positions_change": "reducedPositionsChange",
+            "total_calls": "totalCalls",
+            "last_total_calls": "lastTotalCalls",
+            "total_calls_change": "totalCallsChange",
+            "total_puts": "totalPuts",
+            "last_total_puts": "lastTotalPuts",
+            "total_puts_change": "totalPutsChange",
+            "put_call_ratio": "putCallRatio",
+            "last_put_call_ratio": "lastPutCallRatio",
+            "put_call_ratio_change": "putCallRatioChange",
+        }
 
     @validator("date", pre=True)
     def time_validate(cls, v):  # pylint: disable=no-self-argument
