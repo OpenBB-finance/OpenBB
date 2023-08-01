@@ -1,47 +1,39 @@
 """FMP Share Statistics Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.models.base import BaseSymbol
 from openbb_provider.models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
+from pydantic import validator
 
-class FMPShareStatisticsQueryParams(QueryParams, BaseSymbol):
+
+class FMPShareStatisticsQueryParams(ShareStatisticsQueryParams):
     """FMP Income Statement QueryParams.
 
     Source: https://site.financialmodelingprep.com/developer/docs/shares-float-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPShareStatisticsData(Data):
-    symbol: str
-    date: dateType
-    freeFloat: float
-    floatShares: float
-    outstandingShares: float
-    source: str
+class FMPShareStatisticsData(ShareStatisticsData):
+    """FMP Share Statistics Data."""
+
+    class Config:
+        fields = {
+            "free_float": "freeFloat",
+            "float_shares": "floatShares",
+            "outstanding_shares": "outstandingShares",
+        }
 
     @validator("date", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
@@ -64,6 +56,7 @@ class FMPShareStatisticsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "shares_float", api_key, query)
+
         return get_data_many(url, FMPShareStatisticsData)
 
     @staticmethod
