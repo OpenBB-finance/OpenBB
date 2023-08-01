@@ -12,18 +12,16 @@ class Provider:
         self,
         name: str,
         description: str,
-        required_credentials: Optional[List[str]],
         fetcher_dict: Dict[str, Type[Fetcher]],
+        required_credentials: Optional[List[str]] = None,
     ) -> None:
         """Initialize the provider."""
         self.name = name
         self.description = description
-
+        self.fetcher_dict = fetcher_dict
         if required_credentials is None:
             self.required_credentials: List = []
         else:
             self.required_credentials = []
             for rq in required_credentials:
                 self.required_credentials.append(f"{self.name.lower()}_{rq}")
-
-        self.fetcher_dict = fetcher_dict
