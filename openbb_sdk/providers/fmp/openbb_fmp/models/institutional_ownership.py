@@ -61,7 +61,7 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
             "put_call_ratio_change": "putCallRatioChange",
         }
 
-    @validator("date", pre=True)
+    @validator("date", pre=True, check_fields=False)
     def time_validate(cls, v):  # pylint: disable=no-self-argument
         return datetime.strptime(v, "%Y-%m-%d")
 
