@@ -1,6 +1,5 @@
-from openbb_core.app.model.charts.chart import Chart, ChartFormat, Error
-
 import pytest
+from openbb_core.app.model.charts.chart import Chart, ChartFormat, Error
 
 
 def test_chart_default_values():

@@ -1,5 +1,5 @@
-from openbb_core.app.model.abstract.error import Error
 import pytest
+from openbb_core.app.model.abstract.error import Error
 
 
 @pytest.mark.parametrize(

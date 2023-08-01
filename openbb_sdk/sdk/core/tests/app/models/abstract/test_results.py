@@ -1,5 +1,4 @@
 from openbb_core.app.model.abstract.results import Results
-
 from pydantic import BaseModel
 
 

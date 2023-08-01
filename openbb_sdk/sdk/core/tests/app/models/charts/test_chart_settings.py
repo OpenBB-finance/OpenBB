@@ -1,6 +1,6 @@
-from openbb_core.app.model.charts.charting_settings import ChartingSettings
-
 from unittest.mock import MagicMock
+
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 mock_user_settings = MagicMock()
 mock_user_settings.preferences.data_directory = "mock_data_directory"
