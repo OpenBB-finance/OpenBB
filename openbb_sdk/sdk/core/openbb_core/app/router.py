@@ -313,11 +313,15 @@ class SignatureInspector:
 class CommandMap:
     """Matching Routes with Commands."""
 
-    def __init__(self, router: Optional[Router] = None) -> None:
+    def __init__(
+        self, router: Optional[Router] = None, sep: Optional[str] = None
+    ) -> None:
         self._router = router or RouterLoader.from_extensions()
-        self._map = self.get_command_map(router=self._router)
-        self._provider_coverage = self.get_provider_coverage(router=self._router)
-        self._command_coverage = self.get_command_coverage(router=self._router)
+        self._map = self.get_command_map(router=self._router, sep=sep)
+        self._provider_coverage = self.get_provider_coverage(
+            router=self._router, sep=sep
+        )
+        self._command_coverage = self.get_command_coverage(router=self._router, sep=sep)
 
     @property
     def map(self) -> Dict[str, Callable]:
@@ -332,13 +336,22 @@ class CommandMap:
         return self._command_coverage
 
     @staticmethod
-    def get_command_map(router: Router) -> Dict[str, Callable]:
+    def get_command_map(
+        router: Router, sep: Optional[str] = None
+    ) -> Dict[str, Callable]:
         api_router = router.api_router
-        command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
+        if sep is None:
+            command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
+        else:
+            command_map = {
+                route.path.replace("/", sep): route.endpoint for route in api_router.routes  # type: ignore
+            }
         return command_map
 
     @staticmethod
-    def get_provider_coverage(router: Router) -> Dict[str, List[str]]:
+    def get_provider_coverage(
+        router: Router, sep: Optional[str] = None
+    ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
         mapping = get_provider_interface().map
@@ -356,12 +369,19 @@ class CommandMap:
                         if provider not in coverage_map:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
-                            coverage_map[provider].append(route.path)
+                            rp = (
+                                route.path
+                                if sep is None
+                                else route.path.replace("/", sep)
+                            )
+                            coverage_map[provider].append(rp)
 
         return coverage_map
 
     @staticmethod
-    def get_command_coverage(router: Router) -> Dict[str, List[str]]:
+    def get_command_coverage(
+        router: Router, sep: Optional[str] = None
+    ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
         mapping = get_provider_interface().map
@@ -377,9 +397,10 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
+                        rp = route.path if sep is None else route.path.replace("/", sep)
                         if route.path not in coverage_map:
-                            coverage_map[route.path] = []
-                        coverage_map[route.path] = providers
+                            coverage_map[rp] = []
+                        coverage_map[rp] = providers
         return coverage_map
 
     def get_command(self, route: str) -> Optional[Callable]:
