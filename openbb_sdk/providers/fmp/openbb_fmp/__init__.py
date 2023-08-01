@@ -49,7 +49,9 @@ from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
 fmp_provider = Provider(
     name="fmp",
-    description="Provider for FMP.",
+    website="https://financialmodelingprep.com/",
+    description="""Financial Modeling Prep is a new concept that informs you about
+     stock market information (news, currencies, and stock prices).""",
     required_credentials=["api_key"],
     fetcher_dict={
         "KeyExecutives": FMPKeyExecutivesFetcher,

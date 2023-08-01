@@ -13,6 +13,7 @@ class Provider:
         self,
         name: str,
         description: str,
+        website: str,
         fetcher_dict: Dict[str, Type[Fetcher]],
         required_credentials: Optional[List[str]] = None,
     ) -> None:
@@ -24,6 +25,8 @@ class Provider:
             Name of the provider.
         description : str
             Description of the provider.
+        website : str
+            Website of the provider.
         fetcher_dict : Dict[str, Type[Fetcher]]
             Dictionary of fetchers.
         required_credentials : Optional[List[str]], optional
@@ -31,6 +34,7 @@ class Provider:
         """
         self.name = name
         self.description = description
+        self.website = website
         self.fetcher_dict = fetcher_dict
         if required_credentials is None:
             self.required_credentials: List = []

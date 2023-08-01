@@ -13,7 +13,10 @@ from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
 polygon_provider = Provider(
     name="polygon",
-    description="Provider for Polygon.",
+    website="https://polygon.io/",
+    description="""The Polygon.io Stocks API provides REST endpoints that let you query
+     the latest market data from all US stock exchanges. You can also find data on
+     company financials, stock market holidays, corporate actions, and more.""",
     required_credentials=["api_key"],
     fetcher_dict={
         "StockEOD": PolygonStockEODFetcher,

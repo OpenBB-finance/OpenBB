@@ -6,7 +6,9 @@ from openbb_benzinga.models.stock_news import BenzingaStockNewsFetcher
 
 benzinga_provider = Provider(
     name="benzinga",
-    description="Provider for Benzinga.",
+    website="https://www.benzinga.com/",
+    description="""Benzinga is a financial data provider that offers an API
+     focused on information that moves the market.""",
     required_credentials=["api_key"],
     fetcher_dict={
         "GlobalNews": BenzingaGlobalNewsFetcher,
