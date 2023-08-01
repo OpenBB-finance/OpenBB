@@ -314,12 +314,12 @@ class CommandMap:
     """Matching Routes with Commands."""
 
     def __init__(
-        self, router: Optional[Router] = None, sep: Optional[str] = None
+        self, router: Optional[Router] = None, coverage_sep: Optional[str] = None
     ) -> None:
         self._router = router or RouterLoader.from_extensions()
-        self._map = self.get_command_map(router=self._router, sep=sep)
+        self._map = self.get_command_map(router=self._router)
         self._provider_coverage = self.get_provider_coverage(
-            router=self._router, sep=sep
+            router=self._router, sep=coverage_sep
         )
         self._command_coverage = self.get_command_coverage(router=self._router, sep=sep)
 
@@ -337,15 +337,10 @@ class CommandMap:
 
     @staticmethod
     def get_command_map(
-        router: Router, sep: Optional[str] = None
+        router: Router,
     ) -> Dict[str, Callable]:
         api_router = router.api_router
-        if sep is None:
-            command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
-        else:
-            command_map = {
-                route.path.replace("/", sep): route.endpoint for route in api_router.routes  # type: ignore
-            }
+        command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
         return command_map
 
     @staticmethod
