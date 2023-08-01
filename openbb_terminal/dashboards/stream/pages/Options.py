@@ -1,6 +1,6 @@
 # type: ignore
 # pylint: disable=[W0621,R1714]
-from typing import Any
+from typing import Any, Tuple
 
 import pandas as pd
 import streamlit as st
@@ -14,7 +14,10 @@ from openbb_terminal.stocks.options.options_chains_model import (
     get_nearest_otm_strike,
     get_nearest_put_strike,
 )
-from openbb_terminal.stocks.options.options_sdk_helper import load_options_chains
+from openbb_terminal.stocks.options.options_sdk_helper import (
+    OptionsChains,
+    load_options_chains,
+)
 
 EXCEPTIONS = ["NDX", "RUT"]
 analysis_type: str = ""
@@ -31,12 +34,15 @@ target_column: dict[str, str] = {
     "Bid Price": "bid",
     "Ask Price": "ask",
     "Theoretical Price": "theoretical",
+    "Breakeven Price": "Breakeven",
     "Open Interest": "openInterest",
     "Volume": "volume",
     "Implied Volatility": "impliedVolatility",
     "Gamma": "gamma",
     "Theta": "theta",
     "Vega": "vega",
+    "Delta Dollars": "DEX",
+    "GEX Per 1% Move": "GEX",
 }
 strategy_target_column_dict = {
     "Cost of Position": "Cost",
@@ -85,7 +91,149 @@ def format_plotly(fig: OpenBBFigure):
 @st.cache_data(show_spinner=False, experimental_allow_widgets=True)
 def load_data(ticker):
     df = load_options_chains(ticker)
+
+    _calls = df.chains[df.chains["optionType"] == "call"].copy()
+    _puts = df.chains[df.chains["optionType"] == "put"].copy()
+
+    _calls.loc[:, ("$ To Spot")] = (
+        (_calls.loc[:, ("strike")]) + (_calls.loc[:, ("ask")]) - (df.last_price)
+    )
+    _calls.loc[:, ("% To Spot")] = (_calls.loc[:, ("$ To Spot")] / df.last_price) * 100
+    _calls.loc[:, ("Breakeven")] = _calls.loc[:, ("strike")] + _calls.loc[:, ("ask")]
+    _calls.loc[:, ("DEX")] = (
+        (_calls.loc[:, ("delta")] * 100)
+        * (_calls.loc[:, ("openInterest")])
+        * df.last_price
+    )
+    _calls["DEX"] = _calls["DEX"].convert_dtypes(convert_floating=True)
+    _calls.loc[:, ("GEX")] = (
+        _calls.loc[:, ("gamma")]
+        * 100
+        * _calls.loc[:, ("openInterest")]
+        * (df.last_price * df.last_price)
+        * 0.01
+    )
+    _calls.GEX = _calls.GEX.convert_dtypes(convert_floating=True)
+    _calls.set_index(keys=["expiration", "strike", "optionType"], inplace=True)
+
+    _puts.loc[:, ("$ To Spot")] = (
+        (_puts.loc[:, ("strike")]) - (_puts.loc[:, ("ask")]) - (df.last_price)
+    )
+    _puts.loc[:, ("% To Spot")] = (_puts.loc[:, ("$ To Spot")] / df.last_price) * 100
+    _puts.loc[:, ("Breakeven")] = _puts.loc[:, ("strike")] - _puts.loc[:, ("ask")]
+    _puts.loc[:, ("DEX")] = (
+        (_puts.loc[:, ("delta")] * 100)
+        * (_puts.loc[:, ("openInterest")])
+        * df.last_price
+    )
+    _puts.loc[:, ("GEX")] = (
+        _puts.loc[:, ("gamma")]
+        * 100
+        * _puts.loc[:, ("openInterest")]
+        * (df.last_price * df.last_price)
+        * 0.01
+        * (-1)
+    )
+    _puts.GEX = _puts.GEX.convert_dtypes(convert_floating=True)
+    _puts["DEX"] = _puts["DEX"].convert_dtypes(convert_floating=True)
+    _puts.set_index(keys=["expiration", "strike", "optionType"], inplace=True)
+
+    _calls.GEX = round(_calls.GEX, ndigits=2)
+    _calls["DEX"] = round(_calls["DEX"], ndigits=2)
+    _puts.GEX = round(_puts.GEX, ndigits=2)
+    _puts["DEX"] = round(_puts["DEX"], ndigits=2)
+
+    df.chains = pd.concat([_puts, _calls])
+    df.chains.sort_index(inplace=True)
+    df.chains.reset_index(inplace=True)
+
     return df
+
+
+def get_exposure(df: OptionsChains) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    by_strike = pd.DataFrame()
+    by_expiration = pd.DataFrame()
+    puts_by_strike = (
+        df.chains.query("`optionType` == 'put'").groupby("strike")[["DEX", "GEX"]].sum()
+    )
+    puts_by_strike.columns = ["Put DEX", "Put GEX"]
+    calls_by_strike = (
+        df.chains.query("`optionType` == 'call'")
+        .groupby("strike")[["DEX", "GEX"]]
+        .sum()
+    )
+    calls_by_strike.columns = ["Call DEX", "Call GEX"]
+    by_strike = pd.concat([calls_by_strike, puts_by_strike], axis=1)
+    puts_by_expiration = (
+        df.chains.query("`optionType` == 'put'")
+        .groupby("expiration")[["DEX", "GEX"]]
+        .sum()
+    )
+    puts_by_expiration.columns = ["Put DEX", "Put GEX"]
+    calls_by_expiration = (
+        df.chains.query("`optionType` == 'call'")
+        .groupby("expiration")[["DEX", "GEX"]]
+        .sum()
+    )
+    calls_by_expiration.columns = ["Call DEX", "Call GEX"]
+    by_expiration = pd.concat([calls_by_expiration, puts_by_expiration], axis=1)
+    return by_strike.astype("int64"), by_expiration.astype("int64")
+
+
+def get_highest_oi(df: OptionsChains) -> pd.DataFrame:
+    highest_oi = df.chains[df.chains["openInterest"] == max(df.chains["openInterest"])][
+        [
+            "optionType",
+            "strike",
+            "dte",
+            "openInterest",
+            "volume",
+            "impliedVolatility",
+            "bid",
+            "ask",
+            "Breakeven",
+        ]
+    ]
+    highest_oi.columns = [
+        "Type",
+        "Strike",
+        "DTE",
+        "OI",
+        "Volume",
+        "IV",
+        "Bid",
+        "Ask",
+        "Breakeven",
+    ]
+    return highest_oi
+
+
+def get_highest_volume(df: OptionsChains) -> pd.DataFrame:
+    highest_volume = df.chains[df.chains["volume"] == max(df.chains["volume"])][
+        [
+            "optionType",
+            "strike",
+            "dte",
+            "openInterest",
+            "volume",
+            "impliedVolatility",
+            "bid",
+            "ask",
+            "Breakeven",
+        ]
+    ]
+    highest_volume.columns = [
+        "Type",
+        "Strike",
+        "DTE",
+        "OI",
+        "Volume",
+        "IV",
+        "Bid",
+        "Ask",
+        "Breakeven",
+    ]
+    return highest_volume
 
 
 with st.sidebar:
@@ -429,6 +577,11 @@ if analysis_type == "Tables" and table_choice == "Chains" and ticker_good is Tru
             "high",
             "low",
             "previousClose",
+            "DEX",
+            "GEX",
+            "Breakeven",
+            "$ To Spot",
+            "% To Spot",
         ]
     ]
     chains_df = chains_df.rename(
@@ -466,12 +619,33 @@ if analysis_type == "Tables" and table_choice == "Chains" and ticker_good is Tru
     st.dataframe(chains_df, use_container_width=True, height=700)
 
 if analysis_type == "Tables" and table_choice == "Stats" and ticker_good is True:
+    exposure_by_strike, exposure_by_expiration = get_exposure(df)
     stats_df_expiration = df.get_stats()
     stats_df_strike = df.get_stats("strike")
+    sc1, sc2, sc3, sc4, sc5 = st.columns(5)
+    with sc1:
+        st.write("Total OI: ", format(stats_df_expiration["Total OI"].sum(), ","))
+    with sc2:
+        st.write("Call OI: ", format(stats_df_expiration["Calls OI"].sum(), ","))
+    with sc3:
+        st.write("Put OI: ", format(stats_df_expiration["Puts OI"].sum(), ","))
+    with sc4:
+        st.write("Call DEX: $", format(exposure_by_expiration["Call DEX"].sum(), ","))
+    with sc5:
+        st.write(
+            "Put DEX: $", format(abs(exposure_by_expiration["Put DEX"]).sum(), ",")
+        )
+
     with st.expander("Stats by Expiration", expanded=True):
         st.dataframe(stats_df_expiration, use_container_width=True)
-    with st.expander("Stats by Strike", expanded=True):
+    with st.expander("Stats by Strike", expanded=False):
         st.dataframe(stats_df_strike, use_container_width=True)
+    with st.expander("Delta Dollars and GEX per 1% Move", expanded=False):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.dataframe(exposure_by_expiration.abs(), use_container_width=True)
+        with col2:
+            st.dataframe(exposure_by_strike.abs(), use_container_width=True)
 
 if analysis_type == "Charts" and ticker_good is True and chart_data_type == "Stats":
     if stats_type == "Open Interest" and expiry != "All":
@@ -546,7 +720,11 @@ if analysis_type == "Charts" and chart_data_type == "Strikes" and ticker_good is
         if strike_choice == "Separate Calls and Puts"
         else title
     )
-
+    title = (
+        f"Gamma Exposure per 1% Move of {df.symbol}"
+        if strike_data_point == "GEX Per 1% Move"
+        else title
+    )
     if strike_choice == "Single Strike":
         _price_data = df.chains[df.chains["strike"] == strike_price]
         call_price_data = _price_data[_price_data["optionType"] == "call"]
