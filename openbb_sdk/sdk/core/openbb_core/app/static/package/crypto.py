@@ -23,7 +23,104 @@ class CLASS_crypto(Container):
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Crypto Intraday Price."""
+        """Crypto Intraday Price.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp, polygon]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        start_date : Optional[date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[date]
+            End date of the data, in YYYY-MM-DD format.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        CryptoEOD
+        ---------
+        open : PositiveFloat
+            The open price of the symbol.
+        high : PositiveFloat
+            The high price of the symbol.
+        low : PositiveFloat
+            The low price of the symbol.
+        close : PositiveFloat
+            The close price of the symbol.
+        volume : PositiveFloat
+            The volume of the symbol.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        timeseries : Optional[NonNegativeInt]
+            Number of days to look back.
+
+
+        CryptoEOD
+        ---------
+        date : datetime
+            The date of the data.
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \\% in the price of the symbol.
+        vwap : float
+            Volume Weighted Average Price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \\% in the price of the symbol over a period of time.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        CryptoEOD
+        ---------
+        t : datetime
+            The timestamp of the data.
+        n : PositiveInt
+            The number of transactions for the symbol in the time period.
+        vw : PositiveFloat
+            The volume weighted average price of the symbol."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

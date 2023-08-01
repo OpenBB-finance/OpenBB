@@ -18,12 +18,80 @@ class CLASS_fixedincome(Container):
     def treasury(
         self,
         start_date: Optional[str] = None,
-        end_date: Optional[str] = "2023-07-31",
+        end_date: Optional[str] = "2023-08-01",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Get treasury rates."""
+        """Get treasury rates.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        start_date : Optional[str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[str]
+            End date of the data, in YYYY-MM-DD format.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        TreasuryRates
+        -------------
+        date : date
+            None
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        TreasuryRates
+        -------------
+        month1 : float
+            None
+        month2 : float
+            None
+        month3 : float
+            None
+        month6 : float
+            None
+        year1 : float
+            None
+        year2 : float
+            None
+        year3 : float
+            None
+        year5 : float
+            None
+        year7 : float
+            None
+        year10 : float
+            None
+        year20 : float
+            None
+        year30 : float
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

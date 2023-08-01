@@ -22,7 +22,52 @@ class CLASS_stocks_ca(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Company peers."""
+        """Company peers.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        StockPeers
+        ----------
+        symbol : str
+            None
+        peers_list : Optional[List[str]]
+            None
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockPeers
+        ----------
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

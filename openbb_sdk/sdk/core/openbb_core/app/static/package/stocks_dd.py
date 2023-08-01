@@ -23,7 +23,67 @@ class CLASS_stocks_dd(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """SEC Filings."""
+        """SEC Filings.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : str
+            None
+        type : Optional[str]
+            None
+        page : Optional[int]
+            None
+        limit : Optional[int]
+            None
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        SECFilings
+        ----------
+        symbol : str
+            None
+        cik : str
+            None
+        type : str
+            None
+        link : str
+            None
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        SECFilings
+        ----------
+        fillingDate : date
+            None
+        acceptedDate : date
+            None
+        finalLink : str
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
