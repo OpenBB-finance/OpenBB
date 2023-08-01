@@ -1,11 +1,11 @@
 """Price target consensus data model."""
 
 
+from pydantic import Field
+
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
-
-from pydantic import Field
 
 
 class PriceTargetConsensusQueryParams(QueryParams, BaseSymbol):

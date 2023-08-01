@@ -5,8 +5,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.descriptions import DATA_DESCRIPTIONS
+from openbb_provider.helpers import get_querystring
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,

@@ -9,10 +9,9 @@ from openbb_provider.models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
 )
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import get_data_many
-
-from pydantic import validator
 
 
 class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams):
