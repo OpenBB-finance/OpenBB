@@ -1,12 +1,11 @@
 """FMP Cryptos end of day fetcher."""
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import get_querystring
-from openbb_provider.metadata import DATA_DESCRIPTIONS
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
 from pydantic import Field, NonNegativeInt, validator
 
@@ -27,7 +26,6 @@ class FMPCryptoEODQueryParams(CryptoEODQueryParams):
 class FMPCryptoEODData(CryptoEODData):
     """FMP Crypto end of day Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     adjClose: float = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
     )
@@ -41,7 +39,6 @@ class FMPCryptoEODData(CryptoEODData):
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
-    vwap: float = Field(description="Volume Weighted Average Price of the symbol.")
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
@@ -63,7 +60,14 @@ class FMPCryptoEODFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCryptoEODQueryParams:
-        return FMPCryptoEODQueryParams(**params)
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return FMPCryptoEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

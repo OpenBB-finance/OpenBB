@@ -34,6 +34,4 @@ class StockEODData(Data):
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: PositiveFloat = Field(
-        description="Volume Weighted Average Price of the symbol."
-    )
+    vwap: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
