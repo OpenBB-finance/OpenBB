@@ -1,4 +1,4 @@
-"""Metadata for the parameters of the Pydantic models."""
+"""Common descriptions for model fields."""
 
 QUERY_DESCRIPTIONS = {
     "symbol": "Symbol to get data for.",
