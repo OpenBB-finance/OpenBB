@@ -1,36 +1,32 @@
 """FMP Available Indices fetcher."""
 
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
-from pydantic import Field
 
 from openbb_fmp.utils.helpers import get_data_many
 
 
-class FMPAvailableIndicesQueryParams(QueryParams):
-    """FMP Available Indices query.
+class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
+    """FMP Available Indices Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-stock-index-prices
-
     """
 
 
-class FMPAvailableIndicesData(Data):
-    """FMP Available Indices data."""
+class FMPAvailableIndicesData(AvailableIndicesData):
+    """FMP Available Indices Data."""
 
-    symbol: str
-    name: Optional[str]
-    currency: Optional[str]
-    stockExchange: str = Field(alias="stock_exchange")
-    exchangeShortName: str = Field(alias="exchange_short_name")
+    class Config:
+        fields = {
+            "stock_exchange": "stockExchange",
+            "exchange_short_name": "exchangeShortName",
+        }
 
 
 class FMPAvailableIndicesFetcher(
@@ -42,17 +38,14 @@ class FMPAvailableIndicesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: AvailableIndicesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPAvailableIndicesQueryParams:
-        return FMPAvailableIndicesQueryParams()
+    def transform_query(params: Dict[str, Any]) -> FMPAvailableIndicesQueryParams:
+        return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPAvailableIndicesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPAvailableIndicesData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-indexes?apikey={api_key}"
@@ -61,5 +54,5 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPAvailableIndicesData],
-    ) -> List[AvailableIndicesData]:
-        return data_transformer(data, AvailableIndicesData)
+    ) -> List[FMPAvailableIndicesData]:
+        return data

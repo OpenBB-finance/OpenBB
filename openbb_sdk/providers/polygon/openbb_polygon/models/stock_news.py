@@ -2,9 +2,9 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
@@ -13,15 +13,11 @@ from pydantic import BaseModel, Field
 from openbb_polygon.utils.helpers import get_data
 
 
-class PolygonStockNewsQueryParams(QueryParams):
+class PolygonStockNewsQueryParams(StockNewsQueryParams):
     """Polygon stock news query.
 
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
 
-    Parameters
-    ----------
-    symbol : str
-        The symbol of the stocks to fetch.
     ticker_lt : str, optional
         Less than, by default None
     ticker_lte : str, optional
@@ -42,13 +38,13 @@ class PolygonStockNewsQueryParams(QueryParams):
         Greater than or equal, by default None
     order : Literal["asc", "desc"], optional
         The sort order of the query, by default None
-    limit : int, optional
-        The limit of the query, by default 100
     sort : str, optional
         The sort of the query, by default None
     """
 
-    ticker: str = Field(alias="symbols")
+    class Config:
+        fields = {"symbols": "ticker"}
+
     ticker_lt: Optional[str] = Field(alias="ticker.lt", default=None)
     ticker_lte: Optional[str] = Field(alias="ticker.lte", default=None)
     ticker_gt: Optional[str] = Field(alias="ticker.gt", default=None)
@@ -59,7 +55,6 @@ class PolygonStockNewsQueryParams(QueryParams):
     published_utc_gt: Optional[str] = Field(alias="published_utc.gt", default=None)
     published_utc_gte: Optional[str] = Field(alias="published_utc.gte", default=None)
     order: Optional[Literal["asc", "desc"]] = None
-    limit: Optional[int] = Field(default=100)
     sort: Optional[str] = None
 
 
@@ -95,22 +90,17 @@ class PolygonStockNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockNewsQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonStockNewsQueryParams:
-        return PolygonStockNewsQueryParams(
-            symbols=query.symbols, **extra_params if extra_params else {}
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonStockNewsQueryParams:
+        return PolygonStockNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: PolygonStockNewsQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonStockNewsData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
-        querystring = get_querystring(query.dict(), [])
+        querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&apiKey={api_key}"
         data = get_data(request_url)["results"]
 

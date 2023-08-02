@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-polygon = "openbb_polygon.provider:polygon_provider"
+polygon = "openbb_polygon:polygon_provider"

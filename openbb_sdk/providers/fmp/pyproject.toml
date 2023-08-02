@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-fmp = "openbb_fmp.provider:fmp_provider"
+fmp = "openbb_fmp:fmp_provider"

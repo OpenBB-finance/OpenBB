@@ -3,51 +3,35 @@
 
 from datetime import date, datetime
 
-from openbb_provider.abstract.data import Data, QueryParams
+from pydantic import Field
+
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
 
 
 class HistoricalEmployeesQueryParams(QueryParams, BaseSymbol):
-    """Historical Employees query model.
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    """
+    """Historical Employees Query."""
 
 
-class HistoricalEmployeesData(Data):
-    """Historical Employees data.
+class HistoricalEmployeesData(Data, BaseSymbol):
+    """Historical Employees Data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the company to retrieve the historical employees of.
-    cik : int
-        The CIK of the company to retrieve the historical employees of.
-    acceptance_time : datetime
-        The time of acceptance of the company employee.
-    period_of_report : date
-        The date of reporting of the company employee.
-    company_name : str
-        The registered name of the company to retrieve the historical employees of.
-    form_type : float
-        The form type of the company employee.
-    filing_date : date
-        The filing date of the company employee
-    employee_count : int
-        The count of employees of the company.
-    source : str
-        The source URL which retrieves this data for the company.
-    """
-
-    symbol: str
-    cik: int
-    acceptance_time: datetime
-    period_of_report: date
-    company_name: str
-    form_type: str
-    filing_date: date
-    employee_count: int
-    source: str
+    cik: int = Field(
+        description="The CIK of the company to retrieve the historical employees of."
+    )
+    acceptance_time: datetime = Field(
+        description="The time of acceptance of the company employee."
+    )
+    period_of_report: date = Field(
+        description="The date of reporting of the company employee."
+    )
+    company_name: str = Field(
+        description="The registered name of the company to retrieve the historical employees of."
+    )
+    form_type: str = Field(description="The form type of the company employee.")
+    filing_date: date = Field(description="The filing date of the company employee")
+    employee_count: int = Field(description="The count of employees of the company.")
+    source: str = Field(
+        description="The source URL which retrieves this data for the company."
+    )

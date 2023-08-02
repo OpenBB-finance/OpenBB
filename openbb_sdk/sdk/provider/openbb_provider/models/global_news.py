@@ -6,40 +6,21 @@ from typing import Optional
 
 from pydantic import Field, NonNegativeInt
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 
 
 class GlobalNewsQueryParams(QueryParams):
-    """Global news query.
+    """Global news query."""
 
-    Parameter
-    ---------
-    page : NonNegativeInt
-        The page of the global news to be retrieved.
-    """
-
-    page: NonNegativeInt = Field(default=0)
+    page: NonNegativeInt = Field(default=0, description="The page of the global news.")
 
 
 class GlobalNewsData(Data):
-    """Return Global News Data.
+    """Return Global News Data."""
 
-    Returns
-    -------
-    date : datetime
-        The published date of the news.
-    title : str
-        The title of the news.
-    image : Optional[str]
-        The image URL of the news.
-    text : str
-        The text/body of the news.
-    url : str
-        The URL of the news.
-    """
-
-    date: datetime
-    title: str
-    image: Optional[str]
-    text: str
-    url: str
+    date: datetime = Field(description="The published date of the news.")
+    title: str = Field(description="The title of the news.")
+    image: Optional[str] = Field(description="The image URL of the news.")
+    text: str = Field(description="The text/body of the news.")
+    url: str = Field(description="The URL of the news.")

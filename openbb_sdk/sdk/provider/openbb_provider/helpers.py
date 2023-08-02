@@ -1,9 +1,7 @@
 """Provider helpers."""
 
 
-import json
 import re
-from io import StringIO
 from typing import Callable, Dict, List, Optional, Type, Union
 
 from openbb_provider.abstract.fetcher import DataType, ProviderDataType
@@ -30,15 +28,6 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
         items.pop(item)
     params = {k: v for k, v in items.items() if v is not None}
     return "&".join([f"{k}={v}" for k, v in params.items()])
-
-
-def extract_data(schema, data: list):
-    new_data: Dict[str, list] = {x: [] for x in schema.__fields__}
-    for item in data:
-        for key, value in item.items():
-            if key in new_data:
-                new_data[key].append(value)
-    return schema(**new_data)
 
 
 def process(
@@ -118,34 +107,3 @@ def data_transformer(
         schema = convert_schema(row, new_schema, final_mapping, processors)
         new_data.append(schema)
     return new_data
-
-
-class BasicResponse:
-    def __init__(self, response: StringIO):
-        # Find a way to get the status code
-        self.status_code = 200
-        response.seek(0)
-        self.text = response.read()
-
-    def json(self) -> dict:
-        return json.loads(self.text)
-
-
-def request(url: str) -> BasicResponse:
-    """
-    Request function for PyScript. Pass in Method and make sure to await!
-    Parameters:
-    -----------
-    url: str
-        URL to make request to
-
-    Return:
-    -------
-    response: BasicRequest
-        BasicRequest object with status_code and text attributes
-    """
-    # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url
-
-    response = open_url(url)
-    return BasicResponse(response)
