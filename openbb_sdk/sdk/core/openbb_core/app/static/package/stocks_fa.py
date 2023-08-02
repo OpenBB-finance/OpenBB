@@ -38,7 +38,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 1,
+        limit: Optional[pydantic.types.NonNegativeInt] = 200,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -58,7 +58,7 @@ class CLASS_stocks_fa(Container):
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
         limit : Optional[NonNegativeInt]
-            The limit of the income statement.
+            The number of data entries to return.
 
         Returns
         -------
@@ -79,7 +79,7 @@ class CLASS_stocks_fa(Container):
         ------------
         date : date
             Date of the income statement.
-        symbol : str
+        symbol : Optional[str]
             Symbol of the company.
         cik : Optional[int]
             Central Index Key.
@@ -92,25 +92,31 @@ class CLASS_stocks_fa(Container):
         period : Optional[str]
             Period of the income statement.
         cash_and_cash_equivalents : Optional[int]
-            None
+            Cash and cash equivalents
         short_term_investments : Optional[int]
-            None
-        cash_and_short_term_investments : Optional[int]
-            None
-        net_receivables : Optional[int]
-            None
+            Short-term investments
         inventory : Optional[int]
-            None
+            Inventory
+        net_receivables : Optional[int]
+            Receivables, net
         other_current_assets : Optional[int]
-            None
+            Other current assets
         current_assets : Optional[int]
-            None
+            Total current assets
         long_term_investments : Optional[int]
-            None
+            Long-term investments
         property_plant_equipment_net : Optional[int]
-            None
+            Property, plant and equipment, net
+        goodwill : Optional[int]
+            Goodwill
+        intangible_assets : Optional[int]
+            Intangible assets
         other_non_current_assets : Optional[int]
-            None
+            Other non-current assets
+        tax_assets : Optional[int]
+            Accrued income taxes
+        other_assets : Optional[int]
+            Other assets
         noncurrent_assets : Optional[int]
             None
         assets : Optional[int]
@@ -119,13 +125,19 @@ class CLASS_stocks_fa(Container):
             None
         other_current_liabilities : Optional[int]
             None
+        tax_payables : Optional[int]
+            Accrued income taxes
         deferred_revenue : Optional[int]
-            None
+            Accrued income taxes, other deferred revenue
+        short_term_debt : Optional[int]
+            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
         current_liabilities : Optional[int]
             None
         long_term_debt : Optional[int]
-            None
+            Long-term debt, Operating lease obligations, Long-term finance lease obligations
         other_non_current_liabilities : Optional[int]
+            Deferred income taxes and other
+        other_liabilities : Optional[int]
             None
         noncurrent_liabilities : Optional[int]
             None
@@ -133,13 +145,23 @@ class CLASS_stocks_fa(Container):
             None
         common_stock : Optional[int]
             None
-        retained_earnings : Optional[int]
-            None
+        other_stockholder_equity : Optional[int]
+            Capital in excess of par value
         accumulated_other_comprehensive_income_loss : Optional[int]
+            Accumulated other comprehensive income (loss)
+        preferred_stock : Optional[int]
+            Preferred stock
+        retained_earnings : Optional[int]
+            Retained earnings
+        minority_interest : Optional[int]
+            Minority interest
+        total_stockholders_equity : Optional[int]
             None
         total_equity : Optional[int]
             None
         total_liabilities_and_stockholders_equity : Optional[int]
+            None
+        total_liabilities_and_total_equity : Optional[int]
             None
 
         fmp
@@ -155,35 +177,27 @@ class CLASS_stocks_fa(Container):
         ------------
         calendarYear : Optional[int]
             None
-        goodwill : Optional[int]
+        link : Optional[str]
             None
-        intangibleAssets : Optional[int]
+        finalLink : Optional[str]
+            None
+        cashAndShortTermInvestments : Optional[int]
             None
         goodwillAndIntangibleAssets : Optional[int]
             None
-        taxAssets : Optional[int]
-            None
-        shortTermDebt : Optional[int]
-            None
-        taxPayables : Optional[int]
-            None
         deferredRevenueNonCurrent : Optional[int]
-            None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
-            None
-        othertotalStockholdersEquity : Optional[int]
-            None
-        totalStockholdersEquity : Optional[int]
-            None
-        minorityInterest : Optional[int]
-            None
-        totalLiabilitiesAndTotalEquity : Optional[int]
             None
         totalInvestments : Optional[int]
             None
-        netDebt : Optional[int]
+        capitalLeaseObligations : Optional[int]
             None
-        finalLink : Optional[str]
+        deferredTaxLiabilitiesNonCurrent : Optional[int]
+            None
+        totalNonCurrentLiabilities : Optional[int]
+            None
+        totalDebt : Optional[int]
+            None
+        netDebt : Optional[int]
             None
 
         polygon
@@ -227,16 +241,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        start_date : date
-            None
-        equity : Optional[int]
-            None
-        equity_attributable_to_noncontrolling_interest : Optional[int]
-            None
-        equity_attributable_to_parent : Optional[int]
-            None
-        liabilities_and_equity : Optional[int]
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1594,7 +1599,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 1,
+        limit: Optional[pydantic.types.NonNegativeInt] = 200,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -1614,7 +1619,7 @@ class CLASS_stocks_fa(Container):
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
         limit : Optional[NonNegativeInt]
-            The limit of the income statement.
+            The number of data entries to return.
 
         Returns
         -------
@@ -2063,6 +2068,155 @@ class CLASS_stocks_fa(Container):
 
         o = self._command_runner_session.run(
             "/stocks/fa/ins",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def ins_own(
+        self,
+        symbol: str,
+        include_current_quarter: bool = False,
+        date: Optional[datetime.date] = None,
+        chart: bool = False,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> CommandOutput[typing.List]:
+        """Institutional Ownership.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        include_current_quarter : bool
+            Include current quarter data.
+        date : Optional[date]
+            A specific date to get data for.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        InstitutionalOwnership
+        ----------------------
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        cik : Optional[str]
+            The CIK of the company.
+        date : date
+            The date of the data.
+        investors_holding : int
+            The number of investors holding the stock.
+        last_investors_holding : int
+            The number of investors holding the stock in the last quarter.
+        investors_holding_change : int
+            The change in the number of investors holding the stock.
+        number_of_13f_shares : Optional[int]
+            The number of 13F shares.
+        last_number_of_13f_shares : Optional[int]
+            The number of 13F shares in the last quarter.
+        number_of_13f_shares_change : Optional[int]
+            The change in the number of 13F shares.
+        total_invested : float
+            The total amount invested.
+        last_total_invested : float
+            The total amount invested in the last quarter.
+        total_invested_change : float
+            The change in the total amount invested.
+        ownership_percent : float
+            The ownership percent.
+        last_ownership_percent : float
+            The ownership percent in the last quarter.
+        ownership_percent_change : float
+            The change in the ownership percent.
+        new_positions : int
+            The number of new positions.
+        last_new_positions : int
+            The number of new positions in the last quarter.
+        new_positions_change : int
+            he change in the number of new positions.
+        increased_positions : int
+            The number of increased positions.
+        last_increased_positions : int
+            The number of increased positions in the last quarter.
+        increased_positions_change : int
+            The change in the number of increased positions.
+        closed_positions : int
+            The number of closed positions.
+        last_closed_positions : int
+            The number of closed positions in the last quarter.
+        closed_positions_change : int
+            The change in the number of closed positions.
+        reduced_positions : int
+            The number of reduced positions.
+        last_reduced_positions : int
+            The number of reduced positions in the last quarter.
+        reduced_positions_change : int
+            The change in the number of reduced positions.
+        total_calls : int
+            Total number of call options contracts traded for Apple Inc. on the specified date.
+        last_total_calls : int
+            Total number of call options contracts traded for Apple Inc. on the previous reporting date.
+        total_calls_change : int
+            Change in the total number of call options contracts traded between the current and previous reporting dates.
+        total_puts : int
+            Total number of put options contracts traded for Apple Inc. on the specified date.
+        last_total_puts : int
+            Total number of put options contracts traded for Apple Inc. on the previous reporting date.
+        total_puts_change : int
+            Change in the total number of put options contracts traded between the current and previous reporting dates.
+        put_call_ratio : float
+            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
+        last_put_call_ratio : float
+            The put-call ratio on the previous reporting date.
+        put_call_ratio_change : float
+            Change in the put-call ratio between the current and previous reporting dates.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        InstitutionalOwnership
+        ----------------------
+        All fields are standardized."""
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": symbol,
+                "include_current_quarter": include_current_quarter,
+                "date": date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/fa/ins_own",
             **inputs,
         ).output
 
@@ -2543,13 +2697,13 @@ class CLASS_stocks_fa(Container):
     def own(
         self,
         symbol: str,
-        include_current_quarter: bool = False,
-        date: Optional[datetime.date] = None,
+        date: datetime.date,
+        page: Optional[int] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Institutional Ownership.
+        """Stock Ownership.
 
 
         openbb
@@ -2561,10 +2715,10 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
-        include_current_quarter : bool
-            Include current quarter data.
-        date : Optional[date]
+        date : date
             A specific date to get data for.
+        page : Optional[int]
+            The page number of the data to fetch.
 
         Returns
         -------
@@ -2581,80 +2735,86 @@ class CLASS_stocks_fa(Container):
                 Chart object.
 
 
-        InstitutionalOwnership
-        ----------------------
-        symbol : ConstrainedStrValue
-            Symbol to get data for.
-        cik : Optional[str]
-            The CIK of the company.
+        StockOwnership
+        --------------
         date : date
             The date of the data.
-        investors_holding : int
-            The number of investors holding the stock.
-        last_investors_holding : int
-            The number of investors holding the stock in the last quarter.
-        investors_holding_change : int
-            The change in the number of investors holding the stock.
-        number_of_13f_shares : Optional[int]
-            The number of 13F shares.
-        last_number_of_13f_shares : Optional[int]
-            The number of 13F shares in the last quarter.
-        number_of_13f_shares_change : Optional[int]
-            The change in the number of 13F shares.
-        total_invested : float
-            The total amount invested.
-        last_total_invested : float
-            The total amount invested in the last quarter.
-        total_invested_change : float
-            The change in the total amount invested.
-        ownership_percent : float
-            The ownership percent.
-        last_ownership_percent : float
-            The ownership percent in the last quarter.
-        ownership_percent_change : float
-            The change in the ownership percent.
-        new_positions : int
-            The number of new positions.
-        last_new_positions : int
-            The number of new positions in the last quarter.
-        new_positions_change : int
-            he change in the number of new positions.
-        increased_positions : int
-            The number of increased positions.
-        last_increased_positions : int
-            The number of increased positions in the last quarter.
-        increased_positions_change : int
-            The change in the number of increased positions.
-        closed_positions : int
-            The number of closed positions.
-        last_closed_positions : int
-            The number of closed positions in the last quarter.
-        closed_positions_change : int
-            The change in the number of closed positions.
-        reduced_positions : int
-            The number of reduced positions.
-        last_reduced_positions : int
-            The number of reduced positions in the last quarter.
-        reduced_positions_change : int
-            The change in the number of reduced positions.
-        total_calls : int
-            Total number of call options contracts traded for Apple Inc. on the specified date.
-        last_total_calls : int
-            Total number of call options contracts traded for Apple Inc. on the previous reporting date.
-        total_calls_change : int
-            Change in the total number of call options contracts traded between the current and previous reporting dates.
-        total_puts : int
-            Total number of put options contracts traded for Apple Inc. on the specified date.
-        last_total_puts : int
-            Total number of put options contracts traded for Apple Inc. on the previous reporting date.
-        total_puts_change : int
-            Change in the total number of put options contracts traded between the current and previous reporting dates.
-        put_call_ratio : float
-            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
-        last_put_call_ratio : float
-            The put-call ratio on the previous reporting date.
-        put_call_ratio_change : float
-            Change in the put-call ratio between the current and previous reporting dates.
+        cik : int
+            The cik of the stock ownership.
+        filing_date : date
+            The filing date of the stock ownership.
+        investor_name : str
+            The investor name of the stock ownership.
+        symbol : str
+            The symbol of the stock ownership.
+        security_name : str
+            The security name of the stock ownership.
+        type_of_security : str
+            The type of security of the stock ownership.
+        security_cusip : str
+            The security cusip of the stock ownership.
+        shares_type : str
+            The shares type of the stock ownership.
+        put_call_share : str
+            The put call share of the stock ownership.
+        investment_discretion : str
+            The investment discretion of the stock ownership.
+        industry_title : str
+            The industry title of the stock ownership.
+        weight : float
+            The weight of the stock ownership.
+        last_weight : float
+            The last weight of the stock ownership.
+        change_in_weight : float
+            The change in weight of the stock ownership.
+        change_in_weight_percentage : float
+            The change in weight percentage of the stock ownership.
+        market_value : int
+            The market value of the stock ownership.
+        last_market_value : int
+            The last market value of the stock ownership.
+        change_in_market_value : int
+            The change in market value of the stock ownership.
+        change_in_market_value_percentage : float
+            The change in market value percentage of the stock ownership.
+        shares_number : int
+            The shares number of the stock ownership.
+        last_shares_number : int
+            The last shares number of the stock ownership.
+        change_in_shares_number : float
+            The change in shares number of the stock ownership.
+        change_in_shares_number_percentage : float
+            The change in shares number percentage of the stock ownership.
+        quarter_end_price : float
+            The quarter end price of the stock ownership.
+        avg_price_paid : float
+            The average price paid of the stock ownership.
+        is_new : bool
+            Is the stock ownership new.
+        is_sold_out : bool
+            Is the stock ownership sold out.
+        ownership : float
+            How much is the ownership.
+        last_ownership : float
+            The last ownership amount.
+        change_in_ownership : float
+            The change in ownership amount.
+        change_in_ownership_percentage : float
+            The change in ownership percentage.
+        holding_period : int
+            The holding period of the stock ownership.
+        first_added : date
+            The first added date of the stock ownership.
+        performance : float
+            The performance of the stock ownership.
+        performance_percentage : float
+            The performance percentage of the stock ownership.
+        last_performance : float
+            The last performance of the stock ownership.
+        change_in_performance : float
+            The change in performance of the stock ownership.
+        is_counted_for_performance : bool
+            Is the stock ownership counted for performance.
 
         fmp
         ===
@@ -2664,8 +2824,8 @@ class CLASS_stocks_fa(Container):
         All fields are standardized.
 
 
-        InstitutionalOwnership
-        ----------------------
+        StockOwnership
+        --------------
         All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
@@ -2673,8 +2833,8 @@ class CLASS_stocks_fa(Container):
             },
             standard_params={
                 "symbol": symbol,
-                "include_current_quarter": include_current_quarter,
                 "date": date,
+                "page": page,
             },
             extra_params=kwargs,
             chart=chart,

@@ -1,7 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import datetime
 import typing
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -17,8 +18,8 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = "2023-08-02",
+        start_date: Union[datetime.date, None, str] = None,
+        end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -33,9 +34,9 @@ class CLASS_fixedincome(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        start_date : Optional[str]
+        start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[str]
+        end_date : Optional[date]
             End date of the data, in YYYY-MM-DD format.
 
         Returns
@@ -56,7 +57,31 @@ class CLASS_fixedincome(Container):
         TreasuryRates
         -------------
         date : date
-            None
+            The date of the data.
+        month_1 : float
+            The 1 month treasury rate.
+        month_2 : float
+            The 2 month treasury rate.
+        month_3 : float
+            The 3 month treasury rate.
+        month_6 : float
+            The 6 month treasury rate.
+        year_1 : float
+            The 1 year treasury rate.
+        year_2 : float
+            The 2 year treasury rate.
+        year_3 : float
+            The 3 year treasury rate.
+        year_5 : float
+            The 5 year treasury rate.
+        year_7 : float
+            The 7 year treasury rate.
+        year_10 : float
+            The 10 year treasury rate.
+        year_20 : float
+            The 20 year treasury rate.
+        year_30 : float
+            The 30 year treasury rate.
 
         fmp
         ===
@@ -68,30 +93,7 @@ class CLASS_fixedincome(Container):
 
         TreasuryRates
         -------------
-        month1 : float
-            None
-        month2 : float
-            None
-        month3 : float
-            None
-        month6 : float
-            None
-        year1 : float
-            None
-        year2 : float
-            None
-        year3 : float
-            None
-        year5 : float
-            None
-        year7 : float
-            None
-        year10 : float
-            None
-        year20 : float
-            None
-        year30 : float
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

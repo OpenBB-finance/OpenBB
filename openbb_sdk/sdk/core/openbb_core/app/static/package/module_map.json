@@ -99,6 +99,7 @@
     "stocks_fa_income": "/stocks/fa/income",
     "stocks_fa_income_growth": "/stocks/fa/income_growth",
     "stocks_fa_ins": "/stocks/fa/ins",
+    "stocks_fa_ins_own": "/stocks/fa/ins_own",
     "stocks_fa_key": "/stocks/fa/key",
     "stocks_fa_metrics": "/stocks/fa/metrics",
     "stocks_fa_mgmt": "/stocks/fa/mgmt",
