@@ -22,10 +22,17 @@ from typing import (
 )
 
 import pandas as pd
+from pydantic import BaseModel
 from starlette.routing import BaseRoute
 
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
+
+
+class OpenBBCustomParameter(BaseModel):
+    """Custom parameter for OpenBB."""
+
+    description: str
 
 
 class PackageBuilder:
@@ -168,6 +175,9 @@ class ImportDefinition:
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
+        code += (
+            "\nfrom openbb_core.app.static.package_builder import OpenBBCustomParameter"
+        )
 
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
@@ -179,7 +189,7 @@ class ImportDefinition:
         code += "\nimport pydantic"
         code += "\nfrom pydantic import validate_arguments"
         code += "\nfrom inspect import Parameter"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
 
@@ -334,6 +344,7 @@ class DocstringGenerator:
                         section_docstring += (
                             f"{cls.get_available_providers(query_mapping)}"
                         )
+                        # TODO: How do we know if the model has a chart parameter?
                 elif section_name == "Data":
                     underline = "-" * len(model_name)
                     section_docstring += f"\n{model_name}\n{underline}\n"
@@ -496,8 +507,36 @@ class MethodDefinition:
         return MethodDefinition.reorder_params(params=formatted)
 
     @staticmethod
-    def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
+    def build_func_params(
+        parameter_map: Dict[str, Parameter], model_name: Optional[str]
+    ) -> str:
         od = MethodDefinition.format_params(parameter_map=parameter_map)
+
+        if model_name:
+            for param, value in od.items():
+                if (
+                    (param == "chart")
+                    or (param == "provider")
+                    or (param == "extra_params")
+                ):
+                    # TODO: These are special cases that are params but not inside
+                    # the interface. We should find a better way to handle this.
+                    continue
+
+                description = (
+                    get_provider_interface()
+                    .map[model_name]["openbb"]["QueryParams"]["fields"][param]
+                    .field_info.description
+                )
+
+                new_value = value.replace(
+                    annotation=Annotated[
+                        value.annotation, OpenBBCustomParameter(description=description)
+                    ]
+                )
+
+                od[param] = new_value
+
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(
@@ -530,9 +569,12 @@ class MethodDefinition:
 
     @staticmethod
     def build_command_method_signature(
-        func_name: str, parameter_map: Dict[str, Parameter], return_type: type
+        func_name: str,
+        parameter_map: Dict[str, Parameter],
+        return_type: type,
+        model_name: Optional[str],
     ) -> str:
-        func_params = MethodDefinition.build_func_params(parameter_map)
+        func_params = MethodDefinition.build_func_params(parameter_map, model_name)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
 
@@ -605,6 +647,7 @@ class MethodDefinition:
             func_name=func_name,
             parameter_map=parameter_map,
             return_type=sig.return_annotation,
+            model_name=model_name,
         )
         code += cls.build_command_method_doc(func=func)
         code += cls.build_command_method_implementation(path=path, func=func)
