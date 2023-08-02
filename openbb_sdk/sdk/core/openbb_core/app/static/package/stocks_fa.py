@@ -78,7 +78,7 @@ class CLASS_stocks_fa(Container):
         BalanceSheet
         ------------
         date : date
-            Date of the income statement.
+            Date of the fetched statement.
         symbol : Optional[str]
             Symbol of the company.
         cik : Optional[int]
@@ -90,7 +90,7 @@ class CLASS_stocks_fa(Container):
         accepted_date : Optional[datetime]
             Accepted date.
         period : Optional[str]
-            Period of the income statement.
+            Reporting period of the statement.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
         short_term_investments : Optional[int]
@@ -512,9 +512,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash(
         self,
-        symbol: Optional[str] = None,
-        period: Literal["annual", "quarter"] = "annual",
-        limit: Optional[pydantic.types.NonNegativeInt] = None,
+        symbol: str,
+        period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[pydantic.types.NonNegativeInt] = 200,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -529,12 +529,12 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp, polygon]
             The provider to use for the query.
-        symbol : Optional[str]
-            None
-        period : Literal['annual', 'quarter']
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        period : Literal['annually', 'quarterly']
+            Period of the data to return (quarterly or annually).
         limit : Optional[NonNegativeInt]
-            None
+            The number of data entries to return.
 
         Returns
         -------
@@ -554,14 +554,70 @@ class CLASS_stocks_fa(Container):
         CashFlowStatement
         -----------------
         date : date
-            None
-        symbol : str
-            None
+            Date of the fetched statement.
+        symbol : Optional[str]
+            Symbol of the company.
         cik : Optional[int]
-            None
+            Central Index Key.
+        currency : Optional[str]
+            Reporting currency.
+        filing_date : Optional[date]
+            Filling date.
+        accepted_date : Optional[datetime]
+            Accepted date.
         period : Optional[str]
+            Reporting period of the statement.
+        cash_at_beginning_of_period : Optional[int]
             None
+        net_income : Optional[int]
+            None
+        depreciation_and_amortization : Optional[int]
+            None
+        stock_based_compensation : Optional[int]
+            None
+        other_non_cash_items : Optional[int]
+            Other non-cash items.
+        deferred_income_tax : Optional[int]
+            Deferred income tax.
         inventory : Optional[int]
+            None
+        accounts_receivables : Optional[int]
+            None
+        accounts_payables : Optional[int]
+            None
+        other_working_capital : Optional[int]
+            Accrued expenses and other, Unearned revenue.
+        net_cash_flow_from_operating_activities : Optional[int]
+            None
+        capital_expenditure : Optional[int]
+            Purchases of property and equipment.
+        other_investing_activities : Optional[int]
+            Proceeds from property and equipment sales and incentives.
+        acquisitions_net : Optional[int]
+            Acquisitions, net of cash acquired, and other
+        sales_maturities_of_investments : Optional[int]
+            None
+        purchases_of_investments : Optional[int]
+            None
+        net_cash_flow_from_investing_activities : Optional[int]
+            None
+        investments_in_property_plant_and_equipment : Optional[int]
+            None
+        dividends_paid : Optional[int]
+            None
+        common_stock_repurchased : Optional[int]
+            None
+        debt_repayment : Optional[int]
+            None
+        other_financing_activities : Optional[int]
+            None
+        net_cash_flow_from_financing_activities : Optional[int]
+            None
+        effect_of_forex_changes_on_cash : Optional[int]
+            Foreign currency effect on cash, cash equivalents, and restricted cash
+        net_change_in_cash : Optional[int]
+            Net increase (decrease) in cash, cash equivalents, and restricted cash
+        cash_at_end_of_period : Optional[int]
             None
 
         fmp
@@ -570,76 +626,12 @@ class CLASS_stocks_fa(Container):
         Parameters
         ----------
         cik : Optional[str]
-            None
+            Central Index Key (CIK) of the company.
 
 
         CashFlowStatement
         -----------------
-        reportedCurrency : str
-            None
-        fillingDate : Optional[date]
-            None
-        acceptedDate : Optional[datetime]
-            None
         calendarYear : Optional[int]
-            None
-        netIncome : Optional[int]
-            None
-        depreciationAndAmortization : Optional[int]
-            None
-        deferredIncomeTax : Optional[int]
-            None
-        stockBasedCompensation : Optional[int]
-            None
-        changeInWorkingCapital : Optional[int]
-            None
-        accountsReceivables : Optional[int]
-            None
-        accountsPayables : Optional[int]
-            None
-        otherWorkingCapital : Optional[int]
-            None
-        otherNonCashItems : Optional[int]
-            None
-        netCashProvidedByOperatingActivities : Optional[int]
-            None
-        investmentsInPropertyPlantAndEquipment : Optional[int]
-            None
-        acquisitionsNet : Optional[int]
-            None
-        purchasesOfInvestments : Optional[int]
-            None
-        salesMaturitiesOfInvestments : Optional[int]
-            None
-        otherInvestingActivites : Optional[int]
-            None
-        netCashUsedForInvestingActivites : Optional[int]
-            None
-        debtRepayment : Optional[int]
-            None
-        commonStockIssued : Optional[int]
-            None
-        commonStockRepurchased : Optional[int]
-            None
-        dividendsPaid : Optional[int]
-            None
-        otherFinancingActivites : Optional[int]
-            None
-        netCashUsedProvidedByFinancingActivities : Optional[int]
-            None
-        effectOfForexChangesOnCash : Optional[int]
-            None
-        netChangeInCash : Optional[int]
-            None
-        cashAtEndOfPeriod : Optional[int]
-            None
-        cashAtBeginningOfPeriod : Optional[int]
-            None
-        operatingCashFlow : Optional[int]
-            None
-        capitalExpenditure : Optional[int]
-            None
-        freeCashFlow : Optional[int]
             None
         link : Optional[str]
             None
@@ -687,24 +679,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        start_date : date
-            None
-        tickers : Optional[List[str]]
-            None
-        filing_date : Optional[date]
-            None
-        acceptance_datetime : Optional[datetime]
-            None
-        fiscal_period : Optional[str]
-            None
-        net_cash_flow_continuing : int
-            None
-        net_cash_flow_from_financing_activities_continuing : int
-            None
-        net_cash_flow_from_investing_activities_continuing : int
-            None
-        net_cash_flow_from_operating_activities_continuing : int
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
