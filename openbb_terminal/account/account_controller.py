@@ -2,6 +2,7 @@ import argparse
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional
+from uuid import UUID
 
 from openbb_terminal.account.account_view import (
     display_default_routines,
@@ -55,12 +56,12 @@ class AccountController(BaseController):
         """Constructor"""
         super().__init__(queue)
         self.LOCAL_ROUTINES: Dict[str, Path] = {}
-        self.REMOTE_CHOICES: List[str] = []
+        self.REMOTE_CHOICES: Dict[str, UUID] = {}
 
         self.DEFAULT_ROUTINES: List[Dict[str, str]] = self.fetch_default_routines()
-        self.DEFAULT_CHOICES: List[str] = [
-            r["name"] for r in self.DEFAULT_ROUTINES if "name" in r
-        ]
+        self.DEFAULT_CHOICES: List[str] = {
+            r["name"]: None for r in self.DEFAULT_ROUTINES if "name" in r
+        }
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
@@ -75,7 +76,11 @@ class AccountController(BaseController):
                 {c: {} for c in self.LOCAL_ROUTINES}
             )
             self.choices["download"]["--name"].update(
-                {c: {} for c in self.DEFAULT_CHOICES + self.REMOTE_CHOICES}
+                {
+                    c: {}
+                    for c in list(self.DEFAULT_CHOICES.keys())
+                    + list(self.REMOTE_CHOICES.keys())
+                }
             )
             self.choices["delete"]["--name"].update(
                 {c: {} for c in self.REMOTE_CHOICES}
@@ -253,7 +258,8 @@ class AccountController(BaseController):
                     )
                     df, page, pages = get_personal_routines_info(response)
                     if not df.empty:
-                        self.REMOTE_CHOICES += list(df["name"])
+                        temp_dict = {x: y for x, y in zip(df["name"], df["uuid"])}
+                        self.REMOTE_CHOICES = {**self.REMOTE_CHOICES, **temp_dict}
                         self.update_runtime_choices()
                         display_personal_routines(df, page, pages)
                     else:
@@ -366,7 +372,8 @@ class AccountController(BaseController):
                             console.print("[info]Aborted.[/info]")
 
                     if response and response.status_code == 200:
-                        self.REMOTE_CHOICES.append(name)
+                        the_uuid = response.json()["uuid"]
+                        self.REMOTE_CHOICES[name] = the_uuid
                         self.update_runtime_choices()
 
     # store data in list with "personal/default" to identify data's routine type
@@ -401,12 +408,13 @@ class AccountController(BaseController):
                 data = []
                 name = " ".join(ns_parser.name)
                 # Personal routines
-                response = Hub.download_routine(
-                    auth_header=get_current_user().profile.get_auth_header(),
-                    name=name,
-                )
-                if response and response.status_code == 200:
-                    data = [response.json(), "personal"]
+                if name in self.REMOTE_CHOICES:
+                    response = Hub.download_routine(
+                        auth_header=get_current_user().profile.get_auth_header(),
+                        uuid=self.REMOTE_CHOICES[name],
+                    )
+                    if response and response.status_code == 200:
+                        data = [response.json(), "personal"]
                 # Default routine
                 elif name in self.DEFAULT_CHOICES:
                     data = [
@@ -490,14 +498,14 @@ class AccountController(BaseController):
                 if i.lower() in ["y", "yes"]:
                     response = Hub.delete_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
-                        name=name,
+                        uuid=self.REMOTE_CHOICES[name],
                     )
                     if (
                         response
                         and response.status_code == 200
                         and name in self.REMOTE_CHOICES
                     ):
-                        self.REMOTE_CHOICES.remove(name)
+                        self.REMOTE_CHOICES.pop(name)
                         self.update_runtime_choices()
                 else:
                     console.print("[info]Aborted.[/info]")
