@@ -70,16 +70,16 @@ def display_default_routines(df: pd.DataFrame):
     df : pd.DataFrame
         The default routines list.
     """
-    # try:
-    df = df.rename(columns={"date_updated": "updated_date"})
-    print(df)
-    df = clean_df(df)
-    print_rich_table(
-        df=df,
-        title="Default routines",
-        headers=["Name", "Description", "Version", "Last update"],
-        show_index=True,
-        index_name="#",
-    )
-    # except Exception:
-    # console.print("Failed to display default routines.")
+    try:
+        df = df.rename(columns={"date_updated": "updated_date"})
+        print(df)
+        df = clean_df(df)
+        print_rich_table(
+            df=df,
+            title="Default routines",
+            headers=["Name", "Description", "Version", "Last update"],
+            show_index=True,
+            index_name="#",
+        )
+    except Exception:
+        console.print("Failed to display default routines.")
