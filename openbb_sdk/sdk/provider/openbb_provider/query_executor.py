@@ -72,9 +72,9 @@ class QueryExecutor:
         """
         provider = self.get_provider(provider_name)
         self.verify_credentials(provider, credentials)
-        Fetcher_ = self.get_fetcher(provider, model_name)
+        fetcher = self.get_fetcher(provider, model_name)
 
         try:
-            return Fetcher_.fetch_data(params, credentials)
+            return fetcher.fetch_data(params, credentials)
         except Exception as e:
             raise ProviderError(e) from e
