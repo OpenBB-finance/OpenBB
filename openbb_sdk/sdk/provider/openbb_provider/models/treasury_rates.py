@@ -4,11 +4,11 @@
 from datetime import date as dateType
 from typing import Optional
 
+from pydantic import Field
+
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
-
-from pydantic import Field
+from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class TreasuryRatesQueryParams(QueryParams):

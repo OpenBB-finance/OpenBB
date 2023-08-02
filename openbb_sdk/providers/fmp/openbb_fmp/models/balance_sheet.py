@@ -38,52 +38,55 @@ class FMPBalanceSheetData(BalanceSheetData):
             "accepted_date": "acceptedDate",
             "cash_and_cash_equivalents": "cashAndCashEquivalents",
             "short_term_investments": "shortTermInvestments",
-            "cash_and_short_term_investments": "cashAndShortTermInvestments",
             "net_receivables": "netReceivables",
-            "tax_assets": "taxAssets",
             "other_current_assets": "otherCurrentAssets",
             "current_assets": "totalCurrentAssets",
             "long_term_investments": "longTermInvestments",
             "property_plant_equipment_net": "propertyPlantEquipmentNet",
             "intangible_assets": "intangibleAssets",
             "other_non_current_assets": "otherNonCurrentAssets",
-            "noncurrent_assets": "totalNonCurrentAssets",
+            "tax_assets": "taxAssets",
             "other_assets": "otherAssets",
+            "noncurrent_assets": "totalNonCurrentAssets",
             "assets": "totalAssets",
-            "short_term_debt": "shortTermDebt",
-            "tax_payables": "taxPayables",
             "account_payables": "accountPayables",
             "other_current_liabilities": "otherCurrentLiabilities",
+            "tax_payables": "taxPayables",
+            "short_term_debt": "shortTermDebt",
             "deferred_revenue": "deferredRevenue",
             "current_liabilities": "totalCurrentLiabilities",
             "long_term_debt": "longTermDebt",
             "other_non_current_liabilities": "otherNonCurrentLiabilities",
-            "noncurrent_liabilities": "totalNonCurrentLiabilities",
             "other_liabilities": "otherLiabilities",
+            "noncurrent_liabilities": "totalNonCurrentLiabilities",
             "liabilities": "totalLiabilities",
             "common_stock": "commonStock",
-            "retained_earnings": "retainedEarnings",
+            "other_stockholder_equity": "othertotalStockholdersEquity",
             "accumulated_other_comprehensive_income_loss": "accumulatedOtherComprehensiveIncomeLoss",
-            "total_stockholders_equity": "totalStockholdersEquity",
+            "preferred_stock": "preferredStock",
+            "retained_earnings": "retainedEarnings",
             "minority_interest": "minorityInterest",
+            "total_stockholders_equity": "totalStockholdersEquity",
             "total_equity": "totalEquity",
             "total_liabilities_and_stockholders_equity": "totalLiabilitiesAndStockholdersEquity",
+            "total_liabilities_and_total_equity": "totalLiabilitiesAndTotalEquity",
         }
 
-    calendarYear: Optional[int]
-
-    goodwillAndIntangibleAssets: Optional[int]
-
-    deferredRevenueNonCurrent: Optional[int]
-    deferredTaxLiabilitiesNonCurrent: Optional[int]
-
-    othertotalStockholdersEquity: Optional[int]
-
     # Leftovers below
-    totalLiabilitiesAndTotalEquity: Optional[int]
-    totalInvestments: Optional[int]
-    netDebt: Optional[int]
+    calendarYear: Optional[int]
+    link: Optional[str]
     finalLink: Optional[str]
+
+    cashAndShortTermInvestments: Optional[int]
+    goodwillAndIntangibleAssets: Optional[int]
+    deferredRevenueNonCurrent: Optional[int]
+    totalInvestments: Optional[int]
+
+    capitalLeaseObligations: Optional[int]
+    deferredTaxLiabilitiesNonCurrent: Optional[int]
+    totalNonCurrentLiabilities: Optional[int]
+    totalDebt: Optional[int]
+    netDebt: Optional[int]
 
 
 class FMPBalanceSheetFetcher(

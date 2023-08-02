@@ -30,41 +30,62 @@ class BalanceSheetData(Data):
     accepted_date: Optional[datetime] = Field(description="Accepted date.")
     period: Optional[str] = Field(description="Period of the income statement.")
 
-    cash_and_cash_equivalents: Optional[int]
-    short_term_investments: Optional[int]
-    cash_and_short_term_investments: Optional[int]
-    net_receivables: Optional[int]
-    tax_assets: Optional[int]
-    inventory: Optional[int]
-    other_current_assets: Optional[int]
-    current_assets: Optional[int]
+    cash_and_cash_equivalents: Optional[int] = Field(
+        description="Cash and cash equivalents"
+    )
+    short_term_investments: Optional[int] = Field(description="Short-term investments")
+    inventory: Optional[int] = Field(description="Inventory")
+    net_receivables: Optional[int] = Field(description="Receivables, net")
+    other_current_assets: Optional[int] = Field(description="Other current assets")
+    current_assets: Optional[int] = Field(description="Total current assets")
 
-    long_term_investments: Optional[int]
-    property_plant_equipment_net: Optional[int]
-    goodwill: Optional[int]
-    intangible_assets: Optional[int]
-    other_non_current_assets: Optional[int]
+    long_term_investments: Optional[int] = Field(description="Long-term investments")
+    property_plant_equipment_net: Optional[int] = Field(
+        description="Property, plant and equipment, net"
+    )
+    goodwill: Optional[int] = Field(description="Goodwill")
+    intangible_assets: Optional[int] = Field(description="Intangible assets")
+    other_non_current_assets: Optional[int] = Field(
+        description="Other non-current assets"
+    )
+    tax_assets: Optional[int] = Field(description="Accrued income taxes")
+    other_assets: Optional[int] = Field(description="Other assets")
     noncurrent_assets: Optional[int]
-    other_assets: Optional[int]
     assets: Optional[int]
 
-    short_term_debt: Optional[int]
-    tax_payables: Optional[int]
     account_payables: Optional[int]
     other_current_liabilities: Optional[int]
-    deferred_revenue: Optional[int]
+    tax_payables: Optional[int] = Field(description="Accrued income taxes")
+    deferred_revenue: Optional[int] = Field(
+        description="Accrued income taxes, other deferred revenue"
+    )
+    short_term_debt: Optional[int] = Field(
+        description="Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year"
+    )
     current_liabilities: Optional[int]
 
-    long_term_debt: Optional[int]
-    other_non_current_liabilities: Optional[int]
-    noncurrent_liabilities: Optional[int]
+    long_term_debt: Optional[int] = Field(
+        description="Long-term debt, Operating lease obligations, Long-term finance lease obligations"
+    )
+    other_non_current_liabilities: Optional[int] = Field(
+        description="Deferred income taxes and other"
+    )
     other_liabilities: Optional[int]
+    noncurrent_liabilities: Optional[int]
     liabilities: Optional[int]
 
     common_stock: Optional[int]
-    retained_earnings: Optional[int]
-    accumulated_other_comprehensive_income_loss: Optional[int]
+    other_stockholder_equity: Optional[int] = Field(
+        description="Capital in excess of par value"
+    )
+
+    accumulated_other_comprehensive_income_loss: Optional[int] = Field(
+        description="Accumulated other comprehensive income (loss)"
+    )
+    preferred_stock: Optional[int] = Field(description="Preferred stock")
+    retained_earnings: Optional[int] = Field(description="Retained earnings")
+    minority_interest: Optional[int] = Field(description="Minority interest")
     total_stockholders_equity: Optional[int]
-    minority_interest: Optional[int]
     total_equity: Optional[int]
     total_liabilities_and_stockholders_equity: Optional[int]
+    total_liabilities_and_total_equity: Optional[int]

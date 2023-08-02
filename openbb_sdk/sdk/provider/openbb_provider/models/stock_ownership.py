@@ -4,12 +4,12 @@
 from datetime import date as dateType
 from typing import Optional
 
+from pydantic import Field, validator
+
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
-
-from pydantic import Field, validator
 
 
 def most_recent_quarter(base: dateType = dateType.today()) -> dateType:

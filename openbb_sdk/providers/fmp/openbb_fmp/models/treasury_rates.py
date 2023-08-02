@@ -9,10 +9,9 @@ from openbb_provider.models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
-
-from openbb_fmp.utils.helpers import get_querystring, get_data_many
-
 from pydantic import validator
+
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):
