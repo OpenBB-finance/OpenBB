@@ -1,45 +1,25 @@
 """FMP Balance Sheet Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from pydantic import Field, NonNegativeInt, root_validator
+from pydantic import root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPBalanceSheetQueryParams(QueryParams):
+class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
     """FMP Balance Sheet QueryParams.
 
     Source: https://financialmodelingprep.com/developer/docs/#Balance-Sheet
-
-    Parameter
-    ---------
-    symbol : Optional[str]
-        The symbol of the company if cik is not provided.
-    cik : Optional[str]
-        The CIK of the company if symbol is not provided.
-    period : Literal["annual", "quarter"]
-        The period of the balance sheet. Default is "annual".
-    limit : Optional[NonNegativeInt]
-        The limit of the balance sheet.
     """
 
-    symbol: Optional[str]
     cik: Optional[str]
-    period: Literal["annual", "quarter"] = Field(default="annual")
-    limit: Optional[NonNegativeInt]
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
@@ -48,64 +28,65 @@ class FMPBalanceSheetQueryParams(QueryParams):
         return values
 
 
-class FMPBalanceSheetData(Data):
-    date: dateType
-    symbol: str
-    cik: Optional[int]
-    reportedCurrency: Optional[str]
-    fillingDate: Optional[dateType]
-    acceptedDate: Optional[datetime]
-    calendarYear: Optional[int]
-    period: Optional[str]
+class FMPBalanceSheetData(BalanceSheetData):
+    """FMP Balance Sheet Data."""
 
-    cashAndCashEquivalents: Optional[int]
-    shortTermInvestments: Optional[int]
-    cashAndShortTermInvestments: Optional[int]
-    netReceivables: Optional[int]
-    inventory: Optional[int]
-    otherCurrentAssets: Optional[int]
-    totalCurrentAssets: Optional[int] = Field(alias="current_assets")
-
-    longTermInvestments: Optional[int]
-    propertyPlantEquipmentNet: Optional[int]
-
-    goodwill: Optional[int]
-    intangibleAssets: Optional[int]
-    goodwillAndIntangibleAssets: Optional[int]
-    taxAssets: Optional[int]
-    otherNonCurrentAssets: Optional[int]
-
-    totalNonCurrentAssets: Optional[int] = Field(alias="noncurrent_assets")
-    totalAssets: Optional[int] = Field(alias="assets")
-
-    accountPayables: Optional[int]
-    otherCurrentLiabilities: Optional[int]
-    deferredRevenue: Optional[int]
-    shortTermDebt: Optional[int]
-    taxPayables: Optional[int]
-    totalCurrentLiabilities: Optional[int] = Field(alias="current_liabilities")
-
-    longTermDebt: Optional[int]
-    deferredRevenueNonCurrent: Optional[int]
-    deferredTaxLiabilitiesNonCurrent: Optional[int]
-    otherNonCurrentLiabilities: Optional[int]
-    totalNonCurrentLiabilities: Optional[int] = Field(alias="noncurrent_liabilities")
-    totalLiabilities: Optional[int] = Field(alias="liabilities")
-
-    commonStock: Optional[int]
-    retainedEarnings: Optional[int]
-    accumulatedOtherComprehensiveIncomeLoss: Optional[int]
-    othertotalStockholdersEquity: Optional[int]
-    totalEquity: Optional[int]
-    totalLiabilitiesAndStockholdersEquity: Optional[int]
+    class Config:
+        fields = {
+            "currency": "reportedCurrency",
+            "filing_date": "fillingDate",
+            "accepted_date": "acceptedDate",
+            "cash_and_cash_equivalents": "cashAndCashEquivalents",
+            "short_term_investments": "shortTermInvestments",
+            "net_receivables": "netReceivables",
+            "other_current_assets": "otherCurrentAssets",
+            "current_assets": "totalCurrentAssets",
+            "long_term_investments": "longTermInvestments",
+            "property_plant_equipment_net": "propertyPlantEquipmentNet",
+            "intangible_assets": "intangibleAssets",
+            "other_non_current_assets": "otherNonCurrentAssets",
+            "tax_assets": "taxAssets",
+            "other_assets": "otherAssets",
+            "noncurrent_assets": "totalNonCurrentAssets",
+            "assets": "totalAssets",
+            "account_payables": "accountPayables",
+            "other_current_liabilities": "otherCurrentLiabilities",
+            "tax_payables": "taxPayables",
+            "short_term_debt": "shortTermDebt",
+            "deferred_revenue": "deferredRevenue",
+            "current_liabilities": "totalCurrentLiabilities",
+            "long_term_debt": "longTermDebt",
+            "other_non_current_liabilities": "otherNonCurrentLiabilities",
+            "other_liabilities": "otherLiabilities",
+            "noncurrent_liabilities": "totalNonCurrentLiabilities",
+            "liabilities": "totalLiabilities",
+            "common_stock": "commonStock",
+            "other_stockholder_equity": "othertotalStockholdersEquity",
+            "accumulated_other_comprehensive_income_loss": "accumulatedOtherComprehensiveIncomeLoss",
+            "preferred_stock": "preferredStock",
+            "retained_earnings": "retainedEarnings",
+            "minority_interest": "minorityInterest",
+            "total_stockholders_equity": "totalStockholdersEquity",
+            "total_equity": "totalEquity",
+            "total_liabilities_and_stockholders_equity": "totalLiabilitiesAndStockholdersEquity",
+            "total_liabilities_and_total_equity": "totalLiabilitiesAndTotalEquity",
+        }
 
     # Leftovers below
-    totalStockholdersEquity: Optional[int]
-    minorityInterest: Optional[int]
-    totalLiabilitiesAndTotalEquity: Optional[int]
-    totalInvestments: Optional[int]
-    netDebt: Optional[int]
+    calendarYear: Optional[int]
+    link: Optional[str]
     finalLink: Optional[str]
+
+    cashAndShortTermInvestments: Optional[int]
+    goodwillAndIntangibleAssets: Optional[int]
+    deferredRevenueNonCurrent: Optional[int]
+    totalInvestments: Optional[int]
+
+    capitalLeaseObligations: Optional[int]
+    deferredTaxLiabilitiesNonCurrent: Optional[int]
+    totalNonCurrentLiabilities: Optional[int]
+    totalDebt: Optional[int]
+    netDebt: Optional[int]
 
 
 class FMPBalanceSheetFetcher(
@@ -117,20 +98,14 @@ class FMPBalanceSheetFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: BalanceSheetQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPBalanceSheetQueryParams:
-        period = "annual" if query.period == "annually" else "quarter"
-        return FMPBalanceSheetQueryParams(
-            symbol=query.symbol, period=period, **extra_params if extra_params else {}  # type: ignore
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPBalanceSheetQueryParams:
+        return FMPBalanceSheetQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPBalanceSheetQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPBalanceSheetData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"balance-sheet-statement/{query.symbol}", api_key, query, ["symbol"]
@@ -140,5 +115,5 @@ class FMPBalanceSheetFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPBalanceSheetData],
-    ) -> List[BalanceSheetData]:
-        return data_transformer(data, BalanceSheetData)
+    ) -> List[FMPBalanceSheetData]:
+        return data

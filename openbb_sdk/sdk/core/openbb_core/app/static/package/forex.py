@@ -1,7 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import datetime
 import typing
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -14,35 +15,101 @@ class CLASS_forex(Container):
     @filter_call
     @validate_arguments
     def pairs(
-        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
+        self,
+        chart: bool = False,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs.
 
-        Available providers: fmp,
 
-        Standard
-        ========
+        openbb
+        ======
 
+        Parameters
+        ----------
+        provider: Literal[fmp, polygon]
+            The provider to use for the query.
+        All fields are standardized.
 
         Returns
         -------
-        symbol : str
-            The symbol of the currency pair.
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        ForexPairs
+        ----------
         name : str
-            The name of the currency pair separated by '/'.
-        currency : str
-            The base currency of the currency pair.
-        stock_exchange : Optional[str]
-            The stock exchange of the currency pair.
-        exchange_short_name : Optional[str]
-            The short name of the stock exchange of the currency pair.
+            The name of the currency pair.
 
         fmp
         ===
 
-        Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
+        Parameters
+        ----------
+        All fields are standardized.
 
-        """
+
+        ForexPairs
+        ----------
+        symbol : str
+            The symbol of the currency pair.
+        currency : str
+            The base currency of the currency pair.
+        stockExchange : Optional[str]
+            The stock exchange of the currency pair.
+        exchange_short_name : Optional[str]
+            The short name of the stock exchange of the currency pair.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        symbol : Optional[str]
+            Symbol of the pair to search.
+        date : Optional[date]
+            A specific date to get data for.
+        search : Optional[str]
+            Search for terms within the ticker and/or company name.
+        active : Optional[Literal[True, False]]
+            Specify if the tickers returned should be actively traded on the queried date.
+        order : Optional[Literal['asc', 'desc']]
+            Order data by ascending or descending.
+        sort : Optional[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']]
+            Sort field used for ordering.
+        limit : Optional[PositiveInt]
+            The number of data entries to return.
+
+
+        ForexPairs
+        ----------
+        market : str
+            The name of the trading market. Always 'fx'.
+        locale : str
+            The locale of the currency pair.
+        currency_symbol : str
+            The symbol of the quote currency.
+        currency_name : str
+            The name of the quote currency.
+        base_currency_symbol : str
+            The symbol of the base currency.
+        base_currency_name : str
+            The name of the base currency.
+        last_updated_utc : datetime
+            The last updated timestamp in UTC.
+        delisted_utc : Optional[datetime]
+            The delisted timestamp in UTC."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -64,88 +131,113 @@ class CLASS_forex(Container):
     def load(
         self,
         symbol: str,
+        start_date: Union[datetime.date, None, str] = None,
+        end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        """Forex Intraday Price.
+        r"""Forex Intraday Price.
 
-        Available providers: fmp, polygon
 
-        Standard
-        ========
+        openbb
+        ======
 
-        Parameter
-        ---------
-        symbol : str
-            The symbol of the forex currency pair.
-
+        Parameters
+        ----------
+        provider: Literal[fmp, polygon]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        start_date : Optional[date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[date]
+            End date of the data, in YYYY-MM-DD format.
 
         Returns
         -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        ForexEOD
+        --------
         date : datetime
-            The date of the forex currency pair.
+            The date of the data.
         open : PositiveFloat
-            The open price of the forex currency pair.
+            The open price of the symbol.
         high : PositiveFloat
-            The high price of the forex currency pair.
+            The high price of the symbol.
         low : PositiveFloat
-            The low price of the forex currency pair.
+            The low price of the symbol.
         close : PositiveFloat
-            The close price of the forex currency pair.
-        adj_close : Optional[PositiveFloat]
-            The adjusted close price of the forex currency pair.
+            The close price of the symbol.
+        volume : NonNegativeFloat
+            The volume of the symbol.
+        vwap : Optional[PositiveFloat]
+            Volume Weighted Average Price of the symbol.
 
         fmp
         ===
 
-        Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
-
-        Parameter
-        ---------
+        Parameters
+        ----------
         All fields are standardized.
 
 
-        Returns
-        -------
-        Documentation not available.
-
+        ForexEOD
+        --------
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \% in the price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \% in the price of the symbol over a period of time.
 
         polygon
         =======
 
-        Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
-
         Parameters
         ----------
-        stocksTicker : str
-            The ticker symbol of the stocks to fetch.
-        start_date : Union[date, datetime], optional
-            The start date of the query.
-        end_date : Union[date, datetime], optional
-            The end date of the query.
-        timespan : Timespan, optional
-            The timespan of the query, by default Timespan.day
-        sort : Literal["asc", "desc"], optional
-            The sort order of the query, by default "desc"
-        limit : PositiveInt, optional
-            The limit of the query, by default 49999
-        adjusted : bool, optional
-            Whether the query is adjusted, by default True
-        multiplier : PositiveInt, optional
-            The multiplier of the query, by default 1
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
 
 
-        Returns
-        -------
-        Documentation not available.
-        """
+        ForexEOD
+        --------
+        n : PositiveInt
+            The number of transactions for the symbol in the time period."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
                 "symbol": symbol,
+                "start_date": start_date,
+                "end_date": end_date,
             },
             extra_params=kwargs,
             chart=chart,

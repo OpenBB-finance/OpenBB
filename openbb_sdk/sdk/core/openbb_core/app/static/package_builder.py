@@ -8,7 +8,6 @@ from json import dumps
 from pathlib import Path
 from typing import (
     Annotated,
-    Any,
     Callable,
     Dict,
     List,
@@ -22,6 +21,7 @@ from typing import (
 )
 
 import pandas as pd
+from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 
 from openbb_core.app.provider_interface import get_provider_interface
@@ -222,92 +222,131 @@ class ClassDefinition:
 
 
 class DocstringGenerator:
-    """Generate docstrings for the commands dynamically."""
+    """Dynamically generate docstrings for the commands."""
 
     @staticmethod
-    def get_docstrings(query_mapping: dict) -> dict:
-        """Get docstrings from the query mapping."""
-        mapping = query_mapping.copy()
-        for _, model_mapping in mapping.items():
-            for _, query_params_mapping in model_mapping.items():
-                query_params_mapping.pop("fields", None)
-        return mapping
+    def get_command_output_description() -> str:
+        """Get the command output description."""
+        command_output_description = (
+            "\nReturns\n"
+            "-------\n"
+            "CommandOutput\n"
+            "    results: List[Data]\n"
+            "        Serializable results.\n"
+            "    provider: Optional[PROVIDERS]\n"
+            "        Provider name.\n"
+            "    warnings: Optional[List[Warning_]]\n"
+            "        List of warnings.\n"
+            "    error: Optional[Error]\n"
+            "        Caught exceptions.\n"
+            "    chart: Optional[Chart]\n"
+            "        Chart object.\n"
+        )
+
+        return command_output_description
 
     @staticmethod
-    def clean_provider_docstring(
-        section_name: Literal["QueryParams", "Data"], docstring: str, model_name: str
-    ) -> str:
-        """Clean the provider docstring from standard fields."""
-        provider_interface = get_provider_interface()
-        if section_name == "QueryParams":
-            standard_fields = provider_interface.params[model_name][
-                "standard"
-            ].__dataclass_fields__.keys()
-        elif section_name == "Data":
-            standard_fields = provider_interface.data[model_name][
-                "standard"
-            ].__dataclass_fields__.keys()
+    def get_available_providers(query_mapping: dict) -> str:
+        """Return a string of available providers."""
+        available_providers = ", ".join(query_mapping.keys())
+        available_providers = available_providers.replace("openbb, ", "")
+        available_providers = available_providers.replace("openbb", "")
+
+        provider_string = f"provider: Literal[{available_providers}]\n"
+        provider_string += "    The provider to use for the query.\n"
+
+        return provider_string
+
+    @staticmethod
+    def reorder_dictionary(dictionary: dict, key_to_move_first: str) -> dict:
+        """Reorder a dictionary so that a given key is first."""
+        if key_to_move_first in dictionary:
+            ordered_dict = OrderedDict(
+                [(key_to_move_first, dictionary[key_to_move_first])]
+            )
+
+            for key, value in dictionary.items():
+                if key != key_to_move_first:
+                    ordered_dict[key] = value
+
+            return ordered_dict
         else:
-            return docstring
+            return dictionary
 
-        doc_lines = docstring.split("\n")
-        cleaned_lines = []
-        skip_lines = False
+    @classmethod
+    def extract_field_details(
+        cls,
+        model_name: str,
+        provider: str,
+        section_name: str,
+        section_docstring: str,
+        mapping: dict,
+    ) -> str:
+        """Extract the field details from the map and add them to the docstring."""
+        if section_docstring == "":
+            return section_docstring
 
-        for line in doc_lines:
-            stripped_line = line.strip()
-            parameter_word = stripped_line.split(" : ")[0]
+        padding = "    "
 
-            if parameter_word in standard_fields:
-                skip_lines = True
-            elif ":" in stripped_line and parameter_word not in standard_fields:
-                skip_lines = False
+        field_mapping = mapping[model_name][provider.lower()][section_name]["fields"]
+        fields = field_mapping.keys()
 
-            if not skip_lines:
-                cleaned_lines.append(line)
+        if len(fields) == 0:
+            section_docstring += "All fields are standardized.\n"
+        else:
+            for field in fields:
+                # We need to get the string representation of the field type
+                # because Pydantic uses a custom repr.
+                try:
+                    field_type = field_mapping[field].__repr_args__()[1][1]
+                except AttributeError:
+                    # Fallback to the annotation if the repr fails
+                    field_type = field_mapping[field].annotation
 
-        for i, line in enumerate(cleaned_lines):
-            try:
-                if line == "---------" and cleaned_lines[i + 1] == "    ":
-                    cleaned_lines[i] = "---------"
-                    cleaned_lines[i + 1] = "All fields are standardized.\n"
-                    break
-            except IndexError:
-                cleaned_lines.append("All fields are standardized.\n")
+                field_description = field_mapping[field].field_info.description
 
-        return "\n".join(cleaned_lines)
+                section_docstring += f"{field} : {field_type}\n"
+                section_docstring += f"{padding}{field_description}\n"
+
+        if provider == "openbb" and section_name == "QueryParams":
+            section_docstring += cls.get_command_output_description()
+
+        return section_docstring
 
     @classmethod
     def generate_provider_docstrings(
-        cls, docstring: str, docstring_mapping: dict, model_name: str
+        cls,
+        docstring: str,
+        query_mapping: dict,
+        model_name: str,
+        provider_interface_mapping: dict,
     ) -> str:
         """Generate the docstring for the provider."""
-        for provider, model_mapping in docstring_mapping.items():
+        for provider, model_mapping in query_mapping.items():
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
-            for section_name, section_docstring in model_mapping.items():
-                missing_doc = "\nReturns\n-------\nDocumentation not available.\n\n"
-                section_docstring = (
-                    section_docstring["docstring"]
-                    if section_docstring["docstring"]
-                    else missing_doc
-                )
 
-                # clean the docstring from its original indentation
-                if missing_doc != section_docstring:
-                    section_docstring = "\n".join(
-                        line[4:] for line in section_docstring.split("\n")[1:]
-                    )
-                    section_docstring = "\n".join(
-                        f"{line}" for line in section_docstring.split("\n")
-                    )
-
-                    if provider != "Standard":
-                        section_docstring = cls.clean_provider_docstring(
-                            section_name,
-                            docstring=section_docstring,
-                            model_name=model_name,
+            for section_name in model_mapping:
+                section_docstring = ""
+                if section_name == "QueryParams":
+                    section_docstring += "\nParameters\n----------\n"
+                    if provider == "openbb":
+                        section_docstring += (
+                            f"{cls.get_available_providers(query_mapping)}"
                         )
+                elif section_name == "Data":
+                    underline = "-" * len(model_name)
+                    section_docstring += f"\n{model_name}\n{underline}\n"
+                else:
+                    continue
+
+                section_docstring = cls.extract_field_details(
+                    model_name=model_name,
+                    provider=provider,
+                    section_name=section_name,
+                    section_docstring=section_docstring,
+                    mapping=provider_interface_mapping,
+                )
 
                 docstring += f"\n{section_docstring}"
 
@@ -319,23 +358,15 @@ class DocstringGenerator:
         provider_interface_mapping = get_provider_interface().map
         query_mapping = provider_interface_mapping.get(model_name, None)
         if query_mapping:
-            docstring_mapping = cls.get_docstrings(query_mapping)
-
             docstring = func.__doc__ or ""
+            docstring += "\n\n"
 
-            available_providers = ", ".join(docstring_mapping.keys())
-            available_providers = available_providers.replace("openbb, ", "")
-            available_providers = available_providers.replace("openbb", "")
-
-            docstring += f"\n\nAvailable providers: {available_providers}\n"
-
-            docstring_mapping_ordered = {
-                "Standard": docstring_mapping.pop("openbb", None),  # type: ignore
-                **docstring_mapping,
-            }
-
+            query_mapping_ordered = cls.reorder_dictionary(query_mapping, "openbb")
             docstring = cls.generate_provider_docstrings(
-                docstring, docstring_mapping_ordered, model_name
+                docstring=docstring,
+                query_mapping=query_mapping_ordered,
+                model_name=model_name,
+                provider_interface_mapping=provider_interface_mapping,
             )
 
             func.__doc__ = docstring
@@ -357,7 +388,7 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def get_type(field: Any) -> type:
+    def get_type(field: ModelField) -> type:
         field_type = getattr(field, "type", Parameter.empty)
         if isclass(field_type):
             name = field_type.__name__
@@ -368,7 +399,7 @@ class MethodDefinition:
         return field_type
 
     @staticmethod
-    def get_default(field: Any):
+    def get_default(field: ModelField):
         field_default = getattr(field, "default", None)
         if field_default is None or field_default is MISSING:
             return Parameter.empty
@@ -629,13 +660,13 @@ class PathHandler:
     @classmethod
     def build_module_name(cls, path: str) -> str:
         if path == "":
-            return "__commands__"
+            return "__extensions__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
         if path == "":
-            return "Commands"
+            return "Extensions"
         return f"CLASS_{cls.clean_path(path=path)}"
 
 

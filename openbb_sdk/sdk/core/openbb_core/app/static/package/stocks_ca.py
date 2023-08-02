@@ -15,7 +15,7 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_stocks_ca(Container):
     @filter_call
     @validate_arguments
-    def get(
+    def peers(
         self,
         symbol: str,
         chart: bool = False,
@@ -24,33 +24,50 @@ class CLASS_stocks_ca(Container):
     ) -> CommandOutput[typing.List]:
         """Company peers.
 
-        Available providers: fmp,
 
-        Standard
-        ========
+        openbb
+        ======
 
-        Parameter
-        ---------
-        symbol: str
-            The symbol of the company.
-
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
 
         Returns
         -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        StockPeers
+        ----------
         symbol : str
-            The symbol of the company to retrieve the stock peers of.
-        peers_list : List[str]
-            A list of stock peers based on sector, exchange and market cap
+            Symbol representing the entity requested in the data.
+        peers_list : Optional[List[str]]
+            A list of stock peers based on sector, exchange and market cap.
 
         fmp
         ===
 
-        Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Peers
-
-        Parameter
-        ---------
+        Parameters
+        ----------
         All fields are standardized.
-        """
+
+
+        StockPeers
+        ----------
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -63,7 +80,7 @@ class CLASS_stocks_ca(Container):
         )
 
         o = self._command_runner_session.run(
-            "/stocks/ca/get",
+            "/stocks/ca/peers",
             **inputs,
         ).output
 

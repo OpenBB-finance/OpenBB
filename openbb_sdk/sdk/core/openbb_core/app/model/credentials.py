@@ -1,3 +1,5 @@
+from typing import Dict, List, Optional, Tuple
+
 from pydantic import create_model
 
 from openbb_core.app.provider_interface import get_provider_interface
@@ -9,12 +11,24 @@ from openbb_core.app.provider_interface import get_provider_interface
 
 class Config:
     validate_assignment = True
+    # extra = Extra.forbid
+
+
+def format_map(
+    required_credentials: List[str],
+) -> Dict[str, Tuple[object, None]]:
+    """Format credentials map to be used in the Credentials model"""
+    formatted: Dict[str, Tuple[object, None]] = {}
+    for c in required_credentials:
+        formatted[c] = (Optional[str], None)
+
+    return formatted
 
 
 Credentials = create_model(  # type: ignore
     "Credentials",
     __config__=Config,
-    **get_provider_interface().required_credentials,
+    **format_map(get_provider_interface().required_credentials),
 )
 
 

@@ -1,17 +1,15 @@
 """FMP Historical Employees fetcher."""
 
 
-from datetime import date, datetime
-from typing import Dict, List, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -20,36 +18,31 @@ class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):
     """FMP Historical Employees query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/historical-numer-of-employees-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPHistoricalEmployeesData(Data):
-    """FMP Historical Employees data."""
+class FMPHistoricalEmployeesData(HistoricalEmployeesData):
+    """FMP Historical Employees Data."""
 
-    symbol: str = Field(min_length=1)
-    cik: int
-    acceptanceTime: datetime = Field(alias="acceptance_time")
-    periodOfReport: date = Field(alias="period_of_report")
-    companyName: str = Field(alias="company_name")
-    formType: str = Field(alias="form_type")
-    filingDate: date = Field(alias="filing_date")
-    employeeCount: int = Field(alias="employee_count")
-    source: str
+    class Config:
+        fields = {
+            "acceptance_time": "acceptanceTime",
+            "period_of_report": "periodOfReport",
+            "company_name": "companyName",
+            "form_type": "formType",
+            "filing_date": "filingDate",
+            "employee_count": "employeeCount",
+        }
 
-    @validator("acceptanceTime", pre=True)
+    @validator("acceptanceTime", pre=True, check_fields=False)
     def acceptance_time_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
-    @validator("periodOfReport", pre=True)
+    @validator("periodOfReport", pre=True, check_fields=False)
     def period_of_report_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 
-    @validator("filingDate", pre=True)
+    @validator("filingDate", pre=True, check_fields=False)
     def filing_date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 
@@ -63,19 +56,14 @@ class FMPHistoricalEmployeesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: HistoricalEmployeesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPHistoricalEmployeesQueryParams:
-        return FMPHistoricalEmployeesQueryParams(
-            symbol=query.symbol, **extra_params or {}
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPHistoricalEmployeesQueryParams:
+        return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPHistoricalEmployeesQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPHistoricalEmployeesData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "historical/employee_count", api_key, query)
         return get_data_many(url, FMPHistoricalEmployeesData)
@@ -83,5 +71,5 @@ class FMPHistoricalEmployeesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPHistoricalEmployeesData],
-    ) -> List[HistoricalEmployeesData]:
-        return data_transformer(data, HistoricalEmployeesData)
+    ) -> List[FMPHistoricalEmployeesData]:
+        return data

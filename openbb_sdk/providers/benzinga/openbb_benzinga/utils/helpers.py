@@ -1,12 +1,8 @@
 """Benzinga Helpers."""
 
 
-from datetime import datetime
-from typing import List
-
 import requests
-from openbb_provider.abstract.data import Data
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel
 
 
 def get_data(url: str) -> dict:
@@ -26,15 +22,3 @@ def get_data(url: str) -> dict:
 class BenzingaImage(BaseModel):
     size: str
     url: str
-
-
-class BenzingaBaseNewsData(Data):
-    created: datetime = Field(alias="date")
-    title: str
-    image: List[BenzingaImage]
-    body: str = Field(alias="text")
-    url: str
-
-    @validator("created", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
