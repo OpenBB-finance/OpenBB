@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-yfinance"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,6 +8,9 @@ packages = [{ include = "openbb_yfinance" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+yfinance = "^0.2.26"
+beautifulsoup4 = "^4.11.1"
+soupsieve = "^1.2"
 openbb-provider = { path = "../../sdk/provider" }
 
 [build-system]
