@@ -23,7 +23,7 @@ class BalanceSheetData(Data):
     """Return Balance Sheet Data."""
 
     date: dateType = Field(description="Date of the income statement.")
-    symbol: str = Field(description="Symbol of the company.")
+    symbol: Optional[str] = Field(description="Symbol of the company.")
     cik: Optional[int] = Field(description="Central Index Key.")
     currency: Optional[str] = Field(description="Reporting currency.")
     filing_date: Optional[dateType] = Field(description="Filling date.")
