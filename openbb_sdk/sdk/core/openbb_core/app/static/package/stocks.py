@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -12,6 +12,7 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.package_builder import OpenBBCustomParameter
 
 
 class CLASS_stocks(Container):
@@ -83,9 +84,21 @@ class CLASS_stocks(Container):
     @validate_arguments
     def load(
         self,
-        symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -208,9 +221,19 @@ class CLASS_stocks(Container):
     @validate_arguments
     def news(
         self,
-        symbols: str,
-        page: int = 0,
-        limit: Optional[pydantic.types.NonNegativeInt] = 15,
+        symbols: typing.Annotated[str, OpenBBCustomParameter(description="")],
+        page: typing.Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="The page of the stock news to be retrieved."
+            ),
+        ] = 0,
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(
+                description="The number of results to return per page."
+            ),
+        ] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs
@@ -382,8 +405,13 @@ class CLASS_stocks(Container):
     @validate_arguments
     def multiples(
         self,
-        symbol: str,
-        limit: Optional[int] = 100,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs

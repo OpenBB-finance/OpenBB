@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -11,6 +11,7 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.package_builder import OpenBBCustomParameter
 
 
 class CLASS_economy(Container):
@@ -40,7 +41,12 @@ class CLASS_economy(Container):
     @validate_arguments
     def const(
         self,
-        index: Literal["nasdaq", "sp500", "dowjones"] = "dowjones",
+        index: Annotated[
+            Literal["nasdaq", "sp500", "dowjones"],
+            OpenBBCustomParameter(
+                description="The index for which we want to fetch the constituents."
+            ),
+        ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -125,64 +131,88 @@ class CLASS_economy(Container):
     @validate_arguments
     def cpi(
         self,
-        countries: List[
-            Literal[
-                "australia",
-                "austria",
-                "belgium",
-                "brazil",
-                "bulgaria",
-                "canada",
-                "chile",
-                "china",
-                "croatia",
-                "cyprus",
-                "czech_republic",
-                "denmark",
-                "estonia",
-                "euro_area",
-                "finland",
-                "france",
-                "germany",
-                "greece",
-                "hungary",
-                "iceland",
-                "india",
-                "indonesia",
-                "ireland",
-                "israel",
-                "italy",
-                "japan",
-                "korea",
-                "latvia",
-                "lithuania",
-                "luxembourg",
-                "malta",
-                "mexico",
-                "netherlands",
-                "new_zealand",
-                "norway",
-                "poland",
-                "portugal",
-                "romania",
-                "russian_federation",
-                "slovak_republic",
-                "slovakia",
-                "slovenia",
-                "south_africa",
-                "spain",
-                "sweden",
-                "switzerland",
-                "turkey",
-                "united_kingdom",
-                "united_states",
-            ]
+        countries: Annotated[
+            List[
+                Literal[
+                    "australia",
+                    "austria",
+                    "belgium",
+                    "brazil",
+                    "bulgaria",
+                    "canada",
+                    "chile",
+                    "china",
+                    "croatia",
+                    "cyprus",
+                    "czech_republic",
+                    "denmark",
+                    "estonia",
+                    "euro_area",
+                    "finland",
+                    "france",
+                    "germany",
+                    "greece",
+                    "hungary",
+                    "iceland",
+                    "india",
+                    "indonesia",
+                    "ireland",
+                    "israel",
+                    "italy",
+                    "japan",
+                    "korea",
+                    "latvia",
+                    "lithuania",
+                    "luxembourg",
+                    "malta",
+                    "mexico",
+                    "netherlands",
+                    "new_zealand",
+                    "norway",
+                    "poland",
+                    "portugal",
+                    "romania",
+                    "russian_federation",
+                    "slovak_republic",
+                    "slovakia",
+                    "slovenia",
+                    "south_africa",
+                    "spain",
+                    "sweden",
+                    "switzerland",
+                    "turkey",
+                    "united_kingdom",
+                    "united_states",
+                ]
+            ],
+            OpenBBCustomParameter(description="The country or countries to get data."),
         ],
-        units: Literal["growth_previous", "growth_same", "index_2015"] = "growth_same",
-        frequency: Literal["monthly", "quarterly", "annual"] = "monthly",
-        harmonized: bool = False,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        units: Annotated[
+            Literal["growth_previous", "growth_same", "index_2015"],
+            OpenBBCustomParameter(description="The data units."),
+        ] = "growth_same",
+        frequency: Annotated[
+            Literal["monthly", "quarterly", "annual"],
+            OpenBBCustomParameter(description="The data time frequency."),
+        ] = "monthly",
+        harmonized: typing.Annotated[
+            bool,
+            OpenBBCustomParameter(
+                description="Whether you wish to obtain harmonized data."
+            ),
+        ] = False,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
@@ -296,9 +326,21 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
