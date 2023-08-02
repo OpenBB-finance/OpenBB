@@ -34,7 +34,7 @@ Close for closing price column name in data from one provider might be coded as 
 - **Provider** : Entry point class for each provider extension. Contains information about the provider, it's required credentials and available fetchers.
 - **RegistryLoader** : Loads the registry with the provider extensions installed.
 - **Registry** : Maintains a registry of provider extensions installed.
-- **RegistryMap** : Stores the complete characterization of each provider. For example, it centralizes information like required credentials, standardised and extra query parameteres/data by provider.
+- **RegistryMap** : Stores the complete characterization of each provider. It centralizes information like required credentials, standardised and extra query parameteres/data by provider.
 - **QueryExecutor** : Executes the query, routing it to the respective provider.
 
 ## Installation
