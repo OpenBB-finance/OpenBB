@@ -121,6 +121,6 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
     def show(self):
         """Displays chart."""
-        if not self.chart:
+        if not self.chart and not self.chart.fig:
             raise OpenBBError("Chart not found.")
-        self.chart.show()
+        self.chart.fig.show()
