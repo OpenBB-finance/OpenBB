@@ -1,24 +1,11 @@
 """Polygon types helpers."""
 
 
-from datetime import date, datetime, timedelta
-from enum import Enum
-from typing import Literal, Optional, Union
+from datetime import date
+from typing import Literal, Optional
 
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.income_statement import IncomeStatementQueryParams
-from pydantic import Field, PositiveFloat, PositiveInt, validator
-
-
-class Timespan(str, Enum):
-    minute = "minute"
-    hour = "hour"
-    day = "day"
-    week = "week"
-    month = "month"
-    quarter = "quarter"
-    year = "year"
+from pydantic import Field
 
 
 class PolygonFundamentalQueryParams(IncomeStatementQueryParams):
@@ -79,30 +66,3 @@ class PolygonFundamentalQueryParams(IncomeStatementQueryParams):
     sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
         description="The sort of the financial statement."
     )
-
-
-class BaseStockQueryParams(QueryParams):
-    stocksTicker: str = Field(alias="symbol")
-    start_date: Union[date, datetime] = Field(
-        default=datetime.now().date() - timedelta(days=8)
-    )
-    end_date: Union[date, datetime] = Field(
-        default=datetime.now().date() - timedelta(days=1)
-    )
-    timespan: Timespan = Field(default=Timespan.day)
-    sort: Literal["asc", "desc"] = Field(default="desc")
-    limit: PositiveInt = Field(default=49999)
-    adjusted: bool = Field(default=True)
-    multiplier: PositiveInt = Field(default=1)
-
-
-class BaseStockData(Data):
-    c: PositiveFloat = Field(alias="close")
-    o: PositiveFloat = Field(alias="open")
-    h: PositiveFloat = Field(alias="high")
-    l: PositiveFloat = Field(alias="low")  # noqa: E741
-    t: datetime = Field(alias="date")
-
-    @validator("t", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.fromtimestamp(v / 1000)
