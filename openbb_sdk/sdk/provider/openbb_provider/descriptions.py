@@ -6,7 +6,7 @@ QUERY_DESCRIPTIONS = {
     "end_date": "End date of the data, in YYYY-MM-DD format.",
     "weekly": "Whether to return weekly data.",
     "monthly": "Whether to return monthly data.",
-    "period": "Period of the data to return (quarterly or annually).",
+    "period": "Period of the data to return.",
     "date": "A specific date to get data for.",
     "limit": "The number of data entries to return.",
     "countries": "The country or countries to get data.",
