@@ -1,19 +1,16 @@
 """FMP Cash Flow Statement Fetcher."""
 
 
-from datetime import date as dateType, datetime
-from typing import Any, Dict, List, Literal, Optional
-
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from pydantic import Field, root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
-
-from pydantic import Field, NonNegativeInt, root_validator
 
 
 class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):

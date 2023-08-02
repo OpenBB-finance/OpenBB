@@ -1,7 +1,10 @@
 """Income Statement Data Model."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
 
 from pydantic import Field

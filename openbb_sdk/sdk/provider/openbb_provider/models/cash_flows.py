@@ -1,14 +1,16 @@
 """Cash Flow Statement Data Model."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
+
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.models.base import FinancialStatementQueryParams
-from openbb_provider.descriptions import DATA_DESCRIPTIONS
-
-from pydantic import Field
 
 
 class CashFlowStatementQueryParams(FinancialStatementQueryParams):

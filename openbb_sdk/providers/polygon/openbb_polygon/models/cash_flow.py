@@ -1,17 +1,12 @@
-from datetime import (
-    date as dateType,
-    datetime,
-)
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import get_querystring
 from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
