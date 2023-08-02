@@ -211,7 +211,11 @@ class ChartingManager(metaclass=SingletonMeta):
         kwargs["command_output_item"] = command_output_item
         kwargs["charting_settings"] = self._charting_settings
 
+        charting_function = self.get_chart_function(self._charting_extension, route)
+        fig, content = charting_function(**kwargs)
+
         return Chart(
-            content=self.get_chart_function(self._charting_extension, route)(**kwargs),
+            content=content,
             format=self.get_chart_format(self._charting_extension),
+            fig=fig,
         )

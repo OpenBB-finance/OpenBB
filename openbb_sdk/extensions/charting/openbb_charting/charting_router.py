@@ -1,3 +1,6 @@
+from typing import Any, Dict, Tuple
+
+from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.charts.chart import ChartFormat
 from openbb_core.app.router import Router
@@ -1652,7 +1655,7 @@ def stocks_options_vsurf(**kwargs):
     )
 
 
-def stocks_load(**kwargs):
+def stocks_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     def handle_indicators(ma):
         k = {}
         if ma:
@@ -1674,8 +1677,9 @@ def stocks_load(**kwargs):
         symbol=f"{symbol} historical data",
         prepost=prepost,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
 
 
 def stocks_news(**kwargs):
