@@ -404,7 +404,7 @@ class CommandMap:
         return self._map.get(route, None)
 
 
-class ExtensionError(Exception):
+class LoadingError(Exception):
     pass
 
 
@@ -419,7 +419,7 @@ class RouterLoader:
                     prefix=f"/{entry_point.name}",
                 )
             except Exception as e:
-                raise ExtensionError(
+                raise LoadingError(
                     f"Invalid extension '{entry_point.name}': {e}"
                 ) from e
 
