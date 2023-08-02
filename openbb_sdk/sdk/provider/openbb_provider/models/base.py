@@ -1,6 +1,6 @@
-from typing import Literal
+from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, NonNegativeInt, validator
 
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.descriptions import QUERY_DESCRIPTIONS
@@ -17,4 +17,7 @@ class BaseSymbol(BaseModel):
 class FinancialStatementQueryParams(QueryParams, BaseSymbol):
     period: Literal["annually", "quarterly"] = Field(
         default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: Optional[NonNegativeInt] = Field(
+        default=1, description="The limit of the income statement."
     )

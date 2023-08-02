@@ -33,10 +33,6 @@ class PolygonFundamentalQueryParams(IncomeStatementQueryParams):
             "period": "timeframe",
         }
 
-    limit: Optional[NonNegativeInt] = Field(
-        default=1, description="The limit of the income statement."
-    )
-
     company_name: Optional[str] = Field(description="The name of the company.")
     company_name_search: Optional[str] = Field(
         description="The name of the company to search."

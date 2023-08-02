@@ -24,9 +24,6 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     cik: Optional[str] = Field(
         description="The CIK of the company if no symbol is provided."
     )
-    limit: Optional[NonNegativeInt] = Field(
-        default=1, description="The limit of the income statement."
-    )
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument

@@ -391,7 +391,7 @@ class CLASS_stocks(Container):
     def multiples(
         self,
         symbol: str,
-        limit: Optional[int] = None,
+        limit: Optional[int] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -409,7 +409,7 @@ class CLASS_stocks(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         limit : Optional[int]
-            None
+            The number of data entries to return.
 
         Returns
         -------
@@ -429,119 +429,119 @@ class CLASS_stocks(Container):
         StockMultiples
         --------------
         revenue_per_share_ttm : Optional[float]
-            None
+            Revenue per share calculated as trailing twelve months.
         net_income_per_share_ttm : Optional[float]
-            None
+            Net income per share calculated as trailing twelve months.
         operating_cash_flow_per_share_ttm : Optional[float]
-            None
+            Operating cash flow per share calculated as trailing twelve months.
         free_cash_flow_per_share_ttm : Optional[float]
-            None
+            Free cash flow per share calculated as trailing twelve months.
         cash_per_share_ttm : Optional[float]
-            None
+            Cash per share calculated as trailing twelve months.
         book_value_per_share_ttm : Optional[float]
-            None
+            Book value per share calculated as trailing twelve months.
         tangible_book_value_per_share_ttm : Optional[float]
-            None
+            Tangible book value per share calculated as trailing twelve months.
         shareholders_equity_per_share_ttm : Optional[float]
-            None
+            Shareholders equity per share calculated as trailing twelve months.
         interest_debt_per_share_ttm : Optional[float]
-            None
+            Interest debt per share calculated as trailing twelve months.
         market_cap_ttm : Optional[float]
-            None
+            Market capitalization calculated as trailing twelve months.
         enterprise_value_ttm : Optional[float]
-            None
+            Enterprise value calculated as trailing twelve months.
         pe_ratio_ttm : Optional[float]
-            None
+            Price-to-earnings ratio (P/E ratio) calculated as trailing twelve months.
         price_to_sales_ratio_ttm : Optional[float]
-            None
+            Price-to-sales ratio calculated as trailing twelve months.
         pocf_ratio_ttm : Optional[float]
-            None
+            Price-to-operating cash flow ratio calculated as trailing twelve months.
         pfcf_ratio_ttm : Optional[float]
-            None
+            Price-to-free cash flow ratio calculated as trailing twelve months.
         pb_ratio_ttm : Optional[float]
-            None
+            Price-to-book ratio calculated as trailing twelve months.
         ptb_ratio_ttm : Optional[float]
-            None
+            Price-to-tangible book ratio calculated as trailing twelve months.
         ev_to_sales_ttm : Optional[float]
-            None
+            Enterprise value-to-sales ratio calculated as trailing twelve months.
         enterprise_value_over_ebitda_ttm : Optional[float]
-            None
+            Enterprise value-to-EBITDA ratio calculated as trailing twelve months.
         ev_to_operating_cash_flow_ttm : Optional[float]
-            None
+            Enterprise value-to-operating cash flow ratio calculated as trailing twelve months.
         ev_to_free_cash_flow_ttm : Optional[float]
-            None
+            Enterprise value-to-free cash flow ratio calculated as trailing twelve months.
         earnings_yield_ttm : Optional[float]
-            None
+            Earnings yield calculated as trailing twelve months.
         free_cash_flow_yield_ttm : Optional[float]
-            None
+            Free cash flow yield calculated as trailing twelve months.
         debt_to_equity_ttm : Optional[float]
-            None
+            Debt-to-equity ratio calculated as trailing twelve months.
         debt_to_assets_ttm : Optional[float]
-            None
+            Debt-to-assets ratio calculated as trailing twelve months.
         net_debt_to_ebitda_ttm : Optional[float]
-            None
+            Net debt-to-EBITDA ratio calculated as trailing twelve months.
         current_ratio_ttm : Optional[float]
-            None
+            Current ratio calculated as trailing twelve months.
         interest_coverage_ttm : Optional[float]
-            None
+            Interest coverage calculated as trailing twelve months.
         income_quality_ttm : Optional[float]
-            None
+            Income quality calculated as trailing twelve months.
         dividend_yield_ttm : Optional[float]
-            None
+            Dividend yield calculated as trailing twelve months.
         payout_ratio_ttm : Optional[float]
-            None
+            Payout ratio calculated as trailing twelve months.
         sales_general_and_administrative_to_revenue_ttm : Optional[float]
-            None
+            Sales general and administrative expenses-to-revenue ratio calculated as trailing twelve months.
         research_and_development_to_revenue_ttm : Optional[float]
-            None
+            Research and development expenses-to-revenue ratio calculated as trailing twelve months.
         intangibles_to_total_assets_ttm : Optional[float]
-            None
+            Intangibles-to-total assets ratio calculated as trailing twelve months.
         capex_to_operating_cash_flow_ttm : Optional[float]
-            None
+            Capital expenditures-to-operating cash flow ratio calculated as trailing twelve months.
         capex_to_revenue_ttm : Optional[float]
-            None
+            Capital expenditures-to-revenue ratio calculated as trailing twelve months.
         capex_to_depreciation_ttm : Optional[float]
-            None
+            Capital expenditures-to-depreciation ratio calculated as trailing twelve months.
         stock_based_compensation_to_revenue_ttm : Optional[float]
-            None
+            Stock-based compensation-to-revenue ratio calculated as trailing twelve months.
         graham_number_ttm : Optional[float]
-            None
+            Graham number calculated as trailing twelve months.
         roic_ttm : Optional[float]
-            None
+            Return on invested capital calculated as trailing twelve months.
         return_on_tangible_assets_ttm : Optional[float]
-            None
+            Return on tangible assets calculated as trailing twelve months.
         graham_net_net_ttm : Optional[float]
-            None
+            Graham net-net working capital calculated as trailing twelve months.
         working_capital_ttm : Optional[float]
-            None
+            Working capital calculated as trailing twelve months.
         tangible_asset_value_ttm : Optional[float]
-            None
+            Tangible asset value calculated as trailing twelve months.
         net_current_asset_value_ttm : Optional[float]
-            None
+            Net current asset value calculated as trailing twelve months.
         invested_capital_ttm : Optional[float]
-            None
+            Invested capital calculated as trailing twelve months.
         average_receivables_ttm : Optional[float]
-            None
+            Average receivables calculated as trailing twelve months.
         average_payables_ttm : Optional[float]
-            None
+            Average payables calculated as trailing twelve months.
         average_inventory_ttm : Optional[float]
-            None
+            Average inventory calculated as trailing twelve months.
         days_sales_outstanding_ttm : Optional[float]
-            None
+            Days sales outstanding calculated as trailing twelve months.
         days_payables_outstanding_ttm : Optional[float]
-            None
+            Days payables outstanding calculated as trailing twelve months.
         days_of_inventory_on_hand_ttm : Optional[float]
-            None
+            Days of inventory on hand calculated as trailing twelve months.
         receivables_turnover_ttm : Optional[float]
-            None
+            Receivables turnover calculated as trailing twelve months.
         payables_turnover_ttm : Optional[float]
-            None
+            Payables turnover calculated as trailing twelve months.
         inventory_turnover_ttm : Optional[float]
-            None
+            Inventory turnover calculated as trailing twelve months.
         roe_ttm : Optional[float]
-            None
+            Return on equity calculated as trailing twelve months.
         capex_per_share_ttm : Optional[float]
-            None
+            Capital expenditures per share calculated as trailing twelve months.
 
         fmp
         ===
@@ -553,120 +553,7 @@ class CLASS_stocks(Container):
 
         StockMultiples
         --------------
-        revenuePerShareTTM : Optional[float]
-            None
-        netIncomePerShareTTM : Optional[float]
-            None
-        operatingCashFlowPerShareTTM : Optional[float]
-            None
-        freeCashFlowPerShareTTM : Optional[float]
-            None
-        cashPerShareTTM : Optional[float]
-            None
-        bookValuePerShareTTM : Optional[float]
-            None
-        tangibleBookValuePerShareTTM : Optional[float]
-            None
-        shareholdersEquityPerShareTTM : Optional[float]
-            None
-        interestDebtPerShareTTM : Optional[float]
-            None
-        marketCapTTM : Optional[float]
-            None
-        enterpriseValueTTM : Optional[float]
-            None
-        peRatioTTM : Optional[float]
-            None
-        priceToSalesRatioTTM : Optional[float]
-            None
-        pocfratioTTM : Optional[float]
-            None
-        pfcfRatioTTM : Optional[float]
-            None
-        pbRatioTTM : Optional[float]
-            None
-        ptbRatioTTM : Optional[float]
-            None
-        evToSalesTTM : Optional[float]
-            None
-        enterpriseValueOverEBITDATTM : Optional[float]
-            None
-        evToOperatingCashFlowTTM : Optional[float]
-            None
-        evToFreeCashFlowTTM : Optional[float]
-            None
-        earningsYieldTTM : Optional[float]
-            None
-        freeCashFlowYieldTTM : Optional[float]
-            None
-        debtToEquityTTM : Optional[float]
-            None
-        debtToAssetsTTM : Optional[float]
-            None
-        netDebtToEBITDATTM : Optional[float]
-            None
-        currentRatioTTM : Optional[float]
-            None
-        interestCoverageTTM : Optional[float]
-            None
-        incomeQualityTTM : Optional[float]
-            None
-        dividendYieldTTM : Optional[float]
-            None
-        payoutRatioTTM : Optional[float]
-            None
-        salesGeneralAndAdministrativeToRevenueTTM : Optional[float]
-            None
-        researchAndDevelopementToRevenueTTM : Optional[float]
-            None
-        intangiblesToTotalAssetsTTM : Optional[float]
-            None
-        capexToOperatingCashFlowTTM : Optional[float]
-            None
-        capexToRevenueTTM : Optional[float]
-            None
-        capexToDepreciationTTM : Optional[float]
-            None
-        stockBasedCompensationToRevenueTTM : Optional[float]
-            None
-        grahamNumberTTM : Optional[float]
-            None
-        roicTTM : Optional[float]
-            None
-        returnOnTangibleAssetsTTM : Optional[float]
-            None
-        grahamNetNetTTM : Optional[float]
-            None
-        workingCapitalTTM : Optional[float]
-            None
-        tangibleAssetValueTTM : Optional[float]
-            None
-        netCurrentAssetValueTTM : Optional[float]
-            None
-        investedCapitalTTM : Optional[float]
-            None
-        averageReceivablesTTM : Optional[float]
-            None
-        averagePayablesTTM : Optional[float]
-            None
-        averageInventoryTTM : Optional[float]
-            None
-        daysSalesOutstandingTTM : Optional[float]
-            None
-        daysPayablesOutstandingTTM : Optional[float]
-            None
-        daysOfInventoryOnHandTTM : Optional[float]
-            None
-        receivablesTurnoverTTM : Optional[float]
-            None
-        payablesTurnoverTTM : Optional[float]
-            None
-        inventoryTurnoverTTM : Optional[float]
-            None
-        roeTTM : Optional[float]
-            None
-        capexPerShareTTM : Optional[float]
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

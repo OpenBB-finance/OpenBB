@@ -4,6 +4,7 @@ import datetime
 import typing
 from typing import List, Literal, Optional, Union
 
+import pydantic
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -37,6 +38,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: Optional[str] = None,
         period: Literal["annual", "quarter"] = "annual",
+        limit: Optional[pydantic.types.NonNegativeInt] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -54,6 +56,8 @@ class CLASS_stocks_fa(Container):
         symbol : Optional[str]
             None
         period : Literal['annual', 'quarter']
+            None
+        limit : Optional[NonNegativeInt]
             None
 
         Returns
@@ -86,8 +90,6 @@ class CLASS_stocks_fa(Container):
         Parameters
         ----------
         cik : Optional[str]
-            None
-        limit : Optional[NonNegativeInt]
             None
 
 
@@ -189,10 +191,6 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        ticker : Optional[str]
-            The symbol of the company if no CIK is provided.
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
         company_name : Optional[str]
             The name of the company.
         company_name_search : Optional[str]
@@ -219,14 +217,10 @@ class CLASS_stocks_fa(Container):
             The period of report date greater than the given date.
         period_of_report_date_gte : Optional[date]
             The period of report date greater than or equal to the given date.
-        timeframe : Optional[Literal['annual', 'quarterly', 'ttm']]
-            The timeframe of the financial statement.
         include_sources : Optional[bool]
             Whether to include the sources of the financial statement.
         order : Optional[Literal['asc', 'desc']]
             The order of the financial statement.
-        limit : Optional[PositiveInt]
-            The limit of the financial statement.
         sort : Optional[Literal['filing_date', 'period_of_report_date']]
             The sort of the financial statement.
 
@@ -250,6 +244,7 @@ class CLASS_stocks_fa(Container):
             standard_params={
                 "symbol": symbol,
                 "period": period,
+                "limit": limit,
             },
             extra_params=kwargs,
             chart=chart,
@@ -514,6 +509,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: Optional[str] = None,
         period: Literal["annual", "quarter"] = "annual",
+        limit: Optional[pydantic.types.NonNegativeInt] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -531,6 +527,8 @@ class CLASS_stocks_fa(Container):
         symbol : Optional[str]
             None
         period : Literal['annual', 'quarter']
+            None
+        limit : Optional[NonNegativeInt]
             None
 
         Returns
@@ -567,8 +565,6 @@ class CLASS_stocks_fa(Container):
         Parameters
         ----------
         cik : Optional[str]
-            None
-        limit : Optional[NonNegativeInt]
             None
 
 
@@ -650,10 +646,6 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        ticker : Optional[str]
-            The symbol of the company if no CIK is provided.
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
         company_name : Optional[str]
             The name of the company.
         company_name_search : Optional[str]
@@ -680,14 +672,10 @@ class CLASS_stocks_fa(Container):
             The period of report date greater than the given date.
         period_of_report_date_gte : Optional[date]
             The period of report date greater than or equal to the given date.
-        timeframe : Optional[Literal['annual', 'quarterly', 'ttm']]
-            The timeframe of the financial statement.
         include_sources : Optional[bool]
             Whether to include the sources of the financial statement.
         order : Optional[Literal['asc', 'desc']]
             The order of the financial statement.
-        limit : Optional[PositiveInt]
-            The limit of the financial statement.
         sort : Optional[Literal['filing_date', 'period_of_report_date']]
             The sort of the financial statement.
 
@@ -719,6 +707,7 @@ class CLASS_stocks_fa(Container):
             standard_params={
                 "symbol": symbol,
                 "period": period,
+                "limit": limit,
             },
             extra_params=kwargs,
             chart=chart,
@@ -1605,6 +1594,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[pydantic.types.NonNegativeInt] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -1623,6 +1613,8 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
+        limit : Optional[NonNegativeInt]
+            The limit of the income statement.
 
         Returns
         -------
@@ -1643,11 +1635,15 @@ class CLASS_stocks_fa(Container):
         ---------------
         date : date
             Date of the income statement.
+        symbol : str
+            Symbol of the company.
+        cik : Optional[int]
+            Central Index Key.
         currency : Optional[str]
             Reporting currency.
         filing_date : Optional[date]
             Filling date.
-        accepted_date : Optional[date]
+        accepted_date : Optional[datetime]
             Accepted date.
         period : Optional[str]
             Period of the income statement.
@@ -1703,21 +1699,13 @@ class CLASS_stocks_fa(Container):
         ----------
         cik : Optional[str]
             The CIK of the company if no symbol is provided.
-        limit : Optional[NonNegativeInt]
-            The limit of the income statement.
 
 
         IncomeStatement
         ---------------
-        symbol : str
-            None
-        cik : Optional[int]
-            None
         calendarYear : Optional[int]
             None
         grossProfitRatio : Optional[float]
-            None
-        costAndExpenses : Optional[int]
             None
         ebitdaratio : Optional[float]
             None
@@ -1737,10 +1725,6 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        ticker : Optional[str]
-            The symbol of the company if no CIK is provided.
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
         company_name : Optional[str]
             The name of the company.
         company_name_search : Optional[str]
@@ -1767,55 +1751,25 @@ class CLASS_stocks_fa(Container):
             The period of report date greater than the given date.
         period_of_report_date_gte : Optional[date]
             The period of report date greater than or equal to the given date.
-        timeframe : Optional[Literal['annual', 'quarterly', 'ttm']]
-            The timeframe of the financial statement.
         include_sources : Optional[bool]
             Whether to include the sources of the financial statement.
         order : Optional[Literal['asc', 'desc']]
             The order of the financial statement.
-        limit : Optional[PositiveInt]
-            The limit of the financial statement.
         sort : Optional[Literal['filing_date', 'period_of_report_date']]
             The sort of the financial statement.
 
 
         IncomeStatement
         ---------------
-        start_date : date
-            None
-        tickers : Optional[List[str]]
-            None
-        cik : Optional[str]
-            None
-        acceptance_datetime : Optional[datetime]
-            None
-        fiscal_period : Optional[str]
-            None
-        revenues : Optional[float]
-            None
-        income_loss_from_continuing_operations_before_tax : Optional[float]
-            None
         income_loss_from_continuing_operations_after_tax : Optional[float]
             None
-        income_tax_expense_benefit : Optional[float]
-            None
-        net_income_loss : Optional[float]
-            None
-        basic_earnings_per_share : Optional[float]
-            None
-        diluted_earnings_per_share : Optional[float]
-            None
         benefits_costs_expenses : Optional[float]
-            None
-        interest_expense_operating : Optional[float]
             None
         net_income_loss_attributable_to_noncontrolling_interest : Optional[int]
             None
         net_income_loss_attributable_to_parent : Optional[float]
             None
         net_income_loss_available_to_common_stockholders_basic : Optional[float]
-            None
-        operating_income_loss : Optional[float]
             None
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
@@ -1828,6 +1782,7 @@ class CLASS_stocks_fa(Container):
             standard_params={
                 "symbol": symbol,
                 "period": period,
+                "limit": limit,
             },
             extra_params=kwargs,
             chart=chart,
@@ -2134,8 +2089,8 @@ class CLASS_stocks_fa(Container):
     def metrics(
         self,
         symbol: str,
-        period: Literal["quarter", "annual"] = "annual",
-        limit: Optional[int] = None,
+        period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[int] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2150,12 +2105,12 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : str
-            None
-        period : Literal['quarter', 'annual']
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        period : Literal['annually', 'quarterly']
+            Period of the data to return (quarterly or annually).
         limit : Optional[int]
-            None
+            The number of data entries to return.
 
         Returns
         -------
@@ -2174,16 +2129,126 @@ class CLASS_stocks_fa(Container):
 
         KeyMetrics
         ----------
-        symbol : str
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
         date : date
-            None
+            The date of the data.
         period : str
-            None
+            The period of the data.
+        revenue_per_share : Optional[float]
+            Revenue per share
+        net_income_per_share : Optional[float]
+            Net income per share
+        operating_cash_flow_per_share : Optional[float]
+            Operating cash flow per share
+        free_cash_flow_per_share : Optional[float]
+            Free cash flow per share
+        cash_per_share : Optional[float]
+            Cash per share
+        book_value_per_share : Optional[float]
+            Book value per share
+        tangible_book_value_per_share : Optional[float]
+            Tangible book value per share
+        shareholders_equity_per_share : Optional[float]
+            Shareholders equity per share
+        interest_debt_per_share : Optional[float]
+            Interest debt per share
+        market_cap : Optional[float]
+            Market capitalization
+        enterprise_value : Optional[float]
+            Enterprise value
+        pe_ratio : Optional[float]
+            Price-to-earnings ratio (P/E ratio)
+        price_to_sales_ratio : Optional[float]
+            Price-to-sales ratio
+        pocf_ratio : Optional[float]
+            Price-to-operating cash flow ratio
+        pfcf_ratio : Optional[float]
+            Price-to-free cash flow ratio
+        pb_ratio : Optional[float]
+            Price-to-book ratio
+        ptb_ratio : Optional[float]
+            Price-to-tangible book ratio
+        ev_to_sales : Optional[float]
+            Enterprise value-to-sales ratio
+        enterprise_value_over_ebitda : Optional[float]
+            Enterprise value-to-EBITDA ratio
+        ev_to_operating_cash_flow : Optional[float]
+            Enterprise value-to-operating cash flow ratio
+        ev_to_free_cash_flow : Optional[float]
+            Enterprise value-to-free cash flow ratio
+        earnings_yield : Optional[float]
+            Earnings yield
+        free_cash_flow_yield : Optional[float]
+            Free cash flow yield
+        debt_to_equity : Optional[float]
+            Debt-to-equity ratio
+        debt_to_assets : Optional[float]
+            Debt-to-assets ratio
+        net_debt_to_ebitda : Optional[float]
+            Net debt-to-EBITDA ratio
+        current_ratio : Optional[float]
+            Current ratio
+        interest_coverage : Optional[float]
+            Interest coverage
+        income_quality : Optional[float]
+            Income quality
+        dividend_yield : Optional[float]
+            Dividend yield
+        payout_ratio : Optional[float]
+            Payout ratio
+        sales_general_and_administrative_to_revenue : Optional[float]
+            Sales general and administrative expenses-to-revenue ratio
+        research_and_development_to_revenue : Optional[float]
+            Research and development expenses-to-revenue ratio
+        intangibles_to_total_assets : Optional[float]
+            Intangibles-to-total assets ratio
+        capex_to_operating_cash_flow : Optional[float]
+            Capital expenditures-to-operating cash flow ratio
+        capex_to_revenue : Optional[float]
+            Capital expenditures-to-revenue ratio
+        capex_to_depreciation : Optional[float]
+            Capital expenditures-to-depreciation ratio
+        stock_based_compensation_to_revenue : Optional[float]
+            Stock-based compensation-to-revenue ratio
+        graham_number : Optional[float]
+            Graham number
         roic : Optional[float]
-            None
+            Return on invested capital
+        return_on_tangible_assets : Optional[float]
+            Return on tangible assets
+        graham_net_net : Optional[float]
+            Graham net-net working capital
+        working_capital : Optional[float]
+            Working capital
+        tangible_asset_value : Optional[float]
+            Tangible asset value
+        net_current_asset_value : Optional[float]
+            Net current asset value
+        invested_capital : Optional[float]
+            Invested capital
+        average_receivables : Optional[float]
+            Average receivables
+        average_payables : Optional[float]
+            Average payables
+        average_inventory : Optional[float]
+            Average inventory
+        days_sales_outstanding : Optional[float]
+            Days sales outstanding
+        days_payables_outstanding : Optional[float]
+            Days payables outstanding
+        days_of_inventory_on_hand : Optional[float]
+            Days of inventory on hand
+        receivables_turnover : Optional[float]
+            Receivables turnover
+        payables_turnover : Optional[float]
+            Payables turnover
+        inventory_turnover : Optional[float]
+            Inventory turnover
         roe : Optional[float]
-            None
+            Return on equity
+        capex_per_share : Optional[float]
+            Capital expenditures per share
 
         fmp
         ===
@@ -2195,116 +2260,7 @@ class CLASS_stocks_fa(Container):
 
         KeyMetrics
         ----------
-        revenuePerShare : float
-            None
-        netIncomePerShare : float
-            None
-        operatingCashFlowPerShare : Optional[float]
-            None
-        freeCashFlowPerShare : Optional[float]
-            None
-        cashPerShare : Optional[float]
-            None
-        bookValuePerShare : Optional[float]
-            None
-        tangibleBookValuePerShare : Optional[float]
-            None
-        shareholdersEquityPerShare : Optional[float]
-            None
-        interestDebtPerShare : Optional[float]
-            None
-        marketCap : Optional[float]
-            None
-        enterpriseValue : Optional[float]
-            None
-        peRatio : Optional[float]
-            None
-        priceToSalesRatio : Optional[float]
-            None
-        pocfratio : Optional[float]
-            None
-        pfcfRatio : Optional[float]
-            None
-        pbRatio : Optional[float]
-            None
-        ptbRatio : Optional[float]
-            None
-        evToSales : Optional[float]
-            None
-        enterpriseValueOverEBITDA : Optional[float]
-            None
-        evToOperatingCashFlow : Optional[float]
-            None
-        evToFreeCashFlow : Optional[float]
-            None
-        earningsYield : Optional[float]
-            None
-        freeCashFlowYield : Optional[float]
-            None
-        debtToEquity : Optional[float]
-            None
-        debtToAssets : Optional[float]
-            None
-        netDebtToEBITDA : Optional[float]
-            None
-        currentRatio : Optional[float]
-            None
-        interestCoverage : Optional[float]
-            None
-        incomeQuality : Optional[float]
-            None
-        dividendYield : Optional[float]
-            None
-        payoutRatio : Optional[float]
-            None
-        salesGeneralAndAdministrativeToRevenue : Optional[float]
-            None
-        researchAndDdevelopementToRevenue : Optional[float]
-            None
-        intangiblesToTotalAssets : Optional[float]
-            None
-        capexToOperatingCashFlow : Optional[float]
-            None
-        capexToRevenue : Optional[float]
-            None
-        capexToDepreciation : Optional[float]
-            None
-        stockBasedCompensationToRevenue : Optional[float]
-            None
-        grahamNumber : Optional[float]
-            None
-        returnOnTangibleAssets : Optional[float]
-            None
-        grahamNetNet : Optional[float]
-            None
-        workingCapital : Optional[float]
-            None
-        tangibleAssetValue : Optional[float]
-            None
-        netCurrentAssetValue : Optional[float]
-            None
-        investedCapital : Optional[float]
-            None
-        averageReceivables : Optional[float]
-            None
-        averagePayables : Optional[float]
-            None
-        averageInventory : Optional[float]
-            None
-        daysSalesOutstanding : Optional[float]
-            None
-        daysPayablesOutstanding : Optional[float]
-            None
-        daysOfInventoryOnHand : Optional[float]
-            None
-        receivablesTurnover : Optional[float]
-            None
-        payablesTurnover : Optional[float]
-            None
-        inventoryTurnover : Optional[float]
-            None
-        capexPerShare : Optional[float]
-            None"""
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
