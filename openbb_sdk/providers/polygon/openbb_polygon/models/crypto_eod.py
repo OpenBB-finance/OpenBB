@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
-from pydantic import Field, PositiveInt, validator
+from pydantic import Field, PositiveInt, PositiveFloat, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -47,6 +47,7 @@ class PolygonCryptoEODData(CryptoEODData):
             "vwap": "vw",
         }
 
+    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )
