@@ -16,20 +16,48 @@ class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
     """FMP Stock Ownership query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
-
-    Parameter
-    ---------
-    symbol : string
-        The symbol of the company.
-    page : int
-        The page number to get
-    date : date
-        The CIK of the company owner.
     """
 
 
 class FMPStockOwnershipData(StockOwnershipData):
-    """FMP Stock Ownership data."""
+    """FMP Stock Ownership Data."""
+
+    class Config:
+        fields = {
+            "filing_date": "filingDate",
+            "investor_name": "investorName",
+            "security_name": "securityName",
+            "type_of_security": "typeOfSecurity",
+            "security_cusip": "securityCusip",
+            "shares_type": "sharesType",
+            "put_call_share": "putCallShare",
+            "investment_discretion": "investmentDiscretion",
+            "industry_title": "industryTitle",
+            "last_weight": "lastWeight",
+            "change_in_weight": "changeInWeight",
+            "change_in_weight_percentage": "changeInWeightPercentage",
+            "market_value": "marketValue",
+            "last_market_value": "lastMarketValue",
+            "change_in_market_value": "changeInMarketValue",
+            "change_in_market_value_percentage": "changeInMarketValuePercentage",
+            "shares_number": "sharesNumber",
+            "last_shares_number": "lastSharesNumber",
+            "change_in_shares_number": "changeInSharesNumber",
+            "change_in_shares_number_percentage": "changeInSharesNumberPercentage",
+            "quarter_end_price": "quarterEndPrice",
+            "avg_price_paid": "avgPricePaid",
+            "is_new": "isNew",
+            "is_sold_out": "isSoldOut",
+            "last_ownership": "lastOwnership",
+            "change_in_ownership": "changeInOwnership",
+            "change_in_ownership_percentage": "changeInOwnershipPercentage",
+            "holding_period": "holdingPeriod",
+            "first_added": "firstAdded",
+            "performance_percentage": "performancePercentage",
+            "last_performance": "lastPerformance",
+            "change_in_performance": "changeInPerformance",
+            "is_counted_for_performance": "isCountedForPerformance",
+        }
 
 
 class FMPStockOwnershipFetcher(
@@ -56,6 +84,7 @@ class FMPStockOwnershipFetcher(
             api_key,
             query,
         )
+
         return get_data_many(url, FMPStockOwnershipData)
 
     @staticmethod
