@@ -8,7 +8,7 @@ from typing import Literal, Optional, Union
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.income_statement import IncomeStatementQueryParams
-from pydantic import Field, NonNegativeInt, PositiveFloat, PositiveInt, validator
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 
 class Timespan(str, Enum):

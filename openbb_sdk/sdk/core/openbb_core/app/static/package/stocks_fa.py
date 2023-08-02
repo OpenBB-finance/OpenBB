@@ -36,9 +36,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance(
         self,
-        symbol: Optional[str] = None,
-        period: Literal["annual", "quarter"] = "annual",
-        limit: Optional[pydantic.types.NonNegativeInt] = None,
+        symbol: str,
+        period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[pydantic.types.NonNegativeInt] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -53,12 +53,12 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp, polygon]
             The provider to use for the query.
-        symbol : Optional[str]
-            None
-        period : Literal['annual', 'quarter']
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        period : Literal['annually', 'quarterly']
+            Period of the data to return (quarterly or annually).
         limit : Optional[NonNegativeInt]
-            None
+            The limit of the income statement.
 
         Returns
         -------
@@ -78,10 +78,68 @@ class CLASS_stocks_fa(Container):
         BalanceSheet
         ------------
         date : date
-            None
+            Date of the income statement.
+        symbol : str
+            Symbol of the company.
         cik : Optional[int]
+            Central Index Key.
+        currency : Optional[str]
+            Reporting currency.
+        filing_date : Optional[date]
+            Filling date.
+        accepted_date : Optional[datetime]
+            Accepted date.
+        period : Optional[str]
+            Period of the income statement.
+        cash_and_cash_equivalents : Optional[int]
+            None
+        short_term_investments : Optional[int]
+            None
+        cash_and_short_term_investments : Optional[int]
+            None
+        net_receivables : Optional[int]
             None
         inventory : Optional[int]
+            None
+        other_current_assets : Optional[int]
+            None
+        current_assets : Optional[int]
+            None
+        long_term_investments : Optional[int]
+            None
+        property_plant_equipment_net : Optional[int]
+            None
+        other_non_current_assets : Optional[int]
+            None
+        noncurrent_assets : Optional[int]
+            None
+        assets : Optional[int]
+            None
+        account_payables : Optional[int]
+            None
+        other_current_liabilities : Optional[int]
+            None
+        deferred_revenue : Optional[int]
+            None
+        current_liabilities : Optional[int]
+            None
+        long_term_debt : Optional[int]
+            None
+        other_non_current_liabilities : Optional[int]
+            None
+        noncurrent_liabilities : Optional[int]
+            None
+        liabilities : Optional[int]
+            None
+        common_stock : Optional[int]
+            None
+        retained_earnings : Optional[int]
+            None
+        accumulated_other_comprehensive_income_loss : Optional[int]
+            None
+        total_equity : Optional[int]
+            None
+        total_liabilities_and_stockholders_equity : Optional[int]
             None
 
         fmp
@@ -95,33 +153,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        symbol : str
-            None
-        reportedCurrency : Optional[str]
-            None
-        fillingDate : Optional[date]
-            None
-        acceptedDate : Optional[datetime]
-            None
         calendarYear : Optional[int]
-            None
-        period : Optional[str]
-            None
-        cashAndCashEquivalents : Optional[int]
-            None
-        shortTermInvestments : Optional[int]
-            None
-        cashAndShortTermInvestments : Optional[int]
-            None
-        netReceivables : Optional[int]
-            None
-        otherCurrentAssets : Optional[int]
-            None
-        totalCurrentAssets : Optional[int]
-            None
-        longTermInvestments : Optional[int]
-            None
-        propertyPlantEquipmentNet : Optional[int]
             None
         goodwill : Optional[int]
             None
@@ -131,47 +163,15 @@ class CLASS_stocks_fa(Container):
             None
         taxAssets : Optional[int]
             None
-        otherNonCurrentAssets : Optional[int]
-            None
-        totalNonCurrentAssets : Optional[int]
-            None
-        totalAssets : Optional[int]
-            None
-        accountPayables : Optional[int]
-            None
-        otherCurrentLiabilities : Optional[int]
-            None
-        deferredRevenue : Optional[int]
-            None
         shortTermDebt : Optional[int]
             None
         taxPayables : Optional[int]
-            None
-        totalCurrentLiabilities : Optional[int]
-            None
-        longTermDebt : Optional[int]
             None
         deferredRevenueNonCurrent : Optional[int]
             None
         deferredTaxLiabilitiesNonCurrent : Optional[int]
             None
-        otherNonCurrentLiabilities : Optional[int]
-            None
-        totalNonCurrentLiabilities : Optional[int]
-            None
-        totalLiabilities : Optional[int]
-            None
-        commonStock : Optional[int]
-            None
-        retainedEarnings : Optional[int]
-            None
-        accumulatedOtherComprehensiveIncomeLoss : Optional[int]
-            None
         othertotalStockholdersEquity : Optional[int]
-            None
-        totalEquity : Optional[int]
-            None
-        totalLiabilitiesAndStockholdersEquity : Optional[int]
             None
         totalStockholdersEquity : Optional[int]
             None
