@@ -235,6 +235,17 @@ def ins(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(model="InstitutionalOwnership")
+def ins_own(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Institutional Ownership."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command
 def key() -> CommandOutput[Empty]:  # type: ignore
     return CommandOutput(results=Empty())
