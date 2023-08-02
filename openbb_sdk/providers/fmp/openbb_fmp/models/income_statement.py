@@ -19,6 +19,8 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     """FMP Income Statement QueryParams.
 
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
+
+    Either a Symbol or CIK is required. Symbol is preferred over CIK.
     """
 
     cik: Optional[str] = Field(
@@ -87,9 +89,14 @@ class FMPIncomeStatementFetcher(
     ) -> List[FMPIncomeStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(
-            3, f"income-statement/{query.symbol}", api_key, query, ["symbol"]
+        symbol = query.symbol or query.cik
+        base_url = "https://financialmodelingprep.com/api/v3"
+
+        url = (
+            f"{base_url}/income-statement/{symbol}?"
+            f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
+
         return get_data_many(url, FMPIncomeStatementData)
 
     @staticmethod

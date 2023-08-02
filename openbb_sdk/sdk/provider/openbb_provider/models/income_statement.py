@@ -1,10 +1,7 @@
 """Income Statement Data Model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType, datetime
 from typing import Optional
 
 from pydantic import Field
@@ -14,7 +11,7 @@ from openbb_provider.models.base import FinancialStatementQueryParams
 
 
 class IncomeStatementQueryParams(FinancialStatementQueryParams):
-    """Income statement query."""
+    """Income Statement Query."""
 
 
 class IncomeStatementData(Data):
