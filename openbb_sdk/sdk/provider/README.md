@@ -28,11 +28,11 @@ Close for closing price column name in data from one provider might be coded as 
 
 ## Key Elements
 
-- **QueryParams** : Are input parameters that are used for obtaining data. To load stock market data, we would have StockQueryParams, which would have fields like symbol, start date, and end date. You can find the standard query params inside the `./models` folder.
-- **Data** : Are outputs. Stock market data would be StockPriceData and have fields such as Open, High, Low, Close, and Volume. You can find the standard data models inside the `./models` folder.
-- **Fetcher** : A provider-specific object (FMPStockPriceFetcher) that holds executable logic that performs the standardization procedure going from QueryParams to the Data.
-- **Provider** : An object that is specific to a data provider (i.e. PolygonProvider) which holds Provider attributes and unites all of the provider's fetchers into a list.
-- **Provider Registry** : An aggregation of all the Provider objects and their API keys. It is the main point of usage and is responsible for dynamically serving the data by finding the correct Provider and Fetcher based on the given QueryParams.
+- **QueryParams** : The input model for a particular query. To load stock market data, we would have StockQueryParams, which would have fields like symbol, start date, and end date. You can find the standard query params inside the `./models` folder.
+- **Data** : The output model of a particular query. Stock market data would be StockPriceData and have fields such as Open, High, Low, Close, and Volume. You can find the standard data models inside the `./models` folder.
+- **Fetcher** : Class containing a set of methods to receive query parameters, extract data and transform it, if necessary.
+- **Provider** : Entry point class for each provider extension. Contains information about the provider, it's required credentials and available fetchers.
+- **Registry** : Maintains a registry of provider extensions installed.
 
 ## Installation
 
