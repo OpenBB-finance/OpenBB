@@ -32,7 +32,10 @@ Close for closing price column name in data from one provider might be coded as 
 - **Data** : The output model of a particular query. Stock market data would be StockPriceData and have fields such as Open, High, Low, Close, and Volume. You can find the standard data models inside the `./models` folder.
 - **Fetcher** : Class containing a set of methods to receive query parameters, extract data and transform it, if necessary.
 - **Provider** : Entry point class for each provider extension. Contains information about the provider, it's required credentials and available fetchers.
+- **RegistryLoader** : Loads the registry with the provider extensions installed.
 - **Registry** : Maintains a registry of provider extensions installed.
+- **RegistryMap** : Stores the complete characterization of each provider. For example, it centralizes information like required credentials, standardised and extra query parameteres/data by provider.
+- **QueryExecutor** : Executes the query, routing it to the respective provider.
 
 ## Installation
 
