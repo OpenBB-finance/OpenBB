@@ -1603,8 +1603,8 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income(
         self,
-        symbol: Optional[str] = None,
-        period: Literal["annual", "quarter"] = "annual",
+        symbol: str,
+        period: Literal["annually", "quarterly"] = "annually",
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -1619,10 +1619,10 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp, polygon]
             The provider to use for the query.
-        symbol : Optional[str]
-            None
-        period : Literal['annual', 'quarter']
-            None
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        period : Literal['annually', 'quarterly']
+            Period of the data to return (quarterly or annually).
 
         Returns
         -------
@@ -1642,15 +1642,59 @@ class CLASS_stocks_fa(Container):
         IncomeStatement
         ---------------
         date : date
-            None
+            Date of the income statement.
+        currency : Optional[str]
+            Reporting currency.
+        filing_date : Optional[date]
+            Filling date.
+        accepted_date : Optional[date]
+            Accepted date.
         period : Optional[str]
-            None
+            Period of the income statement.
         revenue : Optional[int]
-            None
+            Revenue.
+        cost_of_revenue : Optional[int]
+            Cost of revenue.
+        gross_profit : Optional[int]
+            Gross profit.
+        research_and_development_expenses : Optional[int]
+            Research and development expenses.
+        general_and_administrative_expenses : Optional[int]
+            General and administrative expenses.
+        selling_and_marketing_expenses : Optional[float]
+            Selling and marketing expenses.
+        selling_general_and_administrative_expenses : Optional[int]
+            Selling, general and administrative expenses.
+        other_expenses : Optional[int]
+            Other expenses.
+        operating_expenses : Optional[int]
+            Operating expenses.
+        depreciation_and_amortization : Optional[int]
+            Depreciation and amortization.
         ebitda : Optional[int]
-            None
+            Earnings before interest, taxes, depreciation and amortization.
+        operating_income : Optional[int]
+            Operating income.
+        interest_income : Optional[int]
+            Interest income.
+        interest_expense : Optional[int]
+            Interest expense.
+        total_other_income_expenses_net : Optional[int]
+            Total other income expenses net.
+        income_before_tax : Optional[int]
+            Income before tax.
+        income_tax_expense : Optional[int]
+            Income tax expense.
+        net_income : Optional[int]
+            Net income.
         eps : Optional[float]
-            None
+            Earnings per share.
+        eps_diluted : Optional[float]
+            Earnings per share diluted.
+        weighted_average_shares_outstanding : Optional[int]
+            Weighted average shares outstanding.
+        weighted_average_shares_outstanding_dil : Optional[int]
+            Weighted average shares outstanding diluted.
 
         fmp
         ===
@@ -1658,74 +1702,30 @@ class CLASS_stocks_fa(Container):
         Parameters
         ----------
         cik : Optional[str]
-            None
+            The CIK of the company if no symbol is provided.
         limit : Optional[NonNegativeInt]
-            None
+            The limit of the income statement.
 
 
         IncomeStatement
         ---------------
         symbol : str
             None
-        reportedCurrency : str
-            None
         cik : Optional[int]
-            None
-        fillingDate : Optional[date]
-            None
-        acceptedDate : Optional[datetime]
             None
         calendarYear : Optional[int]
             None
-        costOfRevenue : Optional[int]
-            None
-        grossProfit : Optional[int]
-            None
         grossProfitRatio : Optional[float]
-            None
-        researchAndDevelopmentExpenses : Optional[int]
-            None
-        generalAndAdministrativeExpenses : Optional[int]
-            None
-        sellingAndMarketingExpenses : Optional[int]
-            None
-        sellingGeneralAndAdministrativeExpenses : Optional[int]
-            None
-        otherExpenses : Optional[int]
-            None
-        operatingExpenses : Optional[int]
             None
         costAndExpenses : Optional[int]
             None
-        interestIncome : Optional[int]
-            None
-        interestExpense : Optional[int]
-            None
-        depreciationAndAmortization : Optional[int]
-            None
         ebitdaratio : Optional[float]
-            None
-        operatingIncome : Optional[int]
             None
         operatingIncomeRatio : Optional[float]
             None
-        totalOtherIncomeExpensesNet : Optional[int]
-            None
-        incomeBeforeTax : Optional[int]
-            None
         incomeBeforeTaxRatio : Optional[float]
             None
-        incomeTaxExpense : Optional[int]
-            None
-        netIncome : Optional[int]
-            None
         netIncomeRatio : Optional[float]
-            None
-        epsdiluted : Optional[float]
-            None
-        weightedAverageShsOut : Optional[int]
-            None
-        weightedAverageShsOutDil : Optional[int]
             None
         link : Optional[str]
             None

@@ -1,119 +1,74 @@
 """Income Statement Data Model."""
 
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
+
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.models.base import FinancialStatementQueryParams
 
 
 class IncomeStatementQueryParams(FinancialStatementQueryParams):
-    """Income statement query.
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    period : Literal["annually", "quarterly"]
-        The period of the income statement.
-    """
+    """Income statement query."""
 
 
 class IncomeStatementData(Data):
-    """Income Statement Data.
+    """Income Statement Data."""
 
-    Returns
-    -------
-    date : date
-        The date of the income statement.
-    symbol : str
-        The symbol of the company.
-    currency : Optional[str]
-        The currency of the income statement.
-    cik : Optional[int]
-        The Central Index Key (CIK) of the company.
-    filing_date : date
-        The filing date of the income statement.
-    accepted_date : Optional[date]
-        The accepted date of the income statement.
-    period : Optional[str]
-        The period of the income statement.
-    revenue : Optional[int]
-        The revenue of the income statement.
-    cost_of_revenue : Optional[int]
-        The cost of revenue of the income statement.
-    gross_profit : Optional[int]
-        The gross profit of the income statement.
-    research_and_development_expenses : Optional[int]
-        The research and development expenses of the income statement.
-    general_and_administrative_expenses : Optional[int]
-        The general and administrative expenses of the income statement.
-    selling_and_marketing_expenses : Optional[float]
-        The selling and marketing expenses of the income statement.
-    selling_general_and_administrative_expenses : Optional[int]
-        The selling, general and administrative expenses of the income statement.
-    other_expenses : Optional[int]
-        The other expenses of the income statement.
-    operating_expenses : Optional[int]
-        The operating expenses of the income statement.
-    depreciation_and_amortization : Optional[int]
-        The depreciation and amortization of the income statement.
-    ebitda : Optional[int]
-        The earnings before interest, taxes, depreciation and amortization of the income statement.
-    operating_income : Optional[int]
-        The operating income of the income statement.
-    interest_income : Optional[int]
-        The interest income of the income statement.
-    interest_expense : Optional[int]
-        The interest expense of the income statement.
-    total_other_income_expenses_net : Optional[int]
-        The total other income expenses net of the income statement.
-    income_before_tax : Optional[int]
-        The income before tax of the income statement.
-    income_tax_expense : Optional[int]
-        The income tax expense of the income statement.
-    net_income : Optional[int]
-        The net income of the income statement.
-    eps : Optional[float]
-        The earnings per share of the income statement.
-    eps_diluted : Optional[float]
-        The diluted earnings per share of the income statement.
-    weighted_average_shares_outstanding : Optional[int]
-        The weighted average shares outstanding of the income statement.
-    weighted_average_shares_outstanding_dil : Optional[int]
-        The weighted average shares outstanding diluted of the income statement.
-    """
+    date: dateType = Field(description="Date of the income statement.")
+    symbol: str = Field(description="Symbol of the company.")
+    cik: Optional[int] = Field(description="Central Index Key.")
+    currency: Optional[str] = Field(description="Reporting currency.")
+    filing_date: Optional[dateType] = Field(description="Filling date.")
+    accepted_date: Optional[datetime] = Field(description="Accepted date.")
+    period: Optional[str] = Field(description="Period of the income statement.")
 
-    date: dateType
-    currency: Optional[str] = None
-    filing_date: Optional[dateType] = None
-    accepted_date: Optional[dateType] = None
-    period: Optional[str]
+    revenue: Optional[int] = Field(description="Revenue.")
+    cost_of_revenue: Optional[int] = Field(description="Cost of revenue.")
+    gross_profit: Optional[int] = Field(description="Gross profit.")
 
-    revenue: Optional[int]
-    cost_of_revenue: Optional[int]
-    gross_profit: Optional[int]
+    research_and_development_expenses: Optional[int] = Field(
+        description="Research and development expenses."
+    )
+    general_and_administrative_expenses: Optional[int] = Field(
+        description="General and administrative expenses."
+    )
+    selling_and_marketing_expenses: Optional[float] = Field(
+        description="Selling and marketing expenses."
+    )
+    selling_general_and_administrative_expenses: Optional[int] = Field(
+        description="Selling, general and administrative expenses."
+    )
+    other_expenses: Optional[int] = Field(description="Other expenses.")
+    operating_expenses: Optional[int] = Field(description="Operating expenses.")
 
-    research_and_development_expenses: Optional[int] = None
-    general_and_administrative_expenses: Optional[int] = None
-    selling_and_marketing_expenses: Optional[float] = None
-    selling_general_and_administrative_expenses: Optional[int] = None
-    other_expenses: Optional[int] = None
-    operating_expenses: Optional[int]
+    depreciation_and_amortization: Optional[int] = Field(
+        description="Depreciation and amortization."
+    )
+    ebitda: Optional[int] = Field(
+        description="Earnings before interest, taxes, depreciation and amortization."
+    )
+    operating_income: Optional[int] = Field(description="Operating income.")
 
-    depreciation_and_amortization: Optional[int] = None
-    ebitda: Optional[int] = None
-    operating_income: Optional[int] = None
+    interest_income: Optional[int] = Field(description="Interest income.")
+    interest_expense: Optional[int] = Field(description="Interest expense.")
+    total_other_income_expenses_net: Optional[int] = Field(
+        description="Total other income expenses net."
+    )
+    income_before_tax: Optional[int] = Field(description="Income before tax.")
+    income_tax_expense: Optional[int] = Field(description="Income tax expense.")
 
-    interest_income: Optional[int] = None
-    interest_expense: Optional[int] = None
-    total_other_income_expenses_net: Optional[int] = None
-    income_before_tax: Optional[int]
-    income_tax_expense: Optional[int]
-
-    net_income: Optional[int]
-    eps: Optional[float]
-    eps_diluted: Optional[float]
-    weighted_average_shares_outstanding: Optional[int] = None
-    weighted_average_shares_outstanding_dil: Optional[int] = None
+    net_income: Optional[int] = Field(description="Net income.")
+    eps: Optional[float] = Field(description="Earnings per share.")
+    eps_diluted: Optional[float] = Field(description="Earnings per share diluted.")
+    weighted_average_shares_outstanding: Optional[int] = Field(
+        description="Weighted average shares outstanding."
+    )
+    weighted_average_shares_outstanding_dil: Optional[int] = Field(
+        description="Weighted average shares outstanding diluted."
+    )

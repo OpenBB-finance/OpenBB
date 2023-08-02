@@ -1,15 +1,9 @@
 """FMP Income Statement Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
@@ -21,27 +15,18 @@ from openbb_fmp.utils.helpers import create_url, get_data_many
 PeriodType = Literal["annual", "quarter"]
 
 
-class FMPIncomeStatementQueryParams(QueryParams):
+class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     """FMP Income Statement QueryParams.
 
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
-
-    Parameter
-    ---------
-    symbol : Optional[str]
-        The symbol of the company if no CIK is provided.
-    cik : Optional[str]
-        The CIK of the company if no symbol is provided.
-    period : Literal["annual", "quarter"]
-        The period of the income statement. Default is "annual".
-    limit : Optional[NonNegativeInt]
-        The limit of the income statement.
     """
 
-    symbol: Optional[str]
-    cik: Optional[str]
-    period: PeriodType = Field(default="annual")
-    limit: Optional[NonNegativeInt]
+    cik: Optional[str] = Field(
+        description="The CIK of the company if no symbol is provided."
+    )
+    limit: Optional[NonNegativeInt] = Field(
+        default=1, description="The limit of the income statement."
+    )
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
@@ -50,47 +35,39 @@ class FMPIncomeStatementQueryParams(QueryParams):
         return values
 
 
-class FMPIncomeStatementData(Data):
-    date: dateType
-    symbol: str
-    reportedCurrency: str = Field(alias="currency")
-    cik: Optional[int]
-    fillingDate: Optional[dateType] = Field(alias="filing_date")
-    acceptedDate: Optional[datetime]
+class FMPIncomeStatementData(IncomeStatementData):
+    class Config:
+        fields = {
+            "currency": "reportedCurrency",
+            "filing_date": "fillingDate",
+            "accepted_date": "acceptedDate",
+            "cost_of_revenue": "costOfRevenue",
+            "gross_profit": "grossProfit",
+            "research_and_development_expenses": "researchAndDevelopmentExpenses",
+            "general_and_administrative_expenses": "generalAndAdministrativeExpenses",
+            "selling_and_marketing_expenses": "sellingAndMarketingExpenses",
+            "selling_general_and_administrative_expenses": "sellingGeneralAndAdministrativeExpenses",
+            "other_expenses": "otherExpenses",
+            "operating_expenses": "operatingExpenses",
+            "depreciation_and_amortization": "depreciationAndAmortization",
+            "operating_income": "operatingIncome",
+            "interest_income": "interestIncome",
+            "interest_expense": "interestExpense",
+            "total_other_income_expenses_net": "totalOtherIncomeExpensesNet",
+            "income_before_tax": "incomeBeforeTax",
+            "income_tax_expense": "incomeTaxExpense",
+            "net_income": "netIncome",
+            "eps_diluted": "epsdiluted",
+            "weighted_average_shares_outstanding": "weightedAverageShsOut",
+            "weighted_average_shares_outstanding_dil": "weightedAverageShsOutDil",
+        }
+
     calendarYear: Optional[int]
-    period: Optional[str]
-    revenue: Optional[int]
-    costOfRevenue: Optional[int]
-    grossProfit: Optional[int]
     grossProfitRatio: Optional[float]
-    researchAndDevelopmentExpenses: Optional[int]
-    generalAndAdministrativeExpenses: Optional[int]
-    sellingAndMarketingExpenses: Optional[int]
-    sellingGeneralAndAdministrativeExpenses: Optional[int]
-    otherExpenses: Optional[int]
-    operatingExpenses: Optional[int]
-    costAndExpenses: Optional[int]
-    interestIncome: Optional[int]
-    interestExpense: Optional[int]
-    depreciationAndAmortization: Optional[int]
-    ebitda: Optional[int]
     ebitdaratio: Optional[float]
-    operatingIncome: Optional[int]
     operatingIncomeRatio: Optional[float]
-    totalOtherIncomeExpensesNet: Optional[int]
-    incomeBeforeTax: Optional[int]
     incomeBeforeTaxRatio: Optional[float]
-    incomeTaxExpense: Optional[int]
-    netIncome: Optional[int]
     netIncomeRatio: Optional[float]
-    eps: Optional[float]
-    epsdiluted: Optional[float] = Field(alias="eps_diluted")
-    weightedAverageShsOut: Optional[int] = Field(
-        alias="weighted_average_shares_outstanding"
-    )
-    weightedAverageShsOutDil: Optional[int] = Field(
-        alias="weighted_average_shares_outstanding_dil"
-    )
     link: Optional[str]
     finalLink: Optional[str]
 
@@ -105,11 +82,7 @@ class FMPIncomeStatementFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementQueryParams:
-        transformed_params = params
-        transformed_params["period"] = (
-            "annual" if params.get("period", "") == "annually" else "quarter"
-        )
-        return FMPIncomeStatementQueryParams(**transformed_params)
+        return FMPIncomeStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
