@@ -284,14 +284,14 @@ def overview(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(model="InstitutionalOwnership")
+@router.command(model="StockOwnership")
 def own(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
-    """Institutional Ownership."""
+    """Stock Ownership."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
