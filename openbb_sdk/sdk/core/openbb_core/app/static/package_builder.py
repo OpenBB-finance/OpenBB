@@ -8,7 +8,6 @@ from json import dumps
 from pathlib import Path
 from typing import (
     Annotated,
-    Any,
     Callable,
     Dict,
     List,
@@ -22,6 +21,7 @@ from typing import (
 )
 
 import pandas as pd
+from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 
 from openbb_core.app.provider_interface import get_provider_interface
@@ -388,7 +388,7 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def get_type(field: Any) -> type:
+    def get_type(field: ModelField) -> type:
         field_type = getattr(field, "type", Parameter.empty)
         if isclass(field_type):
             name = field_type.__name__
@@ -399,7 +399,7 @@ class MethodDefinition:
         return field_type
 
     @staticmethod
-    def get_default(field: Any):
+    def get_default(field: ModelField):
         field_default = getattr(field, "default", None)
         if field_default is None or field_default is MISSING:
             return Parameter.empty

@@ -33,8 +33,6 @@ class RegistryLoader:
                     provider=entry_point.load(),
                 )
             except Exception as e:
-                raise LoadingError(
-                    f"Invalid provider '{entry_point.name}': {e}"
-                ) from e
+                raise LoadingError(f"Invalid provider '{entry_point.name}': {e}") from e
 
         return registry
