@@ -100,8 +100,8 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             If True, it creates the chart object and populates the respective field on the object, by default True.
         **kwargs
             Keyword arguments to be passed to the charting extension.
-            This implies that the user has to know the charting extension API; this is the case
-            because the charting extension may vary on user settings.
+            This implies that the user has some knowledge on the charting extension API.
+            This is the case because the charting extension may vary on user preferences.
         """
 
         if self.chart and not kwargs:
@@ -118,6 +118,23 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
                     self.chart = Chart(error=Error(message=str(e)))
 
         return plotly_json
+
+    def render_chart(self, **kwargs):
+        """
+        Create or update the `Chart`.
+        Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments to be passed to the charting extension.
+            This implies that the user has some knowledge on the charting extension API.
+            This is the case because the charting extension may vary on user preferences.
+        """
+        cm = ChartingManager()
+        kwargs["data"] = self.to_dataframe()
+
+        self.chart = cm.render_chart(**kwargs)
 
     def show(self):
         """Displays chart."""

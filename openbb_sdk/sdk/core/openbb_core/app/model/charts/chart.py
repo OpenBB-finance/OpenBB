@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, Optional
 
 from openbb_core.app.model.abstract.error import Error
 from pydantic import BaseModel, Field

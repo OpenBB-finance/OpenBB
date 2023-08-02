@@ -163,6 +163,50 @@ class ChartingManager(metaclass=SingletonMeta):
 
         return to_plotly_json_func(**kwargs)
 
+    def render_chart(self, **kwargs) -> Chart:
+        """
+        Returns the chart object.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments to be passed to the charting extension.
+
+        Returns
+        -------
+        Chart
+            Chart object.
+
+        Raises
+        ------
+        ChartingManagerError
+            If charting extension is not installed.
+        Exception
+            If the charting extension module does not contain the `render_chart` function.
+        """
+
+        if not self._charting_extension_installed:
+            raise ChartingManagerError(
+                f"Charting extension `{self._charting_extension}` is not installed"
+            )
+        self.handle_backend(self._charting_extension, self._charting_settings)
+
+        # Dynamically import the charting module
+        backend_module = import_module(self._charting_extension)
+        # Get the `render_chart` function from the charting module
+        render_chart_func = getattr(backend_module, "render_chart")
+
+        # Add the charting settings to the kwargs
+        kwargs["charting_settings"] = self._charting_settings
+
+        fig, content = render_chart_func(**kwargs)
+
+        return Chart(
+            content=content,
+            format=self.get_chart_format(self._charting_extension),
+            fig=fig,
+        )
+
     def chart(
         self,
         user_settings: UserSettings,
