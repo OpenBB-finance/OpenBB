@@ -7,9 +7,11 @@ from typing import Any, Dict, List, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.helpers import get_querystring
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
-from pydantic import Field, NonNegativeInt, validator
+from openbb_provider.descriptions import DATA_DESCRIPTIONS
 
 from openbb_fmp.utils.helpers import get_data_many
+
+from pydantic import Field, NonNegativeInt, PositiveFloat, validator
 
 
 class FMPCryptoEODQueryParams(CryptoEODQueryParams):
@@ -39,6 +41,7 @@ class FMPCryptoEODData(CryptoEODData):
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
+    vwap: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
@@ -47,7 +50,7 @@ class FMPCryptoEODData(CryptoEODData):
 
     @validator("date", pre=True)
     def date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d").datetime()
 
 
 class FMPCryptoEODFetcher(
