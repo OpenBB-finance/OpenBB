@@ -1,7 +1,7 @@
 """Major indices aggregate end of day price data model."""
 
 
-from datetime import date
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from pydantic import Field, PositiveFloat
@@ -17,9 +17,10 @@ class MajorIndicesEODQueryParams(QueryParams, BaseSymbol):
 
     start_date: Optional[date] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
+        default=date.today() - timedelta(days=30),
     )
     end_date: Optional[date] = Field(
-        description=QUERY_DESCRIPTIONS.get("end_date", ""),
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=date.today()
     )
 
 
@@ -30,4 +31,5 @@ class MajorIndicesEODData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

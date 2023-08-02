@@ -1,7 +1,17 @@
 """Abstract class for the fetcher."""
 
 
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    List,
+    Optional,
+    TypeVar,
+    Union,
+    get_args,
+    get_origin,
+)
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -63,7 +73,7 @@ class Fetcher(
     def data_type(self):
         """Get the type of the data."""
         # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[1]
+        return self.get_data_type(self.__orig_bases__[0].__args__[1])
 
     @property
     def provider_query_params_type(self):
@@ -75,4 +85,18 @@ class Fetcher(
     def provider_data_type(self):
         """Get the type of the provider data."""
         # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[3]
+        return self.get_data_type(self.__orig_bases__[0].__args__[3])
+
+    # TODO: Create abstract class attribute for generic return type
+    @property
+    def generic_return_type(self):
+        """Get the type of the return."""
+        # pylint: disable=E1101
+        return self.__orig_bases__[0].__args__[1]
+
+    @staticmethod
+    def get_data_type(data: GenericDataType) -> DataType:
+        """Get the type of the data."""
+        if get_origin(data) == list:
+            data = get_args(data)[0]
+        return data

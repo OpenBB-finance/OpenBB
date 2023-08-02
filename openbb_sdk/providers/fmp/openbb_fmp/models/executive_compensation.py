@@ -48,9 +48,9 @@ class FMPExecutiveCompensationData(ExecutiveCompensationData):
 class FMPExecutiveCompensationFetcher(
     Fetcher[  # type: ignore
         ExecutiveCompensationQueryParams,
-        ExecutiveCompensationData,
+        List[ExecutiveCompensationData],
         FMPExecutiveCompensationQueryParams,
-        FMPExecutiveCompensationData,
+        List[FMPExecutiveCompensationData],
     ]
 ):
     @staticmethod

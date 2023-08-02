@@ -2,7 +2,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
@@ -43,19 +43,14 @@ class PolygonCashFlowStatementData(Data):
 class PolygonCashFlowStatementFetcher(
     Fetcher[
         CashFlowStatementQueryParams,
-        CashFlowStatementData,
+        List[CashFlowStatementData],
         PolygonCashFlowStatementQueryParams,
-        PolygonCashFlowStatementData,
+        List[PolygonCashFlowStatementData],
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: CashFlowStatementQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonCashFlowStatementQueryParams:
-        period = "annual" if query.period == "annually" else "quarterly"
-        return PolygonCashFlowStatementQueryParams(
-            symbol=query.symbol, period=period, **extra_params if extra_params else {}  # type: ignore
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonCashFlowStatementQueryParams:
+        return PolygonCashFlowStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -65,6 +60,8 @@ class PolygonCashFlowStatementFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
+
+        query.period = "annual" if query.period == "annually" else "quarterly"
         query_string = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url)["results"]

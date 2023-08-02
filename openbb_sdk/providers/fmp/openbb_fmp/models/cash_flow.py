@@ -38,7 +38,7 @@ class FMPCashFlowStatementQueryParams(QueryParams):
 
     symbol: Optional[str]
     cik: Optional[str]
-    period: Literal["annual", "quarter"] = Field(default="annual")
+    period: Literal["annually", "quarterly"] = Field(default="annually")
     limit: Optional[NonNegativeInt]
 
     @root_validator()
@@ -100,24 +100,23 @@ class FMPCashFlowStatementData(Data):
 class FMPCashFlowStatementFetcher(
     Fetcher[
         CashFlowStatementQueryParams,
-        CashFlowStatementData,
+        List[CashFlowStatementData],
         FMPCashFlowStatementQueryParams,
-        FMPCashFlowStatementData,
+        List[FMPCashFlowStatementData],
     ]
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
-        transformed_params = params
-        transformed_params["period"] = (
-            "annual" if params.get("period", "") == "annually" else "quarter"
-        )
-        return FMPCashFlowStatementQueryParams(**transformed_params)
+        return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPCashFlowStatementQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPCashFlowStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        period = "annual" if query.period == "annually" else "quarter"
+        query = query.copy(update={"period": period})
 
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]

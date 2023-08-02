@@ -62,9 +62,9 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
 class FMPIncomeStatementGrowthFetcher(
     Fetcher[
         IncomeStatementGrowthQueryParams,
-        IncomeStatementGrowthData,
+        List[IncomeStatementGrowthData],
         FMPIncomeStatementGrowthQueryParams,
-        FMPIncomeStatementGrowthData,
+        List[FMPIncomeStatementGrowthData],
     ]
 ):
     @staticmethod
@@ -88,5 +88,5 @@ class FMPIncomeStatementGrowthFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPIncomeStatementGrowthData],
-    ) -> List[FMPIncomeStatementGrowthData]:
-        return data
+    ) -> List[IncomeStatementGrowthData]:
+        return [IncomeStatementGrowthData.parse_obj(d.dict()) for d in data]

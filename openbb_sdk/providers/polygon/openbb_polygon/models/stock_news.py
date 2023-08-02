@@ -84,9 +84,9 @@ class PolygonStockNewsData(Data):
 class PolygonStockNewsFetcher(
     Fetcher[
         StockNewsQueryParams,
-        StockNewsData,
+        List[StockNewsData],
         PolygonStockNewsQueryParams,
-        PolygonStockNewsData,
+        List[PolygonStockNewsData],
     ]
 ):
     @staticmethod

@@ -1,7 +1,10 @@
 """Stock owner data model."""
 
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
 
 from pydantic import Field, validator
@@ -43,15 +46,19 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
 class StockOwnershipQueryParams(QueryParams, BaseSymbol):
     """Stock ownership Query."""
 
-    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
+    date: dateType = Field(
+        description=QUERY_DESCRIPTIONS.get("date", ""), default=most_recent_quarter()
+    )
     page: Optional[int] = Field(
         default=0, description="The page number of the data to fetch."
     )
 
     @validator("date", pre=True)
-    def date_validate(cls, v: str):  # pylint: disable=E0213
-        # base = datetime.strptime(v, "%Y-%m-%d").date()
-        return most_recent_quarter(v)
+    def time_validate(cls, v: str):  # pylint: disable=E0213
+        if isinstance(v, str):
+            base = datetime.strptime(v, "%Y-%m-%d").date()
+            return most_recent_quarter(base)
+        return v
 
 
 class StockOwnershipData(Data):

@@ -164,7 +164,10 @@ class Router:
         self,
         prefix: str = "",
     ) -> None:
-        self._api_router = APIRouter(prefix=prefix)
+        self._api_router = APIRouter(
+            prefix=prefix,
+            responses={404: {"description": "Not found"}},
+        )
 
     @overload
     def command(
@@ -194,7 +197,13 @@ class Router:
         func = SignatureInspector.complete_signature(func, model)
         if func is not None:
             CommandValidator.check(func=func)
+            create_operation_id = [
+                t.replace("_router", "")
+                for t in func.__module__.split(".")[1:] + [func.__name__]
+            ]
+            cleaned_id = "_".join({c: "" for c in create_operation_id if c}.keys())
 
+            kwargs["operation_id"] = kwargs.get("operation_id", cleaned_id)
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
@@ -222,6 +231,21 @@ class SignatureInspector:
     ) -> Optional[Callable[P, CommandOutput]]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
+        return_type = func.__annotations__["return"]
+        is_list = False
+
+        results_type = get_type_hints(return_type)["results"]
+        if not isinstance(results_type, type(None)):
+            results_type = get_args(results_type)[0]
+
+        is_list = get_origin(results_type) == list
+        inner_type = results_type.__args__[0] if is_list else results_type
+
+        func.__annotations__["return"].__doc__ = "CommandOutput"
+        func.__annotations__[
+            "return"
+        ].__name__ = f"CommandOutput[{inner_type.__name__}]"
+
         if model:
             if model not in provider_interface.models:
                 warnings.warn(
@@ -259,9 +283,17 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            ReturnModel = provider_interface.return_schema[model]
-            func.__annotations__["return"] = CommandOutput[ReturnModel]  # type: ignore
+            ReturnModel = merged_return = provider_interface.return_schema[model]
 
+            if get_origin(provider_interface.return_map[model]) == list or is_list:
+                ReturnModel = List[ReturnModel]
+
+            return_type = CommandOutput[ReturnModel]  # type: ignore
+            return_type.__name__ = f"CommandOutput[{merged_return.__name__}]"
+            return_type.__doc__ = (
+                f"CommandOutput with results of type '{merged_return.__name__}'."
+            )
+            func.__annotations__["return"] = return_type
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices
@@ -415,8 +447,7 @@ class RouterLoader:
         for entry_point in pkg_resources.iter_entry_points("openbb_core_extension"):
             try:
                 router.include_router(
-                    router=entry_point.load(),
-                    prefix=f"/{entry_point.name}",
+                    router=entry_point.load(), prefix=f"/{entry_point.name}"
                 )
             except Exception as e:
                 raise ExtensionError(

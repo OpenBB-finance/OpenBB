@@ -40,9 +40,9 @@ class PolygonBalanceSheetData(BalanceSheetData):
 class PolygonBalanceSheetFetcher(
     Fetcher[
         BalanceSheetQueryParams,
-        BalanceSheetData,
+        List[BalanceSheetData],
         PolygonBalanceSheetQueryParams,
-        PolygonBalanceSheetData,
+        List[PolygonBalanceSheetData],
     ]
 ):
     @staticmethod

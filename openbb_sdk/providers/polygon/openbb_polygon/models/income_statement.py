@@ -62,9 +62,9 @@ class PolygonIncomeStatementData(IncomeStatementData):
 class PolygonIncomeStatementFetcher(
     Fetcher[
         IncomeStatementQueryParams,
-        IncomeStatementData,
+        List[IncomeStatementData],
         PolygonIncomeStatementQueryParams,
-        PolygonIncomeStatementData,
+        List[PolygonIncomeStatementData],
     ]
 ):
     @staticmethod

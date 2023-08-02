@@ -49,9 +49,9 @@ class FMPHistoricalDividendsData(HistoricalDividendsData):
 class FMPHistoricalDividendsFetcher(
     Fetcher[
         HistoricalDividendsQueryParams,
-        HistoricalDividendsData,
+        List[HistoricalDividendsData],
         FMPHistoricalDividendsQueryParams,
-        FMPHistoricalDividendsData,
+        List[FMPHistoricalDividendsData],
     ]
 ):
     @staticmethod

@@ -13,9 +13,11 @@ from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPCryptoEODQueryParams(CryptoEODQueryParams):
+    # noqa: E501
     """FMP Crypto end of day Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
+    Source:
+        https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
     """
 
     timeseries: Optional[NonNegativeInt] = Field(
@@ -53,9 +55,9 @@ class FMPCryptoEODData(CryptoEODData):
 class FMPCryptoEODFetcher(
     Fetcher[
         CryptoEODQueryParams,
-        CryptoEODData,
+        List[CryptoEODData],
         FMPCryptoEODQueryParams,
-        FMPCryptoEODData,
+        List[FMPCryptoEODData],
     ]
 ):
     @staticmethod

@@ -50,9 +50,9 @@ class FMPTreasuryRatesData(TreasuryRatesData):
 class FMPTreasuryRatesFetcher(
     Fetcher[
         TreasuryRatesQueryParams,
-        TreasuryRatesData,
+        List[TreasuryRatesData],
         FMPTreasuryRatesQueryParams,
-        FMPTreasuryRatesData,
+        List[FMPTreasuryRatesData],
     ]
 ):
     @staticmethod

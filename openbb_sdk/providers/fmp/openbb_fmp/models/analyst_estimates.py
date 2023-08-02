@@ -50,9 +50,9 @@ class FMPAnalystEstimatesData(AnalystEstimatesData):
 class FMPAnalystEstimatesFetcher(
     Fetcher[
         AnalystEstimatesQueryParams,
-        AnalystEstimatesData,
+        List[AnalystEstimatesData],
         FMPAnalystEstimatesQueryParams,
-        FMPAnalystEstimatesData,
+        List[FMPAnalystEstimatesData],
     ]
 ):
     @staticmethod
@@ -65,7 +65,8 @@ class FMPAnalystEstimatesFetcher(
     ) -> List[FMPAnalystEstimatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "quarter" if query.period == "quarterly" else "annual"
+        period = "annual" if query.period == "annually" else "quarter"
+        query = query.copy(update={"period": period})
 
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
@@ -75,5 +76,5 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPAnalystEstimatesData],
-    ) -> List[FMPAnalystEstimatesData]:
-        return data
+    ) -> List[AnalystEstimatesData]:
+        return [AnalystEstimatesData.parse_obj(d.dict()) for d in data]

@@ -41,6 +41,7 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 
     class Config:
         fields = {
+            "date": "t",
             "open": "o",
             "high": "h",
             "low": "l",
@@ -64,21 +65,19 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 class PolygonMajorIndicesEODFetcher(
     Fetcher[
         MajorIndicesEODQueryParams,
-        MajorIndicesEODData,
+        List[MajorIndicesEODData],
         PolygonMajorIndicesEODQueryParams,
-        PolygonMajorIndicesEODData,
+        List[PolygonMajorIndicesEODData],
     ]
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonMajorIndicesEODQueryParams:
         now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
-        return PolygonMajorIndicesEODQueryParams(**transformed_params)
+        start_date = params.pop("start_date", now - timedelta(days=7))
+        end_date = params.pop("end_date", now)
+        return PolygonMajorIndicesEODQueryParams(
+            **params, start_date=start_date, end_date=end_date
+        )
 
     @staticmethod
     def extract_data(
@@ -88,10 +87,9 @@ class PolygonMajorIndicesEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"I:{query.symbol}/range/1/{query.timespan}/"
+            f"I:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url)
@@ -101,8 +99,9 @@ class PolygonMajorIndicesEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonMajorIndicesEODData(**d) for d in data]
+        return [
+            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
+        ]
 
     @staticmethod
     def transform_data(

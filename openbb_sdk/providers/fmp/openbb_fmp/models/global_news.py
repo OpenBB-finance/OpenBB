@@ -27,9 +27,9 @@ class FMPGlobalNewsData(GlobalNewsData):
 class FMPGlobalNewsFetcher(
     Fetcher[
         GlobalNewsQueryParams,
-        GlobalNewsData,
+        List[GlobalNewsData],
         FMPGlobalNewsQueryParams,
-        FMPGlobalNewsData,
+        List[FMPGlobalNewsData],
     ]
 ):
     @staticmethod

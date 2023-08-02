@@ -1,6 +1,7 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """Stocks Router."""
 
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.results.empty import Empty
@@ -72,10 +73,15 @@ def tob() -> CommandOutput[Empty]:
     return CommandOutput(results=Empty())
 
 
-@router.command
-def quote() -> CommandOutput[Empty]:
-    """View the current price for a specific stock ticker."""
-    return CommandOutput(results=Empty())
+@router.command(model="StockQuote")
+def quote(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Load stock data for a specific ticker."""
+    return CommandOutput(results=Query(**locals()).execute())
 
 
 @router.command

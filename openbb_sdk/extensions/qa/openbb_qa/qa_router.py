@@ -18,8 +18,8 @@ from pydantic import NonNegativeFloat, PositiveInt
 from scipy import stats
 from statsmodels.tsa import stattools
 
-from .qa_helpers import get_fama_raw
-from .qa_models import (
+from openbb_qa.qa_helpers import get_fama_raw
+from openbb_qa.qa_models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,
