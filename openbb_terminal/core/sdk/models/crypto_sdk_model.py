@@ -13,7 +13,7 @@ class CryptoRoot(Category):
         `chart`: Load data for Technical Analysis\n
         `find`: Find similar coin by coin name,symbol or id.\n
         `load`: Load crypto currency to get data for\n
-        `price`: Returns price and confidence interval from pyth live feed. [Source: Pyth]\n
+        `price`: Displays live price from pyth live feed [Source: https://pyth.network/]\n
     """
 
     _location_path = "crypto"
@@ -24,7 +24,7 @@ class CryptoRoot(Category):
         self.chart = lib.crypto_helpers.plot_chart
         self.find = lib.crypto_models.find
         self.load = lib.crypto_helpers.load
-        self.price = lib.crypto_pyth_model.get_price
+        self.price = lib.crypto_pyth_view.display_price
 
 
 class CryptoDueDiligence(Category):
@@ -336,6 +336,8 @@ class CryptoDiscovery(Category):
         `dapps_chart`: Prints table showing dapps [Source: https://dappradar.com/]\n
         `defi_chains`: Get defi chains [Source: https://dappradar.com/]\n
         `defi_chains_chart`: Prints table showing defi chains [Source: https://dappradar.com/]\n
+        `fees`: Show cryptos with most fees. [Source: CryptoStats]\n
+        `fees_chart`: Display crypto with most fees paid [Source: CryptoStats]\n
         `gainers`: Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
         `gainers_chart`: Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]\n
         `losers`: Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]\n
@@ -376,6 +378,8 @@ class CryptoDiscovery(Category):
         self.dapps_chart = lib.crypto_disc_dappradar_view.display_dapps
         self.defi_chains = lib.crypto_disc_dappradar_model.get_defi_chains
         self.defi_chains_chart = lib.crypto_disc_dappradar_view.display_defi_chains
+        self.fees = lib.crypto_disc_cryptostats_model.get_fees
+        self.fees_chart = lib.crypto_disc_cryptostats_view.display_fees
         self.gainers = lib.crypto_disc_pycoingecko_model.get_gainers
         self.gainers_chart = lib.crypto_disc_pycoingecko_view.display_gainers
         self.losers = lib.crypto_disc_pycoingecko_model.get_losers
@@ -459,6 +463,8 @@ class CryptoOnChain(Category):
         `token_decimals`: Helper methods that gets token decimals number. [Source: Ethplorer]\n
         `top`: Get top 50 tokens. [Source: Ethplorer]\n
         `top_chart`: Display top ERC20 tokens [Source: Ethplorer]\n
+        `topledger`: Returns Topledger's Data for the given Organization's Slug[org_slug] based\n
+        `topledger_chart`: Display on-chain data from Topledger. [Source: Topledger]\n
         `ttcp`: Get most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `ttcp_chart`: Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.\n
         `tv`: Get token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]\n
@@ -529,6 +535,8 @@ class CryptoOnChain(Category):
         self.token_decimals = lib.crypto_onchain_ethplorer_model.get_token_decimals
         self.top = lib.crypto_onchain_ethplorer_model.get_top_tokens
         self.top_chart = lib.crypto_onchain_ethplorer_view.display_top_tokens
+        self.topledger = lib.crypto_onchain_topledger_model.get_topledger_data
+        self.topledger_chart = lib.crypto_onchain_topledger_view.display_topledger_data
         self.ttcp = lib.crypto_onchain_bitquery_model.get_most_traded_pairs
         self.ttcp_chart = lib.crypto_onchain_bitquery_view.display_most_traded_pairs
         self.tv = lib.crypto_onchain_bitquery_model.get_token_volume_on_dexes

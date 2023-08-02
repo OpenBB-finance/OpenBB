@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal import OpenBBFigure, config_terminal, theme
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
@@ -85,7 +85,6 @@ class PlotlyTA(PltTA):
     close_column: Optional[str] = "Close"
     has_volume: bool = True
     show_volume: bool = True
-    prepost: bool = False
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
@@ -141,11 +140,17 @@ class PlotlyTA(PltTA):
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
-        prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
+
+        if config_terminal.HOLD:
+            console.print(
+                "The previous command is not supported within hold on.  Only the last command run"
+                "will be displayed when hold off is run."
+            )
+
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 
@@ -163,8 +168,6 @@ class PlotlyTA(PltTA):
         )
         self.show_volume = volume and self.has_volume
 
-        self.prepost = prepost
-
         return self.plot_fig(
             fig=fig, symbol=symbol, candles=candles, volume_ticks_x=volume_ticks_x
         )
@@ -176,7 +179,6 @@ class PlotlyTA(PltTA):
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
-        prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
@@ -201,8 +203,6 @@ class PlotlyTA(PltTA):
             Plot a candlestick chart, by default True (if False, plots a line chart)
         volume : bool, optional
             Plot volume, by default True
-        prepost : bool, optional
-            Plot pre and post market data, by default False
         fig : OpenBBFigure, optional
             Plotly figure to plot on, by default None
         volume_ticks_x : int, optional
@@ -212,7 +212,7 @@ class PlotlyTA(PltTA):
             indicators = PLOTLY_TA.indicators
 
         return PlotlyTA().__plot__(
-            df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
+            df_stock, indicators, symbol, candles, volume, fig, volume_ticks_x
         )
 
     @staticmethod
@@ -494,7 +494,6 @@ class PlotlyTA(PltTA):
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
         figure.update_layout(showlegend=False)
-        figure.hide_holidays(self.prepost)
 
         if not self.show_volume:
             figure.update_layout(margin=dict(l=20))

@@ -10,7 +10,7 @@ import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
@@ -366,17 +366,19 @@ def reset(queue: Optional[List[str]] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
-    plots_backend().close()
-    debug = get_current_system().DEBUG_MODE
+    plots_backend().close(reset=True)
     load_env_files()
+    debug = get_current_system().DEBUG_MODE
 
     try:
         # save the current user
         user_profile = get_current_user().profile
-        session: Dict[str, str] = {
+        session: Dict[str, Any] = {
             "access_token": user_profile.token,
             "token_type": user_profile.token_type,
             "uuid": user_profile.uuid,
+            "username": user_profile.username,
+            "remember": user_profile.remember,
         }
 
         # remove the hub routines
@@ -391,16 +393,17 @@ def reset(queue: Optional[List[str]] = None):
             if parts[0] == "openbb_terminal":
                 del sys.modules[module]
 
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
         if is_local():
             from openbb_terminal.terminal_controller import main
 
-            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+            main(debug, queue_list, module="")  # type: ignore
         else:
             from openbb_terminal.core.session import session_controller
 
-            session_controller.main(session)
+            session_controller.main(session, queue=queue_list)
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))

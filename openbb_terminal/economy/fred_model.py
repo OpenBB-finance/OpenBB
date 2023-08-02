@@ -79,6 +79,42 @@ CPI_UNITS = ["growth_previous", "growth_same", "index_2015"]
 
 CPI_FREQUENCY = ["monthly", "quarterly", "annual"]
 
+EQUITY_INDICES = {
+    "SP500": "S&P 500 Index",
+    "CBBTCUSD": "Coinbase Bitcoin",
+    "CBETHUSD": "Coinbase Ethereum",
+    "DJCA": "Dow Jones Composite Average",
+    "DJIA": "Dow Jones Industrial Average",
+    "DJTA": "Dow Jones Transportation Average",
+    "DJUA": "Dow Jones Utility Average",
+    "NASDAQCOM": "Nasdaq Composite Index",
+    "NASDAQ100": "Nasdaq 100 Index",
+    "WILL2500PR": "Wilshire 2500 Price Index",
+    "WILL2500PRGR": "Wilshire 2500 Growth Price Index",
+    "WILL2500INDGR": "Wilshire 2500 Growth Total Market Index",
+    "WILL2500PRVAL": "Wilshire 2500 Value Price Index",
+    "WILL2500INDVAL": "Wilshire 2500 Value Total Market Index",
+    "WILL4500PR": "Wilshire 4500 Price Index",
+    "WILL5000PR": "Wilshire 5000 Price Index",
+    "WILL5000PRFC": "Wilshire 5000 Full Cap Price Index",
+    "WILLLRGCAP": "Wilshire US Large-Cap Total Market Index",
+    "WILLLRGCAPPR": "Wilshire US Large-Cap Price Index",
+    "WILLLRGCAPGRPR": "Wilshire US Large-Cap Growth Price Index",
+    "WILLLRGCAPVALPR": "Wilshire US Large-Cap Value Price Index",
+    "WILLMIDCAP": "Wilshire US Mid-Cap Total Market Index",
+    "WILLMIDCAPPR": "Wilshire US Mid-Cap Price Index",
+    "WILLMIDCAPGRPR": "Wilshire US Mid-Cap Growth Price Index",
+    "WILLMIDCAPVALPR": "Wilshire US Mid-Cap Value Price Index",
+    "WILLSMLCAP": "Wilshire US Small-Cap Total Market Index",
+    "WILLSMLCAPPR": "Wilshire US Small-Cap Price Index",
+    "WILLSMLCAPGR": "Wilshire US Small-Cap Growth Total Market Index",
+    "WILLSMLCAPVAL": "Wilshire US Small-Cap Value Total Market Index",
+    "WILLMICROCAP": "Wilshire US Micro-Cap Total Market Index",
+    "WILLREITIND": "Wilshire US Real Estate Investment Trust Price Index",
+    "WILLRESIPR": "Wilshire US Real Estate Securities Price Index",
+    "DTWEXBGS": "Nominal Broad US Dollar Index",
+}
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -348,3 +384,59 @@ def get_cpi(
     df = df.dropna()
 
     return df
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def get_usd_liquidity(overlay: str = "", show: bool = False) -> pd.DataFrame:
+    """The USD Liquidity Index is defined as: [WALCL - WLRRAL - WDTGAL]. It is expressed in billions of USD.
+
+    Parameters
+    -----------
+    overlay: str
+        An equity index to overlay, as a FRED Series ID. Defaults to none.
+    show: bool
+        Shows the list of valid equity indices to overlay.
+
+    Returns
+    --------
+    pd.DataFrame
+        DataFrame with the USD Liquidity Index.
+
+    Examples
+    ----------
+    >>> from openbb_terminal.economy import fred_model
+    >>> usd_liquidity = fred_model.get_usd_liquidity()
+
+    Display the list of equity indices:
+    >>> fred_model.get_usd_liquidity(show = True)
+    """
+
+    if show:
+        return pd.DataFrame.from_dict(data=EQUITY_INDICES, orient="index").rename(
+            columns={0: "Index Name"}
+        )
+
+    data = pd.DataFrame()
+    data["WALCL"] = get_series_data("WALCL").astype("int64") * 1000000
+    data["WLRRAL"] = get_series_data("WLRRAL").astype("int64") * 1000000
+    data["WDTGAL"] = get_series_data("WDTGAL").astype("int64") * 1000000
+    data["USD Liquidity Index (Billions of USD)"] = round(
+        (data["WALCL"] - data["WLRRAL"] - data["WDTGAL"]) / 1000000000, 2
+    )
+
+    if overlay != "":
+        overlay = overlay.upper()
+        if overlay not in EQUITY_INDICES:
+            print(
+                "Invalid choice for the overlay."
+                "Use `get_usd_liquidity(show = True)` to see display the list of choices."
+            )
+            return pd.DataFrame()
+
+        overlay_df = pd.DataFrame()
+        overlay_df[f"{EQUITY_INDICES[overlay]}"] = get_series_data(overlay)
+        liquidity_df = data[["USD Liquidity Index (Billions of USD)"]].join(overlay_df)
+        return liquidity_df.dropna()
+
+    return data[["USD Liquidity Index (Billions of USD)"]]

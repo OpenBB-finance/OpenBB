@@ -79,3 +79,35 @@ def test_option_chain_bad_symbol(recorder):
     )
     recorder.capture(df2)
     assert df2.empty
+
+
+@pytest.mark.vcr
+def test_get_ticker_info(recorder):
+    df = intrinio_model.get_ticker_info("AAPL")
+    recorder.capture(df)
+    assert df["ticker"] == "AAPL"
+    data = intrinio_model.load_options("AAPL")
+    assert df["name"] == data.underlying_name
+    assert data.symbol in data.SYMBOLS
+
+
+@pytest.mark.vcr
+def test_SYMBOLS(recorder):
+    results_df = intrinio_model.get_all_ticker_symbols()
+    assert isinstance(results_df, list)
+    recorder.capture(results_df[0])
+
+
+@pytest.mark.timeout(90)
+@pytest.mark.vcr
+def test_load_options(recorder):
+    data = intrinio_model.load_options("AAPL")
+    assert data.symbol == "AAPL"
+    assert data.hasIV is True
+    assert isinstance(data.underlying_price, pd.Series)
+    assert not data.chains.empty
+    assert isinstance(data.underlying_name, str)
+    data = intrinio_model.load_options("AAPL", date="2023-01-05", pydantic=True)
+    assert data.source == "Intrinio"
+    assert data.date == "2023-01-05"
+    recorder.capture(pd.DataFrame(data.chains).columns.to_list())

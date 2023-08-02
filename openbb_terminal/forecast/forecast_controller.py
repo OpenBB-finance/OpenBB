@@ -1039,7 +1039,9 @@ class ForecastController(BaseController):
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+                console.print(
+                    "[red]Please select a valid dataset with the -d flag.\n[/red]"
+                )
                 return
 
             df = self.datasets[ns_parser.target_dataset]
@@ -1079,13 +1081,17 @@ class ForecastController(BaseController):
             return
 
         if not ns_parser.values:
-            console.print("[red]Please enter valid dataset.\n[/red]")
+            console.print(
+                "[red]Please select a valid dataset with the -d flag.\n[/red]"
+            )
             return
 
         values = [x.strip() for x in ns_parser.values.split(",")]
         target_df = values[0].split(".")[0]
         if target_df not in self.datasets:
-            console.print("[red]Please enter valid dataset.\n[/red]")
+            console.print(
+                "[red]Please select a valid dataset with the -d flag.\n[/red]"
+            )
             return
 
         for value in values:
@@ -1148,7 +1154,9 @@ class ForecastController(BaseController):
             return
 
         if not ns_parser.values:
-            console.print("[red]Please enter valid dataset.\n[/red]")
+            console.print(
+                "[red]Please select a valid dataset with the -d flag.\n[/red]"
+            )
             return
 
         try:
@@ -1191,7 +1199,9 @@ class ForecastController(BaseController):
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+                console.print(
+                    "[red]Please select a valid dataset with the -d flag.\n[/red]"
+                )
                 return
 
             data = self.datasets[ns_parser.target_dataset]
@@ -1311,7 +1321,9 @@ class ForecastController(BaseController):
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+                console.print(
+                    "[red]Please select a valid dataset with the -d flag.\n[/red]"
+                )
                 return
 
             (
@@ -1412,7 +1424,9 @@ class ForecastController(BaseController):
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+                console.print(
+                    "[red]Please select a valid dataset with the -d flag.\n[/red]"
+                )
                 return
 
             df = forecast_model.add_sto(
@@ -1499,7 +1513,9 @@ class ForecastController(BaseController):
         if ns_parser:
             # check proper file name is provided
             if not ns_parser.target_dataset:
-                console.print("[red]Please enter valid dataset.\n[/red]")
+                console.print(
+                    "[red]Please select a valid dataset with the -d flag.\n[/red]"
+                )
                 return
 
             self.datasets[ns_parser.target_dataset] = forecast_model.add_rsi(

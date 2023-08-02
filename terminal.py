@@ -29,14 +29,13 @@ def main():
     else:
         from openbb_terminal.core.session import session_controller
 
-        if (
+        prompt_login = (
             is_auth_enabled()
             and ("--login" in sys.argv[1:] or is_installer())
             and sys.stdin.isatty()
-        ):
-            session_controller.main()
-        else:
-            session_controller.launch_terminal()
+        )
+
+        session_controller.main(prompt=prompt_login)
 
 
 if __name__ == "__main__":

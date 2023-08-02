@@ -24,10 +24,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.show_prompt import (
-    get_show_prompt,
-    set_show_prompt,
-)
+from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
 from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -38,16 +35,12 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    set_preference,
-)
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
     parse_and_split_input,
-    query_LLM,
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
@@ -95,6 +88,7 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
+        "askobb",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -112,7 +106,6 @@ class TerminalController(BaseController):
         "futures",
         "fixedincome",
         "funds",
-        "askobb",
     ]
 
     if is_auth_enabled():
@@ -188,7 +181,8 @@ class TerminalController(BaseController):
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
-
+            choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
+            choices["hold"]["off"] = {"--title": None}
             if biztoc_model.BIZTOC_TAGS:
                 choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
 
@@ -220,6 +214,8 @@ class TerminalController(BaseController):
         mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
+        mt.add_cmd("askobb")
+        mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
         mt.add_menu("crypto")
@@ -230,7 +226,6 @@ class TerminalController(BaseController):
         mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_menu("funds")
-        mt.add_menu("askobb")
         mt.add_raw("\n")
         mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
@@ -346,104 +341,6 @@ class TerminalController(BaseController):
         custom_filters = [sort_filter]
 
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
-
-    def call_askobb(self, other_args: List[str]) -> None:
-        """Accept user input as a string and return the most appropriate Terminal command"""
-        self.save_class()
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="askobb",
-            description="Accept input as a string and return the most appropriate Terminal command",
-        )
-        parser.add_argument(
-            "--question",
-            "-q",
-            action="store",
-            type=str,
-            nargs="+",
-            dest="question",
-            required="-h" not in other_args and "--help" not in other_args,
-            default="",
-            help="Question for Askobb LLM",
-        )
-
-        parser.add_argument(
-            "--model",
-            "-m",
-            action="store",
-            type=str,
-            dest="gpt_model",
-            required=False,
-            default="gpt-3.5-turbo",
-            choices=["gpt-3.5-turbo", "gpt-4"],
-            help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
-        )
-
-        if other_args and "-q" not in other_args:
-            other_args.insert(0, "-q")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
-
-        if ns_parser:
-            # check if user has passed a question with more than 2 words
-            if len(ns_parser.question) <= 2:
-                console.print(
-                    "[red]Please enter a question with more than 2 words[/red]"
-                )
-            else:
-                console.print(
-                    "[yellow]Thinking... This may take a few moments.\n[/yellow]"
-                )
-                response = query_LLM(" ".join(ns_parser.question), ns_parser.gpt_model)
-                logger.info(
-                    "ASKOBB: %s ",
-                    json.dumps(
-                        {
-                            "Question": " ".join(ns_parser.question),
-                            "Model": ns_parser.gpt_model,
-                            "Response": response,
-                        }
-                    ),
-                )
-                if response is not None:
-                    # check that "I don't know" and "Sorry" is not the response
-                    if all(
-                        phrase not in response
-                        for phrase in [
-                            "I don't know",
-                            "Sorry",
-                            "I am not sure",
-                            "no terminal command provided",
-                            "no available",
-                            "no command provided",
-                            "no information",
-                            "does not contain",
-                        ]
-                    ):
-                        console.print(f"[green]Suggested Command: {response}[/green]\n")
-                        console.print(
-                            "If this command does not work, please refine your question and try again."
-                        )
-
-                        console.print(
-                            "[yellow]Would you like to run this command?(y/n)[/yellow]"
-                        )
-                        user_response = input()
-                        if user_response == "y":
-                            self.queue.append(response)
-                        elif user_response == "n":
-                            console.print("Please refine your question and try again.")
-                        else:
-                            return
-
-                    else:
-                        console.print(
-                            "[red]AskObb could not respond with an appropriate answer.[/red]"
-                        )
-                        console.print("Please refine your question and try again.")
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
@@ -1012,7 +909,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
     if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
         set_show_prompt(False)
-        return session_controller.main()
+        return session_controller.main(welcome=False)
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -1187,7 +1084,7 @@ def main(
     """
     if kwargs["module"] == "ipykernel_launcher":
         bootup()
-        ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
+        return ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
         set_system_variable("DEBUG_MODE", True)

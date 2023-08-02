@@ -157,7 +157,7 @@ In this function:
 - We use the openbb_terminal helper function `request`, which is an abstracted version of the requests library, which allows us to add user agents, timeouts, caches, etc. to any HTTP request in the terminal.
 - We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP API, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid API key.
 - When an error is caught, we still return an empty dataframe.
-- We return the json response as a pandas dataframe.  Most functions in the terminal should return a datatframe, but if not, make sure that the return type is specified.
+- We return the json response as a pandas dataframe.  Most functions in the terminal should return a dataframe, but if not, make sure that the return type is specified.
 
 Note:
 
@@ -1211,6 +1211,9 @@ In order to do that, you'll simply need to choose from one the following files:
 
 1. [local_credentials.json](openbb_terminal/miscellaneous/models/local_credentials.json) --> credentials that should only be stored locally and not pushed to the [OpenBB Hub](https://my.openbb.co/) like brokerage keys or other very sensitive or personal to the user.
 2. [hub_credentials.json](openbb_terminal/miscellaneous/models/hub_credentials.json) --> credentials that should be stored in the [OpenBB Hub](https://my.openbb.co/) like API keys to access your favorite providers.
+
+Then just update [all_api_keys.json](openbb_terminal/miscellaneous/models/all_api_keys.json) with the instructions to get
+the api key from the data source website.
 
 > Note: By differentiating between local and hub credentials, we can ensure that the user's credentials are not pushed to the [OpenBB Hub](https://my.openbb.co/) and are only stored locally. This does not mean that the credentials are not secure in the OpenBB Hub, but rather that the user can choose to store them locally if they wish.
 

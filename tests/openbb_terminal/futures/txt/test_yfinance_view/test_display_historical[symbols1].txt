@@ -1,6 +1,3 @@
-
-1 Failed download:
-- SF=F: No data found for this date range, symbol may be delisted
                        Adj Close            Close         High          Low         Open       Volume    
                               ES  SF           ES  SF       ES  SF       ES  SF       ES  SF       ES  SF
 Date                                                                                                     

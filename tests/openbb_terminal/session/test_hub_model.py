@@ -1,8 +1,10 @@
 import json
+from datetime import datetime, timedelta
 from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
+from jose import JWTError, jwt
 
 from openbb_terminal.core.session import hub_model
 
@@ -22,6 +24,18 @@ TEST_EMAIL_PASSWORD = [
 TEST_HEADER_TOKEN = [
     ("Bearer test_token", "test_token"),
 ]
+
+
+def create_token(delta: int = 0):
+    """Create a JWT token with a payload that expires in `delta` days."""
+    return jwt.encode(
+        claims={
+            "some": "claim",
+            "exp": (datetime.today() + timedelta(days=delta)).timestamp(),
+        },
+        key="secret",
+        algorithm="HS256",
+    )
 
 
 @pytest.mark.parametrize("email, password", TEST_EMAIL_PASSWORD)
@@ -62,10 +76,39 @@ def test_create_session_exception(email, password):
         assert response is None
 
 
+# Github actions fails this test so I hard coded the test tokens
+# expired: create_token(-10)
+# valid: create_token(3600) this will fail in 2033 contact me by then
+@pytest.mark.parametrize(
+    ("test_type", "token"),
+    [
+        ("invalid", "random"),
+        (
+            "expired",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoiY2xhaW0iLCJleHAiOjE2ODk1MjgyMTEuMTQ3MjgxfQ.W6ElBpX19SToo3vAwfV7U9S-LdKELXzvoTD6grMVh9I",
+        ),
+        (
+            "valid",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoiY2xhaW0iLCJleHAiOjIwMDE0MzIyMDkuNzEzODIxfQ.lSS9OAtwpzqma7xiP3vMDdrDaeCj8vsWKwRC1lSiRFA",
+        ),
+    ],
+)
+def test_check_token_expiration(test_type, token):
+    if test_type == "invalid":
+        with pytest.raises(JWTError):
+            hub_model.check_token_expiration(token)
+    elif test_type == "expired":
+        with pytest.raises(jwt.ExpiredSignatureError):
+            hub_model.check_token_expiration(token)
+    elif test_type == "valid":
+        hub_model.check_token_expiration(token)
+
+
 @pytest.mark.parametrize("token", [("test_token")])
-def test_create_session_from_token_success(token):
+def test_create_session_from_token_success(mocker, token):
     with patch("requests.post") as mock_post:
         mock_post.return_value.json.return_value = TEST_RESPONSE
+        mocker.patch("openbb_terminal.core.session.hub_model.check_token_expiration")
         response = hub_model.create_session_from_token(token)
         assert response.json() == TEST_RESPONSE
 
@@ -534,14 +577,45 @@ def test_clear_user_configs_exception():
 
 
 @pytest.mark.parametrize(
-    "auth_header, name, description, routine, override, base_url, timeout, status_code",
+    "auth_header, name, description, routine, override, tags, public, base_url, timeout, status_code",
     [
-        ("auth_header", "name", "description", "routine", True, "base_url", 10, 200),
-        ("auth_header", "name", "description", "routine", False, "base_url", 10, 400),
+        (
+            "auth_header",
+            "name",
+            "description",
+            "routine",
+            True,
+            "TEST_TAG",
+            True,
+            "base_url",
+            10,
+            200,
+        ),
+        (
+            "auth_header",
+            "name",
+            "description",
+            "routine",
+            False,
+            "TEST_TAG",
+            False,
+            "base_url",
+            10,
+            400,
+        ),
     ],
 )
 def test_upload_routine(
-    auth_header, name, description, routine, override, base_url, timeout, status_code
+    auth_header,
+    name,
+    description,
+    routine,
+    override,
+    tags,
+    public,
+    base_url,
+    timeout,
+    status_code,
 ):
     mock_response = MagicMock(spec=requests.Response)
     mock_response.status_code = status_code
@@ -555,6 +629,8 @@ def test_upload_routine(
             name=name,
             description=description,
             routine=routine,
+            tags=tags,
+            public=public,
             override=override,
             base_url=base_url,
             timeout=timeout,

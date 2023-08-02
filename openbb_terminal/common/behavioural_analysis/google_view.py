@@ -123,16 +123,16 @@ def display_correlation_interest(
     )
     for word in words:
         df_interest = google_model.get_mentions(word)
-        if df_interest.empty:
-            continue
-        fig.add_scatter(
-            x=df_interest.index,
-            y=df_interest[word],
-            name=word,
-            row=2,
-            col=1,
-        )
-    fig.hide_holidays()
+        if not df_interest.empty:
+            df_interest = df_interest.reindex(data.index, method="nearest")
+
+            fig.add_scatter(
+                x=df_interest.index,
+                y=df_interest[word].values,
+                name=word,
+                row=2,
+                col=1,
+            )
 
     export_data(
         export,

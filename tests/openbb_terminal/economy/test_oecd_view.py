@@ -9,7 +9,10 @@ from openbb_terminal.economy import oecd_view
 @pytest.mark.parametrize(
     "countries, kwargs",
     [
-        (["united_states"], {"start_date": "2019-01-01", "end_date": "2021-12-31"}),
+        (
+            ["united_states"],
+            {"units": "USD_CAP", "start_date": "2019-01-01", "end_date": "2021-12-31"},
+        ),
     ],
 )
 def test_plot_gdp(countries, kwargs):

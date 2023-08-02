@@ -41,12 +41,12 @@ import yfinance as yf
 from holidays import US as us_holidays
 from langchain.chat_models import ChatOpenAI
 from llama_index import (
-    GPTVectorStoreIndex,
     LLMPredictor,
     PromptHelper,
     ServiceContext,
     SimpleDirectoryReader,
     StorageContext,
+    VectorStoreIndex,
     load_index_from_storage,
 )
 from pandas._config.config import get_option
@@ -87,7 +87,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.2
+GPT_INDEX_VER = 0.4
 
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -106,6 +106,8 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
+    if cmd_loc.split("/")[-1] == "hold":
+        return
     global command_location  # noqa
     command_location = cmd_loc
 
@@ -328,9 +330,11 @@ def print_rich_table(
     # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
         try:
-            if not isinstance(df[col].iloc[0], pd.Timestamp):
-                pd.to_numeric(df[col].iloc[0])
-
+            if not any(
+                isinstance(df[col].iloc[x], pd.Timestamp)
+                for x in range(min(10, len(df)))
+            ):
+                df[col] = pd.to_numeric(df[col], errors="ignore")
         except (ValueError, TypeError):
             df[col] = df[col].astype(str)
 
@@ -844,6 +848,8 @@ def us_market_holidays(years) -> list:
 
 def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return num
 
     if num == float("inf"):
         return "inf"
@@ -1517,8 +1523,6 @@ def export_data(
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
     """
-    if not figure:
-        figure = OpenBBFigure()
 
     if export_type:
         saved_path = compose_export_path(func_name, dir_path).resolve()
@@ -1597,6 +1601,9 @@ def export_data(
                             writer, sheet_name=sheet_name, index=True, header=True
                         )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+                if figure is None:
+                    console.print("No plot to export.")
+                    continue
                 figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
@@ -1604,7 +1611,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
-        figure._exported = True  # pylint: disable=protected-access
+        if figure is not None:
+            figure._exported = True  # pylint: disable=protected-access
 
 
 def get_rf() -> float:
@@ -2155,7 +2163,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @check_api_key(["API_OPENAI_KEY"])
-def query_LLM(query_text, gpt_model):
+def query_LLM_local(query_text, gpt_model):
     current_user = get_current_user()
     os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
 
@@ -2166,9 +2174,9 @@ def query_LLM(query_text, gpt_model):
     ]
 
     # define LLM
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name=gpt_model))
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
     # define prompt helper
-    prompt_helper = PromptHelper(max_input_size=4096, num_output=256)
+    prompt_helper = PromptHelper(context_window=4096, num_output=256)
     service_context = ServiceContext.from_defaults(
         llm_predictor=llm_predictor, prompt_helper=prompt_helper
     )
@@ -2194,7 +2202,7 @@ def query_LLM(query_text, gpt_model):
 
         # read in documents
         documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
-        index = GPTVectorStoreIndex.from_documents(
+        index = VectorStoreIndex.from_documents(
             documents, service_context=service_context
         )
 
@@ -2202,24 +2210,41 @@ def query_LLM(query_text, gpt_model):
         console.print("Saving index to disk....\n")
         index.storage_context.persist(index_path)
 
-    prompt_string = f"""From argparse help text above, provide the terminal
-        command for {query_text}.Provide the exact command along with the parent command
-        with a "/" separation to get that information,and nothing else including any
-        explanation. Don't add any other word such as 'Command to get', 'Answer' or the likes.
-        Remember, it is very important to provide the full path of the command. Pay
-        attention to the parent commands, and make sure that if you were to run a command that is located
-        in a submenu, that it will have the full path included as if you were running
-        from the root directory. If and only if there is no information in the argparse help text above,
-        then just provide information on how to find that answer through normal financial terms.
-        Only do what is asked and provide a single command string. Always use a comma to separate between countries but
-        never between full commands. Lower cap the country name.
+    current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
+
+    prompt_string = f"""From the cli argparse help text above, provide the terminal
+        command for {query_text}. If relevant, use the examples as guidance.
+        Provide the exact command along with the parent command with a "/" separation to get that information,
+        and nothing else including any explanation. Don't add any other word such as 'Command to get', 'Answer'
+        or the likes.  If you do not know, reply "I don't know"
+
+        Current date: {current_date.strftime("%Y-%m-%d")}
+        Current day of the week: {current_date.strftime("%A")}
+
+        Remember:
+        1. It is very important to provide the full path of the command including the parent command and loading
+        the particular target before running any subsequent commands
+        2. If you are asked about dates or times, load the target dates, times span during the "load" command
+        before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
+        be YYYY-MM-DD. If there is no date included in the query, do not specify any.
+        3. Country names should be snake case and lower case. example: united_states.
+        4. Always use a comma to separate between countries and no spaces: example: united_states,italy,spain
+        5. Always use "load" command first before running any subsequent commands. example:
+        stocks/load <symbol>/ ....
+        crypto/load <symbol>/ .... etc.
+        6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
+        7. Do not make up any subcommands or options for the specific command.
+        8. Do not provide anything that could be interpreted as investment advice.
+        9. Any request asking for options refers to stocks/options.
+
+        Only do what is asked and only provide a single command string, never more than one.
         """
 
     # try to get the response from the index
     try:
         query_engine = index.as_query_engine()
         response = query_engine.query(prompt_string)
-        return response.response
+        return response.response, response.source_nodes
     except Exception as e:
         # check if the error has the following "The model: `gpt-4` does not exist"
         if "The model: `gpt-4` does not exist" in str(e):
@@ -2230,4 +2255,26 @@ def query_LLM(query_text, gpt_model):
             return None
 
         console.print(f"[red]Something went wrong with the query. {e}[/red]")
-        return None
+        return None, None
+
+
+def query_LLM_remote(query_text: str):
+    """Query askobb on gpt-3.5 turbo hosted model
+
+    Parameters
+    ----------
+    query_text : str
+        Query string for askobb
+    """
+
+    url = "https://api.openbb.co/askobb"
+
+    data = {"prompt": query_text, "accessToken": get_current_user().profile.token}
+
+    ask_obbrequest_data = request(url, method="POST", json=data, timeout=15).json()
+
+    if "error" in ask_obbrequest_data:
+        console.print(f"[red]{ask_obbrequest_data['error']}[/red]")
+        return None, None
+
+    return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]

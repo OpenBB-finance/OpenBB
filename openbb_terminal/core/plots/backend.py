@@ -8,6 +8,7 @@ import subprocess  # nosec: B404
 import sys
 from multiprocessing import current_process
 from pathlib import Path
+from threading import Thread
 from typing import Any, Dict, Optional, Union
 
 import aiohttp
@@ -30,6 +31,7 @@ except ImportError as e:
 
 from svglib.svglib import svg2rlg
 
+from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
@@ -50,7 +52,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.21.0.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
 BACKEND = None
 
 
@@ -183,7 +185,7 @@ class Backend(PyWry):
         export_image : str, optional
             Path to export image to, by default ""
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
         # pylint: disable=C0415
         from openbb_terminal.helper_funcs import command_location
 
@@ -200,8 +202,10 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update(self.get_json_update(command_location))
-
+        if config_terminal.COMMAND_ON_CHART:
+            json_data.update(self.get_json_update(command_location))
+        else:
+            json_data.update(self.get_json_update(" "))
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,
@@ -261,7 +265,7 @@ class Backend(PyWry):
         theme : light or dark, optional
             Theme of the table, by default "light"
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
 
         if title:
             # We remove any html tags and markdown from the title
@@ -328,7 +332,7 @@ class Backend(PyWry):
         height : int, optional
             Height of the window, by default 800
         """
-        self.loop.run_until_complete(self.check_backend())
+        self.check_backend()
         script = f"""
         <script>
             window.location.replace("{url}");
@@ -355,30 +359,37 @@ class Backend(PyWry):
         if self.isatty:
             super().start(debug)
 
-    async def check_backend(self):
+    def check_backend(self):
         """Override to check if isatty."""
-        if self.isatty:
-            message = (
-                "[bold red]PyWry version 0.5.12 or higher is required to use the "
-                "OpenBB Plots backend.[/]\n"
-                "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
-            )
-            if not hasattr(PyWry, "__version__"):
-                try:
-                    # pylint: disable=C0415
-                    from pywry import __version__ as pywry_version
-                except ImportError:
-                    console.print(message)
-                    self.max_retries = 0
-                    return
+        if not self.isatty:
+            return None
 
-                PyWry.__version__ = pywry_version  # pylint: disable=W0201
+        message = (
+            "[bold red]PyWry version 0.5.12 or higher is required to use the "
+            "OpenBB Plots backend.[/]\n"
+            "[yellow]Please update pywry with 'pip install pywry --upgrade'[/]"
+        )
+        if not hasattr(PyWry, "__version__"):
+            try:
+                # pylint: disable=C0415
+                from pywry import __version__ as pywry_version
+            except ImportError:
+                self.max_retries = 0
+                return console.print(message)
 
-            if version.parse(PyWry.__version__) < version.parse("0.5.12"):
-                console.print(message)
-                self.max_retries = 0  # pylint: disable=W0201
-                return
-            await super().check_backend()
+            PyWry.__version__ = pywry_version  # pylint: disable=W0201
+
+        if version.parse(PyWry.__version__) < version.parse("0.5.12"):
+            self.max_retries = 0  # pylint: disable=W0201
+            return console.print(message)
+
+        if version.parse(PyWry.__version__) > version.parse("0.5.12"):
+            return super().check_backend()
+
+        try:
+            return self.loop.run_until_complete(super().check_backend())
+        except Exception:
+            return None
 
     def close(self, reset: bool = False):
         """Close the backend."""
@@ -386,6 +397,75 @@ class Backend(PyWry):
             self.max_retries = 50  # pylint: disable=W0201
 
         super().close()
+
+    async def get_results(self, description: str) -> dict:
+        """Wait for completion of interactive task and return the data.
+
+        Parameters
+        ----------
+        description : str
+            Description of the task to console print while waiting.
+
+        Returns
+        -------
+        dict
+            The data returned from pywry backend.
+        """
+        console.print(
+            f"[green]{description}[/]\n\n"
+            "[yellow]If the window is closed you can continue by pressing Ctrl+C.[/]"
+        )
+        while True:
+            try:
+                data: dict = self.recv.get(block=False) or {}
+                if data.get("result", False):
+                    return json.loads(data["result"])
+            except Exception:  # pylint: disable=W0703
+                pass
+
+            await asyncio.sleep(1)
+
+    def call_hub(self, login: bool = True) -> Optional[dict]:
+        """Call the hub to login or logout.
+
+        Parameters
+        ----------
+        login : bool, optional
+            Whether to login or logout, by default True
+
+        Returns
+        -------
+        Optional[dict]
+            The user data if login was successful, None otherwise.
+        """
+        self.check_backend()
+        endpoint = {True: "login", False: "logout"}[login]
+
+        outgoing = dict(
+            json_data=dict(url=f"https://my.openbb.co/{endpoint}?pywry=true"),
+            **self.get_kwargs(endpoint.title()),
+            width=900,
+            height=800,
+        )
+        self.send_outgoing(outgoing)
+
+        messages_dict = dict(
+            login=dict(
+                message="Welcome to OpenBB Terminal! Please login to continue.",
+                interrupt="Window closed without authentication. Please proceed below.",
+            ),
+            logout=dict(
+                message="Sending logout request", interrupt="Please login to continue."
+            ),
+        )
+
+        try:
+            return self.loop.run_until_complete(
+                self.get_results(messages_dict[endpoint]["message"])
+            )
+        except KeyboardInterrupt:
+            console.print(f"\n[red]{messages_dict[endpoint]['interrupt']}[/red]")
+            return None
 
 
 async def download_plotly_js():
@@ -414,14 +494,15 @@ async def download_plotly_js():
         print(f"Error downloading plotly.js: {err}")
 
 
-# To avoid having plotly.js in the repo, we download it if it's not present
-if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
-    asyncio.run(download_plotly_js())
-
-
 def plots_backend() -> Backend:
     """Get the backend."""
     global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
         BACKEND = Backend()
     return BACKEND
+
+
+# To avoid having plotly.js in the repo, we download it if it's not present
+if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
+    # We run this in a thread so we don't block the main thread
+    Thread(target=asyncio.run, args=(download_plotly_js(),)).start()
