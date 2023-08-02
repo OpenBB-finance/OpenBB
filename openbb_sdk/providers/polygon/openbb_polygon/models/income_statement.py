@@ -87,6 +87,26 @@ class PolygonIncomeStatementFetcher(
         if len(data) == 0:
             raise RuntimeError("No Income Statement found")
 
+        FIELDS = [
+            "revenues",
+            "cost_of_revenue",
+            "gross_profit",
+            "operating_expenses" "income_loss_from_continuing_operations_before_tax",
+            "income_tax_expense_benefit",
+            "net_income_loss",
+            "basic_earnings_per_share",
+            "diluted_earnings_per_share",
+            "net_income_loss_attributable_to_noncontrolling_interest",
+            "net_income_loss_attributable_to_parent",
+            "net_income_loss_available_to_common_stockholders_basic",
+            "operating_income_loss",
+            "participating_securities_distributed_and_undistributed_earnings_loss_basic",
+            "preferred_stock_dividends_and_other_adjustments",
+            "income_loss_from_continuing_operations_after_tax",
+            "benefits_costs_expenses",
+            "interest_expense_operating",
+        ]
+
         to_return = []
         for item in data:
             new = {"acceptance_datetime": item.get("acceptance_datetime")}
@@ -96,27 +116,6 @@ class PolygonIncomeStatementFetcher(
             new["tickers"] = item["tickers"]
             new["cik"] = item["cik"]
             incs = item["financials"].get("income_statement", {})
-
-            FIELDS = [
-                "revenues",
-                "cost_of_revenue",
-                "gross_profit",
-                "operating_expenses"
-                "income_loss_from_continuing_operations_before_tax",
-                "income_tax_expense_benefit",
-                "net_income_loss",
-                "basic_earnings_per_share",
-                "diluted_earnings_per_share",
-                "net_income_loss_attributable_to_noncontrolling_interest",
-                "net_income_loss_attributable_to_parent",
-                "net_income_loss_available_to_common_stockholders_basic",
-                "operating_income_loss",
-                "participating_securities_distributed_and_undistributed_earnings_loss_basic",
-                "preferred_stock_dividends_and_other_adjustments",
-                "income_loss_from_continuing_operations_after_tax",
-                "benefits_costs_expenses",
-                "interest_expense_operating",
-            ]
 
             if incs:
                 for field in FIELDS:
