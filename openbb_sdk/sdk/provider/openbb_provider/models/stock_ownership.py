@@ -1,7 +1,7 @@
 """Stock owner data model."""
 
 
-from datetime import date as dateType, datetime
+from datetime import date as dateType
 from typing import Optional
 
 from openbb_provider.abstract.data import Data
