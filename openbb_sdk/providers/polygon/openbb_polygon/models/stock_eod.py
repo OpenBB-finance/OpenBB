@@ -5,17 +5,18 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from pydantic import Field, PositiveInt, validator
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
 
 from openbb_polygon.utils.helpers import get_data
+
+from pydantic import Field, PositiveInt, PositiveFloat, validator
 
 
 class PolygonStockEODQueryParams(StockEODQueryParams):
     """Polygon stocks end of day Query.
 
-    Source: https://polygon.io/docs/stocks/getting-started
+    Source: https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__range__multiplier___timespan___from___to
     """
 
     timespan: Literal[
@@ -47,6 +48,7 @@ class PolygonStockEODData(StockEODData):
             "vwap": "vw",
         }
 
+    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )

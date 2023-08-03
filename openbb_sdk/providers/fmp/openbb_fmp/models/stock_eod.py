@@ -5,11 +5,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from pydantic import Field, NonNegativeInt, validator
+from openbb_provider.descriptions import DATA_DESCRIPTIONS
 
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_fmp.utils.helpers import get_querystring, get_data_many
+
+from pydantic import Field, NonNegativeInt, PositiveFloat, validator
 
 
 class FMPStockEODQueryParams(StockEODQueryParams):
@@ -39,7 +40,7 @@ class FMPStockEODData(StockEODData):
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
-
+    vwap: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
