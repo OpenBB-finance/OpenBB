@@ -46,15 +46,18 @@ def check_weekday(date) -> str:
 def get_all_ticker_symbols() -> pd.DataFrame:
     """Returns a DataFrame with all valid ticker symbols."""
 
-    options_listings = pd.read_html("https://www.m-x.ca/en/trading/data/options-list")
-    listings = pd.concat(options_listings)
-    listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
-    symbols = listings[:-1]
-    symbols = symbols.fillna(value="")
-    symbols["Underlying Symbol"] = (
-        symbols["Underlying Symbol"].str.replace(" u", ".UN").str.replace("––", "")
-    )
-    return symbols
+    r = request("https://www.m-x.ca/en/trading/data/options-list")
+    if r.status_code == 200:
+        options_listings = pd.read_html(r.text)
+        listings = pd.concat(options_listings)
+        listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
+        symbols = listings[:-1]
+        symbols = symbols.fillna(value="")
+        symbols["Underlying Symbol"] = (
+            symbols["Underlying Symbol"].str.replace(" u", ".UN").str.replace("––", "")
+        )
+        return symbols
+    return pd.DataFrame()
 
 
 SYMBOLS = get_all_ticker_symbols()
@@ -138,7 +141,7 @@ def check_symbol(symbol: str) -> bool:
     return len(SYMBOLS.query("`Underlying Symbol` == @symbol")) == 1
 
 
-def get_chains(symbol: str = "") -> object:
+def get_chains(symbol: str = "") -> Options:
     """Gets the current quotes for the complete options chain.
     No implied volatility is returned from this method.
     Use `get_eodchains()` to get the implied volatility.
@@ -196,7 +199,7 @@ def get_chains(symbol: str = "") -> object:
     if check_symbol(symbol):
         symbol = list(SYMBOLS.query("`Underlying Symbol` == @symbol").index.values)[0]
 
-    if symbol not in OptionsChains.SYMBOLS.index:
+    if symbol not in OptionsChains.SYMBOLS.index and not OptionsChains.SYMBOLS.empty:
         print(
             "The symbol, " f"{symbol}" ", is not a valid TMX listing.",
             sep=None,
@@ -287,7 +290,7 @@ def get_chains(symbol: str = "") -> object:
     return OptionsChains
 
 
-def get_eodchains(symbol: str = "", date: str = "") -> object:
+def get_eodchains(symbol: str = "", date: str = "") -> Options:
     """Gets the complete options chain for the EOD on a specific date.
     Open Interest values are from the previous day.
 
@@ -487,7 +490,7 @@ def get_eodchains(symbol: str = "", date: str = "") -> object:
     return OptionsChains
 
 
-def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
+def load_options(symbol: str, date: str = "", pydantic: bool = False) -> Options:
     """Options data object for TMX.
 
     Parameters
@@ -566,7 +569,7 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
             )
             return OptionsChainsPydantic
 
-        return None
+        return Options()
 
     OptionsChainsChains = get_chains(symbol)
     if not pydantic:
@@ -588,4 +591,4 @@ def load_options(symbol: str, date: str = "", pydantic: bool = False) -> object:
         )
         return OptionsChainsPydantic
 
-    return None
+    return Options()
