@@ -4,6 +4,7 @@ from openbb_provider.abstract.provider import Provider
 from openbb_yfinance.models.crypto_eod import YFinanceCryptoEODFetcher
 from openbb_yfinance.models.forex_eod import YFinanceForexEODFetcher
 from openbb_yfinance.models.major_indices_eod import YFinanceMajorIndicesEODFetcher
+from openbb_yfinance.models.stock_eod import YFinanceStockEODFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -16,5 +17,6 @@ yfinance_provider = Provider(
         "CryptoEOD": YFinanceCryptoEODFetcher,
         "ForexEOD": YFinanceForexEODFetcher,
         "MajorIndicesEOD": YFinanceMajorIndicesEODFetcher,
+        "StockEOD": YFinanceStockEODFetcher,
     },
 )
