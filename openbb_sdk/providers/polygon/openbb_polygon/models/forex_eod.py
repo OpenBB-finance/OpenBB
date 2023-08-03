@@ -5,11 +5,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
-from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
+
+from pydantic import Field, PositiveInt, PositiveFloat, validator
 
 
 class PolygonForexEODQueryParams(ForexEODQueryParams):
@@ -47,6 +48,7 @@ class PolygonForexEODData(ForexEODData):
             "vwap": "vw",
         }
 
+    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )

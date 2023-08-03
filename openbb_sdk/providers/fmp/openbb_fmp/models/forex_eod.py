@@ -6,9 +6,11 @@ from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
-from pydantic import Field, validator
+from openbb_provider.descriptions import DATA_DESCRIPTIONS
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
+
+from pydantic import Field, validator, PositiveFloat
 
 
 class FMPForexEODQueryParams(ForexEODQueryParams):
@@ -34,6 +36,7 @@ class FMPForexEODData(ForexEODData):
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
+    vwap: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
