@@ -87,7 +87,7 @@ class FMPStockOwnershipFetcher(
             query,
         )
 
-        return get_data_many(url, FMPStockOwnershipData)
+        return get_data_many(url, FMPStockOwnershipData, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -73,7 +73,7 @@ class FMPStockInsiderTradingFetcher(
         query.transactionType = ",".join(query.transactionType)  # type: ignore
         url = create_url(4, "insider-trading", api_key, query)
 
-        return get_data_many(url, FMPStockInsiderTradingData)
+        return get_data_many(url, FMPStockInsiderTradingData, **kwargs)
 
     @staticmethod
     def transform_data(

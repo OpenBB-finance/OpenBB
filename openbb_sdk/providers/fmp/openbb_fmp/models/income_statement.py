@@ -99,7 +99,7 @@ class FMPIncomeStatementFetcher(
             f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
 
-        return get_data_many(url, FMPIncomeStatementData)
+        return get_data_many(url, FMPIncomeStatementData, **kwargs)
 
     @staticmethod
     def transform_data(

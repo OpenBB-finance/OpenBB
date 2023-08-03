@@ -48,7 +48,7 @@ class FMPRiskPremiumFetcher(
 
         url = create_url(4, "market_risk_premium", api_key)
 
-        return get_data_many(url, FMPRiskPremiumData)
+        return get_data_many(url, FMPRiskPremiumData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPRiskPremiumData]) -> List[FMPRiskPremiumData]:

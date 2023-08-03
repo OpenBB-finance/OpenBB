@@ -107,7 +107,7 @@ def create_url(
 
 
 def get_data_many(
-    url: str, to_schema: Type[T], sub_dict: Optional[str] = None
+    url: str, to_schema: Type[T], sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[T]:
     """Get data from FMP endpoint and convert to list of schemas.
 
@@ -125,7 +125,7 @@ def get_data_many(
     List[T]
         The list of schemas.
     """
-    data = get_data(url)
+    data = get_data(url, **kwargs)
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
@@ -133,9 +133,9 @@ def get_data_many(
     return [to_schema(**d) for d in data]
 
 
-def get_data_one(url: str, to_schema: Type[T]) -> T:
+def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
     """Get data from FMP endpoint and convert to schema."""
-    data = get_data(url)
+    data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
             raise ValueError("Expected dict, got empty list")

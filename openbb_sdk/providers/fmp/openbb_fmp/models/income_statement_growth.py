@@ -84,7 +84,7 @@ class FMPIncomeStatementGrowthFetcher(
         url = create_url(
             3, f"income-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPIncomeStatementGrowthData)
+        return get_data_many(url, FMPIncomeStatementGrowthData, **kwargs)
 
     @staticmethod
     def transform_data(

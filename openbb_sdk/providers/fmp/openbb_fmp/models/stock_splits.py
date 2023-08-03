@@ -54,7 +54,7 @@ class FMPStockSplitCalendarFetcher(
 
         query_str = f"from={query.start_date}&to={query.end_date}"
         url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
-        return get_data_many(url, FMPStockSplitCalendarData)
+        return get_data_many(url, FMPStockSplitCalendarData, **kwargs)
 
     @staticmethod
     def transform_data(

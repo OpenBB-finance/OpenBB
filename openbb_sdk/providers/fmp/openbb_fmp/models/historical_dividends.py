@@ -69,7 +69,7 @@ class FMPHistoricalDividendsFetcher(
         url = create_url(
             3, f"historical-price-full/stock_dividend/{query.symbol}", api_key
         )
-        return get_data_many(url, FMPHistoricalDividendsData, "historical")
+        return get_data_many(url, FMPHistoricalDividendsData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

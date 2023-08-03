@@ -55,7 +55,7 @@ class FMPForexPairsFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
 
-        return get_data_many(url, FMPForexPairsData)
+        return get_data_many(url, FMPForexPairsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPForexPairsData]) -> List[FMPForexPairsData]:

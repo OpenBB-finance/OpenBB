@@ -65,7 +65,7 @@ class FMPESGRiskRatingFetcher(
         url = create_url(
             4, "esg-environmental-social-governance-data-ratings", api_key, query
         )
-        return get_data_many(url, FMPESGRiskRatingData)
+        return get_data_many(url, FMPESGRiskRatingData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGRiskRatingData]) -> List[FMPESGRiskRatingData]:

@@ -87,7 +87,7 @@ class FMPInstitutionalOwnershipFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "institutional-ownership/symbol-ownership", api_key, query)
-        return get_data_many(url, FMPInstitutionalOwnershipData)
+        return get_data_many(url, FMPInstitutionalOwnershipData, **kwargs)
 
     @staticmethod
     def transform_data(

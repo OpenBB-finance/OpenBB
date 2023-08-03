@@ -52,7 +52,7 @@ class FMPPriceTargetConsensusFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
-        return get_data_many(url, FMPPriceTargetConsensusData)
+        return get_data_many(url, FMPPriceTargetConsensusData, **kwargs)
 
     @staticmethod
     def transform_data(

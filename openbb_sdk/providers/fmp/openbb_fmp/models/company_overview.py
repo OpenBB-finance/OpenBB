@@ -64,7 +64,7 @@ class FMPCompanyOverviewFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3/"
         request_url = f"{base_url}profile/{query.symbol}?apikey={api_key}"
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 

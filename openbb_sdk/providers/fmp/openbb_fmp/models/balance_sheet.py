@@ -112,7 +112,7 @@ class FMPBalanceSheetFetcher(
         url = create_url(
             3, f"balance-sheet-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPBalanceSheetData)
+        return get_data_many(url, FMPBalanceSheetData, **kwargs)
 
     @staticmethod
     def transform_data(

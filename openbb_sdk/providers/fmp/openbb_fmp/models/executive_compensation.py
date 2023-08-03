@@ -66,7 +66,7 @@ class FMPExecutiveCompensationFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "governance/executive_compensation", api_key, query)
-        return get_data_many(url, FMPExecutiveCompensationData)
+        return get_data_many(url, FMPExecutiveCompensationData, **kwargs)
 
     @staticmethod
     def transform_data(

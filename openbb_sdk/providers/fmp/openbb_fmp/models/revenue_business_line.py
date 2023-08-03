@@ -52,7 +52,7 @@ class FMPRevenueBusinessLineFetcher(
         query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(4, "revenue-product-segmentation", api_key, query)
-        data = get_data(url)
+        data = get_data(url, **kwargs)
 
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")

@@ -110,7 +110,7 @@ class FMPKeyMetricsFetcher(
         url = create_url(
             3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
         )
-        return get_data_many(url, FMPKeyMetricsData)
+        return get_data_many(url, FMPKeyMetricsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPKeyMetricsData]) -> List[FMPKeyMetricsData]:

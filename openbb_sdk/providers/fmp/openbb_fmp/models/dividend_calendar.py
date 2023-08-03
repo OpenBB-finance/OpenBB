@@ -82,7 +82,7 @@ class FMPDividendCalendarFetcher(
         query_str = get_querystring(query.dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/stock_dividend_calendar?{query_str}&apikey={api_key}"
-        return get_data_many(url, FMPDividendCalendarData)
+        return get_data_many(url, FMPDividendCalendarData, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -72,7 +72,7 @@ class FMPAnalystEstimatesFetcher(
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPAnalystEstimatesData)
+        return get_data_many(url, FMPAnalystEstimatesData, **kwargs)
 
     @staticmethod
     def transform_data(

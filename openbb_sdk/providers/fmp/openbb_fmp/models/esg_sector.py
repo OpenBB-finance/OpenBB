@@ -58,7 +58,7 @@ class FMPESGSectorFetcher(
         url = create_url(
             4, "esg-environmental-social-governance-sector-benchmark", api_key, query
         )
-        return get_data_many(url, FMPESGSectorData)
+        return get_data_many(url, FMPESGSectorData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGSectorData]) -> List[FMPESGSectorData]:

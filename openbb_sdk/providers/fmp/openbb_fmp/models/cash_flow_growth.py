@@ -88,7 +88,7 @@ class FMPCashFlowStatementGrowthFetcher(
         url = create_url(
             3, f"cash-flow-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementGrowthData)
+        return get_data_many(url, FMPCashFlowStatementGrowthData, **kwargs)
 
     @staticmethod
     def transform_data(

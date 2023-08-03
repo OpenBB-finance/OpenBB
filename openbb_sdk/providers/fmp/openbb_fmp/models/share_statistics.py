@@ -58,7 +58,7 @@ class FMPShareStatisticsFetcher(
 
         url = create_url(4, "shares_float", api_key, query)
 
-        return get_data_many(url, FMPShareStatisticsData)
+        return get_data_many(url, FMPShareStatisticsData, **kwargs)
 
     @staticmethod
     def transform_data(

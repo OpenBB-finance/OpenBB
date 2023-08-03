@@ -61,7 +61,7 @@ class FMPEarningsCallTranscriptFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPEarningsCallTranscriptData)
+        return get_data_many(url, FMPEarningsCallTranscriptData, **kwargs)
 
     @staticmethod
     def transform_data(
