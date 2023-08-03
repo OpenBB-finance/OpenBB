@@ -1506,7 +1506,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
                 return
             if ns_parser.india:
-                ns_parser.ticker = ns_parser.ticker + ".NS"
+                if not ns_parser.ticker.endswith(('.ns', '.NS')):
+                    ns_parser.ticker = ns_parser.ticker + '.NS'
             if ns_parser.filepath is None:
                 df_stock_candidate = stocks_helper.load(
                     ns_parser.ticker,
