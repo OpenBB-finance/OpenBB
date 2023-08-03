@@ -30,6 +30,8 @@ def make_request(
         Url to make the request to
     method : str, optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
 
     Returns
     -------
@@ -46,8 +48,8 @@ def make_request(
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers", {})
     preferences = kwargs.pop("preferences", None)
-    if preferences:
-        timeout = preferences.REQUEST_TIMEOUT or timeout
+    if preferences and "request_timeout" in preferences:
+        timeout = preferences["request_timeout"] or timeout
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
