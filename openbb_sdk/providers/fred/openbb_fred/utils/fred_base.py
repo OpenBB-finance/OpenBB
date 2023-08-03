@@ -13,7 +13,6 @@ class Fred:
     def __fetch_data(self, url: str, **kwargs: Any):
         full_url = f"{url}&api_key={self.api_key}&file_type=json"
         response = utils.make_request(full_url, **kwargs)
-        # requests.get(full_url, timeout=10)
         return response.json()
 
     def get_series(
