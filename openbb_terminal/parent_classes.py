@@ -1485,6 +1485,13 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             default=False,
             help="Show performance information.",
         )
+        parser.add_argument(
+            "--india",
+            dest="india",
+            action="store_true",
+            default=False,
+            help="Show indian stocks.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -1498,6 +1505,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     "[red]Only one of monthly or weekly can be selected.[/red]."
                 )
                 return
+            if ns_parser.india:
+                ns_parser.ticker = ns_parser.ticker + ".NS"
             if ns_parser.filepath is None:
                 df_stock_candidate = stocks_helper.load(
                     ns_parser.ticker,
