@@ -6,14 +6,14 @@ from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.descriptions import DATA_DESCRIPTIONS
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
-from pydantic import Field, NonNegativeInt, validator
 
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_fmp.utils.helpers import get_querystring, get_data_many
+
+from pydantic import Field, NonNegativeInt, NonNegativeFloat, validator
 
 
 class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
@@ -44,7 +44,9 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
     changePercent: float = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
-    vwap: float = Field(description="Volume Weighted Average Price of the symbol.")
+    vwap: NonNegativeFloat = Field(
+        description="Volume Weighted Average Price of the symbol."
+    )
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",

@@ -4,12 +4,12 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import Field, PositiveFloat
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
+
+from pydantic import Field, PositiveFloat
 
 
 class MajorIndicesEODQueryParams(QueryParams, BaseSymbol):

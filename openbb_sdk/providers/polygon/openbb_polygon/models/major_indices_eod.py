@@ -5,14 +5,15 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
-from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
+
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 
 class PolygonMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
@@ -41,6 +42,7 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 
     class Config:
         fields = {
+            "date": "t",
             "open": "o",
             "high": "h",
             "low": "l",
@@ -48,12 +50,9 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
             "volume": "v",
         }
 
-    t: datetime = Field(description="The timestamp of the data.")
+    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
-    )
-    vw: PositiveFloat = Field(
-        description="The volume weighted average price of the symbol."
     )
 
     @validator("t", pre=True, check_fields=False)
