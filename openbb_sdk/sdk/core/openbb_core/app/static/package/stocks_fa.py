@@ -268,6 +268,8 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         limit: int = 10,
+        start_date: Union[datetime.date, None, str] = datetime.date(2023, 6, 25),
+        end_date: Union[datetime.date, None, str] = datetime.date(2023, 7, 25),
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs

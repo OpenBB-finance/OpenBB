@@ -1,14 +1,19 @@
+"""Coverage module."""
 from openbb_core.app.router import CommandMap
 
 
 class Coverage:
+    """Coverage class."""
+
     def __init__(self):
         self._command_map = CommandMap(coverage_sep=".")
 
     @property
     def providers(self):
-        return self._command_map.provider_coverage
+        """Return providers coverage."""
+        return self.__command_map.provider_coverage
 
     @property
     def commands(self):
-        return self._command_map.command_coverage
+        """Return commands coverage."""
+        return self.__command_map.command_coverage
