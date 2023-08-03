@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Optional, Union
+from typing import Literal, Union
 
 from pydantic import validate_arguments
 
@@ -17,7 +17,7 @@ class CLASS_forex(Container):
     def pairs(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs.
@@ -134,7 +134,7 @@ class CLASS_forex(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         r"""Forex Intraday Price.
