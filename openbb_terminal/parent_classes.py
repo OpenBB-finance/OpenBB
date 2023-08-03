@@ -1490,7 +1490,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             dest="india",
             action="store_true",
             default=False,
-            help="Show indian stocks.",
+            help="Only works for yf source, when the ticker has .NS suffix as part of it.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
