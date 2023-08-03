@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import typing
-from typing import Literal, Optional
+from typing import Literal, Union
 
 from pydantic import validate_arguments
 
@@ -19,7 +19,7 @@ class CLASS_stocks_ca(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Company peers.

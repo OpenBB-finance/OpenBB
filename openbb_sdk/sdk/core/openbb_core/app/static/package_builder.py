@@ -174,7 +174,6 @@ class ImportDefinition:
         code += "\nimport openbb_provider"
         code += "\nimport pandas"
         code += "\nimport datetime"
-        code += "\nfrom types import NoneType"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import validate_arguments"
         code += "\nfrom inspect import Parameter"
@@ -416,7 +415,7 @@ class MethodDefinition:
         )
 
     @staticmethod
-    def reorder_params(params: Dict[str, Parameter]) -> OrderedDict[str, Parameter]:
+    def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
         formatted_keys = list(params.keys())
         for k in ["provider", "extra_params"]:
             if k in formatted_keys:
@@ -432,7 +431,7 @@ class MethodDefinition:
     @staticmethod
     def format_params(
         parameter_map: Dict[str, Parameter]
-    ) -> OrderedDict[str, Parameter]:
+    ) -> "OrderedDict[str, Parameter]":
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
@@ -520,9 +519,13 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                # inner_type = getattr(item_type, "__name__", "_name")
+                inner_type_name = (
+                    item_type.__name__
+                    if hasattr(item_type, "__name__")
+                    else item_type._name
+                )
                 func_returns = (
-                    f"CommandOutput[{item_type.__module__}.{item_type.__name__}]"
+                    f"CommandOutput[{item_type.__module__}.{inner_type_name}]"
                 )
 
         return func_returns
