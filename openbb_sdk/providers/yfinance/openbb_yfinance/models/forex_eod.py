@@ -17,7 +17,7 @@ from yfinance import Ticker
 class YFinanceForexEODQueryParams(ForexEODQueryParams):
     """YFinance Forex end of day Query.
 
-    Source: https://finance.yahoo.com/Forex/
+    Source: https://finance.yahoo.com/currencies/
     """
 
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
