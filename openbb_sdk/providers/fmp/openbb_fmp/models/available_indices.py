@@ -43,7 +43,9 @@ class FMPAvailableIndicesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPAvailableIndicesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPAvailableIndicesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPAvailableIndicesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

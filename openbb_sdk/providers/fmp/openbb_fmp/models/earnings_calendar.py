@@ -59,7 +59,9 @@ class FMPEarningsCalendarFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPEarningsCalendarQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPEarningsCalendarQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPEarningsCalendarData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

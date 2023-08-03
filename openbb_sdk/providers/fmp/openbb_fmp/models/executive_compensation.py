@@ -61,6 +61,7 @@ class FMPExecutiveCompensationFetcher(
     def extract_data(
         query: FMPExecutiveCompensationQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPExecutiveCompensationData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

@@ -45,7 +45,9 @@ class FMPPriceTargetConsensusFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetConsensusQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPPriceTargetConsensusQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPPriceTargetConsensusData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

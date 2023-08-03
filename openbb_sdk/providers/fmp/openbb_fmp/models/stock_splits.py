@@ -46,7 +46,9 @@ class FMPStockSplitCalendarFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockSplitCalendarQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockSplitCalendarQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockSplitCalendarData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

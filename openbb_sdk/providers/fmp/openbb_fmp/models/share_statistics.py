@@ -50,7 +50,9 @@ class FMPShareStatisticsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPShareStatisticsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPShareStatisticsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPShareStatisticsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

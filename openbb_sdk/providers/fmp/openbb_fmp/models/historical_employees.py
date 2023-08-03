@@ -61,7 +61,9 @@ class FMPHistoricalEmployeesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPHistoricalEmployeesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPHistoricalEmployeesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPHistoricalEmployeesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

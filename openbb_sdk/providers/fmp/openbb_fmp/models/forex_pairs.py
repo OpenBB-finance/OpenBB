@@ -46,7 +46,9 @@ class FMPForexPairsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPForexPairsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPForexPairsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPForexPairsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

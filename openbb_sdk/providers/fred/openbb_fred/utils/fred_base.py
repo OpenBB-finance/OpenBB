@@ -1,8 +1,6 @@
 from datetime import date
-from typing import Optional, Any
+from typing import Any, Optional
 from urllib.parse import urlencode
-
-import requests
 
 root_url = "https://api.stlouisfed.org/fred"
 from openbb_provider import utils

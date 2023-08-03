@@ -88,6 +88,7 @@ class FMPBalanceSheetGrowthFetcher(
     def extract_data(
         query: FMPBalanceSheetGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPBalanceSheetGrowthData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

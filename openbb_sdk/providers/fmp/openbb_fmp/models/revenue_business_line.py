@@ -43,7 +43,9 @@ class FMPRevenueBusinessLineFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRevenueBusinessLineQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPRevenueBusinessLineQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPRevenueBusinessLineData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

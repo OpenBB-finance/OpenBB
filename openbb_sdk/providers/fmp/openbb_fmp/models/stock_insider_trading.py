@@ -63,7 +63,9 @@ class FMPStockInsiderTradingFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockInsiderTradingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockInsiderTradingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPStockInsiderTradingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

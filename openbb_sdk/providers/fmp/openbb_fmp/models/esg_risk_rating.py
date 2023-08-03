@@ -56,7 +56,9 @@ class FMPESGRiskRatingFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPESGRiskRatingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGRiskRatingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGRiskRatingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

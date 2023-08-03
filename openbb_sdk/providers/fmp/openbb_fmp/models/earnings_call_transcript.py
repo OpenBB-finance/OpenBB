@@ -50,6 +50,7 @@ class FMPEarningsCallTranscriptFetcher(
     def extract_data(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPEarningsCallTranscriptData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

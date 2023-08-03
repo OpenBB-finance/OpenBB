@@ -66,7 +66,9 @@ class FMPForexEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPForexEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPForexEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPForexEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

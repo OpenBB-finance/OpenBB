@@ -1,7 +1,8 @@
 """Generic providers utils"""
 
-import requests
 import random
+
+import requests
 
 
 def get_user_agent() -> str:

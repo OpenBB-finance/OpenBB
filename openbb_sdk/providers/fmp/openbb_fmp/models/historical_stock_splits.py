@@ -45,6 +45,7 @@ class FMPHistoricalStockSplitsFetcher(
     def extract_data(
         query: FMPHistoricalStockSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPHistoricalStockSplitsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

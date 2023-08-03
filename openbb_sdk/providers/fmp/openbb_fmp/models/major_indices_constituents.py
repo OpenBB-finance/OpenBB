@@ -68,6 +68,7 @@ class FMPMajorIndicesConstituentsFetcher(
     def extract_data(
         query: FMPMajorIndicesConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPMajorIndicesConstituentsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

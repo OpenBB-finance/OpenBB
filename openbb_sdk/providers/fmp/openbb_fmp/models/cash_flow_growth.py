@@ -81,6 +81,7 @@ class FMPCashFlowStatementGrowthFetcher(
     def extract_data(
         query: FMPCashFlowStatementGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCashFlowStatementGrowthData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

@@ -61,7 +61,9 @@ class FMPAnalystEstimatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPAnalystEstimatesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPAnalystEstimatesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPAnalystEstimatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

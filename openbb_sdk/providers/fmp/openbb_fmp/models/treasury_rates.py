@@ -61,7 +61,9 @@ class FMPTreasuryRatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPTreasuryRatesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPTreasuryRatesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPTreasuryRatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

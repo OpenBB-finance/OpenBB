@@ -70,7 +70,9 @@ class FMPMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPMajorIndicesEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPMajorIndicesEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

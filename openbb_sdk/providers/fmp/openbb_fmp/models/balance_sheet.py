@@ -103,7 +103,9 @@ class FMPBalanceSheetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPBalanceSheetQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPBalanceSheetQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPBalanceSheetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

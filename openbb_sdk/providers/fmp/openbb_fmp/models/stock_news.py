@@ -46,7 +46,9 @@ class FMPStockNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockNewsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockNewsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPStockNewsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

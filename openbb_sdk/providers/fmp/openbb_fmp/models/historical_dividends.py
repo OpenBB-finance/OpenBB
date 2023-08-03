@@ -60,7 +60,9 @@ class FMPHistoricalDividendsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPHistoricalDividendsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPHistoricalDividendsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPHistoricalDividendsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

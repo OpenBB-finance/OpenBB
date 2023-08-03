@@ -71,7 +71,9 @@ class FMPCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCryptoEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

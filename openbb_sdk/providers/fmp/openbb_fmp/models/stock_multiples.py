@@ -98,7 +98,9 @@ class FMPStockMultiplesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockMultiplesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockMultiplesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockMultiplesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

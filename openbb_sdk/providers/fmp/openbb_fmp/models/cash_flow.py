@@ -88,7 +88,9 @@ class FMPCashFlowStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCashFlowStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCashFlowStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCashFlowStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

@@ -49,7 +49,9 @@ class FMPESGSectorFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPESGSectorQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGSectorQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGSectorData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

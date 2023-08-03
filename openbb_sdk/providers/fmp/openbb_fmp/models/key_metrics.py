@@ -99,7 +99,9 @@ class FMPKeyMetricsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPKeyMetricsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPKeyMetricsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPKeyMetricsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

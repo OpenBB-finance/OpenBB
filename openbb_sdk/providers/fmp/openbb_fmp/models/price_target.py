@@ -54,7 +54,9 @@ class FMPPriceTargetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPPriceTargetQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPPriceTargetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

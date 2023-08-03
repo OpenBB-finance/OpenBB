@@ -47,7 +47,9 @@ class FMPSECFilingsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPSECFilingsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPSECFilingsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPSECFilingsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

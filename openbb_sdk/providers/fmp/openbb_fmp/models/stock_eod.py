@@ -73,7 +73,9 @@ class FMPStockEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

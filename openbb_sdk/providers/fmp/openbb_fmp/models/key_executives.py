@@ -50,7 +50,9 @@ class FMPKeyExecutivesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPKeyExecutivesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPKeyExecutivesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPKeyExecutivesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

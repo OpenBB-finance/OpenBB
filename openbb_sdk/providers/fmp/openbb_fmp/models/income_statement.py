@@ -85,7 +85,9 @@ class FMPIncomeStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPIncomeStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPIncomeStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

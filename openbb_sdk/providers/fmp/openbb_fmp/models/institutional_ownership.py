@@ -82,6 +82,7 @@ class FMPInstitutionalOwnershipFetcher(
     def extract_data(
         query: FMPInstitutionalOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPInstitutionalOwnershipData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
