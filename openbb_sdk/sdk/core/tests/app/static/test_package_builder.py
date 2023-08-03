@@ -3,7 +3,7 @@
 
 from dataclasses import dataclass
 from inspect import _empty
-from typing import Annotated
+from typing_extensions import Annotated
 
 import pytest
 from openbb_core.app.static.package_builder import (
