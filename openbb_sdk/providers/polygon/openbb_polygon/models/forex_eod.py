@@ -5,12 +5,11 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS, DATA_DESCRIPTIONS
+from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
-
-from pydantic import Field, PositiveInt, PositiveFloat, validator
 
 
 class PolygonForexEODQueryParams(ForexEODQueryParams):

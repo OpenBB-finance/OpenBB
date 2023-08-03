@@ -5,12 +5,11 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.descriptions import DATA_DESCRIPTIONS
-
-from openbb_fmp.utils.helpers import get_querystring, get_data_many
-
+from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
 from pydantic import Field, NonNegativeInt, PositiveFloat, validator
+
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPStockEODQueryParams(StockEODQueryParams):

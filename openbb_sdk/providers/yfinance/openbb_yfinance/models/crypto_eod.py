@@ -5,13 +5,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
 from openbb_provider.descriptions import QUERY_DESCRIPTIONS
-
-from openbb_yfinance.utils.types import INTERVALS, PERIODS
-
+from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
 from pydantic import Field, validator
 from yfinance import Ticker
+
+from openbb_yfinance.utils.types import INTERVALS, PERIODS
 
 
 class YFinanceCryptoEODQueryParams(CryptoEODQueryParams):
