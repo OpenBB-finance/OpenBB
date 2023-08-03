@@ -1,12 +1,16 @@
 """Benzinga Helpers."""
 
 
-import requests
+from typing import Any
 from pydantic import BaseModel
 
+from openbb_provider import utils
 
-def get_data(url: str) -> dict:
-    r = requests.get(url, timeout=10, headers={"accept": "application/json"})
+
+def get_data(url: str, **kwargs: Any) -> dict:
+    r = utils.make_request(
+        url, timeout=10, headers={"accept": "application/json"}, **kwargs
+    )
     if r.status_code != 200:
         data = r.json()
         if data == ['Access denied for user 0 "anonymous"']:
