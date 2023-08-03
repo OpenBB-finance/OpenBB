@@ -31,11 +31,11 @@ class PackageBuilder:
     """Build the extension package for the SDK."""
 
     @classmethod
-    def build(cls, lint: bool = True) -> None:
+    def build(cls, modules:Optional[List[str]]=None, lint: bool = True) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
         cls.save_module_map()
-        cls.save_modules()
+        cls.save_modules(modules)
         cls.save_package()
         if lint:
             cls.run_linters()
@@ -56,7 +56,7 @@ class PackageBuilder:
         )
 
     @classmethod
-    def save_modules(cls):
+    def save_modules(cls, modules:Optional[List[str]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -67,6 +67,9 @@ class PackageBuilder:
             return
 
         MAX_LEN = max([len(path) for path in path_list if path != "/"])
+
+        if modules:
+            path_list = [path for path in path_list if path in modules]
 
         for path in path_list:
             route = PathHandler.get_route(path=path, route_map=route_map)
