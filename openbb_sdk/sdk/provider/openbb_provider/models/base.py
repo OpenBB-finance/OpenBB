@@ -19,5 +19,5 @@ class FinancialStatementQueryParams(QueryParams, BaseSymbol):
         default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: Optional[NonNegativeInt] = Field(
-        default=200, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
