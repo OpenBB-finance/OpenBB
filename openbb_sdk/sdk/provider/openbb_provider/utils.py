@@ -53,15 +53,19 @@ def make_request(
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
+
+    # Allow a custom session for caching, if desired
+    _session = kwargs.pop("session", None) or requests
+
     if method.upper() == "GET":
-        return requests.get(
+        return _session.get(
             url,
             headers=headers,
             timeout=timeout,
             **kwargs,
         )
     if method.upper() == "POST":
-        return requests.post(
+        return _session.post(
             url,
             headers=headers,
             timeout=timeout,
