@@ -50,7 +50,7 @@ class FMPCryptoEODData(CryptoEODData):
 
     @validator("date", pre=True)
     def date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d").datetime()
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPCryptoEODFetcher(
