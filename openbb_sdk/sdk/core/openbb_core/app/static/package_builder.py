@@ -7,7 +7,6 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
 from typing import (
-    Annotated,
     Callable,
     Dict,
     List,
@@ -16,13 +15,13 @@ from typing import (
     Type,
     Union,
     get_args,
-    get_origin,
     get_type_hints,
 )
 
 import pandas as pd
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
+from typing_extensions import _AnnotatedAlias
 
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
@@ -412,7 +411,7 @@ class MethodDefinition:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return get_origin(annotation) == Annotated and hasattr(
+        return type(annotation) is _AnnotatedAlias and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
@@ -437,7 +436,7 @@ class MethodDefinition:
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
-        # will need to had some conversion code to the method implementation.
+        # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
             "data": pd.DataFrame,
             "start_date": str,
