@@ -87,7 +87,7 @@ class CLASS_stocks(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         r"""Load stock data for a specific ticker.
@@ -98,7 +98,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[fmp, polygon, yfinance]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -136,8 +136,6 @@ class CLASS_stocks(Container):
             The close price of the symbol.
         volume : PositiveFloat
             The volume of the symbol.
-        vwap : PositiveFloat
-            Volume Weighted Average Price of the symbol.
 
         fmp
         ===
@@ -158,6 +156,8 @@ class CLASS_stocks(Container):
             Change in the price of the symbol from the previous day.
         changePercent : float
             Change \% in the price of the symbol.
+        vwap : PositiveFloat
+            Volume Weighted Average Price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
@@ -182,8 +182,25 @@ class CLASS_stocks(Container):
 
         StockEOD
         --------
+        vw : PositiveFloat
+            Volume Weighted Average Price of the symbol.
         n : PositiveInt
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period.
+
+        yfinance
+        ========
+
+        Parameters
+        ----------
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return.
+
+
+        StockEOD
+        --------
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

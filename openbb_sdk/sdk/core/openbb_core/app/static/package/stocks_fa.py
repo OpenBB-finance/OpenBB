@@ -56,7 +56,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[NonNegativeInt]
             The number of data entries to return.
 
@@ -532,7 +532,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[NonNegativeInt]
             The number of data entries to return.
 
@@ -1387,7 +1387,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : int
             The number of data entries to return.
 
@@ -1592,7 +1592,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[NonNegativeInt]
             The number of data entries to return.
 
@@ -1801,7 +1801,7 @@ class CLASS_stocks_fa(Container):
         limit : int
             The number of data entries to return.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
 
         Returns
         -------
@@ -2237,7 +2237,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
 
@@ -3067,7 +3067,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             The structure of the returned data.
 
@@ -3156,7 +3156,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             The structure of the returned data.
 
