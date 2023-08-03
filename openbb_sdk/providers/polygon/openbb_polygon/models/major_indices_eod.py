@@ -82,7 +82,9 @@ class PolygonMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonMajorIndicesEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonMajorIndicesEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -94,7 +96,7 @@ class PolygonMajorIndicesEODFetcher(
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

@@ -2,9 +2,9 @@
 
 
 from typing import Any
-from pydantic import BaseModel
 
 from openbb_provider import utils
+from pydantic import BaseModel
 
 
 def get_data(url: str, **kwargs: Any) -> dict:

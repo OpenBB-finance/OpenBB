@@ -47,6 +47,7 @@ class PolygonCashFlowStatementFetcher(
     def extract_data(
         query: PolygonCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonCashFlowStatementData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -55,7 +56,7 @@ class PolygonCashFlowStatementFetcher(
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
-        data = get_data(request_url)["results"]
+        data = get_data(request_url, **kwargs)["results"]
 
         if len(data) == 0:
             raise RuntimeError("No Cash Flow Statement found")
