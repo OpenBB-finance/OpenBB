@@ -1,14 +1,15 @@
 # flake8: noqa
+from typing import List
 from openbb_core.app.static.app_factory import create_app as __create_app
 
 sdk = __create_app()
 obb = sdk
 
 
-def _rebuild_python_interface() -> None:
+def _rebuild_python_interface(*args, lint=True) -> None:
     """Rebuild the Python SDK."""
     from openbb_core.app.static.package_builder import (  # pylint: disable=import-outside-toplevel
         PackageBuilder,
     )
 
-    PackageBuilder.build()
+    PackageBuilder.build(modules=list(args), lint = lint)
