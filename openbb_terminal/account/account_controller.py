@@ -59,7 +59,7 @@ class AccountController(BaseController):
         self.REMOTE_CHOICES: Dict[str, UUID] = {}
 
         self.DEFAULT_ROUTINES: List[Dict[str, str]] = self.fetch_default_routines()
-        self.DEFAULT_CHOICES: List[str] = {
+        self.DEFAULT_CHOICES: Dict[str, None] = {
             r["name"]: None for r in self.DEFAULT_ROUTINES if "name" in r
         }
 
