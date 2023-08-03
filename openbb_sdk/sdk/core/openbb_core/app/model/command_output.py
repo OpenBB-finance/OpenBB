@@ -86,39 +86,6 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         return results
 
-    def to_plotly_json(
-        self, create_chart: bool = True, **kwargs
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Returns the plotly json representation of the chart.
-        If the chart was already computed it return the plotly json representation of the chart.
-        Otherwise it computes the chart based on the available data and provided kwargs.
-
-        Parameters
-        ----------
-        create_chart : bool, optional
-            If True, it creates the chart object and populates the respective field on the object, by default True.
-        **kwargs
-            Keyword arguments to be passed to the charting extension.
-            This implies that the user has some knowledge on the charting extension API.
-            This is the case because the charting extension may vary on user preferences.
-        """
-
-        if self.chart and not kwargs:
-            plotly_json = self.chart.content
-        else:
-            cm = ChartingManager()
-            kwargs["data"] = self.to_dataframe()
-            plotly_json = cm.to_plotly_json(**kwargs)
-
-            if create_chart:
-                try:
-                    self.chart = Chart(content=plotly_json, format=ChartFormat.plotly)
-                except Exception as e:
-                    self.chart = Chart(error=Error(message=str(e)))
-
-        return plotly_json
-
     def render_chart(self, **kwargs):
         """
         Create or update the `Chart`.
