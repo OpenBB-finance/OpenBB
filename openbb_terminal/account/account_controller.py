@@ -258,7 +258,7 @@ class AccountController(BaseController):
                     )
                     df, page, pages = get_personal_routines_info(response)
                     if not df.empty:
-                        temp_dict = {x: y for x, y in zip(df["name"], df["uuid"])}
+                        temp_dict = dict(zip(df["name"], df["uuid"]))
                         self.REMOTE_CHOICES = {**self.REMOTE_CHOICES, **temp_dict}
                         self.update_runtime_choices()
                         display_personal_routines(df, page, pages)
