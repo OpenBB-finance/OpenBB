@@ -12,8 +12,6 @@ from pydantic import Field
 from openbb_provider.abstract.data import Data
 from openbb_provider.models.base import FinancialStatementQueryParams
 
-# IMPORT THIRD PARTY
-
 
 class BalanceSheetQueryParams(FinancialStatementQueryParams):
     """Balance Sheet query."""
