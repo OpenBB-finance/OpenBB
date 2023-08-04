@@ -65,8 +65,7 @@ class FMPAnalystEstimatesFetcher(
     ) -> List[FMPAnalystEstimatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        period = "annual" if query.period == "annually" else "quarter"
-        query = query.copy(update={"period": period})
+        query.period = "quarter" if query.period == "quarterly" else "annual"
 
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]

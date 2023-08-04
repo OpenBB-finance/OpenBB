@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -7,7 +8,14 @@ from openbb_core.app.model.system_settings import SystemSettings
 
 class SystemService:
     SYSTEM_SETTINGS_PATH = SYSTEM_SETTINGS_PATH
-    SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {"run_in_isolation", "dbms_uri"}
+    SYSTEM_SETTINGS_ALLOWED_FIELD_SET = {
+        "log_collect",
+        "test_mode",
+        "headless",
+        "debug_mode",
+        "run_in_isolation",
+        "dbms_uri",
+    }
 
     @classmethod
     def read_default_system_settings(
@@ -19,7 +27,13 @@ class SystemService:
             with path.open(mode="r") as file:
                 system_settings_json = file.read()
 
-            system_settings = SystemSettings.parse_raw(system_settings_json)
+            system_settings_dict = json.loads(system_settings_json)
+            S = system_settings_dict.copy()
+            for field in S:
+                if field not in cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET:
+                    del system_settings_dict[field]
+
+            system_settings = SystemSettings.parse_obj(system_settings_dict)
         else:
             system_settings = SystemSettings()
 

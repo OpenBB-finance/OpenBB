@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import typing
-from typing import Literal, Optional
+from typing import Literal, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -20,7 +20,7 @@ class CLASS_news(Container):
         self,
         page: pydantic.types.NonNegativeInt = 0,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Union[Literal["benzinga", "fmp"], None] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Global News.

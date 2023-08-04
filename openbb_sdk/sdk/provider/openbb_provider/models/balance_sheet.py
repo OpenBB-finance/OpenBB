@@ -28,7 +28,7 @@ class BalanceSheetData(Data):
     currency: Optional[str] = Field(description="Reporting currency.")
     filing_date: Optional[dateType] = Field(description="Filling date.")
     accepted_date: Optional[datetime] = Field(description="Accepted date.")
-    period: Optional[str] = Field(description="Period of the income statement.")
+    period: Optional[str] = Field(description="Reporting period of the statement.")
 
     cash_and_cash_equivalents: Optional[int] = Field(
         description="Cash and cash equivalents"
@@ -60,7 +60,8 @@ class BalanceSheetData(Data):
         description="Accrued income taxes, other deferred revenue"
     )
     short_term_debt: Optional[int] = Field(
-        description="Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year"
+        description="Short-term borrowings, Long-term debt due within one year,"
+        " Operating lease obligations due within one year, Finance lease obligations due within one year"
     )
     current_liabilities: Optional[int]
 

@@ -11,8 +11,8 @@ def test_get_gdp(recorder):
     """Test get_gdp"""
     data = oecd_model.get_gdp(
         countries=["united_states", "canada"],
-        start_date=datetime.strptime("2020-01-01", "%Y-%m-%d"),
-        end_date=datetime.strptime("2022-01-31", "%Y-%m-%d"),
+        start_date="2020-01-01",
+        end_date="2022-01-31",
     )
     assert isinstance(data, pd.DataFrame)
     recorder.capture(data)

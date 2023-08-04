@@ -80,11 +80,8 @@ class PolygonBalanceSheetFetcher(
 
         to_return = []
         for item in data:
-            new = {"start_date": item["start_date"]}
-            new["cik"] = item["cik"]
-            bs = item["financials"]["balance_sheet"]
-
-            if bs:
+            new = {"start_date": item["start_date"], "cik": item["cik"]}
+            if bs := item["financials"]["balance_sheet"]:
                 for field in FIELDS:
                     new[field] = bs[field].get("value", 0)
 
