@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+from typing import Dict, Generic, List, Optional, TypeVar, Union
 
 import pandas as pd
 from pydantic import Field

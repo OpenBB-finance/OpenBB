@@ -12,4 +12,4 @@ def _rebuild_python_interface(*args, lint=True) -> None:
         PackageBuilder,
     )
 
-    PackageBuilder.build(modules=list(args), lint = lint)
+    PackageBuilder.build(modules=list(args), lint=lint)
