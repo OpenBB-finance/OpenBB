@@ -25,6 +25,7 @@ class Chart(BaseModel):
     fig: Optional[Any] = Field(
         default=None,
         description="The figure object.",
+        exclude_from_api=True,
     )
 
     class Config:

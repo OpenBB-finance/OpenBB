@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Optional, TypeVar
+from typing import Dict, Generic, List, Optional, TypeVar
 
 import pandas as pd
 from pydantic import Field
@@ -8,7 +8,7 @@ from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.model.abstract.error import Error
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
-from openbb_core.app.model.charts.chart import Chart, ChartFormat
+from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import get_provider_interface
 
 T = TypeVar("T")
