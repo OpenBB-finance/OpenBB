@@ -1704,7 +1704,7 @@ def stocks_search(**kwargs):
 
 def _ta_ma(ma_type: str, **kwargs):
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
-    window = kwargs.get("window", 50)
+    window = kwargs.get("windowstocks_load", 50)
     offset = kwargs.get("offset", 0)
     symbol = kwargs.get("symbol", "")
 
@@ -1716,8 +1716,9 @@ def _ta_ma(ma_type: str, **kwargs):
         False,
         volume=False,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
 
 
 def ta_atr(**kwargs):
@@ -1771,8 +1772,9 @@ def ta_aroon(**kwargs):
         False,
         volume=False,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
 
 
 def ta_sma(**kwargs):
@@ -1807,8 +1809,9 @@ def ta_macd(**kwargs):
         False,
         volume=False,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
 
 
 def ta_hma(**kwargs):
@@ -1847,8 +1850,9 @@ def ta_adx(**kwargs):
         False,
         volume=False,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
 
 
 def ta_wma(**kwargs):
@@ -1875,8 +1879,9 @@ def ta_rsi(**kwargs):
         False,
         volume=False,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
 
 
 def ta_summary(**kwargs):
