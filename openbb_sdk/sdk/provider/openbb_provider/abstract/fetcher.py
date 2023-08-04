@@ -38,7 +38,7 @@ class Fetcher(
 
     @staticmethod
     def transform_data(data: ReturnType) -> GenericDataType:
-        """Transform the provider-specific data to the standard data."""
+        """Transform the provider-specific data."""
         raise NotImplementedError
 
     @classmethod
@@ -48,13 +48,13 @@ class Fetcher(
         credentials: Optional[Dict[str, str]] = None,
         **kwargs
     ) -> GenericDataType:
-        """Fetch data from a provider by using the OpenBB standard."""
-        provider_query = cls.transform_query(params=params)
-        provider_data = cls.extract_data(
-            query=provider_query, credentials=credentials, **kwargs
+        """Fetch data from a provider."""
+        query = cls.transform_query(params=params)
+        data = cls.extract_data(
+            query=query, credentials=credentials, **kwargs
         )
-        data = cls.transform_data(data=provider_data)
-        return data
+        results = cls.transform_data(data=data)
+        return results
 
     @property
     def query_params_type(self):
