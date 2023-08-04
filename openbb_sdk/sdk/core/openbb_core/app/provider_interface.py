@@ -435,15 +435,11 @@ class ProviderInterface:
             class Config(BaseConfig):
                 extra = Extra.allow
 
-            ReturnModel = create_model(  # type: ignore
+            result[model_name] = create_model(  # type: ignore
                 model_name,
                 __config__=Config,
                 **fields_dict,  # type: ignore
             )
-
-            # TODO: If we want to support multiple return schemas, we need
-            # to change this `List` to the schema type
-            result[model_name] = List[ReturnModel]  # type: ignore
 
         return result
 
