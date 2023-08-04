@@ -3,12 +3,12 @@
 
 from typing import Any
 
-from openbb_provider import utils
+from openbb_provider import helpers
 from pydantic import BaseModel
 
 
 def get_data(url: str, **kwargs: Any) -> dict:
-    r = utils.make_request(
+    r = helpers.make_request(
         url, timeout=10, headers={"accept": "application/json"}, **kwargs
     )
     if r.status_code != 200:

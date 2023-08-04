@@ -6,7 +6,7 @@ from io import StringIO
 from typing import Any, List, Optional, Type, TypeVar, Union
 
 import requests
-from openbb_provider import utils
+from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import QueryParamsType
 from openbb_provider.helpers import (
@@ -52,7 +52,7 @@ def request(url: str) -> BasicResponse:
 def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
     try:
-        r: Union[requests.Response, BasicResponse] = utils.make_request(url, **kwargs)
+        r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
         r = request(url)
     if r.status_code == 404:

@@ -3,7 +3,7 @@ from typing import Any, Optional
 from urllib.parse import urlencode
 
 root_url = "https://api.stlouisfed.org/fred"
-from openbb_provider import utils
+from openbb_provider import helpers
 
 
 class Fred:
@@ -12,7 +12,7 @@ class Fred:
 
     def __fetch_data(self, url: str, **kwargs: Any):
         full_url = f"{url}&api_key={self.api_key}&file_type=json"
-        response = utils.make_request(full_url, **kwargs)
+        response = helpers.make_request(full_url, **kwargs)
         return response.json()
 
     def get_series(

@@ -1,9 +1,9 @@
 # IMPORT THIRD PARTY
-from openbb_provider import utils
+from openbb_provider import helpers
 
 
 def get_data(url: str, **kwargs) -> dict:
-    r = utils.make_request(url, **kwargs)
+    r = helpers.make_request(url, **kwargs)
     if r.status_code != 200:
         data = r.json()
         message = data.get("message")
