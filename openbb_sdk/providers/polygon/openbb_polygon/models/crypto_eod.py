@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
