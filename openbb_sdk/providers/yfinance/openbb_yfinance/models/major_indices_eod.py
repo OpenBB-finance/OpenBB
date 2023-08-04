@@ -5,11 +5,11 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
