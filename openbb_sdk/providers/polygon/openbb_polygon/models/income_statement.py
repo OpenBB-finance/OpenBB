@@ -1,55 +1,62 @@
 from datetime import (
     date as dateType,
-    datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
+from openbb_provider.helpers import get_querystring
 from openbb_provider.models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from pydantic import Field
+from pydantic import validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 
 
 class PolygonIncomeStatementQueryParams(PolygonFundamentalQueryParams):
-    __doc__ = PolygonFundamentalQueryParams.__doc__
+    """Polygon Income Statement Query Parameters"""
 
 
-class PolygonIncomeStatementData(Data):
-    start_date: dateType = Field(alias="date")
-    tickers: Optional[List[str]]
+class PolygonIncomeStatementData(IncomeStatementData):
+    class Config:
+        fields = {
+            "date": "start_date",
+            "accepted_date": "acceptance_datetime",
+            "period": "fiscal_period",
+            "revenue": "revenues",
+            "operating_income": "operating_income_loss",
+            "income_before_tax": "income_loss_from_continuing_operations_before_tax",
+            "income_tax_expense": "income_tax_expense_benefit",
+            "net_income": "net_income_loss",
+            "eps": "basic_earnings_per_share",
+            "eps_diluted": "diluted_earnings_per_share",
+            "interest_expense": "interest_expense_operating",
+            "symbol": "tickers",
+        }
+
+    # tickers: Optional[List[str]]
     cik: Optional[str]
     filing_date: Optional[dateType]
-    acceptance_datetime: Optional[datetime] = Field(alias="accepted_date")
-    fiscal_period: Optional[str] = Field(alias="period")
-    revenues: Optional[float] = Field(alias="revenue")
     cost_of_revenue: Optional[float]
     gross_profit: Optional[float]
     operating_expenses: Optional[float]
-    income_loss_from_continuing_operations_before_tax: Optional[float] = Field(
-        alias="income_before_tax"
-    )
     income_loss_from_continuing_operations_after_tax: Optional[float]
-    income_tax_expense_benefit: Optional[float] = Field(alias="income_tax_expense")
-    net_income_loss: Optional[float] = Field(alias="net_income")
-    basic_earnings_per_share: Optional[float] = Field(alias="eps")
-    diluted_earnings_per_share: Optional[float] = Field(alias="eps_diluted")
     benefits_costs_expenses: Optional[float]
-    interest_expense_operating: Optional[float] = Field(alias="interest_expense")
     net_income_loss_attributable_to_noncontrolling_interest: Optional[int]
     net_income_loss_attributable_to_parent: Optional[float]
     net_income_loss_available_to_common_stockholders_basic: Optional[float]
-    operating_income_loss: Optional[float]
     participating_securities_distributed_and_undistributed_earnings_loss_basic: Optional[
         float
     ]
     preferred_stock_dividends_and_other_adjustments: Optional[float]
+
+    @validator("symbol", pre=True, check_fields=False)
+    def symbol_from_tickers(cls, v):
+        if isinstance(v, list):
+            return ",".join(v)
+        return v
 
 
 class PolygonIncomeStatementFetcher(
@@ -61,28 +68,44 @@ class PolygonIncomeStatementFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: IncomeStatementQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonIncomeStatementQueryParams:
-        period = "annual" if query.period == "annually" else "quarterly"
-        return PolygonIncomeStatementQueryParams(
-            symbol=query.symbol, period=period, **extra_params if extra_params else {}  # type: ignore
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonIncomeStatementQueryParams:
+        return PolygonIncomeStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: PolygonIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[PolygonIncomeStatementData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
+
+        query.period = "annual" if query.period == "annually" else "quarter"
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.dict(), [])
+        query_string = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url)["results"]
 
         if len(data) == 0:
             raise RuntimeError("No Income Statement found")
+
+        FIELDS = [
+            "revenues",
+            "cost_of_revenue",
+            "gross_profit",
+            "operating_expenses" "income_loss_from_continuing_operations_before_tax",
+            "income_tax_expense_benefit",
+            "net_income_loss",
+            "basic_earnings_per_share",
+            "diluted_earnings_per_share",
+            "net_income_loss_attributable_to_noncontrolling_interest",
+            "net_income_loss_attributable_to_parent",
+            "net_income_loss_available_to_common_stockholders_basic",
+            "operating_income_loss",
+            "participating_securities_distributed_and_undistributed_earnings_loss_basic",
+            "preferred_stock_dividends_and_other_adjustments",
+            "income_loss_from_continuing_operations_after_tax",
+            "benefits_costs_expenses",
+            "interest_expense_operating",
+        ]
 
         to_return = []
         for item in data:
@@ -92,53 +115,12 @@ class PolygonIncomeStatementFetcher(
             new["fiscal_period"] = item["fiscal_period"]
             new["tickers"] = item["tickers"]
             new["cik"] = item["cik"]
-            incs = item["financials"]["income_statement"]
-            new["revenues"] = incs["revenues"].get("value")
-            new["cost_of_revenue"] = incs.get("cost_of_revenue", {}).get("value", 0)
-            new["gross_profit"] = incs.get("gross_profit", {}).get("value", 0)
-            new["operating_expenses"] = incs["operating_expenses"].get("value")
-            new["income_loss_from_continuing_operations_before_tax"] = incs[
-                "income_loss_from_continuing_operations_before_tax"
-            ].get("value")
-            new["income_tax_expense_benefit"] = incs["income_tax_expense_benefit"].get(
-                "value"
-            )
-            new["net_income_loss"] = incs["net_income_loss"].get("value")
-            new["basic_earnings_per_share"] = incs.get(
-                "basic_earnings_per_share", {}
-            ).get("value")
-            new["diluted_earnings_per_share"] = incs.get(
-                "diluted_earnings_per_share", {}
-            ).get("value")
-            new["net_income_loss_attributable_to_noncontrolling_interest"] = incs[
-                "net_income_loss_attributable_to_noncontrolling_interest"
-            ].get("value")
-            new["net_income_loss_attributable_to_parent"] = incs[
-                "net_income_loss_attributable_to_parent"
-            ].get("value")
-            new["net_income_loss_available_to_common_stockholders_basic"] = incs[
-                "net_income_loss_available_to_common_stockholders_basic"
-            ].get("value")
-            new["operating_income_loss"] = incs["operating_income_loss"].get("value")
-            new[
-                "participating_securities_distributed_and_undistributed_earnings_loss_basic"
-            ] = incs[
-                "participating_securities_distributed_and_undistributed_earnings_loss_basic"
-            ].get(
-                "value"
-            )
-            new["preferred_stock_dividends_and_other_adjustments"] = incs[
-                "preferred_stock_dividends_and_other_adjustments"
-            ].get("value")
-            new["income_loss_from_continuing_operations_after_tax"] = incs[
-                "income_loss_from_continuing_operations_after_tax"
-            ].get("value")
-            new["benefits_costs_expenses"] = incs["benefits_costs_expenses"].get(
-                "value"
-            )
-            new["interest_expense_operating"] = incs.get(
-                "interest_expense_operating", {}
-            ).get("value", 0)
+            incs = item["financials"].get("income_statement", {})
+
+            if incs:
+                for field in FIELDS:
+                    new[field] = incs.get(field, {}).get("value", 0)
+
             to_return.append(PolygonIncomeStatementData(**new))
         return to_return
 
@@ -146,5 +128,4 @@ class PolygonIncomeStatementFetcher(
     def transform_data(
         data: List[PolygonIncomeStatementData],
     ) -> List[IncomeStatementData]:
-        processors = {"tickers": lambda x: "" if not x else ",".join(x)}
-        return data_transformer(data, IncomeStatementData, processors)
+        return data

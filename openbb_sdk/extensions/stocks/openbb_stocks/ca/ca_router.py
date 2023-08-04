@@ -17,7 +17,7 @@ router = Router(prefix="/ca")
 
 
 @router.command(model="StockPeers")
-def get(
+def peers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

@@ -28,7 +28,7 @@ def filter_call(func):
 
             msg = ""
             for error in e.errors():
-                msg += f"{error['loc'][-1]} -> {error['msg']}"
+                msg += f"\narg: {error['loc'][-1]} -> {error['msg']}"
 
             raise OpenBBError(msg) from e
 

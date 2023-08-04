@@ -4,11 +4,19 @@ import pandas as pd
 from openbb_provider.abstract.data import Data
 
 
-def basemodel_to_df(data: List[Data], index: Optional[str] = None) -> pd.DataFrame:
+def basemodel_to_df(
+    data: Union[List[Data], Data], index: Optional[str] = None
+) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
-    df = pd.DataFrame([d.dict() for d in data])
+
+    data_list = [data] if not isinstance(data, list) else data
+
+    df = pd.DataFrame([d.dict() for d in data_list])
     if index and index in df.columns:
         df = df.set_index(index)
+        if df.index.name == "date":
+            df.index = pd.to_datetime(df.index)
+            df.sort_index(axis=0, inplace=True)
     return df
 
 

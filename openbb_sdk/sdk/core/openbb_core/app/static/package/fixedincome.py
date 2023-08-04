@@ -1,7 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import datetime
 import typing
-from typing import Literal, Optional
+from typing import Literal, Union
 
 from pydantic import validate_arguments
 
@@ -17,31 +18,46 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = "2023-07-24",
+        start_date: Union[datetime.date, None, str] = None,
+        end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Get treasury rates.
 
-        Available providers: fmp,
 
-        Standard
-        ========
+        openbb
+        ======
 
-        Parameter
-        ---------
-        start_date : Optional[str]
-            Start date of the data, default is None.
-        end_date : Optional[str]
-            End date of the data, default is today.
-
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        start_date : Optional[date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[date]
+            End date of the data, in YYYY-MM-DD format.
 
         Returns
         -------
-        date : dateType
-            The date of the treasury rates.
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        TreasuryRates
+        -------------
+        date : date
+            The date of the data.
         month_1 : float
             The 1 month treasury rate.
         month_2 : float
@@ -70,17 +86,14 @@ class CLASS_fixedincome(Container):
         fmp
         ===
 
-        Source: https://site.financialmodelingprep.com/developer/docs/treasury-rates-api/
-
-        Parameter
-        ---------
+        Parameters
+        ----------
         All fields are standardized.
 
 
-        Returns
-        -------
-        Documentation not available.
-        """
+        TreasuryRates
+        -------------
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

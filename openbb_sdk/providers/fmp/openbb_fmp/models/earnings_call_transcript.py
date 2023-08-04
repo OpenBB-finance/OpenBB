@@ -1,38 +1,37 @@
 """FMP Earnings Call Transcript fetcher."""
 
 
-from typing import Dict, List, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
-from openbb_provider.models.base import BaseSymbol
 from openbb_provider.models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPEarningsCallTranscriptQueryParams(QueryParams, BaseSymbol):
-    """FMP Earnings Calendar query.
+class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
+    """FMP Earnings Calendar Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    year: int
-        The year of the transcript to get.
+    Source: https://site.financialmodelingprep.com/developer/docs/earning-call-transcript-api/
     """
 
-    year: int
+    @validator("year", pre=True, check_fields=False)
+    def time_validate(cls, v: int):  # pylint: disable=E0213
+        current_year = datetime.now().year
+        return current_year if v > current_year or v < 1950 else v
 
 
 class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
-    """FMP Earnings Call Transcript data."""
+    """FMP Earnings Call Transcript Data."""
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v: str):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPEarningsCallTranscriptFetcher(
@@ -44,20 +43,15 @@ class FMPEarningsCallTranscriptFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: EarningsCallTranscriptQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPEarningsCallTranscriptQueryParams:
-        return FMPEarningsCallTranscriptQueryParams(
-            symbol=query.symbol, year=query.year
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPEarningsCallTranscriptQueryParams:
+        return FMPEarningsCallTranscriptQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
     ) -> List[FMPEarningsCallTranscriptData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4,
@@ -71,5 +65,5 @@ class FMPEarningsCallTranscriptFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPEarningsCallTranscriptData],
-    ) -> List[EarningsCallTranscriptData]:
-        return data_transformer(data, EarningsCallTranscriptData)
+    ) -> List[FMPEarningsCallTranscriptData]:
+        return data

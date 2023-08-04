@@ -1,17 +1,16 @@
 import sys
+import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
-from types import MappingProxyType
 from typing import (
-    Annotated,
     Any,
     Callable,
     Dict,
     List,
+    Mapping,
     Optional,
     Type,
     get_args,
-    get_origin,
     get_type_hints,
     overload,
 )
@@ -21,7 +20,9 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
+from typing_extensions import Annotated, _AnnotatedAlias
 
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.provider_interface import (
@@ -71,7 +72,7 @@ class CommandValidator:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return get_origin(annotation) == Annotated and hasattr(
+        return type(annotation) is _AnnotatedAlias and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
@@ -79,7 +80,7 @@ class CommandValidator:
     def check_reserved_param(
         name: str,
         expected_annot: Any,
-        parameter_map: MappingProxyType[str, Parameter],
+        parameter_map: Mapping[str, Parameter],
         func: Callable,
         sig: Signature,
     ):
@@ -178,7 +179,7 @@ class Router:
         self,
         func: Optional[Callable[P, CommandOutput]] = None,
         **kwargs,
-    ) -> Callable:
+    ) -> Optional[Callable]:
         if func is None:
             return lambda f: self.command(f, **kwargs)
 
@@ -190,15 +191,15 @@ class Router:
             kwargs["openapi_extra"] = {"model": model}
 
         func = SignatureInspector.complete_signature(func, model)
+        if func is not None:
+            CommandValidator.check(func=func)
 
-        CommandValidator.check(func=func)
+            kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
+            kwargs["endpoint"] = func
+            kwargs["methods"] = kwargs.get("methods", ["GET"])
+            kwargs["description"] = SignatureInspector.get_description(func)
 
-        kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
-        kwargs["endpoint"] = func
-        kwargs["methods"] = kwargs.get("methods", ["GET"])
-        kwargs["description"] = SignatureInspector.get_description(func)
-
-        api_router.add_api_route(**kwargs)
+            api_router.add_api_route(**kwargs)
 
         return func
 
@@ -217,14 +218,18 @@ class SignatureInspector:
     @classmethod
     def complete_signature(
         cls, func: Callable[P, CommandOutput], model: str
-    ) -> Callable[P, CommandOutput]:
+    ) -> Optional[Callable[P, CommandOutput]]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
         if model:
             if model not in provider_interface.models:
-                raise AttributeError(
-                    f"Invalid model: '{model}'. Check available models in ProviderInterface().models"
+                warnings.warn(
+                    message=f"\nSkipping api route '/{func.__name__}'.\n"
+                    f"Model '{model}' not found.\n\n"
+                    "Check available models in ProviderInterface().models",
+                    category=OpenBBWarning,
                 )
+                return None
 
             cls.validate_signature(
                 func,
@@ -253,8 +258,9 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            data_type = provider_interface.merged_data[model]
-            func.__annotations__["return"] = CommandOutput[List[data_type]]  # type: ignore
+            ReturnModel = provider_interface.return_schema[model]
+            func.__annotations__["return"] = CommandOutput[ReturnModel]  # type: ignore
+
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices
@@ -306,11 +312,17 @@ class SignatureInspector:
 class CommandMap:
     """Matching Routes with Commands."""
 
-    def __init__(self, router: Optional[Router] = None) -> None:
+    def __init__(
+        self, router: Optional[Router] = None, coverage_sep: Optional[str] = None
+    ) -> None:
         self._router = router or RouterLoader.from_extensions()
         self._map = self.get_command_map(router=self._router)
-        self._provider_coverage = self.get_provider_coverage(router=self._router)
-        self._command_coverage = self.get_command_coverage(router=self._router)
+        self._provider_coverage = self.get_provider_coverage(
+            router=self._router, sep=coverage_sep
+        )
+        self._command_coverage = self.get_command_coverage(
+            router=self._router, sep=coverage_sep
+        )
 
     @property
     def map(self) -> Dict[str, Callable]:
@@ -325,13 +337,17 @@ class CommandMap:
         return self._command_coverage
 
     @staticmethod
-    def get_command_map(router: Router) -> Dict[str, Callable]:
+    def get_command_map(
+        router: Router,
+    ) -> Dict[str, Callable]:
         api_router = router.api_router
         command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
         return command_map
 
     @staticmethod
-    def get_provider_coverage(router: Router) -> Dict[str, List[str]]:
+    def get_provider_coverage(
+        router: Router, sep: Optional[str] = None
+    ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
         mapping = get_provider_interface().map
@@ -349,12 +365,19 @@ class CommandMap:
                         if provider not in coverage_map:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
-                            coverage_map[provider].append(route.path)
+                            rp = (
+                                route.path
+                                if sep is None
+                                else route.path.replace("/", sep)
+                            )
+                            coverage_map[provider].append(rp)
 
         return coverage_map
 
     @staticmethod
-    def get_command_coverage(router: Router) -> Dict[str, List[str]]:
+    def get_command_coverage(
+        router: Router, sep: Optional[str] = None
+    ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
         mapping = get_provider_interface().map
@@ -370,16 +393,17 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
+                        rp = route.path if sep is None else route.path.replace("/", sep)
                         if route.path not in coverage_map:
-                            coverage_map[route.path] = []
-                        coverage_map[route.path] = providers
+                            coverage_map[rp] = []
+                        coverage_map[rp] = providers
         return coverage_map
 
     def get_command(self, route: str) -> Optional[Callable]:
         return self._map.get(route, None)
 
 
-class ExtensionError(Exception):
+class LoadingError(Exception):
     pass
 
 
@@ -394,7 +418,7 @@ class RouterLoader:
                     prefix=f"/{entry_point.name}",
                 )
             except Exception as e:
-                raise ExtensionError(
+                raise LoadingError(
                     f"Invalid extension '{entry_point.name}': {e}"
                 ) from e
 

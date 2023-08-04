@@ -2,41 +2,42 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.price_target import PriceTargetData, PriceTargetQueryParams
-from pydantic import Field
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPPriceTargetQueryParams(PriceTargetQueryParams):
-    """FMP Price Target query.
+    """FMP Price Target Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Price-Target
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPPriceTargetData(Data):
-    symbol: str
-    publishedDate: datetime
-    newsURL: str = Field(alias="news_url")
-    newsTitle: Optional[str]
-    analystName: Optional[str]
-    priceTarget: float
-    adjPriceTarget: float
-    priceWhenPosted: float
-    newsPublisher: str
-    newsBaseURL: str = Field(alias="news_base_url")
-    analystCompany: str
+class FMPPriceTargetData(PriceTargetData):
+    """FMP Price Target Data."""
+
+    class Config:
+        fields = {
+            "published_date": "publishedDate",
+            "news_url": "newsURL",
+            "news_title": "newsTitle",
+            "analyst_name": "analystName",
+            "price_target": "priceTarget",
+            "adj_price_target": "adjPriceTarget",
+            "price_when_posted": "priceWhenPosted",
+            "news_publisher": "newsPublisher",
+            "news_base_url": "newsBaseURL",
+            "analyst_company": "analystCompany",
+        }
+
+    @validator("publishedDate", pre=True, check_fields=False)
+    def published_date_validate(cls, v: str):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
 class FMPPriceTargetFetcher(
@@ -48,21 +49,19 @@ class FMPPriceTargetFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: PriceTargetQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPPriceTargetQueryParams:
-        return FMPPriceTargetQueryParams.parse_obj(query)
+    def transform_query(params: Dict[str, Any]) -> FMPPriceTargetQueryParams:
+        return FMPPriceTargetQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPPriceTargetQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPPriceTargetData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target", api_key, query)
+
         return get_data_many(url, FMPPriceTargetData)
 
     @staticmethod
-    def transform_data(data: List[FMPPriceTargetData]) -> List[PriceTargetData]:
-        return data_transformer(data, PriceTargetData)
+    def transform_data(data: List[FMPPriceTargetData]) -> List[FMPPriceTargetData]:
+        return data

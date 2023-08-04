@@ -1,7 +1,7 @@
 import inspect
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
-from typing import Annotated, Any, Callable, Dict, Tuple, TypeVar
+from typing import Any, Callable, Dict, Tuple, TypeVar
 
 from fastapi import APIRouter, Depends
 from fastapi.routing import APIRoute
@@ -13,7 +13,7 @@ from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
 from pydantic import BaseModel
-from typing_extensions import ParamSpec
+from typing_extensions import Annotated, ParamSpec
 
 T = TypeVar("T")
 P = ParamSpec("P")

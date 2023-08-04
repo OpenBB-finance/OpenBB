@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import typing
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
 import openbb_provider
 import pandas
@@ -83,8 +83,8 @@ class CLASS_ta(Container):
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        start_date: Union[str, None] = None,
+        end_date: Union[str, None] = None,
         chart: bool = False,
     ) -> CommandOutput[typing.List]:
         """

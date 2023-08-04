@@ -1,48 +1,32 @@
-"""Revenue by business line data model."""
+"""Revenue by Business Line data model."""
 
 
-from datetime import date
+from datetime import date as dateType
 from typing import Dict, Literal
 
 from pydantic import Field
 
-from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
 
 
 class RevenueBusinessLineQueryParams(QueryParams, BaseSymbol):
-    """Revenue business line query.
-
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    period : Literal["quarterly", "annually"]
-        The period of the income statement.
-    structure : Literal["hierarchical", "flat"]
-        The structure of the revenue business line. Should always be flat.
-    """
+    """Revenue Business Line Query."""
 
     period: Literal["quarterly", "annually"] = Field(
-        default="quarterly", description=DESCRIPTIONS.get("period", "")
+        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     structure: Literal["hierarchical", "flat"] = Field(
-        default="flat"
+        default="flat", description="The structure of the returned data."
     )  # should always be flat
 
 
 class RevenueBusinessLineData(Data):
-    """Revenue by business line data.
+    """Revenue by Business Line Data."""
 
-    Returns
-    -------
-    date : date
-        The date of the revenue.
-    data_and_service : Dict[str, int]
-        The data and service of the revenue.
-    """
-
-    date: date
-    data_and_service: Dict[str, int]
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    business_line: Dict[str, int] = Field(
+        description="Day level data containing the revenue of the business line."
+    )
