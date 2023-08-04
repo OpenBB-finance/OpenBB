@@ -50,9 +50,7 @@ class Fetcher(
     ) -> GenericDataType:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
-        data = cls.extract_data(
-            query=query, credentials=credentials, **kwargs
-        )
+        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
         results = cls.transform_data(data=data)
         return results
 

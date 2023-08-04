@@ -31,7 +31,7 @@ class PackageBuilder:
     """Build the extension package for the SDK."""
 
     @classmethod
-    def build(cls, modules:Optional[List[str]]=None, lint: bool = True) -> None:
+    def build(cls, modules: Optional[List[str]] = None, lint: bool = True) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
         cls.save_module_map()
@@ -56,7 +56,7 @@ class PackageBuilder:
         )
 
     @classmethod
-    def save_modules(cls, modules:Optional[List[str]] = None):
+    def save_modules(cls, modules: Optional[List[str]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
