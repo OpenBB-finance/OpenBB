@@ -10,7 +10,7 @@ from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
-from pydantic import Field, PositiveFloat, PositiveInt, validator
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -47,14 +47,11 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
             "low": "l",
             "close": "c",
             "volume": "v",
+            "vwap": "vw",
         }
 
-    t: datetime = Field(description="The timestamp of the data.")
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
-    )
-    vw: PositiveFloat = Field(
-        description="The volume weighted average price of the symbol."
     )
 
     @validator("t", pre=True, check_fields=False)
@@ -106,5 +103,5 @@ class PolygonMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(
         data: List[PolygonMajorIndicesEODData],
-    ) -> List[PolygonMajorIndicesEODData]:
-        return data
+    ) -> List[MajorIndicesEODData]:
+        return [MajorIndicesEODData.parse_obj(d.dict()) for d in data]
