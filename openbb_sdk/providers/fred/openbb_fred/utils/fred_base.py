@@ -1,19 +1,18 @@
 from datetime import date
-from typing import Optional
+from typing import Any, Optional
 from urllib.parse import urlencode
 
-import requests
-
 root_url = "https://api.stlouisfed.org/fred"
+from openbb_provider import helpers
 
 
 class Fred:
     def __init__(self, api_key: Optional[str]):
         self.api_key = api_key
 
-    def __fetch_data(self, url: str):
+    def __fetch_data(self, url: str, **kwargs: Any):
         full_url = f"{url}&api_key={self.api_key}&file_type=json"
-        response = requests.get(full_url, timeout=10)
+        response = helpers.make_request(full_url, **kwargs)
         return response.json()
 
     def get_series(
@@ -50,8 +49,10 @@ class Fred:
         if end_date:
             url += "&observation_end=" + end_date.strftime("%Y-%m-%d")
         if kwargs.keys():
-            url += "&" + urlencode(kwargs)
-        root = self.__fetch_data(url)
+            url += "&" + urlencode(
+                {k: v for k, v in kwargs.items() if k != "preferences"}
+            )
+        root = self.__fetch_data(url, **kwargs)
         if root is None:
             raise ValueError("No data exists for series id: " + series_id)
         return root["observations"]

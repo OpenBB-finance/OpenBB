@@ -71,7 +71,9 @@ class FMPCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCryptoEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -80,7 +82,7 @@ class FMPCryptoEODFetcher(
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}historical-price-full/crypto/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPCryptoEODData, "historical")
+        return get_data_many(url, FMPCryptoEODData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPCryptoEODData]) -> List[FMPCryptoEODData]:

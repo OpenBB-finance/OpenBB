@@ -46,10 +46,13 @@ class Fetcher(
         cls,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
+        **kwargs
     ) -> GenericDataType:
         """Fetch data from a provider by using the OpenBB standard."""
         provider_query = cls.transform_query(params=params)
-        provider_data = cls.extract_data(query=provider_query, credentials=credentials)
+        provider_data = cls.extract_data(
+            query=provider_query, credentials=credentials, **kwargs
+        )
         data = cls.transform_data(data=provider_data)
         return data
 
