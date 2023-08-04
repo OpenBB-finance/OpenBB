@@ -4,7 +4,7 @@ from datetime import (
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
+from openbb_provider.utils.helpers import get_querystring
 from openbb_provider.models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
