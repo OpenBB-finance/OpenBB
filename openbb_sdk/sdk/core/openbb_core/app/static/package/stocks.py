@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Optional, Union
+from typing import Literal, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -87,8 +87,8 @@ class CLASS_stocks(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        provider: Union[Literal["fmp", "polygon"], None] = None,
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         r"""Load stock data for a specific ticker.
 
@@ -210,10 +210,10 @@ class CLASS_stocks(Container):
         self,
         symbols: str,
         page: int = 0,
-        limit: Optional[pydantic.types.NonNegativeInt] = 15,
+        limit: Union[pydantic.types.NonNegativeInt, None] = 15,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
-        **kwargs
+        provider: Union[Literal["benzinga", "fmp", "polygon"], None] = None,
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get news for one or more stock tickers.
 
@@ -391,10 +391,10 @@ class CLASS_stocks(Container):
     def multiples(
         self,
         symbol: str,
-        limit: Optional[int] = 100,
+        limit: Union[int, None] = 100,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get valuation multiples for a stock ticker.
 

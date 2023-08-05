@@ -27,9 +27,10 @@ class MajorIndicesEODQueryParams(QueryParams, BaseSymbol):
 class MajorIndicesEODData(Data):
     """Major Indices end of day price data."""
 
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))

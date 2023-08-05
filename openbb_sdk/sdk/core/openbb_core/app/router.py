@@ -2,13 +2,12 @@ import sys
 import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
-from types import MappingProxyType
 from typing import (
-    Annotated,
     Any,
     Callable,
     Dict,
     List,
+    Mapping,
     Optional,
     Type,
     get_args,
@@ -22,6 +21,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
+from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -73,7 +73,7 @@ class CommandValidator:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return get_origin(annotation) == Annotated and hasattr(
+        return type(annotation) is _AnnotatedAlias and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
@@ -81,7 +81,7 @@ class CommandValidator:
     def check_reserved_param(
         name: str,
         expected_annot: Any,
-        parameter_map: MappingProxyType[str, Parameter],
+        parameter_map: Mapping[str, Parameter],
         func: Callable,
         sig: Signature,
     ):
@@ -436,7 +436,7 @@ class CommandMap:
         return self._map.get(route, None)
 
 
-class ExtensionError(Exception):
+class LoadingError(Exception):
     pass
 
 
@@ -450,7 +450,7 @@ class RouterLoader:
                     router=entry_point.load(), prefix=f"/{entry_point.name}"
                 )
             except Exception as e:
-                raise ExtensionError(
+                raise LoadingError(
                     f"Invalid extension '{entry_point.name}': {e}"
                 ) from e
 

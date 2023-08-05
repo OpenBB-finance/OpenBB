@@ -5,7 +5,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import DATA_DESCRIPTIONS
 from openbb_provider.helpers import get_querystring
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
@@ -33,7 +32,6 @@ class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
 class FMPMajorIndicesEODData(MajorIndicesEODData):
     """FMP Major Indices end of day Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     adjClose: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.",
         alias="adj_close",
@@ -53,9 +51,6 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         description=r"Change \% in the price of the symbol.",
         alias="change_percent",
         default=None,
-    )
-    vwap: Optional[float] = Field(
-        description="Volume Weighted Average Price of the symbol.", default=None
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None

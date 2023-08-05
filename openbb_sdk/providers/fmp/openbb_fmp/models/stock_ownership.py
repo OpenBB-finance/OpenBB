@@ -76,8 +76,7 @@ class FMPStockOwnershipFetcher(
     def extract_data(
         query: StockOwnershipQueryParams, credentials: Optional[Dict[str, str]]
     ) -> List[FMPStockOwnershipData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4,
