@@ -84,7 +84,12 @@ def quote(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command
-def search() -> CommandOutput[Empty]:
-    """Search a specific stock ticker for analysis."""
-    return CommandOutput(results=Empty())
+@router.command(model="CompanySearch")
+def search_companies(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Search for a company or ticker within the provider's database."""
+    return CommandOutput(results=Query(**locals()).execute())
