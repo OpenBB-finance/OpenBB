@@ -93,3 +93,13 @@ def search_companies(
 ) -> CommandOutput[BaseModel]:
     """Search for a company or ticker within the provider's database."""
     return CommandOutput(results=Query(**locals()).execute())
+
+@router.command(model="StockInfo")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Search for a company or ticker within the provider's database."""
+    return CommandOutput(results=Query(**locals()).execute())

@@ -1,6 +1,5 @@
 """CBOE Helpers Module"""
 
-
 import os
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -9,8 +8,6 @@ from typing import Optional, Tuple
 import numpy as np
 import pandas as pd
 import requests
-
-#from openbb_provider.models.options_chains import OptionsChainsData
 from requests import HTTPError
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
@@ -190,7 +187,8 @@ def search_companies(query: str, ticker: bool = False) -> dict:
     if len(result) > 0:
         data.update({"results": result})
         return data
-    raise Exception("No results found. Please try a different seach query.")
+    print(f"No results found for: {query}.  Try another search query.")
+    return pd.DataFrame()
 
 def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
     """Gets basic info for the symbol and expiration dates
@@ -394,7 +392,7 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
                 "hv30_annual_high": "hvThirtyOneYearHigh",
                 "hv30_annual_low": "hvThirtyOneYearLow",
                 "hv60_annual_high": "hvSixtyOneYearHigh",
-                "hv60_annual_low": "hvsixtyOneYearLow",
+                "hv60_annual_low": "hvSixtyOneYearLow",
                 "hv90_annual_high": "hvNinetyOneYearHigh",
                 "hv90_annual_low": "hvNinetyOneYearLow",
                 "iv30_annual_high": "ivThirtyOneYearHigh",
@@ -415,7 +413,7 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
             "ivSixtyOneYearHigh",
             "hvSixtyOneYearHigh",
             "ivSixtyOneYearLow",
-            "hvsixtyOneYearLow",
+            "hvSixtyOneYearLow",
             "ivNinetyOneYearHigh",
             "hvNinetyOneYearHigh",
             "ivNinetyOneYearLow",
@@ -428,7 +426,7 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
 
     return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
 
-def get_quotes(symbol: str) -> pd.DataFrame:
+def get_chains(symbol: str) -> pd.DataFrame:
     """Gets the complete options chains for a ticker.
 
     Parameters
@@ -524,6 +522,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
         temp_ = (temp - now).days + 1
         quotes["dte"] = temp_
 
+        quotes["lastTradeTimestamp"] = pd.to_datetime(quotes["lastTradeTimestamp"])
         quotes = quotes.set_index(
             keys=["expiration", "strike", "optionType"]
         ).sort_index()
@@ -596,19 +595,24 @@ def get_eod_prices(
     """
 
     symbol=symbol.upper()
+    if symbol == ("NDX", "^NDX"):
+        print("NDX time series data is not currently supported by the CBOE provider.")
+        return pd.DataFrame()
+    if "^" in symbol:
+        symbol = symbol.replace("^", "")
     now = datetime.now()
     start_date = start_date if start_date else now - timedelta(days=50000)
     end_date = end_date if end_date else now
     if symbol not in SYMBOLS.index:
-        raise Exception("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
-    if symbol == ("NDX", "^NDX"):
-        raise Exception("NDX time series data is not currently supported by the CBOE provider.")
+        print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
+        return pd.DataFrame()
 
     url = __generate_historical_prices_url(symbol)
     r = request(url)
 
     if r.status_code != 200:
-        raise HTTPError
+        print(f"Error: {r.status_code}")
+        return pd.DataFrame()
 
     data = (
         pd.DataFrame(r.json()["data"])
@@ -655,3 +659,31 @@ def get_eod_prices(
     ]
     data.index = data.index.strftime("%Y-%m-%d")
     return data.reset_index()
+
+
+def get_info(symbol: str) -> pd.DataFrame:
+    """Gets information and current statistics for a ticker.
+
+    Parameters
+    ----------
+    symbol: str
+        The symbol of the company.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with results.
+    """
+
+    symbol = symbol.upper()
+    info = pd.DataFrame()
+
+
+    _info = get_ticker_info(symbol)[0]
+    _iv = get_ticker_iv(symbol)
+    info = pd.concat([_info, _iv])
+    info.index = [camel_to_snake(c) for c in info.index]
+    info.loc["symbol", symbol] = symbol
+    info.loc["name", symbol] = SYMBOLS[SYMBOLS.index == symbol]["Company Name"][0]
+
+    return info[symbol]
