@@ -41,7 +41,9 @@ class FMPSECFilingsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPSECFilingsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPSECFilingsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPSECFilingsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -49,7 +51,7 @@ class FMPSECFilingsFetcher(
             3, f"sec_filings/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, FMPSECFilingsData)
+        return get_data_many(url, FMPSECFilingsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPSECFilingsData]) -> List[SECFilingsData]:

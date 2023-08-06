@@ -71,7 +71,9 @@ class FMPPriceTargetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPPriceTargetQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPPriceTargetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
         endpoint = "upgrades-downgrades" if query.with_grade else "price-target"
@@ -80,6 +82,7 @@ class FMPPriceTargetFetcher(
         return get_data_many(
             url,
             FMPPriceTargetData if not query.with_grade else FMPPriceTargetUpgradesData,
+            **kwargs,
         )
 
     @staticmethod

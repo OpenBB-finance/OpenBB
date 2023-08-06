@@ -38,7 +38,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 200,
+        limit: Union[pydantic.types.NonNegativeInt, None] = 12,
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs,
@@ -429,7 +429,7 @@ class CLASS_stocks_fa(Container):
         provider: Union[Literal["fmp"], None] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
-        """Show Dividend Calendar for a given start and end dates.
+        """Balance Sheet Statement Growth.
 
 
         openbb
@@ -514,7 +514,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 200,
+        limit: Union[pydantic.types.NonNegativeInt, None] = 12,
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs,
@@ -1574,7 +1574,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 200,
+        limit: Union[pydantic.types.NonNegativeInt, None] = 12,
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs,

@@ -8,7 +8,7 @@ from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from pydantic import root_validator
+from pydantic import Field, root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -19,8 +19,7 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Cash-Flow-Statement
     """
 
-    symbol: Optional[str]
-    cik: Optional[str]
+    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
@@ -89,7 +88,9 @@ class FMPCashFlowStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCashFlowStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCashFlowStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCashFlowStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -98,7 +99,7 @@ class FMPCashFlowStatementFetcher(
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementData)
+        return get_data_many(url, FMPCashFlowStatementData, **kwargs)
 
     @staticmethod
     def transform_data(

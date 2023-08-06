@@ -38,12 +38,14 @@ class FMPGlobalNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPGlobalNewsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPGlobalNewsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPGlobalNewsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "general_news", api_key, query)
-        return get_data_many(url, FMPGlobalNewsData)
+        return get_data_many(url, FMPGlobalNewsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPGlobalNewsData]) -> List[FMPGlobalNewsData]:

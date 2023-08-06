@@ -5,11 +5,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
 
 from openbb_fmp.utils.helpers import get_data_many
@@ -82,7 +82,9 @@ class FMPMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPMajorIndicesEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPMajorIndicesEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -96,7 +98,7 @@ class FMPMajorIndicesEODFetcher(
             )
             url = f"{base_url}/historical-price-full/index/%5E{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPMajorIndicesEODData, "historical")
+        return get_data_many(url, FMPMajorIndicesEODData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

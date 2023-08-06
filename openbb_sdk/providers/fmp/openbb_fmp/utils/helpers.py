@@ -4,12 +4,13 @@
 import json
 from datetime import datetime
 from io import StringIO
-from typing import List, Optional, Type, TypeVar, Union
+from typing import Any, List, Optional, Type, TypeVar, Union
 
 import requests
+from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provider.helpers import (
+from openbb_provider.utils.helpers import (
     get_querystring,
 )
 from pydantic import BaseModel, PositiveFloat, validator
@@ -49,10 +50,10 @@ def request(url: str) -> BasicResponse:
     return BasicResponse(response)
 
 
-def get_data(url: str) -> Union[list, dict]:
+def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
     try:
-        r: Union[requests.Response, BasicResponse] = requests.get(url, timeout=10)
+        r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
         r = request(url)
     if r.status_code == 404:
@@ -107,7 +108,7 @@ def create_url(
 
 
 def get_data_many(
-    url: str, to_schema: Type[T], sub_dict: Optional[str] = None
+    url: str, to_schema: Type[T], sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[T]:
     """Get data from FMP endpoint and convert to list of schemas.
 
@@ -125,7 +126,7 @@ def get_data_many(
     List[T]
         The list of schemas.
     """
-    data = get_data(url)
+    data = get_data(url, **kwargs)
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
@@ -133,9 +134,9 @@ def get_data_many(
     return [to_schema.parse_obj(d) for d in data]  # type: ignore
 
 
-def get_data_one(url: str, to_schema: Type[T]) -> T:
+def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
     """Get data from FMP endpoint and convert to schema."""
-    data = get_data(url)
+    data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
             raise ValueError("Expected dict, got empty list")

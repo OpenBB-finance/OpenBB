@@ -86,13 +86,13 @@ class FMPIncomeStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPIncomeStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPIncomeStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        period = "annual" if query.period == "annually" else "quarter"
-        query = query.copy(update={"period": period})
-
+        query.period = "annual" if query.period == "annually" else "quarter"
         symbol = query.symbol or query.cik
         base_url = "https://financialmodelingprep.com/api/v3"
 
@@ -101,7 +101,7 @@ class FMPIncomeStatementFetcher(
             f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
 
-        return get_data_many(url, FMPIncomeStatementData)
+        return get_data_many(url, FMPIncomeStatementData, **kwargs)
 
     @staticmethod
     def transform_data(

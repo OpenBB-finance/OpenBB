@@ -45,13 +45,14 @@ class FMPHistoricalStockSplitsFetcher(
     def extract_data(
         query: FMPHistoricalStockSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPHistoricalStockSplitsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"historical-price-full/stock_split/{query.symbol}", api_key
         )
-        return get_data_many(url, FMPHistoricalStockSplitsData, "historical")
+        return get_data_many(url, FMPHistoricalStockSplitsData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

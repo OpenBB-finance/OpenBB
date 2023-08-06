@@ -1,14 +1,13 @@
 """FMP Stocks end of day fetcher."""
 
-
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import DATA_DESCRIPTIONS
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
+from typing_extensions import Literal
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -30,7 +29,6 @@ class FMPStockEODQueryParams(StockEODQueryParams):
 class FMPStockEODData(StockEODData):
     """FMP Stock end of day Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     adjClose: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
     )
@@ -83,7 +81,9 @@ class FMPStockEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -99,7 +99,7 @@ class FMPStockEODFetcher(
             )
             url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPStockEODData, "historical")
+        return get_data_many(url, FMPStockEODData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPStockEODData]) -> List[FMPStockEODData]:

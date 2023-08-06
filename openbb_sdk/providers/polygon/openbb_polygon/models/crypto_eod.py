@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
@@ -67,15 +67,20 @@ class PolygonCryptoEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCryptoEODQueryParams:
         now = datetime.now().date()
-        start_date = params.pop("start_date", now - timedelta(days=7))
-        end_date = params.pop("end_date", now)
-        return PolygonCryptoEODQueryParams(
-            **params, start_date=start_date, end_date=end_date
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
+        return PolygonCryptoEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonCryptoEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -86,7 +91,7 @@ class PolygonCryptoEODFetcher(
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

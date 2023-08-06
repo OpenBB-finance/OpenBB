@@ -16,13 +16,13 @@ from openbb_provider.models.base import FinancialStatementQueryParams
 
 
 class BalanceSheetQueryParams(FinancialStatementQueryParams):
-    """Cash flow statement query."""
+    """Balance Sheet query."""
 
 
 class BalanceSheetData(Data):
-    """Return Balance Sheet Data."""
+    """Balance Sheet Data."""
 
-    date: dateType = Field(description="Date of the income statement.")
+    date: dateType = Field(description="Date of the fetched statement.")
     symbol: Optional[str] = Field(description="Symbol of the company.")
     cik: Optional[int] = Field(description="Central Index Key.")
     currency: Optional[str] = Field(description="Reporting currency.")

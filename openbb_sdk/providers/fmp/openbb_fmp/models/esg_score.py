@@ -47,12 +47,14 @@ class FMPESGScoreFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPESGScoreQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGScoreQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGScoreData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "esg-environmental-social-governance-data", api_key, query)
-        return get_data_many(url, FMPESGScoreData)
+        return get_data_many(url, FMPESGScoreData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGScoreData]) -> List[FMPESGScoreData]:

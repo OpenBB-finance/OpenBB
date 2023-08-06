@@ -64,7 +64,9 @@ class FMPStockInsiderTradingFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockInsiderTradingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockInsiderTradingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockInsiderTradingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -72,7 +74,7 @@ class FMPStockInsiderTradingFetcher(
         query.transactionType = ",".join(query.transactionType)  # type: ignore
         url = create_url(4, "insider-trading", api_key, query)
 
-        return get_data_many(url, FMPStockInsiderTradingData)
+        return get_data_many(url, FMPStockInsiderTradingData, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -16,6 +16,7 @@ class Preferences(BaseModel):
     plot_open_export: bool = (
         False  # Whether to open plot image exports after they are created
     )
+    request_timeout: PositiveInt = 15
 
     class Config:
         validate_assignment = True
