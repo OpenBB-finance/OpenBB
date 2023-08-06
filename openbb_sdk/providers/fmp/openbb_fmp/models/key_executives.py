@@ -39,9 +39,9 @@ class FMPKeyExecutivesData(KeyExecutivesData):
 class FMPKeyExecutivesFetcher(
     Fetcher[
         KeyExecutivesQueryParams,
-        List[KeyExecutivesData],
+        KeyExecutivesData,
         FMPKeyExecutivesQueryParams,
-        List[FMPKeyExecutivesData],
+        FMPKeyExecutivesData,
     ]
 ):
     @staticmethod
@@ -62,5 +62,5 @@ class FMPKeyExecutivesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPKeyExecutivesData],
-    ) -> List[KeyExecutivesData]:
-        return [KeyExecutivesData.parse_obj(d.dict()) for d in data]
+    ) -> List[FMPKeyExecutivesData]:
+        return data

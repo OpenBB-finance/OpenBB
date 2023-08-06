@@ -38,7 +38,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 200,
+        limit: Optional[pydantic.types.NonNegativeInt] = 200,
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs,
@@ -56,7 +56,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[NonNegativeInt]
             The number of data entries to return.
 
@@ -426,8 +426,8 @@ class CLASS_stocks_fa(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Show Dividend Calendar for a given start and end dates.
 
@@ -514,7 +514,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 200,
+        limit: Optional[pydantic.types.NonNegativeInt] = 200,
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs,
@@ -532,7 +532,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[NonNegativeInt]
             The number of data entries to return.
 
@@ -707,8 +707,8 @@ class CLASS_stocks_fa(Container):
         symbol: str,
         limit: int = 10,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement Growth.
 
@@ -1156,7 +1156,7 @@ class CLASS_stocks_fa(Container):
     def earning(
         self,
         symbol: str,
-        limit: Union[int, None] = 50,
+        limit: Optional[int] = 50,
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs,
@@ -1387,7 +1387,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : int
             The number of data entries to return.
 
@@ -1574,7 +1574,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 200,
+        limit: Optional[pydantic.types.NonNegativeInt] = 200,
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs,
@@ -1592,7 +1592,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[NonNegativeInt]
             The number of data entries to return.
 
@@ -1783,8 +1783,8 @@ class CLASS_stocks_fa(Container):
         limit: int = 10,
         period: Literal["annually", "quarterly"] = "annually",
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Income Statement Growth.
 
@@ -1801,7 +1801,7 @@ class CLASS_stocks_fa(Container):
         limit : int
             The number of data entries to return.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
 
         Returns
         -------
@@ -1915,7 +1915,7 @@ class CLASS_stocks_fa(Container):
     def ins(
         self,
         symbol: str,
-        transactionType: Union[
+        transactionType: Optional[
             List[
                 Literal[
                     "A-Award",
@@ -1937,12 +1937,11 @@ class CLASS_stocks_fa(Container):
                     "X-InTheMoney",
                     "Z-Trust",
                 ]
-            ],
-            None,
+            ]
         ] = ["P-Purchase"],
-        reportingCik: Union[int, None] = None,
-        companyCik: Union[int, None] = None,
-        page: Union[int, None] = 0,
+        reportingCik: Optional[int] = None,
+        companyCik: Optional[int] = None,
+        page: Optional[int] = 0,
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs,
@@ -2055,10 +2054,10 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         include_current_quarter: bool = False,
-        date: Union[datetime.date, None] = None,
+        date: Optional[datetime.date] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Institutional Ownership.
 
@@ -2220,7 +2219,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[int, None] = 100,
+        limit: Optional[int] = 100,
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs,
@@ -2238,7 +2237,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
 
@@ -2674,7 +2673,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         date: datetime.date,
-        page: Union[int, None] = 0,
+        page: Optional[int] = 0,
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs,
@@ -3068,7 +3067,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             The structure of the returned data.
 
@@ -3157,7 +3156,7 @@ class CLASS_stocks_fa(Container):
         symbol : ConstrainedStrValue
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+            Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             The structure of the returned data.
 

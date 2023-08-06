@@ -1,5 +1,4 @@
 """FMP Provider module."""
-
 from openbb_provider.abstract.provider import Provider
 
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
@@ -45,17 +44,14 @@ from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
-from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
-
-# mypy: disable-error-code="list-item"
 
 fmp_provider = Provider(
     name="fmp",
     website="https://financialmodelingprep.com/",
     description="""Financial Modeling Prep is a new concept that informs you about
-    stock market information (news, currencies, and stock prices).""",
+     stock market information (news, currencies, and stock prices).""",
     required_credentials=["api_key"],
     fetcher_dict={
         "KeyExecutives": FMPKeyExecutivesFetcher,
@@ -101,6 +97,5 @@ fmp_provider = Provider(
         "RiskPremium": FMPRiskPremiumFetcher,
         "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
         "DividendCalendar": FMPDividendCalendarFetcher,
-        "StockQuote": FMPStockQuoteFetcher,
     },
 )

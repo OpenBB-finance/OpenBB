@@ -71,5 +71,5 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPEarningsCalendarData],
-    ) -> List[EarningsCalendarData]:
-        return [EarningsCalendarData.parse_obj(d.dict()) for d in data]
+    ) -> List[FMPEarningsCalendarData]:
+        return data

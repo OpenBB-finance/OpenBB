@@ -1,10 +1,7 @@
 """FMP Share Statistics Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -36,8 +33,6 @@ class FMPShareStatisticsData(ShareStatisticsData):
 
     @validator("date", pre=True)
     def date_validate(cls, v):  # pylint: disable=E0213
-        if isinstance(v, dateType):
-            return v
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
@@ -66,5 +61,5 @@ class FMPShareStatisticsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPShareStatisticsData],
-    ) -> List[ShareStatisticsData]:
-        return [ShareStatisticsData.parse_obj(d.dict()) for d in data]
+    ) -> List[FMPShareStatisticsData]:
+        return data

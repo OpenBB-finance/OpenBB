@@ -79,5 +79,5 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPMajorIndicesConstituentsData],
-    ) -> List[MajorIndicesConstituentsData]:
-        return [MajorIndicesConstituentsData.parse_obj(d.dict()) for d in data]
+    ) -> List[FMPMajorIndicesConstituentsData]:
+        return data

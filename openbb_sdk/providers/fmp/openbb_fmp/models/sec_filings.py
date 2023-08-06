@@ -1,6 +1,7 @@
 """SEC Filings fetcher."""
 
 
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -25,6 +26,10 @@ class FMPSECFilingsData(SECFilingsData):
             "accepted_date": "acceptedDate",
             "final_link": "finalLink",
         }
+
+    @validator("fillingDate", "acceptedDate", pre=True, check_fields=False)
+    def convert_date(cls, v):  # pylint: disable=no-self-argument
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPSECFilingsFetcher(
@@ -52,5 +57,5 @@ class FMPSECFilingsFetcher(
         return get_data_many(url, FMPSECFilingsData)
 
     @staticmethod
-    def transform_data(data: List[FMPSECFilingsData]) -> List[SECFilingsData]:
-        return [SECFilingsData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[FMPSECFilingsData]) -> List[FMPSECFilingsData]:
+        return data

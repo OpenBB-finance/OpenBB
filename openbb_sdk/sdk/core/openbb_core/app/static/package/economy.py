@@ -19,7 +19,9 @@ class CLASS_economy(Container):
     def corecpi(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """CORECPI."""
         inputs = filter_inputs(
@@ -275,7 +277,9 @@ class CLASS_economy(Container):
     def cpi_options(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """Get the options for v3 cpi(options=True)"""
         inputs = filter_inputs(
@@ -300,8 +304,8 @@ class CLASS_economy(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
-        **kwargs,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         r"""Get OHLCV data for an index.
 
@@ -311,7 +315,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[fmp, polygon, yfinance]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -369,7 +373,7 @@ class CLASS_economy(Container):
             Change in the price of the symbol from the previous day.
         changePercent : float
             Change \% in the price of the symbol.
-        vwap : float
+        vwap : NonNegativeFloat
             Volume Weighted Average Price of the symbol.
         label : str
             Human readable format of the date.
@@ -395,12 +399,25 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
-        t : datetime
-            The timestamp of the data.
+        vw : PositiveFloat
+            Volume Weighted Average Price of the symbol.
         n : PositiveInt
             The number of transactions for the symbol in the time period.
-        vw : PositiveFloat
-            The volume weighted average price of the symbol."""
+
+        yfinance
+        ========
+
+        Parameters
+        ----------
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return.
+
+
+        MajorIndicesEOD
+        ---------------
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -574,7 +591,9 @@ class CLASS_economy(Container):
     def macro(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """Query EconDB for macro data."""
         inputs = filter_inputs(
@@ -596,7 +615,9 @@ class CLASS_economy(Container):
     def macro_countries(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """MACRO_COUNTRIES."""
         inputs = filter_inputs(
@@ -618,7 +639,9 @@ class CLASS_economy(Container):
     def macro_parameters(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """MACRO_PARAMETERS."""
         inputs = filter_inputs(
@@ -640,7 +663,9 @@ class CLASS_economy(Container):
     def balance(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """BALANCE."""
         inputs = filter_inputs(
@@ -662,7 +687,9 @@ class CLASS_economy(Container):
     def bigmac(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """BIGMAC."""
         inputs = filter_inputs(
@@ -684,7 +711,9 @@ class CLASS_economy(Container):
     def country_codes(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """COUNTRY_CODES."""
         inputs = filter_inputs(
@@ -706,7 +735,9 @@ class CLASS_economy(Container):
     def currencies(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """CURRENCIES."""
         inputs = filter_inputs(
@@ -728,7 +759,9 @@ class CLASS_economy(Container):
     def debt(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """DEBT."""
         inputs = filter_inputs(
@@ -750,7 +783,9 @@ class CLASS_economy(Container):
     def events(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """EVENTS."""
         inputs = filter_inputs(
@@ -772,7 +807,9 @@ class CLASS_economy(Container):
     def fgdp(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FGDP."""
         inputs = filter_inputs(
@@ -794,7 +831,9 @@ class CLASS_economy(Container):
     def fred(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FRED."""
         inputs = filter_inputs(
@@ -816,7 +855,9 @@ class CLASS_economy(Container):
     def fred_search(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FRED Search (was fred_notes)."""
         inputs = filter_inputs(
@@ -838,7 +879,9 @@ class CLASS_economy(Container):
     def futures(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """FUTURES. 2 sources"""
         inputs = filter_inputs(
@@ -860,7 +903,9 @@ class CLASS_economy(Container):
     def gdp(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """GDP."""
         inputs = filter_inputs(
@@ -882,7 +927,9 @@ class CLASS_economy(Container):
     def glbonds(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """GLBONDS."""
         inputs = filter_inputs(
@@ -904,7 +951,9 @@ class CLASS_economy(Container):
     def indices(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """INDICES."""
         inputs = filter_inputs(
@@ -926,7 +975,9 @@ class CLASS_economy(Container):
     def overview(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """OVERVIEW."""
         inputs = filter_inputs(
@@ -948,7 +999,9 @@ class CLASS_economy(Container):
     def perfmap(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """PERFMAP."""
         inputs = filter_inputs(
@@ -970,7 +1023,9 @@ class CLASS_economy(Container):
     def performance(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """PERFORMANCE."""
         inputs = filter_inputs(
@@ -992,7 +1047,9 @@ class CLASS_economy(Container):
     def revenue(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """REVENUE."""
         inputs = filter_inputs(
@@ -1014,7 +1071,9 @@ class CLASS_economy(Container):
     def rgdp(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """RGDP."""
         inputs = filter_inputs(
@@ -1036,7 +1095,9 @@ class CLASS_economy(Container):
     def rtps(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """RTPS."""
         inputs = filter_inputs(
@@ -1058,7 +1119,9 @@ class CLASS_economy(Container):
     def search_index(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """SEARCH_INDEX."""
         inputs = filter_inputs(
@@ -1080,7 +1143,9 @@ class CLASS_economy(Container):
     def spending(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """SPENDING."""
         inputs = filter_inputs(
@@ -1102,7 +1167,9 @@ class CLASS_economy(Container):
     def trust(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """TRUST."""
         inputs = filter_inputs(
@@ -1124,7 +1191,9 @@ class CLASS_economy(Container):
     def usbonds(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """USBONDS."""
         inputs = filter_inputs(
@@ -1146,7 +1215,9 @@ class CLASS_economy(Container):
     def valuation(
         self,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "fred", "polygon"], None] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
         """VALUATION."""
         inputs = filter_inputs(

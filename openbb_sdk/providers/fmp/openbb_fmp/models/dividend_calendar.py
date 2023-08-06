@@ -62,11 +62,13 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPDividendCalendarQueryParams:
         now = datetime.now().date()
-        start_date = params.pop("start_date", now - timedelta(days=30))
-        end_date = params.pop("end_date", now + timedelta(days=1))
-        return FMPDividendCalendarQueryParams(
-            **params, start_date=start_date, end_date=end_date
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=31)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now - timedelta(days=1)
+        return FMPDividendCalendarQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -83,5 +85,5 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPDividendCalendarData],
-    ) -> List[DividendCalendarData]:
-        return [DividendCalendarData.parse_obj(d.dict()) for d in data]
+    ) -> List[FMPDividendCalendarData]:
+        return data

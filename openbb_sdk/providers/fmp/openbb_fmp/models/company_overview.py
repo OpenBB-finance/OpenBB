@@ -1,7 +1,7 @@
 """FMP Company Overview Fetcher."""
 
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.company_overview import (
@@ -57,7 +57,7 @@ class FMPCompanyOverviewFetcher(
     @staticmethod
     def extract_data(
         query: FMPCompanyOverviewQueryParams, credentials: Optional[Dict[str, str]]
-    ) -> FMPCompanyOverviewData:
+    ) -> List[FMPCompanyOverviewData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/"
@@ -66,10 +66,11 @@ class FMPCompanyOverviewFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
-        return FMPCompanyOverviewData.parse_obj(data[0])
+        return [FMPCompanyOverviewData.parse_obj(data[0])]
 
     @staticmethod
     def transform_data(  # type: ignore
-        data: FMPCompanyOverviewData,
-    ) -> CompanyOverviewData:
-        return CompanyOverviewData.parse_obj(data.dict())
+        data: List[FMPCompanyOverviewData],
+    ) -> List[FMPCompanyOverviewData]:
+        # Need to update transform_data to return a non list version of list isn't used
+        return data  # type: ignore

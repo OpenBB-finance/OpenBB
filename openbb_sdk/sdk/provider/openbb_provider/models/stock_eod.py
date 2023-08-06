@@ -8,20 +8,20 @@ from pydantic import Field, PositiveFloat
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.models.base import BaseSymbol
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class StockEODQueryParams(QueryParams, BaseSymbol):
     """Stock end of day Query."""
 
     start_date: Optional[date] = Field(
+        default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
-        default=date.today() - timedelta(days=30),
     )
     end_date: Optional[date] = Field(
+        default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
-        default=date.today() + timedelta(days=1),
     )
 
 
@@ -33,5 +33,4 @@ class StockEODData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+    volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))

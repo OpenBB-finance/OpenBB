@@ -5,14 +5,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
-from pydantic import Field
+from openbb_provider.models.stock_news import StockNewsData
+from openbb_provider.utils.helpers import get_querystring
+from pydantic import Field, validator
 
-from openbb_benzinga.utils.helpers import (
-    BenzingaStockNewsData,
-    get_data,
-)
+from openbb_benzinga.utils.helpers import BenzingaImage, get_data
 
 
 class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
@@ -57,8 +55,8 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
         ]
     ] = Field(
         default=None,
-        description="The order in which to sort the news. "
-        "Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.",
+        description="The order in which to sort the news. Options are: published_at,"
+        " updated_at, title, author, channel, ticker, topic, content_type.",
     )
     isin: Optional[str] = Field(
         default=None, description="The ISIN of the news to retrieve."
@@ -83,6 +81,21 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     )
 
 
+class BenzingaGlobalNewsData(StockNewsData):
+    """Benzinga Global News data."""
+
+    class Config:
+        fields = {"date": "created", "text": "body"}
+
+    image: List[BenzingaImage] = Field(
+        description="The images associated with the news."
+    )
+
+    @validator("date", pre=True)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
+
+
 class BenzingaGlobalNewsFetcher(
     Fetcher[
         GlobalNewsQueryParams,
@@ -98,8 +111,8 @@ class BenzingaGlobalNewsFetcher(
     @staticmethod
     def extract_data(
         query: BenzingaGlobalNewsQueryParams, credentials: Optional[Dict[str, str]]
-    ) -> List[BenzingaStockNewsData]:
-        api_key = credentials.get("benzinga_api_key", "") or ""
+    ) -> List[BenzingaGlobalNewsData]:
+        api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
         querystring = get_querystring(query.dict(by_alias=True), [])
@@ -113,6 +126,6 @@ class BenzingaGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[BenzingaStockNewsData],
-    ) -> List[BenzingaStockNewsData]:
+        data: List[BenzingaGlobalNewsData],
+    ) -> List[BenzingaGlobalNewsData]:
         return data

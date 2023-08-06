@@ -21,7 +21,6 @@ openbb-benzinga = { path = "./providers/benzinga" }
 openbb-fmp = { path = "./providers/fmp" }
 openbb-polygon = { path = "./providers/polygon" }
 openbb-fred = { path = "./providers/fred" }
-openbb-cboe = { path = "./providers/cboe"}
 
 [build-system]
 requires = ["poetry-core"]

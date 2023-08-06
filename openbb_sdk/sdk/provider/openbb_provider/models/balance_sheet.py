@@ -12,17 +12,15 @@ from pydantic import Field
 from openbb_provider.abstract.data import Data
 from openbb_provider.models.base import FinancialStatementQueryParams
 
-# IMPORT THIRD PARTY
-
 
 class BalanceSheetQueryParams(FinancialStatementQueryParams):
-    """Cash flow statement query."""
+    """Balance Sheet query."""
 
 
 class BalanceSheetData(Data):
-    """Return Balance Sheet Data."""
+    """Balance Sheet Data."""
 
-    date: dateType = Field(description="Date of the income statement.")
+    date: dateType = Field(description="Date of the fetched statement.")
     symbol: Optional[str] = Field(description="Symbol of the company.")
     cik: Optional[int] = Field(description="Central Index Key.")
     currency: Optional[str] = Field(description="Reporting currency.")
@@ -60,8 +58,7 @@ class BalanceSheetData(Data):
         description="Accrued income taxes, other deferred revenue"
     )
     short_term_debt: Optional[int] = Field(
-        description="Short-term borrowings, Long-term debt due within one year,"
-        " Operating lease obligations due within one year, Finance lease obligations due within one year"
+        description="Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year"
     )
     current_liabilities: Optional[int]
 

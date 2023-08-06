@@ -47,8 +47,7 @@ class FMPRevenueBusinessLineFetcher(
     ) -> List[FMPRevenueBusinessLineData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        period = "annual" if query.period == "annually" else "quarter"
-        query = query.copy(update={"period": period})
+        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(4, "revenue-product-segmentation", api_key, query)
         data = get_data(url)
@@ -56,8 +55,8 @@ class FMPRevenueBusinessLineFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
-        return [
-            FMPRevenueBusinessLineData(date=key, business_line=value)
+        data = [
+            {"date": list(d.keys())[0], "business_line": list(d.values())[0]}
             for d in data
             for key, value in d.items()
         ]

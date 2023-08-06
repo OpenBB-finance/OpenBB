@@ -5,14 +5,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
-from pydantic import Field
+from openbb_provider.utils.helpers import get_querystring
+from pydantic import Field, validator
 
-from openbb_benzinga.utils.helpers import (
-    BenzingaStockNewsData,
-    get_data,
-)
+from openbb_benzinga.utils.helpers import BenzingaImage, get_data
 
 
 class BenzingaStockNewsQueryParams(StockNewsQueryParams):
@@ -57,8 +54,8 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
         ]
     ] = Field(
         default=None,
-        description="The order in which to sort the news. "
-        "Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.",
+        description="The order in which to sort the news. Options are: published_at,"
+        " updated_at, title, author, channel, ticker, topic, content_type.",
     )
     isin: Optional[str] = Field(
         default=None, description="The ISIN of the news to retrieve."
@@ -78,6 +75,21 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     content_types: Optional[str] = Field(
         default=None, description="The content types of the news to retrieve."
     )
+
+
+class BenzingaStockNewsData(StockNewsData):
+    """Benzinga Stock News data."""
+
+    class Config:
+        fields = {"date": "created", "text": "body"}
+
+    image: List[BenzingaImage] = Field(
+        description="The images associated with the news."
+    )
+
+    @validator("date", pre=True)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
 
 class BenzingaStockNewsFetcher(
@@ -112,4 +124,5 @@ class BenzingaStockNewsFetcher(
     def transform_data(
         data: List[BenzingaStockNewsData],
     ) -> List[BenzingaStockNewsData]:
+        # {"image": lambda x: "" if x == [] else x[0].url}
         return data

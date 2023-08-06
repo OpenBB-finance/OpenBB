@@ -1,10 +1,12 @@
 """Key Metrics fetcher."""
 
 
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.key_metrics import KeyMetricsData, KeyMetricsQueryParams
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -53,14 +55,13 @@ class FMPKeyMetricsData(KeyMetricsData):
             "dividend_yield": "dividendYield",
             "payout_ratio": "payoutRatio",
             "sales_general_and_administrative_to_revenue": "salesGeneralAndAdministrativeToRevenue",
-            "research_and_developement_to_revenue": "researchAndDdevelopementToRevenue",
+            "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
             "intangibles_to_total_assets": "intangiblesToTotalAssets",
             "capex_to_operating_cash_flow": "capexToOperatingCashFlow",
             "capex_to_revenue": "capexToRevenue",
             "capex_to_depreciation": "capexToDepreciation",
             "stock_based_compensation_to_revenue": "stockBasedCompensationToRevenue",
             "graham_number": "grahamNumber",
-            "roic": "roic",
             "return_on_tangible_assets": "returnOnTangibleAssets",
             "graham_net_net": "grahamNetNet",
             "working_capital": "workingCapital",
@@ -76,9 +77,12 @@ class FMPKeyMetricsData(KeyMetricsData):
             "receivables_turnover": "receivablesTurnover",
             "payables_turnover": "payablesTurnover",
             "inventory_turnover": "inventoryTurnover",
-            "roe": "roe",
             "capex_per_share": "capexPerShare",
         }
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=no-self-argument
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPKeyMetricsFetcher(
@@ -99,8 +103,7 @@ class FMPKeyMetricsFetcher(
     ) -> List[FMPKeyMetricsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        period = "annual" if query.period == "annually" else "quarter"
-        query = query.copy(update={"period": period})
+        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(
             3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
@@ -108,5 +111,5 @@ class FMPKeyMetricsFetcher(
         return get_data_many(url, FMPKeyMetricsData)
 
     @staticmethod
-    def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:
-        return [KeyMetricsData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[FMPKeyMetricsData]) -> List[FMPKeyMetricsData]:
+        return data

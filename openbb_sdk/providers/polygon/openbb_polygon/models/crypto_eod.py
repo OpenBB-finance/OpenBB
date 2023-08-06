@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
-from pydantic import Field, PositiveInt, validator
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -47,6 +47,7 @@ class PolygonCryptoEODData(CryptoEODData):
             "vwap": "vw",
         }
 
+    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )
@@ -67,11 +68,14 @@ class PolygonCryptoEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCryptoEODQueryParams:
         now = datetime.now().date()
-        start_date = params.pop("start_date", now - timedelta(days=7))
-        end_date = params.pop("end_date", now)
-        return PolygonCryptoEODQueryParams(
-            **params, start_date=start_date, end_date=end_date
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
+        return PolygonCryptoEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -81,7 +85,7 @@ class PolygonCryptoEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"X:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
+            f"X:{query.symbol}/range/1/{str(query.timespan)}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
@@ -96,5 +100,5 @@ class PolygonCryptoEODFetcher(
         return [PolygonCryptoEODData.parse_obj(d) for d in data.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[PolygonCryptoEODData]) -> List[CryptoEODData]:
-        return [CryptoEODData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[PolygonCryptoEODData]) -> List[PolygonCryptoEODData]:
+        return data

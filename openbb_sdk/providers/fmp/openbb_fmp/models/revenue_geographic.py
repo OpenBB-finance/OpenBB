@@ -47,8 +47,7 @@ class FMPRevenueGeographicFetcher(
     ) -> List[FMPRevenueGeographicData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        period = "annual" if query.period == "annually" else "quarter"
-        query = query.copy(update={"period": period})
+        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
         data = get_data(url)
@@ -56,22 +55,20 @@ class FMPRevenueGeographicFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
-        return [
-            FMPRevenueGeographicData(
-                date=key,
-                geographic_segment=v,
-                americas=v.get("Americas Segment", v.get("North America", None)),
-                europe=v.get("Europe Segment", v.get("Europe", None)),
-                greater_china=v.get(
-                    "Greater China Segment", v.get("Greater China", None)
+        data = [
+            {
+                **v,
+                "date": k,
+                "americas": v.get("Americas Segment", v.get("North America")),
+                "europe": v.get("Europe Segment", v.get("Europe")),
+                "greater_china": v.get("Greater China Segment", v.get("Greater China")),
+                "japan": v.get("Japan Segment", v.get("Japan", v.get("J P"))),
+                "rest_of_asia_pacific": v.get(
+                    "Rest of Asia Pacific Segment", v.get("Asia-Pacific")
                 ),
-                japan=v.get("Japan Segment", v.get("Japan", v.get("J P", None))),
-                rest_of_asia_pacific=v.get(
-                    "Rest of Asia Pacific Segment", v.get("Asia-Pacific", None)
-                ),
-            )
+            }
             for d in data
-            for key, v in d.items()
+            for k, v in d.items()
             if isinstance(v, dict)
         ]
 
