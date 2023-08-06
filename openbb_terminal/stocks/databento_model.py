@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class DataBento(BaseModel):
     symbol: str
     exchange: str = "XNAS.ITCH"
-    stype: str = "native"
+    stype: str = "raw_symbol"
     start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
     end: str = datetime.now().strftime("%Y-%m-%d")
 
@@ -35,7 +35,7 @@ class DataBento(BaseModel):
         """Gets historical EOD stock data from DataBento.  Currently, just NASDAQ is supported.
         Note that only nonadjusted data is available."""
         self.exchange = "XNAS.ITCH"
-        self.stype = "native"
+        self.stype = "raw_symbol"
         return self.get_historical()
 
     def get_historical_futures(self):
