@@ -69,8 +69,8 @@ class FMPStockOwnershipFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockOwnershipQueryParams:
-        return FMPStockOwnershipQueryParams(**params)
+    def transform_query(params: Dict[str, Any]) -> StockOwnershipQueryParams:
+        return StockOwnershipQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -85,10 +85,11 @@ class FMPStockOwnershipFetcher(
             query,
         )
 
-        return get_data_many(url, FMPStockOwnershipData)
+        sorted_data = get_data_many(url, FMPStockOwnershipData)
+        sorted_data.sort(key=lambda x: x.filing_date, reverse=True)
+
+        return sorted_data
 
     @staticmethod
-    def transform_data(
-        data: List[FMPStockOwnershipData],
-    ) -> List[FMPStockOwnershipData]:
-        return data
+    def transform_data(data: List[FMPStockOwnershipData]) -> List[StockOwnershipData]:
+        return [StockOwnershipData.parse_obj(d.dict()) for d in data]

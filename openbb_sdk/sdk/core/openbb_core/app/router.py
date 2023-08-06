@@ -197,7 +197,13 @@ class Router:
         func = SignatureInspector.complete_signature(func, model)
         if func is not None:
             CommandValidator.check(func=func)
+            create_operation_id = [
+                t.replace("_router", "")
+                for t in func.__module__.split(".")[1:] + [func.__name__]
+            ]
+            cleaned_id = "_".join({c: "" for c in create_operation_id if c}.keys())
 
+            kwargs["operation_id"] = kwargs.get("operation_id", cleaned_id)
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
@@ -277,9 +283,17 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            ReturnModel = provider_interface.return_schema[model]
-            func.__annotations__["return"] = CommandOutput[ReturnModel]  # type: ignore
+            ReturnModel = merged_return = provider_interface.return_schema[model]
 
+            if get_origin(provider_interface.return_map[model]) == list or is_list:
+                ReturnModel = List[ReturnModel]
+
+            return_type = CommandOutput[ReturnModel]  # type: ignore
+            return_type.__name__ = f"CommandOutput[{merged_return.__name__}]"
+            return_type.__doc__ = (
+                f"CommandOutput with results of type '{merged_return.__name__}'."
+            )
+            func.__annotations__["return"] = return_type
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices

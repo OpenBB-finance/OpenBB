@@ -9,7 +9,7 @@ from typing import List, Optional, Type, TypeVar, Union
 import requests
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provider.utils.helpers import (
+from openbb_provider.helpers import (
     get_querystring,
 )
 from pydantic import BaseModel, PositiveFloat, validator

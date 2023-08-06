@@ -7,7 +7,6 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
 from typing import (
-    Annotated,
     Callable,
     Dict,
     List,

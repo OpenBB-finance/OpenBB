@@ -136,6 +136,11 @@ class ProviderInterface:
         """List of model names."""
         return self._registry_map.models
 
+    @property
+    def return_map(self) -> Dict[str, Dict[str, Any]]:
+        """Return map."""
+        return self._registry_map.return_map
+
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
         return self._query_executor(self._registry_map.registry)  # type: ignore
@@ -180,7 +185,14 @@ class ProviderInterface:
         # field.type_ don't work for nested types
         # field.outer_type_ don't work for Optional nested types
         type_ = field.annotation
-        description = field.field_info.description
+        provider_field = (
+            f"(provider: {provider_name})" if provider_name != "openbb" else ""
+        )
+        description = (
+            f"{field.field_info.description} {provider_field}"
+            if provider_name and field.field_info.description
+            else ""
+        )
 
         if field.required:
             if force_optional:
@@ -423,15 +435,11 @@ class ProviderInterface:
             class Config(BaseConfig):
                 extra = Extra.allow
 
-            ReturnModel = create_model(  # type: ignore
+            result[model_name] = create_model(  # type: ignore
                 model_name,
                 __config__=Config,
                 **fields_dict,  # type: ignore
             )
-
-            # TODO: If we want to support multiple return schemas, we need
-            # to change this `List` to the schema type
-            result[model_name] = List[ReturnModel]  # type: ignore
 
         return result
 

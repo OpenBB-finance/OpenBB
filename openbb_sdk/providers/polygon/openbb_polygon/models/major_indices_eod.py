@@ -5,12 +5,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveFloat, PositiveInt, validator
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -47,9 +47,9 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
             "low": "l",
             "close": "c",
             "volume": "v",
+            "vwap": "vw",
         }
 
-    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )
@@ -70,13 +70,11 @@ class PolygonMajorIndicesEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonMajorIndicesEODQueryParams:
         now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
-        return PolygonMajorIndicesEODQueryParams(**transformed_params)
+        start_date = params.pop("start_date", now - timedelta(days=7))
+        end_date = params.pop("end_date", now)
+        return PolygonMajorIndicesEODQueryParams(
+            **params, start_date=start_date, end_date=end_date
+        )
 
     @staticmethod
     def extract_data(
@@ -86,7 +84,7 @@ class PolygonMajorIndicesEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"I:{query.symbol}/range/1/{query.timespan}/"
+            f"I:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
@@ -105,5 +103,5 @@ class PolygonMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(
         data: List[PolygonMajorIndicesEODData],
-    ) -> List[PolygonMajorIndicesEODData]:
-        return data
+    ) -> List[MajorIndicesEODData]:
+        return [MajorIndicesEODData.parse_obj(d.dict()) for d in data]

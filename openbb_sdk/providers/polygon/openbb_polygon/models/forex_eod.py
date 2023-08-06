@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveFloat, PositiveInt, validator
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -47,7 +47,6 @@ class PolygonForexEODData(ForexEODData):
             "vwap": "vw",
         }
 
-    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
     )
@@ -68,13 +67,11 @@ class PolygonForexEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonForexEODQueryParams:
         now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
-        return PolygonForexEODQueryParams(**transformed_params)
+        start_date = params.pop("start_date", now - timedelta(days=7))
+        end_date = params.pop("end_date", now)
+        return PolygonForexEODQueryParams(
+            **params, start_date=start_date, end_date=end_date
+        )
 
     @staticmethod
     def extract_data(
@@ -84,10 +81,9 @@ class PolygonForexEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.symbol}/range/1/{query.timespan}/"
+            f"C:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url)

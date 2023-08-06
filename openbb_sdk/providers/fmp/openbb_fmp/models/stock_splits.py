@@ -35,14 +35,11 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockSplitCalendarQueryParams:
         today = date.today()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = today
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = today
-
-        return FMPStockSplitCalendarQueryParams(**transformed_params)
+        start_date = params.pop("start_date", today)
+        end_date = params.pop("end_date", today)
+        return FMPStockSplitCalendarQueryParams(
+            **params, start_date=start_date, end_date=end_date
+        )
 
     @staticmethod
     def extract_data(

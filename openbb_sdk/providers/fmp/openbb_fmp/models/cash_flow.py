@@ -8,7 +8,7 @@ from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from pydantic import Field, root_validator
+from pydantic import root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -19,7 +19,8 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Cash-Flow-Statement
     """
 
-    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
+    symbol: Optional[str]
+    cik: Optional[str]
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument

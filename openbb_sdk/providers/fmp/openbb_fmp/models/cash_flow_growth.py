@@ -66,9 +66,9 @@ class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
 class FMPCashFlowStatementGrowthFetcher(
     Fetcher[
         CashFlowStatementGrowthQueryParams,
-        CashFlowStatementGrowthData,
+        List[CashFlowStatementGrowthData],
         FMPCashFlowStatementGrowthQueryParams,
-        FMPCashFlowStatementGrowthData,
+        List[FMPCashFlowStatementGrowthData],
     ]
 ):
     @staticmethod
@@ -92,5 +92,5 @@ class FMPCashFlowStatementGrowthFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPCashFlowStatementGrowthData],
-    ) -> List[FMPCashFlowStatementGrowthData]:
-        return data
+    ) -> List[CashFlowStatementGrowthData]:
+        return [CashFlowStatementGrowthData.parse_obj(d.dict()) for d in data]
