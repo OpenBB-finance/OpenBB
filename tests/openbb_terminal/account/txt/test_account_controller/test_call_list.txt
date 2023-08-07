@@ -1,3 +1,4 @@
+{'items': [{'name': 'scrip1', 'description': 'abc', 'version': '0.0.0', 'updated_date': '2021-01-01', 'uuid': 'dad15f7d-4757-4fa6-a1e4-b9d150282ea0'}, {'name': 'script2', 'description': 'def', 'version': '0.0.1', 'updated_date': '2022-01-01', 'uuid': '4d87035e-33fa-4714-8b8f-9b699423595a'}, {'name': 'script3', 'description': 'ghi', 'version': '0.0.2', 'updated_date': '2023-01-01', 'uuid': '4d87035e-33fa-4714-8b8f-9b699423595b'}], 'total': 3, 'page': 1, 'size': 10, 'pages': 1}
       Name Description Version          Last Update
 1   scrip1         abc   0.0.0  2021-01-01 00:00:00
 2  script2         def   0.0.1  2022-01-01 00:00:00
