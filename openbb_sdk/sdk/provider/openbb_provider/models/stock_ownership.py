@@ -46,9 +46,7 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
 class StockOwnershipQueryParams(QueryParams, BaseSymbol):
     """Stock ownership Query."""
 
-    date: dateType = Field(
-        description=QUERY_DESCRIPTIONS.get("date", ""), default=most_recent_quarter()
-    )
+    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
     page: Optional[int] = Field(
         default=0, description="The page number of the data to fetch."
     )
