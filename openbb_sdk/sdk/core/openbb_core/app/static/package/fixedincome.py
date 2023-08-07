@@ -93,7 +93,7 @@ class CLASS_fixedincome(Container):
 
         TreasuryRates
         -------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -118,7 +118,7 @@ class CLASS_fixedincome(Container):
     def ycrv(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Yield curve."""
+        """Yield curve."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

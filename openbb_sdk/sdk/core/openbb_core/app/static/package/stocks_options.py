@@ -15,7 +15,7 @@ class CLASS_stocks_options(Container):
     def chains(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Return options chains with greeks."""
+        """Return options chains with greeks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -48,7 +48,7 @@ class CLASS_stocks_options(Container):
     def eodchain(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Gets option chain at a specific date."""
+        """Gets option chain at a specific date."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -65,7 +65,7 @@ class CLASS_stocks_options(Container):
     def expirations(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Return options expirations."""
+        """Return options expirations."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -82,7 +82,7 @@ class CLASS_stocks_options(Container):
     def grhist(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot option greek history."""
+        """Plot option greek history."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -99,7 +99,7 @@ class CLASS_stocks_options(Container):
     def hist(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot option history."""
+        """Plot option history."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -116,7 +116,7 @@ class CLASS_stocks_options(Container):
     def info(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Display option information (volatility, IV rank, etc.)."""
+        """Display option information (volatility, IV rank, etc.)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -133,7 +133,7 @@ class CLASS_stocks_options(Container):
     def last_price(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Return last price of an option."""
+        """Return last price of an option."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -150,7 +150,7 @@ class CLASS_stocks_options(Container):
     def oi(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot option open interest."""
+        """Plot option open interest."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -167,7 +167,7 @@ class CLASS_stocks_options(Container):
     def pcr(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Display put/call ratio for ticker."""
+        """Display put/call ratio for ticker."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -200,7 +200,7 @@ class CLASS_stocks_options(Container):
     def unu(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Show unusual options activity."""
+        """Show unusual options activity."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -217,7 +217,7 @@ class CLASS_stocks_options(Container):
     def voi(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot volume and open interest."""
+        """Plot volume and open interest."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -234,7 +234,7 @@ class CLASS_stocks_options(Container):
     def vol(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot volume."""
+        """Plot volume."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -251,7 +251,7 @@ class CLASS_stocks_options(Container):
     def vsurf(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Show 3D volatility surface."""
+        """Show 3D volatility surface."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

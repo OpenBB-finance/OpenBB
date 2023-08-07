@@ -556,7 +556,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_command_method_doc(func: Callable):
-        code = f'        """{func.__doc__}"""\n' if func.__doc__ else ""
+        code = f'        """{func.__doc__}"""   # noqa: E501\n' if func.__doc__ else ""
 
         return code
 

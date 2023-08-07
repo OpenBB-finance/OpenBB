@@ -2,8 +2,9 @@ from datetime import date
 from typing import Any, Optional
 from urllib.parse import urlencode
 
-root_url = "https://api.stlouisfed.org/fred"
 from openbb_provider import helpers
+
+root_url = "https://api.stlouisfed.org/fred"
 
 
 class Fred:

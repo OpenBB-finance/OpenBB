@@ -185,7 +185,7 @@ class CLASS_stocks_dd(Container):
 
         SECFilings
         ----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

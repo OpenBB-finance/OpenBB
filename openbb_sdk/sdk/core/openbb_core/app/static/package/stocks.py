@@ -185,7 +185,7 @@ class CLASS_stocks(Container):
         StockEOD
         --------
         n : Optional[PositiveInt]
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -375,7 +375,7 @@ class CLASS_stocks(Container):
         publisher : PolygonPublisher
             None
         tickers : List[str]
-            None"""
+            None"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -569,7 +569,7 @@ class CLASS_stocks(Container):
 
         StockMultiples
         --------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -594,7 +594,7 @@ class CLASS_stocks(Container):
     def tob(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """View top of book for loaded ticker (US exchanges only)."""
+        """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -700,7 +700,7 @@ class CLASS_stocks(Container):
 
         StockQuote
         ----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -724,7 +724,7 @@ class CLASS_stocks(Container):
     def search(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Search a specific stock ticker for analysis."""
+        """Search a specific stock ticker for analysis."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

@@ -20,7 +20,7 @@ class CLASS_stocks_fa(Container):
     def analysis(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Analyse SEC filings with the help of machine learning."""
+        """Analyse SEC filings with the help of machine learning."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -241,7 +241,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -399,7 +399,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheetGrowth
         ------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -488,7 +488,7 @@ class CLASS_stocks_fa(Container):
 
         DividendCalendar
         ----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -679,7 +679,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -819,7 +819,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatementGrowth
         -----------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -915,7 +915,7 @@ class CLASS_stocks_fa(Container):
 
         ExecutiveCompensation
         ---------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -997,7 +997,7 @@ class CLASS_stocks_fa(Container):
 
         StockSplitCalendar
         ------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1022,7 +1022,7 @@ class CLASS_stocks_fa(Container):
     def customer(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """List of customers of the company."""
+        """List of customers of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1039,7 +1039,7 @@ class CLASS_stocks_fa(Container):
     def dcfc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Determine the (historical) discounted cash flow."""
+        """Determine the (historical) discounted cash flow."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1115,7 +1115,7 @@ class CLASS_stocks_fa(Container):
 
         HistoricalDividends
         -------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1139,7 +1139,7 @@ class CLASS_stocks_fa(Container):
     def dupont(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Detailed breakdown for Return on Equity (RoE)."""
+        """Detailed breakdown for Return on Equity (RoE)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1222,7 +1222,7 @@ class CLASS_stocks_fa(Container):
 
         EarningsCalendar
         ----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1310,7 +1310,7 @@ class CLASS_stocks_fa(Container):
 
         HistoricalEmployees
         -------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1334,7 +1334,7 @@ class CLASS_stocks_fa(Container):
     def enterprise(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Enterprise value."""
+        """Enterprise value."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1351,7 +1351,7 @@ class CLASS_stocks_fa(Container):
     def epsfc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Earnings Estimate by Analysts - EPS."""
+        """Earnings Estimate by Analysts - EPS."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1463,7 +1463,7 @@ class CLASS_stocks_fa(Container):
 
         AnalystEstimates
         ----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1489,7 +1489,7 @@ class CLASS_stocks_fa(Container):
     def fama_coe(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Fama French 3 Factor Model - Coefficient of Earnings."""
+        """Fama French 3 Factor Model - Coefficient of Earnings."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1506,7 +1506,7 @@ class CLASS_stocks_fa(Container):
     def fama_raw(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Fama French 3 Factor Model - Raw Data."""
+        """Fama French 3 Factor Model - Raw Data."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1523,7 +1523,7 @@ class CLASS_stocks_fa(Container):
     def fraud(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Key fraud ratios including M-score, Z-score and McKee."""
+        """Key fraud ratios including M-score, Z-score and McKee."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1540,7 +1540,7 @@ class CLASS_stocks_fa(Container):
     def growth(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Growth of financial statement items and ratios."""
+        """Growth of financial statement items and ratios."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1757,7 +1757,7 @@ class CLASS_stocks_fa(Container):
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            None"""
+            None"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1892,7 +1892,7 @@ class CLASS_stocks_fa(Container):
 
         IncomeStatementGrowth
         ---------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2028,7 +2028,7 @@ class CLASS_stocks_fa(Container):
 
         StockInsiderTrading
         -------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2179,7 +2179,7 @@ class CLASS_stocks_fa(Container):
 
         InstitutionalOwnership
         ----------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2392,7 +2392,7 @@ class CLASS_stocks_fa(Container):
 
         KeyMetrics
         ----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2477,7 +2477,7 @@ class CLASS_stocks_fa(Container):
 
         KeyExecutives
         -------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2501,7 +2501,7 @@ class CLASS_stocks_fa(Container):
     def mktcap(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Obtain the market capitalization or enterprise value."""
+        """Obtain the market capitalization or enterprise value."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -2651,7 +2651,7 @@ class CLASS_stocks_fa(Container):
 
         CompanyOverview
         ---------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2804,7 +2804,7 @@ class CLASS_stocks_fa(Container):
 
         StockOwnership
         --------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2885,7 +2885,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTargetConsensus
         --------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2977,7 +2977,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTarget
         -----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3001,7 +3001,7 @@ class CLASS_stocks_fa(Container):
     def rating(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Analyst prices and ratings over time of the company."""
+        """Analyst prices and ratings over time of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3018,7 +3018,7 @@ class CLASS_stocks_fa(Container):
     def ratios(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Extensive set of ratios over time."""
+        """Extensive set of ratios over time."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3035,7 +3035,7 @@ class CLASS_stocks_fa(Container):
     def revfc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Earning Estimate by Analysts - Revenue."""
+        """Earning Estimate by Analysts - Revenue."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3117,7 +3117,7 @@ class CLASS_stocks_fa(Container):
 
         RevenueGeographic
         -----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3198,7 +3198,7 @@ class CLASS_stocks_fa(Container):
 
         RevenueBusinessLine
         -------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3224,7 +3224,7 @@ class CLASS_stocks_fa(Container):
     def rot(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Number of analyst ratings over time on a monthly basis."""
+        """Number of analyst ratings over time on a monthly basis."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3241,7 +3241,7 @@ class CLASS_stocks_fa(Container):
     def score(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Value investing scores for any time period."""
+        """Value investing scores for any time period."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3347,7 +3347,7 @@ class CLASS_stocks_fa(Container):
 
         ShareStatistics
         ---------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3424,7 +3424,7 @@ class CLASS_stocks_fa(Container):
 
         HistoricalStockSplits
         ---------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3448,7 +3448,7 @@ class CLASS_stocks_fa(Container):
     def supplier(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """List of suppliers of the company."""
+        """List of suppliers of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3526,7 +3526,7 @@ class CLASS_stocks_fa(Container):
 
         EarningsCallTranscript
         ----------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

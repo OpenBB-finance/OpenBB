@@ -15,7 +15,7 @@ class CLASS_stocks_disc(Container):
     def active(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Most active stocks by intraday trade volumes."""
+        """Most active stocks by intraday trade volumes."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -32,7 +32,7 @@ class CLASS_stocks_disc(Container):
     def arkord(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Order by ARK INvestment Management LLC."""
+        """Order by ARK INvestment Management LLC."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -49,7 +49,7 @@ class CLASS_stocks_disc(Container):
     def asc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Small cap stocks with revenue and earnings growth more than 25%."""
+        """Small cap stocks with revenue and earnings growth more than 25%."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -82,7 +82,7 @@ class CLASS_stocks_disc(Container):
     def filings(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """The most-recent form submissions to the SEC."""
+        """The most-recent form submissions to the SEC."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -99,7 +99,7 @@ class CLASS_stocks_disc(Container):
     def fipo(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Future IPOs dates."""
+        """Future IPOs dates."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -116,7 +116,7 @@ class CLASS_stocks_disc(Container):
     def gainers(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Show latest top gainers."""
+        """Show latest top gainers."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -133,7 +133,7 @@ class CLASS_stocks_disc(Container):
     def gtech(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Tech stocks with revenue and earnings growth more than 25%."""
+        """Tech stocks with revenue and earnings growth more than 25%."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -150,7 +150,7 @@ class CLASS_stocks_disc(Container):
     def hotpenny(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Today's hot penny stocks."""
+        """Today's hot penny stocks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -183,7 +183,7 @@ class CLASS_stocks_disc(Container):
     def losers(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Show latest top losers."""
+        """Show latest top losers."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -200,7 +200,7 @@ class CLASS_stocks_disc(Container):
     def lowfloat(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Low float stocks under 10M shares float."""
+        """Low float stocks under 10M shares float."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -217,7 +217,7 @@ class CLASS_stocks_disc(Container):
     def pipo(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Past IPOs dates."""
+        """Past IPOs dates."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -234,7 +234,7 @@ class CLASS_stocks_disc(Container):
     def rtat(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Top 10 retail traded stocks per day."""
+        """Top 10 retail traded stocks per day."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -251,7 +251,7 @@ class CLASS_stocks_disc(Container):
     def trending(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Trending news."""
+        """Trending news."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -268,7 +268,7 @@ class CLASS_stocks_disc(Container):
     def ugs(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Undervalued stocks with revenue and earnings growth above 25%."""
+        """Undervalued stocks with revenue and earnings growth above 25%."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -285,7 +285,7 @@ class CLASS_stocks_disc(Container):
     def ulc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Potentially undervalued large cap stocks."""
+        """Potentially undervalued large cap stocks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -302,7 +302,7 @@ class CLASS_stocks_disc(Container):
     def upcoming(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Upcoming earnings release dates."""
+        """Upcoming earnings release dates."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

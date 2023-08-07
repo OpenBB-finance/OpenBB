@@ -109,7 +109,7 @@ class CLASS_forex(Container):
         last_updated_utc : datetime
             The last updated timestamp in UTC.
         delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC."""
+            The delisted timestamp in UTC."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -229,7 +229,7 @@ class CLASS_forex(Container):
         ForexEOD
         --------
         n : PositiveInt
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

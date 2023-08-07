@@ -45,7 +45,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[NormalityModel]
             Normality tests summary. See qa_models.NormalityModel for details.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -67,7 +67,7 @@ class CLASS_qa(Container):
         target: str,
         chart: bool = False,
     ) -> CommandOutput[openbb_qa.qa_models.CAPMModel]:
-        """Capital Asset Pricing Model."""
+        """Capital Asset Pricing Model."""  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -86,7 +86,7 @@ class CLASS_qa(Container):
     def qqplot(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """QQ Plot."""
+        """QQ Plot."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -125,7 +125,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[List[OmegaModel]]
             Omega ratios.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -165,7 +165,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[List[Data]]
             Kurtosis.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -185,7 +185,7 @@ class CLASS_qa(Container):
     def pick(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Pick."""
+        """Pick."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -202,7 +202,7 @@ class CLASS_qa(Container):
     def spread(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Spread."""
+        """Spread."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -219,7 +219,7 @@ class CLASS_qa(Container):
     def rolling(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Rolling."""
+        """Rolling."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -236,7 +236,7 @@ class CLASS_qa(Container):
     def var(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Value at Risk."""
+        """Value at Risk."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -253,7 +253,7 @@ class CLASS_qa(Container):
     def line(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Line."""
+        """Line."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -270,7 +270,7 @@ class CLASS_qa(Container):
     def hist(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Histogram."""
+        """Histogram."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -312,7 +312,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[UnitRootModel]
             Unit root tests summary.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -333,7 +333,7 @@ class CLASS_qa(Container):
     def beta(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Beta."""
+        """Beta."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -372,7 +372,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[List[Data]]
             Sharpe ratio.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -420,7 +420,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[List[Data]]
             Sortino ratio.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -442,7 +442,7 @@ class CLASS_qa(Container):
     def cusum(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Sum."""
+        """Cumulative Sum."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -459,7 +459,7 @@ class CLASS_qa(Container):
     def raw(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Raw."""
+        """Raw."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -476,7 +476,7 @@ class CLASS_qa(Container):
     def cdf(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Distribution Function."""
+        """Cumulative Distribution Function."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -493,7 +493,7 @@ class CLASS_qa(Container):
     def decompose(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Decompose."""
+        """Decompose."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -529,7 +529,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[List[Data]]
             Skewness.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -554,7 +554,7 @@ class CLASS_qa(Container):
         quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
         chart: bool = False,
     ) -> CommandOutput[typing.List]:
-        """Quantile."""
+        """Quantile."""  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -575,7 +575,7 @@ class CLASS_qa(Container):
     def bw(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Bandwidth."""
+        """Bandwidth."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -592,7 +592,7 @@ class CLASS_qa(Container):
     def es(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Expected Shortfall."""
+        """Expected Shortfall."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -609,7 +609,7 @@ class CLASS_qa(Container):
     def acf(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Autocorrelation Function."""
+        """Autocorrelation Function."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -642,7 +642,7 @@ class CLASS_qa(Container):
         -------
         CommandOutput[SummaryModel]
             Summary table.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,

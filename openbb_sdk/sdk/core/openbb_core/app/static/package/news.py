@@ -123,7 +123,7 @@ class CLASS_news(Container):
         GlobalNews
         ----------
         site : str
-            The site of the news."""
+            The site of the news."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -147,7 +147,7 @@ class CLASS_news(Container):
     def sectornews(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Sector news."""
+        """Sector news."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

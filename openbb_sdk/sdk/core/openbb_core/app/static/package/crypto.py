@@ -116,7 +116,7 @@ class CLASS_crypto(Container):
         CryptoEOD
         ---------
         n : PositiveInt
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
