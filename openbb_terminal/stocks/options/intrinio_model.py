@@ -496,7 +496,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return underlying_price.rename(underlying_price["security"]["ticker"])
 
 
-def get_eod_chains(symbol: str, date: str) -> object:
+def get_eod_chains(symbol: str, date: str) -> Options:
     """Internal function for loading historical EOD option prices.  This function is called from `load_options()`.
 
     Parameters
@@ -601,7 +601,7 @@ def get_eod_chains(symbol: str, date: str) -> object:
 
 
 @check_api_key(["API_INTRINIO_KEY"])
-def load_options(symbol: str, date: str = "", pydantic=False) -> object:
+def load_options(symbol: str, date: str = "", pydantic=False) -> Options:
     """OptionsChains data object for Intrinio.
 
     Parameters
@@ -751,4 +751,4 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> object:
 
         return OptionsChains
 
-    return None
+    return Options()
