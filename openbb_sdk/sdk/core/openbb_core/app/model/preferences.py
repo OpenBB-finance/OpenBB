@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, PositiveInt
+from pydantic import ConfigDict, BaseModel, PositiveInt
 
 
 class Preferences(BaseModel):
@@ -16,9 +16,7 @@ class Preferences(BaseModel):
     plot_open_export: bool = (
         False  # Whether to open plot image exports after they are created
     )
-
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return (

@@ -4,8 +4,8 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
-from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
-from pydantic.fields import ModelField
+from pydantic import ConfigDict, BaseModel, Field, create_model
+from pydantic.fields import FieldInfo
 
 
 @dataclass
@@ -171,7 +171,7 @@ class ProviderInterface:
     @staticmethod
     def _create_field(
         name: str,
-        field: ModelField,
+        field: FieldInfo,
         provider_name: Optional[str] = None,
         query: bool = False,
         force_optional: bool = False,
@@ -180,9 +180,10 @@ class ProviderInterface:
         # field.type_ don't work for nested types
         # field.outer_type_ don't work for Optional nested types
         type_ = field.annotation
-        description = field.field_info.description
+        description = field.description
 
-        if field.required:
+        # if not field.exclude and field.default is None:
+        if not field.exclude:
             if force_optional:
                 type_ = Optional[type_]  # type: ignore
                 default = None
@@ -214,8 +215,8 @@ class ProviderInterface:
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
         for provider_name, model_details in providers.items():
-            if provider_name == "openbb":
-                for name, field in model_details["QueryParams"]["fields"].items():
+            for name, field in model_details["QueryParams"]["fields"].items():
+                if provider_name == "openbb":
                     incoming = cls._create_field(name, field, query=True)
 
                     standard[incoming.name] = (
@@ -223,31 +224,27 @@ class ProviderInterface:
                         incoming.type_,
                         incoming.default,
                     )
-            else:
-                for name, field in model_details["QueryParams"]["fields"].items():
-                    if name not in providers["openbb"]["QueryParams"]["fields"]:
-                        incoming = cls._create_field(
-                            name, field, provider_name, query=True, force_optional=True
+                elif name not in providers["openbb"]["QueryParams"]["fields"]:
+                    incoming = cls._create_field(
+                        name, field, provider_name, query=True, force_optional=True
+                    )
+
+                    if incoming.name in extra:
+                        current = DataclassField(*extra[incoming.name])
+                        updated = cls._merge_fields(current, incoming, query=True)
+                    else:
+                        updated = incoming
+
+                    if not updated.default.title.startswith("Available for providers:"):
+                        updated.default.title = (
+                            f"Available for providers: {updated.default.title}"
                         )
 
-                        if incoming.name in extra:
-                            current = DataclassField(*extra[incoming.name])
-                            updated = cls._merge_fields(current, incoming, query=True)
-                        else:
-                            updated = incoming
-
-                        if not updated.default.title.startswith(
-                            "Available for providers:"
-                        ):
-                            updated.default.title = (
-                                "Available for providers: " + updated.default.title
-                            )
-
-                        extra[updated.name] = (
-                            updated.name,
-                            updated.type_,
-                            updated.default,
-                        )
+                    extra[updated.name] = (
+                        updated.name,
+                        updated.type_,
+                        updated.default,
+                    )
 
         return standard, extra
 
@@ -260,8 +257,8 @@ class ProviderInterface:
         extra: Dict[str, Tuple[str, Any, Any]] = {}
 
         for provider_name, model_details in providers.items():
-            if provider_name == "openbb":
-                for name, field in model_details["Data"]["fields"].items():
+            for name, field in model_details["Data"]["fields"].items():
+                if provider_name == "openbb":
                     incoming = cls._create_field(name, field, "openbb")
 
                     standard[incoming.name] = (
@@ -269,24 +266,22 @@ class ProviderInterface:
                         incoming.type_,
                         incoming.default,
                     )
-            else:
-                for name, field in model_details["Data"]["fields"].items():
-                    if name not in providers["openbb"]["Data"]["fields"]:
-                        incoming = cls._create_field(
-                            name, field, provider_name, force_optional=True
-                        )
+                elif name not in providers["openbb"]["Data"]["fields"]:
+                    incoming = cls._create_field(
+                        name, field, provider_name, force_optional=True
+                    )
 
-                        if incoming.name in extra:
-                            current = DataclassField(*extra[incoming.name])
-                            updated = cls._merge_fields(current, incoming)
-                        else:
-                            updated = incoming
+                    if incoming.name in extra:
+                        current = DataclassField(*extra[incoming.name])
+                        updated = cls._merge_fields(current, incoming)
+                    else:
+                        updated = incoming
 
-                        extra[updated.name] = (
-                            updated.name,
-                            updated.type_,
-                            updated.default,
-                        )
+                    extra[updated.name] = (
+                        updated.name,
+                        updated.type_,
+                        updated.default,
+                    )
 
         return standard, extra
 
@@ -409,23 +404,23 @@ class ProviderInterface:
             fields = standard.__fields__.copy()
             fields.update(extra.__fields__)
 
-            fields_dict: Dict[str, Tuple[Any, Any]] = {}
-            for name, field in fields.items():
-                fields_dict[name] = (
+            fields_dict: Dict[str, Tuple[Any, Any]] = {
+                name: (
                     field.annotation,
                     Field(
                         default=field.default,
-                        title=field.field_info.title,
-                        description=field.field_info.description,
+                        title=field.title,
+                        description=field.description,
                     ),
                 )
+                for name, field in fields.items()
+            }
 
-            class Config(BaseConfig):
-                extra = Extra.allow
+            model_config = ConfigDict(extra="allow")
 
             ReturnModel = create_model(  # type: ignore
                 model_name,
-                __config__=Config,
+                __config__=model_config,
                 **fields_dict,  # type: ignore
             )
 

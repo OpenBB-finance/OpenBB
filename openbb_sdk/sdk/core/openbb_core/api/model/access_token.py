@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from openbb_core.app.model.abstract.tagged import Tagged
-from pydantic import Field
+from pydantic import ConfigDict, Field
 
 
 class AccessToken(Tagged):
@@ -9,6 +9,4 @@ class AccessToken(Tagged):
 
     sub: str = Field(description="Subject of the token, here : `UserSettings.id`")
     exp: datetime = Field(description="Expiration datetime of the `access_token`.")
-
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
