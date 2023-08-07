@@ -43,5 +43,6 @@ class ChartingSettings:
         )
         self.user_exports_directory = user_settings.preferences.export_directory
         self.user_styles_directory = user_settings.preferences.user_styles_directory
+        self.table_style = user_settings.preferences.table_style
         # Theme
         self.chart_style = user_settings.preferences.chart_style

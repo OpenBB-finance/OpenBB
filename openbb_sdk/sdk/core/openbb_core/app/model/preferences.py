@@ -16,6 +16,7 @@ class Preferences(BaseModel):
     plot_open_export: bool = (
         False  # Whether to open plot image exports after they are created
     )
+    table_style: Literal["dark", "light"] = "dark"
 
     class Config:
         validate_assignment = True
