@@ -144,25 +144,6 @@ class ChartingManager(metaclass=SingletonMeta):
         create_backend_func(charting_settings=charting_settings)
         get_backend_func().start(debug=charting_settings.debug_mode)
 
-    def to_plotly_json(self, **kwargs) -> str:
-        """
-        Returns the plotly json representation of the chart.
-        """
-        if not self._charting_extension_installed:
-            raise ChartingManagerError(
-                f"Charting extension `{self._charting_extension}` is not installed"
-            )
-        self.handle_backend(self._charting_extension, self._charting_settings)
-
-        # Dynamically import the charting module
-        backend_module = import_module(self._charting_extension)
-        # Get the plotly json function from the charting module
-        to_plotly_json_func = getattr(backend_module, "to_plotly_json")
-        # Add the charting settings to the kwargs
-        kwargs["charting_settings"] = self._charting_settings
-
-        return to_plotly_json_func(**kwargs)
-
     def render_chart(self, **kwargs) -> Chart:
         """
         Returns the chart object.
