@@ -28,7 +28,7 @@ def get_historical(
     end_date : str
         The end date of the historical data you want to retrieve. The date should be in the format "YYYY-MM-DD".
     source : Optional[str], default "YahooFinance"
-        The source from which you want to retrieve the historical data. This parameter is optional and defaults to "YahooFinance".
+        The source from which you want to retrieve the historical data.
         Valid values for the source are "YahooFinance" and "DataBento".
     expiry : Optional[str], default ""
         The expiry date for futures contracts. This parameter is optional and defaults to an empty string.
