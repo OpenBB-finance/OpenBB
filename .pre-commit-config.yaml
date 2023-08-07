@@ -25,8 +25,8 @@ repos:
         entry: pydocstyle
         language: python
         types: [python]
-        files: 'openbb_sdk/*.py'
-        exclude: '.*tests/.*\.py|openbb_sdk/test_.*\.py'
+        files: '^openbb_sdk/.*\.py$'
+        exclude: 'tests/.*\.py|openbb_sdk/test_.*\.py'
         args: ["--config=pyproject.toml"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.5
