@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import ConfigDict, BaseModel, Field
 
 from openbb_core.app.model.hub.hub_session import HubSession
 
@@ -10,9 +10,7 @@ class Profile(BaseModel):
     username: Optional[str] = Field(default=None)
     password_hash: Optional[str] = Field(default=None)
     hub_session: Optional[HubSession] = Field(default=None)
-
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return (

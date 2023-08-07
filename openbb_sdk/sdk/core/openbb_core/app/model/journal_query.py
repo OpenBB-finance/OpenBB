@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import ConfigDict, BaseModel, Field
 
 
 class JournalQuery(BaseModel):
@@ -11,5 +11,4 @@ class JournalQuery(BaseModel):
         description="Whether or not the JournalEntry with an CommandOutput.Error should be ignored.",
     )
 
-    class Config:
-        allow_mutation = False
+    model_config = ConfigDict(frozen=True)

@@ -5,7 +5,7 @@ from functools import partial
 from pathlib import Path
 from typing import List, Literal, Optional
 
-from pydantic import Field, root_validator, validator
+from pydantic import field_validator, model_validator, ConfigDict, Field
 
 from openbb_core.app.constants import (
     HOME_DIRECTORY,
@@ -57,9 +57,7 @@ class SystemSettings(Tagged):
         default=None,
         description="Connection URI like : `mongodb://root:example@localhost:27017/`",
     )
-
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return (
@@ -81,7 +79,7 @@ class SystemSettings(Tagged):
     #     values["debug_mode"] = bool(values["debug_mode"] or dm)
     #     return values
 
-    @root_validator(allow_reuse=True)
+    @model_validator(mode="before")
     @classmethod
     def create_openbb_directory(cls, values):
         obb_dir = values["openbb_directory"]
@@ -98,7 +96,7 @@ class SystemSettings(Tagged):
                 cls.create_empty_json(system_settings)
         return values
 
-    @root_validator(allow_reuse=True)
+    @model_validator(mode="before")
     @classmethod
     def validate_posthog_handler(cls, values):
         if (
@@ -110,7 +108,8 @@ class SystemSettings(Tagged):
 
         return values
 
-    @validator("logging_handlers", allow_reuse=True, always=True)
+    @field_validator("logging_handlers")
+    @classmethod
     @classmethod
     def validate_logging_handlers(cls, v):
         for value in v:
@@ -118,12 +117,13 @@ class SystemSettings(Tagged):
                 raise ValueError("Invalid logging handler")
         return v
 
-    @validator("logging_commit_hash", allow_reuse=True, always=True)
+    @field_validator("logging_commit_hash")
+    @classmethod
     @classmethod
     def validate_commit_hash(cls, v):
         return v or get_commit_hash()
 
-    @root_validator(allow_reuse=True)
+    @model_validator(mode="before")
     @classmethod
     def validate_branch(cls, values):
         branch = values["logging_branch"]

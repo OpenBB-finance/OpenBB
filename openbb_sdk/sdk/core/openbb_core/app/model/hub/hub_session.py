@@ -8,7 +8,7 @@ class HubSession(BaseModel):
     token_type: str
     user_uuid: str
     email: str
-    username: Optional[str]
+    username: Optional[str] = None
     primary_usage: str
 
     def __repr__(self) -> str:
