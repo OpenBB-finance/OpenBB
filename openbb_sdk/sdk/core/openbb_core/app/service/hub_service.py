@@ -1,3 +1,4 @@
+"""Hub manager class."""
 from typing import Optional
 
 import requests
@@ -12,11 +13,11 @@ from openbb_core.app.model.user_settings import UserSettings
 
 
 class OpenBBError(Exception):
-    pass
+    """OpenBB error."""
 
 
 class HubService:
-    """Hub manager class"""
+    """Manage Hub service class."""
 
     BASE_URL = "https://payments.openbb.dev"
     TIMEOUT = 10
