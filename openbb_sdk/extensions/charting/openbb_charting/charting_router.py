@@ -1,6 +1,7 @@
 from typing import Any, Dict, Tuple
 
 from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.openbb_figure_table import OpenBBFigureTable
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.charts.chart import ChartFormat
 from openbb_core.app.router import Router
@@ -1845,12 +1846,10 @@ def stocks_news(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)
 
-    fig = OpenBBFigure()
-    fig.to_table(data=data, columnwidth=columnwidth, print_index=True)
+    tbl_fig = OpenBBFigureTable(tabular_data=data, columnwidth=columnwidth)
+    content = tbl_fig.to_table().show(external=True).to_plotly_json()
 
-    content = fig.show(external=True).to_plotly_json()
-
-    return fig, content
+    return tbl_fig, content
 
 
 def stocks_tob(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
