@@ -85,7 +85,9 @@ class FMPIncomeStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPIncomeStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPIncomeStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -97,7 +99,7 @@ class FMPIncomeStatementFetcher(
             f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
 
-        return get_data_many(url, FMPIncomeStatementData)
+        return get_data_many(url, FMPIncomeStatementData, **kwargs)
 
     @staticmethod
     def transform_data(

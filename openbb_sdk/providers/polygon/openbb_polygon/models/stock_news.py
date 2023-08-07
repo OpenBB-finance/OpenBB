@@ -6,8 +6,8 @@ from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
+from openbb_provider.utils.helpers import data_transformer, get_querystring
 from pydantic import BaseModel, Field
 
 from openbb_polygon.utils.helpers import get_data
@@ -95,14 +95,16 @@ class PolygonStockNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonStockNewsQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonStockNewsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonStockNewsData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
         querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&apiKey={api_key}"
-        data = get_data(request_url)["results"]
+        data = get_data(request_url, **kwargs)["results"]
 
         if len(data) == 0:
             raise RuntimeError("No news found")

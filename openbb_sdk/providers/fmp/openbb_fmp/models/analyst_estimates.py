@@ -61,7 +61,9 @@ class FMPAnalystEstimatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPAnalystEstimatesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPAnalystEstimatesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPAnalystEstimatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -70,7 +72,7 @@ class FMPAnalystEstimatesFetcher(
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPAnalystEstimatesData)
+        return get_data_many(url, FMPAnalystEstimatesData, **kwargs)
 
     @staticmethod
     def transform_data(
