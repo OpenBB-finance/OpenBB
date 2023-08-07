@@ -33,6 +33,17 @@ def balance(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(model="BalanceSheetGrowth")
+def balance_growth(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Balance Sheet Statement Growth."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command(model="DividendCalendar")
 def cal(
     cc: CommandContext,
@@ -52,6 +63,17 @@ def cash(
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Cash Flow Statement."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
+@router.command(model="CashFlowStatementGrowth")
+def cash_growth(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Cash Flow Statement Growth."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
@@ -191,6 +213,17 @@ def income(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(model="IncomeStatementGrowth")
+def income_growth(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Income Statement Growth."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command(model="StockInsiderTrading")
 def ins(
     cc: CommandContext,
@@ -199,6 +232,17 @@ def ins(
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
     """Stock Insider Trading."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
+@router.command(model="InstitutionalOwnership")
+def ins_own(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Institutional Ownership."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
@@ -251,14 +295,14 @@ def overview(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command(model="InstitutionalOwnership")
+@router.command(model="StockOwnership")
 def own(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
-    """Institutional Ownership."""
+    """Stock Ownership."""
     return CommandOutput(results=Query(**locals()).execute())
 
 

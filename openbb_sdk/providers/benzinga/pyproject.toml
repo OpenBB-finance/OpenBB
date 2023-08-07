@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-benzinga = "openbb_benzinga.provider:benzinga_provider"
+benzinga = "openbb_benzinga:benzinga_provider"

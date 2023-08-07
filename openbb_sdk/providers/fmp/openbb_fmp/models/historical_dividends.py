@@ -1,14 +1,11 @@
 """FMP Historical Dividends fetcher."""
 
 from datetime import (
-    date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
@@ -22,34 +19,29 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """FMP Historical Dividends query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Dividends
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPHistoricalDividendsData(Data):
+class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends data."""
 
-    date: dateType
-    label: str
-    adjDividend: float
-    dividend: float
-    recordDate: Optional[dateType]
-    paymentDate: Optional[dateType]
-    declarationDate: Optional[dateType]
+    class Config:
+        fields = {
+            "adj_dividend": "adjDividend",
+            "record_date": "recordDate",
+            "payment_date": "paymentDate",
+            "declaration_date": "declarationDate",
+        }
 
-    @validator("declarationDate", pre=True)
+    @validator("declarationDate", pre=True, check_fields=False)
     def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("recordDate", pre=True)
+    @validator("recordDate", pre=True, check_fields=False)
     def record_date_validate(cls, v: str):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("paymentDate", pre=True)
+    @validator("paymentDate", pre=True, check_fields=False)
     def payment_date_validate(cls, v: str):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
@@ -63,28 +55,24 @@ class FMPHistoricalDividendsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: HistoricalDividendsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPHistoricalDividendsQueryParams:
-        return FMPHistoricalDividendsQueryParams(
-            symbol=query.symbol,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPHistoricalDividendsQueryParams:
+        return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPHistoricalDividendsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPHistoricalDividendsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPHistoricalDividendsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"historical-price-full/stock_dividend/{query.symbol}", api_key
         )
-        return get_data_many(url, FMPHistoricalDividendsData, "historical")
+        return get_data_many(url, FMPHistoricalDividendsData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(
         data: List[FMPHistoricalDividendsData],
-    ) -> List[HistoricalDividendsData]:
-        return data_transformer(data, HistoricalDividendsData)
+    ) -> List[FMPHistoricalDividendsData]:
+        return data

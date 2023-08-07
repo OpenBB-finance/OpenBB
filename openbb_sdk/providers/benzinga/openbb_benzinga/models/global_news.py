@@ -2,79 +2,98 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
-from pydantic import Field
+from openbb_provider.models.stock_news import StockNewsData
+from openbb_provider.utils.helpers import get_querystring
+from pydantic import Field, validator
 
-from openbb_benzinga.utils.helpers import BenzingaBaseNewsData, get_data
+from openbb_benzinga.utils.helpers import BenzingaImage, get_data
 
 
-class BenzingaGlobalNewsQueryParams(QueryParams):
+class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     """Benzinga Global News query.
 
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
-
-    Parameter
-    ---------
-    page : int (default: 0)
-        The page of the data to retrieve.
-    pageSize : int (default: 15)
-        The number of results to return per page.
-    displayOutput : str (default: "headline")
-        The type of data to return. Options are "headline", "summary", "full", "all".
-    date : Optional[datetime]
-        The date of the news to retrieve.
-    dateFrom : Optional[datetime]
-        The start date of the news to retrieve.
-    dateTo : Optional[datetime]
-        The end date of the news to retrieve.
-    updatedSince : Optional[int]
-        The number of seconds since the news was updated.
-    publishedSince : Optional[int]
-        The number of seconds since the news was published.
-    sort : Optional[str]
-        The order in which to sort the news. Options are:
-        "published_at", "updated_at", "title", "author", "channel", "ticker", "topic", "content_type".
-    isin : Optional[str]
-        The ISIN of the news to retrieve.
-    cusip : Optional[str]
-        The CUSIP of the news to retrieve.
-    tickers : Optional[str]
-        The tickers of the news to retrieve.
-    channels : Optional[str]
-        The channels of the news to retrieve.
-    topics : Optional[str]
-        The topics of the news to retrieve.
-    authors : Optional[str]
-        The authors of the news to retrieve.
-    content_types : Optional[str]
-        The content types of the news to retrieve.
     """
 
-    page: int = Field(default=0)
-    pageSize: int = Field(default=15)
-    displayOutput: str = Field(default="headline")
-    date: Optional[datetime] = None
-    dateFrom: Optional[datetime] = None
-    dateTo: Optional[datetime] = None
-    updatedSince: Optional[int] = None
-    publishedSince: Optional[int] = None
-    sort: Optional[str] = None
-    isin: Optional[str] = None
-    cusip: Optional[str] = None
-    tickers: Optional[str] = None
-    channels: Optional[str] = None
-    topics: Optional[str] = None
-    authors: Optional[str] = None
-    content_types: Optional[str] = None
+    pageSize: int = Field(
+        default=15, description="The number of results to return per page."
+    )
+    displayOutput: Literal["headline", "summary", "full", "all"] = Field(
+        default="headline", description="The type of data to return."
+    )
+    date: Optional[datetime] = Field(
+        default=None, description="The date of the news to retrieve."
+    )
+    dateFrom: Optional[datetime] = Field(
+        default=None, description="The start date of the news to retrieve."
+    )
+    dateTo: Optional[datetime] = Field(
+        default=None, description="The end date of the news to retrieve."
+    )
+    updatedSince: Optional[int] = Field(
+        default=None,
+        description="The number of seconds since the news was updated.",
+    )
+    publishedSince: Optional[int] = Field(
+        default=None,
+        description="The number of seconds since the news was published.",
+    )
+    sort: Optional[
+        Literal[
+            "published_at",
+            "updated_at",
+            "title",
+            "author",
+            "channel",
+            "ticker",
+            "topic",
+            "content_type",
+        ]
+    ] = Field(
+        default=None,
+        description="The order in which to sort the news. Options are: published_at,"
+        " updated_at, title, author, channel, ticker, topic, content_type.",
+    )
+    isin: Optional[str] = Field(
+        default=None, description="The ISIN of the news to retrieve."
+    )
+    cusip: Optional[str] = Field(
+        default=None, description="The CUSIP of the news to retrieve."
+    )
+    tickers: Optional[str] = Field(
+        default=None, description="The tickers of the news to retrieve."
+    )
+    channels: Optional[str] = Field(
+        default=None, description="The channels of the news to retrieve."
+    )
+    topics: Optional[str] = Field(
+        default=None, description="The topics of the news to retrieve."
+    )
+    authors: Optional[str] = Field(
+        default=None, description="The authors of the news to retrieve."
+    )
+    content_types: Optional[str] = Field(
+        default=None, description="The content types of the news to retrieve."
+    )
 
 
-class BenzingaGlobalNewsData(BenzingaBaseNewsData):
-    url: str
+class BenzingaGlobalNewsData(StockNewsData):
+    """Benzinga Global News data."""
+
+    class Config:
+        fields = {"date": "created", "text": "body"}
+
+    image: List[BenzingaImage] = Field(
+        description="The images associated with the news."
+    )
+
+    @validator("date", pre=True)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
 
 class BenzingaGlobalNewsFetcher(
@@ -86,24 +105,21 @@ class BenzingaGlobalNewsFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: GlobalNewsQueryParams, extra_params: Optional[Dict] = None
-    ) -> BenzingaGlobalNewsQueryParams:
-        return BenzingaGlobalNewsQueryParams(
-            page=query.page, **extra_params if extra_params else {}
-        )
+    def transform_query(params: Dict[str, Any]) -> BenzingaGlobalNewsQueryParams:
+        return BenzingaGlobalNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: BenzingaGlobalNewsQueryParams, credentials: Optional[Dict[str, str]]
+        query: BenzingaGlobalNewsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[BenzingaGlobalNewsData]:
-        if credentials:
-            api_key = credentials.get("benzinga_api_key")
+        api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
-        querystring = get_querystring(query.dict(), [])
+        querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
 
         if len(data) == 0:
             raise RuntimeError("No news found")
@@ -113,6 +129,5 @@ class BenzingaGlobalNewsFetcher(
     @staticmethod
     def transform_data(
         data: List[BenzingaGlobalNewsData],
-    ) -> List[GlobalNewsData]:
-        processors = {"image": lambda x: "" if x == [] else x[0].url}
-        return data_transformer(data, GlobalNewsData, processors)
+    ) -> List[BenzingaGlobalNewsData]:
+        return data

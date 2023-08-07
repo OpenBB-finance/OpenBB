@@ -1,12 +1,9 @@
 """FMP Analyst Estimates fetcher."""
 
 
-from datetime import date as dateType
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.analyst_estimates import (
     AnalystEstimatesData,
     AnalystEstimatesQueryParams,
@@ -16,44 +13,38 @@ from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
-    """FMP Analysts Estimates query.
+    """FMP Analysts Estimates Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    period: Literal["quarter", "annual"]
-        The period of the analyst estimates.
-    limit : int
-        The limit number of the amount of returned estimates.
     """
 
 
-class FMPAnalystEstimatesData(Data):
-    symbol: str
-    date: dateType
-    estimatedRevenueLow: int
-    estimatedRevenueHigh: int
-    estimatedRevenueAvg: int
-    estimatedEbitdaLow: int
-    estimatedEbitdaHigh: int
-    estimatedEbitdaAvg: int
-    estimatedEbitLow: int
-    estimatedEbitHigh: int
-    estimatedEbitAvg: int
-    estimatedNetIncomeLow: int
-    estimatedNetIncomeHigh: int
-    estimatedNetIncomeAvg: int
-    estimatedSgaExpenseLow: int
-    estimatedSgaExpenseHigh: int
-    estimatedSgaExpenseAvg: int
-    estimatedEpsAvg: float
-    estimatedEpsHigh: float
-    estimatedEpsLow: float
-    numberAnalystEstimatedRevenue: int
-    numberAnalystsEstimatedEps: int
+class FMPAnalystEstimatesData(AnalystEstimatesData):
+    """FMP Analyst Estimates Data."""
+
+    class Config:
+        fields = {
+            "estimated_revenue_low": "estimatedRevenueLow",
+            "estimated_revenue_high": "estimatedRevenueHigh",
+            "estimated_revenue_avg": "estimatedRevenueAvg",
+            "estimated_ebitda_low": "estimatedEbitdaLow",
+            "estimated_ebitda_high": "estimatedEbitdaHigh",
+            "estimated_ebitda_avg": "estimatedEbitdaAvg",
+            "estimated_ebit_low": "estimatedEbitLow",
+            "estimated_ebit_high": "estimatedEbitHigh",
+            "estimated_ebit_avg": "estimatedEbitAvg",
+            "estimated_net_income_low": "estimatedNetIncomeLow",
+            "estimated_net_income_high": "estimatedNetIncomeHigh",
+            "estimated_net_income_avg": "estimatedNetIncomeAvg",
+            "estimated_sga_expense_low": "estimatedSgaExpenseLow",
+            "estimated_sga_expense_high": "estimatedSgaExpenseHigh",
+            "estimated_sga_expense_avg": "estimatedSgaExpenseAvg",
+            "estimated_eps_avg": "estimatedEpsAvg",
+            "estimated_eps_high": "estimatedEpsHigh",
+            "estimated_eps_low": "estimatedEpsLow",
+            "number_analyst_estimated_revenue": "numberAnalystEstimatedRevenue",
+            "number_analysts_estimated_eps": "numberAnalystsEstimatedEps",
+        }
 
 
 class FMPAnalystEstimatesFetcher(
@@ -65,27 +56,26 @@ class FMPAnalystEstimatesFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: AnalystEstimatesQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPAnalystEstimatesQueryParams:
-        return FMPAnalystEstimatesQueryParams(
-            symbol=query.symbol, period=query.period, limit=query.limit
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPAnalystEstimatesQueryParams:
+        return FMPAnalystEstimatesQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPAnalystEstimatesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPAnalystEstimatesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPAnalystEstimatesData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        query.period = "quarter" if query.period == "quarterly" else "annual"
 
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPAnalystEstimatesData)
+        return get_data_many(url, FMPAnalystEstimatesData, **kwargs)
 
     @staticmethod
     def transform_data(
         data: List[FMPAnalystEstimatesData],
-    ) -> List[AnalystEstimatesData]:
-        return data_transformer(data, AnalystEstimatesData)
+    ) -> List[FMPAnalystEstimatesData]:
+        return data

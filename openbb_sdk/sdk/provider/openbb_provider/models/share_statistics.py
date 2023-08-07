@@ -3,42 +3,29 @@
 
 from datetime import date as dateType
 
-from openbb_provider.abstract.data import Data, QueryParams
+from pydantic import Field
+
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class ShareStatisticsQueryParams(QueryParams, BaseSymbol):
-    """Share Statistics query.
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    """
+    """Share Statistics Query."""
 
 
-class ShareStatisticsData(Data):
-    """Return Share Statistics Data.
+class ShareStatisticsData(Data, BaseSymbol):
+    """Return Share Statistics Data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the company.
-    date : dateType
-        The date of the share statistics.
-    free_float : float
-        The free float of the company.
-    float_shares : float
-        The float shares of the company.
-    outstanding_shares : float
-        The outstanding shares of the company.
-    source : str
-        The source of the data.
-    """
-
-    symbol: str
-    date: dateType
-    free_float: float
-    float_shares: float
-    outstanding_shares: float
-    source: str
+    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
+    free_float: float = Field(
+        description="The percentage of unrestricted shares of a publicly-traded company."
+    )
+    float_shares: float = Field(
+        description="The number of shares available for trading by the general public."
+    )
+    outstanding_shares: float = Field(
+        description="The total number of shares of a publicly-traded company."
+    )
+    source: str = Field(description="Source of the received data.")

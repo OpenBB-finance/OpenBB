@@ -2,47 +2,58 @@
 
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import BaseStockData, BaseStockQueryParams
 
 
-class PolygonStockEODQueryParams(BaseStockQueryParams):
-    """Polygon stocks end of day query.
+class PolygonStockEODQueryParams(StockEODQueryParams):
+    """Polygon stocks end of day Query.
 
     Source: https://polygon.io/docs/stocks/getting-started
-
-    Parameters
-    ----------
-    symbol : str
-        The symbol of the stocks to fetch.
-    start_date : Union[date, datetime]
-        The start date of the query.
-    end_date : Union[date, datetime]
-        The end date of the query.
-    timespan : Timespan, optional
-        The timespan of the query, by default Timespan.day
-    sort : Literal["asc", "desc"], optional
-        The sort order of the query, by default "desc"
-    limit : PositiveInt, optional
-        The limit of the query, by default 49999
-    adjusted : bool, optional
-        Whether the query is adjusted, by default True
-    multiplier : PositiveInt, optional
-        The multiplier of the query, by default 1
     """
 
+    timespan: Literal[
+        "minute", "hour", "day", "week", "month", "quarter", "year"
+    ] = Field(default="day", description="The timespan of the data.")
+    sort: Literal["asc", "desc"] = Field(
+        default="desc", description="Sort order of the data."
+    )
+    limit: PositiveInt = Field(
+        default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
+    adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
+    multiplier: PositiveInt = Field(
+        default=1, description="The multiplier of the timespan."
+    )
 
-class PolygonStockEODData(BaseStockData):
-    v: NonNegativeFloat = Field(alias="volume")
-    n: PositiveInt
-    vw: Optional[PositiveFloat]
+
+class PolygonStockEODData(StockEODData):
+    """Polygon stocks end of day Data."""
+
+    class Config:
+        fields = {
+            "date": "t",
+            "open": "o",
+            "high": "h",
+            "low": "l",
+            "close": "c",
+            "volume": "v",
+            "vwap": "vw",
+        }
+
+    n: PositiveInt = Field(
+        description="The number of transactions for the symbol in the time period."
+    )
+
+    @validator("t", pre=True, check_fields=False)
+    def t_validate(cls, v):  # pylint: disable=E0213
+        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonStockEODFetcher(
@@ -54,44 +65,42 @@ class PolygonStockEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: StockEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonStockEODQueryParams:
-        now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=5)).date()
-        end_date = query.end_date or now.date()
-        return PolygonStockEODQueryParams(
-            symbol=query.symbol,
-            start_date=start_date,
-            end_date=end_date,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonStockEODQueryParams:
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return PolygonStockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonStockEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonStockEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonStockEODData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.stocksTicker.upper()}/range/1/{str(query.timespan.value)}/"
+            f"{query.symbol}/range/1/{str(query.timespan)}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 
-        if "results" not in data.keys() or len(data["results"]) == 0:
+        if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
         data = data["results"]
         return [PolygonStockEODData(**d) for d in data]
 
     @staticmethod
-    def transform_data(data: List[PolygonStockEODData]) -> List[StockEODData]:
-        return data_transformer(data, StockEODData)
+    def transform_data(data: List[PolygonStockEODData]) -> List[PolygonStockEODData]:
+        return data

@@ -1,58 +1,59 @@
 """Polygon forex end of day fetcher."""
 
 
-from datetime import date, datetime, timedelta
-from typing import Dict, List, Literal, Optional, Union
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.data import QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
-from pydantic import Field, NonNegativeFloat, PositiveFloat, PositiveInt
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import BaseStockData, Timespan
 
 
-class PolygonForexEODQueryParams(QueryParams):
-    """Polygon forex end of day query.
+class PolygonForexEODQueryParams(ForexEODQueryParams):
+    """Polygon forex end of day Query.
 
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
-
-    Parameters
-    ----------
-    stocksTicker : str
-        The ticker symbol of the stocks to fetch.
-    start_date : Union[date, datetime], optional
-        The start date of the query.
-    end_date : Union[date, datetime], optional
-        The end date of the query.
-    timespan : Timespan, optional
-        The timespan of the query, by default Timespan.day
-    sort : Literal["asc", "desc"], optional
-        The sort order of the query, by default "desc"
-    limit : PositiveInt, optional
-        The limit of the query, by default 49999
-    adjusted : bool, optional
-        Whether the query is adjusted, by default True
-    multiplier : PositiveInt, optional
-        The multiplier of the query, by default 1
     """
 
-    stocksTicker: str = Field(alias="symbol")
-    start_date: Optional[Union[date, datetime]]
-    end_date: Optional[Union[date, datetime]]
-    timespan: Optional[Timespan] = Field(default=Timespan.day)
-    sort: Optional[Literal["asc", "desc"]] = Field(default="desc")
-    limit: Optional[PositiveInt] = Field(default=49999)
-    adjusted: Optional[bool] = Field(default=True)
-    multiplier: Optional[PositiveInt] = Field(default=1)
+    timespan: Literal[
+        "minute", "hour", "day", "week", "month", "quarter", "year"
+    ] = Field(default="day", description="The timespan of the data.")
+    sort: Literal["asc", "desc"] = Field(
+        default="desc", description="Sort order of the data."
+    )
+    limit: PositiveInt = Field(
+        default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
+    adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
+    multiplier: PositiveInt = Field(
+        default=1, description="The multiplier of the timespan."
+    )
 
 
-class PolygonForexEODData(BaseStockData):
-    v: NonNegativeFloat = Field(alias="volume")
-    n: PositiveInt
-    vw: Optional[PositiveFloat]
+class PolygonForexEODData(ForexEODData):
+    """Polygon forex end of day Data."""
+
+    class Config:
+        fields = {
+            "date": "t",
+            "open": "o",
+            "high": "h",
+            "low": "l",
+            "close": "c",
+            "volume": "v",
+            "vwap": "vw",
+        }
+
+    n: PositiveInt = Field(
+        description="The number of transactions for the symbol in the time period."
+    )
+
+    @validator("t", pre=True, check_fields=False)
+    def time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonForexEODFetcher(
@@ -64,42 +65,42 @@ class PolygonForexEODFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ForexEODQueryParams, extra_params: Optional[Dict] = None
-    ) -> PolygonForexEODQueryParams:
-        return PolygonForexEODQueryParams(
-            symbol=query.symbol,
-            **extra_params or {},
-        )
+    def transform_query(params: Dict[str, Any]) -> PolygonForexEODQueryParams:
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return PolygonForexEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonForexEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonForexEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonForexEODData]:
-        if credentials:
-            api_key = credentials.get("polygon_api_key")
+        api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        now = datetime.now()
-        start_date = query.start_date or (now - timedelta(days=5)).date()
-        end_date = query.end_date or now.date()
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.stocksTicker.upper()}/range/1/{query.timespan._value_}/"
-            f"{start_date}/{end_date}?adjusted={query.adjusted}"
+            f"C:{query.symbol}/range/1/{query.timespan}/"
+            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 
-        if "results" not in data.keys() or len(data["results"]) == 0:
+        if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
         data = data["results"]
         return [PolygonForexEODData(**d) for d in data]
 
     @staticmethod
-    def transform_data(data: List[PolygonForexEODData]) -> List[ForexEODData]:
-        return data_transformer(data, ForexEODData)
+    def transform_data(data: List[PolygonForexEODData]) -> List[PolygonForexEODData]:
+        return data

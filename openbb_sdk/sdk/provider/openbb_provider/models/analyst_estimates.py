@@ -4,97 +4,54 @@
 from datetime import date as dateType
 from typing import Literal
 
-from openbb_provider.abstract.data import Data, QueryParams
+from pydantic import Field
+
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class AnalystEstimatesQueryParams(QueryParams, BaseSymbol):
-    """Analyst Estimates query.
+    """Analyst Estimates query."""
 
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    period : Literal["quarter", "annual"]
-        The period of the analyst estimates.
-    limit : int
-        The limit of the analyst estimates.
-    """
-
-    period: Literal["quarter", "annual"] = "annual"
-    limit: int = 30
+    period: Literal["quarterly", "annually"] = Field(
+        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
 
 class AnalystEstimatesData(Data, BaseSymbol):
-    """Analyst estimates data.
+    """Analyst estimates data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the asset.
-    date : date
-        The date of the analyst estimates.
-    estimated_revenue_low : int
-        The estimated revenue low of the analyst estimates.
-    estimated_revenue_high : int
-        The estimated revenue high of the analyst estimates.
-    estimated_revenue_avg : int
-        The estimated revenue average of the analyst estimates.
-    estimated_ebitda_low : int
-        The estimated EBITDA low of the analyst estimates.
-    estimated_ebitda_high : int
-        The estimated EBITDA high of the analyst estimates.
-    estimated_ebitda_avg : int
-        The estimated EBITDA average of the analyst estimates.
-    estimated_ebit_low : int
-        The estimated EBIT low of the analyst estimates.
-    estimated_ebit_high : int
-        The estimated EBIT high of the analyst estimates.
-    estimated_ebit_avg : int
-        The estimated EBIT average of the analyst estimates.
-    estimated_net_income_low : int
-        The estimated net income low of the analyst estimates.
-    estimated_net_income_high : int
-        The estimated net income high of the analyst estimates.
-    estimated_net_income_avg : int
-        The estimated net income average of the analyst estimates.
-    estimated_sga_expense_low : int
-        The estimated SGA expense low of the analyst estimates.
-    estimated_sga_expense_high : int
-        The estimated SGA expense high of the analyst estimates.
-    estimated_sga_expense_avg : int
-        The estimated SGA expense average of the analyst estimates.
-    estimated_eps_avg : float
-        The estimated EPS average of the analyst estimates.
-    estimated_eps_high : float
-        The estimated EPS high of the analyst estimates.
-    estimated_eps_low : float
-        The estimated EPS low of the analyst estimates.
-    number_analyst_estimated_revenue : int
-        The number of analysts who estimated revenue of the analyst estimates.
-    number_analysts_estimated_eps : int
-        The number of analysts who estimated EPS of the analyst estimates.
-    """
-
-    symbol: str
-    date: dateType
-    estimated_revenue_low: int
-    estimated_revenue_high: int
-    estimated_revenue_avg: int
-    estimated_ebitda_low: int
-    estimated_ebitda_high: int
-    estimated_ebitda_avg: int
-    estimated_ebit_low: int
-    estimated_ebit_high: int
-    estimated_ebit_avg: int
-    estimated_net_income_low: int
-    estimated_net_income_high: int
-    estimated_net_income_avg: int
-    estimated_sga_expense_low: int
-    estimated_sga_expense_high: int
-    estimated_sga_expense_avg: int
-    estimated_eps_avg: float
-    estimated_eps_high: float
-    estimated_eps_low: float
-    number_analyst_estimated_revenue: int
-    number_analysts_estimated_eps: int
+    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
+    estimated_revenue_low: int = Field(description="The estimated revenue low.")
+    estimated_revenue_high: int = Field(description="The estimated revenue high.")
+    estimated_revenue_avg: int = Field(description="The estimated revenue average.")
+    estimated_ebitda_low: int = Field(description="The estimated EBITDA low.")
+    estimated_ebitda_high: int = Field(description="The estimated EBITDA high.")
+    estimated_ebitda_avg: int = Field(description="The estimated EBITDA average.")
+    estimated_ebit_low: int = Field(description="The estimated EBIT low.")
+    estimated_ebit_high: int = Field(description="The estimated EBIT high.")
+    estimated_ebit_avg: int = Field(description="The estimated EBIT average.")
+    estimated_net_income_low: int = Field(description="The estimated net income low.")
+    estimated_net_income_high: int = Field(description="The estimated net income high.")
+    estimated_net_income_avg: int = Field(
+        description="The estimated net income average."
+    )
+    estimated_sga_expense_low: int = Field(description="The estimated SGA expense low.")
+    estimated_sga_expense_high: int = Field(
+        description="The estimated SGA expense high."
+    )
+    estimated_sga_expense_avg: int = Field(
+        description="The estimated SGA expense average."
+    )
+    estimated_eps_avg: float = Field(description="The estimated EPS average.")
+    estimated_eps_high: float = Field(description="The estimated EPS high.")
+    estimated_eps_low: float = Field(description="The estimated EPS low.")
+    number_analyst_estimated_revenue: int = Field(
+        description="The number of analysts who estimated revenue."
+    )
+    number_analysts_estimated_eps: int = Field(
+        description="The number of analysts who estimated EPS."
+    )

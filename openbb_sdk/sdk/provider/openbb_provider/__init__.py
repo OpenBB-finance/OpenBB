@@ -1,2 +1,3 @@
 """OpenBB Provider Package."""
-from . import metadata, models  # noqa: F401
+from . import models  # noqa: F401
+from .utils import descriptions, helpers  # noqa: F401

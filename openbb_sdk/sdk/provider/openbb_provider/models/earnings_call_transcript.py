@@ -2,55 +2,29 @@
 
 
 from datetime import datetime
+from typing import Literal
 
-from pydantic import validator
+from pydantic import Field
 
-from openbb_provider.abstract.data import Data, QueryParams
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.models.base import BaseSymbol
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class EarningsCallTranscriptQueryParams(QueryParams, BaseSymbol):
-    """Earnings call transcript rating query model.
+    """Earnings call transcript rating Query."""
 
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    year : int
-        The year of the earnings call transcript.
-    """
-
-    year: int
-
-    @validator("year", pre=True)
-    def time_validate(cls, v: int):  # pylint: disable=E0213
-        current_year = datetime.now().year
-        if v > current_year:
-            return current_year
-        if v < 1950:
-            return current_year
-        return v
+    year: int = Field(description="The year of the earnings call transcript.")
+    quarter: Literal[1, 2, 3, 4] = Field(
+        default=1, description="The quarter of the earnings call transcript."
+    )
 
 
 class EarningsCallTranscriptData(Data, BaseSymbol):
-    """Earnings call transcript data.
+    """Earnings call transcript Data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the asset.
-    quarter : int
-        The quarter of the earnings call transcript.
-    year : int
-        The year of the earnings call transcript.
-    date : datetime
-        The date of the earnings call transcript.
-    content : str
-        The content of the earnings call transcript.
-    """
-
-    symbol: str
-    quarter: int
-    year: int
-    date: datetime
-    content: str
+    quarter: int = Field(description="The quarter of the earnings call transcript.")
+    year: int = Field(description="The year of the earnings call transcript.")
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    content: str = Field(description="The content of the earnings call transcript.")

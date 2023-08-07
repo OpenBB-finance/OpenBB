@@ -1,6 +1,6 @@
 """User dependency."""
 from datetime import datetime, timedelta
-from typing import Annotated, Optional
+from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -12,6 +12,7 @@ from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 from passlib.context import CryptContext
 from pymongo import MongoClient
+from typing_extensions import Annotated
 
 SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc"  # nosec # pragma: allowlist secret
 ALGORITHM = "HS256"

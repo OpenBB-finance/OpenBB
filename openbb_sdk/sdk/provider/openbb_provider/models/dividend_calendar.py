@@ -1,73 +1,45 @@
 """Dividend Calendar data model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
+from datetime import date as dateType
 from typing import Optional
 
 from pydantic import Field, NonNegativeFloat
 
-from openbb_provider.abstract.data import Data, QueryParams
-from openbb_provider.metadata import DESCRIPTIONS
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.models.base import BaseSymbol
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class DividendCalendarQueryParams(QueryParams):
-    """Dividend Calendar query.
-
-    The maximum time interval between the start and end date can be 3 months.
-    Default value for time interval is 1 month.
-
-    Parameter
-    ---------
-    start_date : date
-        The starting date to fetch the dividend calendar from. Default value is the
-        previous day from the last month.
-    end_date : date
-        The ending date to fetch the dividend calendar till. Default value is the
-        previous day from the current month.
-    """
+    """Dividend Calendar Query."""
 
     start_date: Optional[dateType] = Field(
-        description=DESCRIPTIONS.get("start_date", ""),
-        default=datetime.now().date() - timedelta(days=31),
+        description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     end_date: Optional[dateType] = Field(
-        description=DESCRIPTIONS.get("end_date", ""),
-        default=datetime.now().date() - timedelta(days=1),
+        description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
 
 
-class DividendCalendarData(Data):
-    """Dividend Calendar data.
+class DividendCalendarData(Data, BaseSymbol):
+    """Dividend Calendar Data."""
 
-    Returns
-    -------
-    date : dateType
-        The date of the dividend in the calendar.
-    label : str
-        The date in human readable form in the calendar.
-    adjDividend : Optional[NonNegativeFloat]
-        The adjusted dividend on a date in the calendar.
-    symbol : str
-        The symbol of the company for which the dividend is returned in the calendar.
-    dividend : Optional[NonNegativeFloat]
-        The dividend amount in the calendar.
-    recordDate : Optional[dateType]
-        The record date of the dividend in the calendar.
-    paymentDate : Optional[dateType]
-        The payment date of the dividend in the calendar.
-    declarationDate : Optional[dateType]
-        The declaration date of the dividend in the calendar.
-    """
-
-    date: dateType
-    label: str
-    adjDividend: Optional[NonNegativeFloat] = Field(alias="adj_dividend")
-    symbol: str
-    dividend: Optional[NonNegativeFloat]
-    recordDate: Optional[dateType] = Field(alias="record_date")
-    paymentDate: Optional[dateType] = Field(alias="payment_date")
-    declarationDate: Optional[dateType] = Field(alias="declaration_date")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
+    label: str = Field(description="The date in human readable form in the calendar.")
+    adj_dividend: Optional[NonNegativeFloat] = Field(
+        description="The adjusted dividend on a date in the calendar.",
+    )
+    dividend: Optional[NonNegativeFloat] = Field(
+        description="The dividend amount in the calendar."
+    )
+    record_date: Optional[dateType] = Field(
+        description="The record date of the dividend in the calendar.",
+    )
+    payment_date: Optional[dateType] = Field(
+        description="The payment date of the dividend in the calendar.",
+    )
+    declaration_date: Optional[dateType] = Field(
+        description="The declaration date of the dividend in the calendar.",
+    )

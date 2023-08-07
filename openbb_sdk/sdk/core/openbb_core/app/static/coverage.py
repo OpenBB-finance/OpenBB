@@ -6,14 +6,14 @@ class Coverage:
     """Coverage class."""
 
     def __init__(self):
-        self.__command_map = CommandMap()
+        self._command_map = CommandMap(coverage_sep=".")
 
     @property
     def providers(self):
         """Return providers coverage."""
-        return self.__command_map.provider_coverage
+        return self._command_map.provider_coverage
 
     @property
     def commands(self):
         """Return commands coverage."""
-        return self.__command_map.command_coverage
+        return self._command_map.command_coverage

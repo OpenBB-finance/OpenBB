@@ -1,98 +1,75 @@
 """FMP Cash Flow Statement Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
 from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from pydantic import Field, NonNegativeInt, root_validator
+from pydantic import Field, root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPCashFlowStatementQueryParams(QueryParams):
-    """FMP Cash Flow Statement QueryParams.
+class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
+    """FMP Cash Flow Statement Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Cash-Flow-Statement
-
-    Parameter
-    ---------
-    symbol : Optional[str]
-        The symbol of the company if cik is not provided.
-    cik : Optional[str]
-        The CIK of the company if symbol is not provided.
-    period : Literal["annual", "quarter"]
-        The period of the cash flow statement. Default is "annual".
-    limit : Optional[NonNegativeInt]
-        The limit of the cash flow statement.
     """
 
-    symbol: Optional[str]
-    cik: Optional[str]
-    period: Literal["annual", "quarter"] = Field(default="annual")
-    limit: Optional[NonNegativeInt]
+    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
 
     @root_validator()
-    def check_symbol_or_cik(cls, values):  # pylint: disable=E0213
+    def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
         if values.get("symbol") is None and values.get("cik") is None:
             raise ValueError("symbol or cik must be provided")
         return values
 
 
-class FMPCashFlowStatementData(Data):
-    date: dateType
-    symbol: str
-    cik: Optional[int]
-    reportedCurrency: str = Field(alias="currency")
-    fillingDate: Optional[dateType]
-    acceptedDate: Optional[datetime]
+class FMPCashFlowStatementData(CashFlowStatementData):
+    """FMP Cash Flow Statement Data."""
+
+    class Config:
+        fields = {
+            "currency": "reportedCurrency",
+            "filing_date": "fillingDate",
+            "accepted_date": "acceptedDate",
+            "net_income": "netIncome",
+            "depreciation_and_amortization": "depreciationAndAmortization",
+            "stock_based_compensation": "stockBasedCompensation",
+            "other_non_cash_items": "otherNonCashItems",
+            "deferred_income_tax": "deferredIncomeTax",
+            "change_in_working_capital": "changeInWorkingCapital",
+            "accounts_receivables": "accountsReceivables",
+            "inventory": "inventory",
+            "accounts_payables": "accountsPayables",
+            "other_working_capital": "otherWorkingCapital",
+            "net_cash_flow_from_operating_activities": "netCashProvidedByOperatingActivities",
+            "investments_in_property_plant_and_equipment": "investmentsInPropertyPlantAndEquipment",
+            "acquisitions_net": "acquisitionsNet",
+            "purchases_of_investments": "purchasesOfInvestments",
+            "sales_maturities_of_investments": "salesMaturitiesOfInvestments",
+            "other_investing_activities": "otherInvestingActivites",
+            "net_cash_flow_from_investing_activities": "netCashUsedForInvestingActivites",
+            "debt_repayment": "debtRepayment",
+            "common_stock_issued": "commonStockIssued",
+            "common_stock_repurchased": "commonStockRepurchased",
+            "dividends_paid": "dividendsPaid",
+            "other_financing_activities": "otherFinancingActivites",
+            "net_cash_flow_from_financing_activities": "netCashUsedProvidedByFinancingActivities",
+            "effect_of_forex_changes_on_cash": "effectOfForexChangesOnCash",
+            "net_change_in_cash": "netChangeInCash",
+            "cash_at_end_of_period": "cashAtEndOfPeriod",
+            "cash_at_beginning_of_period": "cashAtBeginningOfPeriod",
+            "operating_cash_flow": "operatingCashFlow",
+            "capital_expenditure": "capitalExpenditure",
+            "net_cash_flow": "freeCashFlow",
+        }
+
+    # Leftovers below
     calendarYear: Optional[int]
-    period: Optional[str]
-    netIncome: Optional[int]
-    depreciationAndAmortization: Optional[int]
-    deferredIncomeTax: Optional[int]
-    stockBasedCompensation: Optional[int]
-    changeInWorkingCapital: Optional[int]
-    accountsReceivables: Optional[int]
-    inventory: Optional[int]
-    accountsPayables: Optional[int]
-    otherWorkingCapital: Optional[int]
-    otherNonCashItems: Optional[int]
-    netCashProvidedByOperatingActivities: Optional[int] = Field(
-        alias="net_cash_flow_from_operating_activities"
-    )
-    investmentsInPropertyPlantAndEquipment: Optional[int]
-    acquisitionsNet: Optional[int]
-    purchasesOfInvestments: Optional[int]
-    salesMaturitiesOfInvestments: Optional[int]
-    otherInvestingActivites: Optional[int] = Field(alias="other_investing_activities")
-    netCashUsedForInvestingActivites: Optional[int] = Field(
-        alias="net_cash_flow_from_investing_activities"
-    )
-    debtRepayment: Optional[int]
-    commonStockIssued: Optional[int]
-    commonStockRepurchased: Optional[int]
-    dividendsPaid: Optional[int]
-    otherFinancingActivites: Optional[int] = Field(alias="other_financing_activities")
-    netCashUsedProvidedByFinancingActivities: Optional[int] = Field(
-        alias="net_cash_flow_from_financing_activities"
-    )
-    effectOfForexChangesOnCash: Optional[int] = Field(alias="exchange_gain_losses")
-    netChangeInCash: Optional[int] = Field(alias="net_cash_flow")
-    cashAtEndOfPeriod: Optional[int]
-    cashAtBeginningOfPeriod: Optional[int]
-    operatingCashFlow: Optional[int]
-    capitalExpenditure: Optional[int]
-    freeCashFlow: Optional[int]
     link: Optional[str]
     finalLink: Optional[str]
 
@@ -106,28 +83,26 @@ class FMPCashFlowStatementFetcher(
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: CashFlowStatementQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPCashFlowStatementQueryParams:
-        period = "annual" if query.period == "annually" else "quarter"
-        return FMPCashFlowStatementQueryParams(
-            symbol=query.symbol, period=period, **extra_params if extra_params else {}  # type: ignore
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
+        return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPCashFlowStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCashFlowStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCashFlowStatementData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementData)
+        return get_data_many(url, FMPCashFlowStatementData, **kwargs)
 
     @staticmethod
     def transform_data(
         data: List[FMPCashFlowStatementData],
-    ) -> List[CashFlowStatementData]:
-        return data_transformer(data, CashFlowStatementData)
+    ) -> List[FMPCashFlowStatementData]:
+        return data

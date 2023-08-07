@@ -1,63 +1,7 @@
 import csv
 import os
 from pathlib import Path
-from typing import List, Literal
-
-CPI_COUNTRIES = Literal[
-    "australia",
-    "austria",
-    "belgium",
-    "brazil",
-    "bulgaria",
-    "canada",
-    "chile",
-    "china",
-    "croatia",
-    "cyprus",
-    "czech_republic",
-    "denmark",
-    "estonia",
-    "euro_area",
-    "finland",
-    "france",
-    "germany",
-    "greece",
-    "hungary",
-    "iceland",
-    "india",
-    "indonesia",
-    "ireland",
-    "israel",
-    "italy",
-    "japan",
-    "korea",
-    "latvia",
-    "lithuania",
-    "luxembourg",
-    "malta",
-    "mexico",
-    "netherlands",
-    "new_zealand",
-    "norway",
-    "poland",
-    "portugal",
-    "romania",
-    "russian_federation",
-    "slovak_republic",
-    "slovakia",
-    "slovenia",
-    "south_africa",
-    "spain",
-    "sweden",
-    "switzerland",
-    "turkey",
-    "united_kingdom",
-    "united_states",
-]
-
-CPI_UNITS = Literal["growth_previous", "growth_same", "index_2015"]
-
-CPI_FREQUENCY = Literal["monthly", "quarterly", "annual"]
+from typing import List
 
 
 def all_cpi_options(harmonized: bool = False) -> List[dict]:

@@ -13,7 +13,7 @@ from pydantic import BaseModel
 router = Router(prefix="")
 
 
-# Remove this once the placeholders are replaced with real commands
+# Remove this once the placeholders are replaced with real commands.
 
 # pylint: disable=unused-argument
 
@@ -33,11 +33,10 @@ def const(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> CommandOutput[BaseModel]:
-    """"""
+    """Get the constituents of an index."""
     return CommandOutput(results=Query(**locals()).execute())
 
 
-# pylint: disable=too-many-arguments
 @router.command(model="CPI")
 def cpi(
     cc: CommandContext,
@@ -57,7 +56,7 @@ def cpi_options(
     return CommandOutput(results=Empty())
 
 
-@router.command(model="MajorIndicesPrice")
+@router.command(model="MajorIndicesEOD")
 def index(
     cc: CommandContext,
     provider_choices: ProviderChoices,

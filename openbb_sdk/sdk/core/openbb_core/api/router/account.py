@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from openbb_core.api.dependency.user import (
@@ -14,6 +12,7 @@ from openbb_core.api.dependency.user import (
 from openbb_core.api.model.token_response import TokenResponse
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.hub_service import HubService
+from typing_extensions import Annotated
 
 router = APIRouter(prefix="/account", tags=["Account"])
 

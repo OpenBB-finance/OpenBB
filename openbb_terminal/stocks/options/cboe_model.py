@@ -30,18 +30,22 @@ def get_cboe_directory() -> pd.DataFrame:
     >>> from openbb_terminal.stocks.options import cboe_model
     >>> CBOE_DIRECTORY = cboe_model.get_cboe_directory()
     """
+    try:
+        CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
+            "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
+        )
+        CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
+            columns={
+                " Stock Symbol": "Symbol",
+                " DPM Name": "DPM Name",
+                " Post/Station": "Post/Station",
+            }
+        ).set_index("Symbol")
 
-    CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
-        "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
-    )
-    CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
-        columns={
-            " Stock Symbol": "Symbol",
-            " DPM Name": "DPM Name",
-            " Post/Station": "Post/Station",
-        }
-    ).set_index("Symbol")
-    return CBOE_DIRECTORY
+        return CBOE_DIRECTORY
+
+    except HTTPError:
+        return pd.DataFrame()
 
 
 def get_cboe_index_directory() -> pd.DataFrame:
@@ -57,45 +61,51 @@ def get_cboe_index_directory() -> pd.DataFrame:
     >>> CBOE_INDEXES = cboe_model.get_cboe_index_directory()
     """
 
-    CBOE_INDEXES: pd.DataFrame = pd.DataFrame(
-        pd.read_json(
-            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+    try:
+        CBOE_INDEXES: pd.DataFrame = pd.DataFrame(
+            pd.read_json(
+                "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+            )
         )
-    )
 
-    CBOE_INDEXES = CBOE_INDEXES.rename(
-        columns={
-            "calc_end_time": "Close Time",
-            "calc_start_time": "Open Time",
-            "currency": "Currency",
-            "description": "Description",
-            "display": "Display",
-            "featured": "Featured",
-            "featured_order": "Featured Order",
-            "index_symbol": "Ticker",
-            "mkt_data_delay": "Data Delay",
-            "name": "Name",
-            "tick_days": "Tick Days",
-            "tick_frequency": "Frequency",
-            "tick_period": "Period",
-            "time_zone": "Time Zone",
-        },
-    )
+        CBOE_INDEXES = CBOE_INDEXES.rename(
+            columns={
+                "calc_end_time": "Close Time",
+                "calc_start_time": "Open Time",
+                "currency": "Currency",
+                "description": "Description",
+                "display": "Display",
+                "featured": "Featured",
+                "featured_order": "Featured Order",
+                "index_symbol": "Ticker",
+                "mkt_data_delay": "Data Delay",
+                "name": "Name",
+                "tick_days": "Tick Days",
+                "tick_frequency": "Frequency",
+                "tick_period": "Period",
+                "time_zone": "Time Zone",
+            },
+        )
 
-    indices_order: list[str] = [
-        "Ticker",
-        "Name",
-        "Description",
-        "Currency",
-        "Tick Days",
-        "Frequency",
-        "Period",
-        "Time Zone",
-    ]
+        indices_order: list[str] = [
+            "Ticker",
+            "Name",
+            "Description",
+            "Currency",
+            "Tick Days",
+            "Frequency",
+            "Period",
+            "Time Zone",
+        ]
 
-    CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index("Ticker")
+        CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index(
+            "Ticker"
+        )
 
-    return CBOE_INDEXES
+        return CBOE_INDEXES
+
+    except HTTPError:
+        return pd.DataFrame()
 
 
 # Gets the list of indexes for parsing the ticker symbol properly.
@@ -471,7 +481,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
     return quotes.reset_index()
 
 
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for CBOE.
 
     Parameters
@@ -571,4 +581,4 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
 
         return OptionsChains
 
-    return None
+    return Options()
