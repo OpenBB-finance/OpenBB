@@ -82,7 +82,6 @@ class PolygonStockEODFetcher(
         **kwargs: Any,
     ) -> List[PolygonStockEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
-        print(query)
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
