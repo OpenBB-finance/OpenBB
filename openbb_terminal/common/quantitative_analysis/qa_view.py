@@ -121,7 +121,8 @@ def display_hist(
 
     fig.update_layout(
         xaxis_title="Value",
-        yaxis_title="Proportion",
+        margin=dict(r=40),
+        yaxis=dict(title="Proportion", title_standoff=40),
         bargap=0.01,
         bargroupgap=0,
     )
