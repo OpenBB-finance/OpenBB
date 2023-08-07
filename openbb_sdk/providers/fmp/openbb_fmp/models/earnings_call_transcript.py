@@ -36,8 +36,6 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[
-        EarningsCallTranscriptQueryParams,
-        EarningsCallTranscriptData,
         FMPEarningsCallTranscriptQueryParams,
         FMPEarningsCallTranscriptData,
     ]

@@ -28,8 +28,6 @@ class FMPRiskPremiumData(RiskPremiumData):
 
 class FMPRiskPremiumFetcher(
     Fetcher[
-        RiskPremiumQueryParams,
-        RiskPremiumData,
         FMPRiskPremiumQueryParams,
         FMPRiskPremiumData,
     ]

@@ -49,8 +49,6 @@ class FMPAnalystEstimatesData(AnalystEstimatesData):
 
 class FMPAnalystEstimatesFetcher(
     Fetcher[
-        AnalystEstimatesQueryParams,
-        AnalystEstimatesData,
         FMPAnalystEstimatesQueryParams,
         FMPAnalystEstimatesData,
     ]

@@ -49,8 +49,6 @@ class FMPTreasuryRatesData(TreasuryRatesData):
 
 class FMPTreasuryRatesFetcher(
     Fetcher[
-        TreasuryRatesQueryParams,
-        TreasuryRatesData,
         FMPTreasuryRatesQueryParams,
         FMPTreasuryRatesData,
     ]

@@ -26,8 +26,6 @@ class FMPGlobalNewsData(GlobalNewsData):
 
 class FMPGlobalNewsFetcher(
     Fetcher[
-        GlobalNewsQueryParams,
-        GlobalNewsData,
         FMPGlobalNewsQueryParams,
         FMPGlobalNewsData,
     ]

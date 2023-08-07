@@ -49,8 +49,6 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
 
 class FMPHistoricalEmployeesFetcher(
     Fetcher[
-        HistoricalEmployeesQueryParams,
-        HistoricalEmployeesData,
         FMPHistoricalEmployeesQueryParams,
         FMPHistoricalEmployeesData,
     ]

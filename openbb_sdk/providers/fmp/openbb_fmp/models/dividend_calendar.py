@@ -53,8 +53,6 @@ class FMPDividendCalendarData(DividendCalendarData):
 
 class FMPDividendCalendarFetcher(
     Fetcher[
-        DividendCalendarQueryParams,
-        DividendCalendarData,
         FMPDividendCalendarQueryParams,
         FMPDividendCalendarData,
     ]

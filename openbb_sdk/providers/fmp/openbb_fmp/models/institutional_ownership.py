@@ -68,8 +68,6 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
 
 class FMPInstitutionalOwnershipFetcher(
     Fetcher[
-        InstitutionalOwnershipQueryParams,
-        InstitutionalOwnershipData,
         FMPInstitutionalOwnershipQueryParams,
         FMPInstitutionalOwnershipData,
     ]

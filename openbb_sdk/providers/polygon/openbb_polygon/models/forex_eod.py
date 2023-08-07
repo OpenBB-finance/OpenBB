@@ -58,8 +58,6 @@ class PolygonForexEODData(ForexEODData):
 
 class PolygonForexEODFetcher(
     Fetcher[
-        ForexEODQueryParams,
-        ForexEODData,
         PolygonForexEODQueryParams,
         PolygonForexEODData,
     ]

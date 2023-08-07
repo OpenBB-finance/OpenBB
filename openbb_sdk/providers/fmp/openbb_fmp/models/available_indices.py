@@ -31,8 +31,6 @@ class FMPAvailableIndicesData(AvailableIndicesData):
 
 class FMPAvailableIndicesFetcher(
     Fetcher[
-        AvailableIndicesQueryParams,
-        AvailableIndicesData,
         FMPAvailableIndicesQueryParams,
         FMPAvailableIndicesData,
     ]

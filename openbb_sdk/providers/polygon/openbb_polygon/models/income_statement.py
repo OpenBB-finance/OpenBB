@@ -1,12 +1,9 @@
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.income_statement import (
     IncomeStatementData,
-    IncomeStatementQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
@@ -53,7 +50,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     preferred_stock_dividends_and_other_adjustments: Optional[float]
 
     @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):
+    def symbol_from_tickers(cls, v):  # pylint: disable=E0213
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -61,8 +58,6 @@ class PolygonIncomeStatementData(IncomeStatementData):
 
 class PolygonIncomeStatementFetcher(
     Fetcher[
-        IncomeStatementQueryParams,
-        IncomeStatementData,
         PolygonIncomeStatementQueryParams,
         PolygonIncomeStatementData,
     ]

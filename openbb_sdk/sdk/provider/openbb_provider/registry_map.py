@@ -1,3 +1,7 @@
+"""Provider registry map."""
+
+import inspect
+import os
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -18,22 +22,27 @@ class RegistryMap:
 
     @property
     def registry(self) -> Registry:
+        """Get the registry."""
         return self._registry
 
     @property
     def available_providers(self) -> List[str]:
+        """Get list of available providers."""
         return self._available_providers
 
     @property
     def required_credentials(self) -> List[str]:
+        """Get list of required credentials."""
         return self._required_credentials
 
     @property
     def map(self) -> MapType:
+        """Get provider registry map."""
         return self._map
 
     @property
     def models(self) -> List[str]:
+        """Get available models."""
         return self._models
 
     def _get_required_credentials(self, registry: Registry) -> List[str]:
@@ -77,21 +86,38 @@ class RegistryMap:
         return list(map_.keys())
 
     @staticmethod
-    def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]):
+    def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        standard = getattr(fetcher, f"{type_}_type")
-        extra = getattr(fetcher, f"provider_{type_}_type")
+        super_model = getattr(fetcher, f"provider_{type_}_type")
+        super_model_name = super_model.__name__
 
-        standard_info = {"fields": {}, "docstring": standard.__doc__}
-        extra_info = {"fields": {}, "docstring": extra.__doc__}
+        skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
+        inheritance_list = [
+            model for model in super_model.__mro__ if model.__name__ not in skip_classes
+        ]
 
-        standard_fields = standard.__fields__
-        extra_fields = extra.__fields__
+        all_fields = {}
+        standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
+        found_standard = False
 
-        for name, field in extra_fields.items():
-            if name in standard_fields:
-                standard_info["fields"][name] = field
+        for model in inheritance_list:
+            model_file_dir = os.path.dirname(inspect.getfile(model))
+            model_name = os.path.basename(model_file_dir)
+
+            if (
+                model_name == "models" and model.__name__ != super_model_name
+            ) or found_standard:
+                if not found_standard:
+                    standard_info["docstring"] = model.__doc__
+                found_standard = True
+                standard_info["fields"].update(model.__fields__)
             else:
+                all_fields.update(model.__fields__)
+
+        extra_info = {"fields": {}, "docstring": super_model.__doc__}
+
+        for name, field in all_fields.items():
+            if name not in standard_info["fields"]:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info

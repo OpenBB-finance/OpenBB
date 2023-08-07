@@ -80,8 +80,6 @@ class PolygonForexPairsData(ForexPairsData):
 
 class PolygonForexPairsFetcher(
     Fetcher[
-        ForexPairsQueryParams,
-        ForexPairsData,
         PolygonForexPairsQueryParams,
         PolygonForexPairsData,
     ]
