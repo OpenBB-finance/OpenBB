@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import Optional
 
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import field_validator, Field, NonNegativeInt
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -24,7 +24,8 @@ class StockNewsQueryParams(QueryParams):
         default=15, description="The number of results to return per page."
     )
 
-    @validator("symbols", pre=True)
+    @field_validator("symbols", mode="before")
+    @classmethod
     def time_validate(cls, v: str):  # pylint: disable=E0213
         return v.upper()
 
