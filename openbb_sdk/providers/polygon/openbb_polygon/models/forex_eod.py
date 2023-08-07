@@ -67,11 +67,13 @@ class PolygonForexEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonForexEODQueryParams:
         now = datetime.now().date()
-        start_date = params.pop("start_date", now - timedelta(days=7))
-        end_date = params.pop("end_date", now)
-        return PolygonForexEODQueryParams(
-            **params, start_date=start_date, end_date=end_date
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return PolygonForexEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

@@ -67,11 +67,13 @@ class PolygonStockEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonStockEODQueryParams:
         now = datetime.now().date()
-        start_date = params.pop("start_date", (now - timedelta(days=7)))
-        end_date = params.pop("end_date", now)
-        return PolygonStockEODQueryParams(
-            **params, start_date=start_date, end_date=end_date
-        )
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=7)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        return PolygonStockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -80,6 +82,7 @@ class PolygonStockEODFetcher(
         **kwargs: Any,
     ) -> List[PolygonStockEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
+        print(query)
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
