@@ -32,9 +32,9 @@ class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
 class FMPHistoricalStockSplitsFetcher(
     Fetcher[
         HistoricalStockSplitsQueryParams,
-        HistoricalStockSplitsData,
+        List[HistoricalStockSplitsData],
         FMPHistoricalStockSplitsQueryParams,
-        FMPHistoricalStockSplitsData,
+        List[FMPHistoricalStockSplitsData],
     ]
 ):
     @staticmethod

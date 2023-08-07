@@ -9,10 +9,10 @@ from typing import List, Optional, Type, TypeVar, Union
 import requests
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provider.utils.helpers import (
+from openbb_provider.helpers import (
     get_querystring,
 )
-from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
+from pydantic import BaseModel, PositiveFloat, validator
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
@@ -130,7 +130,7 @@ def get_data_many(
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
         raise ValueError("Expected list of dicts, got dict")
-    return [to_schema(**d) for d in data]
+    return [to_schema.parse_obj(d) for d in data]  # type: ignore
 
 
 def get_data_one(url: str, to_schema: Type[T]) -> T:
@@ -145,18 +145,18 @@ def get_data_one(url: str, to_schema: Type[T]) -> T:
         except TypeError as e:
             raise ValueError("Expected dict, got list of dicts") from e
 
-    return to_schema(**data)  # type: ignore
+    return to_schema.parse_obj(data)  # type: ignore
 
 
 class BaseStockPriceData(Data):
     """Base Stock Price Data."""
 
+    date: datetime
     open: PositiveFloat
     high: PositiveFloat
     low: PositiveFloat
     close: PositiveFloat
-    volume: NonNegativeInt
-    date: datetime
+    volume: float
 
     @validator("date", pre=True)
     def time_validate(cls, v: str) -> datetime:  # pylint: disable=E0213

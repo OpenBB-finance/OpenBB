@@ -50,9 +50,9 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
 class FMPHistoricalEmployeesFetcher(
     Fetcher[
         HistoricalEmployeesQueryParams,
-        HistoricalEmployeesData,
+        List[HistoricalEmployeesData],
         FMPHistoricalEmployeesQueryParams,
-        FMPHistoricalEmployeesData,
+        List[FMPHistoricalEmployeesData],
     ]
 ):
     @staticmethod

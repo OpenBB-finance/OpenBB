@@ -37,9 +37,9 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[
         EarningsCallTranscriptQueryParams,
-        EarningsCallTranscriptData,
+        List[EarningsCallTranscriptData],
         FMPEarningsCallTranscriptQueryParams,
-        FMPEarningsCallTranscriptData,
+        List[FMPEarningsCallTranscriptData],
     ]
 ):
     @staticmethod

@@ -69,9 +69,9 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
 class FMPInstitutionalOwnershipFetcher(
     Fetcher[
         InstitutionalOwnershipQueryParams,
-        InstitutionalOwnershipData,
+        List[InstitutionalOwnershipData],
         FMPInstitutionalOwnershipQueryParams,
-        FMPInstitutionalOwnershipData,
+        List[FMPInstitutionalOwnershipData],
     ]
 ):
     @staticmethod
@@ -91,5 +91,5 @@ class FMPInstitutionalOwnershipFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPInstitutionalOwnershipData],
-    ) -> List[FMPInstitutionalOwnershipData]:
-        return data
+    ) -> List[InstitutionalOwnershipData]:
+        return [InstitutionalOwnershipData.parse_obj(d.dict()) for d in data]

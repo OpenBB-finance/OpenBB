@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from fastapi import APIRouter, Depends
 from openbb_core.api.dependency.user import (
     UserService,
@@ -8,6 +6,7 @@ from openbb_core.api.dependency.user import (
 )
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
+from typing_extensions import Annotated
 
 router = APIRouter(prefix="/settings", tags=["Settings"])
 

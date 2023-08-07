@@ -50,9 +50,9 @@ class FMPAnalystEstimatesData(AnalystEstimatesData):
 class FMPAnalystEstimatesFetcher(
     Fetcher[
         AnalystEstimatesQueryParams,
-        AnalystEstimatesData,
+        List[AnalystEstimatesData],
         FMPAnalystEstimatesQueryParams,
-        FMPAnalystEstimatesData,
+        List[FMPAnalystEstimatesData],
     ]
 ):
     @staticmethod
@@ -75,5 +75,5 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPAnalystEstimatesData],
-    ) -> List[FMPAnalystEstimatesData]:
-        return data
+    ) -> List[AnalystEstimatesData]:
+        return [AnalystEstimatesData.parse_obj(d.dict()) for d in data]

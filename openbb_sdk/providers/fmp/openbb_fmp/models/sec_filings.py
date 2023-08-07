@@ -1,12 +1,10 @@
 """SEC Filings fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.sec_filings import SECFilingsData, SECFilingsQueryParams
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -28,17 +26,13 @@ class FMPSECFilingsData(SECFilingsData):
             "final_link": "finalLink",
         }
 
-    @validator("fillingDate", "acceptedDate", pre=True, check_fields=False)
-    def convert_date(cls, v):  # pylint: disable=no-self-argument
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-
 
 class FMPSECFilingsFetcher(
     Fetcher[
         SECFilingsQueryParams,
-        SECFilingsData,
+        List[SECFilingsData],
         FMPSECFilingsQueryParams,
-        FMPSECFilingsData,
+        List[FMPSECFilingsData],
     ]
 ):
     @staticmethod
@@ -58,5 +52,5 @@ class FMPSECFilingsFetcher(
         return get_data_many(url, FMPSECFilingsData)
 
     @staticmethod
-    def transform_data(data: List[FMPSECFilingsData]) -> List[FMPSECFilingsData]:
-        return data
+    def transform_data(data: List[FMPSECFilingsData]) -> List[SECFilingsData]:
+        return [SECFilingsData.parse_obj(d.dict()) for d in data]

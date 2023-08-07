@@ -29,9 +29,9 @@ class FMPRiskPremiumData(RiskPremiumData):
 class FMPRiskPremiumFetcher(
     Fetcher[
         RiskPremiumQueryParams,
-        RiskPremiumData,
+        List[RiskPremiumData],
         FMPRiskPremiumQueryParams,
-        FMPRiskPremiumData,
+        List[FMPRiskPremiumData],
     ]
 ):
     @staticmethod

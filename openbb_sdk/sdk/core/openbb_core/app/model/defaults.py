@@ -5,6 +5,7 @@ from pydantic import ConfigDict, BaseModel, Field
 
 class Defaults(BaseModel):
     """Defaults."""
+
     model_config = ConfigDict(validate_assignment=True)
 
     routes: Dict[str, Dict[str, Optional[str]]] = Field(default_factory=dict)

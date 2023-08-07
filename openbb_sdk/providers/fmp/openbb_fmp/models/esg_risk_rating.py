@@ -45,9 +45,9 @@ class FMPESGRiskRatingData(Data):
 class FMPESGRiskRatingFetcher(
     Fetcher[
         ESGRiskRatingQueryParams,
-        ESGRiskRatingData,
+        List[ESGRiskRatingData],
         FMPESGRiskRatingQueryParams,
-        FMPESGRiskRatingData,
+        List[FMPESGRiskRatingData],
     ]
 ):
     @staticmethod

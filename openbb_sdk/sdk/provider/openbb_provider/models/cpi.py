@@ -5,7 +5,7 @@ from pydantic import field_validator, Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_provider.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 CPI_COUNTRIES = Literal[
     "australia",

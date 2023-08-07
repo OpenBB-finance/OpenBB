@@ -15,7 +15,7 @@ from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput, Error
+from openbb_core.app.model.command_output import CommandOutput, Error, OpenBBError
 from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.journal_query import JournalQuery
@@ -267,11 +267,7 @@ class StaticCommandRunner:
                     command_output.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            command_output = CommandOutput(
-                error=Error(message=str(e), error_kind=e.__class__.__name__)
-            )
-            if system_settings.debug_mode:
-                raise
+            raise OpenBBError(e) from e
 
         return command_output
 

@@ -32,9 +32,9 @@ class FMPRevenueBusinessLineData(RevenueBusinessLineData):
 class FMPRevenueBusinessLineFetcher(
     Fetcher[  # type: ignore
         RevenueBusinessLineQueryParams,
-        RevenueBusinessLineData,
+        List[RevenueBusinessLineData],
         FMPRevenueBusinessLineQueryParams,
-        FMPRevenueBusinessLineData,
+        List[FMPRevenueBusinessLineData],
     ]
 ):
     @staticmethod
@@ -47,7 +47,8 @@ class FMPRevenueBusinessLineFetcher(
     ) -> List[FMPRevenueBusinessLineData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
+        period = "annual" if query.period == "annually" else "quarter"
+        query = query.copy(update={"period": period})
 
         url = create_url(4, "revenue-product-segmentation", api_key, query)
         data = get_data(url)
@@ -55,12 +56,11 @@ class FMPRevenueBusinessLineFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
-        data = [
-            {"date": list(d.keys())[0], "business_line": list(d.values())[0]}
+        return [
+            FMPRevenueBusinessLineData(date=key, business_line=value)
             for d in data
+            for key, value in d.items()
         ]
-
-        return [FMPRevenueBusinessLineData(**d) for d in data]
 
     @staticmethod
     def transform_data(
