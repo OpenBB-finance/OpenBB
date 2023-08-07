@@ -17,6 +17,17 @@ repos:
     rev: "v0.0.256"
     hooks:
       - id: ruff
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        name: pydocstyle
+        entry: pydocstyle
+        language: python
+        types: [python]
+        files: 'openbb_sdk/*.py'
+        exclude: '.*tests/.*\.py|openbb_sdk/test_.*\.py'
+        args: ["--config=pyproject.toml"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.5
     hooks:
