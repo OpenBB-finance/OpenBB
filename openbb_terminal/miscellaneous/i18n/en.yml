@@ -1111,6 +1111,7 @@ en:
   forecast/rename: Rename columns from dataset
   forecast/export: Export a processed dataset
   forecast/_feateng_: Feature Engineering
+  forecast/timegpt: TimeGPT-1 (Beta) by Nixtla
   forecast/ema: Add Exponentially Weighted Moving Average
   forecast/sto: Add Stochastic Oscillator %K and %D
   forecast/rsi: Add Relative Strength Index

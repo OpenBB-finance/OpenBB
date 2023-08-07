@@ -1254,9 +1254,15 @@ def filter_dates(
         console.print("[red]The start date must be before the end date.[/red]\n")
         return data
     if end_date:
-        data = data[data["date"] <= end_date]
+        if isinstance(data["date"].values[0], str):
+            data = data[pd.to_datetime(data["date"]) <= end_date]
+        else:
+            data = data[data["date"] <= end_date]
     if start_date:
-        data = data[data["date"] >= start_date]
+        if isinstance(data["date"].values[0], str):
+            data = data[pd.to_datetime(data["date"]) >= start_date]
+        else:
+            data = data[data["date"] >= start_date]
     return data
 
 
@@ -1341,6 +1347,9 @@ def check_data(
             f"[red]Column {target_column} is not in the dataframe."
             " Change the 'target_column' parameter.[/red]\n"
         )
+        return False
+    if data.empty:
+        console.print("[red]The data provided is empty.[/red]\n")
         return False
     if past_covariates is not None:
         covariates = past_covariates.split(",")

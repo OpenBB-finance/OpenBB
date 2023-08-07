@@ -21,6 +21,7 @@ import requests
 import stocksera
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI
+from nixtlats import TimeGPT
 from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
@@ -86,6 +87,7 @@ API_DICT: Dict = {
     "stocksera": "STOCKSERA",
     "dappradar": "DAPPRADAR",
     "openai": "OPENAI",
+    "nixtla": "NIXTLA",
 }
 
 # sorting api key section by name
@@ -2995,6 +2997,74 @@ def check_openai_key(show_output: bool = False) -> str:
             # Handle other API errors
             logger.warning("OpenAI key defined, test inclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_nixtla_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Nixtla API key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.nixtla(key="example_key")
+    """
+
+    handle_credential("API_KEY_NIXTLA", key, persist)
+    return check_nixtla_key(show_output)
+
+
+def check_nixtla_key(show_output: bool = False) -> str:
+    """Check Nixtla key
+
+    Parameters
+    ----------
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_KEY_NIXTLA
+        == "REPLACE_ME"  # pragma: allowlist secret
+    ):  # pragma: allowlist secret
+        status = KeyStatus.NOT_DEFINED
+    else:
+        timegpt = TimeGPT(
+            token=get_current_user().credentials.API_KEY_NIXTLA,
+        )
+        status = (
+            KeyStatus.DEFINED_TEST_PASSED
+            if timegpt.validate_token()
+            else KeyStatus.DEFINED_TEST_FAILED
+        )
 
     if show_output:
         console.print(status.colorize())
