@@ -5,7 +5,6 @@ import pytest
 from openbb_core.app.provider_interface import (
     ProviderChoices,
     ProviderInterface,
-    ProviderRegistry,
     get_provider_interface,
 )
 
@@ -37,7 +36,7 @@ def test_map(provider_interface):
 def test_required_credentials(provider_interface):
     """Test required credentials."""
     required_credentials = provider_interface.required_credentials
-    assert isinstance(required_credentials, dict)
+    assert isinstance(required_credentials, list)
     assert len(required_credentials) > 0
 
 
@@ -64,14 +63,6 @@ def test_data(provider_interface):
     assert "StockEOD" in data
 
 
-def test_merged_data(provider_interface):
-    """Test merged data."""
-    merged_data = provider_interface.merged_data
-    assert isinstance(merged_data, dict)
-    assert len(merged_data) > 0
-    assert "StockEOD" in merged_data
-
-
 def test_providers_literal(provider_interface):
     """Test providers literal."""
     providers_literal = provider_interface.providers_literal
@@ -92,9 +83,3 @@ def test_models(provider_interface):
     assert isinstance(models, list)
     assert len(models) > 0
     assert "StockEOD" in models
-
-
-def test_build_registry(provider_interface):
-    """Test build registry."""
-    build_registry = provider_interface.build_registry()
-    assert isinstance(build_registry, ProviderRegistry)

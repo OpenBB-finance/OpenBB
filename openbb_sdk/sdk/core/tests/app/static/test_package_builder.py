@@ -3,7 +3,6 @@
 
 from dataclasses import dataclass
 from inspect import _empty
-from typing import Annotated
 
 import pytest
 from openbb_core.app.static.package_builder import (
@@ -17,6 +16,7 @@ from openbb_core.app.static.package_builder import (
     PathHandler,
 )
 from pydantic import Field
+from typing_extensions import Annotated
 
 
 @pytest.fixture(scope="module")
@@ -395,7 +395,7 @@ def test_clean_path(path_handler):
 def test_build_module_name(path_handler):
     """Test build module name."""
     module_name = path_handler.build_module_name(path="")
-    assert module_name == "__commands__"
+    assert module_name == "__extensions__"
 
     module_name = path_handler.build_module_name(path="/stocks/load")
     assert module_name == "stocks_load"
@@ -404,7 +404,7 @@ def test_build_module_name(path_handler):
 def test_build_module_class(path_handler):
     """Test build module class."""
     module_class = path_handler.build_module_class(path="")
-    assert module_class == "Commands"
+    assert module_class == "Extensions"
 
     module_class = path_handler.build_module_class(path="/stocks/load")
     assert module_class == "CLASS_stocks_load"
