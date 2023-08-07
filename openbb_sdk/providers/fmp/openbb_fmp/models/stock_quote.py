@@ -57,7 +57,9 @@ class FMPStockQuoteFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockQuoteQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockQuoteQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockQuoteData]:
         if credentials:
             api_key = credentials.get("fmp_api_key")
@@ -66,7 +68,7 @@ class FMPStockQuoteFetcher(
         query_str = get_querystring(query.dict(), ["symbol"])
         url = f"{base_url}/quote/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPStockQuoteData)
+        return get_data_many(url, FMPStockQuoteData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPStockQuoteData]) -> List[StockQuoteData]:
