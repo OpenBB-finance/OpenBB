@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -87,10 +87,10 @@ class CLASS_stocks(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
 
         openbb
@@ -134,9 +134,9 @@ class CLASS_stocks(Container):
             The low price of the symbol.
         close : PositiveFloat
             The close price of the symbol.
-        volume : PositiveFloat
+        volume : float
             The volume of the symbol.
-        vwap : PositiveFloat
+        vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
 
         fmp
@@ -146,22 +146,24 @@ class CLASS_stocks(Container):
         ----------
         timeseries : Optional[NonNegativeInt]
             Number of days to look back.
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Interval of the data to fetch.
 
 
         StockEOD
         --------
-        adjClose : float
+        adjClose : Optional[float]
             Adjusted Close Price of the symbol.
-        unadjustedVolume : float
+        unadjustedVolume : Optional[float]
             Unadjusted volume of the symbol.
-        change : float
+        change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \% in the price of the symbol.
-        label : str
+        changePercent : Optional[float]
+            Change \\% in the price of the symbol.
+        label : Optional[str]
             Human readable format of the date.
-        changeOverTime : float
-            Change \% in the price of the symbol over a period of time.
+        changeOverTime : Optional[float]
+            Change \\% in the price of the symbol over a period of time.
 
         polygon
         =======
@@ -182,7 +184,7 @@ class CLASS_stocks(Container):
 
         StockEOD
         --------
-        n : PositiveInt
+        n : Optional[PositiveInt]
             The number of transactions for the symbol in the time period."""
         inputs = filter_inputs(
             provider_choices={
@@ -210,9 +212,9 @@ class CLASS_stocks(Container):
         self,
         symbols: str,
         page: int = 0,
-        limit: Union[pydantic.types.NonNegativeInt, None] = 15,
+        limit: Optional[pydantic.types.NonNegativeInt] = 15,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "polygon"], None] = None,
+        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get news for one or more stock tickers.
@@ -249,7 +251,7 @@ class CLASS_stocks(Container):
 
         StockNews
         ---------
-        date : date
+        date : datetime
             The published date of the news.
         title : str
             The title of the news.
@@ -293,8 +295,16 @@ class CLASS_stocks(Container):
 
         StockNews
         ---------
-        image : List[BenzingaImage]
+        images : List[BenzingaImage]
             The images associated with the news.
+        channels : Optional[List[str]]
+            The channels associated with the news.
+        stocks : Optional[List[str]]
+            The stocks associated with the news.
+        tags : Optional[List[str]]
+            The tags associated with the news.
+        teaser : Optional[str]
+            The teaser of the news.
 
         fmp
         ===
@@ -306,13 +316,13 @@ class CLASS_stocks(Container):
 
         StockNews
         ---------
-        symbol : str
+        symbol : Optional[str]
             None
         publishedDate : datetime
             None
         image : Optional[str]
             None
-        site : str
+        site : Optional[str]
             None
 
         polygon
@@ -391,9 +401,9 @@ class CLASS_stocks(Container):
     def multiples(
         self,
         symbol: str,
-        limit: Union[int, None] = 100,
+        limit: Optional[int] = 100,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get valuation multiples for a stock ticker.
@@ -488,6 +498,12 @@ class CLASS_stocks(Container):
             Income quality calculated as trailing twelve months.
         dividend_yield_ttm : Optional[float]
             Dividend yield calculated as trailing twelve months.
+        dividend_yield_percentage_ttm : Optional[float]
+            Dividend yield percentage calculated as trailing twelve months.
+        dividend_to_market_cap_ttm : Optional[float]
+            Dividend to market capitalization ratio calculated as trailing twelve months.
+        dividend_per_share_ttm : Optional[float]
+            Dividend per share calculated as trailing twelve months.
         payout_ratio_ttm : Optional[float]
             Payout ratio calculated as trailing twelve months.
         sales_general_and_administrative_to_revenue_ttm : Optional[float]
@@ -593,10 +609,106 @@ class CLASS_stocks(Container):
     @filter_call
     @validate_arguments
     def quote(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """View the current price for a specific stock ticker."""
+        self,
+        symbol: Optional[str] = None,
+        chart: bool = False,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs,
+    ) -> CommandOutput[typing.List]:
+        """Load stock data for a specific ticker.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : Optional[str]
+            Comma separated list of symbols.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        StockQuote
+        ----------
+        symbol : str
+            Symbol of the company.
+        name : Optional[str]
+            The name of the company.
+        price : Optional[float]
+            The current trading price of the stock.
+        changes_percentage : Optional[float]
+            The change percentage of the stock price.
+        change : Optional[float]
+            The change of the stock price.
+        day_low : Optional[float]
+            The lowest price of the stock in the current trading day.
+        day_high : Optional[float]
+            The highest price of the stock in the current trading day.
+        year_high : Optional[float]
+            The highest price of the stock in the last 52 weeks.
+        year_low : Optional[float]
+            The lowest price of the stock in the last 52 weeks.
+        market_cap : Optional[float]
+            The market cap of the company.
+        price_avg50 : Optional[float]
+            The 50 days average price of the stock.
+        price_avg200 : Optional[float]
+            The 200 days average price of the stock.
+        volume : Optional[int]
+            The volume of the stock in the current trading day.
+        avg_volume : Optional[int]
+            The average volume of the stock in the last 10 trading days.
+        exchange : Optional[str]
+            The exchange the stock is traded on.
+        open : Optional[float]
+            The opening price of the stock in the current trading day.
+        previous_close : Optional[float]
+            The previous closing price of the stock.
+        eps : Optional[float]
+            The earnings per share of the stock.
+        pe : Optional[float]
+            The price earnings ratio of the stock.
+        earnings_announcement : Optional[str]
+            The earnings announcement date of the stock.
+        shares_outstanding : Optional[int]
+            The number of shares outstanding of the stock.
+        date : Optional[datetime]
+            The timestamp of the stock quote.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockQuote
+        ----------
+        All fields are standardized."""
         inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": symbol,
+            },
+            extra_params=kwargs,
             chart=chart,
         )
 

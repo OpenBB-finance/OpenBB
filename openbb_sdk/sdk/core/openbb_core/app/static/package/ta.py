@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import typing
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import openbb_provider
 import pandas
@@ -83,8 +83,8 @@ class CLASS_ta(Container):
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
-        start_date: Union[str, None] = None,
-        end_date: Union[str, None] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
         chart: bool = False,
     ) -> CommandOutput[typing.List]:
         """
@@ -1121,7 +1121,7 @@ class CLASS_ta(Container):
     ) -> CommandOutput[typing.List]:
         """
         A Weighted Moving Average puts more weight on recent data and less on past data.
-        This is done by multiplying each bar�s price by a weighting factor. Because of its
+        This is done by multiplying each bar’s price by a weighting factor. Because of its
         unique calculation, WMA will follow prices more closely than a corresponding Simple
         Moving Average.
 

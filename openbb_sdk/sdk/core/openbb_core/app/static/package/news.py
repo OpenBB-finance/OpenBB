@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional
 
 import pydantic
 from pydantic import validate_arguments
@@ -20,8 +20,8 @@ class CLASS_news(Container):
         self,
         page: pydantic.types.NonNegativeInt = 0,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp"], None] = None,
-        **kwargs
+        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Global News.
 
@@ -53,7 +53,7 @@ class CLASS_news(Container):
 
         GlobalNews
         ----------
-        date : date
+        date : datetime
             The published date of the news.
         title : str
             The title of the news.
@@ -61,8 +61,6 @@ class CLASS_news(Container):
             The text/body of the news.
         url : str
             The URL of the news.
-        image : List[BenzingaImage]
-            The images associated with the news.
 
         benzinga
         ========
@@ -103,7 +101,16 @@ class CLASS_news(Container):
 
         GlobalNews
         ----------
-        All fields are standardized.
+        images : List[BenzingaImage]
+            The images associated with the news.
+        channels : Optional[List[str]]
+            The channels associated with the news.
+        stocks : Optional[List[str]]
+            The stocks associated with the news.
+        tags : Optional[List[str]]
+            The tags associated with the news.
+        teaser : Optional[str]
+            The teaser of the news.
 
         fmp
         ===
