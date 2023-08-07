@@ -82,6 +82,9 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             else:
                 df = basemodel_to_df(res, "date")  # type: ignore
 
+            # Improve output so that all columns that are None are not returned
+            df = df.dropna(axis=1, how="all")
+
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
 

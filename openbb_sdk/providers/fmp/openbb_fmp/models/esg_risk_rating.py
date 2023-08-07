@@ -56,14 +56,16 @@ class FMPESGRiskRatingFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPESGRiskRatingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGRiskRatingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGRiskRatingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4, "esg-environmental-social-governance-data-ratings", api_key, query
         )
-        return get_data_many(url, FMPESGRiskRatingData)
+        return get_data_many(url, FMPESGRiskRatingData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGRiskRatingData]) -> List[FMPESGRiskRatingData]:

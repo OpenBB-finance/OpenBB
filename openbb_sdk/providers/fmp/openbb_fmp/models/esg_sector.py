@@ -49,14 +49,16 @@ class FMPESGSectorFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPESGSectorQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGSectorQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGSectorData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4, "esg-environmental-social-governance-sector-benchmark", api_key, query
         )
-        return get_data_many(url, FMPESGSectorData)
+        return get_data_many(url, FMPESGSectorData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGSectorData]) -> List[FMPESGSectorData]:
