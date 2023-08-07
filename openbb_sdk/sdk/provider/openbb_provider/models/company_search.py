@@ -10,7 +10,10 @@ class CompanySearchQueryParams(QueryParams):
     """Company Search Query Params"""
 
     query: str = Field(description="The search query.", default="")
-    ticker: bool = Field(description="Whether to search by ticker symbol.", default=False)
+    ticker: bool = Field(
+        description="Whether to search by ticker symbol.", default=False
+    )
+
 
 class CompanySearchData(Data):
     """Company Search Data."""

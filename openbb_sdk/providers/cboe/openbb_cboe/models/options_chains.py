@@ -5,7 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.options_chains import OptionsChainsData, OptionsChainsQueryParams
+from openbb_provider.models.options_chains import (
+    OptionsChainsData,
+    OptionsChainsQueryParams,
+)
 from pydantic import Field, validator
 
 from openbb_cboe.utils.helpers import get_chains
@@ -16,6 +19,7 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 
     Source: https://www.cboe.com/
     """
+
 
 class CboeOptionsChainsData(OptionsChainsData):
     """CBOE Options Chains Data."""
@@ -85,6 +89,7 @@ class CboeOptionsChainsData(OptionsChainsData):
     def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 
+
 class CboeOptionsChainsFetcher(
     Fetcher[
         OptionsChainsQueryParams,
@@ -100,7 +105,7 @@ class CboeOptionsChainsFetcher(
     @staticmethod
     def extract_data(
         query: CboeOptionsChainsQueryParams,
-        credentials: Optional[Dict[str,str]],
+        credentials: Optional[Dict[str, str]],
     ) -> List[CboeOptionsChainsData]:
         data = get_chains(query.symbol).to_dict("records")
 

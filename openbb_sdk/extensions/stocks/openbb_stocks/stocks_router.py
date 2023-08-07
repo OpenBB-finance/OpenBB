@@ -94,6 +94,7 @@ def search_companies(
     """Search for a company or ticker within the provider's database."""
     return CommandOutput(results=Query(**locals()).execute())
 
+
 @router.command(model="StockInfo")
 def info(
     cc: CommandContext,

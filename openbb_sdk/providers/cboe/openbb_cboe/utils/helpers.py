@@ -12,6 +12,7 @@ from requests import HTTPError
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 
+
 def get_user_agent() -> str:
     """Get a not very random user agent."""
     user_agent_strings = [
@@ -72,9 +73,10 @@ def request(
         )
     raise ValueError("Method must be GET or POST")
 
+
 def camel_to_snake(str):
     """Convert camelCase to snake_case."""
-    return "".join(["_"+i.lower() if i.isupper() else i for i in str]).lstrip("_")
+    return "".join(["_" + i.lower() if i.isupper() else i for i in str]).lstrip("_")
 
 
 def get_cboe_directory() -> pd.DataFrame:
@@ -109,7 +111,9 @@ def get_cboe_index_directory() -> pd.DataFrame:
     pd.DataFrame: CBOE_INDEXES
     """
     try:
-        r = request("https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json")
+        r = request(
+            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+        )
 
         if r.status_code != 200:
             raise HTTPError
@@ -146,7 +150,9 @@ def get_cboe_index_directory() -> pd.DataFrame:
             "Time Zone",
         ]
 
-        CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index("Ticker")
+        CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index(
+            "Ticker"
+        )
 
         return CBOE_INDEXES
 
@@ -189,6 +195,7 @@ def search_companies(query: str, ticker: bool = False) -> dict:
         return data
     print(f"No results found for: {query}.  Try another search query.")
     return pd.DataFrame()
+
 
 def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
     """Gets basic info for the symbol and expiration dates
@@ -343,6 +350,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
 
     return ticker_details, ticker_expirations
 
+
 def get_ticker_iv(symbol: str) -> pd.DataFrame:
     """Gets annualized high/low historical and implied volatility over 30/60/90 day windows.
 
@@ -425,6 +433,7 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
         print("There was an error with the request'\n")
 
     return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
+
 
 def get_chains(symbol: str) -> pd.DataFrame:
     """Gets the complete options chains for a ticker.
@@ -540,13 +549,17 @@ def get_chains(symbol: str) -> pd.DataFrame:
     return quotes.reset_index()
 
 
-def __generate_historical_prices_url(symbol, data_type: Optional[str] = "historical") -> str:
+def __generate_historical_prices_url(
+    symbol, data_type: Optional[str] = "historical"
+) -> str:
     """Generates the final URL for historical prices data."""
 
     url: str = ""
 
     if data_type not in ["historical", "intraday"]:
-        print("Invalid data_type. Must be either 'historical' or 'intraday'. Defaulting to 'historical'.")
+        print(
+            "Invalid data_type. Must be either 'historical' or 'intraday'. Defaulting to 'historical'."
+        )
         data_type = "historical"
 
     if symbol in TICKER_EXCEPTIONS:
@@ -594,7 +607,7 @@ def get_eod_prices(
         DataFrame of daily EOD OHLC+V prices.
     """
 
-    symbol=symbol.upper()
+    symbol = symbol.upper()
     if symbol == ("NDX", "^NDX"):
         print("NDX time series data is not currently supported by the CBOE provider.")
         return pd.DataFrame()
@@ -615,8 +628,9 @@ def get_eod_prices(
         return pd.DataFrame()
 
     data = (
-        pd.DataFrame(r.json()["data"])
-        [["date", "open", "high", "low", "close", "volume"]]
+        pd.DataFrame(r.json()["data"])[
+            ["date", "open", "high", "low", "close", "volume"]
+        ]
     ).set_index("date")
 
     # Fill in missing data from current or most recent trading session.
@@ -626,28 +640,28 @@ def get_eod_prices(
         day_minus = today.weekday() - 4
         today = pd.to_datetime(today - timedelta(days=day_minus))
     if today != data.index[-1]:
-        _today,_ = get_ticker_info(symbol)
+        _today, _ = get_ticker_info(symbol)
         today_df = pd.DataFrame()
-        today_df["open"] = round(_today.loc["open"].astype(float),2)
-        today_df["high"] = round(_today.loc["high"].astype(float),2)
-        today_df["low"] = round(_today.loc["low"].astype(float),2)
-        today_df["close"] = round(_today.loc["close"].astype(float),2)
+        today_df["open"] = round(_today.loc["open"].astype(float), 2)
+        today_df["high"] = round(_today.loc["high"].astype(float), 2)
+        today_df["low"] = round(_today.loc["low"].astype(float), 2)
+        today_df["close"] = round(_today.loc["close"].astype(float), 2)
         if symbol not in INDEXES and symbol not in TICKER_EXCEPTIONS:
             data = data[data["volume"] > 0]
             today_df["volume"] = _today.loc["volume"]
         today_df["date"] = today
         today_df = today_df.reset_index(drop=True).set_index("date")
 
-        data = pd.concat([data,today_df], axis = 0)
+        data = pd.concat([data, today_df], axis=0)
 
     # If ticker is an index there is no volume data and the types must be set.
 
     if symbol in INDEXES or symbol in TICKER_EXCEPTIONS:
         data = data[["open", "high", "low", "close", "volume"]]
-        data["open"] = round(data.open.astype(float),2)
-        data["high"] = round(data.high.astype(float),2)
-        data["low"] = round(data.low.astype(float),2)
-        data["close"] = round(data.close.astype(float),2)
+        data["open"] = round(data.open.astype(float), 2)
+        data["high"] = round(data.high.astype(float), 2)
+        data["low"] = round(data.low.astype(float), 2)
+        data["close"] = round(data.close.astype(float), 2)
         data["volume"] = 0
 
     data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
@@ -677,7 +691,6 @@ def get_info(symbol: str) -> pd.DataFrame:
 
     symbol = symbol.upper()
     info = pd.DataFrame()
-
 
     _info = get_ticker_info(symbol)[0]
     _iv = get_ticker_iv(symbol)

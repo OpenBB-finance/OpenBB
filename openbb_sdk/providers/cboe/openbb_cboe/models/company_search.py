@@ -4,7 +4,10 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.company_search import CompanySearchData, CompanySearchQueryParams
+from openbb_provider.models.company_search import (
+    CompanySearchData,
+    CompanySearchQueryParams,
+)
 from pydantic import Field, validator
 
 from openbb_cboe.utils.helpers import search_companies
@@ -16,6 +19,7 @@ class CboeCompanySearchQueryParams(CompanySearchQueryParams):
     Source: https://www.cboe.com/
     """
 
+
 class CboeCompanySearchData(CompanySearchData):
     """CBOE Company Search Data."""
 
@@ -24,6 +28,7 @@ class CboeCompanySearchData(CompanySearchData):
             "name": "Company Name",
             "symbol": "Symbol",
         }
+
     dpmName: Optional[str] = Field(
         description="The name of the primary market maker.",
         alias="DPM Name",
@@ -36,6 +41,7 @@ class CboeCompanySearchData(CompanySearchData):
     @validator("symbol", pre=True, check_fields=False)
     def name_validate(cls, v):  # pylint: disable=E0213
         return v.upper()
+
 
 class CboeCompanySearchFetcher(
     Fetcher[
@@ -52,7 +58,7 @@ class CboeCompanySearchFetcher(
     @staticmethod
     def extract_data(
         query: CboeCompanySearchQueryParams,
-        credentials: Optional[Dict[str,str]],
+        credentials: Optional[Dict[str, str]],
     ) -> List[CboeCompanySearchData]:
         data = search_companies(query.query, ticker=query.ticker)
 
