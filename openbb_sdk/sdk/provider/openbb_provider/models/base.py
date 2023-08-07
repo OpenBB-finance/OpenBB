@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, NonNegativeInt, validator
+from pydantic import field_validator, BaseModel, Field, NonNegativeInt
 
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.descriptions import QUERY_DESCRIPTIONS
@@ -9,7 +9,8 @@ from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 class BaseSymbol(BaseModel):
     symbol: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True)
+    @field_validator("symbol", mode="before")
+    @classmethod
     def upper_symbol(cls, v: str):  # pylint: disable=E0213
         return v.upper()
 

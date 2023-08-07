@@ -1,8 +1,7 @@
 from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 import pandas as pd
-from pydantic import Field
-from pydantic.generics import GenericModel
+from pydantic import BaseModel, Field
 
 from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.model.abstract.error import Error
@@ -24,7 +23,7 @@ class OpenBBError(Exception):
         super().__init__(str(original))
 
 
-class CommandOutput(GenericModel, Generic[T], Tagged):
+class CommandOutput(BaseModel, Generic[T], Tagged):
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",
@@ -73,19 +72,13 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         try:
             res = self.results
-            if isinstance(res, list):
-                if isinstance(res[0], dict):
-                    for r in res:
-                        dict_of_df = {
-                            k: basemodel_to_df(v, "date") for k, v in r.items()
-                        }
-                        df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
+            if isinstance(res, list) and isinstance(res[0], dict):
+                for r in res:
+                    dict_of_df = {k: basemodel_to_df(v, "date") for k, v in r.items()}
+                    df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
 
-                else:
-                    df = basemodel_to_df(res, "date")  # type: ignore
             else:
                 df = basemodel_to_df(res, "date")  # type: ignore
-
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
 
@@ -100,11 +93,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             Dictionary of lists.
         """
         df = self.to_dataframe().reset_index()  # type: ignore
-        results = {}
-        for field in df.columns:
-            results[field] = df[field].tolist()
-
-        return results
+        return {field: df[field].tolist() for field in df.columns}
 
     def to_plotly_json(
         self, create_chart: bool = True, **kwargs

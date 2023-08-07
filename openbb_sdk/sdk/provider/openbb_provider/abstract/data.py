@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Extra
+from pydantic import ConfigDict, BaseModel
 
 
 class Data(BaseModel):
@@ -7,6 +7,4 @@ class Data(BaseModel):
     def __repr__(self):
         return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in self.dict().items()])})"
 
-    class Config:
-        extra = Extra.allow
-        allow_population_by_field_name = True
+    model_config = ConfigDict(extra="allow", populate_by_name=True)

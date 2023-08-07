@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, validator
+from pydantic import field_validator, Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -53,12 +53,11 @@ class StockOwnershipQueryParams(QueryParams, BaseSymbol):
         default=0, description="The page number of the data to fetch."
     )
 
-    @validator("date", pre=True)
-    def time_validate(cls, v: str):  # pylint: disable=E0213
-        if isinstance(v, str):
-            base = datetime.strptime(v, "%Y-%m-%d").date()
-            return most_recent_quarter(base)
-        return v
+    @field_validator("date", mode="before")
+    @classmethod
+    def date_validate(cls, v: str):  # pylint: disable=E0213
+        # base = datetime.strptime(v, "%Y-%m-%d").date()
+        return most_recent_quarter(v)
 
 
 class StockOwnershipData(Data):

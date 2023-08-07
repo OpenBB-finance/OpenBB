@@ -8,9 +8,9 @@ packages = [{ include = "openbb_provider" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pydantic = { extras = ["dotenv"], version = "^1.10" }
 requests = "^2.31.0"
 urllib3 = "<2.0.0"
+pydantic = "^2.1.1"
 
 [build-system]
 requires = ["poetry-core"]
