@@ -239,16 +239,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_spacc",
-            ["--limit=5", "--popular"],
-            "reddit_view.display_spac_community",
-            [],
-            dict(
-                limit=5,
-                popular=True,
-            ),
-        ),
-        (
             "call_wsb",
             ["--limit=5", "--new"],
             "reddit_view.display_wsb_community",
@@ -426,7 +416,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_spacc",
         "call_wsb",
         "call_popular",
         "call_bullbear",

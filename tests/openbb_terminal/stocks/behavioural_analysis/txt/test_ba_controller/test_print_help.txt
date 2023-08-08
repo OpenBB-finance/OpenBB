@@ -6,7 +6,6 @@ Ticker: TSLA
     snews              stock price displayed over sentiment of news headlines          [Finnhub]
     wsb                show what WSB gang is up to in subreddit wallstreetbets         [Reddit]
     popular            show popular tickers                                            [Reddit]
-    spacc              show other users spacs announcements from subreddit SPACs       [Reddit]
     getdd              gets due diligence from another user's post                     [Reddit]
     redditsent         searches reddit for ticker and finds reddit sentiment           [Reddit]
     trending           trending stocks                                                 [Stocktwits]
