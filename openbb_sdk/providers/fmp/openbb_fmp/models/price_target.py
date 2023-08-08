@@ -5,7 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.price_target import PriceTargetData, PriceTargetQueryParams
+from openbb_provider.standard_models.price_target import (
+    PriceTargetData,
+    PriceTargetQueryParams,
+)
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -42,8 +45,6 @@ class FMPPriceTargetData(PriceTargetData):
 
 class FMPPriceTargetFetcher(
     Fetcher[
-        PriceTargetQueryParams,
-        PriceTargetData,
         FMPPriceTargetQueryParams,
         FMPPriceTargetData,
     ]
@@ -54,13 +55,15 @@ class FMPPriceTargetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPPriceTargetQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPPriceTargetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target", api_key, query)
 
-        return get_data_many(url, FMPPriceTargetData)
+        return get_data_many(url, FMPPriceTargetData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPPriceTargetData]) -> List[FMPPriceTargetData]:

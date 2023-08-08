@@ -1,14 +1,11 @@
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
-from openbb_provider.models.income_statement import (
+from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
-    IncomeStatementQueryParams,
 )
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
 
 from openbb_polygon.utils.helpers import get_data
@@ -53,7 +50,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     preferred_stock_dividends_and_other_adjustments: Optional[float]
 
     @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):
+    def symbol_from_tickers(cls, v):  # pylint: disable=E0213
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -61,8 +58,6 @@ class PolygonIncomeStatementData(IncomeStatementData):
 
 class PolygonIncomeStatementFetcher(
     Fetcher[
-        IncomeStatementQueryParams,
-        IncomeStatementData,
         PolygonIncomeStatementQueryParams,
         PolygonIncomeStatementData,
     ]
@@ -73,7 +68,9 @@ class PolygonIncomeStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonIncomeStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonIncomeStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonIncomeStatementData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -82,7 +79,7 @@ class PolygonIncomeStatementFetcher(
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
-        data = get_data(request_url)["results"]
+        data = get_data(request_url, **kwargs)["results"]
 
         if len(data) == 0:
             raise RuntimeError("No Income Statement found")

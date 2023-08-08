@@ -137,7 +137,7 @@ class CLASS_forex(Container):
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        r"""Forex Intraday Price.
+        """Forex Intraday Price.
 
 
         openbb
@@ -203,11 +203,11 @@ class CLASS_forex(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \% in the price of the symbol.
+            Change \\% in the price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \% in the price of the symbol over a period of time.
+            Change \\% in the price of the symbol over a period of time.
 
         polygon
         =======

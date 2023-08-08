@@ -16,8 +16,6 @@ from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 class HandlersManager:
     def __init__(self, settings: LoggingSettings):
-        self.is_initialized = True
-
         self._handlers = settings.handler_list
         self._settings = settings
 

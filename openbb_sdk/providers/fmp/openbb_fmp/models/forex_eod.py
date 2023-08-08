@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
+from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
@@ -47,8 +47,6 @@ class FMPForexEODData(ForexEODData):
 
 class FMPForexEODFetcher(
     Fetcher[
-        ForexEODQueryParams,
-        ForexEODData,
         FMPForexEODQueryParams,
         FMPForexEODData,
     ]
@@ -66,7 +64,9 @@ class FMPForexEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPForexEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPForexEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPForexEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -75,7 +75,7 @@ class FMPForexEODFetcher(
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/historical-price-full/forex/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPForexEODData, "historical")
+        return get_data_many(url, FMPForexEODData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPForexEODData]) -> List[FMPForexEODData]:

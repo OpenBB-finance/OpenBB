@@ -5,7 +5,7 @@ from datetime import date
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_splits import (
+from openbb_provider.standard_models.stock_splits import (
     StockSplitCalendarData,
     StockSplitCalendarQueryParams,
 )
@@ -26,8 +26,6 @@ class FMPStockSplitCalendarData(StockSplitCalendarData):
 
 class FMPStockSplitCalendarFetcher(
     Fetcher[
-        StockSplitCalendarQueryParams,
-        StockSplitCalendarData,
         FMPStockSplitCalendarQueryParams,
         FMPStockSplitCalendarData,
     ]
@@ -46,13 +44,15 @@ class FMPStockSplitCalendarFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockSplitCalendarQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockSplitCalendarQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockSplitCalendarData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query_str = f"from={query.start_date}&to={query.end_date}"
         url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
-        return get_data_many(url, FMPStockSplitCalendarData)
+        return get_data_many(url, FMPStockSplitCalendarData, **kwargs)
 
     @staticmethod
     def transform_data(

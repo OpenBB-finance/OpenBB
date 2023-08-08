@@ -5,7 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.key_metrics import KeyMetricsData, KeyMetricsQueryParams
+from openbb_provider.standard_models.key_metrics import (
+    KeyMetricsData,
+    KeyMetricsQueryParams,
+)
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -87,8 +90,6 @@ class FMPKeyMetricsData(KeyMetricsData):
 
 class FMPKeyMetricsFetcher(
     Fetcher[
-        KeyMetricsQueryParams,
-        KeyMetricsData,
         FMPKeyMetricsQueryParams,
         FMPKeyMetricsData,
     ]
@@ -99,7 +100,9 @@ class FMPKeyMetricsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPKeyMetricsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPKeyMetricsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPKeyMetricsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -108,7 +111,7 @@ class FMPKeyMetricsFetcher(
         url = create_url(
             3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
         )
-        return get_data_many(url, FMPKeyMetricsData)
+        return get_data_many(url, FMPKeyMetricsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPKeyMetricsData]) -> List[FMPKeyMetricsData]:

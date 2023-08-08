@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.analyst_estimates import (
+from openbb_provider.standard_models.analyst_estimates import (
     AnalystEstimatesData,
     AnalystEstimatesQueryParams,
 )
@@ -49,8 +49,6 @@ class FMPAnalystEstimatesData(AnalystEstimatesData):
 
 class FMPAnalystEstimatesFetcher(
     Fetcher[
-        AnalystEstimatesQueryParams,
-        AnalystEstimatesData,
         FMPAnalystEstimatesQueryParams,
         FMPAnalystEstimatesData,
     ]
@@ -61,7 +59,9 @@ class FMPAnalystEstimatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPAnalystEstimatesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPAnalystEstimatesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPAnalystEstimatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -70,7 +70,7 @@ class FMPAnalystEstimatesFetcher(
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPAnalystEstimatesData)
+        return get_data_many(url, FMPAnalystEstimatesData, **kwargs)
 
     @staticmethod
     def transform_data(

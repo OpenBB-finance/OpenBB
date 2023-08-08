@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.cash_flow_growth import (
+from openbb_provider.standard_models.cash_flow_growth import (
     CashFlowStatementGrowthData,
     CashFlowStatementGrowthQueryParams,
 )
@@ -65,8 +65,6 @@ class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
 
 class FMPCashFlowStatementGrowthFetcher(
     Fetcher[
-        CashFlowStatementGrowthQueryParams,
-        CashFlowStatementGrowthData,
         FMPCashFlowStatementGrowthQueryParams,
         FMPCashFlowStatementGrowthData,
     ]
@@ -81,13 +79,14 @@ class FMPCashFlowStatementGrowthFetcher(
     def extract_data(
         query: FMPCashFlowStatementGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCashFlowStatementGrowthData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"cash-flow-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementGrowthData)
+        return get_data_many(url, FMPCashFlowStatementGrowthData, **kwargs)
 
     @staticmethod
     def transform_data(

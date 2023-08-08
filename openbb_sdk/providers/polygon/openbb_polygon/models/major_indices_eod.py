@@ -5,11 +5,11 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
-from openbb_provider.models.major_indices_eod import (
+from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveFloat, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
@@ -63,8 +63,6 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 
 class PolygonMajorIndicesEODFetcher(
     Fetcher[
-        MajorIndicesEODQueryParams,
-        MajorIndicesEODData,
         PolygonMajorIndicesEODQueryParams,
         PolygonMajorIndicesEODData,
     ]
@@ -82,7 +80,9 @@ class PolygonMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonMajorIndicesEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonMajorIndicesEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -94,7 +94,7 @@ class PolygonMajorIndicesEODFetcher(
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

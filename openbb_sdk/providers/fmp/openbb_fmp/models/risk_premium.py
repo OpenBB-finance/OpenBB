@@ -4,7 +4,10 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.risk_premium import RiskPremiumData, RiskPremiumQueryParams
+from openbb_provider.standard_models.risk_premium import (
+    RiskPremiumData,
+    RiskPremiumQueryParams,
+)
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -28,8 +31,6 @@ class FMPRiskPremiumData(RiskPremiumData):
 
 class FMPRiskPremiumFetcher(
     Fetcher[
-        RiskPremiumQueryParams,
-        RiskPremiumData,
         FMPRiskPremiumQueryParams,
         FMPRiskPremiumData,
     ]
@@ -40,13 +41,15 @@ class FMPRiskPremiumFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRiskPremiumQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPRiskPremiumQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPRiskPremiumData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "market_risk_premium", api_key)
 
-        return get_data_many(url, FMPRiskPremiumData)
+        return get_data_many(url, FMPRiskPremiumData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPRiskPremiumData]) -> List[FMPRiskPremiumData]:

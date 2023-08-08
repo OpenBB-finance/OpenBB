@@ -38,7 +38,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 200,
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -514,7 +514,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 200,
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -1574,7 +1574,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 200,
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs

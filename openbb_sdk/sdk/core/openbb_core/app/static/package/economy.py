@@ -303,7 +303,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        r"""Get OHLCV data for an index.
+        """Get OHLCV data for an index.
 
 
         openbb
@@ -368,13 +368,13 @@ class CLASS_economy(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \% in the price of the symbol.
+            Change \\% in the price of the symbol.
         vwap : float
             Volume Weighted Average Price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \% in the price of the symbol over a period of time.
+            Change \\% in the price of the symbol over a period of time.
 
         polygon
         =======

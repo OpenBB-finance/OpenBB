@@ -82,8 +82,8 @@ class FormatterWithExceptions(logging.Formatter):
 
         return text_mocked
 
-    @classmethod
-    def filter_special_tags(cls, text: str) -> str:
+    @staticmethod
+    def filter_special_tags(text: str) -> str:
         text_filtered = text.replace("\n", " MOCKING_BREAKLINE ")
         text_filtered = text_filtered.replace("'Traceback", "Traceback")
 

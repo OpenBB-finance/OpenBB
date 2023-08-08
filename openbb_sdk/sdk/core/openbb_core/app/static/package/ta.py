@@ -5,7 +5,6 @@ from openbb_core.app.model.command_output import CommandOutput
 import openbb_provider
 import pandas
 import datetime
-from types import NoneType
 import pydantic
 from pydantic import validate_arguments
 from inspect import Parameter

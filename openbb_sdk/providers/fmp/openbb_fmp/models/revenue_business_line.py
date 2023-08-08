@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.revenue_business_line import (
+from openbb_provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
@@ -31,8 +31,6 @@ class FMPRevenueBusinessLineData(RevenueBusinessLineData):
 
 class FMPRevenueBusinessLineFetcher(
     Fetcher[  # type: ignore
-        RevenueBusinessLineQueryParams,
-        RevenueBusinessLineData,
         FMPRevenueBusinessLineQueryParams,
         FMPRevenueBusinessLineData,
     ]
@@ -43,14 +41,16 @@ class FMPRevenueBusinessLineFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRevenueBusinessLineQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPRevenueBusinessLineQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPRevenueBusinessLineData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(4, "revenue-product-segmentation", api_key, query)
-        data = get_data(url)
+        data = get_data(url, **kwargs)
 
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
