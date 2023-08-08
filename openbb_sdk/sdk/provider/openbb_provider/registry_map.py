@@ -104,9 +104,7 @@ class RegistryMap:
             model_file_dir = os.path.dirname(inspect.getfile(model))
             model_name = os.path.basename(model_file_dir)
 
-            if (
-                model_name == "models" and model.__name__ != super_model_name
-            ) or found_standard:
+            if (model_name == "standard_models") or found_standard:
                 if not found_standard:
                     standard_info["docstring"] = model.__doc__
                 found_standard = True
