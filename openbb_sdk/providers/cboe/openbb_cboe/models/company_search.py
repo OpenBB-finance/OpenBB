@@ -45,8 +45,6 @@ class CboeCompanySearchData(CompanySearchData):
 
 class CboeCompanySearchFetcher(
     Fetcher[
-        CompanySearchQueryParams,
-        List[CompanySearchData],
         CboeCompanySearchQueryParams,
         List[CboeCompanySearchData],
     ]
@@ -59,11 +57,12 @@ class CboeCompanySearchFetcher(
     def extract_data(
         query: CboeCompanySearchQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[CboeCompanySearchData]:
         data = search_companies(query.query, ticker=query.ticker)
 
         return [CboeCompanySearchData.parse_obj(d) for d in data.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[CboeCompanySearchData]) -> List[CompanySearchData]:
-        return [CompanySearchData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[CboeCompanySearchData]) -> List[CboeCompanySearchData]:
+        return data

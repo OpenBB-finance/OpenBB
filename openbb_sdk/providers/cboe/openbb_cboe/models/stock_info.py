@@ -79,8 +79,6 @@ class CboeStockInfoData(StockInfoData):
 
 class CboeStockInfoFetcher(
     Fetcher[
-        StockInfoQueryParams,
-        List[StockInfoData],
         CboeStockInfoQueryParams,
         List[CboeStockInfoData],
     ]
@@ -93,10 +91,11 @@ class CboeStockInfoFetcher(
     def extract_data(
         query: CboeStockInfoQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[CboeStockInfoData]:
         data = get_info(query.symbol).to_dict()
         return CboeStockInfoData.parse_obj(data)
 
     @staticmethod
-    def transform_data(data: List[CboeStockInfoData]) -> List[StockInfoData]:
-        return StockInfoData.parse_obj(data.dict())
+    def transform_data(data: List[CboeStockInfoData]) -> List[CboeStockInfoData]:
+        return data

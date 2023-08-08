@@ -92,8 +92,6 @@ class CboeOptionsChainsData(OptionsChainsData):
 
 class CboeOptionsChainsFetcher(
     Fetcher[
-        OptionsChainsQueryParams,
-        List[OptionsChainsData],
         CboeOptionsChainsQueryParams,
         List[CboeOptionsChainsData],
     ]
@@ -106,6 +104,7 @@ class CboeOptionsChainsFetcher(
     def extract_data(
         query: CboeOptionsChainsQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[CboeOptionsChainsData]:
         data = get_chains(query.symbol).to_dict("records")
 
@@ -114,5 +113,5 @@ class CboeOptionsChainsFetcher(
         return [CboeOptionsChainsData.parse_obj(d) for d in data_.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[CboeOptionsChainsData]) -> List[OptionsChainsData]:
-        return [OptionsChainsData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[CboeOptionsChainsData]) -> List[CboeOptionsChainsData]:
+        return data

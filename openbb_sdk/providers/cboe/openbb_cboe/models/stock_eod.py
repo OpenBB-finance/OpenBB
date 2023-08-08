@@ -28,8 +28,6 @@ class CboeStockEODData(StockEODData):
 
 class CboeStockEODFetcher(
     Fetcher[
-        StockEODQueryParams,
-        List[StockEODData],
         CboeStockEODQueryParams,
         List[CboeStockEODData],
     ]
@@ -48,6 +46,7 @@ class CboeStockEODFetcher(
     def extract_data(
         query: CboeStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[CboeStockEODData]:
         data = get_eod_prices(query.symbol, query.start_date, query.end_date).to_dict(
             "records"
@@ -57,5 +56,5 @@ class CboeStockEODFetcher(
         return [CboeStockEODData.parse_obj(d) for d in data_.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[CboeStockEODData]) -> List[StockEODData]:
-        return [StockEODData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[CboeStockEODData]) -> List[CboeStockEODData]:
+        return data
