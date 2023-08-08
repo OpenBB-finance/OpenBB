@@ -15,10 +15,10 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from urllib.parse import urlparse
 
 import certifi
 import pandas as pd
+import requests
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
@@ -649,15 +649,6 @@ class TerminalController(BaseController):
             other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        print(ns_parser.url)
-
-        def is_valid_url(url):
-            try:
-                result = urlparse(url)
-                return all([result.scheme, result.netloc])
-            except ValueError:
-                return False
-
         if ns_parser:
             if ns_parser.example:
                 routine_path = (
@@ -668,26 +659,37 @@ class TerminalController(BaseController):
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
-            if not ns_parser.file:
-                return
-            file_path = " ".join(ns_parser.file)
-            # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
-            full_path = file_path
-            hub_routine = file_path.split("/")
-            # Change with: my.openbb.co
-            if "payments.openbb.dev" in file_path:
-                print(file_path)
+            if ns_parser.url:
+                username = ns_parser.url.split("/")[-2][1:]
+                script_name = ns_parser.url.split("/")[-1]
+                file_name = f"{username}_{script_name}.openbb"
+                response = requests.get(ns_parser.url, timeout=10)
+                if response.status_code != 200:
+                    console.print("[red]Could not find the requested script.[/red]")
+                    return
+                routine_text = response.json()["script"]
+                file_path = Path(get_current_user().preferences.USER_ROUTINES_DIRECTORY)
+                routine_path = file_path / file_name
+                with open(routine_path, "w") as file:
+                    file.write(routine_text)
+                self.update_runtime_choices()
 
-            if hub_routine[0] == "default":
-                routine_path = Path(
-                    self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
-                )
-            elif hub_routine[0] == "personal":
-                routine_path = Path(
-                    self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
-                )
-            else:
-                routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
+            if ns_parser.file:
+                file_path = " ".join(ns_parser.file)
+                # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
+                full_path = file_path
+                hub_routine = file_path.split("/")
+                # Change with: my.openbb.co
+                if hub_routine[0] == "default":
+                    routine_path = Path(
+                        self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
+                    )
+                elif hub_routine[0] == "personal":
+                    routine_path = Path(
+                        self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
+                    )
+                else:
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
 
             with open(routine_path) as fp:
                 raw_lines = list(fp)
