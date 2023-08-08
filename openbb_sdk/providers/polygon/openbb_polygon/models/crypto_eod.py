@@ -58,8 +58,6 @@ class PolygonCryptoEODData(CryptoEODData):
 
 class PolygonCryptoEODFetcher(
     Fetcher[
-        CryptoEODQueryParams,
-        CryptoEODData,
         PolygonCryptoEODQueryParams,
         PolygonCryptoEODData,
     ]

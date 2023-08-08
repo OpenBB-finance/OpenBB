@@ -31,8 +31,6 @@ class FMPRevenueBusinessLineData(RevenueBusinessLineData):
 
 class FMPRevenueBusinessLineFetcher(
     Fetcher[  # type: ignore
-        RevenueBusinessLineQueryParams,
-        RevenueBusinessLineData,
         FMPRevenueBusinessLineQueryParams,
         FMPRevenueBusinessLineData,
     ]

@@ -58,8 +58,6 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
 
 class FMPMajorIndicesEODFetcher(
     Fetcher[
-        MajorIndicesEODQueryParams,
-        MajorIndicesEODData,
         FMPMajorIndicesEODQueryParams,
         FMPMajorIndicesEODData,
     ]

@@ -52,8 +52,6 @@ class FMPCryptoEODData(CryptoEODData):
 
 class FMPCryptoEODFetcher(
     Fetcher[
-        CryptoEODQueryParams,
-        CryptoEODData,
         FMPCryptoEODQueryParams,
         FMPCryptoEODData,
     ]

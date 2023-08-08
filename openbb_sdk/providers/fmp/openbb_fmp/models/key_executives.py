@@ -38,8 +38,6 @@ class FMPKeyExecutivesData(KeyExecutivesData):
 
 class FMPKeyExecutivesFetcher(
     Fetcher[
-        KeyExecutivesQueryParams,
-        KeyExecutivesData,
         FMPKeyExecutivesQueryParams,
         FMPKeyExecutivesData,
     ]
@@ -65,4 +63,5 @@ class FMPKeyExecutivesFetcher(
     def transform_data(
         data: List[FMPKeyExecutivesData],
     ) -> List[FMPKeyExecutivesData]:
+        return data
         return data

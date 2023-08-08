@@ -33,8 +33,6 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
 
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
-        PriceTargetConsensusQueryParams,
-        PriceTargetConsensusData,
         FMPPriceTargetConsensusQueryParams,
         FMPPriceTargetConsensusData,
     ]

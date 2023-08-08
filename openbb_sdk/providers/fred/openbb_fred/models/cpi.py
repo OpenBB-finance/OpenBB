@@ -17,7 +17,7 @@ class FREDCPIData(CPIData):
     """CPI data."""
 
 
-class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCPIData]):
+class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, FREDCPIData]):
     """FRED CPI Fetcher."""
 
     @staticmethod

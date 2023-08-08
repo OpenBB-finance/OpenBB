@@ -53,8 +53,6 @@ class FMPStockEODData(StockEODData):
 
 class FMPStockEODFetcher(
     Fetcher[
-        StockEODQueryParams,
-        StockEODData,
         FMPStockEODQueryParams,
         FMPStockEODData,
     ]

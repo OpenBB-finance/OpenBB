@@ -3,6 +3,7 @@
 import datetime
 import typing
 from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -17,6 +18,7 @@ class CLASS_forex(Container):
     def pairs(
         self,
         chart: bool = False,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:

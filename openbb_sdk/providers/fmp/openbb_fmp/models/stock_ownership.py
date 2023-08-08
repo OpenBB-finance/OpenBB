@@ -62,8 +62,6 @@ class FMPStockOwnershipData(StockOwnershipData):
 
 class FMPStockOwnershipFetcher(
     Fetcher[
-        StockOwnershipQueryParams,
-        StockOwnershipData,
         FMPStockOwnershipQueryParams,
         FMPStockOwnershipData,
     ]

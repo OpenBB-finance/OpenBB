@@ -31,8 +31,6 @@ class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
 
 class FMPHistoricalStockSplitsFetcher(
     Fetcher[
-        HistoricalStockSplitsQueryParams,
-        HistoricalStockSplitsData,
         FMPHistoricalStockSplitsQueryParams,
         FMPHistoricalStockSplitsData,
     ]

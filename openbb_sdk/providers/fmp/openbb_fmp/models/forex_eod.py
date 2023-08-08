@@ -47,8 +47,6 @@ class FMPForexEODData(ForexEODData):
 
 class FMPForexEODFetcher(
     Fetcher[
-        ForexEODQueryParams,
-        ForexEODData,
         FMPForexEODQueryParams,
         FMPForexEODData,
     ]

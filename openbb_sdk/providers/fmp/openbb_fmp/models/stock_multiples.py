@@ -86,8 +86,6 @@ class FMPStockMultiplesData(StockMultiplesData):
 
 class FMPStockMultiplesFetcher(
     Fetcher[
-        StockMultiplesQueryParams,
-        StockMultiplesData,
         FMPStockMultiplesQueryParams,
         FMPStockMultiplesData,
     ]

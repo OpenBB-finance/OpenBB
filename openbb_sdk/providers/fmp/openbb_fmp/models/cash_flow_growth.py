@@ -65,8 +65,6 @@ class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
 
 class FMPCashFlowStatementGrowthFetcher(
     Fetcher[
-        CashFlowStatementGrowthQueryParams,
-        CashFlowStatementGrowthData,
         FMPCashFlowStatementGrowthQueryParams,
         FMPCashFlowStatementGrowthData,
     ]

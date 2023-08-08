@@ -44,8 +44,6 @@ class FMPCompanyOverviewData(CompanyOverviewData):
 
 class FMPCompanyOverviewFetcher(
     Fetcher[
-        CompanyOverviewQueryParams,
-        CompanyOverviewData,
         FMPCompanyOverviewQueryParams,
         FMPCompanyOverviewData,
     ]

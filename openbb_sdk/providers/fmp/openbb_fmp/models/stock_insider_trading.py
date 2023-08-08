@@ -51,8 +51,6 @@ class FMPStockInsiderTradingData(StockInsiderTradingData):
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[
-        StockInsiderTradingQueryParams,
-        StockInsiderTradingData,
         FMPStockInsiderTradingQueryParams,
         FMPStockInsiderTradingData,
     ]
@@ -79,4 +77,5 @@ class FMPStockInsiderTradingFetcher(
     def transform_data(
         data: List[FMPStockInsiderTradingData],
     ) -> List[FMPStockInsiderTradingData]:
+        return data
         return data

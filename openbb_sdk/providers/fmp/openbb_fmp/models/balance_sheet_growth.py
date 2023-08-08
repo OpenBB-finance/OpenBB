@@ -74,8 +74,6 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
 
 class FMPBalanceSheetGrowthFetcher(
     Fetcher[
-        BalanceSheetGrowthQueryParams,
-        BalanceSheetGrowthData,
         FMPBalanceSheetGrowthQueryParams,
         FMPBalanceSheetGrowthData,
     ]

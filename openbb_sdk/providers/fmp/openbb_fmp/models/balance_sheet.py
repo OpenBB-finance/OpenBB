@@ -91,8 +91,6 @@ class FMPBalanceSheetData(BalanceSheetData):
 
 class FMPBalanceSheetFetcher(
     Fetcher[
-        BalanceSheetQueryParams,
-        BalanceSheetData,
         FMPBalanceSheetQueryParams,
         FMPBalanceSheetData,
     ]

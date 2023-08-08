@@ -38,8 +38,6 @@ class FMPShareStatisticsData(ShareStatisticsData):
 
 class FMPShareStatisticsFetcher(
     Fetcher[
-        ShareStatisticsQueryParams,
-        ShareStatisticsData,
         FMPShareStatisticsQueryParams,
         FMPShareStatisticsData,
     ]

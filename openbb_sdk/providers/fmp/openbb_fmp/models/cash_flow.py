@@ -76,8 +76,6 @@ class FMPCashFlowStatementData(CashFlowStatementData):
 
 class FMPCashFlowStatementFetcher(
     Fetcher[
-        CashFlowStatementQueryParams,
-        CashFlowStatementData,
         FMPCashFlowStatementQueryParams,
         FMPCashFlowStatementData,
     ]

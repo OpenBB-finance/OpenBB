@@ -73,8 +73,6 @@ class FMPIncomeStatementData(IncomeStatementData):
 
 class FMPIncomeStatementFetcher(
     Fetcher[
-        IncomeStatementQueryParams,
-        IncomeStatementData,
         FMPIncomeStatementQueryParams,
         FMPIncomeStatementData,
     ]

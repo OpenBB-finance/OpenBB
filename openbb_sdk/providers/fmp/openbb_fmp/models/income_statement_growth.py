@@ -61,8 +61,6 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
 
 class FMPIncomeStatementGrowthFetcher(
     Fetcher[
-        IncomeStatementGrowthQueryParams,
-        IncomeStatementGrowthData,
         FMPIncomeStatementGrowthQueryParams,
         FMPIncomeStatementGrowthData,
     ]

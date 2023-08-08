@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.cash_flows import (
     CashFlowStatementData,
-    CashFlowStatementQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
@@ -33,8 +32,6 @@ class PolygonCashFlowStatementData(CashFlowStatementData):
 
 class PolygonCashFlowStatementFetcher(
     Fetcher[
-        CashFlowStatementQueryParams,
-        CashFlowStatementData,
         PolygonCashFlowStatementQueryParams,
         PolygonCashFlowStatementData,
     ]

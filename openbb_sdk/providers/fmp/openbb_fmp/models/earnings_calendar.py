@@ -47,8 +47,6 @@ class FMPEarningsCalendarData(EarningsCalendarData):
 
 class FMPEarningsCalendarFetcher(
     Fetcher[
-        EarningsCalendarQueryParams,
-        EarningsCalendarData,
         FMPEarningsCalendarQueryParams,
         FMPEarningsCalendarData,
     ]

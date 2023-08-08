@@ -35,8 +35,6 @@ class FMPSECFilingsData(SECFilingsData):
 
 class FMPSECFilingsFetcher(
     Fetcher[
-        SECFilingsQueryParams,
-        SECFilingsData,
         FMPSECFilingsQueryParams,
         FMPSECFilingsData,
     ]
