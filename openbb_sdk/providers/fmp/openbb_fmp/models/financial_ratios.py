@@ -1,4 +1,4 @@
-"""FMP Income Statement Fetcher."""
+"""FMP Financial Ratios Fetcher."""
 
 
 from typing import Any, Dict, List, Literal, Optional
