@@ -15,6 +15,7 @@ import webbrowser
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
 import certifi
 import pandas as pd
@@ -331,16 +332,18 @@ class TerminalController(BaseController):
                     )
 
     def parse_input(self, an_input: str) -> List:
-        """Overwrite the BaseController parse_input for `askobb`
+        """Overwrite the BaseController parse_input for `askobb` and 'exe'
 
         This will allow us to search for something like "P/E" ratio
         """
         # Filtering out sorting parameters with forward slashes like P/E
         sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
-
-        custom_filters = [sort_filter]
-
-        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
+        # Filter out urls
+        url = r"(exe --url payments\.openbb\.dev/terminal/script/.*)"
+        custom_filters = [sort_filter, url]
+        return parse_and_split_input(
+            an_input=an_input.replace("https://", ""), custom_filters=custom_filters
+        )
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
@@ -591,16 +594,6 @@ class TerminalController(BaseController):
     def call_intro(self, _):
         """Process intro command."""
         webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
-        # import json
-
-        # intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
-
-        # for prompt in intro.get("prompts", []):
-        #     console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
-        #     console.print("".join(prompt["content"]))
-        #     if input("") == "q":
-        #         break
-        #     console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -652,6 +645,13 @@ class TerminalController(BaseController):
             other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
+        def is_valid_url(url):
+            try:
+                result = urlparse(url)
+                return all([result.scheme, result.netloc])
+            except ValueError:
+                return False
+
         if ns_parser:
             if ns_parser.example:
                 routine_path = (
@@ -662,23 +662,26 @@ class TerminalController(BaseController):
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
-            elif ns_parser.file:
-                # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
-                file_path = " ".join(ns_parser.file)
-                full_path = file_path
-                hub_routine = file_path.split("/")
-                if hub_routine[0] == "default":
-                    routine_path = Path(
-                        self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
-                    )
-                elif hub_routine[0] == "personal":
-                    routine_path = Path(
-                        self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
-                    )
-                else:
-                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
-            else:
+            if not ns_parser.file:
                 return
+            file_path = " ".join(ns_parser.file)
+            # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
+            full_path = file_path
+            hub_routine = file_path.split("/")
+            # Change with: my.openbb.co
+            if "payments.openbb.dev" in file_path:
+                print(file_path)
+
+            if hub_routine[0] == "default":
+                routine_path = Path(
+                    self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
+                )
+            elif hub_routine[0] == "personal":
+                routine_path = Path(
+                    self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
+                )
+            else:
+                routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
 
             with open(routine_path) as fp:
                 raw_lines = list(fp)
