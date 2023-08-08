@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -25,11 +25,23 @@ class HistoricalDividendsData(Data):
     )
     dividend: float = Field(description="The dividend of the historical dividends.")
     record_date: Optional[dateType] = Field(
-        description="The record date of the historical dividends."
+        description="The record date of the historical dividends.", default=None
     )
     payment_date: Optional[dateType] = Field(
-        description="The payment date of the historical dividends."
+        description="The payment date of the historical dividends.", default=None
     )
     declaration_date: Optional[dateType] = Field(
-        description="The declaration date of the historical dividends."
+        description="The declaration date of the historical dividends.", default=None
     )
+
+    @validator("declaration_date", pre=True, check_fields=False)
+    def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
+        return dateType.fromisoformat(v) if v else None
+
+    @validator("record_date", pre=True, check_fields=False)
+    def record_date_validate(cls, v: str):  # pylint: disable=E0213
+        return dateType.fromisoformat(v) if v else None
+
+    @validator("payment_date", pre=True, check_fields=False)
+    def payment_date_validate(cls, v: str):  # pylint: disable=E0213
+        return dateType.fromisoformat(v) if v else None

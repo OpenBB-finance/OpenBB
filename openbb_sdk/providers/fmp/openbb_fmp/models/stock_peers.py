@@ -50,5 +50,5 @@ class FMPStockPeersFetcher(
         return get_data_one(url, FMPStockPeersData, **kwargs)
 
     @staticmethod
-    def transform_data(data: FMPStockPeersData) -> FMPStockPeersData:
-        return data
+    def transform_data(data: FMPStockPeersData) -> StockPeersData:
+        return StockPeersData.parse_obj(data.dict())

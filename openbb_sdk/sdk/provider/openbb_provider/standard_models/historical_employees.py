@@ -3,7 +3,7 @@
 
 from datetime import date, datetime
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -35,3 +35,15 @@ class HistoricalEmployeesData(Data, BaseSymbol):
     source: str = Field(
         description="The source URL which retrieves this data for the company."
     )
+
+    @validator("acceptance_time", pre=True, check_fields=False)
+    def acceptance_time_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+
+    @validator("period_of_report", pre=True, check_fields=False)
+    def period_of_report_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d")
+
+    @validator("filing_date", pre=True, check_fields=False)
+    def filing_date_validate(cls, v):  # pylint: disable=E0213
+        return datetime.strptime(v, "%Y-%m-%d")

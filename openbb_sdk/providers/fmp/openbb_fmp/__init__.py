@@ -16,6 +16,7 @@ from openbb_fmp.models.esg_risk_rating import FMPESGRiskRatingFetcher
 from openbb_fmp.models.esg_score import FMPESGScoreFetcher
 from openbb_fmp.models.esg_sector import FMPESGSectorFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
+from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_eod import FMPForexEODFetcher
 from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
@@ -101,5 +102,6 @@ fmp_provider = Provider(
         "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
         "DividendCalendar": FMPDividendCalendarFetcher,
         "StockQuote": FMPStockQuoteFetcher,
+        "FinancialRatios": FMPFinancialRatiosFetcher,
     },
 )
