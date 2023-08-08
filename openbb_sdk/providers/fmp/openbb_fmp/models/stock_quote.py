@@ -5,7 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_quote import StockQuoteData, StockQuoteQueryParams
+from openbb_provider.standard_models.stock_quote import (
+    StockQuoteData,
+    StockQuoteQueryParams,
+)
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
@@ -45,8 +48,6 @@ class FMPStockQuoteData(StockQuoteData):
 
 class FMPStockQuoteFetcher(
     Fetcher[
-        StockQuoteQueryParams,
-        List[StockQuoteData],
         FMPStockQuoteQueryParams,
         List[FMPStockQuoteData],
     ]

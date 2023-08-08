@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider import helpers
-from openbb_provider.models.stock_news import StockNewsData
+from openbb_provider.standard_models.stock_news import StockNewsData
 from pydantic import BaseModel, Field
 
 
