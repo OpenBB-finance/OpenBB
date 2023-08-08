@@ -8,7 +8,7 @@ from datetime import (
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.share_statistics import (
+from openbb_provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
@@ -43,8 +43,6 @@ class FMPShareStatisticsData(ShareStatisticsData):
 
 class FMPShareStatisticsFetcher(
     Fetcher[
-        ShareStatisticsQueryParams,
-        List[ShareStatisticsData],
         FMPShareStatisticsQueryParams,
         List[FMPShareStatisticsData],
     ]

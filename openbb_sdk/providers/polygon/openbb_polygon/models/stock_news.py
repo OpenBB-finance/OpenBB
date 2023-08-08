@@ -1,12 +1,13 @@
 """Polygon Stock News Fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
+from openbb_provider.standard_models.stock_news import (
+    StockNewsData,
+    StockNewsQueryParams,
+)
 from openbb_provider.utils.helpers import data_transformer, get_querystring
 from pydantic import BaseModel, Field
 
@@ -17,74 +18,74 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     """Polygon stock news query.
 
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
-
-    ticker_lt : str, optional
-        Less than, by default None
-    ticker_lte : str, optional
-        Less than or equal, by default None
-    ticker_gt : str, optional
-        Greater than, by default None
-    ticker_gte : str, optional
-        Greater than or equal, by default None
-    published_utc : str, optional
-        The published date of the query, by default None
-    published_utc_lt : str, optional
-        Less than, by default None
-    published_utc_lte : str, optional
-        Less than or equal, by default None
-    published_utc_gt : str, optional
-        Greater than, by default None
-    published_utc_gte : str, optional
-        Greater than or equal, by default None
-    order : Literal["asc", "desc"], optional
-        The sort order of the query, by default None
-    sort : str, optional
-        The sort of the query, by default None
     """
 
     class Config:
         fields = {"symbols": "ticker"}
 
-    ticker_lt: Optional[str] = Field(alias="ticker.lt", default=None)
-    ticker_lte: Optional[str] = Field(alias="ticker.lte", default=None)
-    ticker_gt: Optional[str] = Field(alias="ticker.gt", default=None)
-    ticker_gte: Optional[str] = Field(alias="ticker.gte", default=None)
-    published_utc: Optional[str] = None
-    published_utc_lt: Optional[str] = Field(alias="published_utc.lt", default=None)
-    published_utc_lte: Optional[str] = Field(alias="published_utc.lte", default=None)
-    published_utc_gt: Optional[str] = Field(alias="published_utc.gt", default=None)
-    published_utc_gte: Optional[str] = Field(alias="published_utc.gte", default=None)
-    order: Optional[Literal["asc", "desc"]] = None
-    sort: Optional[str] = None
+    ticker_lt: Optional[str] = Field(
+        default=None, description="Less than, by default None"
+    )
+    ticker_lte: Optional[str] = Field(
+        default=None, description="Less than or equal, by default None"
+    )
+    ticker_gt: Optional[str] = Field(
+        default=None, description="Greater than, by default None"
+    )
+    ticker_gte: Optional[str] = Field(
+        default=None, description="Greater than or equal, by default None"
+    )
+    published_utc: Optional[str] = Field(
+        default=None, description="The published date of the query, by default None"
+    )
+    published_utc_lt: Optional[str] = Field(
+        default=None, description="Less than, by default None"
+    )
+    published_utc_lte: Optional[str] = Field(
+        default=None, description="Less than or equal, by default None"
+    )
+    published_utc_gt: Optional[str] = Field(
+        default=None, description="Greater than, by default None"
+    )
+    published_utc_gte: Optional[str] = Field(
+        default=None, description="Greater than or equal, by default None"
+    )
+    order: Optional[Literal["asc", "desc"]] = Field(
+        default=None, description="The sort order of the query, by default None"
+    )
+    sort: Optional[str] = Field(
+        default=None, description="The sort of the query, by default None"
+    )
 
 
 class PolygonPublisher(BaseModel):
-    favicon_url: str
-    homepage_url: str
-    logo_url: str
-    name: str
+    favicon_url: str = Field(description="Favicon URL.")
+    homepage_url: str = Field(description="Homepage URL.")
+    logo_url: str = Field(description="Logo URL.")
+    name: str = Field(description="Publisher Name.")
 
 
-class PolygonStockNewsData(Data):
+class PolygonStockNewsData(StockNewsData):
     """Source: https://polygon.io/docs/stocks/get_v2_reference_news"""
 
-    amp_url: Optional[str]
-    article_url: str = Field(alias="url")
-    author: Optional[str]
-    description: Optional[str] = Field(alias="text")
-    id: str
-    image_url: Optional[str]
-    keywords: Optional[List[str]]
-    published_utc: datetime = Field(alias="date")
-    publisher: PolygonPublisher = Field(alias="image")
-    tickers: List[str]
-    title: str
+    class Config:
+        fields = {
+            "url": "article_url",
+            "text": "description",
+            "date": "published_utc",
+        }
+
+    amp_url: Optional[str] = Field(description="AMP URL.")
+    author: Optional[str] = Field(description="Author of the article.")
+    id: str = Field(description="Article ID.")
+    image_url: Optional[str] = Field(description="Image URL.")
+    keywords: Optional[List[str]] = Field(description="Keywords in the article")
+    publisher: PolygonPublisher = Field(description="Publisher of the article.")
+    tickers: List[str] = Field(description="Tickers covered in the article.")
 
 
 class PolygonStockNewsFetcher(
     Fetcher[
-        StockNewsQueryParams,
-        List[StockNewsData],
         PolygonStockNewsQueryParams,
         List[PolygonStockNewsData],
     ]

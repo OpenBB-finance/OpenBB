@@ -4,7 +4,10 @@
 from typing import Any, Dict, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
+from openbb_provider.standard_models.stock_peers import (
+    StockPeersData,
+    StockPeersQueryParams,
+)
 
 from openbb_fmp.utils.helpers import create_url, get_data_one
 
@@ -27,8 +30,6 @@ class FMPStockPeersData(StockPeersData):
 
 class FMPStockPeersFetcher(
     Fetcher[
-        StockPeersQueryParams,
-        StockPeersData,
         FMPStockPeersQueryParams,
         FMPStockPeersData,
     ]

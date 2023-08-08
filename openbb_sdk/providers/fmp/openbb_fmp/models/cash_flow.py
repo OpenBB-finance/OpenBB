@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.cash_flows import (
+from openbb_provider.standard_models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
@@ -76,8 +76,6 @@ class FMPCashFlowStatementData(CashFlowStatementData):
 
 class FMPCashFlowStatementFetcher(
     Fetcher[
-        CashFlowStatementQueryParams,
-        List[CashFlowStatementData],
         FMPCashFlowStatementQueryParams,
         List[FMPCashFlowStatementData],
     ]

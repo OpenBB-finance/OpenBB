@@ -371,11 +371,13 @@ class CLASS_economy(Container):
             Unadjusted volume of the symbol.
         change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : Optional[float]
+        changePercent : float
             Change \\% in the price of the symbol.
-        label : Optional[str]
+        vwap : float
+            Volume Weighted Average Price of the symbol.
+        label : str
             Human readable format of the date.
-        changeOverTime : Optional[float]
+        changeOverTime : float
             Change \\% in the price of the symbol over a period of time.
 
         polygon

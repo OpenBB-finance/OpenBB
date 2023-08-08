@@ -26,8 +26,6 @@ GenericDataType = Union[DataType, List[DataType], Dict[str, DataType]]
 
 class Fetcher(
     Generic[
-        QueryParamsType,
-        DataType,
         ProviderQueryParamsType,
         ProviderDataType,
     ]
@@ -65,28 +63,16 @@ class Fetcher(
         return results
 
     @property
-    def query_params_type(self):
-        """Get the type of the query."""
-        # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[0]
-
-    @property
-    def data_type(self):
-        """Get the type of the data."""
-        # pylint: disable=E1101
-        return self.get_data_type(self.__orig_bases__[0].__args__[1])
-
-    @property
     def provider_query_params_type(self):
         """Get the type of the provider query."""
         # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[2]
+        return self.__orig_bases__[0].__args__[0]
 
     @property
     def provider_data_type(self):
         """Get the type of the provider data."""
         # pylint: disable=E1101
-        return self.get_data_type(self.__orig_bases__[0].__args__[3])
+        return self.get_data_type(self.__orig_bases__[0].__args__[1])
 
     # TODO: Create abstract class attribute for generic return type
     @property

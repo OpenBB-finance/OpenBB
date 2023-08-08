@@ -1,11 +1,13 @@
 """FMP Stock News fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
+from openbb_provider.standard_models.stock_news import (
+    StockNewsData,
+    StockNewsQueryParams,
+)
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -22,16 +24,18 @@ class FMPStockNewsQueryParams(StockNewsQueryParams):
 
 
 class FMPStockNewsData(StockNewsData):
-    symbol: Optional[str] = None
-    publishedDate: datetime = Field(alias="date")
-    image: Optional[str] = Field(default=None)
-    site: Optional[str] = None
+    """FMP Stock News data."""
+
+    class Config:
+        fields = {"date": "publishedDate"}
+
+    symbol: str = Field(description="Ticker of the fetched news.")
+    image: Optional[str] = Field(description="URL to the image of the news source.")
+    site: str = Field(description="Name of the news source.")
 
 
 class FMPStockNewsFetcher(
     Fetcher[
-        StockNewsQueryParams,
-        List[StockNewsData],
         FMPStockNewsQueryParams,
         List[FMPStockNewsData],
     ]

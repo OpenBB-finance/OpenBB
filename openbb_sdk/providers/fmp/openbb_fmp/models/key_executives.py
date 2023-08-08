@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.key_executives import (
+from openbb_provider.standard_models.key_executives import (
     KeyExecutivesData,
     KeyExecutivesQueryParams,
 )
@@ -38,8 +38,6 @@ class FMPKeyExecutivesData(KeyExecutivesData):
 
 class FMPKeyExecutivesFetcher(
     Fetcher[
-        KeyExecutivesQueryParams,
-        List[KeyExecutivesData],
         FMPKeyExecutivesQueryParams,
         List[FMPKeyExecutivesData],
     ]

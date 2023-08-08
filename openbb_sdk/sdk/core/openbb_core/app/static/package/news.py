@@ -57,7 +57,9 @@ class CLASS_news(Container):
             The published date of the news.
         title : str
             The title of the news.
-        text : Optional[str]
+        image : Optional[str]
+            The image URL of the news.
+        text : str
             The text/body of the news.
         url : str
             The URL of the news.

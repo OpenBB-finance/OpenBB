@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.income_statement import (
+from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
@@ -74,8 +74,6 @@ class FMPIncomeStatementData(IncomeStatementData):
 
 class FMPIncomeStatementFetcher(
     Fetcher[
-        IncomeStatementQueryParams,
-        List[IncomeStatementData],
         FMPIncomeStatementQueryParams,
         List[FMPIncomeStatementData],
     ]

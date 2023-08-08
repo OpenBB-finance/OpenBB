@@ -158,11 +158,11 @@ class CLASS_stocks(Container):
             Unadjusted volume of the symbol.
         change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : Optional[float]
+        changePercent : float
             Change \\% in the price of the symbol.
-        label : Optional[str]
+        label : str
             Human readable format of the date.
-        changeOverTime : Optional[float]
+        changeOverTime : float
             Change \\% in the price of the symbol over a period of time.
 
         polygon
@@ -228,7 +228,7 @@ class CLASS_stocks(Container):
         provider: Literal[benzinga, fmp, polygon]
             The provider to use for the query.
         symbols : ConstrainedStrValue
-
+            Symbol to get data for.
         page : int
             The page of the stock news to be retrieved.
         limit : Optional[NonNegativeInt]
@@ -316,14 +316,12 @@ class CLASS_stocks(Container):
 
         StockNews
         ---------
-        symbol : Optional[str]
-            None
-        publishedDate : datetime
-            None
+        symbol : str
+            Ticker of the fetched news.
         image : Optional[str]
-            None
-        site : Optional[str]
-            None
+            URL to the image of the news source.
+        site : str
+            Name of the news source.
 
         polygon
         =======
@@ -331,51 +329,45 @@ class CLASS_stocks(Container):
         Parameters
         ----------
         ticker_lt : Optional[str]
-            None
+            Less than, by default None
         ticker_lte : Optional[str]
-            None
+            Less than or equal, by default None
         ticker_gt : Optional[str]
-            None
+            Greater than, by default None
         ticker_gte : Optional[str]
-            None
+            Greater than or equal, by default None
         published_utc : Optional[str]
-            None
+            The published date of the query, by default None
         published_utc_lt : Optional[str]
-            None
+            Less than, by default None
         published_utc_lte : Optional[str]
-            None
+            Less than or equal, by default None
         published_utc_gt : Optional[str]
-            None
+            Greater than, by default None
         published_utc_gte : Optional[str]
-            None
+            Greater than or equal, by default None
         order : Optional[Literal['asc', 'desc']]
-            None
+            The sort order of the query, by default None
         sort : Optional[str]
-            None
+            The sort of the query, by default None
 
 
         StockNews
         ---------
         amp_url : Optional[str]
-            None
-        article_url : str
-            None
+            AMP URL.
         author : Optional[str]
-            None
-        description : Optional[str]
-            None
+            Author of the article.
         id : str
-            None
+            Article ID.
         image_url : Optional[str]
-            None
+            Image URL.
         keywords : Optional[List[str]]
-            None
-        published_utc : datetime
-            None
+            Keywords in the article
         publisher : PolygonPublisher
-            None
+            Publisher of the article.
         tickers : List[str]
-            None"""  # noqa: E501
+            Tickers covered in the article."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

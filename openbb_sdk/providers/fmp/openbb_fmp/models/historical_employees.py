@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.historical_employees import (
+from openbb_provider.standard_models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
 )
@@ -49,8 +49,6 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
 
 class FMPHistoricalEmployeesFetcher(
     Fetcher[
-        HistoricalEmployeesQueryParams,
-        List[HistoricalEmployeesData],
         FMPHistoricalEmployeesQueryParams,
         List[FMPHistoricalEmployeesData],
     ]
@@ -63,7 +61,7 @@ class FMPHistoricalEmployeesFetcher(
     def extract_data(
         query: FMPHistoricalEmployeesQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPHistoricalEmployeesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

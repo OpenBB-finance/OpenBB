@@ -4,7 +4,7 @@
 from datetime import date
 from typing import Literal, Optional
 
-from openbb_provider.models.income_statement import IncomeStatementQueryParams
+from openbb_provider.standard_models.income_statement import IncomeStatementQueryParams
 from pydantic import Field
 
 

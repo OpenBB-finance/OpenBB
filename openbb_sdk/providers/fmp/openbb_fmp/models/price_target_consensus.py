@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.price_target_consensus import (
+from openbb_provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
     PriceTargetConsensusQueryParams,
 )
@@ -33,8 +33,6 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
 
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
-        PriceTargetConsensusQueryParams,
-        List[PriceTargetConsensusData],
         FMPPriceTargetConsensusQueryParams,
         List[FMPPriceTargetConsensusData],
     ]

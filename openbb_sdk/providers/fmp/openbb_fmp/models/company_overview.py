@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.company_overview import (
+from openbb_provider.standard_models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
 )
@@ -44,8 +44,6 @@ class FMPCompanyOverviewData(CompanyOverviewData):
 
 class FMPCompanyOverviewFetcher(
     Fetcher[
-        CompanyOverviewQueryParams,
-        CompanyOverviewData,
         FMPCompanyOverviewQueryParams,
         FMPCompanyOverviewData,
     ]
