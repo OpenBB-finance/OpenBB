@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.forex_eod import ForexEODData, ForexEODQueryParams
+from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring

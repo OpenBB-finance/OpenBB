@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.available_indices import (
+from openbb_provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )

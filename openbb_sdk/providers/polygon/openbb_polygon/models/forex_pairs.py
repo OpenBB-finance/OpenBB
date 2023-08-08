@@ -8,7 +8,10 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.forex_pairs import ForexPairsData, ForexPairsQueryParams
+from openbb_provider.standard_models.forex_pairs import (
+    ForexPairsData,
+    ForexPairsQueryParams,
+)
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 

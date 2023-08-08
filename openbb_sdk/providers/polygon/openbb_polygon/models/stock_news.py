@@ -4,7 +4,10 @@
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
+from openbb_provider.standard_models.stock_news import (
+    StockNewsData,
+    StockNewsQueryParams,
+)
 from openbb_provider.utils.helpers import data_transformer, get_querystring
 from pydantic import BaseModel, Field
 

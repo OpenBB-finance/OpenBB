@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.cash_flow_growth import (
+from openbb_provider.standard_models.cash_flow_growth import (
     CashFlowStatementGrowthData,
     CashFlowStatementGrowthQueryParams,
 )

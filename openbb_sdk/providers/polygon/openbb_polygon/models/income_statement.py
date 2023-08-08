@@ -2,7 +2,7 @@ from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.income_statement import (
+from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
 )
 from openbb_provider.utils.helpers import get_querystring
