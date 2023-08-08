@@ -45,8 +45,6 @@ class YFinanceStockEODData(StockEODData):
 
 class YFinanceStockEODFetcher(
     Fetcher[
-        StockEODQueryParams,
-        StockEODData,
         YFinanceStockEODQueryParams,
         YFinanceStockEODData,
     ]

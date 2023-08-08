@@ -45,8 +45,6 @@ class YFinanceForexEODData(ForexEODData):
 
 class YFinanceForexEODFetcher(
     Fetcher[
-        ForexEODQueryParams,
-        ForexEODData,
         YFinanceForexEODQueryParams,
         YFinanceForexEODData,
     ]

@@ -48,8 +48,6 @@ class YFinanceMajorIndicesEODData(MajorIndicesEODData):
 
 class YFinanceMajorIndicesEODFetcher(
     Fetcher[
-        MajorIndicesEODQueryParams,
-        MajorIndicesEODData,
         YFinanceMajorIndicesEODQueryParams,
         YFinanceMajorIndicesEODData,
     ]

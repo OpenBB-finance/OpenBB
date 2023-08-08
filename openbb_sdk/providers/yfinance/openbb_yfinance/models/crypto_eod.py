@@ -45,8 +45,6 @@ class YFinanceCryptoEODData(CryptoEODData):
 
 class YFinanceCryptoEODFetcher(
     Fetcher[
-        CryptoEODQueryParams,
-        CryptoEODData,
         YFinanceCryptoEODQueryParams,
         YFinanceCryptoEODData,
     ]
