@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -20,10 +20,10 @@ class CLASS_crypto(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        r"""Crypto Intraday Price.
+        """Crypto Intraday Price.
 
 
         openbb
@@ -31,7 +31,7 @@ class CLASS_crypto(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[fmp, polygon, yfinance]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -90,11 +90,11 @@ class CLASS_crypto(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \% in the price of the symbol.
+            Change \\% in the price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \% in the price of the symbol over a period of time.
+            Change \\% in the price of the symbol over a period of time.
 
         polygon
         =======
@@ -116,7 +116,22 @@ class CLASS_crypto(Container):
         CryptoEOD
         ---------
         n : PositiveInt
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period.
+
+        yfinance
+        ========
+
+        Parameters
+        ----------
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
+
+
+        CryptoEOD
+        ---------
+        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
