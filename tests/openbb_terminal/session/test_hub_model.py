@@ -677,7 +677,7 @@ def test_download_routine(auth_header, name, base_url, timeout, status_code):
         return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.download_routine(
-            auth_header=auth_header, name=name, base_url=base_url, timeout=timeout
+            auth_header=auth_header, uuid=name, base_url=base_url, timeout=timeout
         )
 
         assert result.status_code == mock_response.status_code
@@ -721,7 +721,7 @@ def test_delete_routine(auth_header, name, base_url, timeout, status_code):
         return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.delete_routine(
-            auth_header=auth_header, name=name, base_url=base_url, timeout=timeout
+            auth_header=auth_header, uuid=name, base_url=base_url, timeout=timeout
         )
 
         assert result.status_code == mock_response.status_code
