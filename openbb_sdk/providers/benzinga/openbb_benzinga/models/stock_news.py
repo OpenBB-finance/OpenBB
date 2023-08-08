@@ -94,8 +94,6 @@ class BenzingaStockNewsData(StockNewsData):
 
 class BenzingaStockNewsFetcher(
     Fetcher[
-        StockNewsQueryParams,
-        StockNewsData,
         BenzingaStockNewsQueryParams,
         BenzingaStockNewsData,
     ]
@@ -106,14 +104,16 @@ class BenzingaStockNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: BenzingaStockNewsQueryParams, credentials: Optional[Dict[str, str]]
+        query: BenzingaStockNewsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[BenzingaStockNewsData]:
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
         querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
 
         if len(data) == 0:
             raise RuntimeError("No news found")

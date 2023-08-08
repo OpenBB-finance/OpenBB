@@ -38,8 +38,6 @@ class FMPShareStatisticsData(ShareStatisticsData):
 
 class FMPShareStatisticsFetcher(
     Fetcher[
-        ShareStatisticsQueryParams,
-        ShareStatisticsData,
         FMPShareStatisticsQueryParams,
         FMPShareStatisticsData,
     ]
@@ -50,13 +48,15 @@ class FMPShareStatisticsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPShareStatisticsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPShareStatisticsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPShareStatisticsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "shares_float", api_key, query)
 
-        return get_data_many(url, FMPShareStatisticsData)
+        return get_data_many(url, FMPShareStatisticsData, **kwargs)
 
     @staticmethod
     def transform_data(

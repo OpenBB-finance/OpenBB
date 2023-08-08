@@ -76,8 +76,6 @@ class FMPCashFlowStatementData(CashFlowStatementData):
 
 class FMPCashFlowStatementFetcher(
     Fetcher[
-        CashFlowStatementQueryParams,
-        CashFlowStatementData,
         FMPCashFlowStatementQueryParams,
         FMPCashFlowStatementData,
     ]
@@ -88,7 +86,9 @@ class FMPCashFlowStatementFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCashFlowStatementQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCashFlowStatementQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCashFlowStatementData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -97,7 +97,7 @@ class FMPCashFlowStatementFetcher(
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementData)
+        return get_data_many(url, FMPCashFlowStatementData, **kwargs)
 
     @staticmethod
     def transform_data(

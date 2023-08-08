@@ -36,8 +36,6 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[
-        EarningsCallTranscriptQueryParams,
-        EarningsCallTranscriptData,
         FMPEarningsCallTranscriptQueryParams,
         FMPEarningsCallTranscriptData,
     ]
@@ -50,6 +48,7 @@ class FMPEarningsCallTranscriptFetcher(
     def extract_data(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPEarningsCallTranscriptData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -60,7 +59,7 @@ class FMPEarningsCallTranscriptFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPEarningsCallTranscriptData)
+        return get_data_many(url, FMPEarningsCallTranscriptData, **kwargs)
 
     @staticmethod
     def transform_data(

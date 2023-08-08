@@ -73,8 +73,14 @@ class CommandOutput(BaseModel, Generic[T], Tagged):
                     dict_of_df = {k: basemodel_to_df(v, "date") for k, v in r.items()}
                     df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
 
+                else:
+                    df = basemodel_to_df(res, "date")  # type: ignore
             else:
                 df = basemodel_to_df(res, "date")  # type: ignore
+
+            # Improve output so that all columns that are None are not returned
+            df = df.dropna(axis=1, how="all")
+
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
 

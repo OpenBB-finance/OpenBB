@@ -44,8 +44,6 @@ class FMPCompanyOverviewData(CompanyOverviewData):
 
 class FMPCompanyOverviewFetcher(
     Fetcher[
-        CompanyOverviewQueryParams,
-        CompanyOverviewData,
         FMPCompanyOverviewQueryParams,
         FMPCompanyOverviewData,
     ]
@@ -56,13 +54,15 @@ class FMPCompanyOverviewFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCompanyOverviewQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCompanyOverviewQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCompanyOverviewData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/"
         request_url = f"{base_url}profile/{query.symbol}?apikey={api_key}"
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 

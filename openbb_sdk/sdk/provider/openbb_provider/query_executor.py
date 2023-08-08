@@ -50,6 +50,7 @@ class QueryExecutor:
         model_name: str,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
+        **kwargs: Any,
     ) -> GenericDataType:
         """Execute query.
 
@@ -75,6 +76,6 @@ class QueryExecutor:
         fetcher = self.get_fetcher(provider, model_name)
 
         try:
-            return fetcher.fetch_data(params, credentials)
+            return fetcher.fetch_data(params, credentials, **kwargs)
         except Exception as e:
             raise ProviderError(e) from e

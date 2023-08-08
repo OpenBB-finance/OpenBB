@@ -7,7 +7,6 @@ from typing import Any, Dict, List, Optional
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.models.esg_sector import ESGSectorData, ESGSectorQueryParams
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -38,25 +37,23 @@ class FMPESGSectorData(Data):
     ESGScore: float = Field(alias="esg_score")
 
 
-class FMPESGSectorFetcher(
-    Fetcher[
-        ESGSectorQueryParams, ESGSectorData, FMPESGSectorQueryParams, FMPESGSectorData
-    ]
-):
+class FMPESGSectorFetcher(Fetcher[FMPESGSectorQueryParams, FMPESGSectorData]):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPESGSectorQueryParams:
         return FMPESGSectorQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPESGSectorQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGSectorQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGSectorData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4, "esg-environmental-social-governance-sector-benchmark", api_key, query
         )
-        return get_data_many(url, FMPESGSectorData)
+        return get_data_many(url, FMPESGSectorData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGSectorData]) -> List[FMPESGSectorData]:

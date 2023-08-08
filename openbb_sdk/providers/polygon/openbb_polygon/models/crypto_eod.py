@@ -59,8 +59,6 @@ class PolygonCryptoEODData(CryptoEODData):
 
 class PolygonCryptoEODFetcher(
     Fetcher[
-        CryptoEODQueryParams,
-        CryptoEODData,
         PolygonCryptoEODQueryParams,
         PolygonCryptoEODData,
     ]
@@ -79,7 +77,9 @@ class PolygonCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonCryptoEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -91,7 +91,7 @@ class PolygonCryptoEODFetcher(
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

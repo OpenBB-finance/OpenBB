@@ -59,8 +59,6 @@ class PolygonStockEODData(StockEODData):
 
 class PolygonStockEODFetcher(
     Fetcher[
-        StockEODQueryParams,
-        StockEODData,
         PolygonStockEODQueryParams,
         PolygonStockEODData,
     ]
@@ -78,7 +76,9 @@ class PolygonStockEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonStockEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonStockEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonStockEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -90,7 +90,7 @@ class PolygonStockEODFetcher(
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

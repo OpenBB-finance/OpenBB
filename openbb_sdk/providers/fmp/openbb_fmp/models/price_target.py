@@ -42,8 +42,6 @@ class FMPPriceTargetData(PriceTargetData):
 
 class FMPPriceTargetFetcher(
     Fetcher[
-        PriceTargetQueryParams,
-        PriceTargetData,
         FMPPriceTargetQueryParams,
         FMPPriceTargetData,
     ]
@@ -54,13 +52,15 @@ class FMPPriceTargetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPPriceTargetQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPPriceTargetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target", api_key, query)
 
-        return get_data_many(url, FMPPriceTargetData)
+        return get_data_many(url, FMPPriceTargetData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPPriceTargetData]) -> List[FMPPriceTargetData]:

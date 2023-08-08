@@ -80,8 +80,6 @@ class PolygonForexPairsData(ForexPairsData):
 
 class PolygonForexPairsFetcher(
     Fetcher[
-        ForexPairsQueryParams,
-        ForexPairsData,
         PolygonForexPairsQueryParams,
         PolygonForexPairsData,
     ]
@@ -92,7 +90,9 @@ class PolygonForexPairsFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonForexPairsQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonForexPairsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonForexPairsData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -108,7 +108,7 @@ class PolygonForexPairsFetcher(
         all_data: List[Dict] = []
 
         while "next_url" in data:
-            data = get_data(request_url)
+            data = get_data(request_url, **kwargs)
 
             if isinstance(data, list):
                 raise ValueError("Expected a dict, got a list")

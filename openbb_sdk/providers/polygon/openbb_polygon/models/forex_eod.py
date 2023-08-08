@@ -59,8 +59,6 @@ class PolygonForexEODData(ForexEODData):
 
 class PolygonForexEODFetcher(
     Fetcher[
-        ForexEODQueryParams,
-        ForexEODData,
         PolygonForexEODQueryParams,
         PolygonForexEODData,
     ]
@@ -78,7 +76,9 @@ class PolygonForexEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonForexEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonForexEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonForexEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -90,7 +90,7 @@ class PolygonForexEODFetcher(
             f"&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

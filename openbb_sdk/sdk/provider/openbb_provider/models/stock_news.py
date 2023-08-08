@@ -14,9 +14,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 class StockNewsQueryParams(QueryParams):
     """Stock news query."""
 
-    symbols: str = Field(
-        min_length=1, description=QUERY_DESCRIPTIONS.get("symbols", "")
-    )
+    symbols: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
     page: int = Field(
         default=0, description="The page of the stock news to be retrieved."
     )
