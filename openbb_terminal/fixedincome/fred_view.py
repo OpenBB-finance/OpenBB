@@ -975,8 +975,8 @@ def display_yield_curve(
     ----------
     date: str
         Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     raw : bool
         Output only raw data
     export : str
