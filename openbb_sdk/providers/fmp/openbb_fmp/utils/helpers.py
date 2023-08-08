@@ -43,7 +43,7 @@ def request(url: str) -> BasicResponse:
         BasicRequest object with status_code and text attributes
     """
     # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url
+    from pyodide.http import open_url  # type: ignore
 
     response = open_url(url)
     return BasicResponse(response)

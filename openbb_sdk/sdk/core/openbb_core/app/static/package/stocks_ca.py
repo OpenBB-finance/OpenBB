@@ -1,9 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import Literal, Optional
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -21,7 +20,7 @@ class CLASS_stocks_ca(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[BaseModel]:
         """Company peers.
 
 

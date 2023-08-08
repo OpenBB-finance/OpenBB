@@ -158,11 +158,11 @@ class CLASS_stocks(Container):
             Unadjusted volume of the symbol.
         change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : float
+        changePercent : Optional[float]
             Change \\% in the price of the symbol.
-        label : str
+        label : Optional[str]
             Human readable format of the date.
-        changeOverTime : float
+        changeOverTime : Optional[float]
             Change \\% in the price of the symbol over a period of time.
 
         polygon
@@ -367,7 +367,7 @@ class CLASS_stocks(Container):
         publisher : PolygonPublisher
             Publisher of the article.
         tickers : List[str]
-            Tickers covered in the article."""
+            Tickers covered in the article."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -602,7 +602,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self,
-        symbol: Optional[str] = None,
+        symbol: str,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -617,8 +617,8 @@ class CLASS_stocks(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : Optional[str]
-            Comma separated list of symbols.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
 
         Returns
         -------

@@ -4,7 +4,7 @@ import datetime
 import typing
 from typing import List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -186,7 +186,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs,
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[BaseModel]:
         """CPI.
 
 
@@ -371,13 +371,11 @@ class CLASS_economy(Container):
             Unadjusted volume of the symbol.
         change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : float
+        changePercent : Optional[float]
             Change \\% in the price of the symbol.
-        vwap : float
-            Volume Weighted Average Price of the symbol.
-        label : str
+        label : Optional[str]
             Human readable format of the date.
-        changeOverTime : float
+        changeOverTime : Optional[float]
             Change \\% in the price of the symbol over a period of time.
 
         polygon
