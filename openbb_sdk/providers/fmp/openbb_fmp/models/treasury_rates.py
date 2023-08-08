@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.treasury_rates import (
+from openbb_provider.standard_models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
@@ -49,8 +49,6 @@ class FMPTreasuryRatesData(TreasuryRatesData):
 
 class FMPTreasuryRatesFetcher(
     Fetcher[
-        TreasuryRatesQueryParams,
-        TreasuryRatesData,
         FMPTreasuryRatesQueryParams,
         FMPTreasuryRatesData,
     ]

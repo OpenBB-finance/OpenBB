@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.earnings_call_transcript import (
+from openbb_provider.standard_models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
@@ -36,8 +36,6 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[
-        EarningsCallTranscriptQueryParams,
-        EarningsCallTranscriptData,
         FMPEarningsCallTranscriptQueryParams,
         FMPEarningsCallTranscriptData,
     ]

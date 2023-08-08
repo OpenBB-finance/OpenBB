@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_multiples import (
+from openbb_provider.standard_models.stock_multiples import (
     StockMultiplesData,
     StockMultiplesQueryParams,
 )
@@ -86,8 +86,6 @@ class FMPStockMultiplesData(StockMultiplesData):
 
 class FMPStockMultiplesFetcher(
     Fetcher[
-        StockMultiplesQueryParams,
-        StockMultiplesData,
         FMPStockMultiplesQueryParams,
         FMPStockMultiplesData,
     ]

@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -17,7 +17,7 @@ class CLASS_forex(Container):
     def pairs(
         self,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs.
@@ -134,10 +134,10 @@ class CLASS_forex(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
-        r"""Forex Intraday Price.
+        """Forex Intraday Price.
 
 
         openbb
@@ -203,11 +203,11 @@ class CLASS_forex(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \% in the price of the symbol.
+            Change \\% in the price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \% in the price of the symbol over a period of time.
+            Change \\% in the price of the symbol over a period of time.
 
         polygon
         =======

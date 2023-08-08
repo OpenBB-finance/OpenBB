@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.revenue_business_line import (
+from openbb_provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
@@ -31,8 +31,6 @@ class FMPRevenueBusinessLineData(RevenueBusinessLineData):
 
 class FMPRevenueBusinessLineFetcher(
     Fetcher[  # type: ignore
-        RevenueBusinessLineQueryParams,
-        RevenueBusinessLineData,
         FMPRevenueBusinessLineQueryParams,
         FMPRevenueBusinessLineData,
     ]

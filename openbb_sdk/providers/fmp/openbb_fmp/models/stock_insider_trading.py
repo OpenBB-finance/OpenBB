@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_insider_trading import (
+from openbb_provider.standard_models.stock_insider_trading import (
     StockInsiderTradingData,
     StockInsiderTradingQueryParams,
 )
@@ -51,8 +51,6 @@ class FMPStockInsiderTradingData(StockInsiderTradingData):
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[
-        StockInsiderTradingQueryParams,
-        StockInsiderTradingData,
         FMPStockInsiderTradingQueryParams,
         FMPStockInsiderTradingData,
     ]
@@ -79,4 +77,5 @@ class FMPStockInsiderTradingFetcher(
     def transform_data(
         data: List[FMPStockInsiderTradingData],
     ) -> List[FMPStockInsiderTradingData]:
+        return data
         return data

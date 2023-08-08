@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.income_statement_growth import (
+from openbb_provider.standard_models.income_statement_growth import (
     IncomeStatementGrowthData,
     IncomeStatementGrowthQueryParams,
 )
@@ -61,8 +61,6 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
 
 class FMPIncomeStatementGrowthFetcher(
     Fetcher[
-        IncomeStatementGrowthQueryParams,
-        IncomeStatementGrowthData,
         FMPIncomeStatementGrowthQueryParams,
         FMPIncomeStatementGrowthData,
     ]

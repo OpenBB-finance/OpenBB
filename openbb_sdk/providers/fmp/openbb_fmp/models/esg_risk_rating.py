@@ -6,8 +6,7 @@ from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.esg_risk_rating import (
-    ESGRiskRatingData,
+from openbb_provider.standard_models.esg_risk_rating import (
     ESGRiskRatingQueryParams,
 )
 from pydantic import Field
@@ -44,8 +43,6 @@ class FMPESGRiskRatingData(Data):
 
 class FMPESGRiskRatingFetcher(
     Fetcher[
-        ESGRiskRatingQueryParams,
-        ESGRiskRatingData,
         FMPESGRiskRatingQueryParams,
         FMPESGRiskRatingData,
     ]

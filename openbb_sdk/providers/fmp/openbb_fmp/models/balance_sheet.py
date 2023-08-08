@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.balance_sheet import (
+from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
@@ -91,8 +91,6 @@ class FMPBalanceSheetData(BalanceSheetData):
 
 class FMPBalanceSheetFetcher(
     Fetcher[
-        BalanceSheetQueryParams,
-        BalanceSheetData,
         FMPBalanceSheetQueryParams,
         FMPBalanceSheetData,
     ]
