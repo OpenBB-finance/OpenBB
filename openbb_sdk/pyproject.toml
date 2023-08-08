@@ -23,6 +23,10 @@ openbb-polygon = { path = "./providers/polygon" }
 openbb-fred = { path = "./providers/fred" }
 openbb-cboe = { path = "./providers/cboe"}
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.2.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

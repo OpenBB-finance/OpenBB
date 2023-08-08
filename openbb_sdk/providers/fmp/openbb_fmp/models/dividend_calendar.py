@@ -53,8 +53,6 @@ class FMPDividendCalendarData(DividendCalendarData):
 
 class FMPDividendCalendarFetcher(
     Fetcher[
-        DividendCalendarQueryParams,
-        List[DividendCalendarData],
         FMPDividendCalendarQueryParams,
         List[FMPDividendCalendarData],
     ]
@@ -70,7 +68,9 @@ class FMPDividendCalendarFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPDividendCalendarQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPDividendCalendarQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPDividendCalendarData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -78,7 +78,7 @@ class FMPDividendCalendarFetcher(
         query_str = get_querystring(query.dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/stock_dividend_calendar?{query_str}&apikey={api_key}"
-        return get_data_many(url, FMPDividendCalendarData)
+        return get_data_many(url, FMPDividendCalendarData, **kwargs)
 
     @staticmethod
     def transform_data(

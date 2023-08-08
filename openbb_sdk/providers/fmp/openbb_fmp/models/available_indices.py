@@ -31,8 +31,6 @@ class FMPAvailableIndicesData(AvailableIndicesData):
 
 class FMPAvailableIndicesFetcher(
     Fetcher[
-        AvailableIndicesQueryParams,
-        List[AvailableIndicesData],
         FMPAvailableIndicesQueryParams,
         List[FMPAvailableIndicesData],
     ]
@@ -43,13 +41,15 @@ class FMPAvailableIndicesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPAvailableIndicesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPAvailableIndicesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPAvailableIndicesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-indexes?apikey={api_key}"
-        return get_data_many(url, FMPAvailableIndicesData)
+        return get_data_many(url, FMPAvailableIndicesData, **kwargs)
 
     @staticmethod
     def transform_data(

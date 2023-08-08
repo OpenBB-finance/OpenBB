@@ -31,8 +31,6 @@ class FMPRevenueGeographicData(RevenueGeographicData):
 
 class FMPRevenueGeographicFetcher(
     Fetcher[  # type: ignore
-        RevenueGeographicQueryParams,
-        List[RevenueGeographicData],
         FMPRevenueGeographicQueryParams,
         List[FMPRevenueGeographicData],
     ]
@@ -43,7 +41,9 @@ class FMPRevenueGeographicFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRevenueGeographicQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPRevenueGeographicQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPRevenueGeographicData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -51,7 +51,7 @@ class FMPRevenueGeographicFetcher(
         query = query.copy(update={"period": period})
 
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
-        data = get_data(url)
+        data = get_data(url, **kwargs)
 
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")

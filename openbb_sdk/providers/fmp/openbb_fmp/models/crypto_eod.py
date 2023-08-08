@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
 
 from openbb_fmp.utils.helpers import get_data_many
@@ -54,8 +54,6 @@ class FMPCryptoEODData(CryptoEODData):
 
 class FMPCryptoEODFetcher(
     Fetcher[
-        CryptoEODQueryParams,
-        List[CryptoEODData],
         FMPCryptoEODQueryParams,
         List[FMPCryptoEODData],
     ]
@@ -73,7 +71,9 @@ class FMPCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPCryptoEODData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -82,7 +82,7 @@ class FMPCryptoEODFetcher(
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}historical-price-full/crypto/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPCryptoEODData, "historical")
+        return get_data_many(url, FMPCryptoEODData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPCryptoEODData]) -> List[FMPCryptoEODData]:

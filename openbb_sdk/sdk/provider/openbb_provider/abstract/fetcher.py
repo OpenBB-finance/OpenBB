@@ -26,8 +26,6 @@ GenericDataType = Union[DataType, List[DataType], Dict[str, DataType]]
 
 class Fetcher(
     Generic[
-        QueryParamsType,
-        DataType,
         ProviderQueryParamsType,
         ProviderDataType,
     ]
@@ -48,7 +46,7 @@ class Fetcher(
 
     @staticmethod
     def transform_data(data: ReturnType) -> GenericDataType:
-        """Transform the provider-specific data to the standard data."""
+        """Transform the provider-specific data."""
         raise NotImplementedError
 
     @classmethod
@@ -56,47 +54,22 @@ class Fetcher(
         cls,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
+        **kwargs
     ) -> GenericDataType:
-        """Fetch data from a provider by using the OpenBB standard."""
-        provider_query = cls.transform_query(params=params)
-        provider_data = cls.extract_data(query=provider_query, credentials=credentials)
-        data = cls.transform_data(data=provider_data)
-        return data
-
-    @property
-    def query_params_type(self):
-        """Get the type of the query."""
-        # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[0]
-
-    @property
-    def data_type(self):
-        """Get the type of the data."""
-        # pylint: disable=E1101
-        return self.get_data_type(self.__orig_bases__[0].__args__[1])
+        """Fetch data from a provider."""
+        query = cls.transform_query(params=params)
+        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
+        results = cls.transform_data(data=data)
+        return results
 
     @property
     def provider_query_params_type(self):
         """Get the type of the provider query."""
         # pylint: disable=E1101
-        return self.__orig_bases__[0].__args__[2]
+        return self.__orig_bases__[0].__args__[0]
 
     @property
     def provider_data_type(self):
         """Get the type of the provider data."""
         # pylint: disable=E1101
-        return self.get_data_type(self.__orig_bases__[0].__args__[3])
-
-    # TODO: Create abstract class attribute for generic return type
-    @property
-    def generic_return_type(self):
-        """Get the type of the return."""
-        # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[1]
-
-    @staticmethod
-    def get_data_type(data: GenericDataType) -> DataType:
-        """Get the type of the data."""
-        if get_origin(data) == list:
-            data = get_args(data)[0]
-        return data

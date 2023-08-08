@@ -5,9 +5,9 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import get_querystring
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
-from pydantic import Field
+from openbb_provider.utils.helpers import get_querystring
+from pydantic import Field, validator
 
 from openbb_benzinga.utils.helpers import (
     BenzingaStockNewsData,
@@ -82,8 +82,6 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
 
 class BenzingaStockNewsFetcher(
     Fetcher[
-        StockNewsQueryParams,
-        List[StockNewsData],
         BenzingaStockNewsQueryParams,
         List[BenzingaStockNewsData],
     ]
@@ -94,14 +92,16 @@ class BenzingaStockNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: BenzingaStockNewsQueryParams, credentials: Optional[Dict[str, str]]
+        query: BenzingaStockNewsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[BenzingaStockNewsData]:
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
         querystring = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
 
         if len(data) == 0:
             raise RuntimeError("No news found")

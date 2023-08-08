@@ -62,10 +62,8 @@ class FMPStockOwnershipData(StockOwnershipData):
 
 class FMPStockOwnershipFetcher(
     Fetcher[
-        StockOwnershipQueryParams,
-        List[StockOwnershipData],
-        StockOwnershipQueryParams,
-        List[FMPStockOwnershipData],
+        FMPStockOwnershipQueryParams,
+        FMPStockOwnershipData,
     ]
 ):
     @staticmethod
@@ -74,7 +72,9 @@ class FMPStockOwnershipFetcher(
 
     @staticmethod
     def extract_data(
-        query: StockOwnershipQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockOwnershipQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPStockOwnershipData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -85,10 +85,7 @@ class FMPStockOwnershipFetcher(
             query,
         )
 
-        sorted_data = get_data_many(url, FMPStockOwnershipData)
-        sorted_data.sort(key=lambda x: x.filing_date, reverse=True)
-
-        return sorted_data
+        return get_data_many(url, FMPStockOwnershipData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPStockOwnershipData]) -> List[StockOwnershipData]:

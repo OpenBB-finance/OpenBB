@@ -8,15 +8,13 @@ from pydantic import field_validator, Field, NonNegativeInt
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class StockNewsQueryParams(QueryParams):
     """Stock news query."""
 
-    symbols: str = Field(
-        min_length=1, description=QUERY_DESCRIPTIONS.get("symbols", "")
-    )
+    symbols: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
     page: int = Field(
         default=0, description="The page of the stock news to be retrieved."
     )

@@ -7,7 +7,6 @@ from typing import Any, Dict, List, Literal, Optional
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.esg_risk_rating import (
-    ESGRiskRatingData,
     ESGRiskRatingQueryParams,
 )
 from pydantic import Field
@@ -44,8 +43,6 @@ class FMPESGRiskRatingData(Data):
 
 class FMPESGRiskRatingFetcher(
     Fetcher[
-        ESGRiskRatingQueryParams,
-        List[ESGRiskRatingData],
         FMPESGRiskRatingQueryParams,
         List[FMPESGRiskRatingData],
     ]
@@ -56,14 +53,16 @@ class FMPESGRiskRatingFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPESGRiskRatingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGRiskRatingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGRiskRatingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4, "esg-environmental-social-governance-data-ratings", api_key, query
         )
-        return get_data_many(url, FMPESGRiskRatingData)
+        return get_data_many(url, FMPESGRiskRatingData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPESGRiskRatingData]) -> List[FMPESGRiskRatingData]:

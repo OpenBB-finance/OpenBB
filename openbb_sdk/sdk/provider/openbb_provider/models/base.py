@@ -3,7 +3,7 @@ from typing import Literal, Optional
 from pydantic import field_validator, BaseModel, Field, NonNegativeInt
 
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class BaseSymbol(BaseModel):
@@ -20,5 +20,5 @@ class FinancialStatementQueryParams(QueryParams, BaseSymbol):
         default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: Optional[NonNegativeInt] = Field(
-        default=200, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
     )

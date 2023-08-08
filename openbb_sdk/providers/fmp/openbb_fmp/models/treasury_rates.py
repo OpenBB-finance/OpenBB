@@ -49,8 +49,6 @@ class FMPTreasuryRatesData(TreasuryRatesData):
 
 class FMPTreasuryRatesFetcher(
     Fetcher[
-        TreasuryRatesQueryParams,
-        List[TreasuryRatesData],
         FMPTreasuryRatesQueryParams,
         List[FMPTreasuryRatesData],
     ]
@@ -61,7 +59,9 @@ class FMPTreasuryRatesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPTreasuryRatesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPTreasuryRatesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPTreasuryRatesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -74,7 +74,7 @@ class FMPTreasuryRatesFetcher(
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPTreasuryRatesData)
+        return get_data_many(url, FMPTreasuryRatesData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPTreasuryRatesData]) -> List[FMPTreasuryRatesData]:

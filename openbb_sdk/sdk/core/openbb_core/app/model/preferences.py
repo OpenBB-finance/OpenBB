@@ -16,7 +16,10 @@ class Preferences(BaseModel):
     plot_open_export: bool = (
         False  # Whether to open plot image exports after they are created
     )
-    model_config = ConfigDict(validate_assignment=True)
+    request_timeout: PositiveInt = 15
+
+    class Config:
+        validate_assignment = True
 
     def __repr__(self) -> str:
         return (

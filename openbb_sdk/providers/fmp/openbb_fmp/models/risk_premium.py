@@ -28,8 +28,6 @@ class FMPRiskPremiumData(RiskPremiumData):
 
 class FMPRiskPremiumFetcher(
     Fetcher[
-        RiskPremiumQueryParams,
-        List[RiskPremiumData],
         FMPRiskPremiumQueryParams,
         List[FMPRiskPremiumData],
     ]
@@ -40,13 +38,15 @@ class FMPRiskPremiumFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPRiskPremiumQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPRiskPremiumQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPRiskPremiumData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "market_risk_premium", api_key)
 
-        return get_data_many(url, FMPRiskPremiumData)
+        return get_data_many(url, FMPRiskPremiumData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPRiskPremiumData]) -> List[FMPRiskPremiumData]:

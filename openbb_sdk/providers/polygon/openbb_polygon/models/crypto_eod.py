@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
@@ -58,8 +58,6 @@ class PolygonCryptoEODData(CryptoEODData):
 
 class PolygonCryptoEODFetcher(
     Fetcher[
-        CryptoEODQueryParams,
-        List[CryptoEODData],
         PolygonCryptoEODQueryParams,
         List[PolygonCryptoEODData],
     ]
@@ -75,7 +73,9 @@ class PolygonCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: PolygonCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: PolygonCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[PolygonCryptoEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -86,7 +86,7 @@ class PolygonCryptoEODFetcher(
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
-        data = get_data(request_url)
+        data = get_data(request_url, **kwargs)
         if isinstance(data, list):
             raise ValueError("Expected a dict, got a list")
 

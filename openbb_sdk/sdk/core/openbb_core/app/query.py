@@ -74,4 +74,5 @@ class Query:
             model_name=self.name,
             params={**standard_dict, **extra_dict},
             credentials=self.cc.user_settings.credentials.dict(),
+            preferences=self.cc.user_settings.preferences.dict(),
         )

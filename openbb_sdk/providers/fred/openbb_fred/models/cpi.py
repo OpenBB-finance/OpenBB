@@ -17,7 +17,7 @@ class FREDCPIData(CPIData):
     """CPI data."""
 
 
-class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCPIData]):
+class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, FREDCPIData]):
     """FRED CPI Fetcher."""
 
     @staticmethod
@@ -26,7 +26,7 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
 
     @staticmethod
     def extract_data(
-        query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]]
+        query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> List[Dict[str, List[FREDCPIData]]]:
         api_key = credentials.get("fred_api_key") if credentials else ""
 
@@ -37,11 +37,12 @@ class FREDCPIFetcher(Fetcher[CPIQueryParams, CPIData, FREDCPIQueryParams, FREDCP
         step_3 = [x for x in step_2 if x["frequency"] == query.frequency]
 
         series_dict = {}
-
         fred = Fred(api_key)
         for item in step_3:
             loc = f"{item['country']}-{item['frequency']}-{item['units']}"
-            temp = fred.get_series(item["series_id"], query.start_date, query.end_date)
+            temp = fred.get_series(
+                item["series_id"], query.start_date, query.end_date, **kwargs
+            )
             clean_temp = [FREDCPIData(**x) for x in temp]
             series_dict[loc] = clean_temp
 

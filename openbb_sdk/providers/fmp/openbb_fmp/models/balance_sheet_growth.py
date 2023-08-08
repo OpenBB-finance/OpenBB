@@ -74,8 +74,6 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
 
 class FMPBalanceSheetGrowthFetcher(
     Fetcher[
-        BalanceSheetGrowthQueryParams,
-        List[BalanceSheetGrowthData],
         FMPBalanceSheetGrowthQueryParams,
         List[FMPBalanceSheetGrowthData],
     ]
@@ -88,6 +86,7 @@ class FMPBalanceSheetGrowthFetcher(
     def extract_data(
         query: FMPBalanceSheetGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPBalanceSheetGrowthData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -98,7 +97,7 @@ class FMPBalanceSheetGrowthFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPBalanceSheetGrowthData)
+        return get_data_many(url, FMPBalanceSheetGrowthData, **kwargs)
 
     @staticmethod
     def transform_data(

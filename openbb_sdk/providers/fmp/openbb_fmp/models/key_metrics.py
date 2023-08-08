@@ -83,8 +83,6 @@ class FMPKeyMetricsData(KeyMetricsData):
 
 class FMPKeyMetricsFetcher(
     Fetcher[
-        KeyMetricsQueryParams,
-        List[KeyMetricsData],
         FMPKeyMetricsQueryParams,
         List[FMPKeyMetricsData],
     ]
@@ -95,7 +93,9 @@ class FMPKeyMetricsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPKeyMetricsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPKeyMetricsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPKeyMetricsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -105,7 +105,7 @@ class FMPKeyMetricsFetcher(
         url = create_url(
             3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
         )
-        return get_data_many(url, FMPKeyMetricsData)
+        return get_data_many(url, FMPKeyMetricsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:

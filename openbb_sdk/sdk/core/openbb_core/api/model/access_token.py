@@ -1,3 +1,4 @@
+"""Access Token Model."""
 from datetime import datetime
 
 from openbb_core.app.model.abstract.tagged import Tagged
@@ -5,8 +6,12 @@ from pydantic import ConfigDict, Field
 
 
 class AccessToken(Tagged):
-    """This will be turn into a JWT Token"""
+    """Turn into a JWT Token."""
 
     sub: str = Field(description="Subject of the token, here : `UserSettings.id`")
     exp: datetime = Field(description="Expiration datetime of the `access_token`.")
-    model_config = ConfigDict(validate_assignment=True)
+
+    class Config:
+        """Pydantic Config."""
+
+        validate_assignment = True
