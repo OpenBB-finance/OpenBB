@@ -108,8 +108,11 @@ class PackageBuilder:
 
 
 class ModuleBuilder:
+    """Build the module for the SDK."""
+
     @staticmethod
     def build(path: str) -> str:
+        """Build the module."""
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         code += ImportDefinition.build(path=path)
         code += ClassDefinition.build(path=path)
@@ -118,8 +121,11 @@ class ModuleBuilder:
 
 
 class ImportDefinition:
+    """Build the import definition for the SDK."""
+
     @staticmethod
     def filter_hint_type_list(hint_type_list: List[Type]) -> List[Type]:
+        """Filter the hint type list."""
         new_hint_type_list = []
         for hint_type in hint_type_list:
             if hint_type != _empty and hint_type.__module__ != "builtins":
@@ -131,6 +137,7 @@ class ImportDefinition:
 
     @classmethod
     def get_function_hint_type_list(cls, func: Callable) -> List[Type]:
+        """Get the hint type list from the function."""
         sig = signature(func)
         parameter_map = sig.parameters
         return_type = sig.return_annotation
@@ -150,6 +157,7 @@ class ImportDefinition:
 
     @classmethod
     def get_path_hint_type_list(cls, path: str) -> List[Type]:
+        """Get the hint type list from the path."""
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
         child_path_list = PathHandler.get_child_path_list(
@@ -167,6 +175,7 @@ class ImportDefinition:
 
     @classmethod
     def build(cls, path: str) -> str:
+        """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
@@ -196,8 +205,11 @@ class ImportDefinition:
 
 
 class ClassDefinition:
+    """Build the class definition for the SDK."""
+
     @staticmethod
     def build(path: str) -> str:
+        """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
         code = f"\nclass {class_name}(Container):\n"
         route_map = PathHandler.build_route_map()
@@ -375,8 +387,11 @@ class DocstringGenerator:
 
 
 class MethodDefinition:
+    """Build the method definition for the SDK."""
+
     @staticmethod
     def build_class_loader_method(path: str) -> str:
+        """Build the class loader method."""
         module_name = PathHandler.build_module_name(path=path)
         class_name = PathHandler.build_module_class(path=path)
         function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
@@ -390,6 +405,7 @@ class MethodDefinition:
 
     @staticmethod
     def get_type(field: ModelField) -> type:
+        """Get the type of the field."""
         field_type = getattr(field, "type", Parameter.empty)
         if isclass(field_type):
             name = field_type.__name__
@@ -401,6 +417,7 @@ class MethodDefinition:
 
     @staticmethod
     def get_default(field: ModelField):
+        """Get the default value of the field."""
         field_default = getattr(field, "default", None)
         if field_default is None or field_default is MISSING:
             return Parameter.empty
@@ -413,12 +430,14 @@ class MethodDefinition:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
+        """Check if the annotation is an annotated dataclass."""
         return type(annotation) is _AnnotatedAlias and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
     @staticmethod
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
+        """Reorder the params."""
         formatted_keys = list(params.keys())
         for k in ["provider", "extra_params"]:
             if k in formatted_keys:
@@ -435,6 +454,7 @@ class MethodDefinition:
     def format_params(
         parameter_map: Dict[str, Parameter]
     ) -> "OrderedDict[str, Parameter]":
+        """Format the params."""
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
@@ -498,6 +518,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
+        """Build the function parameters."""
         od = MethodDefinition.format_params(parameter_map=parameter_map)
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
@@ -509,6 +530,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_returns(return_type: type) -> str:
+        """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
         elif return_type.__module__ == "builtins":
@@ -537,6 +559,7 @@ class MethodDefinition:
     def build_command_method_signature(
         func_name: str, parameter_map: Dict[str, Parameter], return_type: type
     ) -> str:
+        """Build the command method signature."""
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
@@ -553,12 +576,14 @@ class MethodDefinition:
 
     @staticmethod
     def build_command_method_doc(func: Callable):
+        """Build the command method docstring."""
         code = f'        """{func.__doc__}"""\n' if func.__doc__ else ""
 
         return code
 
     @staticmethod
     def build_command_method_implementation(path: str, func: Callable):
+        """Build the command method implementation."""
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
@@ -596,6 +621,7 @@ class MethodDefinition:
     def build_command_method(
         cls, path: str, func: Callable, model_name: Optional[str]
     ) -> str:
+        """Build the command method."""
         func_name = func.__name__
 
         sig = signature(func)
@@ -618,8 +644,11 @@ class MethodDefinition:
 
 
 class PathHandler:
+    """Handle the paths for the SDK."""
+
     @staticmethod
     def build_route_map() -> Dict[str, BaseRoute]:
+        """Build the route map."""
         router = RouterLoader.from_extensions()
         route_map = {route.path: route for route in router.api_router.routes}  # type: ignore
 
@@ -627,6 +656,7 @@ class PathHandler:
 
     @staticmethod
     def build_path_list(route_map: Dict[str, BaseRoute]) -> List[str]:
+        """Build the path list."""
         path_list = []
         for route_path in route_map:
             if route_path not in path_list:
@@ -643,10 +673,12 @@ class PathHandler:
 
     @staticmethod
     def get_route(path: str, route_map: Dict[str, BaseRoute]):
+        """Get the route from the path."""
         return route_map.get(path, None)
 
     @staticmethod
     def get_child_path_list(path: str, path_list: List[str]) -> List[str]:
+        """Get the child path list."""
         direct_children = []
         for p in path_list:
             if p.startswith(path):
@@ -658,28 +690,34 @@ class PathHandler:
 
     @staticmethod
     def clean_path(path: str) -> str:
+        """Clean the path."""
         if path.startswith("/"):
             path = path[1:]
         return path.replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:
+        """Build the module name."""
         if path == "":
             return "__extensions__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
+        """Build the module class."""
         if path == "":
             return "Extensions"
         return f"CLASS_{cls.clean_path(path=path)}"
 
 
 class Linters:
+    """Run the linters for the SDK."""
+
     current_folder = str(Path(Path(__file__).parent, "package").absolute())
 
     @staticmethod
     def print_separator(symbol: str, length: int = 160):
+        """Print a separator."""
         print(symbol * length)
 
     @staticmethod
@@ -701,12 +739,15 @@ class Linters:
 
     @classmethod
     def black(cls):
+        """Run black."""
         cls.run(linter="black")
 
     @classmethod
     def ruff(cls):
+        """Run ruff."""
         cls.run(linter="ruff", flags=["--fix"])
 
     @classmethod
     def mypy(cls):
+        """Run mypy."""
         cls.run(linter="mypy", flags=["--ignore-missing-imports"])

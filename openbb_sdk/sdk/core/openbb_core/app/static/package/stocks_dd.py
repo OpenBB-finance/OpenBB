@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional
 
 from pydantic import validate_arguments
 
@@ -118,10 +118,10 @@ class CLASS_stocks_dd(Container):
             "N-8F",
             "N-CEN",
         ] = "10-K",
-        page: Union[int, None] = 0,
-        limit: Union[int, None] = 100,
+        page: Optional[int] = 0,
+        limit: Optional[int] = 100,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """SEC Filings.

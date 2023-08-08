@@ -1,8 +1,6 @@
 """FMP Historical Dividends fetcher."""
 
-from datetime import (
-    datetime,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -48,8 +46,6 @@ class FMPHistoricalDividendsData(HistoricalDividendsData):
 
 class FMPHistoricalDividendsFetcher(
     Fetcher[
-        HistoricalDividendsQueryParams,
-        HistoricalDividendsData,
         FMPHistoricalDividendsQueryParams,
         FMPHistoricalDividendsData,
     ]

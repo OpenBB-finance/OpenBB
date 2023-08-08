@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -38,9 +38,9 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 12,
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Balance Sheet.
@@ -269,7 +269,7 @@ class CLASS_stocks_fa(Container):
         symbol: str,
         limit: int = 10,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Balance Sheet Statement Growth.
@@ -426,7 +426,7 @@ class CLASS_stocks_fa(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Show Dividend Calendar for a given start and end dates.
@@ -514,9 +514,9 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 12,
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement.
@@ -707,7 +707,7 @@ class CLASS_stocks_fa(Container):
         symbol: str,
         limit: int = 10,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement Growth.
@@ -845,7 +845,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Executive Compensation.
@@ -941,7 +941,7 @@ class CLASS_stocks_fa(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Stock Split Calendar.
@@ -1057,7 +1057,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Historical Dividends.
@@ -1156,9 +1156,9 @@ class CLASS_stocks_fa(Container):
     def earning(
         self,
         symbol: str,
-        limit: Union[int, None] = 50,
+        limit: Optional[int] = 50,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Earnings Calendar.
@@ -1248,7 +1248,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Number of Employees.
@@ -1371,7 +1371,7 @@ class CLASS_stocks_fa(Container):
         period: Literal["quarterly", "annually"] = "annually",
         limit: int = 30,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Analyst Estimates.
@@ -1574,9 +1574,9 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[pydantic.types.NonNegativeInt, None] = 12,
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Income Statement.
@@ -1783,7 +1783,7 @@ class CLASS_stocks_fa(Container):
         limit: int = 10,
         period: Literal["annually", "quarterly"] = "annually",
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Income Statement Growth.
@@ -1915,7 +1915,7 @@ class CLASS_stocks_fa(Container):
     def ins(
         self,
         symbol: str,
-        transactionType: Union[
+        transactionType: Optional[
             List[
                 Literal[
                     "A-Award",
@@ -1937,14 +1937,13 @@ class CLASS_stocks_fa(Container):
                     "X-InTheMoney",
                     "Z-Trust",
                 ]
-            ],
-            None,
+            ]
         ] = ["P-Purchase"],
-        reportingCik: Union[int, None] = None,
-        companyCik: Union[int, None] = None,
-        page: Union[int, None] = 0,
+        reportingCik: Optional[int] = None,
+        companyCik: Optional[int] = None,
+        page: Optional[int] = 0,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Stock Insider Trading.
@@ -2055,9 +2054,9 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         include_current_quarter: bool = False,
-        date: Union[datetime.date, None] = None,
+        date: Optional[datetime.date] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Institutional Ownership.
@@ -2220,9 +2219,9 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         period: Literal["annually", "quarterly"] = "annually",
-        limit: Union[int, None] = 100,
+        limit: Optional[int] = 100,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Key Metrics.
@@ -2417,7 +2416,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Key Executives.
@@ -2533,7 +2532,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Company Overview.
@@ -2674,9 +2673,9 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         date: datetime.date,
-        page: Union[int, None] = 0,
+        page: Optional[int] = 0,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Stock Ownership.
@@ -2829,7 +2828,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Price Target Consensus.
@@ -2908,7 +2907,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Price Target.
@@ -3052,7 +3051,7 @@ class CLASS_stocks_fa(Container):
         period: Literal["quarterly", "annually"] = "annually",
         structure: Literal["hierarchical", "flat"] = "flat",
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Revenue Geographic.
@@ -3141,7 +3140,7 @@ class CLASS_stocks_fa(Container):
         period: Literal["quarterly", "annually"] = "annually",
         structure: Literal["hierarchical", "flat"] = "flat",
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Revenue Business Line.
@@ -3286,7 +3285,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Share Statistics.
@@ -3367,7 +3366,7 @@ class CLASS_stocks_fa(Container):
         self,
         symbol: str,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Historical Stock Splits.
@@ -3463,7 +3462,7 @@ class CLASS_stocks_fa(Container):
         year: int,
         quarter: Literal[1, 2, 3, 4] = 1,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Earnings Call Transcript.

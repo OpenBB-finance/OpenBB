@@ -63,8 +63,6 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 
 class PolygonMajorIndicesEODFetcher(
     Fetcher[
-        MajorIndicesEODQueryParams,
-        MajorIndicesEODData,
         PolygonMajorIndicesEODQueryParams,
         PolygonMajorIndicesEODData,
     ]

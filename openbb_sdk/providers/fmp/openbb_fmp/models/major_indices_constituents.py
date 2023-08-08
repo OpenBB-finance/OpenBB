@@ -52,8 +52,6 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 
 class FMPMajorIndicesConstituentsFetcher(
     Fetcher[
-        MajorIndicesConstituentsQueryParams,
-        MajorIndicesConstituentsData,
         FMPMajorIndicesConstituentsQueryParams,
         FMPMajorIndicesConstituentsData,
     ]

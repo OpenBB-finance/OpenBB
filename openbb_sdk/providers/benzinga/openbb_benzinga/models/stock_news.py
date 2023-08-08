@@ -94,8 +94,6 @@ class BenzingaStockNewsData(StockNewsData):
 
 class BenzingaStockNewsFetcher(
     Fetcher[
-        StockNewsQueryParams,
-        StockNewsData,
         BenzingaStockNewsQueryParams,
         BenzingaStockNewsData,
     ]

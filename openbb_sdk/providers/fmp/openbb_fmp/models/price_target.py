@@ -42,8 +42,6 @@ class FMPPriceTargetData(PriceTargetData):
 
 class FMPPriceTargetFetcher(
     Fetcher[
-        PriceTargetQueryParams,
-        PriceTargetData,
         FMPPriceTargetQueryParams,
         FMPPriceTargetData,
     ]

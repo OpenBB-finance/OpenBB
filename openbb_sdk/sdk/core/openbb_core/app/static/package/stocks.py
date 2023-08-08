@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -87,7 +87,7 @@ class CLASS_stocks(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         r"""Load stock data for a specific ticker.
@@ -210,9 +210,9 @@ class CLASS_stocks(Container):
         self,
         symbols: str,
         page: int = 0,
-        limit: Union[pydantic.types.NonNegativeInt, None] = 15,
+        limit: Optional[pydantic.types.NonNegativeInt] = 15,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "polygon"], None] = None,
+        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Get news for one or more stock tickers.
@@ -226,7 +226,7 @@ class CLASS_stocks(Container):
         provider: Literal[benzinga, fmp, polygon]
             The provider to use for the query.
         symbols : ConstrainedStrValue
-
+            Symbol to get data for.
         page : int
             The page of the stock news to be retrieved.
         limit : Optional[NonNegativeInt]
@@ -307,13 +307,11 @@ class CLASS_stocks(Container):
         StockNews
         ---------
         symbol : str
-            None
-        publishedDate : datetime
-            None
+            Ticker of the fetched news.
         image : Optional[str]
-            None
+            URL to the image of the news source.
         site : str
-            None
+            Name of the news source.
 
         polygon
         =======
@@ -321,51 +319,45 @@ class CLASS_stocks(Container):
         Parameters
         ----------
         ticker_lt : Optional[str]
-            None
+            Less than, by default None
         ticker_lte : Optional[str]
-            None
+            Less than or equal, by default None
         ticker_gt : Optional[str]
-            None
+            Greater than, by default None
         ticker_gte : Optional[str]
-            None
+            Greater than or equal, by default None
         published_utc : Optional[str]
-            None
+            The published date of the query, by default None
         published_utc_lt : Optional[str]
-            None
+            Less than, by default None
         published_utc_lte : Optional[str]
-            None
+            Less than or equal, by default None
         published_utc_gt : Optional[str]
-            None
+            Greater than, by default None
         published_utc_gte : Optional[str]
-            None
+            Greater than or equal, by default None
         order : Optional[Literal['asc', 'desc']]
-            None
+            The sort order of the query, by default None
         sort : Optional[str]
-            None
+            The sort of the query, by default None
 
 
         StockNews
         ---------
         amp_url : Optional[str]
-            None
-        article_url : str
-            None
+            AMP URL.
         author : Optional[str]
-            None
-        description : Optional[str]
-            None
+            Author of the article.
         id : str
-            None
+            Article ID.
         image_url : Optional[str]
-            None
+            Image URL.
         keywords : Optional[List[str]]
-            None
-        published_utc : datetime
-            None
+            Keywords in the article
         publisher : PolygonPublisher
-            None
+            Publisher of the article.
         tickers : List[str]
-            None"""
+            Tickers covered in the article."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -391,9 +383,9 @@ class CLASS_stocks(Container):
     def multiples(
         self,
         symbol: str,
-        limit: Union[int, None] = 100,
+        limit: Optional[int] = 100,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Get valuation multiples for a stock ticker.

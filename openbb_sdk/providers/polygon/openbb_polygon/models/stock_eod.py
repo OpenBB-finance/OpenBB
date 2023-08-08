@@ -58,8 +58,6 @@ class PolygonStockEODData(StockEODData):
 
 class PolygonStockEODFetcher(
     Fetcher[
-        StockEODQueryParams,
-        StockEODData,
         PolygonStockEODQueryParams,
         PolygonStockEODData,
     ]

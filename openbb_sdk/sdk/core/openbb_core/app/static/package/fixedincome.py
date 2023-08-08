@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Union
+from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -21,7 +21,7 @@ class CLASS_fixedincome(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Get treasury rates.

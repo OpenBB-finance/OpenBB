@@ -87,8 +87,6 @@ class FMPKeyMetricsData(KeyMetricsData):
 
 class FMPKeyMetricsFetcher(
     Fetcher[
-        KeyMetricsQueryParams,
-        KeyMetricsData,
         FMPKeyMetricsQueryParams,
         FMPKeyMetricsData,
     ]

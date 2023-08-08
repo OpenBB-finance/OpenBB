@@ -29,8 +29,6 @@ class FMPStockPeersData(StockPeersData):
 
 class FMPStockPeersFetcher(
     Fetcher[
-        StockPeersQueryParams,
-        StockPeersData,
         FMPStockPeersQueryParams,
         FMPStockPeersData,
     ]

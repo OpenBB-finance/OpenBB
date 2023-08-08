@@ -26,8 +26,6 @@ class FMPStockSplitCalendarData(StockSplitCalendarData):
 
 class FMPStockSplitCalendarFetcher(
     Fetcher[
-        StockSplitCalendarQueryParams,
-        StockSplitCalendarData,
         FMPStockSplitCalendarQueryParams,
         FMPStockSplitCalendarData,
     ]

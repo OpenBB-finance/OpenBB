@@ -31,8 +31,6 @@ class FMPRevenueGeographicData(RevenueGeographicData):
 
 class FMPRevenueGeographicFetcher(
     Fetcher[  # type: ignore
-        RevenueGeographicQueryParams,
-        RevenueGeographicData,
         FMPRevenueGeographicQueryParams,
         FMPRevenueGeographicData,
     ]

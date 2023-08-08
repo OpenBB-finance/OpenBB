@@ -1,3 +1,4 @@
+"""User service."""
 from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
@@ -26,6 +27,8 @@ from pymongo.mongo_client import MongoClient
 
 
 class UserService:
+    """User service."""
+
     REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
@@ -36,6 +39,7 @@ class UserService:
         mongodb_client: Optional[MongoClient] = None,
         access_token_repository: Optional[AbstractAccessTokenRepository] = None,
     ) -> AbstractAccessTokenRepository:
+        """Build token repository."""
         if access_token_repository:
             pass
         elif mongodb_client and valid_client:
@@ -52,6 +56,7 @@ class UserService:
         mongodb_client: Optional[MongoClient] = None,
         user_settings_repository: Optional[AbstractUserSettingsRepository] = None,
     ) -> AbstractUserSettingsRepository:
+        """Build user settings repository."""
         if user_settings_repository:
             pass
         elif mongodb_client and valid_client:
@@ -64,6 +69,7 @@ class UserService:
 
     @staticmethod
     def valid_client(client: Optional[MongoClient] = None) -> bool:
+        """Check if the client is valid."""
         if client is None:
             return False
 
@@ -77,6 +83,7 @@ class UserService:
 
     @classmethod
     def read_default_user_settings(cls, path: Optional[Path] = None) -> UserSettings:
+        """Read default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
         if path.exists():
@@ -95,6 +102,7 @@ class UserService:
         user_settings: UserSettings,
         path: Optional[Path] = None,
     ) -> None:
+        """Write default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
         user_settings_json = user_settings.json(
@@ -107,6 +115,7 @@ class UserService:
 
     @classmethod
     def update_default(cls, user_settings: UserSettings) -> UserSettings:
+        """Update default user settings."""
         d1 = cls.read_default_user_settings().dict()
         d2 = user_settings.dict() if user_settings else {}
         updated = cls.merge_dicts([d1, d2])
@@ -158,25 +167,31 @@ class UserService:
 
     @property
     def mongodb_client(self) -> Optional[MongoClient]:
+        """Return MongoDB client."""
         return self._mongodb_client
 
     @property
     def default_user_settings(self) -> UserSettings:
+        """Return default user settings."""
         return self._default_user_settings
 
     @default_user_settings.setter
     def default_user_settings(self, default_user_settings: UserSettings) -> None:
+        """Set default user settings."""
         self._default_user_settings = default_user_settings
 
     @property
     def access_token_repository(self) -> AbstractAccessTokenRepository:
+        """Access token repository."""
         return self._token_repository
 
     @property
     def user_settings_repository(self) -> AbstractUserSettingsRepository:
+        """User settings repository."""
         return self._user_settings_repository
 
     def refresh_default_default_user_settings(self) -> UserSettings:
+        """Refresh default default user settings."""
         self._default_user_settings = self.read_default_user_settings()
 
         return self._default_user_settings
