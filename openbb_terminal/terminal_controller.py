@@ -622,7 +622,8 @@ class TerminalController(BaseController):
             required="-h" not in other_args
             and "--help" not in other_args
             and "-e" not in other_args
-            and "--example" not in other_args,
+            and "--example" not in other_args
+            and "--url" not in other_args,
             type=str,
             nargs="+",
         )
@@ -641,9 +642,14 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "--url", help="URL to run openbb script from.", dest="url", type=str
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        print(ns_parser.url)
 
         def is_valid_url(url):
             try:
