@@ -89,7 +89,6 @@ class RegistryMap:
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
         super_model = getattr(fetcher, f"provider_{type_}_type")
-        super_model_name = super_model.__name__
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
