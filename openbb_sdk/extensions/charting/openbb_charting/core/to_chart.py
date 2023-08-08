@@ -1,12 +1,13 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
+from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 
-def to_plotly_json(
+def to_chart(
     charting_settings: ChartingSettings,
     data: Union[pd.DataFrame, pd.Series],
     indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
@@ -15,7 +16,7 @@ def to_plotly_json(
     volume: bool = True,
     prepost: bool = False,
     volume_ticks_x: int = 7,
-) -> str:
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """
     Returns the plotly json representation of the chart.
     This function is used so it can be called at the module level and used out of the box,
@@ -57,5 +58,6 @@ def to_plotly_json(
         prepost=prepost,
         volume_ticks_x=volume_ticks_x,
     )
+    content = fig.show(external=True).to_plotly_json()
 
-    return fig.show(external=True).to_plotly_json()
+    return fig, content
