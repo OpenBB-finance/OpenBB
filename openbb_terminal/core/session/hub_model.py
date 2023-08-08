@@ -1,6 +1,7 @@
 import datetime
 import json
 from typing import Any, Dict, List, Literal, Optional
+from uuid import UUID
 
 import requests
 from jose import jwt
@@ -494,7 +495,7 @@ def upload_routine(
 
 def download_routine(
     auth_header: str,
-    name: str = "",
+    uuid: UUID,
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
@@ -504,8 +505,8 @@ def download_routine(
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
-    name : str
-        The name of the routine.
+    uuid : UUID
+        The uuid of the routine.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
@@ -519,7 +520,7 @@ def download_routine(
     try:
         response = requests.get(
             headers={"Authorization": auth_header},
-            url=base_url + "terminal/script/" + name,
+            url=base_url + "terminal/script/" + uuid,
             timeout=timeout,
         )
         if response.status_code == 404:
@@ -540,7 +541,7 @@ def download_routine(
 
 def delete_routine(
     auth_header: str,
-    name: str = "",
+    uuid: UUID,
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
@@ -550,8 +551,8 @@ def delete_routine(
     ----------
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
-    name : str
-        The name of the routine.
+    uuid : UUID
+        The uuid of the routine.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
@@ -565,7 +566,7 @@ def delete_routine(
     try:
         response = requests.delete(
             headers={"Authorization": auth_header},
-            url=base_url + "terminal/script/" + name,
+            url=base_url + "terminal/script/" + uuid,
             timeout=timeout,
         )
         if response.status_code == 200:
