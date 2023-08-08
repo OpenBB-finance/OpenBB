@@ -3,7 +3,7 @@
 import json
 import sys
 import textwrap
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import floor
 from pathlib import Path
 from typing import (
@@ -598,9 +598,9 @@ class OpenBBFigure(go.Figure):
             colors = [None] * len(valid_x)  # type: ignore
 
         max_y = 0
-        for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
+        for i0, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
             if not color_i:
-                color_i = theme.up_color if i % 2 == 0 else theme.down_color
+                color_i = theme.up_color if i0 % 2 == 0 else theme.down_color
 
             res_mean, res_std = np.mean(x_i), np.std(x_i)
             res_min, res_max = min(x_i), max(x_i)
@@ -639,13 +639,13 @@ class OpenBBFigure(go.Figure):
             if show_rug:
                 self.add_scatter(
                     x=x_i,
-                    y=[0.002] * len(x_i),
+                    y=[0.00002] * len(x_i),
                     name=name_i if len(name) < 2 else name[1],
                     mode="markers",
                     marker=dict(
                         color=theme.down_color,
                         symbol="line-ns-open",
-                        size=8,
+                        size=10,
                     ),
                     row=row,
                     col=col,
@@ -1340,6 +1340,7 @@ class OpenBBFigure(go.Figure):
             return
 
         # We get the missing days
+        is_daily = df_data.index[-1].time() == df_data.index[-2].time()
         dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
 
         # We get the dates that are missing
@@ -1351,17 +1352,22 @@ class OpenBBFigure(go.Figure):
         if len(dt_missing_days) < 2_000:
             rangebreaks = [dict(values=dt_missing_days)]
 
-        # We get the frequency of the data to hide intra-day gaps
-        if df_data.index[-1].time() != df_data.index[-2].time():
-            freq = df_data.index[1] - df_data.index[0]
-            freq_mins = int(freq.seconds / 60)
-            break_values = (
-                df_data.resample(f"{freq_mins}T")
-                .max()
-                .index.union(df_data.index)
-                .difference(df_data.index)
-            )
-            rangebreaks = [dict(values=break_values, dvalue=freq_mins * 60 * 1000)]
+        df_data = df_data.sort_index()
+        # We add a rangebreak if the first and second time are not the same
+        # since daily data will have the same time (00:00)
+        if not is_daily:
+            for i in range(len(df_data) - 1):
+                if df_data.index[i + 1] - df_data.index[i] > timedelta(hours=2):
+                    rangebreaks.insert(
+                        0,
+                        dict(
+                            bounds=[
+                                df_data.index[i]
+                                + timedelta(minutes=60 - df_data.index[i].minute),
+                                df_data.index[i + 1],
+                            ]
+                        ),
+                    )
 
         self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 
@@ -1372,16 +1378,19 @@ class OpenBBFigure(go.Figure):
 
         for row, row_dict in self._subplot_xdates.items():
             for col, values in row_dict.items():
-                x_values = (
-                    pd.to_datetime(np.concatenate(values))
-                    .to_pydatetime()
-                    .astype("datetime64[ms]")
-                )
-                self.hide_date_gaps(
-                    pd.DataFrame(index=x_values.tolist()),
-                    row=row,
-                    col=col,
-                )
+                try:
+                    x_values = (
+                        pd.to_datetime(np.concatenate(values))
+                        .to_pydatetime()
+                        .astype("datetime64[ms]")
+                    )
+                    self.hide_date_gaps(
+                        pd.DataFrame(index=x_values.tolist()),
+                        row=row,
+                        col=col,
+                    )
+                except ValueError:
+                    continue
 
     def to_subplot(
         self,
