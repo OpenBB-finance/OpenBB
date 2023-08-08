@@ -659,11 +659,11 @@ class TerminalController(BaseController):
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
-            if ns_parser.url:
+            elif ns_parser.url:
                 username = ns_parser.url.split("/")[-2][1:]
                 script_name = ns_parser.url.split("/")[-1]
                 file_name = f"{username}_{script_name}.openbb"
-                response = requests.get(ns_parser.url, timeout=10)
+                response = requests.get(f"{ns_parser.url}?raw=true", timeout=10)
                 if response.status_code != 200:
                     console.print("[red]Could not find the requested script.[/red]")
                     return
@@ -674,7 +674,7 @@ class TerminalController(BaseController):
                     file.write(routine_text)
                 self.update_runtime_choices()
 
-            if ns_parser.file:
+            elif ns_parser.file:
                 file_path = " ".join(ns_parser.file)
                 # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
                 full_path = file_path
@@ -690,6 +690,8 @@ class TerminalController(BaseController):
                     )
                 else:
                     routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
+            else:
+                return
 
             with open(routine_path) as fp:
                 raw_lines = list(fp)
