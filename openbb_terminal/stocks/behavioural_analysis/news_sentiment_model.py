@@ -40,7 +40,7 @@ def get_data(
 
     query_params = {
         "all_feilds": "False",
-        "ordering": "-published_on,-share_of_article,-pagerank",
+        "ordering": "-published_on,-entity_score,-share_of_article,-pagerank",
     }
     if ticker:
         query_params["ticker"] = ticker
@@ -70,7 +70,7 @@ def get_data(
         query_params["offset"] = offset  # type:ignore
 
     response = requests.get(
-        "https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/",
+        "https://data-access.althub.com/api/OnclusiveSentiment/",
         headers=headers,
         params=query_params,
         timeout=5,
