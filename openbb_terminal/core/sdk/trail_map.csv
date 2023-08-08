@@ -404,7 +404,6 @@ stocks.ba.spacc,stocks_ba_reddit_model.get_spac_community,
 stocks.ba.stalker,stocks_ba_stocktwits_model.get_stalker,
 stocks.ba.text_sent,stocks_ba_reddit_model.get_sentiment,
 stocks.ba.trending,stocks_ba_stocktwits_model.get_trending,
-stocks.ba.ns,stocks_ba_news_sentiment_model.get_data,stocks_ba_news_sentiment_view.display_articles_data
 stocks.ba.wsb,stocks_ba_reddit_model.get_wsb_community,
 stocks.ca.balance,stocks_ca_marketwatch_model.get_balance_comparison,
 stocks.ca.cashflow,stocks_ca_marketwatch_model.get_cashflow_comparison,
