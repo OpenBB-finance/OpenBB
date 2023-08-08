@@ -7,7 +7,7 @@ from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 
-def render_chart(
+def to_chart(
     charting_settings: ChartingSettings,
     data: Union[pd.DataFrame, pd.Series],
     indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,

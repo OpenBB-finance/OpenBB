@@ -105,7 +105,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
         return results
 
-    def render_chart(self, **kwargs):
+    def to_chart(self, **kwargs):
         """
         Create or update the `Chart`.
         Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
@@ -116,11 +116,17 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             Keyword arguments to be passed to the charting extension.
             This implies that the user has some knowledge on the charting extension API.
             This is the case because the charting extension may vary on user preferences.
+
+        Returns
+        -------
+        chart.fig
+            The chart figure.
         """
         cm = ChartingManager()
         kwargs["data"] = self.to_dataframe()
 
-        self.chart = cm.render_chart(**kwargs)
+        self.chart = cm.to_chart(**kwargs)
+        return self.chart.fig
 
     def show(self):
         """Displays chart."""

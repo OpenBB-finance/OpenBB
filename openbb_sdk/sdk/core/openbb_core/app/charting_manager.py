@@ -144,7 +144,7 @@ class ChartingManager(metaclass=SingletonMeta):
         create_backend_func(charting_settings=charting_settings)
         get_backend_func().start(debug=charting_settings.debug_mode)
 
-    def render_chart(self, **kwargs) -> Chart:
+    def to_chart(self, **kwargs) -> Chart:
         """
         Returns the chart object.
 
@@ -163,7 +163,7 @@ class ChartingManager(metaclass=SingletonMeta):
         ChartingManagerError
             If charting extension is not installed.
         Exception
-            If the charting extension module does not contain the `render_chart` function.
+            If the charting extension module does not contain the `to_chart` function.
         """
 
         if not self._charting_extension_installed:
@@ -174,13 +174,13 @@ class ChartingManager(metaclass=SingletonMeta):
 
         # Dynamically import the charting module
         backend_module = import_module(self._charting_extension)
-        # Get the `render_chart` function from the charting module
-        render_chart_func = getattr(backend_module, "render_chart")
+        # Get the `to_chart` function from the charting module
+        to_chart_func = getattr(backend_module, "to_chart")
 
         # Add the charting settings to the kwargs
         kwargs["charting_settings"] = self._charting_settings
 
-        fig, content = render_chart_func(**kwargs)
+        fig, content = to_chart_func(**kwargs)
 
         return Chart(
             content=content,
