@@ -3,7 +3,6 @@
 import datetime
 import typing
 from typing import Literal, Optional, Union
-from typing import Literal, Optional, Union
 
 from pydantic import validate_arguments
 

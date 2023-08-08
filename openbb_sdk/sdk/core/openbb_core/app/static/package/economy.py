@@ -3,7 +3,6 @@
 import datetime
 import typing
 from typing import List, Literal, Optional, Union
-from typing import List, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -187,7 +186,6 @@ class CLASS_economy(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
@@ -517,7 +515,6 @@ class CLASS_economy(Container):
     @filter_call
     @validate_arguments
     def risk(
-        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> CommandOutput[typing.List]:
         """Market Risk Premium.

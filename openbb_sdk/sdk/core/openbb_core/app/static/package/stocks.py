@@ -3,7 +3,6 @@
 import datetime
 import typing
 from typing import Literal, Optional, Union
-from typing import Literal, Optional, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -227,7 +226,6 @@ class CLASS_stocks(Container):
         symbols: str,
         page: int = 0,
         limit: Optional[pydantic.types.NonNegativeInt] = 15,
-        limit: Optional[pydantic.types.NonNegativeInt] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs
@@ -401,9 +399,7 @@ class CLASS_stocks(Container):
         self,
         symbol: str,
         limit: Optional[int] = 100,
-        limit: Optional[int] = 100,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
