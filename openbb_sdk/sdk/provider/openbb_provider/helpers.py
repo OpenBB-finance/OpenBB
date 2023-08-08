@@ -72,7 +72,7 @@ def data_transformer(
     data: Union[List[ProviderDataType], ProviderDataType],
     new_schema: Type[DataType],
     processors: Optional[Dict[str, Callable]] = None,
-) -> List[DataType]:
+) -> Union[List[DataType], DataType]:
     """Converts a specific data into the standardised version
 
     Parameters:

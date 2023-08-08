@@ -34,7 +34,7 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
         FMPPriceTargetConsensusQueryParams,
-        FMPPriceTargetConsensusData,
+        List[FMPPriceTargetConsensusData],
     ]
 ):
     @staticmethod
@@ -55,5 +55,5 @@ class FMPPriceTargetConsensusFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPPriceTargetConsensusData],
-    ) -> List[FMPPriceTargetConsensusData]:
-        return data
+    ) -> List[PriceTargetConsensusData]:
+        return [PriceTargetConsensusData.parse_obj(d.dict()) for d in data]

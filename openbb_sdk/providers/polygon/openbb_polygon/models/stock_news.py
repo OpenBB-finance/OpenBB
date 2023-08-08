@@ -4,8 +4,8 @@
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import data_transformer, get_querystring
 from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
-from openbb_provider.utils.helpers import data_transformer, get_querystring
 from pydantic import BaseModel, Field
 
 from openbb_polygon.utils.helpers import get_data
@@ -84,7 +84,7 @@ class PolygonStockNewsData(StockNewsData):
 class PolygonStockNewsFetcher(
     Fetcher[
         PolygonStockNewsQueryParams,
-        PolygonStockNewsData,
+        List[PolygonStockNewsData],
     ]
 ):
     @staticmethod

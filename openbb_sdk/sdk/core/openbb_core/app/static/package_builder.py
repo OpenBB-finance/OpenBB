@@ -22,6 +22,7 @@ import pandas as pd
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import _AnnotatedAlias
+from typing_extensions import _AnnotatedAlias
 
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
@@ -549,7 +550,13 @@ class MethodDefinition:
                     if hasattr(item_type, "__name__")
                     else item_type._name
                 )
+                inner_type_name = (
+                    item_type.__name__
+                    if hasattr(item_type, "__name__")
+                    else item_type._name
+                )
                 func_returns = (
+                    f"CommandOutput[{item_type.__module__}.{inner_type_name}]"
                     f"CommandOutput[{item_type.__module__}.{inner_type_name}]"
                 )
 

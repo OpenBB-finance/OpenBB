@@ -1,12 +1,12 @@
 """FMP Stock Peers fetcher."""
 
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_one
 
 # FMP SPECIFIC FUNCTIONALITY CURRENTLY
 
@@ -22,9 +22,7 @@ class FMPStockPeersData(StockPeersData):
     """FMP Stock Peers data."""
 
     class Config:
-        fields = {
-            "peers_list": "peersList",
-        }
+        fields = {"peers_list": "peersList"}
 
 
 class FMPStockPeersFetcher(
@@ -49,5 +47,5 @@ class FMPStockPeersFetcher(
         return get_data_many(url, FMPStockPeersData, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockPeersData]) -> List[FMPStockPeersData]:
+    def transform_data(data: FMPStockPeersData) -> FMPStockPeersData:
         return data

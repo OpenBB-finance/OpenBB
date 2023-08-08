@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveFloat, PositiveInt, validator
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -15,7 +15,7 @@ from openbb_polygon.utils.helpers import get_data
 class PolygonStockEODQueryParams(StockEODQueryParams):
     """Polygon stocks end of day Query.
 
-    Source: https://polygon.io/docs/stocks/get_v2_aggs_ticker__stocksticker__range__multiplier___timespan___from___to
+    Source: https://polygon.io/docs/stocks/getting-started
     """
 
     timespan: Literal[
@@ -47,8 +47,7 @@ class PolygonStockEODData(StockEODData):
             "vwap": "vw",
         }
 
-    vw: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
-    n: PositiveInt = Field(
+    n: Optional[PositiveInt] = Field(
         description="The number of transactions for the symbol in the time period."
     )
 
@@ -60,19 +59,17 @@ class PolygonStockEODData(StockEODData):
 class PolygonStockEODFetcher(
     Fetcher[
         PolygonStockEODQueryParams,
-        PolygonStockEODData,
+        List[PolygonStockEODData],
     ]
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonStockEODQueryParams:
         now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
-
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
-        return PolygonStockEODQueryParams(**transformed_params)
+        start_date = params.pop("start_date", (now - timedelta(days=7)))
+        end_date = params.pop("end_date", now)
+        return PolygonStockEODQueryParams(
+            **params, start_date=start_date, end_date=end_date
+        )
 
     @staticmethod
     def extract_data(
@@ -84,10 +81,9 @@ class PolygonStockEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.symbol}/range/1/{str(query.timespan)}/"
+            f"{query.symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url, **kwargs)
@@ -97,9 +93,8 @@ class PolygonStockEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonStockEODData(**d) for d in data]
+        return [PolygonStockEODData.parse_obj(d) for d in data.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[PolygonStockEODData]) -> List[PolygonStockEODData]:
-        return data
+    def transform_data(data: List[PolygonStockEODData]) -> List[StockEODData]:
+        return [StockEODData.parse_obj(d.dict()) for d in data]

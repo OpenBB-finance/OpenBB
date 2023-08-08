@@ -35,7 +35,7 @@ class FMPForexPairsData(ForexPairsData):
 class FMPForexPairsFetcher(
     Fetcher[
         FMPForexPairsQueryParams,
-        FMPForexPairsData,
+        List[FMPForexPairsData],
     ]
 ):
     @staticmethod

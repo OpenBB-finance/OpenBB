@@ -2,10 +2,10 @@ from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.helpers import get_querystring
 from openbb_provider.models.income_statement import (
     IncomeStatementData,
 )
-from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
 
 from openbb_polygon.utils.helpers import get_data
@@ -59,7 +59,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
 class PolygonIncomeStatementFetcher(
     Fetcher[
         PolygonIncomeStatementQueryParams,
-        PolygonIncomeStatementData,
+        List[PolygonIncomeStatementData],
     ]
 ):
     @staticmethod

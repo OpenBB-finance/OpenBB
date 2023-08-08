@@ -92,7 +92,7 @@ class FMPBalanceSheetData(BalanceSheetData):
 class FMPBalanceSheetFetcher(
     Fetcher[
         FMPBalanceSheetQueryParams,
-        FMPBalanceSheetData,
+        List[FMPBalanceSheetData],
     ]
 ):
     @staticmethod
@@ -106,6 +106,9 @@ class FMPBalanceSheetFetcher(
         **kwargs: Any,
     ) -> List[FMPBalanceSheetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        period = "annual" if query.period == "annually" else "quarter"
+        query = query.copy(update={"period": period})
 
         url = create_url(
             3, f"balance-sheet-statement/{query.symbol}", api_key, query, ["symbol"]

@@ -1,7 +1,17 @@
 """Abstract class for the fetcher."""
 
 
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    List,
+    Optional,
+    TypeVar,
+    Union,
+    get_args,
+    get_origin,
+)
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams

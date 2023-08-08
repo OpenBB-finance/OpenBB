@@ -17,7 +17,7 @@ class RegistryMap:
         self._registry = registry or RegistryLoader.from_extensions()
         self._required_credentials = self._get_required_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
-        self._map = self._get_map(self._registry)
+        self._map, self._return_map = self._get_map(self._registry)
         self._models = self._get_models(self._map)
 
     @property
@@ -41,6 +41,10 @@ class RegistryMap:
         return self._map
 
     @property
+    def return_map(self) -> MapType:
+        return self._return_map
+
+    @property
     def models(self) -> List[str]:
         """Get available models."""
         return self._models
@@ -60,26 +64,30 @@ class RegistryMap:
     def _get_map(self, registry: Registry) -> MapType:
         """Generate map for the provider package."""
         map_: MapType = {}
+        return_map: MapType = {}
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
                 f = fetcher()
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
+                return_type = self.extract_return_type(f)
 
                 if model_name not in map_:
                     map_[model_name] = {}
                     map_[model_name]["openbb"] = {
                         "QueryParams": standard_query,
                         "Data": standard_data,
+                        "ReturnType": return_type,
                     }
 
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
+                return_map[model_name] = return_type
 
-        return map_
+        return map_, return_map
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
@@ -121,3 +129,8 @@ class RegistryMap:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info
+
+    @staticmethod
+    def extract_return_type(fetcher: Fetcher):
+        """Extract return info from fetcher."""
+        return getattr(fetcher, "generic_return_type", None)
