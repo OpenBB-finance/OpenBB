@@ -1,0 +1,4 @@
+Retrieved 2 records
+                  Name Company Number  Status
+0            SHELL PLC       04366849  active
+1  SHELL GROUP LIMITED       03323845  active
