@@ -622,7 +622,7 @@ class TerminalController(BaseController):
             and "-e" not in other_args
             and "--example" not in other_args
             and "--url" not in other_args
-            and "payments." not in other_args[0],
+            and "my.openbb" not in other_args[0],
             type=str,
             nargs="+",
         )
