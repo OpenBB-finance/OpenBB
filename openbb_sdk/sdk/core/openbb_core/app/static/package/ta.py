@@ -1,9 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
 import typing
-from inspect import Parameter
-from typing import Dict, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 import openbb_provider
 import pandas
@@ -15,7 +13,6 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
-from openbb_core.app.utils import df_to_basemodel
 
 
 class CLASS_ta(Container):
