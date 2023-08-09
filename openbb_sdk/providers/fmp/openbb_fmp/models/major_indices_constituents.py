@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.major_indices_constituents import (
+from openbb_provider.standard_models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
 )
@@ -52,8 +52,6 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 
 class FMPMajorIndicesConstituentsFetcher(
     Fetcher[
-        MajorIndicesConstituentsQueryParams,
-        MajorIndicesConstituentsData,
         FMPMajorIndicesConstituentsQueryParams,
         FMPMajorIndicesConstituentsData,
     ]
@@ -68,13 +66,14 @@ class FMPMajorIndicesConstituentsFetcher(
     def extract_data(
         query: FMPMajorIndicesConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPMajorIndicesConstituentsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/{query.index}_constituent/?apikey={api_key}"
 
-        return get_data_many(url, FMPMajorIndicesConstituentsData)
+        return get_data_many(url, FMPMajorIndicesConstituentsData, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -37,19 +37,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        symbol: str,
+        period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -538,19 +528,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        symbol: str,
+        period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
@@ -1644,19 +1624,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        symbol: str,
+        period: Literal["annually", "quarterly"] = "annually",
+        limit: Optional[pydantic.types.NonNegativeInt] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs

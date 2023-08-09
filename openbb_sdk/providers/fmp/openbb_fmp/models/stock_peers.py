@@ -4,7 +4,10 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_peers import StockPeersData, StockPeersQueryParams
+from openbb_provider.standard_models.stock_peers import (
+    StockPeersData,
+    StockPeersQueryParams,
+)
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -29,8 +32,6 @@ class FMPStockPeersData(StockPeersData):
 
 class FMPStockPeersFetcher(
     Fetcher[
-        StockPeersQueryParams,
-        StockPeersData,
         FMPStockPeersQueryParams,
         FMPStockPeersData,
     ]
@@ -41,12 +42,14 @@ class FMPStockPeersFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockPeersQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockPeersQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPStockPeersData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "stock_peers", api_key, query)
-        return get_data_many(url, FMPStockPeersData)
+        return get_data_many(url, FMPStockPeersData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPStockPeersData]) -> List[FMPStockPeersData]:

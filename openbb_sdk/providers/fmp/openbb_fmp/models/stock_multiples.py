@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_multiples import (
+from openbb_provider.standard_models.stock_multiples import (
     StockMultiplesData,
     StockMultiplesQueryParams,
 )
@@ -86,8 +86,6 @@ class FMPStockMultiplesData(StockMultiplesData):
 
 class FMPStockMultiplesFetcher(
     Fetcher[
-        StockMultiplesQueryParams,
-        StockMultiplesData,
         FMPStockMultiplesQueryParams,
         FMPStockMultiplesData,
     ]
@@ -98,7 +96,9 @@ class FMPStockMultiplesFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockMultiplesQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockMultiplesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPStockMultiplesData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -106,7 +106,7 @@ class FMPStockMultiplesFetcher(
             3, f"key-metrics-ttm/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, FMPStockMultiplesData)
+        return get_data_many(url, FMPStockMultiplesData, **kwargs)
 
     @staticmethod
     def transform_data(

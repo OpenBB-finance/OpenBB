@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.balance_sheet import (
+from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
@@ -91,8 +91,6 @@ class FMPBalanceSheetData(BalanceSheetData):
 
 class FMPBalanceSheetFetcher(
     Fetcher[
-        BalanceSheetQueryParams,
-        BalanceSheetData,
         FMPBalanceSheetQueryParams,
         FMPBalanceSheetData,
     ]
@@ -103,14 +101,16 @@ class FMPBalanceSheetFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPBalanceSheetQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPBalanceSheetQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPBalanceSheetData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"balance-sheet-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPBalanceSheetData)
+        return get_data_many(url, FMPBalanceSheetData, **kwargs)
 
     @staticmethod
     def transform_data(

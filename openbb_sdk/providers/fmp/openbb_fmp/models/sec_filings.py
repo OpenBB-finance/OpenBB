@@ -5,7 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.sec_filings import SECFilingsData, SECFilingsQueryParams
+from openbb_provider.standard_models.sec_filings import (
+    SECFilingsData,
+    SECFilingsQueryParams,
+)
 from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -35,8 +38,6 @@ class FMPSECFilingsData(SECFilingsData):
 
 class FMPSECFilingsFetcher(
     Fetcher[
-        SECFilingsQueryParams,
-        SECFilingsData,
         FMPSECFilingsQueryParams,
         FMPSECFilingsData,
     ]
@@ -47,7 +48,9 @@ class FMPSECFilingsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPSECFilingsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPSECFilingsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPSECFilingsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -55,7 +58,7 @@ class FMPSECFilingsFetcher(
             3, f"sec_filings/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, FMPSECFilingsData)
+        return get_data_many(url, FMPSECFilingsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPSECFilingsData]) -> List[FMPSECFilingsData]:

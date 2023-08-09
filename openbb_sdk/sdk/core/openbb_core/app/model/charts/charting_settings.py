@@ -26,22 +26,25 @@ class ChartingSettings:
 
         # System
         self.log_collect: bool = system_settings.log_collect
-        self.version = system_settings.version
-        self.python_version = system_settings.python_version
+        self.version: str = system_settings.version
+        self.python_version: str = system_settings.python_version
         self.test_mode = system_settings.test_mode
         self.app_id: str = get_app_id(user_data_directory)
         self.debug_mode: bool = system_settings.debug_mode
         self.headless: bool = system_settings.headless
         # User
-        self.plot_enable_pywry = user_settings.preferences.plot_enable_pywry
-        self.plot_pywry_width = user_settings.preferences.plot_pywry_width
-        self.plot_pywry_height = user_settings.preferences.plot_pywry_height
-        self.plot_open_export = user_settings.preferences.plot_open_export
-        self.user_email = user_settings.profile.hub_session.email if has_hub else None
-        self.user_uuid = (
+        self.plot_enable_pywry: bool = user_settings.preferences.plot_enable_pywry
+        self.plot_pywry_width: int = user_settings.preferences.plot_pywry_width
+        self.plot_pywry_height: int = user_settings.preferences.plot_pywry_height
+        self.plot_open_export: bool = user_settings.preferences.plot_open_export
+        self.user_email: Optional[str] = (
+            user_settings.profile.hub_session.email if has_hub else None
+        )
+        self.user_uuid: Optional[str] = (
             user_settings.profile.hub_session.user_uuid if has_hub else None
         )
         self.user_exports_directory = user_settings.preferences.export_directory
         self.user_styles_directory = user_settings.preferences.user_styles_directory
         # Theme
-        self.chart_style = user_settings.preferences.chart_style
+        self.chart_style: str = user_settings.preferences.chart_style
+        self.table_style = user_settings.preferences.table_style

@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_insider_trading import (
+from openbb_provider.standard_models.stock_insider_trading import (
     StockInsiderTradingData,
     StockInsiderTradingQueryParams,
 )
@@ -51,8 +51,6 @@ class FMPStockInsiderTradingData(StockInsiderTradingData):
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[
-        StockInsiderTradingQueryParams,
-        StockInsiderTradingData,
         FMPStockInsiderTradingQueryParams,
         FMPStockInsiderTradingData,
     ]
@@ -63,7 +61,9 @@ class FMPStockInsiderTradingFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPStockInsiderTradingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPStockInsiderTradingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPStockInsiderTradingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -71,10 +71,11 @@ class FMPStockInsiderTradingFetcher(
         query.transactionType = ",".join(query.transactionType)  # type: ignore
         url = create_url(4, "insider-trading", api_key, query)
 
-        return get_data_many(url, FMPStockInsiderTradingData)
+        return get_data_many(url, FMPStockInsiderTradingData, **kwargs)
 
     @staticmethod
     def transform_data(
         data: List[FMPStockInsiderTradingData],
     ) -> List[FMPStockInsiderTradingData]:
+        return data
         return data

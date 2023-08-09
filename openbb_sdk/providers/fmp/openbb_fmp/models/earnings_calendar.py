@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.earnings_calendar import (
+from openbb_provider.standard_models.earnings_calendar import (
     EarningsCalendarData,
     EarningsCalendarQueryParams,
 )
@@ -47,8 +47,6 @@ class FMPEarningsCalendarData(EarningsCalendarData):
 
 class FMPEarningsCalendarFetcher(
     Fetcher[
-        EarningsCalendarQueryParams,
-        EarningsCalendarData,
         FMPEarningsCalendarQueryParams,
         FMPEarningsCalendarData,
     ]
@@ -59,14 +57,16 @@ class FMPEarningsCalendarFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPEarningsCalendarQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPEarningsCalendarQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPEarningsCalendarData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"historical/earning_calendar/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPEarningsCalendarData)
+        return get_data_many(url, FMPEarningsCalendarData, **kwargs)
 
     @staticmethod
     def transform_data(

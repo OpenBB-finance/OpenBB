@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.price_target_consensus import (
+from openbb_provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
     PriceTargetConsensusQueryParams,
 )
@@ -33,8 +33,6 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
 
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
-        PriceTargetConsensusQueryParams,
-        PriceTargetConsensusData,
         FMPPriceTargetConsensusQueryParams,
         FMPPriceTargetConsensusData,
     ]
@@ -45,12 +43,14 @@ class FMPPriceTargetConsensusFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPPriceTargetConsensusQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPPriceTargetConsensusQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPPriceTargetConsensusData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
-        return get_data_many(url, FMPPriceTargetConsensusData)
+        return get_data_many(url, FMPPriceTargetConsensusData, **kwargs)
 
     @staticmethod
     def transform_data(

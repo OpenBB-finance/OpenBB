@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.earnings_call_transcript import (
+from openbb_provider.standard_models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
@@ -36,8 +36,6 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[
-        EarningsCallTranscriptQueryParams,
-        EarningsCallTranscriptData,
         FMPEarningsCallTranscriptQueryParams,
         FMPEarningsCallTranscriptData,
     ]
@@ -50,6 +48,7 @@ class FMPEarningsCallTranscriptFetcher(
     def extract_data(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPEarningsCallTranscriptData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -60,7 +59,7 @@ class FMPEarningsCallTranscriptFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPEarningsCallTranscriptData)
+        return get_data_many(url, FMPEarningsCallTranscriptData, **kwargs)
 
     @staticmethod
     def transform_data(

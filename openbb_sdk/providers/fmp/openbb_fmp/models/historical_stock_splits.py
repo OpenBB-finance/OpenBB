@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.historical_stock_splits import (
+from openbb_provider.standard_models.historical_stock_splits import (
     HistoricalStockSplitsData,
     HistoricalStockSplitsQueryParams,
 )
@@ -31,8 +31,6 @@ class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
 
 class FMPHistoricalStockSplitsFetcher(
     Fetcher[
-        HistoricalStockSplitsQueryParams,
-        HistoricalStockSplitsData,
         FMPHistoricalStockSplitsQueryParams,
         FMPHistoricalStockSplitsData,
     ]
@@ -45,13 +43,14 @@ class FMPHistoricalStockSplitsFetcher(
     def extract_data(
         query: FMPHistoricalStockSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPHistoricalStockSplitsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"historical-price-full/stock_split/{query.symbol}", api_key
         )
-        return get_data_many(url, FMPHistoricalStockSplitsData, "historical")
+        return get_data_many(url, FMPHistoricalStockSplitsData, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

@@ -4,7 +4,10 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.forex_pairs import ForexPairsData, ForexPairsQueryParams
+from openbb_provider.standard_models.forex_pairs import (
+    ForexPairsData,
+    ForexPairsQueryParams,
+)
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import get_data_many
@@ -34,8 +37,6 @@ class FMPForexPairsData(ForexPairsData):
 
 class FMPForexPairsFetcher(
     Fetcher[
-        ForexPairsQueryParams,
-        ForexPairsData,
         FMPForexPairsQueryParams,
         FMPForexPairsData,
     ]
@@ -46,14 +47,16 @@ class FMPForexPairsFetcher(
 
     @staticmethod
     def extract_data(
-        query: FMPForexPairsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPForexPairsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPForexPairsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
 
-        return get_data_many(url, FMPForexPairsData)
+        return get_data_many(url, FMPForexPairsData, **kwargs)
 
     @staticmethod
     def transform_data(data: List[FMPForexPairsData]) -> List[FMPForexPairsData]:

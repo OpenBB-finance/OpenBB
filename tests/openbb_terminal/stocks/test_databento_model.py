@@ -20,7 +20,7 @@ def test_databento_model():
     )
     assert model.symbol == "AAPL"
     assert model.exchange == "XNAS.ITCH"
-    assert model.stype == "native"
+    assert model.stype == "raw_symbol"
     assert model.start == "2021-08-10"
     assert model.end == "2021-08-11"
 
