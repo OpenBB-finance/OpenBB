@@ -91,7 +91,9 @@ class InstitutionalOwnershipData(Data, BaseSymbol):
         description="Total number of call options contracts traded for Apple Inc. on the previous reporting date."
     )
     total_calls_change: int = Field(
-        description="Change in the total number of call options contracts traded between the current and previous reporting dates."
+        description="""
+        Change in the total number of call options contracts traded between the current and previous reporting dates.
+        """
     )
     total_puts: int = Field(
         description="Total number of put options contracts traded for Apple Inc. on the specified date."
@@ -100,10 +102,14 @@ class InstitutionalOwnershipData(Data, BaseSymbol):
         description="Total number of put options contracts traded for Apple Inc. on the previous reporting date."
     )
     total_puts_change: int = Field(
-        description="Change in the total number of put options contracts traded between the current and previous reporting dates."
+        description="""
+        Change in the total number of put options contracts traded between the current and previous reporting dates.
+        """
     )
     put_call_ratio: float = Field(
-        description="The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date."
+        description="""
+        The put-call ratio, which is the ratio of the total number of put options to call options.
+        """
     )
     last_put_call_ratio: float = Field(
         description="The put-call ratio on the previous reporting date."
