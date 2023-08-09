@@ -7,8 +7,6 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
 from typing import (
-    Annotated,
-    Any,
     Callable,
     Dict,
     List,
@@ -17,12 +15,13 @@ from typing import (
     Type,
     Union,
     get_args,
-    get_origin,
     get_type_hints,
 )
 
 import pandas as pd
+from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
+from typing_extensions import _AnnotatedAlias
 
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
@@ -32,11 +31,11 @@ class PackageBuilder:
     """Build the extension package for the SDK."""
 
     @classmethod
-    def build(cls, lint: bool = True) -> None:
+    def build(cls, modules: Optional[List[str]] = None, lint: bool = True) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
         cls.save_module_map()
-        cls.save_modules()
+        cls.save_modules(modules)
         cls.save_package()
         if lint:
             cls.run_linters()
@@ -57,7 +56,7 @@ class PackageBuilder:
         )
 
     @classmethod
-    def save_modules(cls):
+    def save_modules(cls, modules: Optional[List[str]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -68,6 +67,9 @@ class PackageBuilder:
             return
 
         MAX_LEN = max([len(path) for path in path_list if path != "/"])
+
+        if modules:
+            path_list = [path for path in path_list if path in modules]
 
         for path in path_list:
             route = PathHandler.get_route(path=path, route_map=route_map)
@@ -106,8 +108,11 @@ class PackageBuilder:
 
 
 class ModuleBuilder:
+    """Build the module for the SDK."""
+
     @staticmethod
     def build(path: str) -> str:
+        """Build the module."""
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         code += ImportDefinition.build(path=path)
         code += ClassDefinition.build(path=path)
@@ -116,8 +121,11 @@ class ModuleBuilder:
 
 
 class ImportDefinition:
+    """Build the import definition for the SDK."""
+
     @staticmethod
     def filter_hint_type_list(hint_type_list: List[Type]) -> List[Type]:
+        """Filter the hint type list."""
         new_hint_type_list = []
         for hint_type in hint_type_list:
             if hint_type != _empty and hint_type.__module__ != "builtins":
@@ -129,6 +137,7 @@ class ImportDefinition:
 
     @classmethod
     def get_function_hint_type_list(cls, func: Callable) -> List[Type]:
+        """Get the hint type list from the function."""
         sig = signature(func)
         parameter_map = sig.parameters
         return_type = sig.return_annotation
@@ -148,6 +157,7 @@ class ImportDefinition:
 
     @classmethod
     def get_path_hint_type_list(cls, path: str) -> List[Type]:
+        """Get the hint type list from the path."""
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
         child_path_list = PathHandler.get_child_path_list(
@@ -165,6 +175,7 @@ class ImportDefinition:
 
     @classmethod
     def build(cls, path: str) -> str:
+        """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
@@ -175,7 +186,6 @@ class ImportDefinition:
         code += "\nimport openbb_provider"
         code += "\nimport pandas"
         code += "\nimport datetime"
-        code += "\nfrom types import NoneType"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import validate_arguments"
         code += "\nfrom inspect import Parameter"
@@ -195,8 +205,11 @@ class ImportDefinition:
 
 
 class ClassDefinition:
+    """Build the class definition for the SDK."""
+
     @staticmethod
     def build(path: str) -> str:
+        """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
         code = f"\nclass {class_name}(Container):\n"
         route_map = PathHandler.build_route_map()
@@ -222,92 +235,131 @@ class ClassDefinition:
 
 
 class DocstringGenerator:
-    """Generate docstrings for the commands dynamically."""
+    """Dynamically generate docstrings for the commands."""
 
     @staticmethod
-    def get_docstrings(query_mapping: dict) -> dict:
-        """Get docstrings from the query mapping."""
-        mapping = query_mapping.copy()
-        for _, model_mapping in mapping.items():
-            for _, query_params_mapping in model_mapping.items():
-                query_params_mapping.pop("fields", None)
-        return mapping
+    def get_command_output_description() -> str:
+        """Get the command output description."""
+        command_output_description = (
+            "\nReturns\n"
+            "-------\n"
+            "CommandOutput\n"
+            "    results: List[Data]\n"
+            "        Serializable results.\n"
+            "    provider: Optional[PROVIDERS]\n"
+            "        Provider name.\n"
+            "    warnings: Optional[List[Warning_]]\n"
+            "        List of warnings.\n"
+            "    error: Optional[Error]\n"
+            "        Caught exceptions.\n"
+            "    chart: Optional[Chart]\n"
+            "        Chart object.\n"
+        )
+
+        return command_output_description
 
     @staticmethod
-    def clean_provider_docstring(
-        section_name: Literal["QueryParams", "Data"], docstring: str, model_name: str
-    ) -> str:
-        """Clean the provider docstring from standard fields."""
-        provider_interface = get_provider_interface()
-        if section_name == "QueryParams":
-            standard_fields = provider_interface.params[model_name][
-                "standard"
-            ].__dataclass_fields__.keys()
-        elif section_name == "Data":
-            standard_fields = provider_interface.data[model_name][
-                "standard"
-            ].__dataclass_fields__.keys()
+    def get_available_providers(query_mapping: dict) -> str:
+        """Return a string of available providers."""
+        available_providers = ", ".join(query_mapping.keys())
+        available_providers = available_providers.replace("openbb, ", "")
+        available_providers = available_providers.replace("openbb", "")
+
+        provider_string = f"provider: Literal[{available_providers}]\n"
+        provider_string += "    The provider to use for the query.\n"
+
+        return provider_string
+
+    @staticmethod
+    def reorder_dictionary(dictionary: dict, key_to_move_first: str) -> dict:
+        """Reorder a dictionary so that a given key is first."""
+        if key_to_move_first in dictionary:
+            ordered_dict = OrderedDict(
+                [(key_to_move_first, dictionary[key_to_move_first])]
+            )
+
+            for key, value in dictionary.items():
+                if key != key_to_move_first:
+                    ordered_dict[key] = value
+
+            return ordered_dict
         else:
-            return docstring
+            return dictionary
 
-        doc_lines = docstring.split("\n")
-        cleaned_lines = []
-        skip_lines = False
+    @classmethod
+    def extract_field_details(
+        cls,
+        model_name: str,
+        provider: str,
+        section_name: str,
+        section_docstring: str,
+        mapping: dict,
+    ) -> str:
+        """Extract the field details from the map and add them to the docstring."""
+        if section_docstring == "":
+            return section_docstring
 
-        for line in doc_lines:
-            stripped_line = line.strip()
-            parameter_word = stripped_line.split(" : ")[0]
+        padding = "    "
 
-            if parameter_word in standard_fields:
-                skip_lines = True
-            elif ":" in stripped_line and parameter_word not in standard_fields:
-                skip_lines = False
+        field_mapping = mapping[model_name][provider.lower()][section_name]["fields"]
+        fields = field_mapping.keys()
 
-            if not skip_lines:
-                cleaned_lines.append(line)
+        if len(fields) == 0:
+            section_docstring += "All fields are standardized.\n"
+        else:
+            for field in fields:
+                # We need to get the string representation of the field type
+                # because Pydantic uses a custom repr.
+                try:
+                    field_type = field_mapping[field].__repr_args__()[1][1]
+                except AttributeError:
+                    # Fallback to the annotation if the repr fails
+                    field_type = field_mapping[field].annotation
 
-        for i, line in enumerate(cleaned_lines):
-            try:
-                if line == "---------" and cleaned_lines[i + 1] == "    ":
-                    cleaned_lines[i] = "---------"
-                    cleaned_lines[i + 1] = "All fields are standardized.\n"
-                    break
-            except IndexError:
-                cleaned_lines.append("All fields are standardized.\n")
+                field_description = field_mapping[field].field_info.description
 
-        return "\n".join(cleaned_lines)
+                section_docstring += f"{field} : {field_type}\n"
+                section_docstring += f"{padding}{field_description}\n"
+
+        if provider == "openbb" and section_name == "QueryParams":
+            section_docstring += cls.get_command_output_description()
+
+        return section_docstring
 
     @classmethod
     def generate_provider_docstrings(
-        cls, docstring: str, docstring_mapping: dict, model_name: str
+        cls,
+        docstring: str,
+        query_mapping: dict,
+        model_name: str,
+        provider_interface_mapping: dict,
     ) -> str:
         """Generate the docstring for the provider."""
-        for provider, model_mapping in docstring_mapping.items():
+        for provider, model_mapping in query_mapping.items():
             docstring += f"\n{provider}"
             docstring += f"\n{'=' * len(provider)}"
-            for section_name, section_docstring in model_mapping.items():
-                missing_doc = "\nReturns\n-------\nDocumentation not available.\n\n"
-                section_docstring = (
-                    section_docstring["docstring"]
-                    if section_docstring["docstring"]
-                    else missing_doc
-                )
 
-                # clean the docstring from its original indentation
-                if missing_doc != section_docstring:
-                    section_docstring = "\n".join(
-                        line[4:] for line in section_docstring.split("\n")[1:]
-                    )
-                    section_docstring = "\n".join(
-                        f"{line}" for line in section_docstring.split("\n")
-                    )
-
-                    if provider != "Standard":
-                        section_docstring = cls.clean_provider_docstring(
-                            section_name,
-                            docstring=section_docstring,
-                            model_name=model_name,
+            for section_name in model_mapping:
+                section_docstring = ""
+                if section_name == "QueryParams":
+                    section_docstring += "\nParameters\n----------\n"
+                    if provider == "openbb":
+                        section_docstring += (
+                            f"{cls.get_available_providers(query_mapping)}"
                         )
+                elif section_name == "Data":
+                    underline = "-" * len(model_name)
+                    section_docstring += f"\n{model_name}\n{underline}\n"
+                else:
+                    continue
+
+                section_docstring = cls.extract_field_details(
+                    model_name=model_name,
+                    provider=provider,
+                    section_name=section_name,
+                    section_docstring=section_docstring,
+                    mapping=provider_interface_mapping,
+                )
 
                 docstring += f"\n{section_docstring}"
 
@@ -319,23 +371,15 @@ class DocstringGenerator:
         provider_interface_mapping = get_provider_interface().map
         query_mapping = provider_interface_mapping.get(model_name, None)
         if query_mapping:
-            docstring_mapping = cls.get_docstrings(query_mapping)
-
             docstring = func.__doc__ or ""
+            docstring += "\n\n"
 
-            available_providers = ", ".join(docstring_mapping.keys())
-            available_providers = available_providers.replace("openbb, ", "")
-            available_providers = available_providers.replace("openbb", "")
-
-            docstring += f"\n\nAvailable providers: {available_providers}\n"
-
-            docstring_mapping_ordered = {
-                "Standard": docstring_mapping.pop("openbb", None),  # type: ignore
-                **docstring_mapping,
-            }
-
+            query_mapping_ordered = cls.reorder_dictionary(query_mapping, "openbb")
             docstring = cls.generate_provider_docstrings(
-                docstring, docstring_mapping_ordered, model_name
+                docstring=docstring,
+                query_mapping=query_mapping_ordered,
+                model_name=model_name,
+                provider_interface_mapping=provider_interface_mapping,
             )
 
             func.__doc__ = docstring
@@ -343,8 +387,11 @@ class DocstringGenerator:
 
 
 class MethodDefinition:
+    """Build the method definition for the SDK."""
+
     @staticmethod
     def build_class_loader_method(path: str) -> str:
+        """Build the class loader method."""
         module_name = PathHandler.build_module_name(path=path)
         class_name = PathHandler.build_module_class(path=path)
         function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
@@ -357,7 +404,8 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def get_type(field: Any) -> type:
+    def get_type(field: ModelField) -> type:
+        """Get the type of the field."""
         field_type = getattr(field, "type", Parameter.empty)
         if isclass(field_type):
             name = field_type.__name__
@@ -368,7 +416,8 @@ class MethodDefinition:
         return field_type
 
     @staticmethod
-    def get_default(field: Any):
+    def get_default(field: ModelField):
+        """Get the default value of the field."""
         field_default = getattr(field, "default", None)
         if field_default is None or field_default is MISSING:
             return Parameter.empty
@@ -381,12 +430,14 @@ class MethodDefinition:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return get_origin(annotation) == Annotated and hasattr(
+        """Check if the annotation is an annotated dataclass."""
+        return type(annotation) is _AnnotatedAlias and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
     @staticmethod
-    def reorder_params(params: Dict[str, Parameter]) -> OrderedDict[str, Parameter]:
+    def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
+        """Reorder the params."""
         formatted_keys = list(params.keys())
         for k in ["provider", "extra_params"]:
             if k in formatted_keys:
@@ -402,11 +453,12 @@ class MethodDefinition:
     @staticmethod
     def format_params(
         parameter_map: Dict[str, Parameter]
-    ) -> OrderedDict[str, Parameter]:
+    ) -> "OrderedDict[str, Parameter]":
+        """Format the params."""
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
-        # will need to had some conversion code to the method implementation.
+        # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
             "data": pd.DataFrame,
             "start_date": str,
@@ -466,6 +518,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
+        """Build the function parameters."""
         od = MethodDefinition.format_params(parameter_map=parameter_map)
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
@@ -477,6 +530,7 @@ class MethodDefinition:
 
     @staticmethod
     def build_func_returns(return_type: type) -> str:
+        """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
         elif return_type.__module__ == "builtins":
@@ -490,9 +544,13 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                # inner_type = getattr(item_type, "__name__", "_name")
+                inner_type_name = (
+                    item_type.__name__
+                    if hasattr(item_type, "__name__")
+                    else item_type._name
+                )
                 func_returns = (
-                    f"CommandOutput[{item_type.__module__}.{item_type.__name__}]"
+                    f"CommandOutput[{item_type.__module__}.{inner_type_name}]"
                 )
 
         return func_returns
@@ -501,6 +559,7 @@ class MethodDefinition:
     def build_command_method_signature(
         func_name: str, parameter_map: Dict[str, Parameter], return_type: type
     ) -> str:
+        """Build the command method signature."""
         func_params = MethodDefinition.build_func_params(parameter_map)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
@@ -517,12 +576,14 @@ class MethodDefinition:
 
     @staticmethod
     def build_command_method_doc(func: Callable):
+        """Build the command method docstring."""
         code = f'        """{func.__doc__}"""\n' if func.__doc__ else ""
 
         return code
 
     @staticmethod
     def build_command_method_implementation(path: str, func: Callable):
+        """Build the command method implementation."""
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
@@ -560,6 +621,7 @@ class MethodDefinition:
     def build_command_method(
         cls, path: str, func: Callable, model_name: Optional[str]
     ) -> str:
+        """Build the command method."""
         func_name = func.__name__
 
         sig = signature(func)
@@ -582,8 +644,11 @@ class MethodDefinition:
 
 
 class PathHandler:
+    """Handle the paths for the SDK."""
+
     @staticmethod
     def build_route_map() -> Dict[str, BaseRoute]:
+        """Build the route map."""
         router = RouterLoader.from_extensions()
         route_map = {route.path: route for route in router.api_router.routes}  # type: ignore
 
@@ -591,6 +656,7 @@ class PathHandler:
 
     @staticmethod
     def build_path_list(route_map: Dict[str, BaseRoute]) -> List[str]:
+        """Build the path list."""
         path_list = []
         for route_path in route_map:
             if route_path not in path_list:
@@ -607,10 +673,12 @@ class PathHandler:
 
     @staticmethod
     def get_route(path: str, route_map: Dict[str, BaseRoute]):
+        """Get the route from the path."""
         return route_map.get(path, None)
 
     @staticmethod
     def get_child_path_list(path: str, path_list: List[str]) -> List[str]:
+        """Get the child path list."""
         direct_children = []
         for p in path_list:
             if p.startswith(path):
@@ -622,28 +690,34 @@ class PathHandler:
 
     @staticmethod
     def clean_path(path: str) -> str:
+        """Clean the path."""
         if path.startswith("/"):
             path = path[1:]
         return path.replace("-", "_").replace("/", "_")
 
     @classmethod
     def build_module_name(cls, path: str) -> str:
+        """Build the module name."""
         if path == "":
-            return "__commands__"
+            return "__extensions__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
+        """Build the module class."""
         if path == "":
-            return "Commands"
+            return "Extensions"
         return f"CLASS_{cls.clean_path(path=path)}"
 
 
 class Linters:
+    """Run the linters for the SDK."""
+
     current_folder = str(Path(Path(__file__).parent, "package").absolute())
 
     @staticmethod
     def print_separator(symbol: str, length: int = 160):
+        """Print a separator."""
         print(symbol * length)
 
     @staticmethod
@@ -665,12 +739,15 @@ class Linters:
 
     @classmethod
     def black(cls):
+        """Run black."""
         cls.run(linter="black")
 
     @classmethod
     def ruff(cls):
+        """Run ruff."""
         cls.run(linter="ruff", flags=["--fix"])
 
     @classmethod
     def mypy(cls):
+        """Run mypy."""
         cls.run(linter="mypy", flags=["--ignore-missing-imports"])

@@ -1,17 +1,11 @@
 """FMP Share Statistics Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Dict, List, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
-from openbb_provider.models.base import BaseSymbol
-from openbb_provider.models.share_statistics import (
+from openbb_provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
@@ -20,57 +14,52 @@ from pydantic import validator
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPShareStatisticsQueryParams(QueryParams, BaseSymbol):
+class FMPShareStatisticsQueryParams(ShareStatisticsQueryParams):
     """FMP Income Statement QueryParams.
 
     Source: https://site.financialmodelingprep.com/developer/docs/shares-float-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
     """
 
 
-class FMPShareStatisticsData(Data):
-    symbol: str
-    date: dateType
-    freeFloat: float
-    floatShares: float
-    outstandingShares: float
-    source: str
+class FMPShareStatisticsData(ShareStatisticsData):
+    """FMP Share Statistics Data."""
+
+    class Config:
+        fields = {
+            "free_float": "freeFloat",
+            "float_shares": "floatShares",
+            "outstanding_shares": "outstandingShares",
+        }
 
     @validator("date", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPShareStatisticsFetcher(
     Fetcher[
-        ShareStatisticsQueryParams,
-        ShareStatisticsData,
         FMPShareStatisticsQueryParams,
         FMPShareStatisticsData,
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ShareStatisticsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPShareStatisticsQueryParams:
-        return FMPShareStatisticsQueryParams(symbol=query.symbol)
+    def transform_query(params: Dict[str, Any]) -> FMPShareStatisticsQueryParams:
+        return FMPShareStatisticsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPShareStatisticsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPShareStatisticsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPShareStatisticsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "shares_float", api_key, query)
-        return get_data_many(url, FMPShareStatisticsData)
+
+        return get_data_many(url, FMPShareStatisticsData, **kwargs)
 
     @staticmethod
     def transform_data(
         data: List[FMPShareStatisticsData],
-    ) -> List[ShareStatisticsData]:
-        return data_transformer(data, ShareStatisticsData)
+    ) -> List[FMPShareStatisticsData]:
+        return data

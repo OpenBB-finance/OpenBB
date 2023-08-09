@@ -1,16 +1,16 @@
 """Benzinga Helpers."""
 
 
-from datetime import datetime
-from typing import List
+from typing import Any
 
-import requests
-from openbb_provider.abstract.data import Data
-from pydantic import BaseModel, Field, validator
+from openbb_provider import helpers
+from pydantic import BaseModel
 
 
-def get_data(url: str) -> dict:
-    r = requests.get(url, timeout=10, headers={"accept": "application/json"})
+def get_data(url: str, **kwargs: Any) -> dict:
+    r = helpers.make_request(
+        url, timeout=10, headers={"accept": "application/json"}, **kwargs
+    )
     if r.status_code != 200:
         data = r.json()
         if data == ['Access denied for user 0 "anonymous"']:
@@ -26,15 +26,3 @@ def get_data(url: str) -> dict:
 class BenzingaImage(BaseModel):
     size: str
     url: str
-
-
-class BenzingaBaseNewsData(Data):
-    created: datetime = Field(alias="date")
-    title: str
-    image: List[BenzingaImage]
-    body: str = Field(alias="text")
-    url: str
-
-    @validator("created", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")

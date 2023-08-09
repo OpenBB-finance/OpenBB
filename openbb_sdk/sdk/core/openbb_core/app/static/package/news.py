@@ -25,19 +25,34 @@ class CLASS_news(Container):
     ) -> CommandOutput[typing.List]:
         """Global News.
 
-        Available providers: benzinga, fmp
 
-        Standard
-        ========
+        openbb
+        ======
 
-        Parameter
-        ---------
+        Parameters
+        ----------
+        provider: Literal[benzinga, fmp]
+            The provider to use for the query.
         page : NonNegativeInt
-            The page of the global news to be retrieved.
-
+            The page of the global news.
 
         Returns
         -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        GlobalNews
+        ----------
         date : datetime
             The published date of the news.
         title : str
@@ -52,14 +67,12 @@ class CLASS_news(Container):
         benzinga
         ========
 
-        Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
-
-        Parameter
-        ---------
-        pageSize : int (default: 15)
+        Parameters
+        ----------
+        pageSize : int
             The number of results to return per page.
-        displayOutput : str (default: "headline")
-            The type of data to return. Options are "headline", "summary", "full", "all".
+        displayOutput : Literal['headline', 'summary', 'full', 'all']
+            The type of data to return.
         date : Optional[datetime]
             The date of the news to retrieve.
         dateFrom : Optional[datetime]
@@ -70,9 +83,8 @@ class CLASS_news(Container):
             The number of seconds since the news was updated.
         publishedSince : Optional[int]
             The number of seconds since the news was published.
-        sort : Optional[str]
-            The order in which to sort the news. Options are:
-            "published_at", "updated_at", "title", "author", "channel", "ticker", "topic", "content_type".
+        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
         isin : Optional[str]
             The ISIN of the news to retrieve.
         cusip : Optional[str]
@@ -89,25 +101,22 @@ class CLASS_news(Container):
             The content types of the news to retrieve.
 
 
-        Returns
-        -------
-        Documentation not available.
-
+        GlobalNews
+        ----------
+        All fields are standardized.
 
         fmp
         ===
 
-        Source: https://site.financialmodelingprep.com/developer/docs/general-news-api/
-
-        Parameter
-        ---------
+        Parameters
+        ----------
         All fields are standardized.
 
 
-        Returns
-        -------
-        Documentation not available.
-        """
+        GlobalNews
+        ----------
+        site : str
+            The site of the news."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

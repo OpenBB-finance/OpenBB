@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Optional, TypeVar
+from typing import Dict, Generic, List, Optional, TypeVar, Union
 
 import pandas as pd
 from pydantic import Field
@@ -8,8 +8,9 @@ from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.model.abstract.error import Error
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
-from openbb_core.app.model.charts.chart import Chart, ChartFormat
+from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.utils import basemodel_to_df
 
 T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
@@ -48,26 +49,44 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
             + "\n".join([f"{k}: {v}" for k, v in self.dict().items()])
         )
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def to_dataframe(
+        self, concat: bool = True
+    ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
         """Converts results field to pandas dataframe.
+
+        Parameters
+        ----------
+        concat : bool, optional
+            If True, it concatenates the dataframes, by default True.
 
         Returns
         -------
-        pd.DataFrame
-            Pandas dataframe.
+        Union[pd.DataFrame, Dict[str, pd.DataFrame]]
+            Pandas dataframe or dictionary of dataframes.
         """
         if self.results is None:
             raise OpenBBError("Results not found.")
 
         try:
-            df = pd.DataFrame(self.dict()["results"])
-            if "date" in df.columns:
-                df = df.set_index("date")
-                df.index = pd.to_datetime(df.index)
-        except ValueError:
-            df = pd.DataFrame(self.dict()["results"], index=["values"]).T
+            res = self.results
+            if isinstance(res, list):
+                if isinstance(res[0], dict):
+                    for r in res:
+                        dict_of_df = {
+                            k: basemodel_to_df(v, "date") for k, v in r.items()
+                        }
+                        df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
+
+                else:
+                    df = basemodel_to_df(res, "date")  # type: ignore
+            else:
+                df = basemodel_to_df(res, "date")  # type: ignore
+
+            # Improve output so that all columns that are None are not returned
+            df = df.dropna(axis=1, how="all")
+
         except Exception as e:
-            raise OpenBBError("Failed to convert results to dataframe.") from e
+            raise OpenBBError("Failed to convert results to DataFrame.") from e
 
         return df
 
@@ -79,48 +98,38 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe().reset_index()
+        df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()
 
         return results
 
-    def to_plotly_json(
-        self, create_chart: bool = True, **kwargs
-    ) -> Optional[Dict[str, Any]]:
+    def to_chart(self, **kwargs):
         """
-        Returns the plotly json representation of the chart.
-        If the chart was already computed it return the plotly json representation of the chart.
-        Otherwise it computes the chart based on the available data and provided kwargs.
+        Create or update the `Chart`.
+        Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
 
         Parameters
         ----------
-        create_chart : bool, optional
-            If True, it creates the chart object and populates the respective field on the object, by default True.
         **kwargs
             Keyword arguments to be passed to the charting extension.
-            This implies that the user has to know the charting extension API; this is the case
-            because the charting extension may vary on user settings.
+            This implies that the user has some knowledge on the charting extension API.
+            This is the case because the charting extension may vary on user preferences.
+
+        Returns
+        -------
+        chart.fig
+            The chart figure.
         """
+        cm = ChartingManager()
+        kwargs["data"] = self.to_dataframe()
 
-        if self.chart and not kwargs:
-            plotly_json = self.chart.content
-        else:
-            cm = ChartingManager()
-            kwargs["data"] = self.to_dataframe()
-            plotly_json = cm.to_plotly_json(**kwargs)
-
-            if create_chart:
-                try:
-                    self.chart = Chart(content=plotly_json, format=ChartFormat.plotly)
-                except Exception as e:
-                    self.chart = Chart(error=Error(message=str(e)))
-
-        return plotly_json
+        self.chart = cm.to_chart(**kwargs)
+        return self.chart.fig
 
     def show(self):
         """Displays chart."""
-        if not self.chart:
+        if not self.chart and not self.chart.fig:
             raise OpenBBError("Chart not found.")
-        self.chart.show()
+        self.chart.fig.show()

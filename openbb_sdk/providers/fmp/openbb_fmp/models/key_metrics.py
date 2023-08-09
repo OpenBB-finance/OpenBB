@@ -1,135 +1,118 @@
 """Key Metrics fetcher."""
 
 
-from datetime import date as dateType
-from typing import Dict, List, Literal, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data, QueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
-from openbb_provider.models.key_metrics import KeyMetricsData, KeyMetricsQueryParams
-from pydantic import Field
+from openbb_provider.standard_models.key_metrics import (
+    KeyMetricsData,
+    KeyMetricsQueryParams,
+)
+from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
-class FMPKeyMetricsQueryParams(QueryParams):
-    """FMP Key Metrics QueryParams.
+class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
+    """FMP Key Metrics Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
-
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    period : Literal["quarter", "annual"]
-        The period of the key metrics. Default is "annual".
-    limit : Optional[int]
-        The limit of the key metrics to be returned.
     """
 
-    symbol: str
-    period: Literal["quarter", "annual"] = "annual"
-    limit: Optional[int] = None
 
+class FMPKeyMetricsData(KeyMetricsData):
+    """FMP Key Metrics Data."""
 
-class FMPKeyMetricsData(Data):
-    symbol: str
-    date: dateType
-    period: str
-    revenuePerShare: float
-    netIncomePerShare: float
-    operatingCashFlowPerShare: Optional[float]
-    freeCashFlowPerShare: Optional[float]
-    cashPerShare: Optional[float]
-    bookValuePerShare: Optional[float]
-    tangibleBookValuePerShare: Optional[float]
-    shareholdersEquityPerShare: Optional[float]
-    interestDebtPerShare: Optional[float]
-    marketCap: Optional[float]
-    enterpriseValue: Optional[float]
-    peRatio: Optional[float]
-    priceToSalesRatio: Optional[float]
-    pocfratio: Optional[float] = Field(alias="pocf_ratio")
-    pfcfRatio: Optional[float]
-    pbRatio: Optional[float]
-    ptbRatio: Optional[float]
-    evToSales: Optional[float]
-    enterpriseValueOverEBITDA: Optional[float] = Field(
-        alias="enterprise_value_over_ebitda"
-    )
-    evToOperatingCashFlow: Optional[float]
-    evToFreeCashFlow: Optional[float]
-    earningsYield: Optional[float]
-    freeCashFlowYield: Optional[Optional[float]]
-    debtToEquity: Optional[float]
-    debtToAssets: Optional[float]
-    netDebtToEBITDA: Optional[float] = Field(alias="net_debt_to_ebitda")
-    currentRatio: Optional[float]
-    interestCoverage: Optional[float]
-    incomeQuality: Optional[float]
-    dividendYield: Optional[Optional[float]]
-    payoutRatio: Optional[Optional[float]]
-    salesGeneralAndAdministrativeToRevenue: Optional[float]
-    researchAndDdevelopementToRevenue: Optional[float] = Field(
-        alias="research_and_developement_to_revenue"
-    )
-    intangiblesToTotalAssets: Optional[float]
-    capexToOperatingCashFlow: Optional[float]
-    capexToRevenue: Optional[float]
-    capexToDepreciation: Optional[float]
-    stockBasedCompensationToRevenue: Optional[float]
-    grahamNumber: Optional[float]
-    roic: Optional[float]
-    returnOnTangibleAssets: Optional[float]
-    grahamNetNet: Optional[float]
-    workingCapital: Optional[float]
-    tangibleAssetValue: Optional[float]
-    netCurrentAssetValue: Optional[float]
-    investedCapital: Optional[float]
-    averageReceivables: Optional[float]
-    averagePayables: Optional[float]
-    averageInventory: Optional[float]
-    daysSalesOutstanding: Optional[float]
-    daysPayablesOutstanding: Optional[float]
-    daysOfInventoryOnHand: Optional[float]
-    receivablesTurnover: Optional[float]
-    payablesTurnover: Optional[float]
-    inventoryTurnover: Optional[float]
-    roe: Optional[float]
-    capexPerShare: Optional[float]
+    class Config:
+        fields = {
+            "revenue_per_share": "revenuePerShare",
+            "net_income_per_share": "netIncomePerShare",
+            "operating_cash_flow_per_share": "operatingCashFlowPerShare",
+            "free_cash_flow_per_share": "freeCashFlowPerShare",
+            "cash_per_share": "cashPerShare",
+            "book_value_per_share": "bookValuePerShare",
+            "tangible_book_value_per_share": "tangibleBookValuePerShare",
+            "shareholders_equity_per_share": "shareholdersEquityPerShare",
+            "interest_debt_per_share": "interestDebtPerShare",
+            "market_cap": "marketCap",
+            "enterprise_value": "enterpriseValue",
+            "pe_ratio": "peRatio",
+            "price_to_sales_ratio": "priceToSalesRatio",
+            "pocf_ratio": "pocfratio",
+            "pfcf_ratio": "pfcfRatio",
+            "pb_ratio": "pbRatio",
+            "ptb_ratio": "ptbRatio",
+            "ev_to_sales": "evToSales",
+            "enterprise_value_over_ebitda": "enterpriseValueOverEBITDA",
+            "ev_to_operating_cash_flow": "evToOperatingCashFlow",
+            "ev_to_free_cash_flow": "evToFreeCashFlow",
+            "earnings_yield": "earningsYield",
+            "free_cash_flow_yield": "freeCashFlowYield",
+            "debt_to_equity": "debtToEquity",
+            "debt_to_assets": "debtToAssets",
+            "net_debt_to_ebitda": "netDebtToEBITDA",
+            "current_ratio": "currentRatio",
+            "interest_coverage": "interestCoverage",
+            "income_quality": "incomeQuality",
+            "dividend_yield": "dividendYield",
+            "payout_ratio": "payoutRatio",
+            "sales_general_and_administrative_to_revenue": "salesGeneralAndAdministrativeToRevenue",
+            "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
+            "intangibles_to_total_assets": "intangiblesToTotalAssets",
+            "capex_to_operating_cash_flow": "capexToOperatingCashFlow",
+            "capex_to_revenue": "capexToRevenue",
+            "capex_to_depreciation": "capexToDepreciation",
+            "stock_based_compensation_to_revenue": "stockBasedCompensationToRevenue",
+            "graham_number": "grahamNumber",
+            "return_on_tangible_assets": "returnOnTangibleAssets",
+            "graham_net_net": "grahamNetNet",
+            "working_capital": "workingCapital",
+            "tangible_asset_value": "tangibleAssetValue",
+            "net_current_asset_value": "netCurrentAssetValue",
+            "invested_capital": "investedCapital",
+            "average_receivables": "averageReceivables",
+            "average_payables": "averagePayables",
+            "average_inventory": "averageInventory",
+            "days_sales_outstanding": "daysSalesOutstanding",
+            "days_payables_outstanding": "daysPayablesOutstanding",
+            "days_of_inventory_on_hand": "daysOfInventoryOnHand",
+            "receivables_turnover": "receivablesTurnover",
+            "payables_turnover": "payablesTurnover",
+            "inventory_turnover": "inventoryTurnover",
+            "capex_per_share": "capexPerShare",
+        }
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=no-self-argument
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPKeyMetricsFetcher(
     Fetcher[
-        KeyMetricsQueryParams,
-        KeyMetricsData,
         FMPKeyMetricsQueryParams,
         FMPKeyMetricsData,
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: KeyMetricsQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPKeyMetricsQueryParams:
-        return FMPKeyMetricsQueryParams(
-            symbol=query.symbol,
-            limit=query.limit,
-            period="annual" if query.period == "annually" else "quarter",
-        )
+    def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
+        return FMPKeyMetricsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPKeyMetricsQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPKeyMetricsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[FMPKeyMetricsData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(
             3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
         )
-        return get_data_many(url, FMPKeyMetricsData)
+        return get_data_many(url, FMPKeyMetricsData, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:
-        return data_transformer(data, KeyMetricsData)
+    def transform_data(data: List[FMPKeyMetricsData]) -> List[FMPKeyMetricsData]:
+        return data

@@ -269,7 +269,7 @@ class EconomyController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sortby ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+        sort_filter = r"((\ -s |\ --sortby ).*?(P\/E|Fwd|P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
 
         custom_filters = [sort_filter]
 
@@ -596,9 +596,9 @@ class EconomyController(BaseController):
             "--units",
             type=str,
             dest="units",
-            help="Use either USD_CAP (US dollars per capita) or MLN_USD (millions of US dollars)",
-            choices=["USD_CAP", "MLN_USD"],
-            default="USD_CAP",
+            help="Use either USD or USD_CAP (USD Per Capita)",
+            choices=["USD", "USD_CAP"],
+            default="USD",
         )
 
         parser.add_argument(

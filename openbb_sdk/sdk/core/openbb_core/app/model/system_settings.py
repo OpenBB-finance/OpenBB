@@ -20,17 +20,6 @@ FrozenField = partial(Field, allow_mutation=False)
 
 
 class SystemSettings(Tagged):
-    run_in_isolation: bool = Field(
-        default=False,
-        description="Whether or not to run each command in total isolation.",
-        allow_mutation=False,
-    )
-    dbms_uri: Optional[str] = Field(
-        default=None,
-        description="Connection URI like : `mongodb://root:example@localhost:27017/`",
-        allow_mutation=False,
-    )
-
     # System section
     os: str = FrozenField(default=str(pl.system()))
     python_version: str = FrozenField(default=str(pl.python_version()))
@@ -60,6 +49,14 @@ class SystemSettings(Tagged):
     test_mode: bool = False
     debug_mode: bool = False
     headless: bool = False
+    run_in_isolation: bool = FrozenField(
+        default=False,
+        description="Whether or not to run each command in total isolation.",
+    )
+    dbms_uri: Optional[str] = FrozenField(
+        default=None,
+        description="Connection URI like : `mongodb://root:example@localhost:27017/`",
+    )
 
     class Config:
         validate_assignment = True

@@ -2,13 +2,11 @@
 
 
 from datetime import date
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
-from openbb_provider.models.esg_risk_rating import (
-    ESGRiskRatingData,
+from openbb_provider.standard_models.esg_risk_rating import (
     ESGRiskRatingQueryParams,
 )
 from pydantic import Field
@@ -45,30 +43,27 @@ class FMPESGRiskRatingData(Data):
 
 class FMPESGRiskRatingFetcher(
     Fetcher[
-        ESGRiskRatingQueryParams,
-        ESGRiskRatingData,
         FMPESGRiskRatingQueryParams,
         FMPESGRiskRatingData,
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: ESGRiskRatingQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPESGRiskRatingQueryParams:
-        return FMPESGRiskRatingQueryParams.parse_obj(query)
+    def transform_query(params: Dict[str, Any]) -> FMPESGRiskRatingQueryParams:
+        return FMPESGRiskRatingQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPESGRiskRatingQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPESGRiskRatingQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPESGRiskRatingData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             4, "esg-environmental-social-governance-data-ratings", api_key, query
         )
-        return get_data_many(url, FMPESGRiskRatingData)
+        return get_data_many(url, FMPESGRiskRatingData, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPESGRiskRatingData]) -> List[ESGRiskRatingData]:
-        return data_transformer(data, ESGRiskRatingData)
+    def transform_data(data: List[FMPESGRiskRatingData]) -> List[FMPESGRiskRatingData]:
+        return data

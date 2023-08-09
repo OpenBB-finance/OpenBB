@@ -2,11 +2,10 @@
 
 
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.helpers import data_transformer
-from openbb_provider.models.revenue_business_line import (
+from openbb_provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
@@ -14,64 +13,50 @@ from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data
 
-# This part is only provided by FMP and not by the other providers for now.
-
 
 class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):
-    """FMP Revenue Business Line QueryParams.
+    """FMP Revenue Business Line Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/sales-revenue-by-segments-api/
-
-    Parameter
-    ---------
-    symbol : Optional[str]
-        The symbol of the company if no CIK is provided.
-    period : Literal["annual", "quarterly"]
-        The period of the income statement. Default is "annual".
-    structure : Literal["hierarchical", "flat"]
-        The structure of the revenue business line. Default is "flat".
     """
 
 
 class FMPRevenueBusinessLineData(RevenueBusinessLineData):
-    @validator("date", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
+    """FMP Revenue Business Line Data."""
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPRevenueBusinessLineFetcher(
     Fetcher[  # type: ignore
-        RevenueBusinessLineQueryParams,
-        RevenueBusinessLineData,
         FMPRevenueBusinessLineQueryParams,
         FMPRevenueBusinessLineData,
     ]
 ):
     @staticmethod
-    def transform_query(
-        query: RevenueBusinessLineQueryParams, extra_params: Optional[Dict] = None
-    ) -> FMPRevenueBusinessLineQueryParams:
-        return FMPRevenueBusinessLineQueryParams.parse_obj(query)
+    def transform_query(params: Dict[str, Any]) -> FMPRevenueBusinessLineQueryParams:
+        return FMPRevenueBusinessLineQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPRevenueBusinessLineQueryParams, credentials: Optional[Dict[str, str]]
+        query: FMPRevenueBusinessLineQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[FMPRevenueBusinessLineData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        # Type has to be ignored below because we are using something different than the literal type
-        query.period = "quarter" if query.period == "quarterly" else "annual"  # type: ignore
+        query.period = "annual" if query.period == "annually" else "quarter"
+
         url = create_url(4, "revenue-product-segmentation", api_key, query)
-        data = get_data(url)
+        data = get_data(url, **kwargs)
+
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
         data = [
-            {
-                "date": list(d.keys())[0],
-                "data_and_service": list(d.values())[0],
-            }
+            {"date": list(d.keys())[0], "business_line": list(d.values())[0]}
             for d in data
         ]
 
@@ -80,5 +65,5 @@ class FMPRevenueBusinessLineFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPRevenueBusinessLineData],
-    ) -> List[RevenueBusinessLineData]:
-        return data_transformer(data, RevenueBusinessLineData)
+    ) -> List[FMPRevenueBusinessLineData]:
+        return data

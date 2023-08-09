@@ -1,16 +1,16 @@
 """FMP Helpers Module."""
 
-
+import json
 from datetime import datetime
-from typing import List, Optional, Type, TypeVar, Union
+from io import StringIO
+from typing import Any, List, Optional, Type, TypeVar, Union
 
 import requests
+from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provider.helpers import (
-    BasicResponse,
+from openbb_provider.utils.helpers import (
     get_querystring,
-    request,
 )
 from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
 from requests.exceptions import SSLError
@@ -18,10 +18,41 @@ from requests.exceptions import SSLError
 T = TypeVar("T", bound=BaseModel)
 
 
-def get_data(url: str) -> Union[list, dict]:
+class BasicResponse:
+    def __init__(self, response: StringIO):
+        # Find a way to get the status code
+        self.status_code = 200
+        response.seek(0)
+        self.text = response.read()
+
+    def json(self) -> dict:
+        return json.loads(self.text)
+
+
+def request(url: str) -> BasicResponse:
+    """
+    Request function for PyScript. Pass in Method and make sure to await!
+    Parameters:
+    -----------
+    url: str
+        URL to make request to
+
+    Return:
+    -------
+    response: BasicRequest
+        BasicRequest object with status_code and text attributes
+    """
+    # pylint: disable=import-outside-toplevel
+    from pyodide.http import open_url
+
+    response = open_url(url)
+    return BasicResponse(response)
+
+
+def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
     try:
-        r: Union[requests.Response, BasicResponse] = requests.get(url, timeout=10)
+        r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
         r = request(url)
     if r.status_code == 404:
@@ -69,14 +100,14 @@ def create_url(
         The querystring.
 
     """
-    the_dict = {} if not query else query.dict()
+    the_dict = {} if not query else query.dict(by_alias=True)
     query_string = get_querystring(the_dict, exclude or [])
     base_url = f"https://financialmodelingprep.com/api/v{version}/"
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
 
 
 def get_data_many(
-    url: str, to_schema: Type[T], sub_dict: Optional[str] = None
+    url: str, to_schema: Type[T], sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[T]:
     """Get data from FMP endpoint and convert to list of schemas.
 
@@ -94,7 +125,7 @@ def get_data_many(
     List[T]
         The list of schemas.
     """
-    data = get_data(url)
+    data = get_data(url, **kwargs)
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
@@ -102,9 +133,9 @@ def get_data_many(
     return [to_schema(**d) for d in data]
 
 
-def get_data_one(url: str, to_schema: Type[T]) -> T:
+def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
     """Get data from FMP endpoint and convert to schema."""
-    data = get_data(url)
+    data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
             raise ValueError("Expected dict, got empty list")

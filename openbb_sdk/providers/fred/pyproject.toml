@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-fred = "openbb_fred.provider:fred_provider"
+fred = "openbb_fred:fred_provider"

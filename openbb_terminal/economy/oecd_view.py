@@ -21,19 +21,19 @@ YAXIS_TITLES = {
     "AGRWTH": "Annual Growth Rate (%)",
     "IDX": "Index (Base = 2015)",
     "IDX2015": "Index (Base = 2015)",
-    "MLN_USD": "Millions of US Dollars",
+    "USD": "Nominal Value in USD",
     "PC_CHGPY": "Same Quarter of the Previous Year (% Change)",
     "PC_CHGPP": "Previous Quarter (% Change)",
     "PC_GDP": "Percentage of GDP (%)",
     "THND_USD_CAP": "Thousands of USD per Capita",
-    "USD_CAP": "US Dollars per Capita",
+    "USD_CAP": "USD per Capita",
 }
 
 
 @log_start_end(log=logger)
 def plot_gdp(
-    countries: Optional[List[str]],
-    units: str = "USD_CAP",
+    countries: Optional[str] = "united_states",
+    units: str = "USD",
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -59,7 +59,7 @@ def plot_gdp(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'USD_CAP' or 'MLN_USD'.
+        Units to get data in. Either 'USD' or 'USD_CAP'.
         Default is US dollars per capita.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -79,11 +79,13 @@ def plot_gdp(
     Union[OpenBBFigure, None]
         OpenBBFigure object if external_axes is True, else None (opens plot in a window)
     """
-    if units not in ["USD_CAP", "MLN_USD"]:
-        return console.print(
-            "Use either USD_CAP (US dollars per capita) "
-            "or MLN_USD (millions of US dollars) for units"
+    countries = [countries] if isinstance(countries, str) else countries  # type: ignore[assignment]
+
+    if units not in ["USD", "USD_CAP"]:
+        console.print(
+            "Invalid choice, choices are either USD or USD_CAP. Defaulting to USD."
         )
+        units = "USD"
 
     df = oecd_model.get_gdp(countries, units, start_date, end_date)
 
@@ -102,7 +104,8 @@ def plot_gdp(
             showlegend=True,
         )
 
-    title = "Nominal Gross Domestic Product (GDP)"
+    title = "Nominal Gross Domestic Product (USD)"
+    title = title + " Per Capita" if units == "USD_CAP" else title
     fig.set_title(title)
 
     if raw:

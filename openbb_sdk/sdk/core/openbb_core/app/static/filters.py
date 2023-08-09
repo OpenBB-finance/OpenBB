@@ -1,3 +1,5 @@
+"""OpenBB filters."""
+
 import builtins
 from functools import wraps
 
@@ -10,10 +12,12 @@ from openbb_core.app.utils import df_to_basemodel
 
 
 class OpenBBError(Exception):
-    pass
+    """A custom exception for OpenBB errors."""
 
 
 def filter_call(func):
+    """Filter command call."""
+
     @wraps(wrapped=func)
     def inner(*args, **kwargs):
         self = args[0]
@@ -28,7 +32,7 @@ def filter_call(func):
 
             msg = ""
             for error in e.errors():
-                msg += f"{error['loc'][-1]} -> {error['msg']}"
+                msg += f"\narg: {error['loc'][-1]} -> {error['msg']}"
 
             raise OpenBBError(msg) from e
 
@@ -36,7 +40,7 @@ def filter_call(func):
 
 
 def filter_inputs(**kwargs) -> dict:
-    """Filter command inputs"""
+    """Filter command inputs."""
     for key, value in kwargs.items():
         if isinstance(value, pd.DataFrame):
             kwargs[key] = df_to_basemodel(value, index=True)
@@ -45,7 +49,7 @@ def filter_inputs(**kwargs) -> dict:
 
 
 def filter_output(command_output: CommandOutput) -> CommandOutput:
-    """Filter command output"""
+    """Filter command output."""
     if command_output.warnings:
         for w in command_output.warnings:
             category = getattr(builtins, w.category, OpenBBWarning)
