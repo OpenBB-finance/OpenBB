@@ -65,7 +65,9 @@ class YFinanceMajorIndicesEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceMajorIndicesEODQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
+        query: YFinanceMajorIndicesEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[YFinanceMajorIndicesEODData]:
         query.symbol = f"^{query.symbol}"
 

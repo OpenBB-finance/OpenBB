@@ -34,4 +34,3 @@ class StockEODData(Data):
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-

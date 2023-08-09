@@ -113,5 +113,7 @@ class CboeOptionsChainsFetcher(
         return [CboeOptionsChainsData.parse_obj(d) for d in data_.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[CboeOptionsChainsData]) -> List[CboeOptionsChainsData]:
+    def transform_data(
+        data: List[CboeOptionsChainsData],
+    ) -> List[CboeOptionsChainsData]:
         return data
