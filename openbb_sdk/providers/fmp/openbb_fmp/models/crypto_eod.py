@@ -18,7 +18,8 @@ from openbb_fmp.utils.helpers import get_data_many
 class FMPCryptoEODQueryParams(CryptoEODQueryParams):
     """FMP Crypto end of day Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
+    Source:
+    https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
     """
 
     timeseries: Optional[NonNegativeInt] = Field(

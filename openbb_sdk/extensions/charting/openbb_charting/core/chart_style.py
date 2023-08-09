@@ -137,7 +137,7 @@ class ChartStyle:
 
         for attr, ext in zip(
             ["plt_styles_available", "console_styles_available"],
-            [".pltstyle", ".richstyle.json"],
+            [".pltstyle.json", ".richstyle.json"],
         ):
             for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file

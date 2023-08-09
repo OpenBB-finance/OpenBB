@@ -338,9 +338,7 @@ class OpenBBFigure(go.Figure):
         for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
             if not color_i:
                 color_i = (  # noqa: PLW2901
-                    self._self._theme.up_color
-                    if i % 2 == 0
-                    else self._self._theme.down_color
+                    self._theme.up_color if i % 2 == 0 else self._theme.down_color
                 )
 
             res_mean, res_std = np.mean(x_i), np.std(x_i)
@@ -386,7 +384,7 @@ class OpenBBFigure(go.Figure):
                     name=name_i if len(name) < 2 else name[1],
                     mode="markers",
                     marker=dict(
-                        color=self._self._theme.down_color,
+                        color=self._theme.down_color,
                         symbol="line-ns-open",
                         size=8,
                     ),
@@ -1381,7 +1379,7 @@ class OpenBBFigure(go.Figure):
         height = kwargs.pop("height", len(data.index) * 28 + 25)
         width = kwargs.pop("width", sum(columnwidth) * 8.7)
 
-        fig: OpenBBFigure = cls()
+        fig = OpenBBFigure(**kwargs)
         fig.add_table(
             header=dict(values=header_values),
             cells=dict(

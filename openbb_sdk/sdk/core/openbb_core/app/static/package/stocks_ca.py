@@ -67,6 +67,52 @@ class CLASS_stocks_ca(Container):
 
         StockPeers
         ----------
+        All fields are standardized.
+
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        StockPeers
+        ----------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        peers_list : Optional[List[str]]
+            A list of stock peers based on sector, exchange and market cap.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockPeers
+        ----------
         All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
