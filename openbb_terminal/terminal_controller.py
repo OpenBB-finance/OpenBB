@@ -339,7 +339,7 @@ class TerminalController(BaseController):
         # Filtering out sorting parameters with forward slashes like P/E
         sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
         # Filter out urls
-        url = r"(exe --url payments\.openbb\.dev/terminal/script/.*)"
+        url = r"(exe (--url )?payments\.openbb\.dev/terminal/script/.*)"
         custom_filters = [sort_filter, url]
         return parse_and_split_input(
             an_input=an_input.replace("https://", ""), custom_filters=custom_filters
@@ -623,7 +623,8 @@ class TerminalController(BaseController):
             and "--help" not in other_args
             and "-e" not in other_args
             and "--example" not in other_args
-            and "--url" not in other_args,
+            and "--url" not in other_args
+            and "payments." not in other_args[0],
             type=str,
             nargs="+",
         )
@@ -646,7 +647,12 @@ class TerminalController(BaseController):
             "--url", help="URL to run openbb script from.", dest="url", type=str
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--file")
+            if other_args[0].startswith("payments.") or other_args[0].startswith(
+                "http"
+            ):
+                other_args.insert(0, "--url")
+            else:
+                other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
