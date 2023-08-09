@@ -20,7 +20,7 @@ class FMPCryptoEODQueryParams(CryptoEODQueryParams):
     """FMP Crypto end of day Query.
 
     Source:
-        https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
+    https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
     """
 
     timeseries: Optional[NonNegativeInt] = Field(

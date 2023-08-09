@@ -9,6 +9,7 @@ from pydantic import validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -18,7 +19,10 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: pydantic.types.NonNegativeInt = 0,
+        page: typing.Annotated[
+            pydantic.types.NonNegativeInt,
+            OpenBBCustomParameter(description="The page of the global news."),
+        ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs,

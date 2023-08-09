@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 import pydantic
 from pydantic import validate_arguments
@@ -10,6 +10,7 @@ from pydantic import validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -83,11 +84,23 @@ class CLASS_stocks(Container):
     @validate_arguments
     def load(
         self,
-        symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Load stock data for a specific ticker.
@@ -98,7 +111,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -134,10 +147,32 @@ class CLASS_stocks(Container):
             The low price of the symbol.
         close : PositiveFloat
             The close price of the symbol.
-        volume : float
+        volume : NonNegativeFloat
             The volume of the symbol.
-        vwap : Optional[float]
+        vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        StockEOD
+        --------
+        n : PositiveInt
+            The number of transactions for the symbol in the time period.
 
         fmp
         ===
@@ -162,30 +197,8 @@ class CLASS_stocks(Container):
             Change \\% in the price of the symbol.
         label : Optional[str]
             Human readable format of the date.
-        changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        StockEOD
-        --------
-        n : Optional[PositiveInt]
-            The number of transactions for the symbol in the time period."""  # noqa: E501
+        changeOverTime : float
+            Change \\% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -210,11 +223,23 @@ class CLASS_stocks(Container):
     @validate_arguments
     def news(
         self,
-        symbols: str,
-        page: int = 0,
-        limit: Optional[pydantic.types.NonNegativeInt] = 15,
+        symbols: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        page: typing.Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="The page of the stock news to be retrieved."
+            ),
+        ] = 0,
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(
+                description="The number of results to return per page."
+            ),
+        ] = 15,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
+        provider: Optional[Literal["benzinga", "polygon", "fmp"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get news for one or more stock tickers.
@@ -225,7 +250,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[benzinga, fmp, polygon]
+        provider: Literal[benzinga, polygon, fmp]
             The provider to use for the query.
         symbols : ConstrainedStrValue
             Symbol to get data for.
@@ -306,23 +331,6 @@ class CLASS_stocks(Container):
         teaser : Optional[str]
             The teaser of the news.
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockNews
-        ---------
-        symbol : str
-            Ticker of the fetched news.
-        image : Optional[str]
-            URL to the image of the news source.
-        site : str
-            Name of the news source.
-
         polygon
         =======
 
@@ -367,7 +375,24 @@ class CLASS_stocks(Container):
         publisher : PolygonPublisher
             Publisher of the article.
         tickers : List[str]
-            Tickers covered in the article."""  # noqa: E501
+            Tickers covered in the article.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockNews
+        ---------
+        symbol : str
+            Ticker of the fetched news.
+        image : Optional[str]
+            URL to the image of the news source.
+        site : str
+            Name of the news source."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -392,8 +417,13 @@ class CLASS_stocks(Container):
     @validate_arguments
     def multiples(
         self,
-        symbol: str,
-        limit: Optional[int] = 100,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,

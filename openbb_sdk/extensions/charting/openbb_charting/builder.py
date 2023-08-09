@@ -1,9 +1,12 @@
 from inspect import getmembers, isfunction
 from typing import List
 
+from openbb_charting import charting_router
 from openbb_core.app.router import RouterLoader
 
-CHARTING_ROUTER = "./charting_router.py"
+# refers to the root of the repo, not the root of the extension
+# this script should be run from the root of the repo
+CHARTING_ROUTER = "openbb_sdk/extensions/charting/openbb_charting/charting_router.py"
 
 
 def get_routes() -> List[str]:
@@ -18,15 +21,13 @@ def create_charting_functions_w_routes(routes_to_add: List[str]):
             f.write(
                 f"""
 
-def {route}(**kwargs):
+def {route}(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError("Command `{original_route}` does not have a charting function")
 """
             )
 
 
 def get_charting_functions() -> List[str]:
-    from . import charting_router  # pylint: disable=import-outside-toplevel
-
     functions = getmembers(charting_router, isfunction)
     if functions:
         return [function[0] for function in functions]

@@ -2,7 +2,7 @@
 
 import datetime
 import typing
-from typing import List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 import pydantic
 from pydantic import BaseModel, validate_arguments
@@ -10,6 +10,7 @@ from pydantic import BaseModel, validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -36,11 +37,21 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 12,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["annually", "quarterly"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Balance Sheet.
@@ -51,7 +62,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -164,42 +175,6 @@ class CLASS_stocks_fa(Container):
         total_liabilities_and_total_equity : Optional[int]
             None
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            None
-
-
-        BalanceSheet
-        ------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-        cashAndShortTermInvestments : Optional[int]
-            None
-        goodwillAndIntangibleAssets : Optional[int]
-            None
-        deferredRevenueNonCurrent : Optional[int]
-            None
-        totalInvestments : Optional[int]
-            None
-        capitalLeaseObligations : Optional[int]
-            None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
-            None
-        totalNonCurrentLiabilities : Optional[int]
-            None
-        totalDebt : Optional[int]
-            None
-        netDebt : Optional[int]
-            None
-
         polygon
         =======
 
@@ -241,7 +216,43 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        All fields are standardized."""  # noqa: E501
+        All fields are standardized.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            None
+
+
+        BalanceSheet
+        ------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None
+        cashAndShortTermInvestments : Optional[int]
+            None
+        goodwillAndIntangibleAssets : Optional[int]
+            None
+        deferredRevenueNonCurrent : Optional[int]
+            None
+        totalInvestments : Optional[int]
+            None
+        capitalLeaseObligations : Optional[int]
+            None
+        deferredTaxLiabilitiesNonCurrent : Optional[int]
+            None
+        totalNonCurrentLiabilities : Optional[int]
+            None
+        totalDebt : Optional[int]
+            None
+        netDebt : Optional[int]
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -266,8 +277,13 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance_growth(
         self,
-        symbol: str,
-        limit: int = 10,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        limit: typing.Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -423,8 +439,18 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cal(
         self,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -512,11 +538,21 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 12,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["annually", "quarterly"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement.
@@ -527,7 +563,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -620,24 +656,6 @@ class CLASS_stocks_fa(Container):
         cash_at_end_of_period : Optional[int]
             None
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            Central Index Key (CIK) of the company.
-
-
-        CashFlowStatement
-        -----------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-
         polygon
         =======
 
@@ -679,7 +697,25 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        All fields are standardized."""  # noqa: E501
+        All fields are standardized.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            Central Index Key (CIK) of the company.
+
+
+        CashFlowStatement
+        -----------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -704,8 +740,13 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash_growth(
         self,
-        symbol: str,
-        limit: int = 10,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        limit: typing.Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -843,7 +884,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def comp(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -938,8 +981,18 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def comsplit(
         self,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -1055,7 +1108,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def divs(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -1155,8 +1210,13 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def earning(
         self,
-        symbol: str,
-        limit: Optional[int] = 50,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 50,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -1246,7 +1306,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def emp(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -1367,9 +1429,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def est(
         self,
-        symbol: str,
-        period: Literal["quarterly", "annually"] = "annually",
-        limit: int = 30,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["quarterly", "annually"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        limit: typing.Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 30,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -1572,11 +1644,21 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[pydantic.types.NonNegativeInt] = 12,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["annually", "quarterly"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Income Statement.
@@ -1587,7 +1669,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -1690,19 +1772,6 @@ class CLASS_stocks_fa(Container):
         final_link : Optional[str]
             Final link to the income statement.
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
-
-
-        IncomeStatement
-        ---------------
-        All fields are standardized.
-
         polygon
         =======
 
@@ -1757,7 +1826,35 @@ class CLASS_stocks_fa(Container):
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            None"""  # noqa: E501
+            None
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            The CIK of the company if no symbol is provided.
+
+
+        IncomeStatement
+        ---------------
+        calendarYear : Optional[int]
+            None
+        grossProfitRatio : Optional[float]
+            None
+        ebitdaratio : Optional[float]
+            None
+        operatingIncomeRatio : Optional[float]
+            None
+        incomeBeforeTaxRatio : Optional[float]
+            None
+        netIncomeRatio : Optional[float]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1782,9 +1879,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income_growth(
         self,
-        symbol: str,
-        limit: int = 10,
-        period: Literal["annually", "quarterly"] = "annually",
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        limit: typing.Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 10,
+        period: Annotated[
+            Literal["annually", "quarterly"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -1917,34 +2024,48 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def ins(
         self,
-        symbol: str,
-        transactionType: Optional[
-            List[
-                Literal[
-                    "A-Award",
-                    "C-Conversion",
-                    "D-Return",
-                    "E-ExpireShort",
-                    "F-InKind",
-                    "G-Gift",
-                    "H-ExpireLong",
-                    "I-Discretionary",
-                    "J-Other",
-                    "L-Small",
-                    "M-Exempt",
-                    "O-OutOfTheMoney",
-                    "P-Purchase",
-                    "S-Sale",
-                    "U-Tender",
-                    "W-Will",
-                    "X-InTheMoney",
-                    "Z-Trust",
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        transactionType: Annotated[
+            Optional[
+                List[
+                    Literal[
+                        "A-Award",
+                        "C-Conversion",
+                        "D-Return",
+                        "E-ExpireShort",
+                        "F-InKind",
+                        "G-Gift",
+                        "H-ExpireLong",
+                        "I-Discretionary",
+                        "J-Other",
+                        "L-Small",
+                        "M-Exempt",
+                        "O-OutOfTheMoney",
+                        "P-Purchase",
+                        "S-Sale",
+                        "U-Tender",
+                        "W-Will",
+                        "X-InTheMoney",
+                        "Z-Trust",
+                    ]
                 ]
-            ]
+            ],
+            OpenBBCustomParameter(description="The type of the transaction."),
         ] = ["P-Purchase"],
-        reportingCik: Optional[int] = None,
-        companyCik: Optional[int] = None,
-        page: Optional[int] = 0,
+        reportingCik: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The CIK of the reporting owner."),
+        ] = None,
+        companyCik: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The CIK of the company owner."),
+        ] = None,
+        page: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The page number of the data to fetch."),
+        ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2055,9 +2176,16 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def ins_own(
         self,
-        symbol: str,
-        include_current_quarter: bool = False,
-        date: Optional[datetime.date] = None,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        include_current_quarter: typing.Annotated[
+            bool, OpenBBCustomParameter(description="Include current quarter data.")
+        ] = False,
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(description="A specific date to get data for."),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2220,9 +2348,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def metrics(
         self,
-        symbol: str,
-        period: Literal["annually", "quarterly"] = "annually",
-        limit: Optional[int] = 100,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["annually", "quarterly"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2417,7 +2555,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def mgmt(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2533,7 +2673,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def overview(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2674,9 +2816,17 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def own(
         self,
-        symbol: str,
-        date: datetime.date,
-        page: Optional[int] = 0,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        date: typing.Annotated[
+            datetime.date,
+            OpenBBCustomParameter(description="A specific date to get data for."),
+        ],
+        page: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The page number of the data to fetch."),
+        ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2829,7 +2979,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def pt(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -2908,7 +3060,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def pta(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -3051,9 +3205,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def revgeo(
         self,
-        symbol: str,
-        period: Literal["quarterly", "annually"] = "annually",
-        structure: Literal["hierarchical", "flat"] = "flat",
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["quarterly", "annually"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        structure: Annotated[
+            Literal["hierarchical", "flat"],
+            OpenBBCustomParameter(description="The structure of the returned data."),
+        ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -3142,9 +3306,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def revseg(
         self,
-        symbol: str,
-        period: Literal["quarterly", "annually"] = "annually",
-        structure: Literal["hierarchical", "flat"] = "flat",
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["quarterly", "annually"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        structure: Annotated[
+            Literal["hierarchical", "flat"],
+            OpenBBCustomParameter(description="The structure of the returned data."),
+        ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -3289,7 +3463,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def shrs(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -3370,7 +3546,9 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def split(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
@@ -3464,9 +3642,21 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def transcript(
         self,
-        symbol: str,
-        year: int,
-        quarter: Literal[1, 2, 3, 4] = 1,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        year: typing.Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="The year of the earnings call transcript."
+            ),
+        ],
+        quarter: Annotated[
+            Literal[1, 2, 3, 4],
+            OpenBBCustomParameter(
+                description="The quarter of the earnings call transcript."
+            ),
+        ] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,

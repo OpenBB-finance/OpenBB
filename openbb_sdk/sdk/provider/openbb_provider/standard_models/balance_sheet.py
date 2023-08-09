@@ -60,8 +60,9 @@ class BalanceSheetData(Data):
         description="Accrued income taxes, other deferred revenue"
     )
     short_term_debt: Optional[int] = Field(
-        description="Short-term borrowings, Long-term debt due within one year,"
-        " Operating lease obligations due within one year, Finance lease obligations due within one year"
+        description="Short-term borrowings, Long-term debt due within one year, "
+        "Operating lease obligations due within one year, "
+        "Finance lease obligations due within one year"
     )
     current_liabilities: Optional[int]
 
