@@ -686,10 +686,10 @@ class TerminalController(BaseController):
                 self.update_runtime_choices()
 
             elif ns_parser.file:
-                file_path = " ".join(ns_parser.file)
+                file_path = " ".join(ns_parser.file)  # type: ignore
                 # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
                 full_path = file_path
-                hub_routine = file_path.split("/")
+                hub_routine = file_path.split("/")  # type: ignore
                 # Change with: my.openbb.co
                 if hub_routine[0] == "default":
                     routine_path = Path(
@@ -700,7 +700,7 @@ class TerminalController(BaseController):
                         self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
                     )
                 else:
-                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))  # type: ignore
             else:
                 return
 
