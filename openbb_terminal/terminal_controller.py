@@ -339,11 +339,9 @@ class TerminalController(BaseController):
         # Filtering out sorting parameters with forward slashes like P/E
         sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
         # Filter out urls
-        url = r"(exe (--url )?my\.openbb\.(dev|co)/u/.*/routine/.*)"
+        url = r"(exe (--url )?(https?://)?my\.openbb\.(dev|co)/u/.*/routine/.*)"
         custom_filters = [sort_filter, url]
-        return parse_and_split_input(
-            an_input=an_input.replace("https://", ""), custom_filters=custom_filters
-        )
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
@@ -652,7 +650,6 @@ class TerminalController(BaseController):
             else:
                 other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
         if ns_parser:
             if ns_parser.example:
                 routine_path = (
@@ -664,10 +661,19 @@ class TerminalController(BaseController):
                 )
                 time.sleep(3)
             elif ns_parser.url:
-                username = ns_parser.url.split("/")[-3]
-                script_name = ns_parser.url.split("/")[-1]
+                if not ns_parser.url.startswith(
+                    "https"
+                ) and not ns_parser.url.startswith("http:"):
+                    url = "https://" + ns_parser.url
+                else:
+                    if ns_parser.url.startswith("http://"):
+                        url = ns_parser.url.replace("http://", "https://")
+                    else:
+                        url = ns_parser.url
+                username = url.split("/")[-3]
+                script_name = url.split("/")[-1]
                 file_name = f"{username}_{script_name}.openbb"
-                final_url = f"{ns_parser.url}?raw=true"
+                final_url = f"{url}?raw=true"
                 response = requests.get(final_url, timeout=10)
                 if response.status_code != 200:
                     console.print("[red]Could not find the requested script.[/red]")
