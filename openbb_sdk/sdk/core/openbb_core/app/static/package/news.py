@@ -83,11 +83,8 @@ class CLASS_news(Container):
             The number of seconds since the news was updated.
         publishedSince : Optional[int]
             The number of seconds since the news was published.
-        sort : Optional[Literal[
-            'published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'
-        ]]
-            The order in which to sort the news.
-            Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
+        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
         isin : Optional[str]
             The ISIN of the news to retrieve.
         cusip : Optional[str]

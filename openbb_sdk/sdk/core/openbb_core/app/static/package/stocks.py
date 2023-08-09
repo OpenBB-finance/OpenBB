@@ -87,7 +87,7 @@ class CLASS_stocks(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["cboe", "fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Load stock data for a specific ticker.
@@ -98,7 +98,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon, yfinance]
+        provider: Literal[cboe, fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -134,10 +134,20 @@ class CLASS_stocks(Container):
             The low price of the symbol.
         close : PositiveFloat
             The close price of the symbol.
-        volume : PositiveFloat
+        volume : float
             The volume of the symbol.
-        vwap : PositiveFloat
-            Volume Weighted Average Price of the symbol.
+
+        cboe
+        ====
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockEOD
+        --------
+        All fields are standardized.
 
         fmp
         ===
@@ -183,22 +193,7 @@ class CLASS_stocks(Container):
         StockEOD
         --------
         n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        StockEOD
-        --------
-        All fields are standardized."""
+            The number of transactions for the symbol in the time period."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -290,11 +285,8 @@ class CLASS_stocks(Container):
             The number of seconds since the news was updated.
         publishedSince : Optional[int]
             The number of seconds since the news was published.
-        sort : Optional[Literal[
-            'published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'
-        ]]
-            The order in which to sort the news.
-            Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
+        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
         isin : Optional[str]
             The ISIN of the news to retrieve.
         cusip : Optional[str]
@@ -602,10 +594,90 @@ class CLASS_stocks(Container):
 
     @filter_call
     @validate_arguments
+    def search(
+        self,
+        query: str = "",
+        ticker: bool = False,
+        chart: bool = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> CommandOutput[typing.List]:
+        """Search for a company or stock ticker.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[cboe]
+            The provider to use for the query.
+        query : str
+            The search query.
+        ticker : bool
+            Whether to search by ticker symbol.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        StockSearch
+        -----------
+        symbol : str
+            The ticker symbol of the company.
+        name : str
+            The name of the company.
+
+        cboe
+        ====
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockSearch
+        -----------
+        dpmName : Optional[str]
+            The name of the primary market maker.
+        postStation : Optional[str]
+            The post and station location on the CBOE trading floor."""
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "ticker": ticker,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/search",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def quote(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """View the current price for a specific stock ticker."""
+        """Get quote information for the ticker symbol."""
         inputs = filter_inputs(
             chart=chart,
         )
@@ -619,16 +691,127 @@ class CLASS_stocks(Container):
 
     @filter_call
     @validate_arguments
-    def search(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Search a specific stock ticker for analysis."""
+    def info(
+        self,
+        symbol: str,
+        chart: bool = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> CommandOutput[typing.List]:
+        """Get general price and performance metrics of a stock.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[cboe]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        StockInfo
+        ---------
+        symbol : str
+            The ticker symbol.
+        name : str
+            The name associated with the ticker symbol.
+        price : float
+            The last price of the stock.
+        open : Optional[float]
+            The opening price of the stock.
+        high : Optional[float]
+            The high price of the current trading day.
+        low : Optional[float]
+            The low price of the current trading day.
+        close : Optional[float]
+            The closing price of the stock.
+        change : Optional[float]
+            The change in price over the current trading period.
+        change_percent : Optional[float]
+            The % change in price over the current trading period.
+        previous_close : Optional[float]
+            The previous closing price of the stock.
+
+        cboe
+        ====
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockInfo
+        ---------
+        type : Optional[str]
+            The type of asset.
+        tick : Optional[str]
+            Whether the last sale was an up or down tick.
+        bid : Optional[float]
+            The current bid price.
+        bid_size : Optional[float]
+            The bid lot size.
+        ask : Optional[float]
+            The current ask price.
+        ask_size : Optional[float]
+            The ask lot size.
+        volume : Optional[float]
+            The stock volume for the current trading day.
+        iv_thirty : Optional[float]
+            The 30-day implied volatility of the stock.
+        iv_thirty_change : Optional[float]
+            The change in 30-day implied volatility of the stock.
+        last_trade_timestamp : Optional[datetime]
+            The last trade timestamp for the stock.
+        iv_thirty_one_year_high : Optional[float]
+            The 1-year high of implied volatility.
+        hv_thirty_one_year_high : Optional[float]
+            The 1-year high of realized volatility.
+        iv_thirty_one_year_low : Optional[float]
+            The 1-year low of implied volatility.
+        hv_thirty_one_year_low : Optional[float]
+            The 1-year low of realized volatility.
+        iv_sixty_one_year_high : Optional[float]
+            The 60-day high of implied volatility.
+        hv_sixty_one_year_high : Optional[float]
+            The 60-day high of realized volatility.
+        iv_sixty_one_year_low : Optional[float]
+            The 60-day low of implied volatility.
+        hv_sixty_one_year_low : Optional[float]
+            The 60-day low of realized volatility.
+        iv_ninety_one_year_high : Optional[float]
+            The 90-day high of implied volatility.
+        hv_ninety_one_year_high : Optional[float]
+            The 90-day high of realized volatility."""
         inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": symbol,
+            },
+            extra_params=kwargs,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/stocks/search",
+            "/stocks/info",
             **inputs,
         ).output
 

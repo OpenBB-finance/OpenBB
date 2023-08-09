@@ -86,10 +86,7 @@ class CLASS_forex(Container):
             Specify if the tickers returned should be actively traded on the queried date.
         order : Optional[Literal['asc', 'desc']]
             Order data by ascending or descending.
-        sort : Optional[Literal[
-            'ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol',
-            'base_currency_name', 'last_updated_utc', 'delisted_utc'
-        ]]
+        sort : Optional[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']]
             Sort field used for ordering.
         limit : Optional[PositiveInt]
             The number of data entries to return.
@@ -137,7 +134,7 @@ class CLASS_forex(Container):
         start_date: Union[datetime.date, None, str] = None,
         end_date: Union[datetime.date, None, str] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Intraday Price.
@@ -148,7 +145,7 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon, yfinance]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -232,22 +229,7 @@ class CLASS_forex(Container):
         ForexEOD
         --------
         n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        ForexEOD
-        --------
-        All fields are standardized."""
+            The number of transactions for the symbol in the time period."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
