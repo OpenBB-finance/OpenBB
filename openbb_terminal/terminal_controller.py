@@ -339,7 +339,7 @@ class TerminalController(BaseController):
         # Filtering out sorting parameters with forward slashes like P/E
         sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
         # Filter out urls
-        url = r"(exe (--url )?payments\.openbb\.dev/terminal/script/.*)"
+        url = r"(exe (--url )?my\.openbb\.(dev|co)/u/.*/routine/.*)"
         custom_filters = [sort_filter, url]
         return parse_and_split_input(
             an_input=an_input.replace("https://", ""), custom_filters=custom_filters
@@ -647,9 +647,7 @@ class TerminalController(BaseController):
             "--url", help="URL to run openbb script from.", dest="url", type=str
         )
         if other_args and "-" not in other_args[0][0]:
-            if other_args[0].startswith("payments.") or other_args[0].startswith(
-                "http"
-            ):
+            if other_args[0].startswith("my.") or other_args[0].startswith("http"):
                 other_args.insert(0, "--url")
             else:
                 other_args.insert(0, "--file")
@@ -666,10 +664,11 @@ class TerminalController(BaseController):
                 )
                 time.sleep(3)
             elif ns_parser.url:
-                username = ns_parser.url.split("/")[-2][1:]
+                username = ns_parser.url.split("/")[-3]
                 script_name = ns_parser.url.split("/")[-1]
                 file_name = f"{username}_{script_name}.openbb"
-                response = requests.get(f"{ns_parser.url}?raw=true", timeout=10)
+                final_url = f"{ns_parser.url}?raw=true"
+                response = requests.get(final_url, timeout=10)
                 if response.status_code != 200:
                     console.print("[red]Could not find the requested script.[/red]")
                     return
