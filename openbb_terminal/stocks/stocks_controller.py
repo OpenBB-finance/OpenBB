@@ -548,46 +548,46 @@ class StocksController(StockBaseController):
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")
 
-    @log_start_end(log=logger)
-    def call_news(self, other_args: List[str]):
-        """Process news command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="news")
-        parser = translator.parser
+    # @log_start_end(log=logger)
+    # def call_news(self, other_args: List[str]):
+    #     """Process news command."""
+    #     translator = stocks_translations.get_translator(menu="stocks", command="news")
+    #     parser = translator.parser
 
-        if ns_parser := self.parse_known_args_and_warn(
-            parser=parser,
-            other_args=other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=10,
-        ):
-            c_out = translator.execute_func(parsed_args=ns_parser)
+    #     if ns_parser := self.parse_known_args_and_warn(
+    #         parser=parser,
+    #         other_args=other_args,
+    #         export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+    #         limit=10,
+    #     ):
+    #         c_out = translator.execute_func(parsed_args=ns_parser)
 
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
-            else:
-                sheet_name = (
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                )
-                export = ns_parser.export if ns_parser.export else None
+    #         if c_out.error:
+    #             console.print(f"[red]{c_out.error}[/]\n")
+    #         else:
+    #             sheet_name = (
+    #                 " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+    #             )
+    #             export = ns_parser.export if ns_parser.export else None
 
-                print_rich_table(
-                    df=c_out.to_dataframe(),
-                    show_index=True,
-                    title="News",
-                    index_name="Date",
-                    export=bool(export),
-                )
-                export_data(
-                    export_type=export,
-                    dir_path=os.path.dirname(os.path.abspath(__file__)),
-                    func_name="news",
-                    df=c_out.to_dataframe(),
-                    sheet_name=sheet_name,
-                )
+    #             print_rich_table(
+    #                 df=c_out.to_dataframe(),
+    #                 show_index=True,
+    #                 title="News",
+    #                 index_name="Date",
+    #                 export=bool(export),
+    #             )
+    #             export_data(
+    #                 export_type=export,
+    #                 dir_path=os.path.dirname(os.path.abspath(__file__)),
+    #                 func_name="news",
+    #                 df=c_out.to_dataframe(),
+    #                 sheet_name=sheet_name,
+    #             )
 
-                # TODO : charting needs to be implemented on the sdk
-                # if ns_parser.chart:
-                #     c_out.show()
+    #             # TODO : charting needs to be implemented on the sdk
+    #             # if ns_parser.chart:
+    #             #     c_out.show()
 
     @log_start_end(log=logger)
     def call_multiples(self, other_args: List[str]):
