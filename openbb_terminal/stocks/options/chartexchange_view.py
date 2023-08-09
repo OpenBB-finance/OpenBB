@@ -127,7 +127,7 @@ def display_raw(
             headers=list(df.columns),
             show_index=True,
             index_name="Date",
-            title=f"{symbol.upper()} raw data",
+            title="Historical Option Prices",
             export=bool(export),
             limit=limit,
         )
