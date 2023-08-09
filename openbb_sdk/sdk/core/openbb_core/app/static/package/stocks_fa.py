@@ -10,9 +10,9 @@ from pydantic import validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
-from openbb_core.app.static.package_builder import OpenBBCustomParameter
 
 
 class CLASS_stocks_fa(Container):
@@ -49,9 +49,9 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Balance Sheet.
@@ -62,7 +62,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -175,42 +175,6 @@ class CLASS_stocks_fa(Container):
         total_liabilities_and_total_equity : Optional[int]
             None
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            None
-
-
-        BalanceSheet
-        ------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-        cashAndShortTermInvestments : Optional[int]
-            None
-        goodwillAndIntangibleAssets : Optional[int]
-            None
-        deferredRevenueNonCurrent : Optional[int]
-            None
-        totalInvestments : Optional[int]
-            None
-        capitalLeaseObligations : Optional[int]
-            None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
-            None
-        totalNonCurrentLiabilities : Optional[int]
-            None
-        totalDebt : Optional[int]
-            None
-        netDebt : Optional[int]
-            None
-
         polygon
         =======
 
@@ -252,7 +216,43 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        All fields are standardized."""
+        All fields are standardized.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            None
+
+
+        BalanceSheet
+        ------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None
+        cashAndShortTermInvestments : Optional[int]
+            None
+        goodwillAndIntangibleAssets : Optional[int]
+            None
+        deferredRevenueNonCurrent : Optional[int]
+            None
+        totalInvestments : Optional[int]
+            None
+        capitalLeaseObligations : Optional[int]
+            None
+        deferredTaxLiabilitiesNonCurrent : Optional[int]
+            None
+        totalNonCurrentLiabilities : Optional[int]
+            None
+        totalDebt : Optional[int]
+            None
+        netDebt : Optional[int]
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -550,9 +550,9 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement.
@@ -563,7 +563,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -656,24 +656,6 @@ class CLASS_stocks_fa(Container):
         cash_at_end_of_period : Optional[int]
             None
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            Central Index Key (CIK) of the company.
-
-
-        CashFlowStatement
-        -----------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-
         polygon
         =======
 
@@ -715,7 +697,25 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        All fields are standardized."""
+        All fields are standardized.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            Central Index Key (CIK) of the company.
+
+
+        CashFlowStatement
+        -----------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None"""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1656,9 +1656,9 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Income Statement.
@@ -1669,7 +1669,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -1754,34 +1754,6 @@ class CLASS_stocks_fa(Container):
         weighted_average_shares_outstanding_dil : Optional[int]
             Weighted average shares outstanding diluted.
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
-
-
-        IncomeStatement
-        ---------------
-        calendarYear : Optional[int]
-            None
-        grossProfitRatio : Optional[float]
-            None
-        ebitdaratio : Optional[float]
-            None
-        operatingIncomeRatio : Optional[float]
-            None
-        incomeBeforeTaxRatio : Optional[float]
-            None
-        netIncomeRatio : Optional[float]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-
         polygon
         =======
 
@@ -1836,6 +1808,34 @@ class CLASS_stocks_fa(Container):
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
         preferred_stock_dividends_and_other_adjustments : Optional[float]
+            None
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            The CIK of the company if no symbol is provided.
+
+
+        IncomeStatement
+        ---------------
+        calendarYear : Optional[int]
+            None
+        grossProfitRatio : Optional[float]
+            None
+        ebitdaratio : Optional[float]
+            None
+        operatingIncomeRatio : Optional[float]
+            None
+        incomeBeforeTaxRatio : Optional[float]
+            None
+        netIncomeRatio : Optional[float]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
             None"""
         inputs = filter_inputs(
             provider_choices={

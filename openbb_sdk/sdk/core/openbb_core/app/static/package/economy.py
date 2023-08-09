@@ -9,9 +9,9 @@ from pydantic import validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
-from openbb_core.app.static.package_builder import OpenBBCustomParameter
 
 
 class CLASS_economy(Container):
@@ -342,7 +342,7 @@ class CLASS_economy(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> CommandOutput[typing.List]:
         """Get OHLCV data for an index.
@@ -353,7 +353,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -390,6 +390,32 @@ class CLASS_economy(Container):
         volume : PositiveFloat
             The volume of the symbol.
 
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        MajorIndicesEOD
+        ---------------
+        t : datetime
+            The timestamp of the data.
+        n : PositiveInt
+            The number of transactions for the symbol in the time period.
+        vw : PositiveFloat
+            The volume weighted average price of the symbol.
+
         fmp
         ===
 
@@ -416,33 +442,7 @@ class CLASS_economy(Container):
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        MajorIndicesEOD
-        ---------------
-        t : datetime
-            The timestamp of the data.
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-        vw : PositiveFloat
-            The volume weighted average price of the symbol."""
+            Change \\% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
