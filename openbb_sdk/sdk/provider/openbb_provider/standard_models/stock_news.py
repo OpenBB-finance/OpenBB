@@ -1,7 +1,7 @@
 """Stock News Data Model."""
 
 
-from datetime import date as dateType
+from datetime import datetime
 from typing import Optional
 
 from pydantic import Field, NonNegativeInt, validator
@@ -23,14 +23,14 @@ class StockNewsQueryParams(QueryParams):
     )
 
     @validator("symbols", pre=True)
-    def time_validate(cls, v: str):  # pylint: disable=E0213
+    def symbol_validate(cls, v: str):  # pylint: disable=E0213
         return v.upper()
 
 
 class StockNewsData(Data):
     """Stock News data."""
 
-    date: dateType = Field(description="The published date of the news.")
+    date: datetime = Field(description="The published date of the news.")
     title: str = Field(description="The title of the news.")
     text: Optional[str] = Field(default=None, description="The text/body of the news.")
     url: str = Field(description="The URL of the news.")
