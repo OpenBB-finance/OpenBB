@@ -110,7 +110,7 @@ def display_raw(
     option_type = "call" if call else "put"
     fig = plot_chart(df, option_type, symbol, price)
 
-    if export != "":
+    if export:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -121,7 +121,7 @@ def display_raw(
         )
         return None
 
-    if raw is True:
+    if raw:
         print_rich_table(
             df,
             headers=list(df.columns),
