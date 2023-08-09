@@ -85,8 +85,8 @@ def display_expo_forecast(
         Whether to export the raw predicted values. Defaults to False.
     metric: str
         The metric to use when backtesting. Defaults to "mape".
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):

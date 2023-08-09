@@ -400,7 +400,6 @@ stocks.ba.regions,stocks_ba_google_model.get_regions,stocks_ba_google_view.displ
 stocks.ba.rise,stocks_ba_google_model.get_rise,
 stocks.ba.sentiment,stocks_ba_twitter_model.get_sentiment,stocks_ba_twitter_view.display_sentiment
 stocks.ba.snews,stocks_ba_finnhub_model.get_headlines_sentiment,stocks_ba_finnhub_view.display_stock_price_headlines_sentiment
-stocks.ba.spacc,stocks_ba_reddit_model.get_spac_community,
 stocks.ba.stalker,stocks_ba_stocktwits_model.get_stalker,
 stocks.ba.text_sent,stocks_ba_reddit_model.get_sentiment,
 stocks.ba.trending,stocks_ba_stocktwits_model.get_trending,

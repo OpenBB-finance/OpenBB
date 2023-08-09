@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.2.0"
+version = "3.2.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -42,7 +42,7 @@ robin-stocks = "^2.0.3"
 pycoingecko = "^3.1.0"
 detecta = "^0.0.5"
 tradingview-ta = "^3.2.3"
-finvizfinance = "^0.14.0"
+finvizfinance = "0.14.6rc2"
 statsmodels = "^0.13"
 python-coinmarketcap = "^0.2"
 oandapyV20 = "^0.6.3"
