@@ -259,7 +259,7 @@ class CLASS_stocks(Container):
 
         StockNews
         ---------
-        date : date
+        date : datetime
             The published date of the news.
         title : str
             The title of the news.
