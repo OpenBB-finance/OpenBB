@@ -7,7 +7,6 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
 from typing import (
-    Annotated,
     Callable,
     Dict,
     List,
@@ -22,7 +21,7 @@ from typing import (
 import pandas as pd
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
-from typing_extensions import _AnnotatedAlias
+from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import get_provider_interface
