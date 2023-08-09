@@ -175,6 +175,7 @@ class TerminalController(BaseController):
         self.ROUTINE_CHOICES["-i"] = None
         self.ROUTINE_CHOICES["--help"] = None
         self.ROUTINE_CHOICES["--h"] = None
+        self.ROUTINE_CHOICES["--url"] = None
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
