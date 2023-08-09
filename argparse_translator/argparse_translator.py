@@ -49,6 +49,7 @@ class ArgparseTranslator:
             formatter_class=argparse.RawTextHelpFormatter,
             add_help=add_help,
         )
+        self._required = self._parser.add_argument_group("required arguments")
 
         self._generate_argparse_arguments(self.signature.parameters)
 
@@ -201,11 +202,13 @@ class ArgparseTranslator:
                 # the custom type itself should not be added as an argument
                 continue
 
+            required = not self._param_is_default(param)
+
             kwargs = {
                 "type": param_type,
                 "dest": param.name,
                 "default": param.default,
-                "required": not self._param_is_default(param),
+                "required": required,
                 "action": self._get_action_type(param),
                 "help": self._get_argument_help(param),
                 "nargs": self._get_nargs(param),
@@ -219,10 +222,16 @@ class ArgparseTranslator:
                 kwargs.pop("type")
                 kwargs.pop("nargs")
 
-            self._parser.add_argument(
-                f"--{param.name}",
-                **kwargs,
-            )
+            if required:
+                self._required.add_argument(
+                    f"--{param.name}",
+                    **kwargs,
+                )
+            else:
+                self._parser.add_argument(
+                    f"--{param.name}",
+                    **kwargs,
+                )
 
     @staticmethod
     def _unflatten_args(args: dict) -> Dict[str, Any]:
