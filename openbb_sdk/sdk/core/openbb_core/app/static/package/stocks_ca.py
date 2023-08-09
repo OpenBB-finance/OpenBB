@@ -1,5 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import typing
 from typing import Literal, Optional
 
 from pydantic import BaseModel, validate_arguments

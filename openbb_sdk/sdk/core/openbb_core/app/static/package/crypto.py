@@ -33,7 +33,7 @@ class CLASS_crypto(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Crypto Intraday Price.
@@ -44,7 +44,7 @@ class CLASS_crypto(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -85,28 +85,6 @@ class CLASS_crypto(Container):
         vwap : PositiveFloat
             Volume Weighted Average Price of the symbol.
 
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        CryptoEOD
-        ---------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
         fmp
         ===
 
@@ -129,7 +107,29 @@ class CLASS_crypto(Container):
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time."""
+            Change \\% in the price of the symbol over a period of time.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        CryptoEOD
+        ---------
+        n : PositiveInt
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

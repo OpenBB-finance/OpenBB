@@ -5,6 +5,7 @@ import typing
 from typing import Annotated, List, Literal, Optional, Union
 
 import pydantic
+import pydantic.main
 from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
@@ -51,7 +52,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Balance Sheet.
@@ -62,7 +63,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -175,6 +176,42 @@ class CLASS_stocks_fa(Container):
         total_liabilities_and_total_equity : Optional[int]
             None
 
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            None
+
+
+        BalanceSheet
+        ------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None
+        cashAndShortTermInvestments : Optional[int]
+            None
+        goodwillAndIntangibleAssets : Optional[int]
+            None
+        deferredRevenueNonCurrent : Optional[int]
+            None
+        totalInvestments : Optional[int]
+            None
+        capitalLeaseObligations : Optional[int]
+            None
+        deferredTaxLiabilitiesNonCurrent : Optional[int]
+            None
+        totalNonCurrentLiabilities : Optional[int]
+            None
+        totalDebt : Optional[int]
+            None
+        netDebt : Optional[int]
+            None
+
         polygon
         =======
 
@@ -216,43 +253,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        All fields are standardized.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            None
-
-
-        BalanceSheet
-        ------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-        cashAndShortTermInvestments : Optional[int]
-            None
-        goodwillAndIntangibleAssets : Optional[int]
-            None
-        deferredRevenueNonCurrent : Optional[int]
-            None
-        totalInvestments : Optional[int]
-            None
-        capitalLeaseObligations : Optional[int]
-            None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
-            None
-        totalNonCurrentLiabilities : Optional[int]
-            None
-        totalDebt : Optional[int]
-            None
-        netDebt : Optional[int]
-            None"""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -552,7 +553,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement.
@@ -563,7 +564,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -656,6 +657,24 @@ class CLASS_stocks_fa(Container):
         cash_at_end_of_period : Optional[int]
             None
 
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            Central Index Key (CIK) of the company.
+
+
+        CashFlowStatement
+        -----------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None
+
         polygon
         =======
 
@@ -697,25 +716,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        All fields are standardized.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            Central Index Key (CIK) of the company.
-
-
-        CashFlowStatement
-        -----------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None"""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1433,7 +1434,7 @@ class CLASS_stocks_fa(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarterly", "annually"],
+            Literal["annually", "quarterly"],
             OpenBBCustomParameter(
                 description="Period of the data to return (quarterly or annually)."
             ),
@@ -1658,7 +1659,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Income Statement.
@@ -1669,7 +1670,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -1772,6 +1773,19 @@ class CLASS_stocks_fa(Container):
         final_link : Optional[str]
             Final link to the income statement.
 
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            The CIK of the company if no symbol is provided.
+
+
+        IncomeStatement
+        ---------------
+        All fields are standardized.
+
         polygon
         =======
 
@@ -1826,35 +1840,7 @@ class CLASS_stocks_fa(Container):
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            None
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
-
-
-        IncomeStatement
-        ---------------
-        calendarYear : Optional[int]
-            None
-        grossProfitRatio : Optional[float]
-            None
-        ebitdaratio : Optional[float]
-            None
-        operatingIncomeRatio : Optional[float]
-            None
-        incomeBeforeTaxRatio : Optional[float]
-            None
-        netIncomeRatio : Optional[float]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None"""
+            None"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3152,6 +3138,207 @@ class CLASS_stocks_fa(Container):
 
     @filter_call
     @validate_arguments
+    def ratios(
+        self,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["annually", "quarterly"],
+            OpenBBCustomParameter(
+                description="Period of the data to return (quarterly or annually)."
+            ),
+        ] = "annually",
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 12,
+        chart: bool = False,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs,
+    ) -> CommandOutput[typing.List]:
+        """Extensive set of ratios over time.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[fmp]
+            The provider to use for the query.
+        symbol : ConstrainedStrValue
+            Symbol to get data for.
+        period : Literal['annually', 'quarterly']
+            Period of the data to return (quarterly or annually).
+        limit : Optional[NonNegativeInt]
+            The number of data entries to return.
+
+        Returns
+        -------
+        CommandOutput
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        FinancialRatios
+        ---------------
+        symbol : str
+            The symbol of the company.
+        date : str
+            The date of the financial ratios.
+        period : str
+            The period of the financial ratios.
+        current_ratio : Optional[float]
+            The current ratio.
+        quick_ratio : Optional[float]
+            The quick ratio.
+        cash_ratio : Optional[float]
+            The cash ratio.
+        days_of_sales_outstanding : Optional[float]
+            Days of sales outstanding.
+        days_of_inventory_outstanding : Optional[float]
+            Days of inventory outstanding.
+        operating_cycle : Optional[float]
+            Operating cycle.
+        days_of_payables_outstanding : Optional[float]
+            Days of payables outstanding.
+        cash_conversion_cycle : Optional[float]
+            Cash conversion cycle.
+        gross_profit_margin : Optional[float]
+            Gross profit margin.
+        operating_profit_margin : Optional[float]
+            Operating profit margin.
+        pretax_profit_margin : Optional[float]
+            Pretax profit margin.
+        net_profit_margin : Optional[float]
+            Net profit margin.
+        effective_tax_rate : Optional[float]
+            Effective tax rate.
+        return_on_assets : Optional[float]
+            Return on assets.
+        return_on_equity : Optional[float]
+            Return on equity.
+        return_on_capital_employed : Optional[float]
+            Return on capital employed.
+        net_income_per_ebt : Optional[float]
+            Net income per EBT.
+        ebt_per_ebit : Optional[float]
+            EBT per EBIT.
+        ebit_per_revenue : Optional[float]
+            EBIT per revenue.
+        debt_ratio : Optional[float]
+            Debt ratio.
+        debt_equity_ratio : Optional[float]
+            Debt equity ratio.
+        long_term_debt_to_capitalization : Optional[float]
+            Long term debt to capitalization.
+        total_debt_to_capitalization : Optional[float]
+            Total debt to capitalization.
+        interest_coverage : Optional[float]
+            Interest coverage.
+        cash_flow_to_debt_ratio : Optional[float]
+            Cash flow to debt ratio.
+        company_equity_multiplier : Optional[float]
+            Company equity multiplier.
+        receivables_turnover : Optional[float]
+            Receivables turnover.
+        payables_turnover : Optional[float]
+            Payables turnover.
+        inventory_turnover : Optional[float]
+            Inventory turnover.
+        fixed_asset_turnover : Optional[float]
+            Fixed asset turnover.
+        asset_turnover : Optional[float]
+            Asset turnover.
+        operating_cash_flow_per_share : Optional[float]
+            Operating cash flow per share.
+        free_cash_flow_per_share : Optional[float]
+            Free cash flow per share.
+        cash_per_share : Optional[float]
+            Cash per share.
+        payout_ratio : Optional[float]
+            Payout ratio.
+        operating_cash_flow_sales_ratio : Optional[float]
+            Operating cash flow sales ratio.
+        free_cash_flow_operating_cash_flow_ratio : Optional[float]
+            Free cash flow operating cash flow ratio.
+        cash_flow_coverage_ratios : Optional[float]
+            Cash flow coverage ratios.
+        short_term_coverage_ratios : Optional[float]
+            Short term coverage ratios.
+        capital_expenditure_coverage_ratio : Optional[float]
+            Capital expenditure coverage ratio.
+        dividend_paid_and_capex_coverage_ratio : Optional[float]
+            Dividend paid and capex coverage ratio.
+        dividend_payout_ratio : Optional[float]
+            Dividend payout ratio.
+        price_book_value_ratio : Optional[float]
+            Price book value ratio.
+        price_to_book_ratio : Optional[float]
+            Price to book ratio.
+        price_to_sales_ratio : Optional[float]
+            Price to sales ratio.
+        price_earnings_ratio : Optional[float]
+            Price earnings ratio.
+        price_to_free_cash_flows_ratio : Optional[float]
+            Price to free cash flows ratio.
+        price_to_operating_cash_flows_ratio : Optional[float]
+            Price to operating cash flows ratio.
+        price_cash_flow_ratio : Optional[float]
+            Price cash flow ratio.
+        price_earnings_to_growth_ratio : Optional[float]
+            Price earnings to growth ratio.
+        price_sales_ratio : Optional[float]
+            Price sales ratio.
+        dividend_yield : Optional[float]
+            Dividend yield.
+        enterprise_value_multiple : Optional[float]
+            Enterprise value multiple.
+        price_fair_value : Optional[float]
+            Price fair value.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        FinancialRatios
+        ---------------
+        All fields are standardized."""  # noqa: E501
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": symbol,
+                "period": period,
+                "limit": limit,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/fa/ratios",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def rating(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
@@ -3162,23 +3349,6 @@ class CLASS_stocks_fa(Container):
 
         o = self._command_runner_session.run(
             "/stocks/fa/rating",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def ratios(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Extensive set of ratios over time."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/fa/ratios",
             **inputs,
         ).output
 
@@ -3209,7 +3379,7 @@ class CLASS_stocks_fa(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarterly", "annually"],
+            Literal["annually", "quarterly"],
             OpenBBCustomParameter(
                 description="Period of the data to return (quarterly or annually)."
             ),
@@ -3310,7 +3480,7 @@ class CLASS_stocks_fa(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarterly", "annually"],
+            Literal["annually", "quarterly"],
             OpenBBCustomParameter(
                 description="Period of the data to return (quarterly or annually)."
             ),

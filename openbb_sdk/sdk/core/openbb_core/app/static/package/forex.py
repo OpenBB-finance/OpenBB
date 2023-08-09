@@ -18,7 +18,7 @@ class CLASS_forex(Container):
     def pairs(
         self,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs.
@@ -29,7 +29,7 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         All fields are standardized.
 
@@ -52,6 +52,25 @@ class CLASS_forex(Container):
         ----------
         name : str
             The name of the currency pair.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        ForexPairs
+        ----------
+        symbol : str
+            The symbol of the currency pair.
+        currency : str
+            The base currency of the currency pair.
+        stockExchange : Optional[str]
+            The stock exchange of the currency pair.
+        exchange_short_name : Optional[str]
+            The short name of the stock exchange of the currency pair.
 
         polygon
         =======
@@ -91,26 +110,7 @@ class CLASS_forex(Container):
         last_updated_utc : datetime
             The last updated timestamp in UTC.
         delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        ForexPairs
-        ----------
-        symbol : str
-            The symbol of the currency pair.
-        currency : str
-            The base currency of the currency pair.
-        stockExchange : Optional[str]
-            The stock exchange of the currency pair.
-        exchange_short_name : Optional[str]
-            The short name of the stock exchange of the currency pair."""
+            The delisted timestamp in UTC."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -147,7 +147,7 @@ class CLASS_forex(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Forex Intraday Price.
@@ -158,7 +158,7 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -199,28 +199,6 @@ class CLASS_forex(Container):
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
 
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        ForexEOD
-        --------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
         fmp
         ===
 
@@ -242,7 +220,29 @@ class CLASS_forex(Container):
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time."""
+            Change \\% in the price of the symbol over a period of time.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        ForexEOD
+        --------
+        n : PositiveInt
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

@@ -100,7 +100,7 @@ class CLASS_stocks(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Load stock data for a specific ticker.
@@ -111,7 +111,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -147,32 +147,10 @@ class CLASS_stocks(Container):
             The low price of the symbol.
         close : PositiveFloat
             The close price of the symbol.
-        volume : NonNegativeFloat
+        volume : float
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        StockEOD
-        --------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
 
         fmp
         ===
@@ -197,8 +175,30 @@ class CLASS_stocks(Container):
             Change \\% in the price of the symbol.
         label : Optional[str]
             Human readable format of the date.
-        changeOverTime : float
-            Change \\% in the price of the symbol over a period of time."""
+        changeOverTime : Optional[float]
+            Change \\% in the price of the symbol over a period of time.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        StockEOD
+        --------
+        n : Optional[PositiveInt]
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -239,7 +239,7 @@ class CLASS_stocks(Container):
             ),
         ] = 15,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "polygon", "fmp"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get news for one or more stock tickers.
@@ -250,7 +250,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[benzinga, polygon, fmp]
+        provider: Literal[benzinga, fmp, polygon]
             The provider to use for the query.
         symbols : ConstrainedStrValue
             Symbol to get data for.
@@ -331,6 +331,23 @@ class CLASS_stocks(Container):
         teaser : Optional[str]
             The teaser of the news.
 
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockNews
+        ---------
+        symbol : str
+            Ticker of the fetched news.
+        image : Optional[str]
+            URL to the image of the news source.
+        site : str
+            Name of the news source.
+
         polygon
         =======
 
@@ -375,24 +392,7 @@ class CLASS_stocks(Container):
         publisher : PolygonPublisher
             Publisher of the article.
         tickers : List[str]
-            Tickers covered in the article.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockNews
-        ---------
-        symbol : str
-            Ticker of the fetched news.
-        image : Optional[str]
-            URL to the image of the news source.
-        site : str
-            Name of the news source."""
+            Tickers covered in the article."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -632,7 +632,9 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,

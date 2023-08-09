@@ -342,7 +342,7 @@ class CLASS_economy(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get OHLCV data for an index.
@@ -353,7 +353,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -394,32 +394,6 @@ class CLASS_economy(Container):
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
 
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        MajorIndicesEOD
-        ---------------
-        t : datetime
-            The timestamp of the data.
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-        vw : PositiveFloat
-            The volume weighted average price of the symbol.
-
         fmp
         ===
 
@@ -443,8 +417,30 @@ class CLASS_economy(Container):
             Change \\% in the price of the symbol.
         label : Optional[str]
             Human readable format of the date.
-        changeOverTime : float
-            Change \\% in the price of the symbol over a period of time."""
+        changeOverTime : Optional[float]
+            Change \\% in the price of the symbol over a period of time.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        MajorIndicesEOD
+        ---------------
+        n : PositiveInt
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
