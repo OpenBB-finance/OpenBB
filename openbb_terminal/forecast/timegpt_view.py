@@ -34,6 +34,7 @@ def display_timegpt_forecast(
     external_axes: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
+    residuals: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """TimeGPT was trained on the largest collection of data in history -
     over 100 billion rows of financial, weather, energy, and web data -
@@ -67,7 +68,8 @@ def display_timegpt_forecast(
         The starting date to perform analysis, data before this is trimmed. Defaults to None.
     end_date: Optional[datetime]
         The ending date to perform analysis, data after this is trimmed. Defaults to None.
-
+    residuals: bool
+        Whether to show residuals for the model. Defaults to False.
 
     Returns
     -------
@@ -87,33 +89,31 @@ def display_timegpt_forecast(
         freq=freq,
         finetune_steps=finetune_steps,
         clean_ex_first=clean_ex_first,
+        residuals=residuals,
     )
 
     fig = OpenBBFigure(yaxis_title="TITLE", xaxis_title="Date")
 
     fig.set_title(f"TimeGPT-1 (Beta) on {target_col} with horizon {forecast_horizon}")
 
-    # Current data
-    fig.add_scatter(
-        x=list(pd.to_datetime(data[time_col].values)),
-        y=list(data[target_col].values),
-        name="Actual",
-        line_color="gold",
-        mode="lines",
-    )
-
-    xds = list(pd.to_datetime(df[time_col].values))
-    xds_reverse = list(df[time_col].values)
+    xds = list(pd.to_datetime(df[time_col].values))[:-forecast_horizon]
+    xds_reverse = list(pd.to_datetime(df[time_col].values))[:-forecast_horizon]
     xds_reverse.reverse()
     xds += xds_reverse
+
+    if residuals:
+        xds_forecast = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
+        xds_forecast_reverse = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
+        xds_forecast_reverse.reverse()
+        xds_forecast += xds_forecast_reverse
 
     # this is done so the confidence levels are displayed correctly
     levels.sort()
     for count, lvl in enumerate(levels):
         lvl_name = str(int(lvl) if lvl.is_integer() else lvl)
 
-        ylo = list(df[f"TimeGPT-lo-{lvl_name}"].values)
-        yhigh = list(df[f"TimeGPT-hi-{lvl_name}"].values)
+        ylo = list(df[f"TimeGPT-lo-{lvl_name}"].values)[:-forecast_horizon]
+        yhigh = list(df[f"TimeGPT-hi-{lvl_name}"].values)[:-forecast_horizon]
         yhigh.reverse()
         ylo += yhigh
 
@@ -123,24 +123,66 @@ def display_timegpt_forecast(
                     x=xds,
                     y=ylo,
                     mode="lines",
-                    line_color=f"rgba(138,173,230,{.2+(len(levels)-count)*(.6/(count+1))})",
-                    name=f"{lvl_name}% confidence interval",
+                    line_color=f"rgba(255,127,14,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                    name=f"{lvl_name}% confidence interval historical",
                     fill="toself",
-                    fillcolor=f"rgba(138,173,230,{.2+(len(levels)-count)*(.6/(count+1))})",
+                    fillcolor=f"rgba(255,127,14,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
                 )
             ]
         )
 
+        if residuals:
+            ylo_forecast = list(df[f"TimeGPT-lo-{lvl_name}"].values)[-forecast_horizon:]
+            yhigh_forecast = list(df[f"TimeGPT-hi-{lvl_name}"].values)[-forecast_horizon:]
+            yhigh_forecast.reverse()
+            ylo_forecast += yhigh_forecast
+
+            fig.add_traces(
+                [
+                    go.Scatter(
+                        x=xds_forecast,
+                        y=ylo_forecast,
+                        mode="lines",
+                        line_color=f"rgba(0,172,255,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                        name=f"{lvl_name}% confidence interval",
+                        fill="toself",
+                        fillcolor=f"rgba(0,172,255,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                    )
+                ]
+            )
+
+    if residuals:
+        # TimeGPT prediction - historical
+        fig.add_scatter(
+            x=list(pd.to_datetime(df[time_col].values))[:-forecast_horizon],
+            y=list(df["TimeGPT"].values)[:-forecast_horizon],
+            name="TimeGPT historical forecast",
+            mode="lines",
+            line=dict(
+                color="rgba(255,127,14,1)",
+                width=3,
+            ),
+        )
+
     # TimeGPT prediction
     fig.add_scatter(
-        x=list(pd.to_datetime(df[time_col].values)),
-        y=list(df["TimeGPT"].values),
+        x=list(pd.to_datetime(df[time_col].values))[-forecast_horizon:],
+        y=list(df["TimeGPT"].values)[-forecast_horizon:],
         name="TimeGPT forecast",
         mode="markers+lines",
         line=dict(
-            color="orange",
+            color="rgba(0,172,255,1)",
             width=3,
         ),
+    )
+
+    # Current data
+    fig.add_scatter(
+        x=list(pd.to_datetime(data[time_col].values)),
+        y=list(data[target_col].values),
+        name="Actual",
+        line_color="gold",
+        mode="lines",
     )
 
     fig.show(external=external_axes)

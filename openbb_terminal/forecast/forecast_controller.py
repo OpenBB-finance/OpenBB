@@ -272,6 +272,7 @@ class ForecastController(BaseController):
         Overrides the parent class function to handle YouTube video URL conventions.
         See `BaseController.parse_input()` for details.
         """
+
         # Filtering out YouTube video parameters like "v=" and removing the domain name
         youtube_filter = r"(youtube\.com/watch\?v=)"
 
@@ -308,6 +309,7 @@ class ForecastController(BaseController):
 
     def print_help(self):
         """Print help"""
+        self.update_runtime_choices()
         current_user = get_current_user()
         mt = MenuText("forecast/")
         mt.add_param("_disclaimer_", self.disclaimer)
@@ -714,7 +716,7 @@ class ForecastController(BaseController):
         """Loads news dataframes into memory"""
 
         # check if data has minimum number of rows
-        if len(data) < self.MINIMUM_DATA_LENGTH:
+        if ticker and len(data) < self.MINIMUM_DATA_LENGTH:
             console.print(
                 f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} data points. [/red]"
             )
@@ -3528,6 +3530,7 @@ class ForecastController(BaseController):
             target_column=True,
             start=True,
             end=True,
+            residuals=True,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
@@ -3551,4 +3554,5 @@ class ForecastController(BaseController):
                 sheet_name=ns_parser.sheet_name,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+                residuals=ns_parser.residuals,
             )

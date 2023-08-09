@@ -26,6 +26,7 @@ def get_timegpt_model(
     freq: Union[str, None] = None,
     finetune_steps: int = 0,
     clean_ex_first: bool = True,
+    residuals: bool = False,
 ) -> pd.DataFrame:
     """TimeGPT was trained on the largest collection of data in history -
     over 100 billion rows of financial, weather, energy, and web data -
@@ -49,7 +50,8 @@ def get_timegpt_model(
         Number of steps used to finetune TimeGPT in the new data.
     clean_ex_first: bool
         Clean exogenous signal before making forecasts using TimeGPT.
-
+    residuals: bool
+        Whether to show residuals for the model. Defaults to False.
 
     Returns
     -------
@@ -73,6 +75,7 @@ def get_timegpt_model(
         level=levels,
         finetune_steps=finetune_steps,
         clean_ex_first=clean_ex_first,
+        add_history=residuals,
     )
 
     return fcst_df

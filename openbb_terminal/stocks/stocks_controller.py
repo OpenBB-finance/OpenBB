@@ -810,7 +810,6 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             forecast_controller.ForecastController,
-            self.ticker,
-            self.stock,
-            self.queue,
+            ticker=self.ticker,
+            queue=self.queue,
         )
