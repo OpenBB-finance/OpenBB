@@ -62,7 +62,7 @@ class YFinanceForexEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceForexEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: YFinanceForexEODQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> List[YFinanceForexEODData]:
         query.symbol = f"{query.symbol}=X"
 

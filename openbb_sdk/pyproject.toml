@@ -22,6 +22,7 @@ openbb-fmp = { path = "./providers/fmp" }
 openbb-polygon = { path = "./providers/polygon" }
 openbb-fred = { path = "./providers/fred" }
 openbb-yfinance = { path = "./providers/yfinance" }
+openbb-cboe = { path = "./providers/cboe"}
 
 
 [tool.poetry.group.dev.dependencies]
