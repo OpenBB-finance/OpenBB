@@ -20,12 +20,9 @@ from typing import (
 from pydantic import BaseModel
 from typing_extensions import Annotated
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+
 SEP = "__"
-
-
-class OpenBBCustomArgument(BaseModel):
-    help: Optional[str] = None
-    # action: Optional[Any] = None
 
 
 class ArgparseActionType(Enum):
@@ -48,7 +45,7 @@ class ArgparseTranslator:
 
         self._parser = argparse.ArgumentParser(
             prog=func.__name__,
-            description=func.__doc__,
+            description=self._build_description(func.__doc__),
             formatter_class=argparse.RawTextHelpFormatter,
             add_help=add_help,
         )
@@ -60,10 +57,25 @@ class ArgparseTranslator:
         return deepcopy(self._parser)
 
     @staticmethod
+    def _build_description(func_doc: str) -> str:
+        """Builds the description of the argparse program from the function docstring."""
+
+        patterns = ["openbb\n        ======", "Parameters\n        ----------"]
+
+        for pattern in patterns:
+            if pattern in func_doc:
+                func_doc = func_doc[: func_doc.index(pattern)].strip()
+                break
+
+        return func_doc
+
+    @staticmethod
     def _param_is_default(param: inspect.Parameter) -> bool:
+        """Returns True if the parameter has a default value."""
         return param.default != inspect.Parameter.empty
 
     def _get_action_type(self, param: inspect.Parameter) -> str:
+        """Returns the argparse action type for the given parameter."""
         param_type = self.type_hints[param.name]
 
         if param_type == bool:
@@ -73,6 +85,7 @@ class ArgparseTranslator:
     def _get_type_and_choices(
         self, param: inspect.Parameter
     ) -> Tuple[Type[Any], Tuple[Any, ...]]:
+        """Returns the type and choices for the given parameter."""
         param_type = self.type_hints[param.name]
         type_origin = get_origin(param_type)
 
@@ -105,27 +118,32 @@ class ArgparseTranslator:
     @staticmethod
     def _split_annotation(
         base_annotation: Type[Any],
-    ) -> tuple[Type[Any], List[OpenBBCustomArgument]]:
+    ) -> Tuple[Type[Any], List[OpenBBCustomParameter]]:
+        """Find the base annotation and the custom annotations, namely the OpenBBCustomParameter."""
         if get_origin(base_annotation) is not Annotated:
             return base_annotation, []
         base_annotation, *maybe_custom_annotations = get_args(base_annotation)
         return base_annotation, [
             annotation
             for annotation in maybe_custom_annotations
-            if isinstance(annotation, OpenBBCustomArgument)
+            if isinstance(annotation, OpenBBCustomParameter)
         ]
 
     @classmethod
     def _get_argument_help(cls, param: inspect.Parameter) -> Optional[str]:
+        """Returns the help annotation for the given parameter."""
         base_annotation = param.annotation
         _, custom_annotations = cls._split_annotation(base_annotation)
-        help_annotation = custom_annotations[0].help if custom_annotations else None
+        help_annotation = (
+            custom_annotations[0].description if custom_annotations else None
+        )
         if not help_annotation:
             # try to get it from the docstring
             pass
         return help_annotation
 
     def _get_nargs(self, param: inspect.Parameter) -> Optional[str]:
+        """Returns the nargs annotation for the given parameter."""
         param_type = self.type_hints[param.name]
 
         if get_origin(param_type) is list:
@@ -133,6 +151,7 @@ class ArgparseTranslator:
         return None
 
     def _generate_argparse_arguments(self, parameters) -> None:
+        """Generates the argparse arguments from the function parameters."""
         for param in parameters.values():
             # TODO : how to handle kwargs?
             # it's possible to add unknown arguments when parsing as follows:
@@ -162,7 +181,7 @@ class ArgparseTranslator:
                         name=f"{param.name}{SEP}{child_param.name}",
                         annotation=Annotated[
                             child_param.annotation,
-                            OpenBBCustomArgument(
+                            OpenBBCustomParameter(
                                 help=param_type.schema()["properties"][
                                     child_param.name
                                 ].get("help", None)
@@ -207,6 +226,7 @@ class ArgparseTranslator:
 
     @staticmethod
     def _unflatten_args(args: dict) -> Dict[str, Any]:
+        """Unflatten the args that were flattened by the custom types."""
         result: Dict[str, Any] = {}
         for key, value in args.items():
             if SEP in key:
@@ -222,6 +242,7 @@ class ArgparseTranslator:
         return result
 
     def _update_with_custom_types(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """Update the kwargs with the custom types."""
         # for each argument in the signature that is a custom type, we need to
         # update the kwargs with the custom type kwargs
         for param in self.signature.parameters.values():
@@ -239,6 +260,16 @@ class ArgparseTranslator:
         self,
         parsed_args: Optional[argparse.Namespace] = None,
     ) -> Any:
+        """
+        Executes the original function with the parsed arguments.
+
+        Args:
+            parsed_args (Optional[argparse.Namespace], optional): The parsed arguments. Defaults to None.
+
+        Returns:
+            Any: The return value of the original function.
+
+        """
         kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
 
