@@ -122,6 +122,7 @@ ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
+nixtlats = "^0.1.4"
 
 
 

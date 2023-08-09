@@ -4980,6 +4980,24 @@ numpy = ">=1.19"
 pandas = ">=1.1"
 
 [[package]]
+name = "nixtlats"
+version = "0.1.4"
+description = "Nixtla SDK"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "nixtlats-0.1.4-py3-none-any.whl", hash = "sha256:660ca06b40cf1bb0f507feb681d40cef029307264dba30bc00f17b8ee66282f6"},
+    {file = "nixtlats-0.1.4.tar.gz", hash = "sha256:e2ac9ff55773f6bcd651db6d1192758f60789e35fb310586f537849939b38aa5"},
+]
+
+[package.dependencies]
+pandas = "*"
+requests = "*"
+
+[package.extras]
+dev = ["nbdev", "openbb", "plotly", "python-dotenv", "statsforecast"]
+
+[[package]]
 name = "nodeenv"
 version = "1.8.0"
 description = "Node.js virtual environment builder"
@@ -10490,4 +10508,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.11, !=3.9.7"
-content-hash = "cf28c86b1360b436443a486b5ed8b33101e35d3a6c02f81c7dc85515e520c634"
+content-hash = "ea5f9ed8c6a8586cc7b550c2ac36c66d366be9c739e3741c0690474517295f73"

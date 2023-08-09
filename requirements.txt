@@ -145,6 +145,7 @@ nbclient==0.6.8 ; python_full_version >= "3.8.1" and python_full_version != "3.9
 nbconvert==7.7.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 nbformat==5.9.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 nest-asyncio==1.5.6 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
+nixtlats==0.1.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 notebook-shim==0.2.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 notebook==6.5.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 numexpr==2.8.4 ; python_full_version >= "3.8.1" and python_version < "3.11" and python_full_version != "3.9.7"
