@@ -13,6 +13,7 @@ from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forecast import helpers, timegpt_model
 from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -22,6 +23,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_KEY_NIXTLA"])
 def display_timegpt_forecast(
     data: Union[pd.DataFrame, pd.Series],
+    dataset_name: str = "",
     time_col: str = "ds",
     target_col: str = "y",
     forecast_horizon: int = 12,
@@ -44,6 +46,8 @@ def display_timegpt_forecast(
     ----------
     data : Union[pd.Series, pd.DataFrame]
         Input data.
+    dataset_name : str
+        Dataset name
     time_col: str:
         Column that identifies each timestep, its values can be timestamps or integers. Defaults to "ds".
     target_column: str:
@@ -76,6 +80,20 @@ def display_timegpt_forecast(
     pd.DataFrame
         Forecasted values.
     """
+    if time_col not in data.columns:
+        if time_col == "ds":  # means that the user has not set it yet, bc default
+            console.print(f"[red]Set the time column for '{dataset_name}' between: {', '.join(data.columns)}[/red]")
+        else:
+            console.print(f"[red]Time column '{time_col}' not found in data[/red]")
+        return None
+
+    if target_col not in data.columns:
+        if target_col == "y":  # means that the user has not set it yet, bc default
+            console.print(f"[red]Set the target column for '{dataset_name}' between: {', '.join(data.columns)}[/red]")
+        else:
+            console.print(f"[red]Target column '{target_col}' not found in data[/red]")
+        return None
+
     data = helpers.clean_data(data, start_date, end_date, target_col, None)
     if not helpers.check_data(data, target_col, None):
         return None
@@ -92,64 +110,68 @@ def display_timegpt_forecast(
         residuals=residuals,
     )
 
-    fig = OpenBBFigure(yaxis_title="TITLE", xaxis_title="Date")
+    fig = OpenBBFigure(xaxis_title="Date")
 
     fig.set_title(f"TimeGPT-1 (Beta) on {target_col} with horizon {forecast_horizon}")
 
-    xds = list(pd.to_datetime(df[time_col].values))[:-forecast_horizon]
-    xds_reverse = list(pd.to_datetime(df[time_col].values))[:-forecast_horizon]
-    xds_reverse.reverse()
-    xds += xds_reverse
-
     if residuals:
-        xds_forecast = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
-        xds_forecast_reverse = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
-        xds_forecast_reverse.reverse()
-        xds_forecast += xds_forecast_reverse
+        xds = list(pd.to_datetime(df[time_col].values))[:-forecast_horizon]
+        xds_reverse = list(pd.to_datetime(df[time_col].values))[:-forecast_horizon]
+        xds_reverse.reverse()
+        xds += xds_reverse
+
+
+    xds_forecast = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
+    xds_forecast_reverse = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
+    xds_forecast_reverse.reverse()
+    xds_forecast += xds_forecast_reverse
 
     # this is done so the confidence levels are displayed correctly
     levels.sort()
     for count, lvl in enumerate(levels):
-        lvl_name = str(int(lvl) if lvl.is_integer() else lvl)
-
-        ylo = list(df[f"TimeGPT-lo-{lvl_name}"].values)[:-forecast_horizon]
-        yhigh = list(df[f"TimeGPT-hi-{lvl_name}"].values)[:-forecast_horizon]
-        yhigh.reverse()
-        ylo += yhigh
-
-        fig.add_traces(
-            [
-                go.Scatter(
-                    x=xds,
-                    y=ylo,
-                    mode="lines",
-                    line_color=f"rgba(255,127,14,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
-                    name=f"{lvl_name}% confidence interval historical",
-                    fill="toself",
-                    fillcolor=f"rgba(255,127,14,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
-                )
-            ]
-        )
+        if isinstance(lvl, int):
+            lvl_name = str(lvl)
+        else:
+            lvl_name = str(int(lvl) if lvl.is_integer() else lvl)
 
         if residuals:
-            ylo_forecast = list(df[f"TimeGPT-lo-{lvl_name}"].values)[-forecast_horizon:]
-            yhigh_forecast = list(df[f"TimeGPT-hi-{lvl_name}"].values)[-forecast_horizon:]
-            yhigh_forecast.reverse()
-            ylo_forecast += yhigh_forecast
+            ylo = list(df[f"TimeGPT-lo-{lvl_name}"].values)[:-forecast_horizon]
+            yhigh = list(df[f"TimeGPT-hi-{lvl_name}"].values)[:-forecast_horizon]
+            yhigh.reverse()
+            ylo += yhigh
 
             fig.add_traces(
                 [
                     go.Scatter(
-                        x=xds_forecast,
-                        y=ylo_forecast,
+                        x=xds,
+                        y=ylo,
                         mode="lines",
-                        line_color=f"rgba(0,172,255,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
-                        name=f"{lvl_name}% confidence interval",
+                        line_color=f"rgba(255,127,14,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                        name=f"{lvl_name}% confidence interval historical",
                         fill="toself",
-                        fillcolor=f"rgba(0,172,255,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                        fillcolor=f"rgba(255,127,14,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
                     )
                 ]
             )
+
+        ylo_forecast = list(df[f"TimeGPT-lo-{lvl_name}"].values)[-forecast_horizon:]
+        yhigh_forecast = list(df[f"TimeGPT-hi-{lvl_name}"].values)[-forecast_horizon:]
+        yhigh_forecast.reverse()
+        ylo_forecast += yhigh_forecast
+
+        fig.add_traces(
+            [
+                go.Scatter(
+                    x=xds_forecast,
+                    y=ylo_forecast,
+                    mode="lines",
+                    line_color=f"rgba(0,172,255,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                    name=f"{lvl_name}% confidence interval",
+                    fill="toself",
+                    fillcolor=f"rgba(0,172,255,{.2+(len(levels)-count)*(.6/(len(levels)+1))})",
+                )
+            ]
+        )
 
     if residuals:
         # TimeGPT prediction - historical

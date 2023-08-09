@@ -3543,6 +3543,7 @@ class ForecastController(BaseController):
         if ns_parser:
             timegpt_view.display_timegpt_forecast(
                 data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
                 time_col=ns_parser.timecol,
                 target_col=ns_parser.targetcol,
                 forecast_horizon=ns_parser.horizon,

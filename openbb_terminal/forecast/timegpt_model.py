@@ -61,6 +61,7 @@ def get_timegpt_model(
     timegpt = TimeGPT(
         token=get_current_user().credentials.API_KEY_NIXTLA,
     )
+
     if isinstance(data[time_col].values[0], pd.Timestamp):
         data[time_col] = data[time_col].dt.strftime("%Y-%m-%d")
     elif isinstance(data[time_col].values[0], numpy.datetime64):
