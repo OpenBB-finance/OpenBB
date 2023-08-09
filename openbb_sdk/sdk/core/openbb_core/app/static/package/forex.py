@@ -86,7 +86,10 @@ class CLASS_forex(Container):
             Specify if the tickers returned should be actively traded on the queried date.
         order : Optional[Literal['asc', 'desc']]
             Order data by ascending or descending.
-        sort : Optional[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']]
+        sort : Optional[Literal[
+            'ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol',
+            'base_currency_name', 'last_updated_utc', 'delisted_utc'
+        ]]
             Sort field used for ordering.
         limit : Optional[PositiveInt]
             The number of data entries to return.

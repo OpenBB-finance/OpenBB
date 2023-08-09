@@ -130,7 +130,8 @@ class CLASS_stocks_fa(Container):
         deferred_revenue : Optional[int]
             Accrued income taxes, other deferred revenue
         short_term_debt : Optional[int]
-            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
+            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year,
+            Finance lease obligations due within one year
         current_liabilities : Optional[int]
             None
         long_term_debt : Optional[int]
@@ -1958,7 +1959,11 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
-        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
+        transactionType : Optional[List[Literal[
+            'A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong',
+            'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale',
+            'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust'
+        ]]]
             The type of the transaction.
         reportingCik : Optional[int]
             The CIK of the reporting owner.
@@ -2160,7 +2165,8 @@ class CLASS_stocks_fa(Container):
         total_puts_change : int
             Change in the total number of put options contracts traded between the current and previous reporting dates.
         put_call_ratio : float
-            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
+            The put-call ratio, which is the ratio of the total number of put options
+            to call options traded on the specified date.
         last_put_call_ratio : float
             The put-call ratio on the previous reporting date.
         put_call_ratio_change : float

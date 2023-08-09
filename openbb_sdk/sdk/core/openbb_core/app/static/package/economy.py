@@ -199,7 +199,14 @@ class CLASS_economy(Container):
         ----------
         provider: Literal[fred]
             The provider to use for the query.
-        countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania', 'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states']]
+        countries : List[Literal[
+            'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus',
+            'czech_republic', 'denmark', 'estonia', 'euro_area', 'finland', 'france', 'germany', 'greece', 'hungary',
+            'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania',
+            'luxembourg','malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania',
+            'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden',
+            'switzerland', 'turkey', 'united_kingdom', 'united_states'
+        ]]
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The data units.

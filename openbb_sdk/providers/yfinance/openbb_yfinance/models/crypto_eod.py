@@ -62,7 +62,9 @@ class YFinanceCryptoEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceCryptoEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: YFinanceCryptoEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[YFinanceCryptoEODData]:
         now = datetime.now().date()
         query.start_date = query.start_date or (now - timedelta(days=8))

@@ -62,7 +62,9 @@ class YFinanceStockEODFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceStockEODQueryParams, credentials: Optional[Dict[str, str]]
+        query: YFinanceStockEODQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> List[YFinanceStockEODData]:
         now = datetime.now().date()
         query.start_date = query.start_date or (now - timedelta(days=8))
