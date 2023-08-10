@@ -314,6 +314,8 @@ def print_rich_table(
         console.
     source: Optional[str]
         Source of the table. If provided, it will be displayed in the header of the table.
+    columns_keep_types: Optional[List[str]]
+        Columns to keep their types, i.e. not convert to numeric
     """
     if export:
         return
