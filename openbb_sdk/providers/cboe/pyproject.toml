@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-cboe"
-version = "0.0.1"
+version = "0.1.1"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
