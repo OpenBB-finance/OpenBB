@@ -134,7 +134,7 @@ class CLASS_stocks_dd(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """SEC Filings.
 

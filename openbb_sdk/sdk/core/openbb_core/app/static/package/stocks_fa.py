@@ -53,7 +53,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Balance Sheet.
 
@@ -142,10 +142,7 @@ class CLASS_stocks_fa(Container):
         deferred_revenue : Optional[int]
             Accrued income taxes, other deferred revenue
         short_term_debt : Optional[int]
-
-                Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year,
-                Finance lease obligations due within one year
-
+            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
         current_liabilities : Optional[int]
             None
         long_term_debt : Optional[int]
@@ -290,7 +287,7 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Balance Sheet Statement Growth.
 
@@ -457,7 +454,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Show Dividend Calendar for a given start and end dates.
 
@@ -557,7 +554,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement.
 
@@ -753,7 +750,7 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Cash Flow Statement Growth.
 
@@ -893,7 +890,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Executive Compensation.
 
@@ -999,7 +996,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Stock Split Calendar.
 
@@ -1117,7 +1114,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Historical Dividends.
 
@@ -1223,7 +1220,7 @@ class CLASS_stocks_fa(Container):
         ] = 50,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Earnings Calendar.
 
@@ -1315,7 +1312,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Number of Employees.
 
@@ -1448,7 +1445,7 @@ class CLASS_stocks_fa(Container):
         ] = 30,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Analyst Estimates.
 
@@ -1663,7 +1660,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Income Statement.
 
@@ -1883,7 +1880,7 @@ class CLASS_stocks_fa(Container):
         ] = "annually",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Income Statement Growth.
 
@@ -2057,7 +2054,7 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Stock Insider Trading.
 
@@ -2177,7 +2174,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Institutional Ownership.
 
@@ -2272,21 +2269,15 @@ class CLASS_stocks_fa(Container):
         last_total_calls : int
             Total number of call options contracts traded for Apple Inc. on the previous reporting date.
         total_calls_change : int
-
-                Change in the total number of call options contracts traded between the current and previous reporting dates.
-
+            Change in the total number of call options contracts traded between the current and previous reporting dates.
         total_puts : int
             Total number of put options contracts traded for Apple Inc. on the specified date.
         last_total_puts : int
             Total number of put options contracts traded for Apple Inc. on the previous reporting date.
         total_puts_change : int
-
-                Change in the total number of put options contracts traded between the current and previous reporting dates.
-
+            Change in the total number of put options contracts traded between the current and previous reporting dates.
         put_call_ratio : float
-
-                The put-call ratio, which is the ratio of the total number of put options to call options.
-
+            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
         last_put_call_ratio : float
             The put-call ratio on the previous reporting date.
         put_call_ratio_change : float
@@ -2358,7 +2349,7 @@ class CLASS_stocks_fa(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Key Metrics.
 
@@ -2555,7 +2546,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Key Executives.
 
@@ -2673,7 +2664,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[BaseModel]:
         """Company Overview.
 
@@ -2824,7 +2815,7 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Stock Ownership.
 
@@ -2979,7 +2970,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Price Target Consensus.
 
@@ -3060,7 +3051,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Price Target.
 
@@ -3164,7 +3155,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Extensive set of ratios over time.
 
@@ -3399,7 +3390,7 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Revenue Geographic.
 
@@ -3500,7 +3491,7 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Revenue Business Line.
 
@@ -3647,7 +3638,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Share Statistics.
 
@@ -3730,7 +3721,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Historical Stock Splits.
 
@@ -3838,7 +3829,7 @@ class CLASS_stocks_fa(Container):
         ] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Earnings Call Transcript.
 

@@ -1,13 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import Literal, Optional
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -17,11 +17,13 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def chains(
         self,
-        symbol: str,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[BaseModel]:
         """Get the complete options chain for a ticker.
 
 
@@ -116,7 +118,7 @@ class CLASS_stocks_options(Container):
         changePercent : float
             The change, in percent, of the option.
         lastTradeTimestamp : datetime
-            The last trade timestamp of the option."""
+            The last trade timestamp of the option."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -154,44 +156,10 @@ class CLASS_stocks_options(Container):
 
     @filter_call
     @validate_arguments
-    def expirations(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Return options expirations."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/expirations",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def grhist(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot option greek history."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/grhist",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def hist(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Get historical data for a single option contract."""
+        """Get historical data for a single option contract."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -222,44 +190,10 @@ class CLASS_stocks_options(Container):
 
     @filter_call
     @validate_arguments
-    def last_price(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Return last price of an option."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/last_price",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def oi(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot option open interest."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/oi",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def pcr(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Display historical rolling put/call ratio for ticker over a defined window."""
+        """Display historical rolling put/call ratio for ticker over a defined window."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -283,57 +217,6 @@ class CLASS_stocks_options(Container):
 
         o = self._command_runner_session.run(
             "/stocks/options/unu",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def voi(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot volume and open interest."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/voi",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def vol(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Plot volume."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/vol",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def vsurf(
-        self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Show 3D volatility surface."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/options/vsurf",
             **inputs,
         ).output
 

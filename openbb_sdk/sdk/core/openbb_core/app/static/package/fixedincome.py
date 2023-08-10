@@ -33,7 +33,7 @@ class CLASS_fixedincome(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Get treasury rates.
 

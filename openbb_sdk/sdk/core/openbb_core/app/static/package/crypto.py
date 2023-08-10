@@ -34,7 +34,7 @@ class CLASS_crypto(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Crypto Intraday Price.
 

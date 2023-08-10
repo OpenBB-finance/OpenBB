@@ -19,7 +19,7 @@ class CLASS_forex(Container):
         self,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs.
 
@@ -148,7 +148,7 @@ class CLASS_forex(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> CommandOutput[typing.List]:
         """Forex Intraday Price.
 
