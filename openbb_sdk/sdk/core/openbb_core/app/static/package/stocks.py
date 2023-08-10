@@ -101,9 +101,9 @@ class CLASS_stocks(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["cboe", "fmp", "polygon"]] = None,
+        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[BaseModel]:
         """Load stock data for a specific ticker.
 
 
@@ -112,7 +112,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[cboe, fmp, polygon]
+        provider: Literal[cboe, fmp, polygon, yfinance]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -211,7 +211,22 @@ class CLASS_stocks(Container):
         StockEOD
         --------
         n : Optional[PositiveInt]
-            The number of transactions for the symbol in the time period."""  # noqa: E501
+            The number of transactions for the symbol in the time period.
+
+        yfinance
+        ========
+
+        Parameters
+        ----------
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
+
+
+        StockEOD
+        --------
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
