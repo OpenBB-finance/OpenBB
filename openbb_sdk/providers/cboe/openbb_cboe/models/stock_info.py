@@ -5,7 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_info import StockInfoData, StockInfoQueryParams
+from openbb_provider.standard_models.stock_info import (
+    StockInfoData,
+    StockInfoQueryParams,
+)
 from pydantic import Field, validator
 
 from openbb_cboe.utils.helpers import get_info
