@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.balance_sheet_growth import (
+from openbb_provider.standard_models.balance_sheet_growth import (
     BalanceSheetGrowthData,
     BalanceSheetGrowthQueryParams,
 )
@@ -75,7 +75,7 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
 class FMPBalanceSheetGrowthFetcher(
     Fetcher[
         FMPBalanceSheetGrowthQueryParams,
-        FMPBalanceSheetGrowthData,
+        List[FMPBalanceSheetGrowthData],
     ]
 ):
     @staticmethod

@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.major_indices_constituents import (
+from openbb_provider.standard_models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
 )
@@ -53,7 +53,7 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 class FMPMajorIndicesConstituentsFetcher(
     Fetcher[
         FMPMajorIndicesConstituentsQueryParams,
-        FMPMajorIndicesConstituentsData,
+        List[FMPMajorIndicesConstituentsData],
     ]
 ):
     @staticmethod
@@ -78,5 +78,5 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPMajorIndicesConstituentsData],
-    ) -> List[FMPMajorIndicesConstituentsData]:
-        return data
+    ) -> List[MajorIndicesConstituentsData]:
+        return [MajorIndicesConstituentsData.parse_obj(d.dict()) for d in data]

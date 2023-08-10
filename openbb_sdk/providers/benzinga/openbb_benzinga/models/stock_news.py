@@ -5,11 +5,16 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
+from openbb_provider.standard_models.stock_news import (
+    StockNewsQueryParams,
+)
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field
 
-from openbb_benzinga.utils.helpers import BenzingaImage, get_data
+from openbb_benzinga.utils.helpers import (
+    BenzingaStockNewsData,
+    get_data,
+)
 
 
 class BenzingaStockNewsQueryParams(StockNewsQueryParams):
@@ -54,8 +59,8 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
         ]
     ] = Field(
         default=None,
-        description="The order in which to sort the news. Options are: published_at,"
-        " updated_at, title, author, channel, ticker, topic, content_type.",
+        description="The order in which to sort the news. "
+        "Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.",
     )
     isin: Optional[str] = Field(
         default=None, description="The ISIN of the news to retrieve."
@@ -77,25 +82,10 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     )
 
 
-class BenzingaStockNewsData(StockNewsData):
-    """Benzinga Stock News data."""
-
-    class Config:
-        fields = {"date": "created", "text": "body"}
-
-    image: List[BenzingaImage] = Field(
-        description="The images associated with the news."
-    )
-
-    @validator("date", pre=True)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
-
-
 class BenzingaStockNewsFetcher(
     Fetcher[
         BenzingaStockNewsQueryParams,
-        BenzingaStockNewsData,
+        List[BenzingaStockNewsData],
     ]
 ):
     @staticmethod
@@ -118,11 +108,10 @@ class BenzingaStockNewsFetcher(
         if len(data) == 0:
             raise RuntimeError("No news found")
 
-        return [BenzingaStockNewsData(**d) for d in data]
+        return [BenzingaStockNewsData.from_dict(d) for d in data]
 
     @staticmethod
     def transform_data(
         data: List[BenzingaStockNewsData],
     ) -> List[BenzingaStockNewsData]:
-        # {"image": lambda x: "" if x == [] else x[0].url}
         return data

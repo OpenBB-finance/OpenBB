@@ -2,11 +2,12 @@
 
 import datetime
 import typing
-from typing import Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -16,12 +17,24 @@ class CLASS_crypto(Container):
     @validate_arguments
     def load(
         self,
-        symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Crypto Intraday Price.
 
@@ -116,7 +129,7 @@ class CLASS_crypto(Container):
         CryptoEOD
         ---------
         n : PositiveInt
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

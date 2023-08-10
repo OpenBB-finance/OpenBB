@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_eod import StockEODData, StockEODQueryParams
+from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 
@@ -47,7 +47,7 @@ class PolygonStockEODData(StockEODData):
             "vwap": "vw",
         }
 
-    n: PositiveInt = Field(
+    n: Optional[PositiveInt] = Field(
         description="The number of transactions for the symbol in the time period."
     )
 
@@ -59,7 +59,7 @@ class PolygonStockEODData(StockEODData):
 class PolygonStockEODFetcher(
     Fetcher[
         PolygonStockEODQueryParams,
-        PolygonStockEODData,
+        List[PolygonStockEODData],
     ]
 ):
     @staticmethod
@@ -83,10 +83,9 @@ class PolygonStockEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.symbol}/range/1/{str(query.timespan)}/"
+            f"{query.symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url, **kwargs)
@@ -96,9 +95,8 @@ class PolygonStockEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonStockEODData(**d) for d in data]
+        return [PolygonStockEODData.parse_obj(d) for d in data.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[PolygonStockEODData]) -> List[PolygonStockEODData]:
-        return data
+    def transform_data(data: List[PolygonStockEODData]) -> List[StockEODData]:
+        return [StockEODData.parse_obj(d.dict()) for d in data]

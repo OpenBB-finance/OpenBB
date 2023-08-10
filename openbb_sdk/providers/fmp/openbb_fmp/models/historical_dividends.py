@@ -1,14 +1,12 @@
 """FMP Historical Dividends fetcher."""
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.historical_dividends import (
+from openbb_provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
 )
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -31,23 +29,11 @@ class FMPHistoricalDividendsData(HistoricalDividendsData):
             "declaration_date": "declarationDate",
         }
 
-    @validator("declarationDate", pre=True, check_fields=False)
-    def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @validator("recordDate", pre=True, check_fields=False)
-    def record_date_validate(cls, v: str):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @validator("paymentDate", pre=True, check_fields=False)
-    def payment_date_validate(cls, v: str):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
 
 class FMPHistoricalDividendsFetcher(
     Fetcher[
         FMPHistoricalDividendsQueryParams,
-        FMPHistoricalDividendsData,
+        List[FMPHistoricalDividendsData],
     ]
 ):
     @staticmethod
@@ -70,5 +56,5 @@ class FMPHistoricalDividendsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPHistoricalDividendsData],
-    ) -> List[FMPHistoricalDividendsData]:
-        return data
+    ) -> List[HistoricalDividendsData]:
+        return [HistoricalDividendsData.parse_obj(d.dict()) for d in data]

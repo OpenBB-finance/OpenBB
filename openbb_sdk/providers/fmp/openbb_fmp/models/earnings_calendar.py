@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.earnings_calendar import (
+from openbb_provider.standard_models.earnings_calendar import (
     EarningsCalendarData,
     EarningsCalendarQueryParams,
 )
@@ -48,7 +48,7 @@ class FMPEarningsCalendarData(EarningsCalendarData):
 class FMPEarningsCalendarFetcher(
     Fetcher[
         FMPEarningsCalendarQueryParams,
-        FMPEarningsCalendarData,
+        List[FMPEarningsCalendarData],
     ]
 ):
     @staticmethod
@@ -71,5 +71,5 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPEarningsCalendarData],
-    ) -> List[FMPEarningsCalendarData]:
-        return data
+    ) -> List[EarningsCalendarData]:
+        return [EarningsCalendarData.parse_obj(d.dict()) for d in data]

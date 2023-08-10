@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.revenue_geographic import (
+from openbb_provider.standard_models.revenue_geographic import (
     RevenueGeographicData,
     RevenueGeographicQueryParams,
 )
@@ -32,7 +32,7 @@ class FMPRevenueGeographicData(RevenueGeographicData):
 class FMPRevenueGeographicFetcher(
     Fetcher[  # type: ignore
         FMPRevenueGeographicQueryParams,
-        FMPRevenueGeographicData,
+        List[FMPRevenueGeographicData],
     ]
 ):
     @staticmethod
@@ -43,7 +43,7 @@ class FMPRevenueGeographicFetcher(
     def extract_data(
         query: FMPRevenueGeographicQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPRevenueGeographicData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -55,24 +55,24 @@ class FMPRevenueGeographicFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
-        data = [
-            {
-                **v,
-                "date": k,
-                "americas": v.get("Americas Segment", v.get("North America")),
-                "europe": v.get("Europe Segment", v.get("Europe")),
-                "greater_china": v.get("Greater China Segment", v.get("Greater China")),
-                "japan": v.get("Japan Segment", v.get("Japan", v.get("J P"))),
-                "rest_of_asia_pacific": v.get(
-                    "Rest of Asia Pacific Segment", v.get("Asia-Pacific")
+        return [
+            FMPRevenueGeographicData(
+                date=key,
+                geographic_segment=v,
+                americas=v.get("Americas Segment", v.get("North America", None)),
+                europe=v.get("Europe Segment", v.get("Europe", None)),
+                greater_china=v.get(
+                    "Greater China Segment", v.get("Greater China", None)
                 ),
-            }
+                japan=v.get("Japan Segment", v.get("Japan", v.get("J P", None))),
+                rest_of_asia_pacific=v.get(
+                    "Rest of Asia Pacific Segment", v.get("Asia-Pacific", None)
+                ),
+            )
             for d in data
-            for k, v in d.items()
+            for key, v in d.items()
             if isinstance(v, dict)
         ]
-
-        return [FMPRevenueGeographicData(**d) for d in data]
 
     @staticmethod
     def transform_data(

@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.analyst_estimates import (
+from openbb_provider.standard_models.analyst_estimates import (
     AnalystEstimatesData,
     AnalystEstimatesQueryParams,
 )
@@ -50,7 +50,7 @@ class FMPAnalystEstimatesData(AnalystEstimatesData):
 class FMPAnalystEstimatesFetcher(
     Fetcher[
         FMPAnalystEstimatesQueryParams,
-        FMPAnalystEstimatesData,
+        List[FMPAnalystEstimatesData],
     ]
 ):
     @staticmethod
@@ -75,5 +75,5 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPAnalystEstimatesData],
-    ) -> List[FMPAnalystEstimatesData]:
-        return data
+    ) -> List[AnalystEstimatesData]:
+        return [AnalystEstimatesData.parse_obj(d.dict()) for d in data]

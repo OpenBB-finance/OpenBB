@@ -328,15 +328,20 @@ def pta(
     return CommandOutput(results=Query(**locals()).execute())
 
 
+@router.command(model="FinancialRatios")
+def ratios(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Extensive set of ratios over time."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command
 def rating() -> CommandOutput[Empty]:  # type: ignore
     """Analyst prices and ratings over time of the company."""
-    return CommandOutput(results=Empty())
-
-
-@router.command
-def ratios() -> CommandOutput[Empty]:  # type: ignore
-    """Extensive set of ratios over time."""
     return CommandOutput(results=Empty())
 
 

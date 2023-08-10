@@ -15,7 +15,7 @@ class CLASS_stocks_dps(Container):
     def psi(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Price vs short interest volume"""
+        """Price vs short interest volume"""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -32,7 +32,7 @@ class CLASS_stocks_dps(Container):
     def ctb(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Cost to borrow of stocks."""
+        """Cost to borrow of stocks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -49,7 +49,7 @@ class CLASS_stocks_dps(Container):
     def dpotc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Dark pools (ATS) vs OTC data."""
+        """Dark pools (ATS) vs OTC data."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -66,7 +66,7 @@ class CLASS_stocks_dps(Container):
     def ftd(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Fails-to-deliver data."""
+        """Fails-to-deliver data."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -83,7 +83,7 @@ class CLASS_stocks_dps(Container):
     def hsi(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Show top high short interest stocks of over 20% ratio."""
+        """Show top high short interest stocks of over 20% ratio."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -100,7 +100,7 @@ class CLASS_stocks_dps(Container):
     def pos(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Dark pool short position."""
+        """Dark pool short position."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -117,7 +117,7 @@ class CLASS_stocks_dps(Container):
     def prom(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Promising tickers based on dark pool shares regression."""
+        """Promising tickers based on dark pool shares regression."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -166,7 +166,7 @@ class CLASS_stocks_dps(Container):
     def shorted(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Most shorted stocks."""
+        """Most shorted stocks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -183,7 +183,7 @@ class CLASS_stocks_dps(Container):
     def sidtc(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Short interest and days to cover."""
+        """Short interest and days to cover."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -200,7 +200,7 @@ class CLASS_stocks_dps(Container):
     def spos(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Net short vs position."""
+        """Net short vs position."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

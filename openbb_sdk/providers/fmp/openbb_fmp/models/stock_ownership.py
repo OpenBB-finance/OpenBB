@@ -4,7 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_ownership import (
+from openbb_provider.standard_models.stock_ownership import (
     StockOwnershipData,
     StockOwnershipQueryParams,
 )
@@ -63,7 +63,7 @@ class FMPStockOwnershipData(StockOwnershipData):
 class FMPStockOwnershipFetcher(
     Fetcher[
         FMPStockOwnershipQueryParams,
-        FMPStockOwnershipData,
+        List[FMPStockOwnershipData],
     ]
 ):
     @staticmethod
@@ -74,7 +74,7 @@ class FMPStockOwnershipFetcher(
     def extract_data(
         query: FMPStockOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPStockOwnershipData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -85,10 +85,11 @@ class FMPStockOwnershipFetcher(
             query,
         )
 
-        return get_data_many(url, FMPStockOwnershipData, **kwargs)
+        sorted_data = get_data_many(url, FMPStockOwnershipData, **kwargs)
+        sorted_data.sort(key=lambda x: x.filing_date, reverse=True)
+
+        return sorted_data
 
     @staticmethod
-    def transform_data(
-        data: List[FMPStockOwnershipData],
-    ) -> List[FMPStockOwnershipData]:
-        return data
+    def transform_data(data: List[FMPStockOwnershipData]) -> List[StockOwnershipData]:
+        return [StockOwnershipData.parse_obj(d.dict()) for d in data]

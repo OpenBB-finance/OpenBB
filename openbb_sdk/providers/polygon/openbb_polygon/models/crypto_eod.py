@@ -5,7 +5,10 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.crypto_eod import CryptoEODData, CryptoEODQueryParams
+from openbb_provider.standard_models.crypto_eod import (
+    CryptoEODData,
+    CryptoEODQueryParams,
+)
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 
@@ -59,7 +62,7 @@ class PolygonCryptoEODData(CryptoEODData):
 class PolygonCryptoEODFetcher(
     Fetcher[
         PolygonCryptoEODQueryParams,
-        PolygonCryptoEODData,
+        List[PolygonCryptoEODData],
     ]
 ):
     @staticmethod
@@ -84,10 +87,9 @@ class PolygonCryptoEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"X:{query.symbol}/range/1/{str(query.timespan)}/"
+            f"X:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url, **kwargs)
@@ -97,9 +99,8 @@ class PolygonCryptoEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonCryptoEODData(**d) for d in data]
+        return [PolygonCryptoEODData.parse_obj(d) for d in data.get("results", [])]
 
     @staticmethod
-    def transform_data(data: List[PolygonCryptoEODData]) -> List[PolygonCryptoEODData]:
-        return data
+    def transform_data(data: List[PolygonCryptoEODData]) -> List[CryptoEODData]:
+        return [CryptoEODData.parse_obj(d.dict()) for d in data]

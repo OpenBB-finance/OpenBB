@@ -17,7 +17,7 @@ class RegistryMap:
         self._registry = registry or RegistryLoader.from_extensions()
         self._required_credentials = self._get_required_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
-        self._map = self._get_map(self._registry)
+        self._map, self._return_map = self._get_map(self._registry)
         self._models = self._get_models(self._map)
 
     @property
@@ -41,6 +41,10 @@ class RegistryMap:
         return self._map
 
     @property
+    def return_map(self) -> MapType:
+        return self._return_map
+
+    @property
     def models(self) -> List[str]:
         """Get available models."""
         return self._models
@@ -60,12 +64,14 @@ class RegistryMap:
     def _get_map(self, registry: Registry) -> MapType:
         """Generate map for the provider package."""
         map_: MapType = {}
+        return_map: MapType = {}
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
                 f = fetcher()
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
+                return_type = self.extract_return_type(f)
 
                 if model_name not in map_:
                     map_[model_name] = {}
@@ -78,8 +84,9 @@ class RegistryMap:
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
+                return_map[model_name] = return_type
 
-        return map_
+        return map_, return_map
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
@@ -89,7 +96,6 @@ class RegistryMap:
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
         super_model = getattr(fetcher, f"provider_{type_}_type")
-        super_model_name = super_model.__name__
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
@@ -104,9 +110,7 @@ class RegistryMap:
             model_file_dir = os.path.dirname(inspect.getfile(model))
             model_name = os.path.basename(model_file_dir)
 
-            if (
-                model_name == "models" and model.__name__ != super_model_name
-            ) or found_standard:
+            if (model_name == "standard_models") or found_standard:
                 if not found_standard:
                     standard_info["docstring"] = model.__doc__
                 found_standard = True
@@ -121,3 +125,8 @@ class RegistryMap:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info
+
+    @staticmethod
+    def extract_return_type(fetcher: Fetcher):
+        """Extract return info from fetcher."""
+        return getattr(fetcher, "generic_return_type", None)

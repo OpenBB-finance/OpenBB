@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.institutional_ownership import (
+from openbb_provider.standard_models.institutional_ownership import (
     InstitutionalOwnershipData,
     InstitutionalOwnershipQueryParams,
 )
@@ -69,7 +69,7 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
 class FMPInstitutionalOwnershipFetcher(
     Fetcher[
         FMPInstitutionalOwnershipQueryParams,
-        FMPInstitutionalOwnershipData,
+        List[FMPInstitutionalOwnershipData],
     ]
 ):
     @staticmethod
@@ -90,5 +90,5 @@ class FMPInstitutionalOwnershipFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPInstitutionalOwnershipData],
-    ) -> List[FMPInstitutionalOwnershipData]:
-        return data
+    ) -> List[InstitutionalOwnershipData]:
+        return [InstitutionalOwnershipData.parse_obj(d.dict()) for d in data]

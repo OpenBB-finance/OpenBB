@@ -3,7 +3,10 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.global_news import GlobalNewsData, GlobalNewsQueryParams
+from openbb_provider.standard_models.global_news import (
+    GlobalNewsData,
+    GlobalNewsQueryParams,
+)
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -27,7 +30,7 @@ class FMPGlobalNewsData(GlobalNewsData):
 class FMPGlobalNewsFetcher(
     Fetcher[
         FMPGlobalNewsQueryParams,
-        FMPGlobalNewsData,
+        List[FMPGlobalNewsData],
     ]
 ):
     @staticmethod
@@ -38,7 +41,7 @@ class FMPGlobalNewsFetcher(
     def extract_data(
         query: FMPGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPGlobalNewsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

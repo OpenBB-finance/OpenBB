@@ -4,7 +4,10 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.models.stock_news import StockNewsData, StockNewsQueryParams
+from openbb_provider.standard_models.stock_news import (
+    StockNewsData,
+    StockNewsQueryParams,
+)
 from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -34,7 +37,7 @@ class FMPStockNewsData(StockNewsData):
 class FMPStockNewsFetcher(
     Fetcher[
         FMPStockNewsQueryParams,
-        FMPStockNewsData,
+        List[FMPStockNewsData],
     ]
 ):
     @staticmethod
@@ -45,7 +48,7 @@ class FMPStockNewsFetcher(
     def extract_data(
         query: FMPStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPStockNewsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -53,5 +56,5 @@ class FMPStockNewsFetcher(
         return get_data_many(url, FMPStockNewsData, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockNewsData]) -> List[FMPStockNewsData]:
-        return data
+    def transform_data(data: List[FMPStockNewsData]) -> List[StockNewsData]:
+        return [StockNewsData.parse_obj(d) for d in data]

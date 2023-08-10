@@ -2,13 +2,14 @@
 
 import datetime
 import typing
-from typing import List, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -23,7 +24,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """CORECPI."""
+        """CORECPI."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -42,10 +43,15 @@ class CLASS_economy(Container):
     @validate_arguments
     def const(
         self,
-        index: Literal["nasdaq", "sp500", "dowjones"] = "dowjones",
+        index: Annotated[
+            Literal["nasdaq", "sp500", "dowjones"],
+            OpenBBCustomParameter(
+                description="The index for which we want to fetch the constituents."
+            ),
+        ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get the constituents of an index.
 
@@ -104,7 +110,7 @@ class CLASS_economy(Container):
 
         MajorIndicesConstituents
         ------------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -127,68 +133,92 @@ class CLASS_economy(Container):
     @validate_arguments
     def cpi(
         self,
-        countries: List[
-            Literal[
-                "australia",
-                "austria",
-                "belgium",
-                "brazil",
-                "bulgaria",
-                "canada",
-                "chile",
-                "china",
-                "croatia",
-                "cyprus",
-                "czech_republic",
-                "denmark",
-                "estonia",
-                "euro_area",
-                "finland",
-                "france",
-                "germany",
-                "greece",
-                "hungary",
-                "iceland",
-                "india",
-                "indonesia",
-                "ireland",
-                "israel",
-                "italy",
-                "japan",
-                "korea",
-                "latvia",
-                "lithuania",
-                "luxembourg",
-                "malta",
-                "mexico",
-                "netherlands",
-                "new_zealand",
-                "norway",
-                "poland",
-                "portugal",
-                "romania",
-                "russian_federation",
-                "slovak_republic",
-                "slovakia",
-                "slovenia",
-                "south_africa",
-                "spain",
-                "sweden",
-                "switzerland",
-                "turkey",
-                "united_kingdom",
-                "united_states",
-            ]
+        countries: Annotated[
+            List[
+                Literal[
+                    "australia",
+                    "austria",
+                    "belgium",
+                    "brazil",
+                    "bulgaria",
+                    "canada",
+                    "chile",
+                    "china",
+                    "croatia",
+                    "cyprus",
+                    "czech_republic",
+                    "denmark",
+                    "estonia",
+                    "euro_area",
+                    "finland",
+                    "france",
+                    "germany",
+                    "greece",
+                    "hungary",
+                    "iceland",
+                    "india",
+                    "indonesia",
+                    "ireland",
+                    "israel",
+                    "italy",
+                    "japan",
+                    "korea",
+                    "latvia",
+                    "lithuania",
+                    "luxembourg",
+                    "malta",
+                    "mexico",
+                    "netherlands",
+                    "new_zealand",
+                    "norway",
+                    "poland",
+                    "portugal",
+                    "romania",
+                    "russian_federation",
+                    "slovak_republic",
+                    "slovakia",
+                    "slovenia",
+                    "south_africa",
+                    "spain",
+                    "sweden",
+                    "switzerland",
+                    "turkey",
+                    "united_kingdom",
+                    "united_states",
+                ]
+            ],
+            OpenBBCustomParameter(description="The country or countries to get data."),
         ],
-        units: Literal["growth_previous", "growth_same", "index_2015"] = "growth_same",
-        frequency: Literal["monthly", "quarterly", "annual"] = "monthly",
-        harmonized: bool = False,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        units: Annotated[
+            Literal["growth_previous", "growth_same", "index_2015"],
+            OpenBBCustomParameter(description="The data units."),
+        ] = "growth_same",
+        frequency: Annotated[
+            Literal["monthly", "quarterly", "annual"],
+            OpenBBCustomParameter(description="The data time frequency."),
+        ] = "monthly",
+        harmonized: typing.Annotated[
+            bool,
+            OpenBBCustomParameter(
+                description="Whether you wish to obtain harmonized data."
+            ),
+        ] = False,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> CommandOutput[typing.List]:
+        **kwargs,
+    ) -> CommandOutput[BaseModel]:
         """CPI.
 
 
@@ -248,7 +278,7 @@ class CLASS_economy(Container):
 
         CPI
         ---
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -281,7 +311,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Get the options for v3 cpi(options=True)"""
+        """Get the options for v3 cpi(options=True)"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -300,12 +330,24 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        symbol: typing.Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get OHLCV data for an index.
 
@@ -341,6 +383,8 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
+        date : datetime
+            The date of the data.
         open : PositiveFloat
             The open price of the symbol.
         high : PositiveFloat
@@ -349,8 +393,10 @@ class CLASS_economy(Container):
             The low price of the symbol.
         close : PositiveFloat
             The close price of the symbol.
-        volume : PositiveFloat
+        volume : float
             The volume of the symbol.
+        vwap : Optional[float]
+            Volume Weighted Average Price of the symbol.
 
         fmp
         ===
@@ -359,25 +405,23 @@ class CLASS_economy(Container):
         ----------
         timeseries : Optional[NonNegativeInt]
             Number of days to look back.
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Interval of the data to fetch.
 
 
         MajorIndicesEOD
         ---------------
-        date : datetime
-            The date of the data.
-        adjClose : float
+        adjClose : Optional[float]
             Adjusted Close Price of the symbol.
-        unadjustedVolume : float
+        unadjustedVolume : Optional[float]
             Unadjusted volume of the symbol.
-        change : float
+        change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : float
+        changePercent : Optional[float]
             Change \\% in the price of the symbol.
-        vwap : float
-            Volume Weighted Average Price of the symbol.
-        label : str
+        label : Optional[str]
             Human readable format of the date.
-        changeOverTime : float
+        changeOverTime : Optional[float]
             Change \\% in the price of the symbol over a period of time.
 
         polygon
@@ -399,12 +443,8 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
-        t : datetime
-            The timestamp of the data.
         n : PositiveInt
-            The number of transactions for the symbol in the time period.
-        vw : PositiveFloat
-            The volume weighted average price of the symbol."""
+            The number of transactions for the symbol in the time period."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -480,7 +520,7 @@ class CLASS_economy(Container):
 
         AvailableIndices
         ----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -550,7 +590,7 @@ class CLASS_economy(Container):
 
         RiskPremium
         -----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -576,7 +616,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Query EconDB for macro data."""
+        """Query EconDB for macro data."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -600,7 +640,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_COUNTRIES."""
+        """MACRO_COUNTRIES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -624,7 +664,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_PARAMETERS."""
+        """MACRO_PARAMETERS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -648,7 +688,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """BALANCE."""
+        """BALANCE."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -672,7 +712,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """BIGMAC."""
+        """BIGMAC."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -696,7 +736,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """COUNTRY_CODES."""
+        """COUNTRY_CODES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -720,7 +760,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """CURRENCIES."""
+        """CURRENCIES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -744,7 +784,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """DEBT."""
+        """DEBT."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -768,7 +808,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """EVENTS."""
+        """EVENTS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -792,7 +832,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """FGDP."""
+        """FGDP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -816,7 +856,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """FRED."""
+        """FRED."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -840,7 +880,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """FRED Search (was fred_notes)."""
+        """FRED Search (was fred_notes)."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -864,7 +904,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """FUTURES. 2 sources"""
+        """FUTURES. 2 sources"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -888,7 +928,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """GDP."""
+        """GDP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -912,7 +952,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """GLBONDS."""
+        """GLBONDS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -936,7 +976,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """INDICES."""
+        """INDICES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -960,7 +1000,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """OVERVIEW."""
+        """OVERVIEW."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -984,7 +1024,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """PERFMAP."""
+        """PERFMAP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1008,7 +1048,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """PERFORMANCE."""
+        """PERFORMANCE."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1032,7 +1072,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """REVENUE."""
+        """REVENUE."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1056,7 +1096,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """RGDP."""
+        """RGDP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1080,7 +1120,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """RTPS."""
+        """RTPS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1104,7 +1144,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """SEARCH_INDEX."""
+        """SEARCH_INDEX."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1128,7 +1168,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """SPENDING."""
+        """SPENDING."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1152,7 +1192,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """TRUST."""
+        """TRUST."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1176,7 +1216,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """USBONDS."""
+        """USBONDS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1200,7 +1240,7 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon"]
         ] = None,
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """VALUATION."""
+        """VALUATION."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
