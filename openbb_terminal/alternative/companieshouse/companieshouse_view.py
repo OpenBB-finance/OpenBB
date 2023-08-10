@@ -44,6 +44,7 @@ def display_search(search_str: str, limit: int, export: str = "") -> None:
         show_index=False,
         title=f"[bold]{search_str}[/bold]",
         export=bool(export),
+        columns_keep_types=["Company Number"],
     )
 
     export_data(
