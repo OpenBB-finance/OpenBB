@@ -142,7 +142,10 @@ class CLASS_stocks_fa(Container):
         deferred_revenue : Optional[int]
             Accrued income taxes, other deferred revenue
         short_term_debt : Optional[int]
-            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
+
+                Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year,
+                Finance lease obligations due within one year
+
         current_liabilities : Optional[int]
             None
         long_term_debt : Optional[int]
@@ -2269,15 +2272,21 @@ class CLASS_stocks_fa(Container):
         last_total_calls : int
             Total number of call options contracts traded for Apple Inc. on the previous reporting date.
         total_calls_change : int
-            Change in the total number of call options contracts traded between the current and previous reporting dates.
+
+                Change in the total number of call options contracts traded between the current and previous reporting dates.
+
         total_puts : int
             Total number of put options contracts traded for Apple Inc. on the specified date.
         last_total_puts : int
             Total number of put options contracts traded for Apple Inc. on the previous reporting date.
         total_puts_change : int
-            Change in the total number of put options contracts traded between the current and previous reporting dates.
+
+                Change in the total number of put options contracts traded between the current and previous reporting dates.
+
         put_call_ratio : float
-            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
+
+                The put-call ratio, which is the ratio of the total number of put options to call options.
+
         last_put_call_ratio : float
             The put-call ratio on the previous reporting date.
         put_call_ratio_change : float

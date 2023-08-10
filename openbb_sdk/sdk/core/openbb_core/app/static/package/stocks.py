@@ -100,9 +100,10 @@ class CLASS_stocks(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        provider: Optional[Literal["cboe", "fmp", "polygon"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
+        """Load stock data for a specific ticker.
         """Load stock data for a specific ticker.
 
 
@@ -111,7 +112,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[cboe, fmp, polygon]
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
@@ -149,7 +150,7 @@ class CLASS_stocks(Container):
             The close price of the symbol.
         volume : float
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
+        vwap : PositiveFloat
             Volume Weighted Average Price of the symbol.
 
         fmp
@@ -171,12 +172,12 @@ class CLASS_stocks(Container):
             Unadjusted volume of the symbol.
         change : Optional[float]
             Change in the price of the symbol from the previous day.
-        changePercent : Optional[float]
-            Change \\% in the price of the symbol.
-        label : Optional[str]
+        changePercent : float
+            Change \% in the price of the symbol.
+        label : str
             Human readable format of the date.
-        changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time.
+        changeOverTime : float
+            Change \% in the price of the symbol over a period of time.
 
         polygon
         =======
@@ -630,16 +631,15 @@ class CLASS_stocks(Container):
 
     @filter_call
     @validate_arguments
-    def quote(
+    def search(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        query: str = "",
+        ticker: bool = False,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
     ) -> CommandOutput[typing.List]:
-        """Load stock data for a specific ticker.
+        """Search for a company or stock ticker.
 
 
         openbb
@@ -647,10 +647,12 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp]
+        provider: Literal[cboe]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
-            Symbol to get data for.
+        query : str
+            The search query.
+        ticker : bool
+            Whether to search by ticker symbol.
 
         Returns
         -------
@@ -667,64 +669,52 @@ class CLASS_stocks(Container):
                 Chart object.
 
 
-        StockQuote
-        ----------
+        StockSearch
+        -----------
         symbol : str
-            Symbol of the company.
-        name : Optional[str]
+            The ticker symbol of the company.
+        name : str
             The name of the company.
-        price : Optional[float]
-            The current trading price of the stock.
-        changes_percentage : Optional[float]
-            The change percentage of the stock price.
-        change : Optional[float]
-            The change of the stock price.
-        day_low : Optional[float]
-            The lowest price of the stock in the current trading day.
-        day_high : Optional[float]
-            The highest price of the stock in the current trading day.
-        year_high : Optional[float]
-            The highest price of the stock in the last 52 weeks.
-        year_low : Optional[float]
-            The lowest price of the stock in the last 52 weeks.
-        market_cap : Optional[float]
-            The market cap of the company.
-        price_avg50 : Optional[float]
-            The 50 days average price of the stock.
-        price_avg200 : Optional[float]
-            The 200 days average price of the stock.
-        volume : Optional[int]
-            The volume of the stock in the current trading day.
-        avg_volume : Optional[int]
-            The average volume of the stock in the last 10 trading days.
-        exchange : Optional[str]
-            The exchange the stock is traded on.
-        open : Optional[float]
-            The opening price of the stock in the current trading day.
-        previous_close : Optional[float]
-            The previous closing price of the stock.
-        eps : Optional[float]
-            The earnings per share of the stock.
-        pe : Optional[float]
-            The price earnings ratio of the stock.
-        earnings_announcement : Optional[str]
-            The earnings announcement date of the stock.
-        shares_outstanding : Optional[int]
-            The number of shares outstanding of the stock.
-        date : Optional[datetime]
-            The timestamp of the stock quote.
 
-        fmp
-        ===
+        cboe
+        ====
 
         Parameters
         ----------
         All fields are standardized.
 
 
-        StockQuote
-        ----------
-        All fields are standardized."""  # noqa: E501
+        StockSearch
+        -----------
+        dpmName : Optional[str]
+            The name of the primary market maker.
+        postStation : Optional[str]
+            The post and station location on the CBOE trading floor."""
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "ticker": ticker,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/search",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def quote(
+        self, chart: bool = False
+    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+        """View the current price for a specific stock ticker."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -748,13 +738,20 @@ class CLASS_stocks(Container):
     def search(
         self, chart: bool = False
     ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
-        """Search a specific stock ticker for analysis."""  # noqa: E501
+        """Search a specific stock ticker for analysis."""
         inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": symbol,
+            },
+            extra_params=kwargs,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/stocks/search",
+            "/stocks/info",
             **inputs,
         ).output
 

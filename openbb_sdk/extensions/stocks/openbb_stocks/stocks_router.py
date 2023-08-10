@@ -73,6 +73,17 @@ def tob() -> CommandOutput[Empty]:
     return CommandOutput(results=Empty())
 
 
+@router.command(model="StockSearch")
+def search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Search for a company or stock ticker."""
+    return CommandOutput(results=Query(**locals()).execute())
+
+
 @router.command(model="StockQuote")
 def quote(
     cc: CommandContext,
@@ -84,7 +95,12 @@ def quote(
     return CommandOutput(results=Query(**locals()).execute())
 
 
-@router.command
-def search() -> CommandOutput[Empty]:
-    """Search a specific stock ticker for analysis."""
-    return CommandOutput(results=Empty())
+@router.command(model="StockInfo")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> CommandOutput[BaseModel]:
+    """Get general price and performance metrics of a stock."""
+    return CommandOutput(results=Query(**locals()).execute())
