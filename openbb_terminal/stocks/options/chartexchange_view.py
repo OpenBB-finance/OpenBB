@@ -72,6 +72,7 @@ def display_raw(
     price: float = 90,
     limit: int = 10,
     chain_id: Optional[str] = None,
+    raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
@@ -109,22 +110,27 @@ def display_raw(
     option_type = "call" if call else "put"
     fig = plot_chart(df, option_type, symbol, price)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "hist",
-        df,
-        sheet_name,
-        fig,
-    )
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=True,
-        index_name="Date",
-        title=f"{symbol.upper()} raw data",
-        export=bool(export),
-        limit=limit,
-    )
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "hist",
+            df,
+            sheet_name,
+            fig,
+        )
+        return None
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            index_name="Date",
+            title="Historical Option Prices",
+            export=bool(export),
+            limit=limit,
+        )
+        return None
 
     return fig.show(external=external_axes)
