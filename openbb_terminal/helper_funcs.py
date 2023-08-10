@@ -278,6 +278,7 @@ def print_rich_table(
     print_to_console: bool = False,
     limit: Optional[int] = 1000,
     source: Optional[str] = None,
+    columns_keep_types: Optional[List[str]] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -329,6 +330,8 @@ def print_rich_table(
     #  convert non-str that are not timestamp or int into str
     # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
+        if columns_keep_types is not None and col in columns_keep_types:
+            continue
         try:
             if not any(
                 isinstance(df[col].iloc[x], pd.Timestamp)
