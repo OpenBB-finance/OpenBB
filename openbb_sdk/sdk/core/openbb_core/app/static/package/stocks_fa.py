@@ -1433,7 +1433,7 @@ class CLASS_stocks_fa(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarterly", "annually"],
+            Literal["annually", "quarterly"],
             OpenBBCustomParameter(
                 description="Period of the data to return (quarterly or annually)."
             ),
@@ -3190,7 +3190,7 @@ class CLASS_stocks_fa(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarterly", "annually"],
+            Literal["annually", "quarterly"],
             OpenBBCustomParameter(
                 description="Period of the data to return (quarterly or annually)."
             ),
@@ -3289,7 +3289,7 @@ class CLASS_stocks_fa(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarterly", "annually"],
+            Literal["annually", "quarterly"],
             OpenBBCustomParameter(
                 description="Period of the data to return (quarterly or annually)."
             ),

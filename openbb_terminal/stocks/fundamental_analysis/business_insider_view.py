@@ -172,9 +172,17 @@ def display_price_target_from_analysts(
         name="Price Target",
         mode="markers",
         customdata=df_analyst_plot.apply(
-            lambda row: f"{row['Company']} ({row['Rating']})", axis=1
-        ).values,
-        hovertemplate="%{customdata}<br><br>Price Target: %{y:.2f}",
+            lambda row: "<br>".join(
+                [
+                    f"<b>${x['Price Target']}</b> - <b>{x['Company']} ({x['Rating']})</b>"
+                    for _, x in df_analyst_plot[df_analyst_plot.index == row.name]
+                    .sort_values(by="Price Target", ascending=False)
+                    .iterrows()
+                ]
+            ),
+            axis=1,
+        ),
+        hovertemplate="<br>%{customdata}",
         marker=dict(
             color=colors,
             line=dict(width=1, color="DarkSlateGrey"),
@@ -182,6 +190,8 @@ def display_price_target_from_analysts(
         ),
         line=dict(color=theme.get_colors()[1]),
     )
+
+    fig.update_layout(hovermode="x unified")
 
     export_data(
         export,
