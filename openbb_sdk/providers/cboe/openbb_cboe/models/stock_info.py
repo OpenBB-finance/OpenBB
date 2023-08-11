@@ -95,10 +95,10 @@ class CboeStockInfoFetcher(
         query: CboeStockInfoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[CboeStockInfoData]:
+    ) -> CboeStockInfoData:
         data = get_info(query.symbol).to_dict()
         return CboeStockInfoData.parse_obj(data)
 
     @staticmethod
-    def transform_data(data: List[CboeStockInfoData]) -> List[CboeStockInfoData]:
+    def transform_data(data: List[CboeStockInfoData]) -> CboeStockInfoData:
         return data

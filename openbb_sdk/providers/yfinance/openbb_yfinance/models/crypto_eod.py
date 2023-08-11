@@ -49,7 +49,7 @@ class YFinanceCryptoEODData(CryptoEODData):
 class YFinanceCryptoEODFetcher(
     Fetcher[
         YFinanceCryptoEODQueryParams,
-        YFinanceCryptoEODData,
+        List[YFinanceCryptoEODData],
     ]
 ):
     @staticmethod
@@ -67,7 +67,7 @@ class YFinanceCryptoEODFetcher(
     def extract_data(
         query: YFinanceCryptoEODQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[YFinanceCryptoEODData]:
         now = datetime.now().date()
         query.start_date = query.start_date or (now - timedelta(days=8))
@@ -95,7 +95,7 @@ class YFinanceCryptoEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceCryptoEODData(**d) for d in data]
+        return [YFinanceCryptoEODData.parse_obj(d) for d in data]
 
     @staticmethod
     def transform_data(

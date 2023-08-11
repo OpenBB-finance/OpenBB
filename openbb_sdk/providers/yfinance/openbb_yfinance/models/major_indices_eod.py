@@ -49,7 +49,7 @@ class YFinanceMajorIndicesEODData(MajorIndicesEODData):
 class YFinanceMajorIndicesEODFetcher(
     Fetcher[
         YFinanceMajorIndicesEODQueryParams,
-        YFinanceMajorIndicesEODData,
+        List[YFinanceMajorIndicesEODData],
     ]
 ):
     @staticmethod
@@ -97,7 +97,7 @@ class YFinanceMajorIndicesEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceMajorIndicesEODData(**d) for d in data]
+        return [YFinanceMajorIndicesEODData.parse_obj(d) for d in data]
 
     @staticmethod
     def transform_data(

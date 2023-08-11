@@ -3,7 +3,7 @@
 import datetime
 from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import Obbject
@@ -131,7 +131,8 @@ class CLASS_forex(Container):
     def load(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -148,7 +149,7 @@ class CLASS_forex(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs,
-    ) -> Obbject[BaseModel]:
+    ) -> Obbject[List]:
         """Forex Intraday Price.
 
 
@@ -159,7 +160,7 @@ class CLASS_forex(Container):
         ----------
         provider: Literal[fmp, polygon, yfinance]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format.
@@ -262,7 +263,7 @@ class CLASS_forex(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },

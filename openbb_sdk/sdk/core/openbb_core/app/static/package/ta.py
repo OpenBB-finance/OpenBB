@@ -8,6 +8,7 @@ import pydantic
 import pydantic.types
 from pydantic import validate_arguments
 
+import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container

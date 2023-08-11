@@ -38,7 +38,8 @@ class CLASS_stocks_fa(Container):
     def balance(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -64,7 +65,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp, polygon]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
@@ -258,7 +259,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "limit": limit,
             },
@@ -278,7 +279,8 @@ class CLASS_stocks_fa(Container):
     def balance_growth(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         limit: Annotated[
             int,
@@ -298,7 +300,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         limit : int
             The number of data entries to return.
@@ -320,7 +322,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheetGrowth
         ------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             The date of the data.
@@ -421,7 +423,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -487,7 +489,7 @@ class CLASS_stocks_fa(Container):
 
         DividendCalendar
         ----------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             The date of the data.
@@ -539,7 +541,8 @@ class CLASS_stocks_fa(Container):
     def cash(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -565,7 +568,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp, polygon]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
@@ -721,7 +724,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "limit": limit,
             },
@@ -741,7 +744,8 @@ class CLASS_stocks_fa(Container):
     def cash_growth(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         limit: Annotated[
             int,
@@ -761,7 +765,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         limit : int
             The number of data entries to return.
@@ -783,7 +787,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatementGrowth
         -----------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             The date of the data.
@@ -866,7 +870,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -885,7 +889,8 @@ class CLASS_stocks_fa(Container):
     def comp(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -901,7 +906,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -921,7 +926,7 @@ class CLASS_stocks_fa(Container):
 
         ExecutiveCompensation
         ---------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         cik : Optional[str]
             The Central Index Key (CIK) of the company.
@@ -964,7 +969,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -1109,7 +1114,8 @@ class CLASS_stocks_fa(Container):
     def divs(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -1125,7 +1131,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -1176,7 +1182,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -1211,7 +1217,8 @@ class CLASS_stocks_fa(Container):
     def earning(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         limit: Annotated[
             Optional[int],
@@ -1231,7 +1238,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
@@ -1253,7 +1260,7 @@ class CLASS_stocks_fa(Container):
 
         EarningsCalendar
         ----------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             The date of the data.
@@ -1288,7 +1295,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -1307,7 +1314,8 @@ class CLASS_stocks_fa(Container):
     def emp(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -1323,7 +1331,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -1343,7 +1351,7 @@ class CLASS_stocks_fa(Container):
 
         HistoricalEmployees
         -------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         cik : int
             The CIK of the company to retrieve the historical employees of.
@@ -1378,7 +1386,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -1430,7 +1438,8 @@ class CLASS_stocks_fa(Container):
     def est(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -1456,7 +1465,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
             Period of the data to return (quarterly or annually).
@@ -1480,7 +1489,7 @@ class CLASS_stocks_fa(Container):
 
         AnalystEstimates
         ----------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             A specific date to get data for.
@@ -1541,7 +1550,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "limit": limit,
             },
@@ -1645,7 +1654,8 @@ class CLASS_stocks_fa(Container):
     def income(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -1671,7 +1681,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp, polygon]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
@@ -1845,7 +1855,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "limit": limit,
             },
@@ -1865,7 +1875,8 @@ class CLASS_stocks_fa(Container):
     def income_growth(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         limit: Annotated[
             int,
@@ -1891,7 +1902,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         limit : int
             The number of data entries to return.
@@ -1915,7 +1926,7 @@ class CLASS_stocks_fa(Container):
 
         IncomeStatementGrowth
         ---------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             The date of the data.
@@ -1990,7 +2001,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "limit": limit,
                 "period": period,
             },
@@ -2010,7 +2021,8 @@ class CLASS_stocks_fa(Container):
     def ins(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         transactionType: Annotated[
             Optional[
@@ -2065,7 +2077,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
             The type of the transaction.
@@ -2093,7 +2105,7 @@ class CLASS_stocks_fa(Container):
 
         StockInsiderTrading
         -------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         filing_date : datetime
             The filing date of the stock insider trading.
@@ -2140,7 +2152,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "transactionType": transactionType,
                 "reportingCik": reportingCik,
                 "companyCik": companyCik,
@@ -2162,7 +2174,8 @@ class CLASS_stocks_fa(Container):
     def ins_own(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         include_current_quarter: Annotated[
             bool, OpenBBCustomParameter(description="Include current quarter data.")
@@ -2185,7 +2198,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         include_current_quarter : bool
             Include current quarter data.
@@ -2209,7 +2222,7 @@ class CLASS_stocks_fa(Container):
 
         InstitutionalOwnership
         ----------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         cik : Optional[str]
             The CIK of the company.
@@ -2298,7 +2311,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "include_current_quarter": include_current_quarter,
                 "date": date,
             },
@@ -2334,7 +2347,8 @@ class CLASS_stocks_fa(Container):
     def metrics(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -2360,7 +2374,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
@@ -2384,7 +2398,7 @@ class CLASS_stocks_fa(Container):
 
         KeyMetrics
         ----------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             The date of the data.
@@ -2521,7 +2535,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "limit": limit,
             },
@@ -2541,7 +2555,8 @@ class CLASS_stocks_fa(Container):
     def mgmt(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -2557,7 +2572,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -2608,7 +2623,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -2659,7 +2674,8 @@ class CLASS_stocks_fa(Container):
     def overview(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -2675,7 +2691,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -2695,7 +2711,7 @@ class CLASS_stocks_fa(Container):
 
         CompanyOverview
         ---------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         price : float
             The price of the company.
@@ -2784,7 +2800,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -2802,7 +2818,8 @@ class CLASS_stocks_fa(Container):
     def own(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         date: Annotated[
             datetime.date,
@@ -2826,7 +2843,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             A specific date to get data for.
@@ -2945,7 +2962,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "date": date,
                 "page": page,
             },
@@ -2965,12 +2982,13 @@ class CLASS_stocks_fa(Container):
     def pt(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> Obbject[List]:
+    ) -> Obbject[BaseModel]:
         """Price Target Consensus.
 
 
@@ -2981,7 +2999,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -3001,7 +3019,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTargetConsensus
         --------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         target_high : float
             The high target of the price target consensus.
@@ -3028,7 +3046,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -3046,7 +3064,8 @@ class CLASS_stocks_fa(Container):
     def pta(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -3062,7 +3081,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -3082,7 +3101,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTarget
         -----------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         published_date : datetime
             The published date of the price target.
@@ -3122,7 +3141,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -3140,7 +3159,8 @@ class CLASS_stocks_fa(Container):
     def ratios(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -3166,7 +3186,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
@@ -3321,7 +3341,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "limit": limit,
             },
@@ -3375,7 +3395,8 @@ class CLASS_stocks_fa(Container):
     def revgeo(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -3401,7 +3422,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
             Period of the data to return (quarterly or annually).
@@ -3456,7 +3477,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "structure": structure,
             },
@@ -3476,7 +3497,8 @@ class CLASS_stocks_fa(Container):
     def revseg(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Literal["annually", "quarterly"],
@@ -3502,7 +3524,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         period : Literal['quarterly', 'annually']
             Period of the data to return (quarterly or annually).
@@ -3547,7 +3569,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "period": period,
                 "structure": structure,
             },
@@ -3633,7 +3655,8 @@ class CLASS_stocks_fa(Container):
     def shrs(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -3649,7 +3672,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -3669,7 +3692,7 @@ class CLASS_stocks_fa(Container):
 
         ShareStatistics
         ---------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         date : date
             A specific date to get data for.
@@ -3698,7 +3721,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -3716,7 +3739,8 @@ class CLASS_stocks_fa(Container):
     def split(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -3732,7 +3756,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -3777,7 +3801,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -3812,7 +3836,8 @@ class CLASS_stocks_fa(Container):
     def transcript(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         year: Annotated[
             int,
@@ -3840,7 +3865,7 @@ class CLASS_stocks_fa(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         year : int
             The year of the earnings call transcript.
@@ -3864,7 +3889,7 @@ class CLASS_stocks_fa(Container):
 
         EarningsCallTranscript
         ----------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         quarter : int
             The quarter of the earnings call transcript.
@@ -3891,7 +3916,7 @@ class CLASS_stocks_fa(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "year": year,
                 "quarter": quarter,
             },

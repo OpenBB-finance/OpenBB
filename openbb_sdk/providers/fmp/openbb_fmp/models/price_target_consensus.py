@@ -1,7 +1,7 @@
 """FMP Price Target Consensus fetcher."""
 
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.price_target_consensus import (
@@ -9,7 +9,7 @@ from openbb_provider.standard_models.price_target_consensus import (
     PriceTargetConsensusQueryParams,
 )
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_one
 
 
 class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
@@ -34,7 +34,7 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
         FMPPriceTargetConsensusQueryParams,
-        List[FMPPriceTargetConsensusData],
+        FMPPriceTargetConsensusData,
     ]
 ):
     @staticmethod
@@ -46,14 +46,14 @@ class FMPPriceTargetConsensusFetcher(
         query: FMPPriceTargetConsensusQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPPriceTargetConsensusData]:
+    ) -> FMPPriceTargetConsensusData:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
-        return get_data_many(url, FMPPriceTargetConsensusData, **kwargs)
+        return get_data_one(url, FMPPriceTargetConsensusData, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPPriceTargetConsensusData],
-    ) -> List[PriceTargetConsensusData]:
-        return [PriceTargetConsensusData.parse_obj(d.dict()) for d in data]
+        data: FMPPriceTargetConsensusData,
+    ) -> PriceTargetConsensusData:
+        return PriceTargetConsensusData.parse_obj(data.dict())

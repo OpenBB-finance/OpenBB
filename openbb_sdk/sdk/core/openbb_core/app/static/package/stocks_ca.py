@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Annotated, Literal, Optional
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import BaseModel, validate_arguments
 
@@ -18,7 +18,8 @@ class CLASS_stocks_ca(Container):
     def peers(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -34,7 +35,7 @@ class CLASS_stocks_ca(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -75,7 +76,7 @@ class CLASS_stocks_ca(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,

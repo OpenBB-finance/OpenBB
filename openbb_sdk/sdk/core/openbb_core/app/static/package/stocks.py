@@ -85,7 +85,8 @@ class CLASS_stocks(Container):
     def load(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -102,7 +103,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs,
-    ) -> Obbject[BaseModel]:
+    ) -> Obbject[List]:
         """Load stock data for a specific ticker.
 
 
@@ -113,7 +114,7 @@ class CLASS_stocks(Container):
         ----------
         provider: Literal[cboe, fmp, polygon, yfinance]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format.
@@ -231,7 +232,7 @@ class CLASS_stocks(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },
@@ -445,7 +446,8 @@ class CLASS_stocks(Container):
     def multiples(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         limit: Annotated[
             Optional[int],
@@ -465,7 +467,7 @@ class CLASS_stocks(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
@@ -624,7 +626,7 @@ class CLASS_stocks(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -669,7 +671,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs,
-    ) -> Obbject[BaseModel]:
+    ) -> Obbject[List]:
         """Search for a company or stock ticker.
 
 
@@ -745,7 +747,8 @@ class CLASS_stocks(Container):
     def quote(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
@@ -761,7 +764,7 @@ class CLASS_stocks(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -842,7 +845,7 @@ class CLASS_stocks(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -860,7 +863,8 @@ class CLASS_stocks(Container):
     def info(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
@@ -876,7 +880,7 @@ class CLASS_stocks(Container):
         ----------
         provider: Literal[cboe]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -972,7 +976,7 @@ class CLASS_stocks(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,

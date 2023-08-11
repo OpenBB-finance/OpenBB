@@ -1,6 +1,8 @@
 """Key Metrics fetcher."""
 
 
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -56,7 +58,7 @@ class FMPKeyMetricsData(KeyMetricsData):
             "dividend_yield": "dividendYield",
             "payout_ratio": "payoutRatio",
             "sales_general_and_administrative_to_revenue": "salesGeneralAndAdministrativeToRevenue",
-            "research_and_developement_to_revenue": "researchAndDdevelopementToRevenue",
+            "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
             "intangibles_to_total_assets": "intangiblesToTotalAssets",
             "capex_to_operating_cash_flow": "capexToOperatingCashFlow",
             "capex_to_revenue": "capexToRevenue",
@@ -104,10 +106,18 @@ class FMPKeyMetricsFetcher(
 
         query.period = "annual" if query.period == "annually" else "quarter"
 
-        url = create_url(
-            3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
-        )
-        return get_data_many(url, FMPKeyMetricsData, **kwargs)
+        data = []
+
+        def multiple_symbols(symbol: str, data: List[FMPKeyMetricsData]) -> None:
+            url = create_url(
+                3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
+            )
+            return data.extend(get_data_many(url, FMPKeyMetricsData, **kwargs))
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+
+        return data
 
     @staticmethod
     def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:

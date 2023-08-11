@@ -82,7 +82,7 @@ class CLASS_economy(Container):
 
         MajorIndicesConstituents
         ------------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         name : str
             The name of the constituent company in the index.
@@ -330,7 +330,8 @@ class CLASS_economy(Container):
     def index(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -347,7 +348,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs,
-    ) -> Obbject[BaseModel]:
+    ) -> Obbject[List]:
         """Get OHLCV data for an index.
 
 
@@ -358,7 +359,7 @@ class CLASS_economy(Container):
         ----------
         provider: Literal[fmp, polygon, yfinance]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format.
@@ -464,7 +465,7 @@ class CLASS_economy(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },
@@ -513,7 +514,7 @@ class CLASS_economy(Container):
 
         AvailableIndices
         ----------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         name : Optional[str]
             The name of the index.

@@ -46,7 +46,7 @@ class YFinanceForexEODData(ForexEODData):
 class YFinanceForexEODFetcher(
     Fetcher[
         YFinanceForexEODQueryParams,
-        YFinanceForexEODData,
+        List[YFinanceForexEODData],
     ]
 ):
     @staticmethod
@@ -94,7 +94,7 @@ class YFinanceForexEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceForexEODData(**d) for d in data]
+        return [YFinanceForexEODData.parse_obj(d) for d in data]
 
     @staticmethod
     def transform_data(

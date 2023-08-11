@@ -469,6 +469,7 @@ class MethodDefinition:
         # Be careful, if the type is not coercible by pydantic to the original type, you
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
+            "symbol": List[str],
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
@@ -653,6 +654,9 @@ class MethodDefinition:
                 value = {k: k for k in fields}
                 code += f"            {name}={{"
                 for k, v in value.items():
+                    if k == "symbol":
+                        code += f'"{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, '
+                        continue
                     code += f'"{k}": {v}, '
                 code += "},\n"
             else:

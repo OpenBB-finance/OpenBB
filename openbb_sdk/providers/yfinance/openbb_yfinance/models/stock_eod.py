@@ -46,7 +46,7 @@ class YFinanceStockEODData(StockEODData):
 class YFinanceStockEODFetcher(
     Fetcher[
         YFinanceStockEODQueryParams,
-        YFinanceStockEODData,
+        List[YFinanceStockEODData],
     ]
 ):
     @staticmethod
@@ -64,7 +64,7 @@ class YFinanceStockEODFetcher(
     def extract_data(
         query: YFinanceStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[YFinanceStockEODData]:
         now = datetime.now().date()
         query.start_date = query.start_date or (now - timedelta(days=8))
@@ -92,7 +92,7 @@ class YFinanceStockEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceStockEODData(**d) for d in data]
+        return [YFinanceStockEODData.parse_obj(d) for d in data]
 
     @staticmethod
     def transform_data(

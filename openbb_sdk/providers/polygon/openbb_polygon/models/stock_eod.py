@@ -1,7 +1,9 @@
 """Polygon stocks end of day fetcher."""
 
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
+from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -81,21 +83,26 @@ class PolygonStockEODFetcher(
     ) -> List[PolygonStockEODData]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        request_url = (
-            f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
-            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
-        )
+        data = []
 
-        data = get_data(request_url, **kwargs)
-        if isinstance(data, list):
-            raise ValueError("Expected a dict, got a list")
+        def multiple_symbols(symbol: str, data: List[PolygonStockEODData]) -> None:
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
+                f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
+                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
+            )
+            results = get_data(request_url, **kwargs).get("results", [])
 
-        if "results" not in data or len(data["results"]) == 0:
-            raise RuntimeError("No results found. Please change your query parameters.")
+            if "," in query.symbol:
+                results = [dict(symbol=symbol, **d) for d in results]
 
-        return [PolygonStockEODData.parse_obj(d) for d in data.get("results", [])]
+            return data.extend([PolygonStockEODData.parse_obj(d) for d in results])
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+
+        return data
 
     @staticmethod
     def transform_data(data: List[PolygonStockEODData]) -> List[StockEODData]:
