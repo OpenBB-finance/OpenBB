@@ -1,5 +1,4 @@
 import builtins
-import re
 import shutil
 import subprocess
 from collections import OrderedDict
@@ -309,10 +308,6 @@ class DocstringGenerator:
         field_mapping = mapping[model_name][provider.lower()][section_name]["fields"]
         fields = field_mapping.keys()
 
-        def _to_snake_case(string: str) -> str:
-            s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
-            return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
-
         if len(fields) == 0:
             section_docstring += "All fields are standardized.\n"
         else:
@@ -327,7 +322,7 @@ class DocstringGenerator:
 
                 field_description = field_mapping[field].field_info.description
 
-                section_docstring += f"{_to_snake_case(field)} : {field_type}\n"
+                section_docstring += f"{field} : {field_type}\n"
                 section_docstring += f"{padding}{field_description}\n"
 
         if provider == "openbb" and section_name == "QueryParams":

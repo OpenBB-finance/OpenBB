@@ -118,17 +118,17 @@ class CLASS_crypto(Container):
 
         CryptoEOD
         ---------
-        adj_close : float
+        adjClose : float
             Adjusted Close Price of the symbol.
-        unadjusted_volume : float
+        unadjustedVolume : float
             Unadjusted volume of the symbol.
         change : float
             Change in the price of the symbol from the previous day.
-        change_percent : float
+        changePercent : float
             Change \% in the price of the symbol.
         label : str
             Human readable format of the date.
-        change_over_time : float
+        changeOverTime : float
             Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
