@@ -1,6 +1,8 @@
 """FMP Financial Ratios Fetcher."""
 
 
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -104,12 +106,19 @@ class FMPFinancialRatiosFetcher(
         query.period = "annual" if query.period == "annually" else "quarter"
         base_url = "https://financialmodelingprep.com/api/v3"
 
-        url = (
-            f"{base_url}/ratios/{query.symbol}?"
-            f"period={query.period}&limit={query.limit}&apikey={api_key}"
-        )
+        data = []
 
-        return get_data_many(url, FMPFinancialRatiosData, **kwargs)
+        def multiple_symbols(symbol: str, data: List[FMPFinancialRatiosData]) -> None:
+            url = (
+                f"{base_url}/ratios/{symbol}?"
+                f"period={query.period}&limit={query.limit}&apikey={api_key}"
+            )
+            return data.extend(get_data_many(url, FMPFinancialRatiosData, **kwargs))
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+
+        return data
 
     @staticmethod
     def transform_data(
