@@ -1,7 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
 from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import BaseModel, validate_arguments
@@ -52,7 +51,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[List]:
         """Get the constituents of an index.
 
 
@@ -197,7 +196,7 @@ class CLASS_economy(Container):
             Literal["monthly", "quarterly", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
-        harmonized: typing.Annotated[
+        harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
@@ -330,7 +329,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
@@ -348,8 +347,8 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs,
-    ) -> CommandOutput[typing.List]:
-        r"""Get OHLCV data for an index.
+    ) -> CommandOutput[BaseModel]:
+        """Get OHLCV data for an index.
 
 
         openbb
@@ -459,22 +458,7 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
-        date : datetime
-            The date of the data.
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \% in the price of the symbol.
-        vwap : float
-            Volume Weighted Average Price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \% in the price of the symbol over a period of time."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -499,7 +483,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[List]:
         """AVAILABLE_INDICES.
 
 
@@ -571,7 +555,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def risk(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> CommandOutput[List]:
         """Market Risk Premium.
 
 
