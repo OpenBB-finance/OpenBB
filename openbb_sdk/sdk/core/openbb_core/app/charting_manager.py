@@ -87,7 +87,7 @@ class ChartingManager(metaclass=SingletonMeta):
         bool
             Either charting extension is installed or not.
         """
-        entry_points = importlib_metadata.entry_points(group=f"{plugin}")
+        entry_points = importlib_metadata.entry_points(group=plugin)
         extensions = [ext.name for ext in entry_points]
 
         return charting_extension in extensions
@@ -99,9 +99,9 @@ class ChartingManager(metaclass=SingletonMeta):
         """
         Get the module of the given extension.
         """
-        for entry_point in importlib_metadata.entry_points(group=f"{plugin}"):
+        for entry_point in importlib_metadata.entry_points(group=plugin):
             if entry_point.name == extension_name:
-                return import_module(entry_point.module_name)
+                return import_module(entry_point.module)
 
     @classmethod
     def get_chart_format(cls, extension_name: str) -> ChartFormat:
