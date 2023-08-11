@@ -1,13 +1,10 @@
 from typing import Any, List, Optional, Tuple, TypeVar
+from unittest.mock import MagicMock
 
 from openbb_core.app.repository.mongodb.user_settings_repository import (
     UserSettingsRepository,
 )
-
 from pydantic import BaseModel
-
-from unittest.mock import MagicMock
-
 
 T = TypeVar("T", bound=BaseModel)
 
