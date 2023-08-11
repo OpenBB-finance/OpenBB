@@ -43,7 +43,7 @@ pycoingecko = "^3.1.0"
 detecta = "^0.0.5"
 tradingview-ta = "^3.2.3"
 finvizfinance = "^0.14.0"
-statsmodels = "^0.13"
+statsmodels = "^0.14.0"
 python-coinmarketcap = "^0.2"
 oandapyV20 = "^0.6.3"
 valinvest = "^0.0.2"
@@ -122,6 +122,7 @@ ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
+openbb-sdk = {path = "openbb_sdk/dist/openbb_sdk-4.0.0-py3-none-any.whl"}
 
 
 
