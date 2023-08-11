@@ -18,6 +18,7 @@ from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
+import requests
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
@@ -331,15 +332,15 @@ class TerminalController(BaseController):
                     )
 
     def parse_input(self, an_input: str) -> List:
-        """Overwrite the BaseController parse_input for `askobb`
+        """Overwrite the BaseController parse_input for `askobb` and 'exe'
 
         This will allow us to search for something like "P/E" ratio
         """
         # Filtering out sorting parameters with forward slashes like P/E
         sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
-
-        custom_filters = [sort_filter]
-
+        # Filter out urls
+        url = r"(exe (--url )?(https?://)?my\.openbb\.(dev|co)/u/.*/routine/.*)"
+        custom_filters = [sort_filter, url]
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def call_guess(self, other_args: List[str]) -> None:
@@ -591,16 +592,6 @@ class TerminalController(BaseController):
     def call_intro(self, _):
         """Process intro command."""
         webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
-        # import json
-
-        # intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
-
-        # for prompt in intro.get("prompts", []):
-        #     console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
-        #     console.print("".join(prompt["content"]))
-        #     if input("") == "q":
-        #         break
-        #     console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -629,7 +620,9 @@ class TerminalController(BaseController):
             required="-h" not in other_args
             and "--help" not in other_args
             and "-e" not in other_args
-            and "--example" not in other_args,
+            and "--example" not in other_args
+            and "--url" not in other_args
+            and "my.openbb" not in other_args[0],
             type=str,
             nargs="+",
         )
@@ -648,10 +641,15 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "--url", help="URL to run openbb script from.", dest="url", type=str
+        )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--file")
+            if other_args[0].startswith("my.") or other_args[0].startswith("http"):
+                other_args.insert(0, "--url")
+            else:
+                other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
         if ns_parser:
             if ns_parser.example:
                 routine_path = (
@@ -662,11 +660,37 @@ class TerminalController(BaseController):
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
+            elif ns_parser.url:
+                if not ns_parser.url.startswith(
+                    "https"
+                ) and not ns_parser.url.startswith("http:"):
+                    url = "https://" + ns_parser.url
+                else:
+                    if ns_parser.url.startswith("http://"):
+                        url = ns_parser.url.replace("http://", "https://")
+                    else:
+                        url = ns_parser.url
+                username = url.split("/")[-3]
+                script_name = url.split("/")[-1]
+                file_name = f"{username}_{script_name}.openbb"
+                final_url = f"{url}?raw=true"
+                response = requests.get(final_url, timeout=10)
+                if response.status_code != 200:
+                    console.print("[red]Could not find the requested script.[/red]")
+                    return
+                routine_text = response.json()["script"]
+                file_path = Path(get_current_user().preferences.USER_ROUTINES_DIRECTORY)
+                routine_path = file_path / file_name
+                with open(routine_path, "w") as file:
+                    file.write(routine_text)
+                self.update_runtime_choices()
+
             elif ns_parser.file:
+                file_path = " ".join(ns_parser.file)  # type: ignore
                 # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
-                file_path = " ".join(ns_parser.file)
                 full_path = file_path
-                hub_routine = file_path.split("/")
+                hub_routine = file_path.split("/")  # type: ignore
+                # Change with: my.openbb.co
                 if hub_routine[0] == "default":
                     routine_path = Path(
                         self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
@@ -676,7 +700,7 @@ class TerminalController(BaseController):
                         self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
                     )
                 else:
-                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))  # type: ignore
             else:
                 return
 
