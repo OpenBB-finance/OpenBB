@@ -133,7 +133,7 @@ class CLASS_stocks_dd(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> Obbject[List]:
         """SEC Filings.
 
