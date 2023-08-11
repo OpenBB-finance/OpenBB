@@ -185,17 +185,17 @@ class CLASS_stocks(Container):
 
         StockEOD
         --------
-        adjClose : float
+        adj_close : float
             Adjusted Close Price of the symbol.
-        unadjustedVolume : float
+        unadjusted_volume : float
             Unadjusted volume of the symbol.
         change : float
             Change in the price of the symbol from the previous day.
-        changePercent : float
+        change_percent : float
             Change \% in the price of the symbol.
         label : str
             Human readable format of the date.
-        changeOverTime : float
+        change_over_time : float
             Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
@@ -288,17 +288,17 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             The type of data to return.
         date : Optional[datetime]
             The date of the news to retrieve.
-        dateFrom : Optional[datetime]
+        date_from : Optional[datetime]
             The start date of the news to retrieve.
-        dateTo : Optional[datetime]
+        date_to : Optional[datetime]
             The end date of the news to retrieve.
-        updatedSince : Optional[int]
+        updated_since : Optional[int]
             The number of seconds since the news was updated.
-        publishedSince : Optional[int]
+        published_since : Optional[int]
             The number of seconds since the news was published.
         sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
             The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.

@@ -73,19 +73,19 @@ class CLASS_news(Container):
 
         Parameters
         ----------
-        pageSize : int
+        page_size : int
             The number of results to return per page.
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             The type of data to return.
         date : Optional[datetime]
             The date of the news to retrieve.
-        dateFrom : Optional[datetime]
+        date_from : Optional[datetime]
             The start date of the news to retrieve.
-        dateTo : Optional[datetime]
+        date_to : Optional[datetime]
             The end date of the news to retrieve.
-        updatedSince : Optional[int]
+        updated_since : Optional[int]
             The number of seconds since the news was updated.
-        publishedSince : Optional[int]
+        published_since : Optional[int]
             The number of seconds since the news was published.
         sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
             The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.

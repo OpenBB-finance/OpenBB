@@ -107,7 +107,7 @@ class CLASS_forex(Container):
             The symbol of the currency pair.
         currency : str
             The base currency of the currency pair.
-        stockExchange : Optional[str]
+        stock_exchange : Optional[str]
             The stock exchange of the currency pair.
         exchange_short_name : Optional[str]
             The short name of the stock exchange of the currency pair."""
@@ -231,17 +231,17 @@ class CLASS_forex(Container):
 
         ForexEOD
         --------
-        adjClose : float
+        adj_close : float
             Adjusted Close Price of the symbol.
-        unadjustedVolume : float
+        unadjusted_volume : float
             Unadjusted volume of the symbol.
         change : float
             Change in the price of the symbol from the previous day.
-        changePercent : float
+        change_percent : float
             Change \% in the price of the symbol.
         label : str
             Human readable format of the date.
-        changeOverTime : float
+        change_over_time : float
             Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
