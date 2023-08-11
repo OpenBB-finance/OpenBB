@@ -102,6 +102,11 @@ class PolygonStockEODFetcher(
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
 
+        data.sort(key=lambda x: x.date)
+        if query.timespan == "day":
+            for d in data:
+                d.date = datetime.replace(d.date, hour=0, minute=0)
+
         return data
 
     @staticmethod
