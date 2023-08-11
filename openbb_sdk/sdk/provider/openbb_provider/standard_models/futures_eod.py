@@ -1,4 +1,4 @@
-"""Crypto aggregate end of day price data model."""
+"""Futures aggregate end of day price data model."""
 
 
 from datetime import date, datetime
@@ -12,8 +12,8 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class CryptoEODQueryParams(QueryParams, BaseSymbol):
-    """Crypto end of day Query."""
+class FuturesEODQueryParams(QueryParams, BaseSymbol):
+    """Futures end of day Query."""
 
     start_date: Optional[date] = Field(
         default=None,
@@ -25,8 +25,8 @@ class CryptoEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class CryptoEODData(Data):
-    """Crypto end of day price Data."""
+class FuturesEODData(Data):
+    """Futures end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
@@ -34,4 +34,3 @@ class CryptoEODData(Data):
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
