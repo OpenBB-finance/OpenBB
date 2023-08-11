@@ -34,7 +34,7 @@ class CLASS_crypto(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Crypto Intraday Price.
 

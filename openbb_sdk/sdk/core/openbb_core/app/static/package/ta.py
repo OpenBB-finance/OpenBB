@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import List, Literal, Optional, Union
 
 import openbb_provider
@@ -27,7 +26,7 @@ class CLASS_ta(Container):
         drift: pydantic.types.NonNegativeInt = 1,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Average True Range is used to measure volatility, especially volatility caused by
         gaps or limit moves.
@@ -86,7 +85,7 @@ class CLASS_ta(Container):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Fibonacci Retracement Levels.
 
@@ -135,7 +134,7 @@ class CLASS_ta(Container):
         index: str = "date",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
            The On Balance Volume (OBV) is a cumulative total of the up and
            down volume. When the close is higher than the previous close, the volume is added
@@ -190,7 +189,7 @@ class CLASS_ta(Container):
         length: pydantic.types.PositiveInt = 14,
         signal: pydantic.types.PositiveInt = 1,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Fisher Transform is a technical indicator created by John F. Ehlers
         that converts prices into a Gaussian normal distribution.1 The indicator
@@ -245,7 +244,7 @@ class CLASS_ta(Container):
         slow: pydantic.types.PositiveInt = 10,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
         is essentially a momentum indicator, but of the Accumulation-Distribution line
@@ -321,7 +320,7 @@ class CLASS_ta(Container):
         mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
             Bollinger Bands consist of three lines. The middle band is a simple
             moving average (generally 20 periods) of the typical price (TP). The upper and lower
@@ -411,7 +410,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The zero lag exponential moving average (ZLEMA) indicator
         was created by John Ehlers and Ric Way. The idea is do a
@@ -470,7 +469,7 @@ class CLASS_ta(Container):
         length: int = 25,
         scalar: int = 100,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
            The word aroon is Sanskrit for "dawn's early light." The Aroon
            indicator attempts to show when a new trend is dawning. The indicator consists
@@ -532,7 +531,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Moving Averages are used to smooth the data in an array to
         help eliminate noise and identify trends. The Simple Moving Average is literally
@@ -593,7 +592,7 @@ class CLASS_ta(Container):
         asint: bool = False,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Demark sequential indicator
 
@@ -649,7 +648,7 @@ class CLASS_ta(Container):
         anchor: str = "D",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Volume Weighted Average Price that measures the average typical price
         by volume.  It is typically used with intraday charts to identify general direction.
@@ -721,7 +720,7 @@ class CLASS_ta(Container):
         slow: int = 26,
         signal: int = 9,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
            The Moving Average Convergence Divergence (MACD) is the difference
            between two Exponential Moving Averages. The Signal line is an Exponential Moving
@@ -786,7 +785,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Hull Moving Average solves the age old dilemma of making a moving average
         more responsive to current price activity whilst maintaining curve smoothness.
@@ -843,7 +842,7 @@ class CLASS_ta(Container):
         upper_length: pydantic.types.PositiveInt = 20,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Donchian Channels are three lines generated by moving average
         calculations that comprise an indicator formed by upper and lower
@@ -904,7 +903,7 @@ class CLASS_ta(Container):
         offset: pydantic.types.PositiveInt = 26,
         lookahead: bool = False,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
         defines support and resistance, identifies trend direction, gauges momentum and provides
@@ -955,7 +954,7 @@ class CLASS_ta(Container):
         target: str = "adj_close",
         period: pydantic.types.PositiveInt = 90,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Clenow Volatility Adjusted Momentum.
 
@@ -1004,7 +1003,7 @@ class CLASS_ta(Container):
         index: str = "date",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Accumulation/Distribution Line is similar to the On Balance
         Volume (OBV), which sums the volume times +1/-1 based on whether the close is
@@ -1062,7 +1061,7 @@ class CLASS_ta(Container):
         scalar: float = 100.0,
         drift: int = 1,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
         The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
@@ -1118,7 +1117,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         A Weighted Moving Average puts more weight on recent data and less on past data.
         This is done by multiplying each bar’s price by a weighting factor. Because of its
@@ -1174,7 +1173,7 @@ class CLASS_ta(Container):
         length: pydantic.types.PositiveInt = 14,
         scalar: pydantic.types.PositiveFloat = 0.015,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The CCI is designed to detect beginning and ending market trends.
         The range of 100 to -100 is the normal trading range. CCI values outside of this
@@ -1224,7 +1223,7 @@ class CLASS_ta(Container):
         scalar: float = 100.0,
         drift: int = 1,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Relative Strength Index (RSI) calculates a ratio of the
         recent upward price movements to the absolute price movement. The RSI ranges
@@ -1302,7 +1301,7 @@ class CLASS_ta(Container):
         slow_d_period: pydantic.types.NonNegativeInt = 3,
         slow_k_period: pydantic.types.NonNegativeInt = 3,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Stochastic Oscillator measures where the close is in relation
         to the recent trading range. The values range from zero to 100. %D values over 75
@@ -1379,7 +1378,7 @@ class CLASS_ta(Container):
         mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
         offset: pydantic.types.NonNegativeInt = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         Keltner Channels are volatility-based bands that are placed
         on either side of an asset's price and can aid in determining
@@ -1438,7 +1437,7 @@ class CLASS_ta(Container):
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Center of Gravity indicator, in short, is used to anticipate future price movements
         and to trade on price reversals as soon as they happen. However, just like other oscillators,
@@ -1498,7 +1497,7 @@ class CLASS_ta(Container):
         ] = "STD",
         is_crypto: bool = False,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Calculate the realized volatility quantiles over rolling windows of time.
 
         The model for calculating volatility is selectable.
@@ -1576,7 +1575,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """
         The Exponential Moving Average is a staple of technical
         analysis and is used in countless technical indicators. In a Simple Moving

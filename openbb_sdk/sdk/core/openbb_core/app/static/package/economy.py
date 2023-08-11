@@ -1,7 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
 from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import BaseModel, validate_arguments
@@ -51,8 +50,8 @@ class CLASS_economy(Container):
         ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> Obbject[List]:
         """Get the constituents of an index.
 
 
@@ -197,7 +196,7 @@ class CLASS_economy(Container):
             Literal["monthly", "quarterly", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
-        harmonized: typing.Annotated[
+        harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
@@ -217,7 +216,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """CPI.
 
@@ -330,7 +329,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
@@ -347,7 +346,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Get OHLCV data for an index.
 
@@ -484,7 +483,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """AVAILABLE_INDICES.
 
 
@@ -556,7 +555,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def risk(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Market Risk Premium.
 
 

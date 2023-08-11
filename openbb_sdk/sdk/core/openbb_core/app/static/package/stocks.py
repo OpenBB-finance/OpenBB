@@ -1,8 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 import pydantic
 import pydantic.main
@@ -85,7 +84,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
@@ -102,7 +101,7 @@ class CLASS_stocks(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Load stock data for a specific ticker.
 
@@ -251,10 +250,10 @@ class CLASS_stocks(Container):
     @validate_arguments
     def news(
         self,
-        symbols: typing.Annotated[
+        symbols: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        page: typing.Annotated[
+        page: Annotated[
             int,
             OpenBBCustomParameter(
                 description="The page of the stock news to be retrieved."
@@ -268,8 +267,8 @@ class CLASS_stocks(Container):
         ] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> Obbject[List]:
         """Get news for one or more stock tickers.
 
 
@@ -445,7 +444,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def multiples(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
@@ -454,8 +453,8 @@ class CLASS_stocks(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> Obbject[List]:
         """Get valuation multiples for a stock ticker.
 
 
@@ -660,16 +659,16 @@ class CLASS_stocks(Container):
     @validate_arguments
     def search(
         self,
-        query: typing.Annotated[
+        query: Annotated[
             str, OpenBBCustomParameter(description="The search query.")
         ] = "",
-        ticker: typing.Annotated[
+        ticker: Annotated[
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Search for a company or stock ticker.
 
@@ -745,13 +744,13 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> Obbject[List]:
         """Load stock data for a specific ticker.
 
 
@@ -860,12 +859,12 @@ class CLASS_stocks(Container):
     @validate_arguments
     def info(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Get general price and performance metrics of a stock.
 

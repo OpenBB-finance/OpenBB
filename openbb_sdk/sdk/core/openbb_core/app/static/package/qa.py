@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import List, Literal, Union
 
 import openbb_provider
@@ -107,7 +106,7 @@ class CLASS_qa(Container):
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Omega Ratio.
 
         Parameters
@@ -149,7 +148,7 @@ class CLASS_qa(Container):
         target: str,
         window: pydantic.types.PositiveInt,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Kurtosis.
 
         Parameters
@@ -354,7 +353,7 @@ class CLASS_qa(Container):
         rfr: float = 0.0,
         window: pydantic.types.PositiveInt = 252,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Sharpe Ratio.
 
         Parameters
@@ -398,7 +397,7 @@ class CLASS_qa(Container):
         window: pydantic.types.PositiveInt = 252,
         adjusted: bool = False,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Sortino Ratio.
 
         For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
@@ -513,7 +512,7 @@ class CLASS_qa(Container):
         target: str,
         window: pydantic.types.PositiveInt,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Skewness.
 
         Parameters
@@ -553,7 +552,7 @@ class CLASS_qa(Container):
         window: pydantic.types.PositiveInt,
         quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Quantile."""  # noqa: E501
         inputs = filter_inputs(
             data=data,

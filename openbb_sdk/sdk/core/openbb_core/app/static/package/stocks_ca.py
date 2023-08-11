@@ -18,12 +18,12 @@ class CLASS_stocks_ca(Container):
     @validate_arguments
     def peers(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Company peers.
 

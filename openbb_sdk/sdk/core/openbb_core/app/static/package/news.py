@@ -1,7 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
-from typing import Literal, Optional
+from typing import Annotated, List, Literal, Optional
 
 import pydantic
 from pydantic import validate_arguments
@@ -19,14 +18,14 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: typing.Annotated[
+        page: Annotated[
             pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The page of the global news."),
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> Obbject[List]:
         """Global News.
 
 

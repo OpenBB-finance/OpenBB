@@ -1,7 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
-from typing import Annotated, Literal, Optional
+from typing import Annotated, List, Literal, Optional
 
 from pydantic import validate_arguments
 
@@ -16,7 +15,7 @@ class CLASS_stocks_dd(Container):
     @validate_arguments
     def sec(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         type: Annotated[
@@ -134,8 +133,8 @@ class CLASS_stocks_dd(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> Obbject[List]:
         """SEC Filings.
 
 

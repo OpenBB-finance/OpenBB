@@ -105,7 +105,7 @@ class PackageBuilder:
 
         print(package_path)
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
-            file.write(module_code)
+            file.write(module_code.replace("typing.", ""))
 
 
 class ModuleBuilder:
