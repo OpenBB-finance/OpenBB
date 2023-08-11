@@ -1,6 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
+import typing
 from typing import Annotated, Literal, Optional, Union
 
 from pydantic import BaseModel, validate_arguments
@@ -16,7 +17,7 @@ class CLASS_crypto(Container):
     @validate_arguments
     def load(
         self,
-        symbol: Annotated[
+        symbol: typing.Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
