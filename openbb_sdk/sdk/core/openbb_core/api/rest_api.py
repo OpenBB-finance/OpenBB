@@ -8,7 +8,7 @@ from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.settings import router as router_settings
 from openbb_core.api.router.system import router as router_system
-from openbb_core.app.model.command_output import OpenBBError
+from openbb_core.app.model.obbject import OpenBBError
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 

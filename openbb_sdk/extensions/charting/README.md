@@ -44,7 +44,7 @@ stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="f
 
 ```
 
-Which would result in an `CommandOutput` object containing a `chart` attribute, which contains plotly json data.
+Which would result in an `Obbject` object containing a `chart` attribute, which contains plotly json data.
 
 In order to actually display the chart, you need to call the `show()` method.
 

@@ -77,7 +77,7 @@ router = Router(prefix="/router_name")
 @router.command
 def some_command(
     some_param: some_param_type,
-) -> CommandOutput[Item]:
+) -> Obbject[Item]:
     pass
 ```
 
@@ -92,9 +92,9 @@ def load(
     provider_choices: ProviderChoices,  # available providers
     standard_params: StandardParams,    # symbol, start_date, etc.
     extra_params: ExtraParams,          # provider specific parameters
-) -> CommandOutput[BaseModel]:
+) -> Obbject[BaseModel]:
     """Load stock data for a specific ticker."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 ```
 
 ### Entrypoint
@@ -171,7 +171,7 @@ output = sdk.stocks.load(
 
 ### 4.1.1. Command output
 
-Each command will always return a  `CommandOutput`. There you will find:
+Each command will always return a  `Obbject`. There you will find:
 
 - `results`: the data returned by the command `None`
 - `provider`: the provider name (only available provider names allowed) used to get the data or `None`
@@ -347,7 +347,7 @@ timestamp: ...          # Execution starting timestamp.
 alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
 
 >>> response.output
-CommandOutput
+Obbject
 
 id: ...                 # UUID Tag
 results: ...            # Serializable results.

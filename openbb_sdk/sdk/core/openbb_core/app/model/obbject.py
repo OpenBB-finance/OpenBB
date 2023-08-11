@@ -24,7 +24,7 @@ class OpenBBError(Exception):
         super().__init__(str(original))
 
 
-class CommandOutput(GenericModel, Generic[T], Tagged):
+class Obbject(GenericModel, Generic[T], Tagged):
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",

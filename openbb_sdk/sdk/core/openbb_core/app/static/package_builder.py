@@ -179,7 +179,7 @@ class ImportDefinition:
         """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
-        code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
+        code += "\nfrom openbb_core.app.model.obbject import Obbject"
         code += (
             "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
         )
@@ -242,12 +242,12 @@ class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
     @staticmethod
-    def get_command_output_description() -> str:
+    def get_obbject_description() -> str:
         """Get the command output description."""
-        command_output_description = (
+        obbject_description = (
             "\nReturns\n"
             "-------\n"
-            "CommandOutput\n"
+            "Obbject\n"
             "    results: List[Data]\n"
             "        Serializable results.\n"
             "    provider: Optional[PROVIDERS]\n"
@@ -260,7 +260,7 @@ class DocstringGenerator:
             "        Chart object.\n"
         )
 
-        return command_output_description
+        return obbject_description
 
     @staticmethod
     def get_available_providers(query_mapping: dict) -> str:
@@ -326,7 +326,7 @@ class DocstringGenerator:
                 section_docstring += f"{padding}{field_description}\n"
 
         if provider == "openbb" and section_name == "QueryParams":
-            section_docstring += cls.get_command_output_description()
+            section_docstring += cls.get_obbject_description()
 
         return section_docstring
 
@@ -582,11 +582,11 @@ class MethodDefinition:
         else:
             item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
-                func_returns = f"CommandOutput[{item_type.__name__}]"
+                func_returns = f"Obbject[{item_type.__name__}]"
             # elif get_origin(item_type) == list:
             #     inner_type = get_args(item_type)[0]
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-            #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
+            #     func_returns = f"Obbject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 inner_type_name = (
                     item_type.__name__
@@ -598,7 +598,7 @@ class MethodDefinition:
                 if "pydantic.main" in result_type:
                     result_type = "BaseModel"
 
-                func_returns = f"CommandOutput[{result_type}]"
+                func_returns = f"Obbject[{result_type}]"
 
         return func_returns
 

@@ -25,7 +25,7 @@ from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -126,7 +126,7 @@ class CommandValidator:
         sig = signature(func)
         return_type = sig.return_annotation
 
-        if issubclass(return_type, CommandOutput):
+        if issubclass(return_type, Obbject):
             results_type = get_type_hints(return_type)["results"]
             if isinstance(results_type, type(None)):
                 valid_return_type = False
@@ -145,7 +145,7 @@ class CommandValidator:
                 "Invalid return type in signature:"
                 f"    {func.__name__}(...) -> {sig.return_annotation}:\n"
                 "Allowed return type:"
-                f"    {func.__name__}(...) -> CommandOutput[T] :\n"
+                f"    {func.__name__}(...) -> Obbject[T] :\n"
                 "If you need T = None, use an empty model instead.\n"
             )
 
@@ -170,9 +170,7 @@ class Router:
         )
 
     @overload
-    def command(
-        self, func: Optional[Callable[P, CommandOutput]]
-    ) -> Callable[P, CommandOutput]:
+    def command(self, func: Optional[Callable[P, Obbject]]) -> Callable[P, Obbject]:
         pass
 
     @overload
@@ -181,7 +179,7 @@ class Router:
 
     def command(
         self,
-        func: Optional[Callable[P, CommandOutput]] = None,
+        func: Optional[Callable[P, Obbject]] = None,
         **kwargs,
     ) -> Optional[Callable]:
         if func is None:
@@ -227,8 +225,8 @@ class Router:
 class SignatureInspector:
     @classmethod
     def complete_signature(
-        cls, func: Callable[P, CommandOutput], model: str
-    ) -> Optional[Callable[P, CommandOutput]]:
+        cls, func: Callable[P, Obbject], model: str
+    ) -> Optional[Callable[P, Obbject]]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
         return_type = func.__annotations__["return"]
@@ -241,10 +239,8 @@ class SignatureInspector:
         is_list = get_origin(results_type) == list
         inner_type = results_type.__args__[0] if is_list else results_type
 
-        func.__annotations__["return"].__doc__ = "CommandOutput"
-        func.__annotations__[
-            "return"
-        ].__name__ = f"CommandOutput[{inner_type.__name__}]"
+        func.__annotations__["return"].__doc__ = "Obbject"
+        func.__annotations__["return"].__name__ = f"Obbject[{inner_type.__name__}]"
 
         if model:
             if model not in provider_interface.models:
@@ -288,10 +284,10 @@ class SignatureInspector:
             if get_origin(provider_interface.return_map[model]) == list or is_list:
                 ReturnModel = List[ReturnModel]
 
-            return_type = CommandOutput[ReturnModel]  # type: ignore
-            return_type.__name__ = f"CommandOutput[{merged_return.__name__}]"
+            return_type = Obbject[ReturnModel]  # type: ignore
+            return_type.__name__ = f"Obbject[{merged_return.__name__}]"
             return_type.__doc__ = (
-                f"CommandOutput with results of type '{merged_return.__name__}'."
+                f"Obbject with results of type '{merged_return.__name__}'."
             )
             func.__annotations__["return"] = return_type
         elif (
@@ -307,7 +303,7 @@ class SignatureInspector:
 
     @staticmethod
     def validate_signature(
-        func: Callable[P, CommandOutput], expected: Dict[str, type]
+        func: Callable[P, Obbject], expected: Dict[str, type]
     ) -> None:
         """Validate function signature before binding to model."""
         for k, v in expected.items():
@@ -323,8 +319,8 @@ class SignatureInspector:
 
     @staticmethod
     def inject_dependency(
-        func: Callable[P, CommandOutput], arg: str, callable_: Any
-    ) -> Callable[P, CommandOutput]:
+        func: Callable[P, Obbject], arg: str, callable_: Any
+    ) -> Callable[P, Obbject]:
         """Annotate function with dependency injection."""
         func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
         return func
