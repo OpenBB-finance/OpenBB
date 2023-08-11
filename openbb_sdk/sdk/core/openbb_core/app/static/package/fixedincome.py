@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -33,7 +33,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Get treasury rates.
 
 

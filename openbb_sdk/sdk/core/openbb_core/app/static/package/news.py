@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Annotated, Literal, Optional
+from typing import Annotated, List, Literal, Optional
 
 import pydantic
 from pydantic import validate_arguments
@@ -25,7 +25,7 @@ class CLASS_news(Container):
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Global News.
 
 

@@ -51,7 +51,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Get the constituents of an index.
 
 
@@ -483,7 +483,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """AVAILABLE_INDICES.
 
 
@@ -555,7 +555,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def risk(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Market Risk Premium.
 
 

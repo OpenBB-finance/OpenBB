@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 import pydantic
 import pydantic.main
@@ -268,7 +268,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Get news for one or more stock tickers.
 
 
@@ -454,7 +454,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Get valuation multiples for a stock ticker.
 
 
@@ -750,7 +750,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Load stock data for a specific ticker.
 
 

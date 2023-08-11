@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import BaseModel, validate_arguments
 
@@ -19,7 +19,7 @@ class CLASS_forex(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
-    ) -> Obbject[typing.List]:
+    ) -> Obbject[List]:
         """Forex Available Pairs.
 
 
