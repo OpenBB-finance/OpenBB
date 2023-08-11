@@ -1,12 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 from pydantic import BaseModel, validate_arguments
 
-from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -19,7 +19,7 @@ class CLASS_forex(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs,
-    ) -> CommandOutput[List]:
+    ) -> Obbject[typing.List]:
         """Forex Available Pairs.
 
 
@@ -34,7 +34,7 @@ class CLASS_forex(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -148,7 +148,7 @@ class CLASS_forex(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs,
-    ) -> CommandOutput[BaseModel]:
+    ) -> Obbject[BaseModel]:
         """Forex Intraday Price.
 
 
@@ -168,7 +168,7 @@ class CLASS_forex(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]

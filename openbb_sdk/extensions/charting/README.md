@@ -43,7 +43,7 @@ from openbb import obb
 stock_data = obb.stocks.load(symbol="TSLA", chart=True)
 ```
 
-This results in a `CommandOutput` object containing a `chart` attribute, which contains Plotly JSON data.
+Which would result in an `Obbject` object containing a `chart` attribute, which contains plotly json data.
 
 In order to display the chart, you need to call the `show()` method:
 

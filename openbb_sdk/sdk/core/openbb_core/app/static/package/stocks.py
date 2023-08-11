@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 import pydantic
 import pydantic.main
@@ -9,8 +9,8 @@ from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -102,7 +102,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs,
-    ) -> CommandOutput[BaseModel]:
+    ) -> Obbject[BaseModel]:
         """Load stock data for a specific ticker.
 
 
@@ -122,7 +122,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -268,7 +268,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs,
-    ) -> CommandOutput[List]:
+    ) -> Obbject[typing.List]:
         """Get news for one or more stock tickers.
 
 
@@ -288,7 +288,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -454,7 +454,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> CommandOutput[List]:
+    ) -> Obbject[typing.List]:
         """Get valuation multiples for a stock ticker.
 
 
@@ -472,7 +472,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -642,7 +642,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def tob(
         self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
         """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -669,7 +669,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs,
-    ) -> CommandOutput[BaseModel]:
+    ) -> Obbject[BaseModel]:
         """Search for a company or stock ticker.
 
 
@@ -687,7 +687,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -750,7 +750,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs,
-    ) -> CommandOutput[List]:
+    ) -> Obbject[typing.List]:
         """Load stock data for a specific ticker.
 
 
@@ -766,7 +766,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -865,7 +865,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs,
-    ) -> CommandOutput[BaseModel]:
+    ) -> Obbject[BaseModel]:
         """Get general price and performance metrics of a stock.
 
 
@@ -881,7 +881,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]

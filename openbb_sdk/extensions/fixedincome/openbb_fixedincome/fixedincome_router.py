@@ -1,7 +1,7 @@
 # pylint: disable=W0613:unused-argument
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -21,12 +21,12 @@ def treasury(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> Obbject[BaseModel]:
     """Get treasury rates."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command
-def ycrv() -> CommandOutput[Empty]:  # type: ignore
+def ycrv() -> Obbject[Empty]:  # type: ignore
     """Yield curve."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())

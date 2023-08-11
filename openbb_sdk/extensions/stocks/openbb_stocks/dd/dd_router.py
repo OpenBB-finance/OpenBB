@@ -2,7 +2,7 @@
 """Due Diligence Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -21,6 +21,6 @@ def sec(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> Obbject[BaseModel]:
     """SEC Filings."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())

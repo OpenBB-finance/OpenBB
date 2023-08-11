@@ -1819,9 +1819,7 @@ def stocks_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
             k["rma"] = dict(length=ma)
         return k
 
-    data = basemodel_to_df(
-        kwargs["command_output_item"], index=kwargs.get("index", "date")
-    )
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     ma = standard_params.get("ma", None)
     prepost = standard_params.get("prepost", False)
@@ -1840,9 +1838,7 @@ def stocks_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 
 def stocks_news(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    data = basemodel_to_df(
-        kwargs["command_output_item"], index=kwargs.get("index", "date")
-    )
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)
 
@@ -2108,9 +2104,7 @@ def stocks_ins_filt(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 
 def stocks_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    data = basemodel_to_df(
-        kwargs["command_output_item"], index=kwargs.get("index", "date")
-    )
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)
 
