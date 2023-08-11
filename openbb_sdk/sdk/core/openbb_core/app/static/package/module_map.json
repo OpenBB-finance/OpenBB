@@ -34,6 +34,8 @@
     "news_globalnews": "/news/globalnews",
     "news": "/news",
     "news_sectornews": "/news/sectornews",
+    "futures_load": "/futures/load",
+    "futures": "/futures",
     "stocks_fa_analysis": "/stocks/fa/analysis",
     "stocks": "/stocks",
     "stocks_fa": "/stocks/fa",

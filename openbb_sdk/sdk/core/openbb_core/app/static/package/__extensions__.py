@@ -41,6 +41,14 @@ class Extensions(Container):
         return news.CLASS_news(command_runner_session=self._command_runner_session)
 
     @property
+    def futures(self):  # route = "/futures"
+        from openbb_core.app.static.package import futures
+
+        return futures.CLASS_futures(
+            command_runner_session=self._command_runner_session
+        )
+
+    @property
     def stocks(self):  # route = "/stocks"
         from openbb_core.app.static.package import stocks
 

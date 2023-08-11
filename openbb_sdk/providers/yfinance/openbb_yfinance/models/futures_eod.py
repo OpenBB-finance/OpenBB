@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.crypto_eod import (
+from openbb_provider.standard_models.futures_eod import (
     FuturesEODData,
     FuturesEODQueryParams,
 )
@@ -74,14 +74,14 @@ class YFinanceFuturesEODFetcher(
         query.end_date = query.end_date or (now - timedelta(days=1))
 
         if query.period:
-            data = Ticker(query.symbol).history(
+            data = Ticker(query.symbol+"=F").history(
                 interval=query.interval,
                 period=query.period,
                 actions=False,
                 raise_errors=True,
             )
         else:
-            data = Ticker(query.symbol).history(
+            data = Ticker(query.symbol+"=F").history(
                 interval=query.interval,
                 start=query.start_date,
                 end=query.end_date,
