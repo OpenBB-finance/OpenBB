@@ -7,7 +7,7 @@ import pandas as pd
 from pydantic import ValidationError
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.utils import df_to_basemodel
 
 
@@ -48,19 +48,19 @@ def filter_inputs(**kwargs) -> dict:
     return kwargs
 
 
-def filter_output(obbject: Obbject) -> Obbject:
+def filter_output(OBBject: OBBject) -> OBBject:
     """Filter command output."""
-    if obbject.warnings:
-        for w in obbject.warnings:
+    if OBBject.warnings:
+        for w in OBBject.warnings:
             category = getattr(builtins, w.category, OpenBBWarning)
             print(f"{category.__name__}: {w.message}")
 
-    error = obbject.error
+    error = OBBject.error
     if error:
         raise OpenBBError(error.message)
 
-    chart = obbject.chart
+    chart = OBBject.chart
     if chart and chart.error:
         raise OpenBBError(chart.error.message)
 
-    return obbject
+    return OBBject

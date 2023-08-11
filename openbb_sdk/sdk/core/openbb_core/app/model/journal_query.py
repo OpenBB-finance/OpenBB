@@ -8,7 +8,7 @@ class JournalQuery(BaseModel):
     )
     ignore_error_output: bool = Field(
         default=True,
-        description="Whether or not the JournalEntry with an Obbject.Error should be ignored.",
+        description="Whether or not the JournalEntry with an OBBject.Error should be ignored.",
     )
 
     class Config:

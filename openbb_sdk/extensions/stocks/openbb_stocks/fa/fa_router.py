@@ -2,7 +2,7 @@
 """Fundamental Analysis Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,9 +17,9 @@ router = Router(prefix="/fa")
 
 
 @router.command
-def analysis() -> Obbject[Empty]:  # type: ignore
+def analysis() -> OBBject[Empty]:  # type: ignore
     """Analyse SEC filings with the help of machine learning."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command(model="BalanceSheet")
@@ -28,9 +28,9 @@ def balance(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Balance Sheet."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="BalanceSheetGrowth")
@@ -39,9 +39,9 @@ def balance_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Balance Sheet Statement Growth."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="DividendCalendar")
@@ -50,9 +50,9 @@ def cal(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Show Dividend Calendar for a given start and end dates."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="CashFlowStatement")
@@ -61,9 +61,9 @@ def cash(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Cash Flow Statement."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="CashFlowStatementGrowth")
@@ -72,9 +72,9 @@ def cash_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Cash Flow Statement Growth."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="ExecutiveCompensation")
@@ -83,9 +83,9 @@ def comp(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Executive Compensation."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockSplitCalendar")
@@ -94,21 +94,21 @@ def comsplit(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Stock Split Calendar."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def customer() -> Obbject[Empty]:  # type: ignore
+def customer() -> OBBject[Empty]:  # type: ignore
     """List of customers of the company."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def dcfc() -> Obbject[Empty]:  # type: ignore
+def dcfc() -> OBBject[Empty]:  # type: ignore
     """Determine the (historical) discounted cash flow."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command(model="HistoricalDividends")
@@ -117,15 +117,15 @@ def divs(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Historical Dividends."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def dupont() -> Obbject[Empty]:  # type: ignore
+def dupont() -> OBBject[Empty]:  # type: ignore
     """Detailed breakdown for Return on Equity (RoE)."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command(model="EarningsCalendar")
@@ -134,9 +134,9 @@ def earning(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Earnings Calendar."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="HistoricalEmployees")
@@ -145,21 +145,21 @@ def emp(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Number of Employees."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def enterprise() -> Obbject[Empty]:  # type: ignore
+def enterprise() -> OBBject[Empty]:  # type: ignore
     """Enterprise value."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def epsfc() -> Obbject[Empty]:  # type: ignore
+def epsfc() -> OBBject[Empty]:  # type: ignore
     """Earnings Estimate by Analysts - EPS."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command(model="AnalystEstimates")
@@ -168,38 +168,38 @@ def est(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Analyst Estimates."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def fama_coe() -> Obbject[Empty]:  # type: ignore
+def fama_coe() -> OBBject[Empty]:  # type: ignore
     """Fama French 3 Factor Model - Coefficient of Earnings."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def fama_raw() -> Obbject[Empty]:  # type: ignore
+def fama_raw() -> OBBject[Empty]:  # type: ignore
     """Fama French 3 Factor Model - Raw Data."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def fraud() -> Obbject[Empty]:  # type: ignore
+def fraud() -> OBBject[Empty]:  # type: ignore
     """Key fraud ratios including M-score, Z-score and McKee."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def growth() -> Obbject[Empty]:  # type: ignore
+def growth() -> OBBject[Empty]:  # type: ignore
     """Growth of financial statement items and ratios."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def historical_5() -> Obbject[Empty]:  # type: ignore
-    return Obbject(results=Empty())
+def historical_5() -> OBBject[Empty]:  # type: ignore
+    return OBBject(results=Empty())
 
 
 @router.command(model="IncomeStatement")
@@ -208,9 +208,9 @@ def income(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Income Statement."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="IncomeStatementGrowth")
@@ -219,9 +219,9 @@ def income_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Income Statement Growth."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockInsiderTrading")
@@ -230,9 +230,9 @@ def ins(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Stock Insider Trading."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="InstitutionalOwnership")
@@ -241,14 +241,14 @@ def ins_own(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Institutional Ownership."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def key() -> Obbject[Empty]:  # type: ignore
-    return Obbject(results=Empty())
+def key() -> OBBject[Empty]:  # type: ignore
+    return OBBject(results=Empty())
 
 
 @router.command(model="KeyMetrics")
@@ -257,9 +257,9 @@ def metrics(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Key Metrics."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="KeyExecutives")
@@ -268,20 +268,20 @@ def mgmt(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Key Executives."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def mktcap() -> Obbject[Empty]:  # type: ignore
+def mktcap() -> OBBject[Empty]:  # type: ignore
     """Obtain the market capitalization or enterprise value."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command  # CHECK IF NEWS IS NEEDED HERE
-def news() -> Obbject[Empty]:  # type: ignore
-    return Obbject(results=Empty())
+def news() -> OBBject[Empty]:  # type: ignore
+    return OBBject(results=Empty())
 
 
 @router.command(model="CompanyOverview")
@@ -290,9 +290,9 @@ def overview(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Company Overview."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockOwnership")
@@ -301,9 +301,9 @@ def own(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Stock Ownership."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="PriceTargetConsensus")
@@ -312,9 +312,9 @@ def pt(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Price Target Consensus."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="PriceTarget")
@@ -323,9 +323,9 @@ def pta(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Price Target."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="FinancialRatios")
@@ -334,21 +334,21 @@ def ratios(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Extensive set of ratios over time."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def rating() -> Obbject[Empty]:  # type: ignore
+def rating() -> OBBject[Empty]:  # type: ignore
     """Analyst prices and ratings over time of the company."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def revfc() -> Obbject[Empty]:  # type: ignore
+def revfc() -> OBBject[Empty]:  # type: ignore
     """Earning Estimate by Analysts - Revenue."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command(model="RevenueGeographic")
@@ -357,9 +357,9 @@ def revgeo(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Revenue Geographic."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="RevenueBusinessLine")
@@ -368,31 +368,31 @@ def revseg(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Revenue Business Line."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def rot() -> Obbject[Empty]:  # type: ignore
+def rot() -> OBBject[Empty]:  # type: ignore
     """Number of analyst ratings over time on a monthly basis."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def score() -> Obbject[Empty]:  # type: ignore
+def score() -> OBBject[Empty]:  # type: ignore
     """Value investing scores for any time period."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def sec() -> Obbject[Empty]:  # type: ignore
-    return Obbject(results=Empty())
+def sec() -> OBBject[Empty]:  # type: ignore
+    return OBBject(results=Empty())
 
 
 @router.command
-def shares() -> Obbject[Empty]:  # type: ignore
-    return Obbject(results=Empty())
+def shares() -> OBBject[Empty]:  # type: ignore
+    return OBBject(results=Empty())
 
 
 @router.command(model="ShareStatistics")
@@ -401,9 +401,9 @@ def shrs(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Share Statistics."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="HistoricalStockSplits")
@@ -412,15 +412,15 @@ def split(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Historical Stock Splits."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def supplier() -> Obbject[Empty]:  # type: ignore
+def supplier() -> OBBject[Empty]:  # type: ignore
     """List of suppliers of the company."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command(model="EarningsCallTranscript")
@@ -429,6 +429,6 @@ def transcript(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Earnings Call Transcript."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())

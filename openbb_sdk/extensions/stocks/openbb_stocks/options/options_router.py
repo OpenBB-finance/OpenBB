@@ -1,7 +1,7 @@
 """Options Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -21,36 +21,36 @@ def chains(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Get the complete options chain for a ticker."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def eodchain() -> Obbject[Empty]:  # type: ignore
+def eodchain() -> OBBject[Empty]:  # type: ignore
     """Gets option chain at a specific date."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def hist() -> Obbject[Empty]:  # type: ignore
+def hist() -> OBBject[Empty]:  # type: ignore
     """Get historical data for a single option contract."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def info() -> Obbject[Empty]:  # type: ignore
+def info() -> OBBject[Empty]:  # type: ignore
     """Display option information (volatility, IV rank, etc.)."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def pcr() -> Obbject[Empty]:  # type: ignore
+def pcr() -> OBBject[Empty]:  # type: ignore
     """Display historical rolling put/call ratio for ticker over a defined window."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def unu() -> Obbject[Empty]:  # type: ignore
+def unu() -> OBBject[Empty]:  # type: ignore
     """Show unusual options activity."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
