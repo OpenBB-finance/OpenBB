@@ -1,6 +1,6 @@
-# THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE
+# THIS README IS A WORK IN PROGRESS
 
-- [THIS README IS A WORK IN PROGRESS AND CAN BE VERY MUCH OUT OF DATE. REFRESH THE PAGE UNTIL THIS BANNER IS GONE](#this-readme-is-a-work-in-progress-and-can-be-very-much-out-of-date-refresh-the-page-until-this-banner-is-gone)
+- [THIS README IS A WORK IN PROGRESS](#this-readme-is-a-work-in-progress)
   - [1. Introduction](#1-introduction)
   - [2. How to install?](#2-how-to-install)
     - [Git clone](#git-clone)
@@ -18,7 +18,7 @@
       - [Settings](#settings)
       - [System](#system)
       - [Coverage](#coverage)
-    - [4.1.3. OpenBB Hub account](#413-openbb-hub-account)
+    - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
@@ -26,13 +26,8 @@
 
 ## 1. Introduction
 
-This is a collection of functions that allow extracting, transforming and exporting financial data.
+This directory contains the OpenBB SDK's core functionality. It allows you to create an [extension](../../extensions/README.md) or a [provider](../../providers/README.md) that will be automatically turned into REST API endpoint and allow sharing data between commands.
 
-These functions are special:
-
-- They provide configuration
-- They will be automatically turned into REST API endpoint
-- They allow sharing data between commands
 
 ## 2. How to install?
 
@@ -65,11 +60,9 @@ poetry new openbb-sdk-my_extension
 
 ### Command
 
-Add a router and a command.
+Add a router and a command in the `openbb_sdk/extensions/<my_extension_folder>/<openbb_my_extension>/<my_extension>_router.py`
 
 ```python
-# File my_extension/extension_router.py
-
 from openbb_core.app.router import Router
 
 router = Router(prefix="/router_name")
@@ -81,9 +74,9 @@ def some_command(
     pass
 ```
 
-If your command only makes use of a `openbb-provider` model, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
+If your command only makes use of a standard model defined inside `openbb_provider/standard_models` directory, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
 
-This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`.
+This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`:
 
 ```python
 @router.command(model="StockEOD")
@@ -102,7 +95,6 @@ def load(
 Add an entrypoint for the extension inside your `pyproject.toml` file.
 
 ```toml
-# File pyproject.toml
 packages = [{include = "openbb_sdk_my_extension"}]
 ...
 [tool.poetry.extensions."openbb_extensions"]
@@ -120,15 +112,15 @@ poetry install
 
 ## 4. Usage
 
-Update the settings
+Update your credentials and default providers by modifying the `.openbb_sdk/user_settings.json` inside your home directory:
 
 ```{json}
-# FILE <your_home_directory>/.openbb_sdk/user_settings.json
 {
     "credentials": {
         "benzinga_api_key": null,
         "fmp_api_key": null,
-        "polygon_api_key": null
+        "polygon_api_key": null,
+        "fred_api_key": null
     },
     "defaults": {
         "routes": {
@@ -146,8 +138,10 @@ Update the settings
 }
 ```
 
+Update your system settings by modifying the `.openbb_sdk/system_settings.json` file inside your home directory:
+
+
 ```{json}
-# FILE <your_home_directory>/.openbb_sdk/system_settings.json
 {
     "run_in_isolation": null,
     "dbms_uri": null
@@ -159,9 +153,9 @@ Update the settings
 Run your command:
 
 ```python
-from openbb import sdk
+from openbb import obb
 
-output = sdk.stocks.load(
+output = obb.stocks.load(
     symbol="TSLA",
     start_date="2023-01-01",
     provider="fmp",
@@ -220,8 +214,8 @@ date
 
 ```python
 >>> output.to_plotly_json()
-{'data':
-    [
+{
+    'data':[
         {
             'close': [260.02, 262.9, 291.26],
             'decreasing': {'line': {'width': 1.1}},
@@ -241,24 +235,24 @@ date
 These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
 
 ```python
-from openbb import sdk
+from openbb import obb
 
-sdk.settings.profile
-sdk.settings.credentials
-sdk.settings.preferences
-sdk.settings.defaults
+obb.settings.profile
+obb.settings.credentials
+obb.settings.preferences
+obb.settings.defaults
 ```
 
 #### System
 
-Check your system settings. Most of the properties are read-only during runtime, so any changes there will be void.
+Check your system settings. Most of the properties are read-only during runtime.
 
-- `debug_mode`: here if you set `debug_mode = True` any exception that occurs during execution will be raised immediately.
+- `debug_mode`: Setting it as `True` will immediately raise all occurring exceptions.
 
 ```python
-from openbb import sdk
+from openbb import obb
 
-sdk.system
+obb.system
 ```
 
 #### Coverage
@@ -266,7 +260,7 @@ sdk.system
 Obtain the coverage of providers and commands.
 
 ```python
->>> sdk.coverage.commands
+>>> obb.coverage.commands
 {
     '/crypto/load': ['fmp', 'polygon'],
     '/economy/const': ['fmp'],
@@ -276,7 +270,7 @@ Obtain the coverage of providers and commands.
 ```
 
 ```python
->>> sdk.coverage.providers
+>>> obb.coverage.providers
 {
     'fmp':
     [
@@ -290,34 +284,34 @@ Obtain the coverage of providers and commands.
 }
 ```
 
-### 4.1.3. OpenBB Hub account
+### 4.1.3. OpenBB Hub Account
 
-You can login to your OpenBB Hub account and save your credentials there. This way you can access them from any device.
+You can login to your OpenBB Hub account and save your credentials there to access them from any device.
 
 ```python
-from openbb import sdk
+from openbb import obb
 
 # Login with email, password or SDK token
-sdk.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
+obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 
 # Change a credential
-sdk.account.settings.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
+obb.account.settings.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
 
 # Save account changes
-sdk.account.save()
+obb.account.save()
 
 # Refresh account with latest changes
-sdk.account.refresh()
+obb.account.refresh()
 
 # Logout
-sdk.account.logout()
+obb.account.logout()
 ```
 
 ## 4.2 Dynamic version
 
-You can also use the dynamic version to consume the api endpoints from Python itself.
+You can also use the dynamic version to consume the API endpoints from Python itself.
 
-In fact, the static version makes use of this feature to run each command. Take a look at the example below.
+In fact, the static version makes use of this feature to run each command. Take a look at the example below:
 
 ```python
 >>> from openbb_core.app.command_runner import CommandRunnerSession
@@ -359,41 +353,7 @@ chart: ...              # Chart object.
 
 ## 5. REST API
 
-OpenBB SDK comes with a ready to use Rest API built with FastAPI.
-
-```{json}
-# FILE <your_home_directory>/.openbb_sdk/user_settings.json
-{
-    "credentials": {
-        "benzinga_api_key": null,
-        "fmp_api_key": null,
-        "polygon_api_key": null
-    },
-    "defaults": {
-        "routes": {
-            "/stocks/fa/balance": {
-                "provider": "polygon"
-            },
-            "/stocks/load": {
-                "provider": "fmp"
-            },
-            "/stocks/news": {
-                "provider": "benzinga"
-            }
-        }
-    }
-}
-```
-
-```{json}
-# FILE <your_home_directory>/.openbb_sdk/system_settings.json
-{
-    "run_in_isolation": null,
-    "dbms_uri": null
-}
-```
-
-Start the application:
+OpenBB SDK comes with a ready to use Rest API built with FastAPI. Start the application using this command:
 
 ```bash
 uvicorn openbb_core.api.rest_api:app --reload

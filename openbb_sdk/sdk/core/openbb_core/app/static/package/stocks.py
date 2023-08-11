@@ -102,9 +102,9 @@ class CLASS_stocks(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> CommandOutput[BaseModel]:
-        """Load stock data for a specific ticker.
+        **kwargs,
+    ) -> CommandOutput[typing.List]:
+        r"""Load stock data for a specific ticker.
 
 
         openbb
@@ -226,7 +226,18 @@ class CLASS_stocks(Container):
 
         StockEOD
         --------
-        All fields are standardized."""  # noqa: E501
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \% in the price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -268,7 +279,7 @@ class CLASS_stocks(Container):
         ] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get news for one or more stock tickers.
 
@@ -454,7 +465,7 @@ class CLASS_stocks(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get valuation multiples for a stock ticker.
 
@@ -669,7 +680,7 @@ class CLASS_stocks(Container):
         ] = False,
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[BaseModel]:
         """Search for a company or stock ticker.
 
@@ -750,7 +761,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Load stock data for a specific ticker.
 
@@ -865,7 +876,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[BaseModel]:
         """Get general price and performance metrics of a stock.
 

@@ -4,7 +4,7 @@ import datetime
 import typing
 from typing import Annotated, Literal, Optional, Union
 
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -19,7 +19,7 @@ class CLASS_forex(Container):
         self,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Forex Available Pairs.
 
@@ -148,9 +148,9 @@ class CLASS_forex(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> CommandOutput[BaseModel]:
-        """Forex Intraday Price.
+        **kwargs,
+    ) -> CommandOutput[typing.List]:
+        r"""Forex Intraday Price.
 
 
         openbb
@@ -257,7 +257,18 @@ class CLASS_forex(Container):
 
         ForexEOD
         --------
-        All fields are standardized."""  # noqa: E501
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \% in the price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

@@ -51,7 +51,7 @@ class CLASS_economy(Container):
         ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[typing.List]:
         """Get the constituents of an index.
 
@@ -217,7 +217,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> CommandOutput[BaseModel]:
         """CPI.
 
@@ -347,9 +347,9 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> CommandOutput[BaseModel]:
-        """Get OHLCV data for an index.
+        **kwargs,
+    ) -> CommandOutput[typing.List]:
+        r"""Get OHLCV data for an index.
 
 
         openbb
@@ -459,7 +459,22 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
-        All fields are standardized."""  # noqa: E501
+        date : datetime
+            The date of the data.
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \% in the price of the symbol.
+        vwap : float
+            Volume Weighted Average Price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

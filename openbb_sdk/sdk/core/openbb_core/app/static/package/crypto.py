@@ -1,9 +1,9 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 
 from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -16,7 +16,7 @@ class CLASS_crypto(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing.Annotated[
+        symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
@@ -33,9 +33,9 @@ class CLASS_crypto(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> CommandOutput[BaseModel]:
-        """Crypto Intraday Price.
+        **kwargs,
+    ) -> CommandOutput[List]:
+        r"""Crypto Intraday Price.
 
 
         openbb
@@ -102,48 +102,11 @@ class CLASS_crypto(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \\% in the price of the symbol.
+            Change \% in the price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        CryptoEOD
-        ---------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        CryptoEOD
-        ---------
-        All fields are standardized."""  # noqa: E501
+            Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

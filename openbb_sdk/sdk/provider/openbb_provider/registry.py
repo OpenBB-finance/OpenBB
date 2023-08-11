@@ -1,6 +1,6 @@
 from typing import Dict
 
-import pkg_resources
+import importlib_metadata
 
 from openbb_provider.abstract.provider import Provider
 
@@ -27,7 +27,9 @@ class RegistryLoader:
     @staticmethod
     def from_extensions() -> Registry:
         registry = Registry()
-        for entry_point in pkg_resources.iter_entry_points("openbb_provider_extension"):
+        for entry_point in importlib_metadata.entry_points(
+            group="openbb_provider_extension"
+        ):
             try:
                 registry.include_provider(
                     provider=entry_point.load(),
