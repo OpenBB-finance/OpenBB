@@ -229,29 +229,29 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None
-        cashAndShortTermInvestments : Optional[int]
+        cash_and_short_term_investments : Optional[int]
             None
-        goodwillAndIntangibleAssets : Optional[int]
+        goodwill_and_intangible_assets : Optional[int]
             None
-        deferredRevenueNonCurrent : Optional[int]
+        deferred_revenue_non_current : Optional[int]
             None
-        totalInvestments : Optional[int]
+        total_investments : Optional[int]
             None
-        capitalLeaseObligations : Optional[int]
+        capital_lease_obligations : Optional[int]
             None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
+        deferred_tax_liabilities_non_current : Optional[int]
             None
-        totalNonCurrentLiabilities : Optional[int]
+        total_non_current_liabilities : Optional[int]
             None
-        totalDebt : Optional[int]
+        total_debt : Optional[int]
             None
-        netDebt : Optional[int]
+        net_debt : Optional[int]
             None"""
         inputs = filter_inputs(
             provider_choices={
@@ -710,11 +710,11 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None"""
         inputs = filter_inputs(
             provider_choices={
@@ -1821,21 +1821,21 @@ class CLASS_stocks_fa(Container):
 
         IncomeStatement
         ---------------
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
-        grossProfitRatio : Optional[float]
+        gross_profit_ratio : Optional[float]
             None
         ebitdaratio : Optional[float]
             None
-        operatingIncomeRatio : Optional[float]
+        operating_income_ratio : Optional[float]
             None
-        incomeBeforeTaxRatio : Optional[float]
+        income_before_tax_ratio : Optional[float]
             None
-        netIncomeRatio : Optional[float]
+        net_income_ratio : Optional[float]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None"""
         inputs = filter_inputs(
             provider_choices={
@@ -2064,11 +2064,11 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query.
         symbol : ConstrainedStrValue
             Symbol to get data for.
-        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
+        transaction_type : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
             The type of the transaction.
-        reportingCik : Optional[int]
+        reporting_cik : Optional[int]
             The CIK of the reporting owner.
-        companyCik : Optional[int]
+        company_cik : Optional[int]
             The CIK of the company owner.
         page : Optional[int]
             The page number of the data to fetch.
