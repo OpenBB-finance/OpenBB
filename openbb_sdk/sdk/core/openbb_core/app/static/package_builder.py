@@ -595,12 +595,7 @@ class MethodDefinition:
                     if hasattr(item_type, "__name__")
                     else item_type._name
                 )
-                result_type = f"{item_type.__module__}.{inner_type_name}"
-
-                if "pydantic.main" in result_type:
-                    result_type = "BaseModel"
-
-                func_returns = f"Obbject[{result_type}]"
+                func_returns = f"Obbject[{item_type.__module__}.{inner_type_name}]"
 
         return func_returns
 

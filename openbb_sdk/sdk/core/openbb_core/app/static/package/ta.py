@@ -297,7 +297,7 @@ class CLASS_ta(Container):
     def tv(
         self, chart: bool = False
     ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """TradingView."""  # noqa: E501
+        """TradingView."""
         inputs = filter_inputs(
             chart=chart,
         )
@@ -389,7 +389,7 @@ class CLASS_ta(Container):
     def multi(
         self, chart: bool = False
     ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Plot multiple indicators on the same chart."""  # noqa: E501
+        """Plot multiple indicators on the same chart."""
         inputs = filter_inputs(
             chart=chart,
         )
@@ -698,7 +698,7 @@ class CLASS_ta(Container):
     def recom(
         self, chart: bool = False
     ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Recommendation."""  # noqa: E501
+        """Recommendation."""
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1280,7 +1280,7 @@ class CLASS_ta(Container):
     def summary(
         self, chart: bool = False
     ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Summary."""  # noqa: E501
+        """Summary."""
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1356,7 +1356,7 @@ class CLASS_ta(Container):
     def rsp(
         self, chart: bool = False
     ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Relative Strength Performance."""  # noqa: E501
+        """Relative Strength Performance."""
         inputs = filter_inputs(
             chart=chart,
         )
