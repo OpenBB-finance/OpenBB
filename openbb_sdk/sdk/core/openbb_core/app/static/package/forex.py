@@ -4,10 +4,10 @@ import datetime
 import typing
 from typing import Annotated, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
-from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -257,18 +257,7 @@ class CLASS_forex(Container):
 
         ForexEOD
         --------
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \% in the price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \% in the price of the symbol over a period of time."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
