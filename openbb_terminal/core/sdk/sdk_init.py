@@ -121,8 +121,6 @@ from openbb_terminal.common.behavioural_analysis import (
     reddit_view as stocks_ba_reddit_view,
     stocktwits_model as stocks_ba_stocktwits_model,
     stocktwits_view as stocks_ba_stocktwits_view,
-    twitter_model as stocks_ba_twitter_model,
-    twitter_view as stocks_ba_twitter_view,
 )
 
 

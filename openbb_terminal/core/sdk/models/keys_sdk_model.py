@@ -42,7 +42,6 @@ class KeysRoot(Category):
         `stocksera`: Set Stocksera key.\n
         `tokenterminal`: Set Token Terminal key.\n
         `tradier`: Set Tradier key\n
-        `twitter`: Set Twitter key\n
         `ultima`: Set Ultima Insights key\n
         `walert`: Set Walert key\n
     """
@@ -84,6 +83,5 @@ class KeysRoot(Category):
         self.stocksera = lib.keys_model.set_stocksera_key
         self.tokenterminal = lib.keys_model.set_tokenterminal_key
         self.tradier = lib.keys_model.set_tradier_key
-        self.twitter = lib.keys_model.set_twitter_key
         self.ultima = lib.keys_model.set_ultima_key
         self.walert = lib.keys_model.set_walert_key

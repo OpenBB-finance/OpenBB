@@ -574,52 +574,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
 
     @log_start_end(log=logger)
-    def call_twitter(self, other_args: List[str]):
-        """Process twitter command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="twitter",
-            description="Set Twitter API key.",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="Key",
-            required="-h" not in other_args and "--help" not in other_args,
-        )
-        parser.add_argument(
-            "-s",
-            "--secret",
-            type=str,
-            dest="secret",
-            help="Secret key",
-            required="-h" not in other_args and "--help" not in other_args,
-        )
-        parser.add_argument(
-            "-t",
-            "--token",
-            type=str,
-            dest="token",
-            help="Bearer token",
-            required="-h" not in other_args and "--help" not in other_args,
-        )
-        if not other_args:
-            console.print("For your API Key, visit: https://developer.twitter.com")
-            return
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["twitter"] = keys_model.set_twitter_key(
-                key=ns_parser.key,
-                secret=ns_parser.secret,
-                access_token=ns_parser.token,
-                persist=True,
-                show_output=True,
-            )
-
-    @log_start_end(log=logger)
     def call_rh(self, other_args: List[str]):
         """Process rh command"""
         parser = argparse.ArgumentParser(
