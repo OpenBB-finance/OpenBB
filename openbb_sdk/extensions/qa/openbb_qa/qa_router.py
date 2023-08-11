@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pandas_ta as ta
 import statsmodels.api as sm
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -34,7 +34,7 @@ router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
-def normality(data: List[Data], target: str) -> CommandOutput[NormalityModel]:
+def normality(data: List[Data], target: str) -> Obbject[NormalityModel]:
     """
     Normality Statistics.
 
@@ -53,7 +53,7 @@ def normality(data: List[Data], target: str) -> CommandOutput[NormalityModel]:
 
     Returns
     -------
-    CommandOutput[NormalityModel]
+    Obbject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
     """
 
@@ -74,11 +74,11 @@ def normality(data: List[Data], target: str) -> CommandOutput[NormalityModel]:
         kolmogorov_smirnov=TestModel(statistic=ks_statistic, p_value=ks_pvalue),
     )
 
-    return CommandOutput(results=norm_summary)
+    return Obbject(results=norm_summary)
 
 
 @router.command(methods=["POST"])
-def capm(data: List[Data], target: str) -> CommandOutput[CAPMModel]:
+def capm(data: List[Data], target: str) -> Obbject[CAPMModel]:
     """Capital Asset Pricing Model."""
 
     df = basemodel_to_df(data)
@@ -106,13 +106,13 @@ def capm(data: List[Data], target: str) -> CommandOutput[CAPMModel]:
         idiosyncratic_risk=1 - model.rsquared,
     )
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def qqplot() -> CommandOutput[Empty]:
+def qqplot() -> Obbject[Empty]:
     """QQ Plot."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -121,7 +121,7 @@ def om(
     target: str,
     threshold_start: float = 0.0,
     threshold_end: float = 1.5,
-) -> CommandOutput[List[OmegaModel]]:
+) -> Obbject[List[OmegaModel]]:
     """Omega Ratio.
 
     Parameters
@@ -137,7 +137,7 @@ def om(
 
     Returns
     -------
-    CommandOutput[List[OmegaModel]]
+    Obbject[List[OmegaModel]]
         Omega ratios.
     """
 
@@ -156,13 +156,11 @@ def om(
     for i in threshold:
         results.append(OmegaModel(threshold=i, omega=get_omega_ratio(series_target, i)))
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def kurtosis(
-    data: List[Data], target: str, window: PositiveInt
-) -> CommandOutput[List[Data]]:
+def kurtosis(data: List[Data], target: str, window: PositiveInt) -> Obbject[List[Data]]:
     """Kurtosis.
 
     Parameters
@@ -176,7 +174,7 @@ def kurtosis(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         Kurtosis.
     """
     df = basemodel_to_df(data)
@@ -184,43 +182,43 @@ def kurtosis(
     results = ta.kurtosis(close=series_target, length=window).dropna()
     results = df_to_basemodel(results)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def pick() -> CommandOutput[Empty]:
+def pick() -> Obbject[Empty]:
     """Pick."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def spread() -> CommandOutput[Empty]:
+def spread() -> Obbject[Empty]:
     """Spread."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def rolling() -> CommandOutput[Empty]:
+def rolling() -> Obbject[Empty]:
     """Rolling."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def var() -> CommandOutput[Empty]:
+def var() -> Obbject[Empty]:
     """Value at Risk."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def line() -> CommandOutput[Empty]:
+def line() -> Obbject[Empty]:
     """Line."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def hist() -> CommandOutput[Empty]:
+def hist() -> Obbject[Empty]:
     """Histogram."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -229,7 +227,7 @@ def unitroot(
     target: str,
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
     kpss_reg: Literal["c", "ct"] = "c",
-) -> CommandOutput[UnitRootModel]:
+) -> Obbject[UnitRootModel]:
     """Unit Root Test.
 
     Augmented Dickey-Fuller test for unit root.
@@ -248,7 +246,7 @@ def unitroot(
 
     Returns
     -------
-    CommandOutput[UnitRootModel]
+    Obbject[UnitRootModel]
         Unit root tests summary.
     """
 
@@ -272,19 +270,19 @@ def unitroot(
             nlags=kpss[2],
         ),
     )
-    return CommandOutput(results=unitroot_summary)
+    return Obbject(results=unitroot_summary)
 
 
 @router.command(methods=["POST"])
-def beta() -> CommandOutput[Empty]:
+def beta() -> Obbject[Empty]:
     """Beta."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
 def sh(
     data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """Sharpe Ratio.
 
     Parameters
@@ -300,7 +298,7 @@ def sh(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         Sharpe ratio.
     """
 
@@ -313,7 +311,7 @@ def sh(
 
     results = df_to_basemodel(results)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -323,7 +321,7 @@ def so(
     target_return: float = 0.0,
     window: PositiveInt = 252,
     adjusted: bool = False,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """Sortino Ratio.
 
     For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
@@ -343,7 +341,7 @@ def so(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         Sortino ratio.
     """
 
@@ -361,37 +359,35 @@ def so(
 
     results = df_to_basemodel(results)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def cusum() -> CommandOutput[Empty]:
+def cusum() -> Obbject[Empty]:
     """Cumulative Sum."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def raw() -> CommandOutput[Empty]:
+def raw() -> Obbject[Empty]:
     """Raw."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def cdf() -> CommandOutput[Empty]:
+def cdf() -> Obbject[Empty]:
     """Cumulative Distribution Function."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def decompose() -> CommandOutput[Empty]:
+def decompose() -> Obbject[Empty]:
     """Decompose."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def skew(
-    data: List[Data], target: str, window: PositiveInt
-) -> CommandOutput[List[Data]]:
+def skew(data: List[Data], target: str, window: PositiveInt) -> Obbject[List[Data]]:
     """Skewness.
 
     Parameters
@@ -405,7 +401,7 @@ def skew(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         Skewness.
     """
     df = basemodel_to_df(data)
@@ -413,7 +409,7 @@ def skew(
     results = ta.skew(close=series_target, length=window).dropna()
     results = df_to_basemodel(results)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -422,7 +418,7 @@ def quantile(
     target: str,
     window: PositiveInt,
     quantile_pct: NonNegativeFloat = 0.5,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """Quantile."""
 
     df = basemodel_to_df(data)
@@ -434,29 +430,29 @@ def quantile(
 
     results = df_to_basemodel(results)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def bw() -> CommandOutput[Empty]:
+def bw() -> Obbject[Empty]:
     """Bandwidth."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def es() -> CommandOutput[Empty]:
+def es() -> Obbject[Empty]:
     """Expected Shortfall."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def acf() -> CommandOutput[Empty]:
+def acf() -> Obbject[Empty]:
     """Autocorrelation Function."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
-def summary(data: List[Data], target: str) -> CommandOutput[SummaryModel]:
+def summary(data: List[Data], target: str) -> Obbject[SummaryModel]:
     """Summary.
 
     Parameters
@@ -468,7 +464,7 @@ def summary(data: List[Data], target: str) -> CommandOutput[SummaryModel]:
 
     Returns
     -------
-    CommandOutput[SummaryModel]
+    Obbject[SummaryModel]
         Summary table.
     """
 
@@ -489,4 +485,4 @@ def summary(data: List[Data], target: str) -> CommandOutput[SummaryModel]:
         max=df_stats.loc["max"],
     )
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
