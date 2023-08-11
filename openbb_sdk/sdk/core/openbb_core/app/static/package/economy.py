@@ -1,16 +1,24 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import BaseModel, validate_arguments
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_economy(Container):
@@ -346,7 +354,7 @@ class CLASS_economy(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get OHLCV data for an index.
@@ -357,7 +365,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon, yfinance]
+        provider: Literal[yfinance, polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -398,31 +406,20 @@ class CLASS_economy(Container):
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
 
-        fmp
-        ===
+        yfinance
+        ========
 
         Parameters
         ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Interval of the data to fetch.
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
 
 
         MajorIndicesEOD
         ---------------
-        adjClose : Optional[float]
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : Optional[float]
-            Unadjusted volume of the symbol.
-        change : Optional[float]
-            Change in the price of the symbol from the previous day.
-        changePercent : Optional[float]
-            Change \\% in the price of the symbol.
-        label : Optional[str]
-            Human readable format of the date.
-        changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time.
+        All fields are standardized.
 
         polygon
         =======
@@ -446,20 +443,31 @@ class CLASS_economy(Container):
         n : PositiveInt
             The number of transactions for the symbol in the time period.
 
-        yfinance
-        ========
+        fmp
+        ===
 
         Parameters
         ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
+        timeseries : Optional[NonNegativeInt]
+            Number of days to look back.
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Interval of the data to fetch.
 
 
         MajorIndicesEOD
         ---------------
-        All fields are standardized."""  # noqa: E501
+        adjClose : Optional[float]
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : Optional[float]
+            Unadjusted volume of the symbol.
+        change : Optional[float]
+            Change in the price of the symbol from the previous day.
+        changePercent : Optional[float]
+            Change \% in the price of the symbol.
+        label : Optional[str]
+            Human readable format of the date.
+        changeOverTime : Optional[float]
+            Change \% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

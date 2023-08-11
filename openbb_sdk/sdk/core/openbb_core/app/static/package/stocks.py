@@ -1,18 +1,24 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
 import pydantic
-import pydantic.main
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_stocks(Container):
@@ -101,7 +107,7 @@ class CLASS_stocks(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["cboe", "yfinance", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -112,7 +118,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[cboe, fmp, polygon, yfinance]
+        provider: Literal[cboe, yfinance, polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -165,31 +171,20 @@ class CLASS_stocks(Container):
         --------
         All fields are standardized.
 
-        fmp
-        ===
+        yfinance
+        ========
 
         Parameters
         ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Interval of the data to fetch.
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
 
 
         StockEOD
         --------
-        adjClose : Optional[float]
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : Optional[float]
-            Unadjusted volume of the symbol.
-        change : Optional[float]
-            Change in the price of the symbol from the previous day.
-        changePercent : Optional[float]
-            Change \\% in the price of the symbol.
-        label : Optional[str]
-            Human readable format of the date.
-        changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time.
+        All fields are standardized.
 
         polygon
         =======
@@ -213,20 +208,31 @@ class CLASS_stocks(Container):
         n : Optional[PositiveInt]
             The number of transactions for the symbol in the time period.
 
-        yfinance
-        ========
+        fmp
+        ===
 
         Parameters
         ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
+        timeseries : Optional[NonNegativeInt]
+            Number of days to look back.
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Interval of the data to fetch.
 
 
         StockEOD
         --------
-        All fields are standardized."""  # noqa: E501
+        adjClose : Optional[float]
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : Optional[float]
+            Unadjusted volume of the symbol.
+        change : Optional[float]
+            Change in the price of the symbol from the previous day.
+        changePercent : Optional[float]
+            Change \% in the price of the symbol.
+        label : Optional[str]
+            Human readable format of the date.
+        changeOverTime : Optional[float]
+            Change \% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -267,7 +273,7 @@ class CLASS_stocks(Container):
             ),
         ] = 15,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
+        provider: Optional[Literal["benzinga", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get news for one or more stock tickers.
@@ -278,7 +284,7 @@ class CLASS_stocks(Container):
 
         Parameters
         ----------
-        provider: Literal[benzinga, fmp, polygon]
+        provider: Literal[benzinga, polygon, fmp]
             The provider to use for the query.
         symbols : ConstrainedStrValue
             Symbol to get data for.
@@ -359,23 +365,6 @@ class CLASS_stocks(Container):
         teaser : Optional[str]
             The teaser of the news.
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockNews
-        ---------
-        symbol : str
-            Ticker of the fetched news.
-        image : Optional[str]
-            URL to the image of the news source.
-        site : str
-            Name of the news source.
-
         polygon
         =======
 
@@ -420,7 +409,24 @@ class CLASS_stocks(Container):
         publisher : PolygonPublisher
             Publisher of the article.
         tickers : List[str]
-            Tickers covered in the article."""  # noqa: E501
+            Tickers covered in the article.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        StockNews
+        ---------
+        symbol : str
+            Ticker of the fetched news.
+        image : Optional[str]
+            URL to the image of the news source.
+        site : str
+            Name of the news source."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

@@ -13,6 +13,7 @@ openbb-core = { path = "./sdk/core" }
 openbb-stocks = { path = "./extensions/stocks" }
 openbb-crypto = { path = "./extensions/crypto" }
 openbb-forex = { path = "./extensions/forex" }
+openbb-futures = { path = "./extensions/futures" }
 openbb-news = { path = "./extensions/news" }
 openbb-economy = { path = "./extensions/economy" }
 openbb-fixedincome = { path = "./extensions/fixedincome" }

@@ -1,6 +1,6 @@
-# Crypto data extension for OpenBB SDK
+# Futures data extension for OpenBB SDK
 
-This extension provides a set of commands for crypto data retrieval.
+This extension provides a set of commands for futures data retrieval.
 
 ## Installation
 

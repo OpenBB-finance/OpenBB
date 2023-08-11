@@ -1,18 +1,24 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
 import pydantic
-import pydantic.main
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_stocks_fa(Container):
@@ -52,7 +58,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet.
@@ -63,7 +69,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -176,42 +182,6 @@ class CLASS_stocks_fa(Container):
         total_liabilities_and_total_equity : Optional[int]
             None
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            None
-
-
-        BalanceSheet
-        ------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-        cashAndShortTermInvestments : Optional[int]
-            None
-        goodwillAndIntangibleAssets : Optional[int]
-            None
-        deferredRevenueNonCurrent : Optional[int]
-            None
-        totalInvestments : Optional[int]
-            None
-        capitalLeaseObligations : Optional[int]
-            None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
-            None
-        totalNonCurrentLiabilities : Optional[int]
-            None
-        totalDebt : Optional[int]
-            None
-        netDebt : Optional[int]
-            None
-
         polygon
         =======
 
@@ -253,7 +223,43 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        All fields are standardized."""  # noqa: E501
+        All fields are standardized.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            None
+
+
+        BalanceSheet
+        ------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None
+        cashAndShortTermInvestments : Optional[int]
+            None
+        goodwillAndIntangibleAssets : Optional[int]
+            None
+        deferredRevenueNonCurrent : Optional[int]
+            None
+        totalInvestments : Optional[int]
+            None
+        capitalLeaseObligations : Optional[int]
+            None
+        deferredTaxLiabilitiesNonCurrent : Optional[int]
+            None
+        totalNonCurrentLiabilities : Optional[int]
+            None
+        totalDebt : Optional[int]
+            None
+        netDebt : Optional[int]
+            None"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -555,7 +561,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement.
@@ -566,7 +572,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -659,24 +665,6 @@ class CLASS_stocks_fa(Container):
         cash_at_end_of_period : Optional[int]
             None
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            Central Index Key (CIK) of the company.
-
-
-        CashFlowStatement
-        -----------------
-        calendarYear : Optional[int]
-            None
-        link : Optional[str]
-            None
-        finalLink : Optional[str]
-            None
-
         polygon
         =======
 
@@ -718,7 +706,25 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        All fields are standardized."""  # noqa: E501
+        All fields are standardized.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            Central Index Key (CIK) of the company.
+
+
+        CashFlowStatement
+        -----------------
+        calendarYear : Optional[int]
+            None
+        link : Optional[str]
+            None
+        finalLink : Optional[str]
+            None"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1668,7 +1674,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Income Statement.
@@ -1679,7 +1685,7 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -1782,19 +1788,6 @@ class CLASS_stocks_fa(Container):
         final_link : Optional[str]
             Final link to the income statement.
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
-
-
-        IncomeStatement
-        ---------------
-        All fields are standardized.
-
         polygon
         =======
 
@@ -1849,7 +1842,20 @@ class CLASS_stocks_fa(Container):
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            None"""  # noqa: E501
+            None
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        cik : Optional[str]
+            The CIK of the company if no symbol is provided.
+
+
+        IncomeStatement
+        ---------------
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
