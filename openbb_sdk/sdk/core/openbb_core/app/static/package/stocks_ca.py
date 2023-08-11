@@ -22,7 +22,7 @@ class CLASS_stocks_ca(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Company peers.
 

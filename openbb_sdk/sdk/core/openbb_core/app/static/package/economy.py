@@ -50,7 +50,7 @@ class CLASS_economy(Container):
         ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[List]:
         """Get the constituents of an index.
 
@@ -216,7 +216,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """CPI.
 
@@ -346,7 +346,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> Obbject[BaseModel]:
         """Get OHLCV data for an index.
 
