@@ -15,7 +15,7 @@ from typing import (
     overload,
 )
 
-import pkg_resources
+import importlib_metadata
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
@@ -411,7 +411,10 @@ class RouterLoader:
     @staticmethod
     def from_extensions() -> Router:
         router = Router()
-        for entry_point in pkg_resources.iter_entry_points("openbb_core_extension"):
+
+        for entry_point in importlib_metadata.entry_points(
+            group="openbb_core_extension"
+        ):
             try:
                 router.include_router(
                     router=entry_point.load(),
