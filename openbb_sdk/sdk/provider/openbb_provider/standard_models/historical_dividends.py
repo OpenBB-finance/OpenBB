@@ -36,12 +36,18 @@ class HistoricalDividendsData(Data):
 
     @validator("declaration_date", pre=True, check_fields=False)
     def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
+        if not isinstance(v, str):
+            return v
         return dateType.fromisoformat(v) if v else None
 
     @validator("record_date", pre=True, check_fields=False)
     def record_date_validate(cls, v: str):  # pylint: disable=E0213
+        if not isinstance(v, str):
+            return v
         return dateType.fromisoformat(v) if v else None
 
     @validator("payment_date", pre=True, check_fields=False)
     def payment_date_validate(cls, v: str):  # pylint: disable=E0213
+        if not isinstance(v, str):
+            return v
         return dateType.fromisoformat(v) if v else None
