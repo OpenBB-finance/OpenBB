@@ -195,7 +195,7 @@ class ChartingManager(metaclass=SingletonMeta):
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
-        obbject_item: Generic[T],
+        OBBject_item: Generic[T],
         **kwargs,
     ):
         """
@@ -215,7 +215,7 @@ class ChartingManager(metaclass=SingletonMeta):
             User settings.
         route : str
             Route name, example: `/stocks/load`.
-        obbject_item
+        OBBject_item
             Command output item.
         Returns
         -------
@@ -235,7 +235,7 @@ class ChartingManager(metaclass=SingletonMeta):
 
         self.handle_backend(self._charting_extension, self._charting_settings)
 
-        kwargs["obbject_item"] = obbject_item
+        kwargs["OBBject_item"] = OBBject_item
         kwargs["charting_settings"] = self._charting_settings
 
         charting_function = self.get_chart_function(self._charting_extension, route)

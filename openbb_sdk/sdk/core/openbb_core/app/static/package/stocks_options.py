@@ -7,7 +7,7 @@ from pydantic import validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -23,8 +23,8 @@ class CLASS_stocks_options(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
 
 
@@ -40,7 +40,7 @@ class CLASS_stocks_options(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -142,7 +142,7 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def eodchain(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Gets option chain at a specific date."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -159,7 +159,7 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def hist(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Get historical data for a single option contract."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -176,7 +176,7 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def info(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Display option information (volatility, IV rank, etc.)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -193,7 +193,7 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def pcr(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Display historical rolling put/call ratio for ticker over a defined window."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -210,7 +210,7 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def unu(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Show unusual options activity."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,

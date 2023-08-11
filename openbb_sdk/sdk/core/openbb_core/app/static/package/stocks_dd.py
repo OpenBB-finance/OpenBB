@@ -5,7 +5,7 @@ from typing import Annotated, List, Literal, Optional, Union
 from pydantic import validate_arguments
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -134,8 +134,8 @@ class CLASS_stocks_dd(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """SEC Filings.
 
 
@@ -157,7 +157,7 @@ class CLASS_stocks_dd(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]

@@ -10,7 +10,7 @@ from pydantic import BaseModel, validate_arguments
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -20,7 +20,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def analysis(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Analyse SEC filings with the help of machine learning."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -53,8 +53,8 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Balance Sheet.
 
 
@@ -74,7 +74,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -288,8 +288,8 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
 
 
@@ -307,7 +307,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -455,8 +455,8 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
 
 
@@ -474,7 +474,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -556,8 +556,8 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Cash Flow Statement.
 
 
@@ -577,7 +577,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -753,8 +753,8 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Cash Flow Statement Growth.
 
 
@@ -772,7 +772,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -894,8 +894,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Executive Compensation.
 
 
@@ -911,7 +911,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1000,8 +1000,8 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Stock Split Calendar.
 
 
@@ -1019,7 +1019,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1079,7 +1079,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def customer(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """List of customers of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1096,7 +1096,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def dcfc(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Determine the (historical) discounted cash flow."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1119,8 +1119,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Historical Dividends.
 
 
@@ -1136,7 +1136,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1199,7 +1199,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def dupont(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Detailed breakdown for Return on Equity (RoE)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1226,8 +1226,8 @@ class CLASS_stocks_fa(Container):
         ] = 50,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Earnings Calendar.
 
 
@@ -1245,7 +1245,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1319,8 +1319,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Number of Employees.
 
 
@@ -1336,7 +1336,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1403,7 +1403,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def enterprise(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Enterprise value."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1420,7 +1420,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def epsfc(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Earnings Estimate by Analysts - EPS."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1453,8 +1453,8 @@ class CLASS_stocks_fa(Container):
         ] = 30,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Analyst Estimates.
 
 
@@ -1474,7 +1474,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1569,7 +1569,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def fama_coe(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Fama French 3 Factor Model - Coefficient of Earnings."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1586,7 +1586,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def fama_raw(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Fama French 3 Factor Model - Raw Data."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1603,7 +1603,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def fraud(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Key fraud ratios including M-score, Z-score and McKee."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1620,7 +1620,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def growth(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Growth of financial statement items and ratios."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -1637,7 +1637,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def historical_5(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1669,8 +1669,8 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Income Statement.
 
 
@@ -1690,7 +1690,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -1890,8 +1890,8 @@ class CLASS_stocks_fa(Container):
         ] = "annually",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Income Statement Growth.
 
 
@@ -1911,7 +1911,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2065,8 +2065,8 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Stock Insider Trading.
 
 
@@ -2090,7 +2090,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2186,8 +2186,8 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Institutional Ownership.
 
 
@@ -2207,7 +2207,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2330,7 +2330,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def key(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         inputs = filter_inputs(
             chart=chart,
         )
@@ -2362,8 +2362,8 @@ class CLASS_stocks_fa(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Key Metrics.
 
 
@@ -2383,7 +2383,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2560,8 +2560,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Key Executives.
 
 
@@ -2577,7 +2577,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2640,7 +2640,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def mktcap(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Obtain the market capitalization or enterprise value."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -2657,7 +2657,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def news(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         inputs = filter_inputs(
             chart=chart,
         )
@@ -2679,8 +2679,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[BaseModel]:
+        **kwargs
+    ) -> OBBject[BaseModel]:
         """Company Overview.
 
 
@@ -2696,7 +2696,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2831,8 +2831,8 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Stock Ownership.
 
 
@@ -2852,7 +2852,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -2987,8 +2987,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[BaseModel]:
+        **kwargs
+    ) -> OBBject[BaseModel]:
         """Price Target Consensus.
 
 
@@ -3004,7 +3004,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3069,8 +3069,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Price Target.
 
 
@@ -3086,7 +3086,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3174,8 +3174,8 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Extensive set of ratios over time.
 
 
@@ -3195,7 +3195,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3360,7 +3360,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def rating(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Analyst prices and ratings over time of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -3377,7 +3377,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def revfc(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Earning Estimate by Analysts - Revenue."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -3410,8 +3410,8 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Revenue Geographic.
 
 
@@ -3431,7 +3431,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3512,8 +3512,8 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Revenue Business Line.
 
 
@@ -3533,7 +3533,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3588,7 +3588,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def rot(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Number of analyst ratings over time on a monthly basis."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -3605,7 +3605,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def score(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Value investing scores for any time period."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -3622,7 +3622,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def sec(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3638,7 +3638,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def shares(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         inputs = filter_inputs(
             chart=chart,
         )
@@ -3660,8 +3660,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Share Statistics.
 
 
@@ -3677,7 +3677,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3744,8 +3744,8 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Historical Stock Splits.
 
 
@@ -3761,7 +3761,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -3818,7 +3818,7 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def supplier(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """List of suppliers of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
@@ -3853,8 +3853,8 @@ class CLASS_stocks_fa(Container):
         ] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> Obbject[List]:
+        **kwargs
+    ) -> OBBject[List]:
         """Earnings Call Transcript.
 
 
@@ -3874,7 +3874,7 @@ class CLASS_stocks_fa(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
