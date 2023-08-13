@@ -1,24 +1,18 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
 import datetime
+from typing import Annotated, List, Literal, Optional, Union
+
 import pydantic
-from pydantic import validate_arguments, BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal, Annotated
-from openbb_core.app.utils import df_to_basemodel
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-import pydantic.main
-import types
-import typing
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 
 class CLASS_stocks(Container):
@@ -110,7 +104,7 @@ class CLASS_stocks(Container):
         provider: Optional[Literal["cboe", "yfinance", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Load stock data for a specific ticker.
+        r"""Load stock data for a specific ticker.
 
 
         openbb
