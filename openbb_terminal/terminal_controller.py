@@ -20,7 +20,7 @@ import certifi
 import pandas as pd
 import requests
 from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
@@ -33,6 +33,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
+from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
@@ -90,6 +91,7 @@ class TerminalController(BaseController):
         "news",
         "intro",
         "askobb",
+        "record",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -142,50 +144,63 @@ class TerminalController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices."""
-        self.ROUTINE_FILES = {
-            filepath.name: filepath
-            for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
-                "*.openbb"
-            )
-        }
-        if get_current_user().profile.get_token():
-            self.ROUTINE_DEFAULT_FILES = {
-                filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "default"
-                ).rglob("*.openbb")
-            }
-            self.ROUTINE_PERSONAL_FILES = {
-                filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "personal"
-                ).rglob("*.openbb")
-            }
-
-        self.ROUTINE_CHOICES["--file"] = {
-            filename: None for filename in self.ROUTINE_FILES
-        }
-        self.ROUTINE_CHOICES["--example"] = None
-        self.ROUTINE_CHOICES["-e"] = None
-        self.ROUTINE_CHOICES["--input"] = None
-        self.ROUTINE_CHOICES["-i"] = None
-        self.ROUTINE_CHOICES["--help"] = None
-        self.ROUTINE_CHOICES["--h"] = None
-
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
             choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
             choices["hold"]["off"] = {"--title": None}
             if biztoc_model.BIZTOC_TAGS:
                 choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
+
+            self.ROUTINE_FILES = {
+                filepath.name: filepath
+                for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
+                    "*.openbb"
+                )
+            }
+            if get_current_user().profile.get_token():
+                self.ROUTINE_DEFAULT_FILES = {
+                    filepath.name: filepath
+                    for filepath in Path(
+                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                        / "hub"
+                        / "default"
+                    ).rglob("*.openbb")
+                }
+                self.ROUTINE_PERSONAL_FILES = {
+                    filepath.name: filepath
+                    for filepath in Path(
+                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                        / "hub"
+                        / "personal"
+                    ).rglob("*.openbb")
+                }
+
+            choices["exe"] = {
+                "--file": {filename: {} for filename in list(self.ROUTINE_FILES.keys())},
+                "-f": "--file",
+                "--example": None,
+                "-e": "--example",
+                "--input": None,
+                "-i": "--input",
+            }
+
+            choices["record"] = {
+                "--name": None,
+                "-n": "--name",
+                "--description": None,
+                "-d": "--description",
+                "--public": None,
+                "-p": "--public",
+                "--local": None,
+                "-l": "--local",
+                "--tag1": {c: None for c in SCRIPT_TAGS},
+                "--tag2": {c: None for c in SCRIPT_TAGS},
+                "--tag3": {c: None for c in SCRIPT_TAGS},
+            }
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -759,6 +774,7 @@ class TerminalController(BaseController):
                         )
                     set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
                     self.queue = self.queue[1:]
+
 
 
 # pylint: disable=global-statement

@@ -14,6 +14,7 @@ from openbb_terminal.core.session.constants import (
     TIMEOUT,
 )
 from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
@@ -476,7 +477,12 @@ def upload_routine(
             timeout=timeout,
         )
         if response.status_code == 200:
+            username = get_current_user().profile.username
             console.print("[green]Successfully uploaded your routine.[/green]")
+            if public:
+                console.print(f"\n[yellow]Share or edit it at https://my.openbb.co/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
+            else:
+                console.print(f"\n[yellow]Edit it at https://my.openbb.co/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
         elif response.status_code != 409:  # 409: routine already exists
             console.print(
                 "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"

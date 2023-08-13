@@ -165,7 +165,7 @@ class EconometricsController(BaseController):
         }
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             choices["load"] = {
                 "--file": {c: {} for c in self.DATA_FILES},
                 "-f": "--file",
