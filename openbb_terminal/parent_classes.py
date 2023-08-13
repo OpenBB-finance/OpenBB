@@ -49,6 +49,7 @@ from openbb_terminal.helper_funcs import (
     support_message,
     system_clear,
     valid_date,
+    check_routine_title,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -891,9 +892,10 @@ class BaseController(metaclass=ABCMeta):
             "--name",
             action="store",
             dest="name",
-            type=str,
+            type=check_routine_title,
             default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
             help="Routine file name to be saved.",
+            required=True if "-h" not in other_args else False,
         )
         parser.add_argument(
             "-d",

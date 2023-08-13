@@ -2283,3 +2283,27 @@ def query_LLM_remote(query_text: str):
         return None, None
 
     return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]
+
+def check_routine_title(title: str) -> str:
+    """Validate that routine title only contains chars, digits and whitespace
+
+    Example: My very cool routine 123 is valid.
+
+    Parameters
+    ----------
+    title: str
+        Any title text
+
+    Returns
+    -------
+    str
+        Valid routine title or raise argparse exception
+    """
+    pattern = re.compile(r"^[a-z0-9]+(?:[-_a-z0-9]+)*$")
+    if not pattern.match(title):
+        log_and_raise(
+            argparse.ArgumentTypeError(
+                f"The title '{title}' has invalid format. Please use only digits, characters and whitespaces."
+            )
+        )
+    return title
