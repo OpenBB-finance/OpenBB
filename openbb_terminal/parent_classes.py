@@ -1001,8 +1001,6 @@ class BaseController(metaclass=ABCMeta):
             SESSION_RECORDED_TAGS += ',' + tag2 if tag2 else ""
             SESSION_RECORDED_TAGS += ',' + tag3 if tag3 else ""
 
-            console.print(SESSION_RECORDED_TAGS)
-
             SESSION_RECORDED_PUBLIC = ns_parser.public
 
             console.print(f"[green]The routine '{title}' is successfully being recorded.[/green]")
@@ -1038,15 +1036,37 @@ class BaseController(metaclass=ABCMeta):
 
                 # If file already exists, add a timestamp to the name
                 if os.path.isfile(routine_file):
-                    routine_file = os.path.join(
-                        current_user.preferences.USER_ROUTINES_DIRECTORY,
-                        datetime.now().strftime("%Y%m%d_%H%M%S_") + title_for_local_storage,
+                    i = console.input(
+                        "A local routine with the same name already exists, "
+                        "do you want to override it? (y/n): "
                     )
+                    console.print("")
+                    while i.lower() not in ["y", "yes", "n", "no"]:
+                        i = console.input(
+                            "Select 'y' or 'n' to proceed: "
+                        )
+                        console.print("")
+
+                    if i.lower() in ["n", "no"]:
+                        new_name = datetime.now().strftime("%Y%m%d_%H%M%S_") + title_for_local_storage
+                        routine_file = os.path.join(
+                            current_user.preferences.USER_ROUTINES_DIRECTORY,
+                            new_name,
+                        )
+                        console.print(f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n")
 
                 # Writing to file
                 with open(routine_file, "w") as file1:
+                    lines = ["# OpenBB Terminal - Routine", "\n"]
+                    username = get_current_user().profile.username
+                    if username:
+                        lines += [f"# Author: {username}", "\n\n"]
+                    lines += [f"# Title: {SESSION_RECORDED_NAME}", "\n"]
+                    lines += [f"# Tags: {SESSION_RECORDED_TAGS}", "\n\n"]
+                    lines += [f"# Description: {SESSION_RECORDED_DESCRIPTION}", "\n\n"]
+                    lines += [c + "\n\n" for c in SESSION_RECORDED[:-1]]
                     # Writing data to a file
-                    file1.writelines([c + "\n\n" for c in SESSION_RECORDED[:-1]])
+                    file1.writelines(lines)
 
                 console.print(
                     f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
