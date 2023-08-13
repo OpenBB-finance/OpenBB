@@ -22,3 +22,14 @@ def load(
 ) -> OBBject[BaseModel]:
     """Futures EOD Price."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="FuturesTermStructure")
+def term_structure(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Futures Term Structure Prices."""
+    return OBBject(results=Query(**locals()).execute())

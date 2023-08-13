@@ -2,6 +2,7 @@
 
 import os
 from datetime import date, datetime, timedelta
+from io import BytesIO
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -87,20 +88,20 @@ def get_cboe_directory() -> pd.DataFrame:
     pd.DataFrame: CBOE_DIRECTORY
         DataFrame of the CBOE listings directory
     """
-    try:
-        CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
-            "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
-        )
-        CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
-            columns={
-                " Stock Symbol": "Symbol",
-                " DPM Name": "DPM Name",
-                " Post/Station": "Post/Station",
-            }
-        ).set_index("Symbol")
-        return CBOE_DIRECTORY
-    except HTTPError:
-        return pd.DataFrame()
+    url = "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
+    r = request(url)
+    if r.status_code != 200:
+        raise HTTPError(r.status_code)
+    CBOE_DIRECTORY = pd.read_csv(BytesIO(r.content), index_col=None)
+    CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
+        columns={
+            " Stock Symbol": "Symbol",
+            " DPM Name": "DPM Name",
+            " Post/Station": "Post/Station",
+        }
+    ).set_index("Symbol")
+
+    return CBOE_DIRECTORY
 
 
 def get_cboe_index_directory() -> pd.DataFrame:
@@ -116,7 +117,7 @@ def get_cboe_index_directory() -> pd.DataFrame:
         )
 
         if r.status_code != 200:
-            raise HTTPError
+            raise HTTPError(r.status_code)
 
         CBOE_INDEXES = pd.DataFrame(r.json())
 
@@ -700,3 +701,121 @@ def get_info(symbol: str) -> pd.DataFrame:
     info.loc["name", symbol] = SYMBOLS[SYMBOLS.index == symbol]["Company Name"][0]
 
     return info[symbol]
+
+
+def list_futures(**kwargs) -> pd.DataFrame:
+    """List of CBOE futures and their underlying symbols.
+
+    Returns
+    --------
+    pd.DataFrame
+        Pandas DataFrame with results.
+    """
+
+    r = request(
+        "https://cdn.cboe.com/api/global/delayed_quotes/symbol_book/futures-roots.json"
+    )
+
+    if r.status_code != 200:
+        raise HTTPError(r.status_code)
+
+    data = pd.DataFrame(r.json()["data"])
+
+    return data
+
+
+def get_settlement_prices(
+    settlement_date: Optional[date] = None,
+    options: bool = False,
+    archives: bool = False,
+    final_settlement: bool = False,
+    **kwargs,
+) -> pd.DataFrame:
+    """Gets the settlement prices of CBOE futures.
+
+    Parameters
+    -----------
+    settlement_date: Optional[date]
+        The settlement date. Only valid for active contracts. [YYYY-MM-DD]
+    options: bool
+        If true, returns options on futures.
+    archives: bool
+        Settlement price archives for select years and products.  Overriden by other parameters.
+    final_settlement: bool
+        Final settlement prices for expired contracts.  Overrides archives.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with results.
+    """
+
+    if archives is True:
+        url = "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_FinalSettlement_Archive.csv"
+
+    if settlement_date is not None:
+        url = f"https://www.cboe.com/us/futures/market_statistics/settlement/csv?dt={settlement_date}"
+        if options is True:
+            url = f"https://www.cboe.com/us/futures/market_statistics/settlement/csv?options=t&dt={settlement_date}"
+
+    if settlement_date is None:
+        url = "https://www.cboe.com/us/futures/market_statistics/settlement/csv"
+        if options is True:
+            url = "https://www.cboe.com/us/futures/market_statistics/settlement/csv?options=t"
+
+    if final_settlement is True:
+        url = "https://www.cboe.com/us/futures/market_statistics/final_settlement_prices/csv/"
+
+    r = request(url)
+
+    if r.status_code != 200:
+        raise HTTPError(r.status_code)
+
+    data = pd.read_csv(BytesIO(r.content), index_col=None, parse_dates=True)
+
+    if data.empty:
+        print(
+            f"No results found for, {settlement_date}."
+        ) if settlement_date is not None else "No results found."
+        return pd.DataFrame()
+
+    data.columns = [camel_to_snake(c.replace(" ", "")) for c in data.columns]
+
+    if len(data) > 0:
+        return data
+
+    return pd.DataFrame()
+
+
+def get_term_structure(
+    symbol: str = "VX", date: Optional[date] = None, **kwargs
+) -> pd.DataFrame:
+    """Gets the term structure for a given futures product.
+    Parameters
+    ----------
+    symbol: str
+        The root symbol of the future.  VIX is known as VX.
+
+    date: Optional[date]
+        The date of the term structure.  Only valid for active contracts. [YYYY-MM-DD].
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with results."""
+
+    symbol = symbol.upper()
+    FUTURES = get_settlement_prices(settlement_date=date)
+    if symbol not in FUTURES["product"].unique().tolist():
+        print(
+            "The symbol, "
+            f"{symbol}"
+            ", is not valid.  Chose from: "
+            f"{FUTURES['product'].unique().tolist()}"
+        )
+        return pd.DataFrame()
+    data = get_settlement_prices(settlement_date=date)
+    data = data.query("`product` == @symbol").rename(
+        columns={"expiration_date": "expiration"}
+    )
+
+    return data.set_index("expiration")[["symbol", "price"]]
