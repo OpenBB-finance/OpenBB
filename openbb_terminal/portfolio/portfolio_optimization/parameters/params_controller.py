@@ -78,7 +78,7 @@ class ParametersController(BaseController):
         self.DATA_FILES = params_helpers.load_data_files()
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             choices["set"] = {c: None for c in self.models}
             choices["set"]["--model"] = {c: None for c in self.models}
             choices["set"]["-m"] = "--model"
