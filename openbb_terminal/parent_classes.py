@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import argparse
+import itertools
 import difflib
 import json
 import logging
@@ -26,6 +27,7 @@ from rich.markdown import Markdown
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import config_terminal
 from openbb_terminal.account.show_prompt import get_show_prompt
+from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
@@ -49,7 +51,6 @@ from openbb_terminal.helper_funcs import (
     support_message,
     system_clear,
     valid_date,
-    check_routine_title,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -86,6 +87,7 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 # TODO: We should try to avoid these global variables
 RECORD_SESSION = False
+RECORD_SESSION_LOCAL_ONLY = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
 SESSION_RECORDED_DESCRIPTION = ""
@@ -112,7 +114,6 @@ class BaseController(metaclass=ABCMeta):
         "reset",
         "support",
         "wiki",
-        "record",
         "stop",
         "screenshot",
         "askobb",
@@ -892,10 +893,10 @@ class BaseController(metaclass=ABCMeta):
             "--name",
             action="store",
             dest="name",
-            type=check_routine_title,
-            default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
-            help="Routine file name to be saved.",
-            required=True if "-h" not in other_args else False,
+            type=str,
+            default="",
+            help="Routine title name to be saved - only use characters, digits and whitespaces.",
+            nargs="+",
         )
         parser.add_argument(
             "-d",
@@ -903,15 +904,30 @@ class BaseController(metaclass=ABCMeta):
             type=str,
             dest="description",
             help="The description of the routine",
+            default=f"Routine recorded at {datetime.now().strftime('%H:%M')} from the OpenBB Terminal",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--tag1",
+            type=str,
+            dest="tag1",
+            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
         parser.add_argument(
-            "-t",
-            "--tags",
+            "--tag2",
             type=str,
-            dest="tags",
-            help="The tags of the routine",
+            dest="tag2",
+            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
+            default="",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--tag3",
+            type=str,
+            dest="tag3",
+            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
@@ -923,32 +939,74 @@ class BaseController(metaclass=ABCMeta):
             help="Whether the routine should be public or not",
             default=False,
         )
+        parser.add_argument(
+            "-l",
+            "--local",
+            dest="local",
+            action="store_true",
+            help="Only save the routine locally - this is necessary if you are running terminal in guest mode.",
+            default=False,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
+
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
+
+            if not ns_parser.name:
+                console.print("[red]Set a routine title by using the '-n' flag. E.g. 'record -n Morning routine'[/red]")
+                return
+
+            tag1 = " ".join(ns_parser.tag1) if isinstance(ns_parser.tag1, list) else ns_parser.tag1
+            if tag1 and tag1 not in SCRIPT_TAGS:
+                console.print(f"[red]The parameter 'tag1' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]")
+                return
+
+            tag2 = " ".join(ns_parser.tag2) if isinstance(ns_parser.tag2, list) else ns_parser.tag2
+            if tag2 and tag2 not in SCRIPT_TAGS:
+                console.print(f"[red]The parameter 'tag2' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]")
+                return
+
+            tag3 = " ".join(ns_parser.tag3) if isinstance(ns_parser.tag3, list) else ns_parser.tag3
+            if tag3 and tag3 not in SCRIPT_TAGS:
+                console.print(f"[red]The parameter 'tag3' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]")
+                return
+
+            if is_local() and not ns_parser.local:
+                console.print("[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]")
+                console.print("\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]")
+                console.print("\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]")
+                return
+
+            # Check if title has a valid format
+            title = " ".join(ns_parser.name) if ns_parser.name else ""
+            pattern = re.compile(r"^[a-zA-Z0-9\s]+(?:[-a-zA-Z0-9\s]+)*$")
+            if not pattern.match(title):
+                console.print(f"[red]The title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/red]")
+                return
+
             global RECORD_SESSION
+            global RECORD_SESSION_LOCAL_ONLY
             global SESSION_RECORDED_NAME
             global SESSION_RECORDED_DESCRIPTION
             global SESSION_RECORDED_TAGS
             global SESSION_RECORDED_PUBLIC
 
-            SESSION_RECORDED_NAME = (
-                ns_parser.name
-                if ".openbb" in ns_parser.name
-                else ns_parser.name + ".openbb"
-            )
+            RECORD_SESSION = True
+            RECORD_SESSION_LOCAL_ONLY = ns_parser.local
+            SESSION_RECORDED_NAME = title
+            SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description) if isinstance(ns_parser.description, list) else ns_parser.description
+            SESSION_RECORDED_TAGS = tag1 if tag1 else ""
+            SESSION_RECORDED_TAGS += ',' + tag2 if tag2 else ""
+            SESSION_RECORDED_TAGS += ',' + tag3 if tag3 else ""
 
-            SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
-            SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
+            console.print(SESSION_RECORDED_TAGS)
+
             SESSION_RECORDED_PUBLIC = ns_parser.public
 
-            console.print(
-                "[green]The session is successfully being recorded."
-                + " Remember to 'stop' before exiting terminal!\n[/green]"
-            )
-            RECORD_SESSION = True
+            console.print(f"[green]The routine '{title}' is successfully being recorded.[/green]")
+            console.print("\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]")
 
     @log_start_end(log=logger)
     def call_stop(self, _) -> None:
@@ -966,49 +1024,61 @@ class BaseController(metaclass=ABCMeta):
             )
         else:
             current_user = get_current_user()
-            routine_file = os.path.join(
-                current_user.preferences.USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME
-            )
 
-            if os.path.isfile(routine_file):
+            # Check if the user just wants to store routine locally
+            # This works regardless of whether they are logged in or not
+            if RECORD_SESSION_LOCAL_ONLY:
+                # Whitespaces are replaced by underscores and an .openbb extension is added
+                title_for_local_storage = SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
+
                 routine_file = os.path.join(
                     current_user.preferences.USER_ROUTINES_DIRECTORY,
-                    datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
+                    title_for_local_storage
                 )
 
-            # Writing to file
-            with open(routine_file, "w") as file1:
-                # Writing data to a file
-                file1.writelines([c + "\n\n" for c in SESSION_RECORDED[:-1]])
+                # If file already exists, add a timestamp to the name
+                if os.path.isfile(routine_file):
+                    routine_file = os.path.join(
+                        current_user.preferences.USER_ROUTINES_DIRECTORY,
+                        datetime.now().strftime("%Y%m%d_%H%M%S_") + title_for_local_storage,
+                    )
 
-            console.print(
-                f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
-            )
+                # Writing to file
+                with open(routine_file, "w") as file1:
+                    # Writing data to a file
+                    file1.writelines([c + "\n\n" for c in SESSION_RECORDED[:-1]])
 
-            if not is_local():
-                routine = read_routine(file_name=routine_file)
-                if routine is not None:
-                    name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
-                    kwargs = {
-                        "auth_header": current_user.profile.get_auth_header(),
-                        "name": name,
-                        "description": SESSION_RECORDED_DESCRIPTION,
-                        "routine": routine,
-                        "tags": SESSION_RECORDED_TAGS,
-                        "public": SESSION_RECORDED_PUBLIC,
-                    }
-                    response = Hub.upload_routine(**kwargs)  # type: ignore
-                    if response is not None and response.status_code == 409:
-                        i = console.input(
-                            "A routine with the same name already exists, "
-                            "do you want to replace it? (y/n): "
-                        )
-                        console.print("")
-                        if i.lower() in ["y", "yes"]:
-                            kwargs["override"] = True  # type: ignore
-                            response = Hub.upload_routine(**kwargs)  # type: ignore
-                        else:
-                            console.print("[info]Aborted.[/info]")
+                console.print(
+                    f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+                )
+
+            # If user doesn't specify they want to store routine locally
+            else:
+                # Confirm that the user is logged in
+                if not is_local():
+                    # routine = read_routine(file_name=routine_file)
+                    routine = "\n\n".join(SESSION_RECORDED[:-1])
+                    if routine is not None:
+                        kwargs = {
+                            "auth_header": current_user.profile.get_auth_header(),
+                            "name": SESSION_RECORDED_NAME,
+                            "description": SESSION_RECORDED_DESCRIPTION,
+                            "routine": routine,
+                            "tags": SESSION_RECORDED_TAGS,
+                            "public": SESSION_RECORDED_PUBLIC,
+                        }
+                        response = Hub.upload_routine(**kwargs)  # type: ignore
+                        if response is not None and response.status_code == 409:
+                            i = console.input(
+                                "A routine with the same name already exists, "
+                                "do you want to replace it? (y/n): "
+                            )
+                            console.print("")
+                            if i.lower() in ["y", "yes"]:
+                                kwargs["override"] = True  # type: ignore
+                                response = Hub.upload_routine(**kwargs)  # type: ignore
+                            else:
+                                console.print("[info]Aborted.[/info]")
 
             # Clear session to be recorded again
             RECORD_SESSION = False
