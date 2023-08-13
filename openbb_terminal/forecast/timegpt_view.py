@@ -37,6 +37,7 @@ def display_timegpt_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     residuals: bool = False,
+    date_features: Optional[List[str]] = None,
 ) -> Union[OpenBBFigure, None]:
     """TimeGPT was trained on the largest collection of data in history -
     over 100 billion rows of financial, weather, energy, and web data -
@@ -74,6 +75,8 @@ def display_timegpt_forecast(
         The ending date to perform analysis, data after this is trimmed. Defaults to None.
     residuals: bool
         Whether to show residuals for the model. Defaults to False.
+    date_features: Optional[List[str]]
+        Specifies which date attributes have highest weight according to model.
 
     Returns
     -------
@@ -108,6 +111,7 @@ def display_timegpt_forecast(
         finetune_steps=finetune_steps,
         clean_ex_first=clean_ex_first,
         residuals=residuals,
+        date_features=date_features,
     )
 
     fig = OpenBBFigure(xaxis_title="Date")

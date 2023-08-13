@@ -74,6 +74,7 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     check_non_negative,
     check_positive_float_list,
+    check_list_values,
 )
 
 from openbb_terminal.menu import session
@@ -3500,7 +3501,6 @@ class ForecastController(BaseController):
             dest="cleanex",
             default=True,
         )
-        # we can check whether this col exists or not
         parser.add_argument(
             "--timecol",
             action="store",
@@ -3523,6 +3523,13 @@ class ForecastController(BaseController):
             dest="sheet_name",
             type=str,
             default="",
+        )
+        parser.add_argument(
+            "--datefeatures",
+            help="Specifies which date attributes have highest weight according to model.",
+            dest="date_features",
+            type=check_list_values(["year", "month", "week", "day", "weekday"]),
+            default=[],
         )
         parser = self.add_standard_args(
             parser,
@@ -3556,4 +3563,5 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 residuals=ns_parser.residuals,
+                date_features=ns_parser.date_features,
             )

@@ -27,6 +27,7 @@ def get_timegpt_model(
     finetune_steps: int = 0,
     clean_ex_first: bool = True,
     residuals: bool = False,
+    date_features: List[str] = None,
 ) -> pd.DataFrame:
     """TimeGPT was trained on the largest collection of data in history -
     over 100 billion rows of financial, weather, energy, and web data -
@@ -52,6 +53,8 @@ def get_timegpt_model(
         Clean exogenous signal before making forecasts using TimeGPT.
     residuals: bool
         Whether to show residuals for the model. Defaults to False.
+    date_features: Optional[List[str]]
+        Specifies which date attributes have highest weight according to model.
 
     Returns
     -------
@@ -77,6 +80,13 @@ def get_timegpt_model(
         finetune_steps=finetune_steps,
         clean_ex_first=clean_ex_first,
         add_history=residuals,
+        date_features=date_features,
     )
+
+    # Plot feature importance
+    # This requires more work, but there's an issue and that needs to be fixed before
+    # implementing this
+    if False:
+        timegpt.weights_x.plot.barh(x='features', y='weights', figsize=(10, 10))
 
     return fcst_df
