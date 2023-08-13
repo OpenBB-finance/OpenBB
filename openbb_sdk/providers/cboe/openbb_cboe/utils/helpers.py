@@ -805,6 +805,9 @@ def get_term_structure(
 
     symbol = symbol.upper()
     FUTURES = get_settlement_prices(settlement_date=date)
+    if len(FUTURES) == 0:
+        return pd.DataFrame()
+
     if symbol not in FUTURES["product"].unique().tolist():
         print(
             "The symbol, "
