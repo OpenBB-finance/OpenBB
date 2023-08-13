@@ -740,7 +740,7 @@ def get_settlement_prices(
     options: bool
         If true, returns options on futures.
     archives: bool
-        Settlement price archives for select years and products.  Overriden by other parameters.
+        Settlement price archives for select years and products.  Overridden by other parameters.
     final_settlement: bool
         Final settlement prices for expired contracts.  Overrides archives.
 
