@@ -13,12 +13,12 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
-@router.command(model="CryptoEOD")
+@router.command(model="FuturesEOD")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Crypto EOD Price."""
+    """Futures EOD Price."""
     return OBBject(results=Query(**locals()).execute())

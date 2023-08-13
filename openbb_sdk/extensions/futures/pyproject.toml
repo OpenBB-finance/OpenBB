@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-futures"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_futures" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = { path = "../../sdk/core" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+futures = "openbb_futures.futures_router:router"
