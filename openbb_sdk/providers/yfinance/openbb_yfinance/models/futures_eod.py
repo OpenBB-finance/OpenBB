@@ -74,14 +74,14 @@ class YFinanceFuturesEODFetcher(
         query.end_date = query.end_date or (now - timedelta(days=1))
 
         if query.period:
-            data = Ticker(query.symbol+"=F").history(
+            data = Ticker(query.symbol + "=F").history(
                 interval=query.interval,
                 period=query.period,
                 actions=False,
                 raise_errors=True,
             )
         else:
-            data = Ticker(query.symbol+"=F").history(
+            data = Ticker(query.symbol + "=F").history(
                 interval=query.interval,
                 start=query.start_date,
                 end=query.end_date,

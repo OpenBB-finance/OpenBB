@@ -11,7 +11,7 @@ from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 
-class CLASS_crypto(Container):
+class CLASS_futures(Container):
     @filter_call
     @validate_arguments
     def load(
@@ -33,10 +33,10 @@ class CLASS_crypto(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
+        provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Crypto EOD Price.
+        """Futures EOD Price.
 
 
         openbb
@@ -44,7 +44,7 @@ class CLASS_crypto(Container):
 
         Parameters
         ----------
-        provider: Literal[yfinance, polygon, fmp]
+        provider: Literal[yfinance]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -68,8 +68,8 @@ class CLASS_crypto(Container):
                 Chart object.
 
 
-        CryptoEOD
-        ---------
+        FuturesEOD
+        ----------
         date : datetime
             The date of the data.
         open : PositiveFloat
@@ -82,8 +82,6 @@ class CLASS_crypto(Container):
             The close price of the symbol.
         volume : PositiveFloat
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
-            Volume Weighted Average Price of the symbol.
 
         yfinance
         ========
@@ -96,55 +94,9 @@ class CLASS_crypto(Container):
             Period of the data to return (quarterly or annually).
 
 
-        CryptoEOD
-        ---------
-        All fields are standardized.
-
-        polygon
-        =======
-
-        Parameters
+        FuturesEOD
         ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        CryptoEOD
-        ---------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
-
-
-        CryptoEOD
-        ---------
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \% in the price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \% in the price of the symbol over a period of time."""  # noqa: E501
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -159,7 +111,7 @@ class CLASS_crypto(Container):
         )
 
         o = self._command_runner_session.run(
-            "/crypto/load",
+            "/futures/load",
             **inputs,
         ).output
 
