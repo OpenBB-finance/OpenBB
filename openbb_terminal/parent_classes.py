@@ -1014,11 +1014,11 @@ class BaseController(metaclass=ABCMeta):
 
         if not RECORD_SESSION:
             console.print(
-                "[red]There is no session being recorded. Start one using 'record'[/red]\n"
+                "[red]There is no session being recorded. Start one using the command 'record'[/red]\n"
             )
-        elif not SESSION_RECORDED:
+        elif len(SESSION_RECORDED) < 5:
             console.print(
-                "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
+                "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
             )
         else:
             current_user = get_current_user()
@@ -1059,11 +1059,15 @@ class BaseController(metaclass=ABCMeta):
                 with open(routine_file, "w") as file1:
                     lines = ["# OpenBB Terminal - Routine", "\n"]
                     username = get_current_user().profile.username
-                    if username:
-                        lines += [f"# Author: {username}", "\n\n"]
-                    lines += [f"# Title: {SESSION_RECORDED_NAME}", "\n"]
-                    lines += [f"# Tags: {SESSION_RECORDED_TAGS}", "\n\n"]
-                    lines += [f"# Description: {SESSION_RECORDED_DESCRIPTION}", "\n\n"]
+                    lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
+                    lines += [
+                        f"# Title: {SESSION_RECORDED_NAME}",
+                        "\n",
+                        f"# Tags: {SESSION_RECORDED_TAGS}",
+                        "\n\n",
+                        f"# Description: {SESSION_RECORDED_DESCRIPTION}",
+                        "\n\n",
+                    ]
                     lines += [c + "\n\n" for c in SESSION_RECORDED[:-1]]
                     # Writing data to a file
                     file1.writelines(lines)
