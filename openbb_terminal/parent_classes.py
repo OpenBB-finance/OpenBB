@@ -1068,7 +1068,7 @@ class BaseController(metaclass=ABCMeta):
                         f"# Description: {SESSION_RECORDED_DESCRIPTION}",
                         "\n\n",
                     ]
-                    lines += [c + "\n\n" for c in SESSION_RECORDED[:-1]]
+                    lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
                     # Writing data to a file
                     file1.writelines(lines)
 
@@ -1081,7 +1081,7 @@ class BaseController(metaclass=ABCMeta):
                 # Confirm that the user is logged in
                 if not is_local():
                     # routine = read_routine(file_name=routine_file)
-                    routine = "\n\n".join(SESSION_RECORDED[:-1])
+                    routine = "\n".join(SESSION_RECORDED[:-1])
                     if routine is not None:
                         kwargs = {
                             "auth_header": current_user.profile.get_auth_header(),
