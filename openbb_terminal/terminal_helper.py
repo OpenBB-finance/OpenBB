@@ -257,7 +257,8 @@ def print_guest_block_msg():
         console.print(
             "[info]You are currently logged as a guest.[/info]\n"
             "[info]Login to use this feature.[/info]\n\n"
-            f"[info]If you don't have an account, you can create one here: [/info][cmds]{BackendEnvironment.HUB_URL + 'register'}\n[/cmds]"
+            "[info]If you don't have an account, you can create one here: [/info]"
+            f"[cmds]{BackendEnvironment.HUB_URL + 'register'}\n[/cmds]"
         )
 
 

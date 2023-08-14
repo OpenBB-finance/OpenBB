@@ -17,6 +17,8 @@ import plotly.graph_objects as go
 from packaging import version
 from reportlab.graphics import renderPDF
 
+from openbb_terminal.core.session.constants import BackendEnvironment
+
 # pylint: disable=C0415
 try:
     from pywry import PyWry
@@ -441,10 +443,7 @@ class Backend(PyWry):
         self.check_backend()
         endpoint = {True: "login", False: "logout"}[login]
 
-        if get_current_system().DEV_BACKEND:
-            json_url = f"https://my.openbb.dev/{endpoint}?pywry=true"
-        else:
-            json_url = f"https://my.openbb.co/{endpoint}?pywry=true"
+        json_url = f"{BackendEnvironment.HUB_URL}{endpoint}?pywry=true"
 
         outgoing = dict(
             json_data=dict(url=json_url),
