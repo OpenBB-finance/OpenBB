@@ -42,7 +42,7 @@ class LoggingManager(metaclass=SingletonMeta):
     __init__(system_settings, user_settings)
         Logging Manager Constructor.
 
-    log(user_settings, system_settings, OBBject, route, func, kwargs)
+    log(user_settings, system_settings, obbject, route, func, kwargs)
         Log command output and relevant information.
 
     logging_settings

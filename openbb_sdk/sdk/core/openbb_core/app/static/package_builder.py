@@ -245,7 +245,7 @@ class DocstringGenerator:
     @staticmethod
     def get_object_description() -> str:
         """Get the command output description."""
-        OBBject_description = (
+        obbject_description = (
             "\nReturns\n"
             "-------\n"
             "OBBject\n"
@@ -261,7 +261,7 @@ class DocstringGenerator:
             "        Chart object.\n"
         )
 
-        return OBBject_description
+        return obbject_description
 
     @staticmethod
     def get_available_providers(query_mapping: dict) -> str:
