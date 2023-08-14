@@ -1,6 +1,6 @@
 from os import environ
 
-if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
+if str(environ.get("DEBUG_MODE", "false")).lower() == "true":
     BASE_URL = "https://payments.openbb.dev/"
     HUB_URL = "https://my.openbb.dev/"
 else:
