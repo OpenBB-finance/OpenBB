@@ -53,7 +53,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Balance Sheet.
 
@@ -288,7 +288,7 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
 
@@ -455,7 +455,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
 
@@ -556,7 +556,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement.
 
@@ -607,27 +607,29 @@ class CLASS_stocks_fa(Container):
         period : Optional[str]
             Reporting period of the statement.
         cash_at_beginning_of_period : Optional[int]
-            None
+            Cash at beginning of period.
         net_income : Optional[int]
-            None
+            Net income.
         depreciation_and_amortization : Optional[int]
-            None
+            Depreciation and amortization.
         stock_based_compensation : Optional[int]
-            None
+            Stock based compensation.
         other_non_cash_items : Optional[int]
             Other non-cash items.
         deferred_income_tax : Optional[int]
             Deferred income tax.
+        free_cash_flow : Optional[int]
+            Net cash flow from operating, investing and financing activities
         inventory : Optional[int]
-            None
-        accounts_receivables : Optional[int]
-            None
+            Inventory.
         accounts_payables : Optional[int]
-            None
+            Accounts payables.
+        accounts_receivables : Optional[int]
+            Accounts receivables.
+        change_in_working_capital : Optional[int]
+            Change in working capital.
         other_working_capital : Optional[int]
             Accrued expenses and other, Unearned revenue.
-        net_cash_flow_from_operating_activities : Optional[int]
-            None
         capital_expenditure : Optional[int]
             Purchases of property and equipment.
         other_investing_activities : Optional[int]
@@ -635,29 +637,37 @@ class CLASS_stocks_fa(Container):
         acquisitions_net : Optional[int]
             Acquisitions, net of cash acquired, and other
         sales_maturities_of_investments : Optional[int]
-            None
+            Sales and maturities of investments.
         purchases_of_investments : Optional[int]
-            None
+            Purchases of investments.
+        net_cash_flow_from_operating_activities : Optional[int]
+            Net cash flow from operating activities.
         net_cash_flow_from_investing_activities : Optional[int]
-            None
-        investments_in_property_plant_and_equipment : Optional[int]
-            None
-        dividends_paid : Optional[int]
-            None
-        common_stock_repurchased : Optional[int]
-            None
-        debt_repayment : Optional[int]
-            None
-        other_financing_activities : Optional[int]
-            None
+            Net cash flow from investing activities.
         net_cash_flow_from_financing_activities : Optional[int]
-            None
+            Net cash flow from financing activities.
+        investments_in_property_plant_and_equipment : Optional[int]
+            Investments in property, plant, and equipment.
+        net_cash_used_for_investing_activities : Optional[int]
+            Net cash used for investing activities.
         effect_of_forex_changes_on_cash : Optional[int]
             Foreign currency effect on cash, cash equivalents, and restricted cash
+        dividends_paid : Optional[int]
+            Payments for dividends and dividend equivalents
+        common_stock_issued : Optional[int]
+            Proceeds from issuance of common stock
+        common_stock_repurchased : Optional[int]
+            Payments related to repurchase of common stock
+        debt_repayment : Optional[int]
+            Payments of long-term debt
+        other_financing_activities : Optional[int]
+            Other financing activities, net
         net_change_in_cash : Optional[int]
             Net increase (decrease) in cash, cash equivalents, and restricted cash
         cash_at_end_of_period : Optional[int]
-            None
+            Cash, cash equivalents, and restricted cash at end of period
+        operating_cash_flow : Optional[int]
+            Net cash flow from operating activities
 
         fmp
         ===
@@ -670,12 +680,12 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        calendarYear : Optional[int]
-            None
+        calendar_year : Optional[int]
+            Calendar Year
         link : Optional[str]
             None
-        finalLink : Optional[str]
-            None
+        final_link : Optional[str]
+            Final Link
 
         polygon
         =======
@@ -753,7 +763,7 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement Growth.
 
@@ -894,7 +904,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Executive Compensation.
 
@@ -1000,7 +1010,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Stock Split Calendar.
 
@@ -1119,7 +1129,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Historical Dividends.
 
@@ -1226,7 +1236,7 @@ class CLASS_stocks_fa(Container):
         ] = 50,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Earnings Calendar.
 
@@ -1319,7 +1329,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Number of Employees.
 
@@ -1453,7 +1463,7 @@ class CLASS_stocks_fa(Container):
         ] = 30,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Analyst Estimates.
 
@@ -1669,7 +1679,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Income Statement.
 
@@ -1890,7 +1900,7 @@ class CLASS_stocks_fa(Container):
         ] = "annually",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Income Statement Growth.
 
@@ -2065,7 +2075,7 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Stock Insider Trading.
 
@@ -2186,7 +2196,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Institutional Ownership.
 
@@ -2362,7 +2372,7 @@ class CLASS_stocks_fa(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Key Metrics.
 
@@ -2560,7 +2570,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Key Executives.
 
@@ -2679,7 +2689,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Company Overview.
 
@@ -2822,16 +2832,16 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         date: Annotated[
-            datetime.date,
+            Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
-        ],
+        ] = None,
         page: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The page number of the data to fetch."),
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Stock Ownership.
 
@@ -2845,7 +2855,7 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             A specific date to get data for.
         page : Optional[int]
             The page number of the data to fetch.
@@ -2987,7 +2997,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Price Target Consensus.
 
@@ -3069,7 +3079,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Price Target.
 
@@ -3156,6 +3166,23 @@ class CLASS_stocks_fa(Container):
 
     @filter_call
     @validate_arguments
+    def rating(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Analyst prices and ratings over time of the company."""  # noqa: E501
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/fa/rating",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def ratios(
         self,
         symbol: Annotated[
@@ -3174,7 +3201,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Extensive set of ratios over time.
 
@@ -3358,23 +3385,6 @@ class CLASS_stocks_fa(Container):
 
     @filter_call
     @validate_arguments
-    def rating(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Analyst prices and ratings over time of the company."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/fa/rating",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def revfc(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
@@ -3410,7 +3420,7 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Revenue Geographic.
 
@@ -3512,7 +3522,7 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Revenue Business Line.
 
@@ -3660,7 +3670,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Share Statistics.
 
@@ -3744,7 +3754,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Historical Stock Splits.
 
@@ -3853,7 +3863,7 @@ class CLASS_stocks_fa(Container):
         ] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Earnings Call Transcript.
 
