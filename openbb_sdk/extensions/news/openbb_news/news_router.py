@@ -2,7 +2,7 @@
 """News Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.modelobbject import OBBject
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -22,12 +22,12 @@ def globalnews(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> Obbject[BaseModel]:
     """Global News."""
-    return OBBject(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command
-def sectornews() -> OBBject[Empty]:  # type: ignore
+def sectornews() -> Obbject[Empty]:  # type: ignore
     """Sector news."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())

@@ -20,7 +20,7 @@ class OpenBBError(Exception):
     pass
 
 
-class OBBject(GenericModel, Generic[T], Tagged):
+class Obbject(GenericModel, Generic[T], Tagged):
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",

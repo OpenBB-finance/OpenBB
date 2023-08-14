@@ -1,5 +1,5 @@
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.modelobbject import OBBject
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -21,9 +21,9 @@ router = Router(prefix="")
 @router.command
 def corecpi(
     cc: CommandContext, provider_choices: ProviderChoices
-) -> OBBject[Empty]:  # type: ignore
+) -> Obbject[Empty]:  # type: ignore
     """CORECPI."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(model="MajorIndicesConstituents")
@@ -32,9 +32,9 @@ def const(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> Obbject[BaseModel]:
     """Get the constituents of an index."""
-    return OBBject(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command(model="CPI")
@@ -43,17 +43,17 @@ def cpi(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> Obbject[BaseModel]:
     """CPI."""
-    return OBBject(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command
 def cpi_options(
     cc: CommandContext, provider_choices: ProviderChoices
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """Get the options for v3 cpi(options=True)"""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(model="MajorIndicesEOD")
@@ -62,9 +62,9 @@ def index(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> Obbject[BaseModel]:
     """Get OHLCV data for an index."""
-    return OBBject(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command(model="AvailableIndices")
@@ -73,9 +73,9 @@ def available_indices(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> Obbject[BaseModel]:
     """AVAILABLE_INDICES."""
-    return OBBject(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command(model="RiskPremium")
@@ -84,249 +84,249 @@ def risk(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> Obbject[BaseModel]:
     """Market Risk Premium."""
-    return OBBject(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command
 def macro(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:  # type: ignore
+) -> Obbject[Empty]:  # type: ignore
     """Query EconDB for macro data."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def macro_countries(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """MACRO_COUNTRIES."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def macro_parameters(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """MACRO_PARAMETERS."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def balance(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """BALANCE."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def bigmac(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """BIGMAC."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def country_codes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """COUNTRY_CODES."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def currencies(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """CURRENCIES."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def debt(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """DEBT."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def events(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """EVENTS."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def fgdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """FGDP."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def fred(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """FRED."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """FRED Search (was fred_notes)."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def futures(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """FUTURES. 2 sources"""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def gdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """GDP."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def glbonds(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """GLBONDS."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def indices(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """INDICES."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def overview(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """OVERVIEW."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def perfmap(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """PERFMAP."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def performance(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """PERFORMANCE."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def revenue(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """REVENUE."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def rgdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """RGDP."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def rtps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """RTPS."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def search_index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """SEARCH_INDEX."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def spending(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """SPENDING."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def trust(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """TRUST."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def usbonds(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """USBONDS."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
 def valuation(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
+) -> Obbject[Empty]:
     """VALUATION."""
-    return OBBject(results=Empty())
+    return Obbject(results=Empty())

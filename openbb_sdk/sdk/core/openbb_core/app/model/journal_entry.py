@@ -4,7 +4,7 @@ from typing import Any, Dict, List
 from pydantic import Field
 
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.app.modelobbject import OBBject
+from openbb_core.app.model.obbject import Obbject
 
 
 class JournalEntry(Tagged):
@@ -16,7 +16,7 @@ class JournalEntry(Tagged):
     duration: int = Field(
         description="Execution duration in nano second of the command."
     )
-    output: OBBject = Field(description="Output of the command.")
+    output: Obbject = Field(description="Output of the command.")
     route: str = Field(description="Route of the command.")
     timestamp: datetime = Field(description="Execution starting timestamp.")
     alias_list: List[str] = Field(

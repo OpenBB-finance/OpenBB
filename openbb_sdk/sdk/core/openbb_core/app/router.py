@@ -24,7 +24,7 @@ from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.modelobbject import OBBject
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -125,7 +125,7 @@ class CommandValidator:
         sig = signature(func)
         return_type = sig.return_annotation
 
-        if issubclass(return_type, OBBject):
+        if issubclass(return_type, Obbject):
             results_type = get_type_hints(return_type)["results"]
             if isinstance(results_type, type(None)):
                 valid_return_type = False
@@ -144,7 +144,7 @@ class CommandValidator:
                 "Invalid return type in signature:"
                 f"    {func.__name__}(...) -> {sig.return_annotation}:\n"
                 "Allowed return type:"
-                f"    {func.__name__}(...) -> OBBject[T] :\n"
+                f"    {func.__name__}(...) -> Obbject[T] :\n"
                 "If you need T = None, use an empty model instead.\n"
             )
 
@@ -166,7 +166,7 @@ class Router:
         self._api_router = APIRouter(prefix=prefix)
 
     @overload
-    def command(self, func: Optional[Callable[P, OBBject]]) -> Callable[P, OBBject]:
+    def command(self, func: Optional[Callable[P, Obbject]]) -> Callable[P, Obbject]:
         pass
 
     @overload
@@ -175,7 +175,7 @@ class Router:
 
     def command(
         self,
-        func: Optional[Callable[P, OBBject]] = None,
+        func: Optional[Callable[P, Obbject]] = None,
         **kwargs,
     ) -> Optional[Callable]:
         if func is None:
@@ -215,8 +215,8 @@ class Router:
 class SignatureInspector:
     @classmethod
     def complete_signature(
-        cls, func: Callable[P, OBBject], model: str
-    ) -> Optional[Callable[P, OBBject]]:
+        cls, func: Callable[P, Obbject], model: str
+    ) -> Optional[Callable[P, Obbject]]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
         if model:
@@ -257,7 +257,7 @@ class SignatureInspector:
             )
 
             ReturnModel = provider_interface.return_schema[model]
-            func.__annotations__["return"] = OBBject[ReturnModel]  # type: ignore
+            func.__annotations__["return"] = Obbject[ReturnModel]  # type: ignore
 
         elif (
             "provider_choices" in func.__annotations__
@@ -272,7 +272,7 @@ class SignatureInspector:
 
     @staticmethod
     def validate_signature(
-        func: Callable[P, OBBject], expected: Dict[str, type]
+        func: Callable[P, Obbject], expected: Dict[str, type]
     ) -> None:
         """Validate function signature before binding to model."""
         for k, v in expected.items():
@@ -288,8 +288,8 @@ class SignatureInspector:
 
     @staticmethod
     def inject_dependency(
-        func: Callable[P, OBBject], arg: str, callable_: Any
-    ) -> Callable[P, OBBject]:
+        func: Callable[P, Obbject], arg: str, callable_: Any
+    ) -> Callable[P, Obbject]:
         """Annotate function with dependency injection."""
         func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
         return func
