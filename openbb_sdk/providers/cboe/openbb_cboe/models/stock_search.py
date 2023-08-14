@@ -46,7 +46,7 @@ class CboeStockSearchData(StockSearchData):
 class CboeStockSearchFetcher(
     Fetcher[
         CboeStockSearchQueryParams,
-        List[CboeStockSearchData],
+        CboeStockSearchData,
     ]
 ):
     @staticmethod
