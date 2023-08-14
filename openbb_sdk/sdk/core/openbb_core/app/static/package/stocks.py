@@ -9,8 +9,8 @@ from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.command_output import CommandOutput
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -102,8 +102,8 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
-        """Load stock data for a specific ticker.
+    ) -> Obbject[typing.List]:
+        r"""Load stock data for a specific ticker.
 
 
         openbb
@@ -122,7 +122,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -192,11 +192,11 @@ class CLASS_stocks(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \\% in the price of the symbol.
+            Change \% in the price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time."""
+            Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -239,7 +239,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["benzinga", "polygon", "fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> Obbject[typing.List]:
         """Get news for one or more stock tickers.
 
 
@@ -259,7 +259,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -417,7 +417,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> Obbject[typing.List]:
         """Get valuation multiples for a stock ticker.
 
 
@@ -435,7 +435,7 @@ class CLASS_stocks(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -599,7 +599,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def tob(
         self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
         """View top of book for loaded ticker (US exchanges only)."""
         inputs = filter_inputs(
             chart=chart,
@@ -616,7 +616,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
         """View the current price for a specific stock ticker."""
         inputs = filter_inputs(
             chart=chart,
@@ -633,7 +633,7 @@ class CLASS_stocks(Container):
     @validate_arguments
     def search(
         self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
         """Search a specific stock ticker for analysis."""
         inputs = filter_inputs(
             chart=chart,

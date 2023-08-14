@@ -5,8 +5,10 @@ from dataclasses import dataclass
 from inspect import _empty
 
 import pytest
+from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
+    DocstringGenerator,
     ImportDefinition,
     Linters,
     MethodDefinition,
@@ -446,4 +448,84 @@ def test_mypy(linters):
     linters.mypy()
 
 
-# TODO: Implement unit test for the DocstringGenerator class once refactored.
+@pytest.fixture(scope="module")
+def docstring_generator():
+    """Return package builder."""
+    return DocstringGenerator()
+
+
+def test_docstring_generator_init(docstring_generator):
+    """Test docstring generator init."""
+    assert docstring_generator
+
+
+def test_get_object_description(docstring_generator):
+    """Test build docstring."""
+    docstring = docstring_generator.get_object_description()
+    assert docstring
+
+
+def test_get_available_providers(docstring_generator):
+    """Test get available providers."""
+    provider_assert = ["fmp", "polygon"]
+    some_mapping = {"fmp": 1, "openbb": 2, "polygon": 3}
+    providers = docstring_generator.get_available_providers(query_mapping=some_mapping)
+    assert providers
+    for provider in provider_assert:
+        assert provider in providers
+
+
+def test_reorder_dictionary(docstring_generator):
+    """Test reorder dictionary."""
+    some_mapping = {"fmp": 1, "openbb": 2, "polygon": 3}
+    reordered = docstring_generator.reorder_dictionary(
+        dictionary=some_mapping, key_to_move_first="openbb"
+    )
+    assert reordered
+    assert list(reordered.keys())[0] == "openbb"
+
+
+def test_extract_field_details(docstring_generator):
+    """Test extract field details."""
+    mapping = get_provider_interface().map
+    section_docstring = docstring_generator.extract_field_details(
+        model_name="GlobalNews",
+        provider="openbb",
+        section_name="QueryParams",
+        section_docstring="some_param: str\n   Some param description\n",
+        mapping=mapping,
+    )
+    assert section_docstring
+    assert "some_param" in section_docstring
+
+
+def test_generate_provider_docstrings(docstring_generator):
+    """Test generate provider docstrings."""
+    docstring = ""
+    model_name = "GlobalNews"
+    provider_interface_mapping = get_provider_interface().map
+    query_mapping = provider_interface_mapping.get(model_name, None)
+    docstring = docstring_generator.generate_provider_docstrings(
+        docstring=docstring,
+        query_mapping=query_mapping,
+        model_name=model_name,
+        provider_interface_mapping=provider_interface_mapping,
+    )
+
+    assert docstring
+    assert "openbb" in docstring
+    assert "GlobalNews" in docstring
+
+
+def test_generate_command_docstring(docstring_generator):
+    """Test generate command docstring."""
+
+    def some_func():
+        """Some func docstring."""
+        pass
+
+    docstring = docstring_generator.generate_command_docstring(
+        func=some_func, model_name="GlobalNews"
+    )
+    assert docstring
+    assert "openbb" in docstring.__doc__

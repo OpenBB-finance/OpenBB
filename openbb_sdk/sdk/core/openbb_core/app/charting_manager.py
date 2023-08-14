@@ -1,7 +1,7 @@
 from importlib import import_module
 from typing import Callable, Generic, Optional, Tuple, TypeVar
 
-import pkg_resources
+import importlib_metadata
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.charts.chart import Chart, ChartFormat
@@ -87,7 +87,9 @@ class ChartingManager(metaclass=SingletonMeta):
         bool
             Either charting extension is installed or not.
         """
-        extensions = [ext.name for ext in pkg_resources.iter_entry_points(plugin)]
+        entry_points = importlib_metadata.entry_points(group=plugin)
+        extensions = [ext.name for ext in entry_points]
+
         return charting_extension in extensions
 
     @staticmethod
@@ -97,9 +99,9 @@ class ChartingManager(metaclass=SingletonMeta):
         """
         Get the module of the given extension.
         """
-        for entry_point in pkg_resources.iter_entry_points(plugin):
+        for entry_point in importlib_metadata.entry_points(group=plugin):
             if entry_point.name == extension_name:
-                return import_module(entry_point.module_name)
+                return import_module(entry_point.module)
 
     @classmethod
     def get_chart_format(cls, extension_name: str) -> ChartFormat:
@@ -193,7 +195,7 @@ class ChartingManager(metaclass=SingletonMeta):
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
-        command_output_item: Generic[T],
+        obbject_item: Generic[T],
         **kwargs,
     ):
         """
@@ -213,7 +215,7 @@ class ChartingManager(metaclass=SingletonMeta):
             User settings.
         route : str
             Route name, example: `/stocks/load`.
-        command_output_item
+        obbject_item
             Command output item.
         Returns
         -------
@@ -233,7 +235,7 @@ class ChartingManager(metaclass=SingletonMeta):
 
         self.handle_backend(self._charting_extension, self._charting_settings)
 
-        kwargs["command_output_item"] = command_output_item
+        kwargs["obbject_item"] = obbject_item
         kwargs["charting_settings"] = self._charting_settings
 
         charting_function = self.get_chart_function(self._charting_extension, route)
