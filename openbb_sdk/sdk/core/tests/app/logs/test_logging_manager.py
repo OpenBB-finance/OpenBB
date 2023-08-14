@@ -13,7 +13,7 @@ class MockLoggingSettings:
         self.user_settings = user_settings
 
 
-class MockObbject(BaseModel):
+class MockOBBject(BaseModel):
     output: Optional[str]
     error: Optional[str]
 
@@ -103,12 +103,12 @@ def test_log_startup(logging_manager):
 
 
 @pytest.mark.parametrize(
-    "user_settings, system_settings, obbject, route, func, kwargs",
+    "user_settings, system_settings, OBBject, route, func, kwargs",
     [
         (
             "mock_settings",
             "mock_system",
-            MockObbject(output="mock_output"),
+            MockOBBject(output="mock_output"),
             "mock_route",
             "mock_func",
             {},
@@ -116,7 +116,7 @@ def test_log_startup(logging_manager):
         (
             "mock_settings",
             "mock_system",
-            MockObbject(error="mock_error"),
+            MockOBBject(error="mock_error"),
             "mock_route",
             "mock_func",
             {},
@@ -124,7 +124,7 @@ def test_log_startup(logging_manager):
         (
             "mock_settings",
             "mock_system",
-            MockObbject(error="mock_error"),
+            MockOBBject(error="mock_error"),
             "login",
             "mock_func",
             {},
@@ -132,7 +132,7 @@ def test_log_startup(logging_manager):
     ],
 )
 def test_log(
-    logging_manager, user_settings, system_settings, obbject, route, func, kwargs
+    logging_manager, user_settings, system_settings, OBBject, route, func, kwargs
 ):
     with patch(
         "openbb_core.app.logs.logging_manager.LoggingSettings",
@@ -145,7 +145,7 @@ def test_log(
                 logging_manager.log(
                     user_settings=user_settings,
                     system_settings=system_settings,
-                    obbject=obbject,
+                    OBBject=OBBject,
                     route=route,
                     func=func,
                     kwargs=kwargs,
@@ -162,7 +162,7 @@ def test_log(
             logging_manager.log(
                 user_settings=user_settings,
                 system_settings=system_settings,
-                obbject=obbject,
+                OBBject=OBBject,
                 route=route,
                 func=mock_callable,
                 kwargs=kwargs,
@@ -171,10 +171,10 @@ def test_log(
             expected_log_data = {
                 "route": route,
                 "input": kwargs,
-                "error": obbject.error,
+                "error": OBBject.error,
             }
 
-            if obbject.error:
+            if OBBject.error:
                 mock_error.assert_called_once_with(
                     "ERROR: %s",
                     json.dumps(expected_log_data),

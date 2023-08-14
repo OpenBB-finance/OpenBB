@@ -1,7 +1,7 @@
 """Due Diligence Router."""
 
 
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.modelobbject import OBBject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 
@@ -9,66 +9,66 @@ router = Router(prefix="/gov")
 
 
 @router.command
-def contracts() -> Obbject[Empty]:  # type: ignore
+def contracts() -> OBBject[Empty]:  # type: ignore
     """Return government contracts."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def government_trading() -> Obbject[Empty]:  # type: ignore
+def government_trading() -> OBBject[Empty]:  # type: ignore
     """Return government trading."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command  # Isn't this one the same as the one above?
-def gtrades() -> Obbject[Empty]:  # type: ignore
+def gtrades() -> OBBject[Empty]:  # type: ignore
     """Return government trades."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def histcont() -> Obbject[Empty]:  # type: ignore
+def histcont() -> OBBject[Empty]:  # type: ignore
     """Historical quarterly government contracts."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def lastcontracts() -> Obbject[Empty]:  # type: ignore
+def lastcontracts() -> OBBject[Empty]:  # type: ignore
     """Return last government contracts given out."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def lasttrades() -> Obbject[Empty]:  # type: ignore
+def lasttrades() -> OBBject[Empty]:  # type: ignore
     """Last trades."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def lobbying() -> Obbject[Empty]:  # type: ignore
+def lobbying() -> OBBject[Empty]:  # type: ignore
     """Corporate lobbying details."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def qtrcontracts() -> Obbject[Empty]:  # type: ignore
+def qtrcontracts() -> OBBject[Empty]:  # type: ignore
     """Quarterly government contracts analysis."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def topbuys() -> Obbject[Empty]:  # type: ignore
+def topbuys() -> OBBject[Empty]:  # type: ignore
     """Show most purchased stocks."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def toplobbying() -> Obbject[Empty]:  # type: ignore
+def toplobbying() -> OBBject[Empty]:  # type: ignore
     """Top corporate lobbying tickers."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def topsells() -> Obbject[Empty]:  # type: ignore
+def topsells() -> OBBject[Empty]:  # type: ignore
     """Show most sold stocks."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())

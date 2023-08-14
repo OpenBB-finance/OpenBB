@@ -2,7 +2,7 @@
 """Comparison Analysis Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.modelobbject import OBBject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -22,66 +22,66 @@ def peers(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Company peers."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def balance() -> Obbject[Empty]:  # type: ignore
+def balance() -> OBBject[Empty]:  # type: ignore
     """Company balance sheet."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def cashflow() -> Obbject[Empty]:  # type: ignore
+def cashflow() -> OBBject[Empty]:  # type: ignore
     """Company cashflow."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def hcorr() -> Obbject[Empty]:  # type: ignore
+def hcorr() -> OBBject[Empty]:  # type: ignore
     """Company historical correlation."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def hist() -> Obbject[Empty]:  # type: ignore
+def hist() -> OBBject[Empty]:  # type: ignore
     """Company historical prices."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def income() -> Obbject[Empty]:  # type: ignore
+def income() -> OBBject[Empty]:  # type: ignore
     """Company income statement."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def scorr() -> Obbject[Empty]:  # type: ignore
+def scorr() -> OBBject[Empty]:  # type: ignore
     """Company sector correlation."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def screener() -> Obbject[Empty]:  # type: ignore
+def screener() -> OBBject[Empty]:  # type: ignore
     """Company screener."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def sentiment() -> Obbject[Empty]:  # type: ignore
+def sentiment() -> OBBject[Empty]:  # type: ignore
     """Company sentiment."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def similar() -> Obbject[Empty]:  # type: ignore
+def similar() -> OBBject[Empty]:  # type: ignore
     """Company similar."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
 @router.command
-def volume() -> Obbject[Empty]:  # type: ignore
+def volume() -> OBBject[Empty]:  # type: ignore
     """Company volume."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())

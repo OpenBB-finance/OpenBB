@@ -18,7 +18,7 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.journal_query import JournalQuery
-from openbb_core.app.model.obbject import Error, Obbject
+from openbb_core.app.modelobbject import Error, OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
@@ -232,7 +232,7 @@ class StaticCommandRunner:
     charting_manager = ChartingManager()
 
     @staticmethod
-    def __run_in_isolation(func, args=None, kwargs=None) -> Obbject:
+    def __run_in_isolation(func, args=None, kwargs=None) -> OBBject:
         args = args or ()
         kwargs = kwargs or {}
 
@@ -244,7 +244,7 @@ class StaticCommandRunner:
     @classmethod
     def __command(
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
-    ) -> Obbject:
+    ) -> OBBject:
         """Run a command and return the output"""
         try:
             context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
@@ -255,30 +255,30 @@ class StaticCommandRunner:
 
             with context_manager as warning_list:
                 if system_settings.run_in_isolation:
-                    obbject = cls.__run_in_isolation(func=func, kwargs=kwargs)
+                    OBBject = cls.__run_in_isolation(func=func, kwargs=kwargs)
                 else:
-                    obbject = func(**kwargs)
+                    OBBject = func(**kwargs)
 
-                obbject.provider = getattr(
+                OBBject.provider = getattr(
                     kwargs.get("provider_choices", None), "provider", None
                 )
 
                 if warning_list:
-                    obbject.warnings = list(map(cast_warning, warning_list))
+                    OBBject.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            obbject = Obbject(
+            OBBject = OBBject(
                 error=Error(message=str(e), error_kind=e.__class__.__name__)
             )
             if system_settings.debug_mode:
                 raise
 
-        return obbject
+        return OBBject
 
     @classmethod
     def __chart(
         cls,
-        obbject: Obbject,
+        OBBject: OBBject,
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
@@ -286,15 +286,15 @@ class StaticCommandRunner:
     ) -> None:
         """Create a chart from the command output"""
         try:
-            obbject.chart = cls.charting_manager.chart(
+            OBBject.chart = cls.charting_manager.chart(
                 user_settings=user_settings,
                 system_settings=system_settings,
                 route=route,
-                obbject_item=obbject.results,
+                OBBject_item=OBBject.results,
                 **kwargs,
             )
         except Exception as e:
-            obbject.chart = Chart(error=Error(message=str(e)))
+            OBBject.chart = Chart(error=Error(message=str(e)))
             if system_settings.debug_mode:
                 raise
 
@@ -306,7 +306,7 @@ class StaticCommandRunner:
         execution_context: ExecutionContext,
         func: Callable,
         kwargs: Dict[str, Any],
-    ) -> Obbject:
+    ) -> OBBject:
         """Execute a function and return the output"""
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
@@ -332,15 +332,15 @@ class StaticCommandRunner:
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
 
-        obbject = cls.__command(
+        OBBject = cls.__command(
             system_settings=system_settings,
             func=func,
             kwargs=kwargs,
         )
 
-        if chart and obbject.results:
+        if chart and OBBject.results:
             cls.__chart(
-                obbject=obbject,
+                OBBject=OBBject,
                 user_settings=user_settings,
                 system_settings=system_settings,
                 route=route,
@@ -350,13 +350,13 @@ class StaticCommandRunner:
         cls.logging_manager.log(
             user_settings=user_settings,
             system_settings=system_settings,
-            obbject=obbject,
+            OBBject=OBBject,
             route=route,
             func=func,
             kwargs=kwargs,
         )
 
-        return obbject
+        return OBBject
 
     @classmethod
     def __update_managers_settings(
@@ -388,7 +388,7 @@ class StaticCommandRunner:
         func = command_map.get_command(route=route)
 
         if func:
-            obbject = cls.__execute_func(
+            OBBject = cls.__execute_func(
                 route=route,
                 args=args,  # type: ignore
                 execution_context=execution_context,
@@ -404,7 +404,7 @@ class StaticCommandRunner:
             journal_id=journal.id,
             arguments=kwargs,
             duration=duration,
-            output=obbject,
+            output=OBBject,
             route=route,
             timestamp=timestamp,
         )
