@@ -213,7 +213,9 @@ def get_top_headlines(ticker: str) -> dict:
 
     if ticker in supported_terms():
         if auth_header:
-            data = request(f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}", headers=auth_header)
+            data = request(
+                f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}", headers=auth_header
+            )
         else:
             data = request(f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}")
         if (

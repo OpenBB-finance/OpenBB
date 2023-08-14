@@ -75,7 +75,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """
         reading_order = get_reading_order()
         hierarchy = "\n        ".join(list(map(str, reversed(reading_order))))
-        return hierarchy if is_local() else f"{BackendEnvironment.HUB_URL + 'app/terminal/api-keys'}\n        {hierarchy}"
+        return (
+            hierarchy
+            if is_local()
+            else f"{BackendEnvironment.HUB_URL + 'app/terminal/api-keys'}\n        {hierarchy}"
+        )
 
     def print_help(self, update_status: bool = True, reevaluate: bool = True):
         """Print help"""

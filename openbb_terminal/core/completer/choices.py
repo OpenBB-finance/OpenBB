@@ -1,14 +1,13 @@
 from argparse import ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
-from os import environ
 from types import MethodType
 from typing import Callable, List
 from unittest.mock import patch
 
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
 from openbb_terminal.rich_config import get_ordered_list_sources
-from openbb_terminal.core.session.current_system import get_current_system
 
 
 def __mock_parse_known_args_and_warn(

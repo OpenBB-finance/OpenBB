@@ -20,7 +20,6 @@ import certifi
 import pandas as pd
 import requests
 from prompt_toolkit import PromptSession
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
@@ -33,11 +32,11 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.session import constants
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
-from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session import constants, session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -180,12 +179,15 @@ class TerminalController(BaseController):
                 }
 
             choices["exe"] = {
-                "--file": {filename: {} for filename in list(self.ROUTINE_FILES.keys())},
+                "--file": {
+                    filename: {} for filename in list(self.ROUTINE_FILES.keys())
+                },
                 "-f": "--file",
                 "--example": None,
                 "-e": "--example",
                 "--input": None,
                 "-i": "--input",
+                "--url": None,
             }
 
             choices["record"] = {
@@ -774,7 +776,6 @@ class TerminalController(BaseController):
                         )
                     set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
                     self.queue = self.queue[1:]
-
 
 
 # pylint: disable=global-statement

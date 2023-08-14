@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import argparse
-import itertools
 import difflib
 import json
 import logging
@@ -27,12 +26,11 @@ from rich.markdown import Markdown
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import config_terminal
 from openbb_terminal.account.show_prompt import get_show_prompt
-from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
+from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.core.session.routines_handler import read_routine
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -953,30 +951,55 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-
             if not ns_parser.name:
-                console.print("[red]Set a routine title by using the '-n' flag. E.g. 'record -n Morning routine'[/red]")
+                console.print(
+                    "[red]Set a routine title by using the '-n' flag. E.g. 'record -n Morning routine'[/red]"
+                )
                 return
 
-            tag1 = " ".join(ns_parser.tag1) if isinstance(ns_parser.tag1, list) else ns_parser.tag1
+            tag1 = (
+                " ".join(ns_parser.tag1)
+                if isinstance(ns_parser.tag1, list)
+                else ns_parser.tag1
+            )
             if tag1 and tag1 not in SCRIPT_TAGS:
-                console.print(f"[red]The parameter 'tag1' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]")
+                console.print(
+                    f"[red]The parameter 'tag1' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                )
                 return
 
-            tag2 = " ".join(ns_parser.tag2) if isinstance(ns_parser.tag2, list) else ns_parser.tag2
+            tag2 = (
+                " ".join(ns_parser.tag2)
+                if isinstance(ns_parser.tag2, list)
+                else ns_parser.tag2
+            )
             if tag2 and tag2 not in SCRIPT_TAGS:
-                console.print(f"[red]The parameter 'tag2' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]")
+                console.print(
+                    f"[red]The parameter 'tag2' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                )
                 return
 
-            tag3 = " ".join(ns_parser.tag3) if isinstance(ns_parser.tag3, list) else ns_parser.tag3
+            tag3 = (
+                " ".join(ns_parser.tag3)
+                if isinstance(ns_parser.tag3, list)
+                else ns_parser.tag3
+            )
             if tag3 and tag3 not in SCRIPT_TAGS:
-                console.print(f"[red]The parameter 'tag3' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]")
+                console.print(
+                    f"[red]The parameter 'tag3' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                )
                 return
 
             if is_local() and not ns_parser.local:
-                console.print("[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]")
-                console.print("\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]")
-                console.print("\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]")
+                console.print(
+                    "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
+                )
+                console.print(
+                    "\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]"
+                )
+                console.print(
+                    "\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]"
+                )
                 return
 
             # Check if title has a valid format
@@ -984,7 +1007,9 @@ class BaseController(metaclass=ABCMeta):
             # To this day, the reason why /^[a-zA-Z0-9\s]+$/ does not work is unknown
             pattern = re.compile(r"^[a-zA-Z0-9\s]+(?:[a-zA-Z0-9\s]+)*$")
             if not pattern.match(title):
-                console.print(f"[red]The title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/red]")
+                console.print(
+                    f"[red]Title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/]"
+                )
                 return
 
             global RECORD_SESSION
@@ -997,15 +1022,23 @@ class BaseController(metaclass=ABCMeta):
             RECORD_SESSION = True
             RECORD_SESSION_LOCAL_ONLY = ns_parser.local
             SESSION_RECORDED_NAME = title
-            SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description) if isinstance(ns_parser.description, list) else ns_parser.description
+            SESSION_RECORDED_DESCRIPTION = (
+                " ".join(ns_parser.description)
+                if isinstance(ns_parser.description, list)
+                else ns_parser.description
+            )
             SESSION_RECORDED_TAGS = tag1 if tag1 else ""
-            SESSION_RECORDED_TAGS += ',' + tag2 if tag2 else ""
-            SESSION_RECORDED_TAGS += ',' + tag3 if tag3 else ""
+            SESSION_RECORDED_TAGS += "," + tag2 if tag2 else ""
+            SESSION_RECORDED_TAGS += "," + tag3 if tag3 else ""
 
             SESSION_RECORDED_PUBLIC = ns_parser.public
 
-            console.print(f"[green]The routine '{title}' is successfully being recorded.[/green]")
-            console.print("\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]")
+            console.print(
+                f"[green]The routine '{title}' is successfully being recorded.[/green]"
+            )
+            console.print(
+                "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
+            )
 
     @log_start_end(log=logger)
     def call_stop(self, _) -> None:
@@ -1028,11 +1061,13 @@ class BaseController(metaclass=ABCMeta):
             # This works regardless of whether they are logged in or not
             if RECORD_SESSION_LOCAL_ONLY:
                 # Whitespaces are replaced by underscores and an .openbb extension is added
-                title_for_local_storage = SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
+                title_for_local_storage = (
+                    SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
+                )
 
                 routine_file = os.path.join(
                     current_user.preferences.USER_ROUTINES_DIRECTORY,
-                    title_for_local_storage
+                    title_for_local_storage,
                 )
 
                 # If file already exists, add a timestamp to the name
@@ -1043,18 +1078,21 @@ class BaseController(metaclass=ABCMeta):
                     )
                     console.print("")
                     while i.lower() not in ["y", "yes", "n", "no"]:
-                        i = console.input(
-                            "Select 'y' or 'n' to proceed: "
-                        )
+                        i = console.input("Select 'y' or 'n' to proceed: ")
                         console.print("")
 
                     if i.lower() in ["n", "no"]:
-                        new_name = datetime.now().strftime("%Y%m%d_%H%M%S_") + title_for_local_storage
+                        new_name = (
+                            datetime.now().strftime("%Y%m%d_%H%M%S_")
+                            + title_for_local_storage
+                        )
                         routine_file = os.path.join(
                             current_user.preferences.USER_ROUTINES_DIRECTORY,
                             new_name,
                         )
-                        console.print(f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n")
+                        console.print(
+                            f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
+                        )
 
                 # Writing to file
                 with open(routine_file, "w") as file1:

@@ -414,7 +414,7 @@ class AccountController(BaseController):
                     response = Hub.download_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
                         uuid=self.REMOTE_CHOICES[name],
-                        base_url=Hub.BackendEnvironment.BASE_URL
+                        base_url=Hub.BackendEnvironment.BASE_URL,
                     )
                     if response and response.status_code == 200:
                         data = [response.json(), "personal"]
@@ -502,7 +502,7 @@ class AccountController(BaseController):
                     response = Hub.delete_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
                         uuid=self.REMOTE_CHOICES[name],
-                        base_url=Hub.BackendEnvironment.BASE_URL
+                        base_url=Hub.BackendEnvironment.BASE_URL,
                     )
                     if (
                         response
