@@ -19,7 +19,7 @@ from reportlab.graphics import renderPDF
 
 from openbb_terminal.core.session.constants import BackendEnvironment
 
-# pylint: disable=C0415
+# pylint: disable=C0411,C0412,C0415
 try:
     from pywry import PyWry
 except ImportError as e:
