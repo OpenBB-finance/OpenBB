@@ -21,6 +21,7 @@ class OpenBBError(Exception):
 
 
 class OBBject(GenericModel, Generic[T], Tagged):
+    """OpenBB custom class that holds command outputs and utility methods."""
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",
