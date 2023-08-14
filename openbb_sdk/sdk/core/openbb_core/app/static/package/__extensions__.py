@@ -12,12 +12,6 @@ class Extensions(Container):
         return forex.CLASS_forex(command_runner_session=self._command_runner_session)
 
     @property
-    def qa(self):  # route = "/qa"
-        from openbb_core.app.static.package import qa
-
-        return qa.CLASS_qa(command_runner_session=self._command_runner_session)
-
-    @property
     def crypto(self):  # route = "/crypto"
         from openbb_core.app.static.package import crypto
 

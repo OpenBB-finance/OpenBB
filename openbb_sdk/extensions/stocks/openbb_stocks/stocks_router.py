@@ -1,6 +1,7 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """Stocks Router."""
 
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
