@@ -1,11 +1,11 @@
 from argparse import ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
-from os import environ
 from types import MethodType
 from typing import Callable, List
 from unittest.mock import patch
 
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
 from openbb_terminal.rich_config import get_ordered_list_sources
 
@@ -211,7 +211,7 @@ def __patch_controller_functions(controller):
         ),
     ]
 
-    if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
+    if not get_current_system().DEBUG_MODE:
         rich.start()
     patched_function_list = []
     for patcher in patcher_list:
@@ -219,7 +219,7 @@ def __patch_controller_functions(controller):
 
     yield patched_function_list
 
-    if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
+    if not get_current_system().DEBUG_MODE:
         rich.stop()
     for patcher in patcher_list:
         patcher.stop()
@@ -317,7 +317,7 @@ def build_controller_choice_map(controller) -> dict:
                 argument_parser=argument_parser
             )
         except Exception as exception:
-            if str(environ.get("DEBUG_MODE", "false")).lower() == "true":
+            if get_current_system().DEBUG_MODE:
                 raise Exception(
                     f"On command : `{command}`.\n{str(exception)}"
                 ) from exception

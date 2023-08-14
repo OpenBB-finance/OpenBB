@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from typing import List, Optional
 
-from openbb_terminal.core.session.constants import SOURCES_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
@@ -54,7 +54,7 @@ class SourcesController(BaseController):
             if Path(sources_file).exists() and os.stat(sources_file).st_size > 0:
                 self.source = sources_file
         else:
-            self.source = SOURCES_URL
+            self.source = BackendEnvironment.HUB_URL + "app/terminal/data-sources"
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -176,6 +176,7 @@ class SourcesController(BaseController):
                         key="features_sources",
                         value=choices,
                         auth_header=get_current_user().profile.get_auth_header(),
+                        base_url=BackendEnvironment.BASE_URL,
                     )
                     console.print("")
                 console.print(

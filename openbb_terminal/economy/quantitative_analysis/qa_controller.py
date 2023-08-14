@@ -83,7 +83,7 @@ class QaController(StockBaseController):
         self.resolution = ""  # For the views
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             choices["pick"] = {c: {} for c in self.options}
             choices["unitroot"] = {
                 "--fuller_reg": {c: {} for c in self.FULLER_REG},

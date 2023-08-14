@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import warnings
-from os import environ
 from typing import Any, Dict
 
 import numpy as np
@@ -12,6 +11,7 @@ import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
 
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.allocation_model import get_allocation
 from openbb_terminal.portfolio.portfolio_helper import (
@@ -196,7 +196,7 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
+            if not get_current_system().DEBUG_MODE:
                 warnings.filterwarnings(
                     "ignore", category=UserWarning, module="openpyxl"
                 )

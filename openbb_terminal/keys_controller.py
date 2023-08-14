@@ -8,7 +8,7 @@ import logging
 from typing import Callable, Dict, List, Optional
 
 from openbb_terminal import keys_model, keys_view
-from openbb_terminal.core.session.constants import KEYS_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.core.session.env_handler import get_reading_order
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -75,7 +75,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """
         reading_order = get_reading_order()
         hierarchy = "\n        ".join(list(map(str, reversed(reading_order))))
-        return hierarchy if is_local() else f"{KEYS_URL}\n        {hierarchy}"
+        return (
+            hierarchy
+            if is_local()
+            else f"{BackendEnvironment.HUB_URL + 'app/terminal/api-keys'}\n        {hierarchy}"
+        )
 
     def print_help(self, update_status: bool = True, reevaluate: bool = True):
         """Print help"""

@@ -255,6 +255,7 @@ class AccountController(BaseController):
                         auth_header=get_current_user().profile.get_auth_header(),
                         page=ns_parser.page,
                         size=ns_parser.size,
+                        base_url=Hub.BackendEnvironment.BASE_URL,
                     )
                     df, page, pages = get_personal_routines_info(response)
                     if not df.empty:
@@ -356,6 +357,7 @@ class AccountController(BaseController):
                         "routine": routine,
                         "tags": tags,
                         "public": ns_parser.public,
+                        "base_url": Hub.BackendEnvironment.BASE_URL,
                     }
                     response = Hub.upload_routine(**kwargs)  # type: ignore
 
@@ -412,6 +414,7 @@ class AccountController(BaseController):
                     response = Hub.download_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
                         uuid=self.REMOTE_CHOICES[name],
+                        base_url=Hub.BackendEnvironment.BASE_URL,
                     )
                     if response and response.status_code == 200:
                         data = [response.json(), "personal"]
@@ -499,6 +502,7 @@ class AccountController(BaseController):
                     response = Hub.delete_routine(
                         auth_header=get_current_user().profile.get_auth_header(),
                         uuid=self.REMOTE_CHOICES[name],
+                        base_url=Hub.BackendEnvironment.BASE_URL,
                     )
                     if (
                         response
@@ -551,6 +555,7 @@ class AccountController(BaseController):
 
                 response = Hub.generate_personal_access_token(
                     auth_header=get_current_user().profile.get_auth_header(),
+                    base_url=Hub.BackendEnvironment.BASE_URL,
                     days=ns_parser.days,
                 )
                 if response and response.status_code == 200:
