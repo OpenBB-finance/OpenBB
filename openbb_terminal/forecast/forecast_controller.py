@@ -1115,8 +1115,8 @@ class ForecastController(BaseController):
             description="The seasonality for a given column",
         )
         parser.add_argument(
-            "-v",
-            "--values",
+            "-d",
+            "--dataset",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
             choices=self.get_dataset_columns(),

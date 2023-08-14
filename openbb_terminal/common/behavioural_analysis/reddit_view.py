@@ -1,6 +1,7 @@
 """Reddit View."""
 __docformat__ = "numpy"
 
+import io
 import logging
 import os
 import textwrap
@@ -212,10 +213,10 @@ def display_wsb_community(limit: int = 10, new: bool = False):
         Flag to sort by new instead of hot, by default False
     """
     subs = reddit_model.get_wsb_community(limit, new)
+    # I am not proud of this, but it works to eliminate the max recursion bug
+    subs = pd.read_csv(io.StringIO(subs.to_csv()), index_col=0).fillna("-")
     if not subs.empty:
-        # for sub in subs.iterrows():
-        #     print_reddit_post(sub)
-        print(print_rich_table(subs))
+        print_rich_table(subs)
 
 
 @log_start_end(log=logger)

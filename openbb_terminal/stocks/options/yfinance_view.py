@@ -320,8 +320,8 @@ def display_vol_surface(
     tick_kwargs = dict(tickfont=dict(size=13), titlefont=dict(size=16))
     fig.update_layout(
         scene=dict(
-            xaxis=dict(title="Strike", **tick_kwargs),
-            yaxis=dict(title="DTE", **tick_kwargs),
+            xaxis=dict(title="DTE", **tick_kwargs),
+            yaxis=dict(title="Strike", **tick_kwargs),
             zaxis=dict(title=z, **tick_kwargs),
         )
     )

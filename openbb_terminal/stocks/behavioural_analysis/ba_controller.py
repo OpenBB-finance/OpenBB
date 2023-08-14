@@ -47,7 +47,6 @@ class BehaviouralAnalysisController(StockBaseController):
         "load",
         "wsb",
         "popular",
-        "spacc",
         "getdd",
         "redditsent",
         "bullbear",
@@ -97,7 +96,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
         mt.add_cmd("popular")
-        mt.add_cmd("spacc")
         mt.add_cmd("getdd")
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
@@ -135,40 +133,6 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             finnhub_view.display_stock_price_headlines_sentiment(
                 symbol=self.ticker, export=ns_parser.export
-            )
-
-    @log_start_end(log=logger)
-    def call_spacc(self, other_args: List[str]):
-        """Process spacc command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spacc",
-            description="""Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="n_limit",
-            type=check_positive,
-            default=10,
-            help="limit of posts with SPACs retrieved",
-        )
-        parser.add_argument(
-            "-p",
-            "--popular",
-            action="store_true",
-            default=False,
-            dest="b_popular",
-            help="popular flag, if true the posts retrieved are based on score rather than time",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_spac_community(
-                limit=ns_parser.n_limit, popular=ns_parser.b_popular
             )
 
     @log_start_end(log=logger)
