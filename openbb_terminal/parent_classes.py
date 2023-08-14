@@ -981,7 +981,8 @@ class BaseController(metaclass=ABCMeta):
 
             # Check if title has a valid format
             title = " ".join(ns_parser.name) if ns_parser.name else ""
-            pattern = re.compile(r"^[a-zA-Z0-9\s]+(?:[-a-zA-Z0-9\s]+)*$")
+            # To this day, the reason why /^[a-zA-Z0-9\s]+$/ does not work is unknown
+            pattern = re.compile(r"^[a-zA-Z0-9\s]+(?:[a-zA-Z0-9\s]+)*$")
             if not pattern.match(title):
                 console.print(f"[red]The title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/red]")
                 return
