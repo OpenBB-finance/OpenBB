@@ -1091,6 +1091,7 @@ class BaseController(metaclass=ABCMeta):
                             "routine": routine,
                             "tags": SESSION_RECORDED_TAGS,
                             "public": SESSION_RECORDED_PUBLIC,
+                            "base_url": Hub.BackendEnvironment.BASE_URL,
                         }
                         response = Hub.upload_routine(**kwargs)  # type: ignore
                         if response is not None and response.status_code == 409:

@@ -1,6 +1,8 @@
-BASE_URL = "https://payments.openbb.co/"
-HUB_URL = "https://my.openbb.co/"
-# BASE_URL = "http://127.0.0.1:8000/"
+class BackendEnvironment():
+    # BASE_URL = "http://127.0.0.1:8000/"
+    BASE_URL = "https://payments.openbb.co/"
+    HUB_URL = "https://my.openbb.co/"
+
 
 REGISTER_URL = HUB_URL + "register"
 SUPPORT_URL = HUB_URL + "app/terminal/support"

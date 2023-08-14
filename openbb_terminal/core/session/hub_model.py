@@ -7,7 +7,7 @@ import requests
 from jose import jwt
 
 from openbb_terminal.core.session.constants import (
-    BASE_URL,
+    BackendEnvironment,
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
     DEFAULT_ROUTINES_URL,
@@ -19,7 +19,7 @@ from openbb_terminal.rich_config import console
 
 
 def create_session(
-    email: str, password: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    email: str, password: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Create a session.
 
@@ -72,7 +72,7 @@ def check_token_expiration(token: str):
 
 
 def create_session_from_token(
-    token: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    token: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ):
     """Create a session from token.
 
@@ -109,7 +109,7 @@ def create_session_from_token(
 
 
 def delete_session(
-    auth_header: str, token: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    auth_header: str, token: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Delete the session.
 
@@ -191,7 +191,7 @@ def get_session(email: str, password: str) -> dict:
     dict
         The session info.
     """
-    response = create_session(email, password)
+    response = create_session(email, password, base_url=BackendEnvironment.BASE_URL)
     if response is None:
         return {}
     return process_session_response(response)
@@ -210,14 +210,14 @@ def get_session_from_token(token: str) -> dict:
     dict
         The session info.
     """
-    response = create_session_from_token(token)
+    response = create_session_from_token(token, base_url=BackendEnvironment.BASE_URL)
     if response is None:
         return {}
     return process_session_response(response)
 
 
 def fetch_user_configs(
-    session: dict, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    session: dict, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Fetch user configurations.
 
@@ -259,7 +259,7 @@ def fetch_user_configs(
 
 
 def clear_user_configs(
-    config: str, auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    config: str, auth_header: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """Clear user configurations to the server.
 
@@ -308,7 +308,7 @@ def upload_user_field(
     key: str,
     value: Any,
     auth_header: str,
-    base_url: str = BASE_URL,
+    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
     silent: bool = False,
 ) -> Optional[requests.Response]:
@@ -366,7 +366,7 @@ def upload_config(
     value: str,
     type_: Literal["settings", "terminal_style"],
     auth_header: str,
-    base_url: str = BASE_URL,
+    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Patch user configurations to the server.
@@ -430,7 +430,7 @@ def upload_routine(
     override: bool = False,
     tags: str = "",
     public: bool = False,
-    base_url: str = BASE_URL,
+    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Send a routine to the server.
@@ -468,7 +468,6 @@ def upload_routine(
         "version": get_current_system().VERSION,
         "public": public,
     }
-
     try:
         response = requests.post(
             headers={"Authorization": auth_header},
@@ -480,7 +479,7 @@ def upload_routine(
             username = get_current_user().profile.username
             console.print("[green]Successfully uploaded your routine.[/green]")
 
-            if get_current_system().DEBUG_MODE:
+            if get_current_system().DEV_BACKEND:
                 run_env = "dev"
             else:
                 run_env = "co"
@@ -488,7 +487,8 @@ def upload_routine(
             if public:
                 console.print(f"\n[yellow]Share or edit it at https://my.openbb.{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
             else:
-                console.print(f"\n[yellow]Edit it at https://my.openbb.{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
+                console.print(f"\n[yellow]Go to https://my.openbb.{run_env} to edit this script,[/yellow]")
+                console.print(f"[yellow]or even make it public so you can access it at https://my.openbb.{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
         elif response.status_code != 409:  # 409: routine already exists
             console.print(
                 "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"
@@ -508,7 +508,7 @@ def upload_routine(
 def download_routine(
     auth_header: str,
     uuid: UUID,
-    base_url=BASE_URL,
+    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Download a routine from the server.
@@ -554,7 +554,7 @@ def download_routine(
 def delete_routine(
     auth_header: str,
     uuid: UUID,
-    base_url=BASE_URL,
+    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Delete a routine from the server.
@@ -604,7 +604,7 @@ def list_routines(
     fields: Optional[List[str]] = None,
     page: int = 1,
     size: int = 10,
-    base_url=BASE_URL,
+    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
     silent: bool = False,
 ) -> Optional[requests.Response]:
@@ -695,7 +695,7 @@ def get_default_routines(
 
 
 def generate_personal_access_token(
-    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT, days: int = 30
+    auth_header: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT, days: int = 30
 ) -> Optional[requests.Response]:
     """
     Generate an OpenBB Personal Access Token.
@@ -744,7 +744,7 @@ def generate_personal_access_token(
 
 
 def get_personal_access_token(
-    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    auth_header: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """
     Show the user's OpenBB Personal Access Token.
@@ -789,7 +789,7 @@ def get_personal_access_token(
 
 
 def revoke_personal_access_token(
-    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+    auth_header: str, base_url: str = BackendEnvironment.BASE_URL, timeout: int = TIMEOUT
 ) -> Optional[requests.Response]:
     """
     Delete the user's OpenBB Personal Access Token.

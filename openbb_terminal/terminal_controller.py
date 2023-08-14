@@ -33,7 +33,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.session.constants import SCRIPT_TAGS
+from openbb_terminal.core.session import constants
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
@@ -197,9 +197,9 @@ class TerminalController(BaseController):
                 "-p": "--public",
                 "--local": None,
                 "-l": "--local",
-                "--tag1": {c: None for c in SCRIPT_TAGS},
-                "--tag2": {c: None for c in SCRIPT_TAGS},
-                "--tag3": {c: None for c in SCRIPT_TAGS},
+                "--tag1": {c: None for c in constants.SCRIPT_TAGS},
+                "--tag2": {c: None for c in constants.SCRIPT_TAGS},
+                "--tag3": {c: None for c in constants.SCRIPT_TAGS},
             }
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -1129,6 +1129,11 @@ def main(
     if debug:
         set_system_variable("DEBUG_MODE", True)
 
+    if dev:
+        set_system_variable("DEV_BACKEND", True)
+        constants.BackendEnvironment.BASE_URL = "https://payments.openbb.dev/"
+        constants.BackendEnvironment.HUB_URL = "https://my.openbb.dev/"
+
     cfg.start_plot_backend()
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
@@ -1155,6 +1160,13 @@ def parse_args_and_run():
         action="store_true",
         default=False,
         help="Runs the terminal in debug mode.",
+    )
+    parser.add_argument(
+        "--dev",
+        dest="dev",
+        action="store_true",
+        default=False,
+        help="Points backend towards development environment instead of production",
     )
     parser.add_argument(
         "--file",
