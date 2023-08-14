@@ -543,7 +543,7 @@ def download_routine(
     try:
         response = requests.get(
             headers={"Authorization": auth_header},
-            url=base_url + "terminal/script/" + uuid,
+            url=base_url + "terminal/script/" + uuid,  # type: ignore
             timeout=timeout,
         )
         if response.status_code == 404:
@@ -589,7 +589,7 @@ def delete_routine(
     try:
         response = requests.delete(
             headers={"Authorization": auth_header},
-            url=base_url + "terminal/script/" + uuid,
+            url=base_url + "terminal/script/" + uuid,  # type: ignore
             timeout=timeout,
         )
         if response.status_code == 200:
