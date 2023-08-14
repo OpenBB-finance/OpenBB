@@ -34,8 +34,9 @@ def main():
             and ("--login" in sys.argv[1:] or is_installer())
             and sys.stdin.isatty()
         )
+        dev = "--dev" in sys.argv[1:]
 
-        session_controller.main(prompt=prompt_login)
+        session_controller.main(prompt=prompt_login, dev=dev)
 
 
 if __name__ == "__main__":

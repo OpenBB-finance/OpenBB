@@ -23,7 +23,7 @@ from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -257,7 +257,8 @@ def print_guest_block_msg():
         console.print(
             "[info]You are currently logged as a guest.[/info]\n"
             "[info]Login to use this feature.[/info]\n\n"
-            f"[info]If you don't have an account, you can create one here: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+            "[info]If you don't have an account, you can create one here: [/info]"
+            f"[cmds]{BackendEnvironment.HUB_URL + 'register'}\n[/cmds]"
         )
 
 
@@ -369,6 +370,7 @@ def reset(queue: Optional[List[str]] = None):
     plots_backend().close(reset=True)
     load_env_files()
     debug = get_current_system().DEBUG_MODE
+    dev = get_current_system().DEV_BACKEND
 
     try:
         # save the current user
@@ -399,7 +401,7 @@ def reset(queue: Optional[List[str]] = None):
         if is_local():
             from openbb_terminal.terminal_controller import main
 
-            main(debug, queue_list, module="")  # type: ignore
+            main(debug, dev, queue_list, module="")  # type: ignore
         else:
             from openbb_terminal.core.session import session_controller
 
