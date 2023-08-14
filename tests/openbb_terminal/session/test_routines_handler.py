@@ -234,6 +234,7 @@ def test_download_routine(mocker, test_user, silent=False):
         fields=["name", "script"],
         page=1,
         size=100,
+        base_url="https://payments.openbb.co/",
         silent=silent,
     )
 
@@ -272,6 +273,7 @@ def test_download_default_routine_exception(mocker, test_user, silent=False):
         fields=["name", "script"],
         page=1,
         size=100,
+        base_url="https://payments.openbb.co/",
         silent=silent,
     )
 
@@ -310,6 +312,7 @@ def test_download_personal_routine_exception(mocker, test_user, silent=False):
         fields=["name", "script"],
         page=1,
         size=100,
+        base_url="https://payments.openbb.co/",
         silent=silent,
     )
 
@@ -339,5 +342,6 @@ def test_download_default_and_personal_routine_exception(
         fields=["name", "script"],
         page=1,
         size=100,
+        base_url="https://payments.openbb.co/",
         silent=silent,
     )

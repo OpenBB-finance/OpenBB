@@ -189,6 +189,7 @@ class EconometricsController(BaseController):
                 "corr",
                 "lag",
                 "vif",
+                "panel",
             ]:
                 choices[feature] = dict()
 

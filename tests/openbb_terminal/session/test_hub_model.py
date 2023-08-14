@@ -233,7 +233,9 @@ def test_get_session_success():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {"session": "info"}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_401():
@@ -246,7 +248,9 @@ def test_get_session_401():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_403():
@@ -259,7 +263,9 @@ def test_get_session_403():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_failed_to_request():
@@ -268,7 +274,9 @@ def test_get_session_failed_to_request():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token():
@@ -282,7 +290,9 @@ def test_get_session_from_token():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {"session": "info"}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token_401():
@@ -295,7 +305,9 @@ def test_get_session_from_token_401():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token_403():
@@ -308,7 +320,9 @@ def test_get_session_from_token_403():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token_failed_to_request():
@@ -318,7 +332,9 @@ def test_get_session_from_token_failed_to_request():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 @pytest.mark.parametrize("token_type, access_token", [("TokenType", "AccessToken")])
