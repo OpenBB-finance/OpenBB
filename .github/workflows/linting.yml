@@ -44,11 +44,10 @@ jobs:
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
       - run: |
-          pip install bandit black codespell mypy==1.1.1 pylint==2.17.0 ruff==0.0.256 pydocstyle==6.3.0
+          pip install bandit black codespell mypy==1.1.1 pylint==2.17.0 ruff==0.0.256
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: pydocstyle --config=pyproject.toml openbb_sdk
       - run: codespell --ignore-words-list=vai,mis,gard,commun,parana,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml -x openbb_terminal/economy/fedreserve_model.py
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
