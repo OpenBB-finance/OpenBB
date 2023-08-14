@@ -102,7 +102,7 @@ class CLASS_stocks(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
 
@@ -268,7 +268,7 @@ class CLASS_stocks(Container):
         ] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Get news for one or more stock tickers.
 
@@ -455,7 +455,7 @@ class CLASS_stocks(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Get valuation multiples for a stock ticker.
 
@@ -670,7 +670,7 @@ class CLASS_stocks(Container):
         ] = False,
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Search for a company or stock ticker.
 
@@ -752,7 +752,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
 
@@ -868,7 +868,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[BaseModel]:
         """Get general price and performance metrics of a stock.
 

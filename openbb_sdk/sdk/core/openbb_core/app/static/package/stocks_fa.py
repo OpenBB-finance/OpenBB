@@ -53,7 +53,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Balance Sheet.
 
@@ -288,7 +288,7 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
 
@@ -455,7 +455,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
 
@@ -556,7 +556,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Cash Flow Statement.
 
@@ -753,7 +753,7 @@ class CLASS_stocks_fa(Container):
         ] = 10,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Cash Flow Statement Growth.
 
@@ -894,7 +894,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Executive Compensation.
 
@@ -1000,7 +1000,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Stock Split Calendar.
 
@@ -1119,7 +1119,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Historical Dividends.
 
@@ -1226,7 +1226,7 @@ class CLASS_stocks_fa(Container):
         ] = 50,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Earnings Calendar.
 
@@ -1319,7 +1319,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Number of Employees.
 
@@ -1453,7 +1453,7 @@ class CLASS_stocks_fa(Container):
         ] = 30,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Analyst Estimates.
 
@@ -1669,7 +1669,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Income Statement.
 
@@ -1890,7 +1890,7 @@ class CLASS_stocks_fa(Container):
         ] = "annually",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Income Statement Growth.
 
@@ -2065,7 +2065,7 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Stock Insider Trading.
 
@@ -2186,7 +2186,7 @@ class CLASS_stocks_fa(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Institutional Ownership.
 
@@ -2362,7 +2362,7 @@ class CLASS_stocks_fa(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Key Metrics.
 
@@ -2560,7 +2560,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Key Executives.
 
@@ -2679,7 +2679,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[BaseModel]:
         """Company Overview.
 
@@ -2831,7 +2831,7 @@ class CLASS_stocks_fa(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Stock Ownership.
 
@@ -2987,7 +2987,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[BaseModel]:
         """Price Target Consensus.
 
@@ -3069,7 +3069,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Price Target.
 
@@ -3174,7 +3174,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Extensive set of ratios over time.
 
@@ -3410,7 +3410,7 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Revenue Geographic.
 
@@ -3512,7 +3512,7 @@ class CLASS_stocks_fa(Container):
         ] = "flat",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Revenue Business Line.
 
@@ -3660,7 +3660,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Share Statistics.
 
@@ -3744,7 +3744,7 @@ class CLASS_stocks_fa(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Historical Stock Splits.
 
@@ -3853,7 +3853,7 @@ class CLASS_stocks_fa(Container):
         ] = 1,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Earnings Call Transcript.
 
