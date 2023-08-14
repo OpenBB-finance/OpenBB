@@ -172,8 +172,8 @@ class CLASS_futures(Container):
 
         FuturesCurve
         ------------
-        date : datetime
-            The date of the data.
+        expiration : str
+            Futures expiration month.
         price : float
             The close price of the symbol.
 
