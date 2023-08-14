@@ -2,16 +2,16 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
-from openbb_core.app.model.command_output import Chart, Obbject, OpenBBError
+from openbb_core.app.model.command_output import Chart, OBBject, OpenBBError
 
 
 def test_command_output():
-    co = Obbject()
-    assert isinstance(co, Obbject)
+    co = OBBject()
+    assert isinstance(co, OBBject)
 
 
 def test_fields():
-    fields = Obbject.__fields__.keys()
+    fields = OBBject.__fields__.keys()
 
     assert "results" in fields
     assert "provider" in fields
@@ -21,7 +21,7 @@ def test_fields():
 
 
 def test_to_dataframe_no_results():
-    co = Obbject()
+    co = OBBject()
     with pytest.raises(Exception):
         co.to_dataframe()
 
@@ -50,7 +50,7 @@ def test_to_dataframe_no_results():
 )
 def test_to_dataframe(results, expected_df):
     # Arrange
-    co = Obbject(results=results)
+    co = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
@@ -87,7 +87,7 @@ def test_to_dataframe(results, expected_df):
 )
 def test_to_dict(results, expected):
     # Arrange
-    co = Obbject(results=results)
+    co = OBBject(results=results)
 
     # Act
     result = co.to_dict()
@@ -101,7 +101,7 @@ def test_to_dict(results, expected):
 @patch("openbb_core.app.model.command_output.Chart")
 def test_to_plotly_json_with_existing_chart(mock_chart, mock_charting_manager):
     # Arrange
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     mock_instance.chart = Chart(content={"existing_chart_data": "some_data"})
 
     # Act
@@ -115,7 +115,7 @@ def test_to_plotly_json_with_existing_chart(mock_chart, mock_charting_manager):
     mock_chart.assert_not_called()
 
 
-@patch("openbb_core.app.model.command_output.Obbject.to_dataframe")
+@patch("openbb_core.app.model.command_output.OBBject.to_dataframe")
 @patch("openbb_core.app.model.command_output.ChartingManager")
 @patch("openbb_core.app.model.command_output.Chart")
 def test_to_plotly_json_with_new_chart(
@@ -133,7 +133,7 @@ def test_to_plotly_json_with_new_chart(
         return pd.DataFrame(data)
 
     # Arrange
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     mock_charting_manager_instance = mock_charting_manager.return_value
     mock_charting_manager_instance.to_plotly_json.return_value = {
         "new_chart_data": "some_data"
@@ -161,7 +161,7 @@ def test_to_plotly_json_with_new_chart(
 
 
 def test_show_chart_exists():
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     # Arrange
     mock_instance.chart = MagicMock(spec=Chart)
 
@@ -173,7 +173,7 @@ def test_show_chart_exists():
 
 
 def test_show_chart_not_found():
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     # Arrange
     mock_instance.chart = None
 

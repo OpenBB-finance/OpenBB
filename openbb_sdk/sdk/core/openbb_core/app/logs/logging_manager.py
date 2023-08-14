@@ -10,7 +10,7 @@ from openbb_core.app.logs.formatters.formatter_with_exceptions import (
 from openbb_core.app.logs.handlers_manager import HandlersManager
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.app.model.abstract.singleton import SingletonMeta
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 
@@ -182,7 +182,7 @@ class LoggingManager(metaclass=SingletonMeta):
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
-        obbject: Obbject,
+        obbject: OBBject,
         route: str,
         func: Callable,
         kwargs: Dict[str, Any],
@@ -196,8 +196,8 @@ class LoggingManager(metaclass=SingletonMeta):
             User Settings object.
         system_settings : SystemSettings
             System Settings object.
-        obbject : Obbject
-            Obbject object containing command output and error information.
+        obbject : OBBject
+            OBBject object containing command output and error information.
         route : str
             Route for the command.
         func : Callable

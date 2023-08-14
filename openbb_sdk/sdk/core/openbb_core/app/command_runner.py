@@ -18,7 +18,7 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.journal_query import JournalQuery
-from openbb_core.app.model.obbject import Error, Obbject
+from openbb_core.app.model.obbject import Error, OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
@@ -232,7 +232,7 @@ class StaticCommandRunner:
     charting_manager = ChartingManager()
 
     @staticmethod
-    def __run_in_isolation(func, args=None, kwargs=None) -> Obbject:
+    def __run_in_isolation(func, args=None, kwargs=None) -> OBBject:
         args = args or ()
         kwargs = kwargs or {}
 
@@ -244,7 +244,7 @@ class StaticCommandRunner:
     @classmethod
     def __command(
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
-    ) -> Obbject:
+    ) -> OBBject:
         """Run a command and return the output"""
         try:
             context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
@@ -267,7 +267,7 @@ class StaticCommandRunner:
                     obbject.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            obbject = Obbject(
+            obbject = OBBject(
                 error=Error(message=str(e), error_kind=e.__class__.__name__)
             )
             if system_settings.debug_mode:
@@ -278,7 +278,7 @@ class StaticCommandRunner:
     @classmethod
     def __chart(
         cls,
-        obbject: Obbject,
+        obbject: OBBject,
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
@@ -306,7 +306,7 @@ class StaticCommandRunner:
         execution_context: ExecutionContext,
         func: Callable,
         kwargs: Dict[str, Any],
-    ) -> Obbject:
+    ) -> OBBject:
         """Execute a function and return the output"""
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings

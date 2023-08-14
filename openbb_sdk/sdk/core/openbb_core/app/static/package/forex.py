@@ -7,7 +7,7 @@ from typing import Annotated, Literal, Optional, Union
 from pydantic import validate_arguments
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -20,7 +20,7 @@ class CLASS_forex(Container):
         chart: bool = False,
         provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[typing.List]:
         """Forex Available Pairs.
 
 
@@ -35,7 +35,7 @@ class CLASS_forex(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -149,7 +149,7 @@ class CLASS_forex(Container):
         chart: bool = False,
         provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[typing.List]:
         r"""Forex Intraday Price.
 
 
@@ -169,7 +169,7 @@ class CLASS_forex(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]

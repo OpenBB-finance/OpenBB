@@ -13,7 +13,7 @@ class MockLoggingSettings:
         self.user_settings = user_settings
 
 
-class MockObbject(BaseModel):
+class MockOBBject(BaseModel):
     output: Optional[str]
     error: Optional[str]
 
@@ -108,7 +108,7 @@ def test_log_startup(logging_manager):
         (
             "mock_settings",
             "mock_system",
-            MockObbject(output="mock_output"),
+            MockOBBject(output="mock_output"),
             "mock_route",
             "mock_func",
             {},
@@ -116,7 +116,7 @@ def test_log_startup(logging_manager):
         (
             "mock_settings",
             "mock_system",
-            MockObbject(error="mock_error"),
+            MockOBBject(error="mock_error"),
             "mock_route",
             "mock_func",
             {},
@@ -124,7 +124,7 @@ def test_log_startup(logging_manager):
         (
             "mock_settings",
             "mock_system",
-            MockObbject(error="mock_error"),
+            MockOBBject(error="mock_error"),
             "login",
             "mock_func",
             {},
