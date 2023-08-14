@@ -480,11 +480,11 @@ def upload_routine(
             username = get_current_user().profile.username
             console.print("[green]Successfully uploaded your routine.[/green]")
 
-            if str(environ.get("DEBUG_MODE", "false")).lower() == "true":
+            if get_current_system().DEBUG_MODE:
                 run_env = "dev"
             else:
                 run_env = "co"
-                
+
             if public:
                 console.print(f"\n[yellow]Share or edit it at https://my.openbb.{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
             else:

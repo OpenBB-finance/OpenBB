@@ -21,6 +21,7 @@ from openbb_terminal.portfolio.portfolio_helper import (
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model import get_splits
 from openbb_terminal.terminal_helper import suppress_stdout
+from openbb_terminal.core.session.current_system import get_current_system
 
 # pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name
@@ -196,7 +197,7 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
+            if not get_current_system().DEBUG_MODE:
                 warnings.filterwarnings(
                     "ignore", category=UserWarning, module="openpyxl"
                 )

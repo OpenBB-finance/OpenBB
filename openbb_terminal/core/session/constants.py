@@ -1,12 +1,5 @@
-from os import environ
-
-if str(environ.get("DEBUG_MODE", "false")).lower() == "true":
-    BASE_URL = "https://payments.openbb.dev/"
-    HUB_URL = "https://my.openbb.dev/"
-else:
-    BASE_URL = "https://payments.openbb.co/"
-    HUB_URL = "https://my.openbb.co/"
-
+BASE_URL = "https://payments.openbb.co/"
+HUB_URL = "https://my.openbb.co/"
 # BASE_URL = "http://127.0.0.1:8000/"
 
 REGISTER_URL = HUB_URL + "register"
