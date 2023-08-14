@@ -13,8 +13,9 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
+from openbb_yfinance.utils.futures_reference import MONTHS, futures_data
 from openbb_yfinance.utils.types import INTERVALS, PERIODS
-from openbb_yfinance.utils.futures_reference import futures_data, MONTHS
+
 
 class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
     """YFinance Futures end of day Query.
@@ -26,7 +27,6 @@ class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
     period: Optional[PERIODS] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("period", "")
     )
-
 
 
 class YFinanceFuturesEODData(FuturesEODData):
@@ -81,7 +81,7 @@ class YFinanceFuturesEODFetcher(
             ].values[0]
             symbol = f"{query.symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
 
-        query_symbol = symbol if symbol else query.symbol+"=F"
+        query_symbol = symbol if symbol else query.symbol + "=F"
 
         if query.period:
             data = Ticker(query_symbol).history(

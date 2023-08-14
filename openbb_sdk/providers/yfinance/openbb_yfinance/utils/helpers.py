@@ -1,9 +1,11 @@
+from datetime import datetime
+from typing import Optional
+
 import pandas as pd
 import yfinance as yf
-from typing import Optional
-from datetime import datetime
-from openbb_yfinance.utils.futures_reference import futures_data, MONTHS
 from dateutil.relativedelta import relativedelta
+
+from openbb_yfinance.utils.futures_reference import MONTHS, futures_data
 
 
 def get_futures_curve(symbol: str, date: Optional[str]) -> pd.DataFrame:
