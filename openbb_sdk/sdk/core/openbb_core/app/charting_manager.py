@@ -1,7 +1,7 @@
 from importlib import import_module
 from typing import Callable, Generic, Optional, Tuple, TypeVar
 
-import pkg_resources
+import importlib_metadata
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.charts.chart import Chart, ChartFormat
@@ -87,7 +87,9 @@ class ChartingManager(metaclass=SingletonMeta):
         bool
             Either charting extension is installed or not.
         """
-        extensions = [ext.name for ext in pkg_resources.iter_entry_points(plugin)]
+        entry_points = importlib_metadata.entry_points(group=plugin)
+        extensions = [ext.name for ext in entry_points]
+
         return charting_extension in extensions
 
     @staticmethod
@@ -97,9 +99,9 @@ class ChartingManager(metaclass=SingletonMeta):
         """
         Get the module of the given extension.
         """
-        for entry_point in pkg_resources.iter_entry_points(plugin):
+        for entry_point in importlib_metadata.entry_points(group=plugin):
             if entry_point.name == extension_name:
-                return import_module(entry_point.module_name)
+                return import_module(entry_point.module)
 
     @classmethod
     def get_chart_format(cls, extension_name: str) -> ChartFormat:
@@ -144,10 +146,28 @@ class ChartingManager(metaclass=SingletonMeta):
         create_backend_func(charting_settings=charting_settings)
         get_backend_func().start(debug=charting_settings.debug_mode)
 
-    def to_plotly_json(self, **kwargs) -> str:
+    def to_chart(self, **kwargs) -> Chart:
         """
-        Returns the plotly json representation of the chart.
+        Returns the chart object.
+
+        Parameters
+        ----------
+        **kwargs
+            Keyword arguments to be passed to the charting extension.
+
+        Returns
+        -------
+        Chart
+            Chart object.
+
+        Raises
+        ------
+        ChartingManagerError
+            If charting extension is not installed.
+        Exception
+            If the charting extension module does not contain the `to_chart` function.
         """
+
         if not self._charting_extension_installed:
             raise ChartingManagerError(
                 f"Charting extension `{self._charting_extension}` is not installed"
@@ -156,19 +176,26 @@ class ChartingManager(metaclass=SingletonMeta):
 
         # Dynamically import the charting module
         backend_module = import_module(self._charting_extension)
-        # Get the plotly json function from the charting module
-        to_plotly_json_func = getattr(backend_module, "to_plotly_json")
+        # Get the `to_chart` function from the charting module
+        to_chart_func = getattr(backend_module, "to_chart")
+
         # Add the charting settings to the kwargs
         kwargs["charting_settings"] = self._charting_settings
 
-        return to_plotly_json_func(**kwargs)
+        fig, content = to_chart_func(**kwargs)
+
+        return Chart(
+            content=content,
+            format=self.get_chart_format(self._charting_extension),
+            fig=fig,
+        )
 
     def chart(
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
-        command_output_item: Generic[T],
+        obbject_item: Generic[T],
         **kwargs,
     ):
         """
@@ -188,7 +215,7 @@ class ChartingManager(metaclass=SingletonMeta):
             User settings.
         route : str
             Route name, example: `/stocks/load`.
-        command_output_item
+        obbject_item
             Command output item.
         Returns
         -------
@@ -208,10 +235,14 @@ class ChartingManager(metaclass=SingletonMeta):
 
         self.handle_backend(self._charting_extension, self._charting_settings)
 
-        kwargs["command_output_item"] = command_output_item
+        kwargs["obbject_item"] = obbject_item
         kwargs["charting_settings"] = self._charting_settings
 
+        charting_function = self.get_chart_function(self._charting_extension, route)
+        fig, content = charting_function(**kwargs)
+
         return Chart(
-            content=self.get_chart_function(self._charting_extension, route)(**kwargs),
+            content=content,
             format=self.get_chart_format(self._charting_extension),
+            fig=fig,
         )

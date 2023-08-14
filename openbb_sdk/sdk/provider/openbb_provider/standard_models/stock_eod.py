@@ -4,7 +4,7 @@
 from datetime import date, datetime
 from typing import Optional
 
-from pydantic import Field, PositiveFloat
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -33,5 +33,5 @@ class StockEODData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+    volume: NonNegativeFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))

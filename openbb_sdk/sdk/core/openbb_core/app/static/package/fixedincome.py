@@ -2,13 +2,14 @@
 
 import datetime
 import typing
-from typing import Literal, Optional, Union
+from typing import Annotated, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -18,12 +19,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> Obbject[typing.List]:
         """Get treasury rates.
 
 
@@ -41,7 +52,7 @@ class CLASS_fixedincome(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -117,7 +128,7 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ycrv(
         self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
         """Yield curve."""
         inputs = filter_inputs(
             chart=chart,

@@ -8,7 +8,8 @@ from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -18,11 +19,14 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: pydantic.types.NonNegativeInt = 0,
+        page: typing.Annotated[
+            pydantic.types.NonNegativeInt,
+            OpenBBCustomParameter(description="The page of the global news."),
+        ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> Obbject[typing.List]:
         """Global News.
 
 
@@ -38,7 +42,7 @@ class CLASS_news(Container):
 
         Returns
         -------
-        CommandOutput
+        Obbject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -139,7 +143,7 @@ class CLASS_news(Container):
     @validate_arguments
     def sectornews(
         self, chart: bool = False
-    ) -> CommandOutput[openbb_core.app.model.results.empty.Empty]:
+    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
         """Sector news."""
         inputs = filter_inputs(
             chart=chart,

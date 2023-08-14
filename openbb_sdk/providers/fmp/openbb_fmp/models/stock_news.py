@@ -58,4 +58,3 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_data(data: List[FMPStockNewsData]) -> List[FMPStockNewsData]:
         return data
-        return data

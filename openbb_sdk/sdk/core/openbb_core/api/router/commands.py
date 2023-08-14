@@ -1,3 +1,4 @@
+import inspect
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
 from typing import Any, Callable, Dict, Tuple, TypeVar
@@ -7,9 +8,11 @@ from fastapi.routing import APIRoute
 from openbb_core.api.dependency.user import get_user
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
+from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
 
 T = TypeVar("T")
@@ -73,6 +76,52 @@ def build_new_signature(func):
     )
 
 
+def validate_output(c_out: Obbject) -> Obbject:
+    """
+    Validate Obbject object.
+    Checks against the Obbject schema and removes fields that contain the
+    `exclude_from_api` extra `pydantic.Field` kwarg.
+    Note that the modification to the `Obbject` object is done in-place.
+
+    Parameters
+    ----------
+    c_out : Obbject
+        Obbject object to validate.
+
+    Returns
+    -------
+    Obbject
+        Validated Obbject object.
+    """
+
+    def is_model(type_):
+        return inspect.isclass(type_) and issubclass(type_, BaseModel)
+
+    def exclude_fields_from_api(key: str, value: Any):
+        type_ = type(value)
+
+        # case where 1st layer field needs to be excluded
+        if key in c_out.__fields__ and c_out.__fields__[key].field_info.extra.get(
+            "exclude_from_api", None
+        ):
+            delattr(c_out, key)
+
+        # if it's a model with nested fields
+        elif is_model(type_):
+            for field in type_.__fields__.values():
+                if field.field_info.extra.get("exclude_from_api", None):
+                    delattr(value, field.name)
+
+                # if it's a yet a nested model we need to go deeper in the recursion
+                elif is_model(field.type_):
+                    exclude_fields_from_api(field.name, getattr(value, field.name))
+
+    for k, v in c_out:
+        exclude_fields_from_api(k, v)
+
+    return c_out
+
+
 def build_api_wrapper(
     command_runner: CommandRunner,
     route: APIRoute,
@@ -97,7 +146,7 @@ def build_api_wrapper(
         execute = partial(command_runner.run_once, user_settings, path)
         journal_entry = execute(*args, **kwargs)
 
-        return journal_entry.output
+        return validate_output(journal_entry.output)
 
     return wrapper
 
