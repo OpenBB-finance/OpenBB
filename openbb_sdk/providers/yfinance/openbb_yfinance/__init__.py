@@ -6,6 +6,7 @@ from openbb_yfinance.models.forex_eod import YFinanceForexEODFetcher
 from openbb_yfinance.models.major_indices_eod import YFinanceMajorIndicesEODFetcher
 from openbb_yfinance.models.stock_eod import YFinanceStockEODFetcher
 from openbb_yfinance.models.futures_eod import YFinanceFuturesEODFetcher
+from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -19,6 +20,7 @@ yfinance_provider = Provider(
         "ForexEOD": YFinanceForexEODFetcher,
         "MajorIndicesEOD": YFinanceMajorIndicesEODFetcher,
         "StockEOD": YFinanceStockEODFetcher,
-        "FuturesEOD": YFinanceFuturesEODFetcher
+        "FuturesEOD": YFinanceFuturesEODFetcher,
+        "FuturesCurve": YFinanceFuturesCurveFetcher
     },
 )

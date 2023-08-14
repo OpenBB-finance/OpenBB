@@ -36,6 +36,7 @@
     "news_sectornews": "/news/sectornews",
     "futures_load": "/futures/load",
     "futures": "/futures",
+    "futures_curve": "/futures/curve",
     "stocks_fa_analysis": "/stocks/fa/analysis",
     "stocks": "/stocks",
     "stocks_fa": "/stocks/fa",
