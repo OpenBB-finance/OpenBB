@@ -12,7 +12,7 @@
     - [Install extension](#install-extension)
   - [4. Usage](#4-usage)
   - [4.1 Static version](#41-static-version)
-    - [4.1.1. Command output](#411-command-output)
+    - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
     - [4.1.2. Utilities](#412-utilities)
       - [Settings](#settings)
@@ -163,9 +163,9 @@ output = obb.stocks.load(
     )
 ```
 
-### 4.1.1. Command output
+### 4.1.1. OBBject
 
-Each command will always return a  `OBBject`. There you will find:
+Each command will always return an `OBBject`. There you will find:
 
 - `results`: the data returned by the command `None`
 - `provider`: the provider name (only available provider names allowed) used to get the data or `None`
