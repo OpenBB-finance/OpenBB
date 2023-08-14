@@ -274,7 +274,7 @@ class StaticCommandRunner:
     @classmethod
     def __chart(
         cls,
-        OBBject: OBBject,
+        obbject: OBBject,
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
@@ -286,7 +286,7 @@ class StaticCommandRunner:
                 user_settings=user_settings,
                 system_settings=system_settings,
                 route=route,
-                OBBject_item=OBBject.results,
+                OBBject_item=obbject.results,
                 **kwargs,
             )
         except Exception as e:

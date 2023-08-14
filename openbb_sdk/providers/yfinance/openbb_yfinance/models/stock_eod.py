@@ -58,7 +58,7 @@ class YFinanceStockEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return YFinanceStockEODQueryParams(**params)
+        return YFinanceStockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

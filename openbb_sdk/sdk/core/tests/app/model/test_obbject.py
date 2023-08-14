@@ -5,7 +5,7 @@ import pytest
 from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
 
 
-def test_OBBject():
+def test_command_output():
     co = OBBject()
     assert isinstance(co, OBBject)
 
@@ -115,7 +115,7 @@ def test_to_plotly_json_with_existing_chart(mock_chart, mock_charting_manager):
     mock_chart.assert_not_called()
 
 
-@patch("openbb_core.app.model.obbject.obbject.to_dataframe")
+@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
 @patch("openbb_core.app.model.obbject.ChartingManager")
 @patch("openbb_core.app.model.obbject.Chart")
 def test_to_plotly_json_with_new_chart(

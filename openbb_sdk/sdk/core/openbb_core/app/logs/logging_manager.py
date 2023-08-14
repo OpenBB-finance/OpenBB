@@ -182,7 +182,7 @@ class LoggingManager(metaclass=SingletonMeta):
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
-        OBBject: OBBject,
+        obbject: OBBject,
         route: str,
         func: Callable,
         kwargs: Dict[str, Any],
@@ -196,7 +196,7 @@ class LoggingManager(metaclass=SingletonMeta):
             User Settings object.
         system_settings : SystemSettings
             System Settings object.
-        OBBject : OBBject
+        obbject : OBBject
             OBBject object containing command output and error information.
         route : str
             Route for the command.
@@ -225,14 +225,14 @@ class LoggingManager(metaclass=SingletonMeta):
             # Truncate kwargs if too long
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
-            log_level = logger.error if OBBject.error else logger.info
+            log_level = logger.error if obbject.error else logger.info
             log_level(
-                "ERROR: %s" if OBBject.error else "CMD: %s",
+                "ERROR: %s" if obbject.error else "CMD: %s",
                 json.dumps(
                     {
                         "route": route,
                         "input": kwargs,
-                        "error": OBBject.error,
+                        "error": obbject.error,
                     },
                     default=pydantic_encoder,
                 ),
