@@ -14,6 +14,11 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint](#add-sdk-endpoint)
+      - [Step 1: Identify the router file](#step-1-identify-the-router-file)
+      - [Step 2: Define and implement the type of command](#step-2-define-and-implement-the-type-of-command)
+        - [GET](#get)
+        - [POST](#post)
+        - [model](#model-1)
     - [Add Unit Tests](#add-unit-tests)
     - [Open a Pull Request](#open-a-pull-request)
     - [Review Process](#review-process)
@@ -456,57 +461,60 @@ In addition, note the `self.load_class` which allows to not create a new `Fundam
 
 In order to add a command to the SDK, follow these steps:
 
-1. If you've created a new model or view file, add the import with an alias to `openbb_terminal/core/sdk/sdk_init.py` following this structure:
+#### Step 1: Identify the router file
 
-    ```python
-    # Stocks - Fundamental Analysis
-    from openbb_terminal.stocks.fundamental_analysis import (
-        finviz_model as stocks_fa_finviz_model,
-        finnhub_model as stocks_fa_finnhub_model,
-        finnhub_view as stocks_fa_finnhub_view,
-    )
-    ```
+Go to the relevant router file in `openbb_sdk/extensions/<extension-name>/openbb_<extension-name>/`
 
-2. Go to the `trail_map.csv` file located in `openbb_terminal/core/sdk`, which should look like this:
+For example, if you want to add a command to the `stocks` extension, you would go to `openbb_sdk/extensions/stocks/openbb_stocks/stocks_router.py`
 
-    ```csv
-    trail,model,view
-    stocks.fa.analyst,stocks_fa_finviz_model.get_analyst_data,
-    stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
+#### Step 2: Define and implement the type of command
 
-    ...
+We primarily use the following types of commands:
 
-    ```
+- GET
+- POST
+- model
 
-    In this file, the trail represents the path to the function to be called. The model represents the import alias we gave to the `_model` file. The view represents the import alias we gave to the `_view` file.
+##### GET
 
-3. Add your new function to this structure. In the below example of the `pt` function, our trail would be `stocks.fa.pt`.
+The `GET` method is our default request method.  It is used to retrieve data. For example, if we want to fetch the name of a company from its symbol, we would do the following:
 
-    Our naming convention is such that the data source should not be included in the trail. In this example, calling a new function `pt_fmp` would not be allowed.
-    For functions with multiple sources, there should be a single `pt` function that takes in the source as an argument.
-    In the following example, we will stick with showing how the business_insider was initially added to the sdk.
+```python
+@router.command
+def get_company_name(symbol: str) -> Obbject[List[str]]:
+    """Get company name."""
+    company = {"AAPL": "Apple", "MSFT": "Microsoft"}
+    return Obbject(results=[company[symbol]])
+```
 
-    The model is the import alias to the `_model` function that was written:
+##### POST
 
-    - `stocks_fa_business_insider_model.get_price_target_from_analysts`
+The `POST` method needs to be specified explicitly. It is used to send data to the server. For example, if you want to send the name of a company and its symbol to the server, you would do the following:
 
-    The view is the import alias to the `_view` function that was written:
+```python
+@router.command(methods=["POST"])
+def post_company_details(symbol: str, company_name: str) -> Obbject[List[dict]]:
+    """Post company details."""
+    return Obbject(results=[{"symbol": symbol, "company_name": company_name}])
+```
 
-    - `stocks_fa_business_insider_view.display_price_target_from_analysts`
+##### model
 
-    The added line of the file should look like this:
+Here we only need to specify the model name that is found in the `openbb_sdk/sdk/provider/openbb_provider/standard_models/<model_name>.py` file. For example, if we want to use the `StockEOD` model, we would do the following:
 
-    ```csv
-    stocks.fa.pt,stocks_fa_business_insider_model.get_price_target_from_analysts,stocks_fa_business_insider_view.display_price_target_from_analysts
-    ```
+```python
+@router.command(model="StockEOD")
+def load(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> Obbject[BaseModel]:
+    """Load stock data for a specific ticker."""
+    return Obbject(results=Query(**locals()).execute())
+```
 
-4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
-
-    To sort the `trail_map.csv` file and generate the SDK files, run the following command
-
-    ```bash
-    python generate_sdk.py sort
-    ```
+In the above code snippet, we only need to change the model name inside the `@router.command(model="StockEOD")` decorator and everything else will be handled automatically.
 
 ### Add Unit Tests
 
@@ -1108,9 +1116,9 @@ Note: If a function has both name and symbol as parameter, we should distinguish
 
 List of instrument tickers, names or currency pairs : `symbols` _(List/List[str]), e.g. ["AAPL", "MSFT"]_
 
-Base currency under ***BASE***-QUOTE → ***XXX***-YYY convention : `from_symbol` _(str), e.g. ETH in ETH-USD_
+Base currency under _**BASE**_-QUOTE → _**XXX**_-YYY convention : `from_symbol` _(str), e.g. ETH in ETH-USD_
 
-Quote currency under BASE-***QUOTE*** → XXX-***YYY*** convention : `to_symbol` _(str), e.g. USD in ETH-USD_
+Quote currency under BASE-_**QUOTE**_ → XXX-_**YYY**_ convention : `to_symbol` _(str), e.g. USD in ETH-USD_
 
 ```python
 def get_exchange_rate(from_symbol: str = "", to_symbol: str = "", ...):
