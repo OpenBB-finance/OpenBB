@@ -1082,6 +1082,7 @@ class BaseController(metaclass=ABCMeta):
                 if not is_local():
                     # routine = read_routine(file_name=routine_file)
                     routine = "\n".join(SESSION_RECORDED[:-1])
+
                     if routine is not None:
                         kwargs = {
                             "auth_header": current_user.profile.get_auth_header(),
