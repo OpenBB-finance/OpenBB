@@ -1100,6 +1100,7 @@ def run_routine(file: str, routines_args=Optional[str]):
 
 def main(
     debug: bool,
+    dev: bool,
     path_list: List[str],
     routines_args: Optional[List[str]] = None,
     **kwargs,
@@ -1110,6 +1111,8 @@ def main(
     ----------
     debug : bool
         Whether to run the terminal in debug mode
+    dev:
+        Points backend towards development environment instead of production
     test : bool
         Whether to run the terminal in integrated test mode
     filtert : str
@@ -1239,6 +1242,7 @@ def parse_args_and_run():
 
     main(
         ns_parser.debug,
+        ns_parser.dev,
         ns_parser.path,
         ns_parser.routine_args,
         module=ns_parser.module,
