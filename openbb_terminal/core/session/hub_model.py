@@ -2,7 +2,7 @@ import datetime
 import json
 from typing import Any, Dict, List, Literal, Optional
 from uuid import UUID
-
+from os import environ
 import requests
 from jose import jwt
 
@@ -479,10 +479,14 @@ def upload_routine(
         if response.status_code == 200:
             username = get_current_user().profile.username
             console.print("[green]Successfully uploaded your routine.[/green]")
-            if public:
-                console.print(f"\n[yellow]Share or edit it at https://my.openbb.co/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
+            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
+                run_env = "dev"
             else:
-                console.print(f"\n[yellow]Edit it at https://my.openbb.co/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
+                run_env = "co"
+            if public:
+                console.print(f"\n[yellow]Share or edit it at https://my.openbb.{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
+            else:
+                console.print(f"\n[yellow]Edit it at https://my.openbb.{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/yellow]")
         elif response.status_code != 409:  # 409: routine already exists
             console.print(
                 "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"
