@@ -2,7 +2,7 @@
 """Stocks Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -39,9 +39,9 @@ def load(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> Obbject[BaseModel]:
     """Load stock data for a specific ticker."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockNews")
@@ -50,9 +50,9 @@ def news(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> Obbject[BaseModel]:
     """Get news for one or more stock tickers."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockMultiples")
@@ -61,24 +61,24 @@ def multiples(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> Obbject[BaseModel]:
     """Get valuation multiples for a stock ticker."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return Obbject(results=Query(**locals()).execute())
 
 
 @router.command
-def tob() -> CommandOutput[Empty]:
+def tob() -> Obbject[Empty]:
     """View top of book for loaded ticker (US exchanges only)."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
-def quote() -> CommandOutput[Empty]:
+def quote() -> Obbject[Empty]:
     """View the current price for a specific stock ticker."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command
-def search() -> CommandOutput[Empty]:
+def search() -> Obbject[Empty]:
     """Search a specific stock ticker for analysis."""
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())

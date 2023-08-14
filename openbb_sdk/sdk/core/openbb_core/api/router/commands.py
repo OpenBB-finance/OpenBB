@@ -8,7 +8,7 @@ from fastapi.routing import APIRoute
 from openbb_core.api.dependency.user import get_user
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
@@ -76,22 +76,22 @@ def build_new_signature(func):
     )
 
 
-def validate_output(c_out: CommandOutput) -> CommandOutput:
+def validate_output(c_out: Obbject) -> Obbject:
     """
-    Validate CommandOutput object.
-    Checks against the CommandOutput schema and removes fields that contain the
+    Validate Obbject object.
+    Checks against the Obbject schema and removes fields that contain the
     `exclude_from_api` extra `pydantic.Field` kwarg.
-    Note that the modification to the `CommandOutput` object is done in-place.
+    Note that the modification to the `Obbject` object is done in-place.
 
     Parameters
     ----------
-    c_out : CommandOutput
-        CommandOutput object to validate.
+    c_out : Obbject
+        Obbject object to validate.
 
     Returns
     -------
-    CommandOutput
-        Validated CommandOutput object.
+    Obbject
+        Validated Obbject object.
     """
 
     def is_model(type_):

@@ -1,7 +1,7 @@
 from typing import List, Literal, Optional
 
 import pandas as pd
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -31,7 +31,7 @@ def atr(
     mamode: Literal["rma", "ema", "sma", "wma"] = "rma",
     drift: NonNegativeInt = 1,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Average True Range is used to measure volatility, especially volatility caused by
     gaps or limit moves.
@@ -53,7 +53,7 @@ def atr(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         List of data with the indicator applied.
 
     Examples
@@ -71,7 +71,7 @@ def atr(
 
     results = df_to_basemodel(df_target.join(df_atr, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -82,7 +82,7 @@ def fib(
     period: PositiveInt = 120,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Fibonacci Retracement Levels.
 
@@ -97,7 +97,7 @@ def fib(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         List of data with the indicator applied.
 
     Examples
@@ -132,7 +132,7 @@ def fib(
 
     results = df_to_basemodel(df_fib)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -140,7 +140,7 @@ def obv(
     data: List[Data],
     index: str = "date",
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The On Balance Volume (OBV) is a cumulative total of the up and
     down volume. When the close is higher than the previous close, the volume is added
@@ -161,7 +161,7 @@ def obv(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         List of data with the indicator applied.
 
     Examples
@@ -177,7 +177,7 @@ def obv(
 
     results = df_to_basemodel(df_target.join(df_obv, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -186,7 +186,7 @@ def fisher(
     index: str = "date",
     length: PositiveInt = 14,
     signal: PositiveInt = 1,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Fisher Transform is a technical indicator created by John F. Ehlers
     that converts prices into a Gaussian normal distribution.1 The indicator
@@ -207,7 +207,7 @@ def fisher(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         List of data with the indicator applied.
 
     Examples
@@ -223,7 +223,7 @@ def fisher(
 
     results = df_to_basemodel(df_target.join(df_fisher, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -233,7 +233,7 @@ def adosc(
     fast: PositiveInt = 3,
     slow: PositiveInt = 10,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
     is essentially a momentum indicator, but of the Accumulation-Distribution line
@@ -256,7 +256,7 @@ def adosc(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
 
     Examples
     --------
@@ -271,16 +271,16 @@ def adosc(
 
     results = df_to_basemodel(df_target.join(df_adosc, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def tv() -> CommandOutput[Empty]:
+def tv() -> Obbject[Empty]:
     """TradingView."""
 
     # TODO : probably out of scope for now
 
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -292,7 +292,7 @@ def bbands(
     std: NonNegativeFloat = 2,
     mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Bollinger Bands consist of three lines. The middle band is a simple
     moving average (generally 20 periods) of the typical price (TP). The upper and lower
@@ -324,7 +324,7 @@ def bbands(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -344,16 +344,16 @@ def bbands(
 
     results = df_to_basemodel(df_target.join(bbands_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def multi() -> CommandOutput[Empty]:
+def multi() -> Obbject[Empty]:
     """Plot multiple indicators on the same chart."""
 
     # TODO : probably out of scope for now
 
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -363,7 +363,7 @@ def zlma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The zero lag exponential moving average (ZLEMA) indicator
     was created by John Ehlers and Ric Way. The idea is do a
@@ -388,7 +388,7 @@ def zlma(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -403,7 +403,7 @@ def zlma(
 
     results = df_to_basemodel(df_target.join(zlma_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -412,7 +412,7 @@ def aroon(
     index: str = "date",
     length: int = 25,
     scalar: int = 100,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The word aroon is Sanskrit for "dawn's early light." The Aroon
     indicator attempts to show when a new trend is dawning. The indicator consists
@@ -438,7 +438,7 @@ def aroon(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -453,7 +453,7 @@ def aroon(
 
     results = df_to_basemodel(df_target.join(aroon_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -463,7 +463,7 @@ def sma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Moving Averages are used to smooth the data in an array to
     help eliminate noise and identify trends. The Simple Moving Average is literally
@@ -488,7 +488,7 @@ def sma(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -503,7 +503,7 @@ def sma(
 
     results = df_to_basemodel(df_target.join(sma_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -514,7 +514,7 @@ def demark(
     show_all: bool = False,
     asint: bool = False,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Demark sequential indicator
 
@@ -535,7 +535,7 @@ def demark(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -553,7 +553,7 @@ def demark(
 
     results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -562,7 +562,7 @@ def vwap(
     index: str = "date",
     anchor: str = "D",
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Volume Weighted Average Price that measures the average typical price
     by volume.  It is typically used with intraday charts to identify general direction.
@@ -582,7 +582,7 @@ def vwap(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -598,17 +598,17 @@ def vwap(
 
     results = df_to_basemodel(df_target.join(df_vwap, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def recom() -> CommandOutput[Empty]:
+def recom() -> Obbject[Empty]:
     """Recommendation."""
 
     # TODO : this command does only a call to a Tradingview's endpoint
     #        thus, it should probably be implement on a provider level
 
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -619,7 +619,7 @@ def macd(
     fast: int = 12,
     slow: int = 26,
     signal: int = 9,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Moving Average Convergence Divergence (MACD) is the difference
     between two Exponential Moving Averages. The Signal line is an Exponential Moving
@@ -646,7 +646,7 @@ def macd(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -663,7 +663,7 @@ def macd(
 
     results = df_to_basemodel(df_target.join(macd_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -673,7 +673,7 @@ def hma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Hull Moving Average solves the age old dilemma of making a moving average
     more responsive to current price activity whilst maintaining curve smoothness.
@@ -695,7 +695,7 @@ def hma(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -710,7 +710,7 @@ def hma(
 
     results = df_to_basemodel(df_target.join(hma_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -720,7 +720,7 @@ def donchian(
     lower_length: PositiveInt = 20,
     upper_length: PositiveInt = 20,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Donchian Channels are three lines generated by moving average
     calculations that comprise an indicator formed by upper and lower
@@ -744,7 +744,7 @@ def donchian(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -764,7 +764,7 @@ def donchian(
 
     results = df_to_basemodel(df_target.join(donchian_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -776,7 +776,7 @@ def ichimoku(
     lagging: PositiveInt = 52,
     offset: PositiveInt = 26,
     lookahead: bool = False,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
     defines support and resistance, identifies trend direction, gauges momentum and provides
@@ -816,7 +816,7 @@ def ichimoku(
 
     results = df_to_basemodel(df_result, index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -825,7 +825,7 @@ def clenow(
     index: str = "date",
     target: str = "adj_close",
     period: PositiveInt = 90,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Clenow Volatility Adjusted Momentum.
 
@@ -842,7 +842,7 @@ def clenow(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -868,13 +868,11 @@ def clenow(
 
     results = df_to_basemodel(df_clenow)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def ad(
-    data: List[Data], index: str = "date", offset: int = 0
-) -> CommandOutput[List[Data]]:
+def ad(data: List[Data], index: str = "date", offset: int = 0) -> Obbject[List[Data]]:
     """
     The Accumulation/Distribution Line is similar to the On Balance
     Volume (OBV), which sums the volume times +1/-1 based on whether the close is
@@ -898,7 +896,7 @@ def ad(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
 
     Examples
     --------
@@ -913,7 +911,7 @@ def ad(
 
     results = df_to_basemodel(df_target.join(ad_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -923,7 +921,7 @@ def adx(
     length: int = 50,
     scalar: float = 100.0,
     drift: int = 1,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
     The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
@@ -944,7 +942,7 @@ def adx(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -961,7 +959,7 @@ def adx(
 
     results = df_to_basemodel(df_target.join(adx_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -971,7 +969,7 @@ def wma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     A Weighted Moving Average puts more weight on recent data and less on past data.
     This is done by multiplying each bar’s price by a weighting factor. Because of its
@@ -993,7 +991,7 @@ def wma(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The WMA data.
 
     Examples
@@ -1008,7 +1006,7 @@ def wma(
 
     results = df_to_basemodel(df_target.join(wma_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1017,7 +1015,7 @@ def cci(
     index: str = "date",
     length: PositiveInt = 14,
     scalar: PositiveFloat = 0.015,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The CCI is designed to detect beginning and ending market trends.
     The range of 100 to -100 is the normal trading range. CCI values outside of this
@@ -1038,7 +1036,7 @@ def cci(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The CCI data.
     """
 
@@ -1048,7 +1046,7 @@ def cci(
 
     results = df_to_basemodel(df_target.join(cci_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1059,7 +1057,7 @@ def rsi(
     length: int = 14,
     scalar: float = 100.0,
     drift: int = 1,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Relative Strength Index (RSI) calculates a ratio of the
     recent upward price movements to the absolute price movement. The RSI ranges
@@ -1084,7 +1082,7 @@ def rsi(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The RSI data.
 
     Examples
@@ -1101,17 +1099,17 @@ def rsi(
 
     results = df_to_basemodel(df_target.join(rsi_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def summary() -> CommandOutput[Empty]:
+def summary() -> Obbject[Empty]:
     """Summary."""
 
     # TODO : this command does only a call to a finbrain's endpoint
     #        thus, it should probably be implement on a provider level
 
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1121,7 +1119,7 @@ def stoch(
     fast_k_period: NonNegativeInt = 14,
     slow_d_period: NonNegativeInt = 3,
     slow_k_period: NonNegativeInt = 3,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Stochastic Oscillator measures where the close is in relation
     to the recent trading range. The values range from zero to 100. %D values over 75
@@ -1145,7 +1143,7 @@ def stoch(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The Stochastic Oscillator data.
 
     Examples
@@ -1167,16 +1165,16 @@ def stoch(
 
     results = df_to_basemodel(df_target.join(stoch_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
-def rsp() -> CommandOutput[Empty]:
+def rsp() -> Obbject[Empty]:
     """Relative Strength Performance."""
 
     # TODO : https://github.com/OpenBB-finance/OpenBBTerminal/issues/5167
 
-    return CommandOutput(results=Empty())
+    return Obbject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1187,7 +1185,7 @@ def kc(
     scalar: PositiveFloat = 20,
     mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
     offset: NonNegativeInt = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     Keltner Channels are volatility-based bands that are placed
     on either side of an asset's price and can aid in determining
@@ -1212,7 +1210,7 @@ def kc(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The Keltner Channels data.
 
     Examples
@@ -1235,13 +1233,13 @@ def kc(
 
     results = df_to_basemodel(df_target.join(kc_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
 def cg(
     data: List[Data], index: str = "date", length: PositiveInt = 14
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Center of Gravity indicator, in short, is used to anticipate future price movements
     and to trade on price reversals as soon as they happen. However, just like other oscillators,
@@ -1260,7 +1258,7 @@ def cg(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The COG data.
 
     Examples
@@ -1276,7 +1274,7 @@ def cg(
 
     results = df_to_basemodel(df_target.join(cg_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1294,7 +1292,7 @@ def cones(
         "Yang-Zhang",
     ] = "STD",
     is_crypto: bool = False,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """Calculate the realized volatility quantiles over rolling windows of time.
 
     The model for calculating volatility is selectable.
@@ -1336,7 +1334,7 @@ def cones(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The cones data.
 
     Examples
@@ -1356,7 +1354,7 @@ def cones(
 
     results = df_to_basemodel(df_cones, index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -1366,7 +1364,7 @@ def ema(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
-) -> CommandOutput[List[Data]]:
+) -> Obbject[List[Data]]:
     """
     The Exponential Moving Average is a staple of technical
     analysis and is used in countless technical indicators. In a Simple Moving
@@ -1392,7 +1390,7 @@ def ema(
 
     Returns
     -------
-    CommandOutput[List[Data]]
+    Obbject[List[Data]]
         The calculated data.
 
     Examples
@@ -1408,4 +1406,4 @@ def ema(
 
     results = df_to_basemodel(df_target.join(ema_df, how="left"), index=True)
 
-    return CommandOutput(results=results)
+    return Obbject(results=results)

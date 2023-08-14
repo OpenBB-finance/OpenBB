@@ -5,12 +5,12 @@ This extension provides stock market data tools for the OpenBB SDK.
 Features of the Stocks extension include:
 
 - Access to various stock market data sources
-- Submenus such as
-  - `fa` for fundamental analysis
+- Sub-modules such as:
+  - `ca` for fundamental analysis
   - `dd` for in-depth due diligence
   - `disc` for stock discovery
   - `dps` for Dark Pool Shorts data
-  - `ca` for comparison analysis
+  - `fa` for comparison analysis
   - `gov` for government contracts data
   - `ins` for insiders trading data
   - `options` for options

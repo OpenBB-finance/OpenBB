@@ -10,7 +10,7 @@ from openbb_core.app.logs.formatters.formatter_with_exceptions import (
 from openbb_core.app.logs.handlers_manager import HandlersManager
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.app.model.abstract.singleton import SingletonMeta
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 
@@ -42,7 +42,7 @@ class LoggingManager(metaclass=SingletonMeta):
     __init__(system_settings, user_settings)
         Logging Manager Constructor.
 
-    log(user_settings, system_settings, command_output, route, func, kwargs)
+    log(user_settings, system_settings, obbject, route, func, kwargs)
         Log command output and relevant information.
 
     logging_settings
@@ -182,7 +182,7 @@ class LoggingManager(metaclass=SingletonMeta):
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
-        command_output: CommandOutput,
+        obbject: Obbject,
         route: str,
         func: Callable,
         kwargs: Dict[str, Any],
@@ -196,8 +196,8 @@ class LoggingManager(metaclass=SingletonMeta):
             User Settings object.
         system_settings : SystemSettings
             System Settings object.
-        command_output : CommandOutput
-            CommandOutput object containing command output and error information.
+        obbject : Obbject
+            Obbject object containing command output and error information.
         route : str
             Route for the command.
         func : Callable
@@ -225,14 +225,14 @@ class LoggingManager(metaclass=SingletonMeta):
             # Truncate kwargs if too long
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
-            log_level = logger.error if command_output.error else logger.info
+            log_level = logger.error if obbject.error else logger.info
             log_level(
-                "ERROR: %s" if command_output.error else "CMD: %s",
+                "ERROR: %s" if obbject.error else "CMD: %s",
                 json.dumps(
                     {
                         "route": route,
                         "input": kwargs,
-                        "error": command_output.error,
+                        "error": obbject.error,
                     },
                     default=pydantic_encoder,
                 ),
