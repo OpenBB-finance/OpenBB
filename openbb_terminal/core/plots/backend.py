@@ -441,8 +441,13 @@ class Backend(PyWry):
         self.check_backend()
         endpoint = {True: "login", False: "logout"}[login]
 
+        if str(os.environ.get("DEBUG_MODE", "false")).lower() != "true":
+            json_url = f"https://my.openbb.dev/{endpoint}?pywry=true"
+        else:
+            json_url = f"https://my.openbb.co/{endpoint}?pywry=true"
+
         outgoing = dict(
-            json_data=dict(url=f"https://my.openbb.co/{endpoint}?pywry=true"),
+            json_data=dict(url=json_url),
             **self.get_kwargs(endpoint.title()),
             width=900,
             height=800,
