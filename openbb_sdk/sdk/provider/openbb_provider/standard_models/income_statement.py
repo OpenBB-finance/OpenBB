@@ -10,20 +10,21 @@ from typing import Optional
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data
-from openbb_provider.standard_models.base import FinancialStatementQueryParams
+from openbb_provider.standard_models.base import (
+    FinancialStatementQueryParams,
+    BaseSymbol,
+)
 
 
 class IncomeStatementQueryParams(FinancialStatementQueryParams):
     """Income Statement Query."""
 
 
-class IncomeStatementData(Data):
+class IncomeStatementData(Data, BaseSymbol):
     """Income Statement Data."""
 
     date: dateType = Field(description="Date of the income statement.")
-    symbol: str = Field(description="Symbol of the company.")
-    cik: Optional[str] = Field(description="Central Index Key.")
-
+    cik: str = Field(description="Central Index Key.")
     currency: Optional[str] = Field(description="Reporting currency.")
     filing_date: Optional[dateType] = Field(description="Filling date.")
     accepted_date: Optional[datetime] = Field(description="Accepted date.")
