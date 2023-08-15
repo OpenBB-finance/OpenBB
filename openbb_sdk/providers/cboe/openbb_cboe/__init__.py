@@ -9,7 +9,9 @@ from openbb_cboe.models.stock_search import CboeStockSearchFetcher
 cboe_provider = Provider(
     name="cboe",
     website="https://www.cboe.com/",
-    description="""Provider for CBOE.""",
+    description="""Cboe is the world's go-to derivatives and exchange network,
+     delivering cutting-edge trading, clearing and investment solutions to people
+     around the world.""",
     required_credentials=None,
     fetcher_dict={
         "StockSearch": CboeStockSearchFetcher,
