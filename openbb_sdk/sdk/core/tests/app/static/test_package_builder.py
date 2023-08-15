@@ -461,7 +461,7 @@ def test_docstring_generator_init(docstring_generator):
 
 def test_get_object_description(docstring_generator):
     """Test build docstring."""
-    docstring = docstring_generator.get_object_description()
+    docstring = docstring_generator.get_OBBject_description()
     assert docstring
 
 

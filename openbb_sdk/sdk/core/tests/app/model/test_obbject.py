@@ -129,10 +129,9 @@ def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
     mock_to_dataframe.assert_called_once()
 
 
-@patch("openbb_core.app.model.obbject.obbject.to_dataframe")
+@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
 @patch("openbb_core.app.model.obbject.ChartingManager")
-@patch("openbb_core.app.model.obbject.Chart")
-def test_to_plotly_json_with_new_chart(
+def test_to_chart_with_new_chart(
     mock_charting_manager,
     mock_to_dataframe,
 ):

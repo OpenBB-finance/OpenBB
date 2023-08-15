@@ -3,7 +3,6 @@
 import builtins
 import shutil
 import subprocess
-from collections import OrderedDict
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -14,6 +13,7 @@ from typing import (
     List,
     Literal,
     Optional,
+    OrderedDict,
     Type,
     Union,
     get_args,

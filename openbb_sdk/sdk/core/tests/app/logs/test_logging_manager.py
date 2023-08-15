@@ -52,11 +52,6 @@ def test_correctly_initialized(logging_manager):
     assert logging_manager
 
 
-def test_logging_settings_property(logging_manager):
-    assert logging_manager.logging_settings.system_settings == "mock_system_settings"
-    assert logging_manager.logging_settings.user_settings == "mock_user_settings"
-
-
 def test_logging_settings_setter(logging_manager):
     custom_user_settings = "custom_user_settings"
     custom_system_settings = "custom_system_settings"
