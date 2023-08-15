@@ -1,6 +1,5 @@
 """Provider helpers."""
 
-
 import random
 import re
 from typing import Callable, Dict, List, Optional, Type, Union
@@ -72,7 +71,7 @@ def data_transformer(
     data: Union[List[ProviderDataType], ProviderDataType],
     new_schema: Type[DataType],
     processors: Optional[Dict[str, Callable]] = None,
-) -> List[DataType]:
+) -> Union[List[DataType], DataType]:
     """Converts a specific data into the standardised version
 
     Parameters:
@@ -124,7 +123,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)  # nosec
+    return random.choice(user_agent_strings)  # nosec # noqa: S311
 
 
 def make_request(

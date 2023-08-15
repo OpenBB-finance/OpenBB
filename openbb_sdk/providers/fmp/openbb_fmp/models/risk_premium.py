@@ -32,7 +32,7 @@ class FMPRiskPremiumData(RiskPremiumData):
 class FMPRiskPremiumFetcher(
     Fetcher[
         FMPRiskPremiumQueryParams,
-        FMPRiskPremiumData,
+        List[FMPRiskPremiumData],
     ]
 ):
     @staticmethod
@@ -43,7 +43,7 @@ class FMPRiskPremiumFetcher(
     def extract_data(
         query: FMPRiskPremiumQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPRiskPremiumData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

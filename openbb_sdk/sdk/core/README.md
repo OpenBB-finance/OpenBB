@@ -12,7 +12,7 @@
     - [Install extension](#install-extension)
   - [4. Usage](#4-usage)
   - [4.1 Static version](#41-static-version)
-    - [4.1.1. Command output](#411-command-output)
+    - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
     - [4.1.2. Utilities](#412-utilities)
       - [Settings](#settings)
@@ -70,7 +70,7 @@ router = Router(prefix="/router_name")
 @router.command
 def some_command(
     some_param: some_param_type,
-) -> Obbject[Item]:
+) -> OBBject[Item]:
     pass
 ```
 
@@ -85,9 +85,9 @@ def load(
     provider_choices: ProviderChoices,  # available providers
     standard_params: StandardParams,    # symbol, start_date, etc.
     extra_params: ExtraParams,          # provider specific parameters
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Load stock data for a specific ticker."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 ```
 
 ### Entrypoint
@@ -163,9 +163,9 @@ output = obb.stocks.load(
     )
 ```
 
-### 4.1.1. Command output
+### 4.1.1. OBBject
 
-Each command will always return a  `Obbject`. There you will find:
+Each command will always return an `OBBject`. There you will find:
 
 - `results`: the data returned by the command `None`
 - `provider`: the provider name (only available provider names allowed) used to get the data or `None`
@@ -341,7 +341,7 @@ timestamp: ...          # Execution starting timestamp.
 alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
 
 >>> response.output
-Obbject
+OBBject
 
 id: ...                 # UUID Tag
 results: ...            # Serializable results.

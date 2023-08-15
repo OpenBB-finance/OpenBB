@@ -104,8 +104,8 @@ class PackageBuilder:
         package_folder.mkdir(exist_ok=True)
 
         print(package_path)
-        with package_path.open("w") as file:
-            file.write(module_code)
+        with package_path.open("w", encoding="utf-8", newline="\n") as file:
+            file.write(module_code.replace("typing.", ""))
 
 
 class ModuleBuilder:
@@ -179,7 +179,7 @@ class ImportDefinition:
         """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
-        code += "\nfrom openbb_core.app.model.obbject import Obbject"
+        code += "\nfrom openbb_core.app.model.obbject import OBBject"
         code += (
             "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
         )
@@ -191,8 +191,9 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_arguments"
+        code += "\nfrom pydantic import validate_arguments, BaseModel"
         code += "\nfrom inspect import Parameter"
+        code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
@@ -247,7 +248,7 @@ class DocstringGenerator:
         obbject_description = (
             "\nReturns\n"
             "-------\n"
-            "Obbject\n"
+            "OBBject\n"
             "    results: List[Data]\n"
             "        Serializable results.\n"
             "    provider: Optional[PROVIDERS]\n"
@@ -468,6 +469,7 @@ class MethodDefinition:
         # Be careful, if the type is not coercible by pydantic to the original type, you
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
+            "symbol": List[str],
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
@@ -582,18 +584,23 @@ class MethodDefinition:
         else:
             item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
-                func_returns = f"Obbject[{item_type.__name__}]"
+                func_returns = f"OBBject[{item_type.__name__}]"
             # elif get_origin(item_type) == list:
             #     inner_type = get_args(item_type)[0]
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-            #     func_returns = f"Obbject[{item_type.__module__}.{item_type.__name__}[{select}]]"
+            #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 inner_type_name = (
                     item_type.__name__
                     if hasattr(item_type, "__name__")
                     else item_type._name
                 )
-                func_returns = f"Obbject[{item_type.__module__}.{inner_type_name}]"
+                result_type = f"{item_type.__module__}.{inner_type_name}"
+
+                if "pydantic.main" in result_type:
+                    result_type = "BaseModel"
+
+                func_returns = f"OBBject[{result_type}]"
 
         return func_returns
 
@@ -621,7 +628,7 @@ class MethodDefinition:
     @staticmethod
     def build_command_method_doc(func: Callable):
         """Build the command method docstring."""
-        code = f'        """{func.__doc__}"""\n' if func.__doc__ else ""
+        code = f'        """{func.__doc__}"""   # noqa: E501\n' if func.__doc__ else ""
 
         return code
 
@@ -647,6 +654,9 @@ class MethodDefinition:
                 value = {k: k for k in fields}
                 code += f"            {name}={{"
                 for k, v in value.items():
+                    if k == "symbol":
+                        code += f'"{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, '
+                        continue
                     code += f'"{k}": {v}, '
                 code += "},\n"
             else:

@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import List, Literal, Union
 
 import openbb_provider
@@ -11,7 +10,7 @@ import pydantic.types
 from pydantic import validate_arguments
 
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -24,7 +23,7 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         chart: bool = False,
-    ) -> Obbject[openbb_qa.qa_models.NormalityModel]:
+    ) -> OBBject[openbb_qa.qa_models.NormalityModel]:
         """
         Normality Statistics.
 
@@ -43,9 +42,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[NormalityModel]
+        OBBject[NormalityModel]
             Normality tests summary. See qa_models.NormalityModel for details.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -66,8 +65,8 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         chart: bool = False,
-    ) -> Obbject[openbb_qa.qa_models.CAPMModel]:
-        """Capital Asset Pricing Model."""
+    ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
+        """Capital Asset Pricing Model."""  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -85,8 +84,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def qqplot(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """QQ Plot."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """QQ Plot."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -107,7 +106,7 @@ class CLASS_qa(Container):
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Omega Ratio.
 
         Parameters
@@ -123,9 +122,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[List[OmegaModel]]
+        OBBject[List[OmegaModel]]
             Omega ratios.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -149,7 +148,7 @@ class CLASS_qa(Container):
         target: str,
         window: pydantic.types.PositiveInt,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Kurtosis.
 
         Parameters
@@ -163,9 +162,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             Kurtosis.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -184,8 +183,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def pick(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Pick."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Pick."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -201,8 +200,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def spread(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Spread."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Spread."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -218,8 +217,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def rolling(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Rolling."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Rolling."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -235,8 +234,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def var(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Value at Risk."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Value at Risk."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -252,8 +251,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def line(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Line."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Line."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -269,8 +268,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def hist(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Histogram."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Histogram."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -291,7 +290,7 @@ class CLASS_qa(Container):
         fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
         chart: bool = False,
-    ) -> Obbject[openbb_qa.qa_models.UnitRootModel]:
+    ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
         """Unit Root Test.
 
         Augmented Dickey-Fuller test for unit root.
@@ -310,9 +309,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[UnitRootModel]
+        OBBject[UnitRootModel]
             Unit root tests summary.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -332,8 +331,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def beta(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Beta."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Beta."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -354,7 +353,7 @@ class CLASS_qa(Container):
         rfr: float = 0.0,
         window: pydantic.types.PositiveInt = 252,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Sharpe Ratio.
 
         Parameters
@@ -370,9 +369,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             Sharpe ratio.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -398,7 +397,7 @@ class CLASS_qa(Container):
         window: pydantic.types.PositiveInt = 252,
         adjusted: bool = False,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Sortino Ratio.
 
         For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
@@ -418,9 +417,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             Sortino ratio.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -441,8 +440,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def cusum(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Sum."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Cumulative Sum."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -458,8 +457,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def raw(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Raw."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Raw."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -475,8 +474,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def cdf(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Distribution Function."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Cumulative Distribution Function."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -492,8 +491,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def decompose(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Decompose."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Decompose."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -513,7 +512,7 @@ class CLASS_qa(Container):
         target: str,
         window: pydantic.types.PositiveInt,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Skewness.
 
         Parameters
@@ -527,9 +526,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             Skewness.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -553,8 +552,8 @@ class CLASS_qa(Container):
         window: pydantic.types.PositiveInt,
         quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
-        """Quantile."""
+    ) -> OBBject[List]:
+        """Quantile."""  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -574,8 +573,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def bw(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Bandwidth."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Bandwidth."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -591,8 +590,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def es(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Expected Shortfall."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Expected Shortfall."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -608,8 +607,8 @@ class CLASS_qa(Container):
     @validate_arguments
     def acf(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Autocorrelation Function."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Autocorrelation Function."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -628,7 +627,7 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         chart: bool = False,
-    ) -> Obbject[openbb_qa.qa_models.SummaryModel]:
+    ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
         """Summary.
 
         Parameters
@@ -640,9 +639,9 @@ class CLASS_qa(Container):
 
         Returns
         -------
-        Obbject[SummaryModel]
+        OBBject[SummaryModel]
             Summary table.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,

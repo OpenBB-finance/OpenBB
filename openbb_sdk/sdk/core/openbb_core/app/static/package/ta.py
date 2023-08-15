@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import List, Literal, Optional, Union
 
 import openbb_provider
@@ -10,7 +9,7 @@ import pydantic.types
 from pydantic import validate_arguments
 
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -27,7 +26,7 @@ class CLASS_ta(Container):
         drift: pydantic.types.NonNegativeInt = 1,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Average True Range is used to measure volatility, especially volatility caused by
         gaps or limit moves.
@@ -49,7 +48,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             List of data with the indicator applied.
 
         Examples
@@ -57,7 +56,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> atr_data = obb.ta.atr(data=stock_data.results)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -86,7 +85,7 @@ class CLASS_ta(Container):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Fibonacci Retracement Levels.
 
@@ -101,7 +100,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             List of data with the indicator applied.
 
         Examples
@@ -109,7 +108,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> fib_data = obb.ta.fib(data=stock_data.results, period=120)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -135,7 +134,7 @@ class CLASS_ta(Container):
         index: str = "date",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
            The On Balance Volume (OBV) is a cumulative total of the up and
            down volume. When the close is higher than the previous close, the volume is added
@@ -158,7 +157,7 @@ class CLASS_ta(Container):
 
            Returns
            -------
-           Obbject[List[Data]]
+           OBBject[List[Data]]
                List of data with the indicator applied.
 
            Examples
@@ -166,7 +165,7 @@ class CLASS_ta(Container):
            >>> from openbb import obb
            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
            >>> obv_data = obb.ta.obv(data=stock_data.results, offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -190,7 +189,7 @@ class CLASS_ta(Container):
         length: pydantic.types.PositiveInt = 14,
         signal: pydantic.types.PositiveInt = 1,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Fisher Transform is a technical indicator created by John F. Ehlers
         that converts prices into a Gaussian normal distribution.1 The indicator
@@ -211,7 +210,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             List of data with the indicator applied.
 
         Examples
@@ -219,7 +218,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> fisher_data = obb.ta.fisher(data=stock_data.results, length=14, signal=1)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -245,7 +244,7 @@ class CLASS_ta(Container):
         slow: pydantic.types.PositiveInt = 10,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
         is essentially a momentum indicator, but of the Accumulation-Distribution line
@@ -268,14 +267,14 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
 
         Examples
         --------
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> adosc_data = obb.ta.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -296,8 +295,8 @@ class CLASS_ta(Container):
     @validate_arguments
     def tv(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """TradingView."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """TradingView."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -321,7 +320,7 @@ class CLASS_ta(Container):
         mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
             Bollinger Bands consist of three lines. The middle band is a simple
             moving average (generally 20 periods) of the typical price (TP). The upper and lower
@@ -355,7 +354,7 @@ class CLASS_ta(Container):
 
             Returns
             -------
-            Obbject[List[Data]]
+            OBBject[List[Data]]
                 The calculated data.
 
             Examples
@@ -365,7 +364,7 @@ class CLASS_ta(Container):
             >>> bbands = obb.ta.bbands(
             >>>     data=stock_data.results, target="close", length=50, std=2, mamode="sma", offset=0
             >>> )
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -388,8 +387,8 @@ class CLASS_ta(Container):
     @validate_arguments
     def multi(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Plot multiple indicators on the same chart."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Plot multiple indicators on the same chart."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -411,7 +410,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The zero lag exponential moving average (ZLEMA) indicator
         was created by John Ehlers and Ric Way. The idea is do a
@@ -436,7 +435,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -444,7 +443,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> zlma_data = obb.ta.zlma(data=stock_data.results, target="close", length=50, offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -470,7 +469,7 @@ class CLASS_ta(Container):
         length: int = 25,
         scalar: int = 100,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
            The word aroon is Sanskrit for "dawn's early light." The Aroon
            indicator attempts to show when a new trend is dawning. The indicator consists
@@ -498,7 +497,7 @@ class CLASS_ta(Container):
 
            Returns
            -------
-           Obbject[List[Data]]
+           OBBject[List[Data]]
                The calculated data.
 
            Examples
@@ -506,7 +505,7 @@ class CLASS_ta(Container):
            >>> from openbb import obb
            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
            >>> aroon_data = obb.ta.aroon(data=stock_data.results, length=25, scalar=100)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -532,7 +531,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Moving Averages are used to smooth the data in an array to
         help eliminate noise and identify trends. The Simple Moving Average is literally
@@ -557,7 +556,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -565,7 +564,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> sma_data = obb.ta.sma(data=stock_data.results,target="close",length=50,offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -593,7 +592,7 @@ class CLASS_ta(Container):
         asint: bool = False,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Demark sequential indicator
 
@@ -614,7 +613,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -622,7 +621,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> demark_data = obb.ta.demark(data=stock_data.results,offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -649,7 +648,7 @@ class CLASS_ta(Container):
         anchor: str = "D",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Volume Weighted Average Price that measures the average typical price
         by volume.  It is typically used with intraday charts to identify general direction.
@@ -669,7 +668,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -677,7 +676,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> vwap_data = obb.ta.vwap(data=stock_data.results,anchor="D",offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -697,8 +696,8 @@ class CLASS_ta(Container):
     @validate_arguments
     def recom(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Recommendation."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Recommendation."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -721,7 +720,7 @@ class CLASS_ta(Container):
         slow: int = 26,
         signal: int = 9,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
            The Moving Average Convergence Divergence (MACD) is the difference
            between two Exponential Moving Averages. The Signal line is an Exponential Moving
@@ -750,7 +749,7 @@ class CLASS_ta(Container):
 
            Returns
            -------
-           Obbject[List[Data]]
+           OBBject[List[Data]]
                The calculated data.
 
            Examples
@@ -758,7 +757,7 @@ class CLASS_ta(Container):
            >>> from openbb import obb
            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
            >>> macd_data = obb.ta.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -786,7 +785,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Hull Moving Average solves the age old dilemma of making a moving average
         more responsive to current price activity whilst maintaining curve smoothness.
@@ -808,7 +807,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -816,7 +815,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> hma_data = obb.ta.hma(data=stock_data.results,target="close",length=50,offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -843,7 +842,7 @@ class CLASS_ta(Container):
         upper_length: pydantic.types.PositiveInt = 20,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Donchian Channels are three lines generated by moving average
         calculations that comprise an indicator formed by upper and lower
@@ -867,7 +866,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -875,7 +874,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> donchian_data = obb.ta.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -904,7 +903,7 @@ class CLASS_ta(Container):
         offset: pydantic.types.PositiveInt = 26,
         lookahead: bool = False,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
         defines support and resistance, identifies trend direction, gauges momentum and provides
@@ -927,7 +926,7 @@ class CLASS_ta(Container):
             Number of periods for the offset, by default 26.
         lookahead : bool, optional
             drops the Chikou Span Column to prevent potential data leak
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -955,7 +954,7 @@ class CLASS_ta(Container):
         target: str = "adj_close",
         period: pydantic.types.PositiveInt = 90,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Clenow Volatility Adjusted Momentum.
 
@@ -972,7 +971,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -980,7 +979,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> clenow_data = obb.ta.clenow(data=stock_data.results,period=90)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1004,7 +1003,7 @@ class CLASS_ta(Container):
         index: str = "date",
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Accumulation/Distribution Line is similar to the On Balance
         Volume (OBV), which sums the volume times +1/-1 based on whether the close is
@@ -1030,14 +1029,14 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
 
         Examples
         --------
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> ad_data = obb.ta.ad(data=stock_data.results,offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1062,7 +1061,7 @@ class CLASS_ta(Container):
         scalar: float = 100.0,
         drift: int = 1,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
         The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
@@ -1083,7 +1082,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -1091,7 +1090,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> adx_data = obb.ta.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1118,7 +1117,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         A Weighted Moving Average puts more weight on recent data and less on past data.
         This is done by multiplying each bar’s price by a weighting factor. Because of its
@@ -1140,7 +1139,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The WMA data.
 
         Examples
@@ -1148,7 +1147,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> wma_data = obb.ta.wma(data=stock_data.results, target="close", length=50, offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -1174,7 +1173,7 @@ class CLASS_ta(Container):
         length: pydantic.types.PositiveInt = 14,
         scalar: pydantic.types.PositiveFloat = 0.015,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The CCI is designed to detect beginning and ending market trends.
         The range of 100 to -100 is the normal trading range. CCI values outside of this
@@ -1195,9 +1194,9 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The CCI data.
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1224,7 +1223,7 @@ class CLASS_ta(Container):
         scalar: float = 100.0,
         drift: int = 1,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Relative Strength Index (RSI) calculates a ratio of the
         recent upward price movements to the absolute price movement. The RSI ranges
@@ -1249,7 +1248,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The RSI data.
 
         Examples
@@ -1257,7 +1256,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> rsi_data = obb.ta.rsi(data=stock_data.results, target="close", length=14, scalar=100.0, drift=1)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -1279,8 +1278,8 @@ class CLASS_ta(Container):
     @validate_arguments
     def summary(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Summary."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Summary."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1302,7 +1301,7 @@ class CLASS_ta(Container):
         slow_d_period: pydantic.types.NonNegativeInt = 3,
         slow_k_period: pydantic.types.NonNegativeInt = 3,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Stochastic Oscillator measures where the close is in relation
         to the recent trading range. The values range from zero to 100. %D values over 75
@@ -1326,7 +1325,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The Stochastic Oscillator data.
 
         Examples
@@ -1334,7 +1333,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> stoch_data = obb.ta.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1355,8 +1354,8 @@ class CLASS_ta(Container):
     @validate_arguments
     def rsp(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Relative Strength Performance."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Relative Strength Performance."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -1379,7 +1378,7 @@ class CLASS_ta(Container):
         mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
         offset: pydantic.types.NonNegativeInt = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         Keltner Channels are volatility-based bands that are placed
         on either side of an asset's price and can aid in determining
@@ -1404,7 +1403,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The Keltner Channels data.
 
         Examples
@@ -1412,7 +1411,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1438,7 +1437,7 @@ class CLASS_ta(Container):
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Center of Gravity indicator, in short, is used to anticipate future price movements
         and to trade on price reversals as soon as they happen. However, just like other oscillators,
@@ -1457,7 +1456,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The COG data.
 
         Examples
@@ -1465,7 +1464,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> cg_data = obb.ta.cg(data=stock_data.results, length=14)
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1498,7 +1497,7 @@ class CLASS_ta(Container):
         ] = "STD",
         is_crypto: bool = False,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Calculate the realized volatility quantiles over rolling windows of time.
 
         The model for calculating volatility is selectable.
@@ -1540,7 +1539,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The cones data.
 
         Examples
@@ -1548,7 +1547,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> cones_data = obb.ta.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model="STD")
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             index=index,
@@ -1576,7 +1575,7 @@ class CLASS_ta(Container):
         length: int = 50,
         offset: int = 0,
         chart: bool = False,
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """
         The Exponential Moving Average is a staple of technical
         analysis and is used in countless technical indicators. In a Simple Moving
@@ -1602,7 +1601,7 @@ class CLASS_ta(Container):
 
         Returns
         -------
-        Obbject[List[Data]]
+        OBBject[List[Data]]
             The calculated data.
 
         Examples
@@ -1611,7 +1610,7 @@ class CLASS_ta(Container):
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> ema_data = obb.ta.ema(data=stock_data.results,target="close",length=50,offset=0)
 
-        """
+        """  # noqa: E501
         inputs = filter_inputs(
             data=data,
             target=target,

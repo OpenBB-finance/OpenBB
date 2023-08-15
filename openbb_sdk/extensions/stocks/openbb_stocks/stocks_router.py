@@ -1,8 +1,9 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """Stocks Router."""
 
+
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -39,9 +40,9 @@ def load(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Load stock data for a specific ticker."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockNews")
@@ -50,9 +51,9 @@ def news(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Get news for one or more stock tickers."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="StockMultiples")
@@ -61,24 +62,45 @@ def multiples(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Get valuation multiples for a stock ticker."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
-def tob() -> Obbject[Empty]:
+def tob() -> OBBject[Empty]:
     """View top of book for loaded ticker (US exchanges only)."""
-    return Obbject(results=Empty())
+    return OBBject(results=Empty())
 
 
-@router.command
-def quote() -> Obbject[Empty]:
-    """View the current price for a specific stock ticker."""
-    return Obbject(results=Empty())
+@router.command(model="StockSearch")
+def search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search for a company or stock ticker."""
+    return OBBject(results=Query(**locals()).execute())
 
 
-@router.command
-def search() -> Obbject[Empty]:
-    """Search a specific stock ticker for analysis."""
-    return Obbject(results=Empty())
+@router.command(model="StockQuote")
+def quote(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Load stock data for a specific ticker."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="StockInfo")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get general price and performance metrics of a stock."""
+    return OBBject(results=Query(**locals()).execute())
