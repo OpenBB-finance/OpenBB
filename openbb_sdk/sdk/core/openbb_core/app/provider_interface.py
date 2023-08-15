@@ -1,5 +1,5 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Type, TypeVar, Union
 
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
@@ -7,13 +7,15 @@ from openbb_provider.registry_map import MapType, RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 
+TupleFieldType = TypeVar("TupleFieldType", bound=Tuple[str, type, Any])
+
 
 @dataclass
 class DataclassField:
     """Dataclass field."""
 
     name: str
-    type_: Any
+    type_: type
     default: Any
 
 
@@ -169,7 +171,7 @@ class ProviderInterface:
 
         return DataclassField(
             name=current_name,
-            type_=merged_type,
+            type_=merged_type,  # type: ignore
             default=merged_default,
         )
 
@@ -220,10 +222,10 @@ class ProviderInterface:
     def _extract_params(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, type, Any]], Dict[str, Tuple[str, type, Any]]]:
+    ) -> Tuple[Dict[str, TupleFieldType], Dict[str, TupleFieldType]]:
         """Extract parameters from map."""
-        standard: Dict[str, Tuple[str, Any, Any]] = {}
-        extra: Dict[str, Tuple[str, Any, Any]] = {}
+        standard: Dict[str, TupleFieldType] = {}
+        extra: Dict[str, TupleFieldType] = {}
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -267,9 +269,9 @@ class ProviderInterface:
     def _extract_data(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, type, Any]], Dict[str, Tuple[str, type, Any]]]:
-        standard: Dict[str, Tuple[str, Any, Any]] = {}
-        extra: Dict[str, Tuple[str, Any, Any]] = {}
+    ) -> Tuple[Dict[str, TupleFieldType], Dict[str, TupleFieldType]]:
+        standard: Dict[str, TupleFieldType] = {}
+        extra: Dict[str, TupleFieldType] = {}
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -326,8 +328,9 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        # TODO: Consider multiprocessing this loop to speed startup
         for model_name, providers in map_.items():
+            standard: dict
+            extra: dict
             standard, extra = self._extract_params(providers)
 
             result[model_name] = {
@@ -392,6 +395,8 @@ class ProviderInterface:
         result: Dict = {}
 
         for model_name, providers in map_.items():
+            standard: dict
+            extra: dict
             standard, extra = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
