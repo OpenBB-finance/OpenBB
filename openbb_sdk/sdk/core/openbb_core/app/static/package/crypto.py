@@ -36,7 +36,7 @@ class CLASS_crypto(Container):
         provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Crypto EOD Price.
+        r"""Crypto EOD Price.
 
 
         openbb
@@ -140,11 +140,11 @@ class CLASS_crypto(Container):
         change : float
             Change in the price of the symbol from the previous day.
         changePercent : float
-            Change \\% in the price of the symbol.
+            Change \% in the price of the symbol.
         label : str
             Human readable format of the date.
         changeOverTime : float
-            Change \\% in the price of the symbol over a period of time."""  # noqa: E501
+            Change \% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

@@ -723,12 +723,12 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        calendarYear : Optional[int]
-            None
+        calendar_year : Optional[int]
+            Calendar Year
         link : Optional[str]
             None
-        finalLink : Optional[str]
-            None"""  # noqa: E501
+        final_link : Optional[str]
+            Final Link"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3159,23 +3159,6 @@ class CLASS_stocks_fa(Container):
 
         o = self._command_runner_session.run(
             "/stocks/fa/pta",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def rating(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Analyst prices and ratings over time of the company."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/fa/rating",
             **inputs,
         ).output
 

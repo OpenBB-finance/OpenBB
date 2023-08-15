@@ -104,7 +104,7 @@ class CLASS_stocks(Container):
         provider: Optional[Literal["cboe", "yfinance", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Load stock data for a specific ticker.
+        r"""Load stock data for a specific ticker.
 
 
         openbb
@@ -222,11 +222,11 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day.
         changePercent : Optional[float]
-            Change \\% in the price of the symbol.
+            Change \% in the price of the symbol.
         label : Optional[str]
             Human readable format of the date.
         changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time."""  # noqa: E501
+            Change \% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -670,7 +670,7 @@ class CLASS_stocks(Container):
         ] = False,
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Search for a company or stock ticker.
 
@@ -752,7 +752,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
 
@@ -868,7 +868,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Get general price and performance metrics of a stock.
 

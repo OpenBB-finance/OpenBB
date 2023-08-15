@@ -349,7 +349,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get OHLCV data for an index.
+        r"""Get OHLCV data for an index.
 
 
         openbb
@@ -455,11 +455,11 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day.
         changePercent : Optional[float]
-            Change \\% in the price of the symbol.
+            Change \% in the price of the symbol.
         label : Optional[str]
             Human readable format of the date.
         changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time."""  # noqa: E501
+            Change \% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
