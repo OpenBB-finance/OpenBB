@@ -67,7 +67,7 @@ class CLASS_stocks_fa(Container):
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -279,7 +279,7 @@ class CLASS_stocks_fa(Container):
         limit : int
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -434,7 +434,7 @@ class CLASS_stocks_fa(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -525,7 +525,7 @@ class CLASS_stocks_fa(Container):
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -709,7 +709,7 @@ class CLASS_stocks_fa(Container):
         limit : int
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -836,7 +836,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -932,7 +932,7 @@ class CLASS_stocks_fa(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1039,7 +1039,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1137,7 +1137,7 @@ class CLASS_stocks_fa(Container):
         limit : Optional[int]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1216,7 +1216,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1344,7 +1344,7 @@ class CLASS_stocks_fa(Container):
         limit : int
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1552,7 +1552,7 @@ class CLASS_stocks_fa(Container):
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1752,7 +1752,7 @@ class CLASS_stocks_fa(Container):
         period : Literal['annually', 'quarterly']
             Period of the data to return (quarterly or annually).
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1919,7 +1919,7 @@ class CLASS_stocks_fa(Container):
         page : Optional[int]
             The page number of the data to fetch.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2024,7 +2024,7 @@ class CLASS_stocks_fa(Container):
         date : Optional[datetime.date]
             A specific date to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2189,7 +2189,7 @@ class CLASS_stocks_fa(Container):
         limit : Optional[int]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2371,7 +2371,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2479,7 +2479,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2623,7 +2623,7 @@ class CLASS_stocks_fa(Container):
         page : Optional[int]
             The page number of the data to fetch.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2763,7 +2763,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2833,7 +2833,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2949,7 +2949,7 @@ class CLASS_stocks_fa(Container):
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3157,7 +3157,7 @@ class CLASS_stocks_fa(Container):
         structure : Literal['hierarchical', 'flat']
             The structure of the returned data.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3247,7 +3247,7 @@ class CLASS_stocks_fa(Container):
         structure : Literal['hierarchical', 'flat']
             The structure of the returned data.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3381,7 +3381,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3453,7 +3453,7 @@ class CLASS_stocks_fa(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3555,7 +3555,7 @@ class CLASS_stocks_fa(Container):
         quarter : Literal[1, 2, 3, 4]
             The quarter of the earnings call transcript.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

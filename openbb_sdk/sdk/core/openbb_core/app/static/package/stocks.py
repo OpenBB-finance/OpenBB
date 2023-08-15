@@ -83,7 +83,7 @@ class CLASS_stocks(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -227,7 +227,7 @@ class CLASS_stocks(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -340,7 +340,7 @@ class CLASS_stocks(Container):
         limit : Optional[int]
             The number of data entries to return.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -536,7 +536,7 @@ class CLASS_stocks(Container):
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of results to return per page.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
@@ -690,7 +690,7 @@ class CLASS_stocks(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -799,7 +799,7 @@ class CLASS_stocks(Container):
         ticker : bool
             Whether to search by ticker symbol.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is

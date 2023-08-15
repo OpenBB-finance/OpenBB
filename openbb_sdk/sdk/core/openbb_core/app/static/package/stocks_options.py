@@ -32,7 +32,7 @@ class CLASS_stocks_options(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is

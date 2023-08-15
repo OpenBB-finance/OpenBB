@@ -33,7 +33,7 @@ class CLASS_news(Container):
         page : NonNegativeInt
             The page of the global news.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['benzinga', 'fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is

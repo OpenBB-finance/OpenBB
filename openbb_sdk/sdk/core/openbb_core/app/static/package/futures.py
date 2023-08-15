@@ -37,7 +37,7 @@ class CLASS_futures(Container):
         date : Optional[datetime.date]
             Historical date to search curve for.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is
@@ -124,7 +124,7 @@ class CLASS_futures(Container):
         expiration : Optional[str]
             Future expiry date with format YYYY-MM
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is

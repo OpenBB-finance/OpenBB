@@ -24,7 +24,7 @@ class CLASS_economy(Container):
         Parameters
         ----------
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -144,7 +144,7 @@ class CLASS_economy(Container):
         index : Literal['nasdaq', 'sp500', 'dowjones']
             The index for which we want to fetch the constituents.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -358,7 +358,7 @@ class CLASS_economy(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
@@ -697,7 +697,7 @@ class CLASS_economy(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1020,7 +1020,7 @@ class CLASS_economy(Container):
         Parameters
         ----------
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

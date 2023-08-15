@@ -47,7 +47,7 @@ class CLASS_crypto(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
-            Wether to create a chart or not, by default False.
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
