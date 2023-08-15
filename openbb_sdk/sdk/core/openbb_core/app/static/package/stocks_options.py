@@ -23,103 +23,92 @@ class CLASS_stocks_options(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[cboe]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Wether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[OptionsChains]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['cboe']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
-
         OptionsChains
         -------------
-        expiration : datetime
+        expiration : Optional[datetime]
             The expiration date of the contract.
-        strike : float
+        strike : Optional[float]
             The strike price of the contract.
-        optionType : str
+        optionType : Optional[str]
             Call or Put.
-        bid : float
+        bid : Optional[float]
             The bid price of the contract.
-        ask : float
+        ask : Optional[float]
             The ask price of the contract.
-        openInterest : float
+        openInterest : Optional[float]
             The open interest on the contract.
-        volume : float
+        volume : Optional[float]
             The current trading volume on the contract.
+        contractSymbol : Optional[str]
+            The contract symbol for the option. (provider: cboe)
+        dte : Optional[int]
+            The days to expiration for the option. (provider: cboe)
+        bidSize : Optional[int]
+            The bid size for the option. (provider: cboe)
+        askSize : Optional[int]
+            The ask size for the option. (provider: cboe)
+        impliedVolatility : Optional[float]
+            The implied volatility of the option. (provider: cboe)
+        delta : Optional[float]
+            The delta of the option. (provider: cboe)
+        gamma : Optional[float]
+            The gamma of the option. (provider: cboe)
+        theta : Optional[float]
+            The theta of the option. (provider: cboe)
+        rho : Optional[float]
+            The rho of the option. (provider: cboe)
+        vega : Optional[float]
+            The vega of the option. (provider: cboe)
+        theoretical : Optional[float]
+            The theoretical value of the option. (provider: cboe)
+        open : Optional[float]
+            The opening price of the option. (provider: cboe)
+        high : Optional[float]
+            The high price of the option. (provider: cboe)
+        low : Optional[float]
+            The low price of the option. (provider: cboe)
+        lastTradePrice : Optional[float]
+            The last trade price of the option. (provider: cboe)
+        tick : Optional[str]
+            Whether the last tick was up or down in price. (provider: cboe)
+        previousClose : Optional[float]
+            The previous closing price of the option. (provider: cboe)
+        change : Optional[float]
+            The change in  price of the option. (provider: cboe)
+        changePercent : Optional[float]
+            The change, in percent, of the option. (provider: cboe)
+        lastTradeTimestamp : Optional[datetime]
+            The last trade timestamp of the option. (provider: cboe)"""
 
-        cboe
-        ====
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        OptionsChains
-        -------------
-        contractSymbol : str
-            The contract symbol for the option.
-        dte : int
-            The days to expiration for the option.
-        bidSize : int
-            The bid size for the option.
-        askSize : int
-            The ask size for the option.
-        impliedVolatility : float
-            The implied volatility of the option.
-        delta : float
-            The delta of the option.
-        gamma : float
-            The gamma of the option.
-        theta : float
-            The theta of the option.
-        rho : float
-            The rho of the option.
-        vega : float
-            The vega of the option.
-        theoretical : float
-            The theoretical value of the option.
-        open : float
-            The opening price of the option.
-        high : float
-            The high price of the option.
-        low : float
-            The low price of the option.
-        lastTradePrice : float
-            The last trade price of the option.
-        tick : str
-            Whether the last tick was up or down in price.
-        previousClose : float
-            The previous closing price of the option.
-        change : float
-            The change in  price of the option.
-        changePercent : float
-            The change, in percent, of the option.
-        lastTradeTimestamp : datetime
-            The last trade timestamp of the option."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -143,7 +132,8 @@ class CLASS_stocks_options(Container):
     def eodchain(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Gets option chain at a specific date."""  # noqa: E501
+        """Gets option chain at a specific date."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -160,7 +150,8 @@ class CLASS_stocks_options(Container):
     def hist(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Get historical data for a single option contract."""  # noqa: E501
+        """Get historical data for a single option contract."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -177,7 +168,8 @@ class CLASS_stocks_options(Container):
     def info(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Display option information (volatility, IV rank, etc.)."""  # noqa: E501
+        """Display option information (volatility, IV rank, etc.)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -194,7 +186,8 @@ class CLASS_stocks_options(Container):
     def pcr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Display historical rolling put/call ratio for ticker over a defined window."""  # noqa: E501
+        """Display historical rolling put/call ratio for ticker over a defined window."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -211,7 +204,8 @@ class CLASS_stocks_options(Container):
     def unu(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Show unusual options activity."""  # noqa: E501
+        """Show unusual options activity."""
+
         inputs = filter_inputs(
             chart=chart,
         )

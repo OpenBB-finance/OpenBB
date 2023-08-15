@@ -24,109 +24,88 @@ class CLASS_news(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Global News.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[benzinga, fmp]
-            The provider to use for the query.
         page : NonNegativeInt
             The page of the global news.
+        chart : bool
+            Wether to create a chart or not, by default False.
+        provider : Optional[Literal['benzinga', 'fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'benzinga' if there is
+            no default.
+        pageSize : int
+            The number of results to return per page. (provider: benzinga)
+        displayOutput : Literal['headline', 'summary', 'full', 'all']
+            The type of data to return. (provider: benzinga)
+        date : Optional[datetime.datetime]
+            The date of the news to retrieve. (provider: benzinga)
+        dateFrom : Optional[datetime.datetime]
+            The start date of the news to retrieve. (provider: benzinga)
+        dateTo : Optional[datetime.datetime]
+            The end date of the news to retrieve. (provider: benzinga)
+        updatedSince : Optional[int]
+            The number of seconds since the news was updated. (provider: benzinga)
+        publishedSince : Optional[int]
+            The number of seconds since the news was published. (provider: benzinga)
+        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type. (provider: benzinga)
+        isin : Optional[str]
+            The ISIN of the news to retrieve. (provider: benzinga)
+        cusip : Optional[str]
+            The CUSIP of the news to retrieve. (provider: benzinga)
+        tickers : Optional[str]
+            The tickers of the news to retrieve. (provider: benzinga)
+        channels : Optional[str]
+            The channels of the news to retrieve. (provider: benzinga)
+        topics : Optional[str]
+            The topics of the news to retrieve. (provider: benzinga)
+        authors : Optional[str]
+            The authors of the news to retrieve. (provider: benzinga)
+        content_types : Optional[str]
+            The content types of the news to retrieve. (provider: benzinga)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[GlobalNews]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
 
         GlobalNews
         ----------
-        date : datetime
+        date : Optional[datetime]
             The published date of the news.
-        title : str
+        title : Optional[str]
             The title of the news.
         text : Optional[str]
             The text/body of the news.
-        url : str
+        url : Optional[str]
             The URL of the news.
-
-        benzinga
-        ========
-
-        Parameters
-        ----------
-        pageSize : int
-            The number of results to return per page.
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
-            The type of data to return.
-        date : Optional[datetime]
-            The date of the news to retrieve.
-        dateFrom : Optional[datetime]
-            The start date of the news to retrieve.
-        dateTo : Optional[datetime]
-            The end date of the news to retrieve.
-        updatedSince : Optional[int]
-            The number of seconds since the news was updated.
-        publishedSince : Optional[int]
-            The number of seconds since the news was published.
-        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
-            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
-        isin : Optional[str]
-            The ISIN of the news to retrieve.
-        cusip : Optional[str]
-            The CUSIP of the news to retrieve.
-        tickers : Optional[str]
-            The tickers of the news to retrieve.
-        channels : Optional[str]
-            The channels of the news to retrieve.
-        topics : Optional[str]
-            The topics of the news to retrieve.
-        authors : Optional[str]
-            The authors of the news to retrieve.
-        content_types : Optional[str]
-            The content types of the news to retrieve.
-
-
-        GlobalNews
-        ----------
-        images : List[BenzingaImage]
-            The images associated with the news.
+        images : Optional[List[BenzingaImage]]
+            The images associated with the news. (provider: benzinga)
         channels : Optional[List[str]]
-            The channels associated with the news.
+            The channels associated with the news. (provider: benzinga)
         stocks : Optional[List[str]]
-            The stocks associated with the news.
+            The stocks associated with the news. (provider: benzinga)
         tags : Optional[List[str]]
-            The tags associated with the news.
+            The tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
-            The teaser of the news.
+            The teaser of the news. (provider: benzinga)
+        site : Optional[str]
+            The site of the news. (provider: fmp)"""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        GlobalNews
-        ----------
-        site : str
-            The site of the news."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -150,7 +129,8 @@ class CLASS_news(Container):
     def sectornews(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Sector news."""  # noqa: E501
+        """Sector news."""
+
         inputs = filter_inputs(
             chart=chart,
         )

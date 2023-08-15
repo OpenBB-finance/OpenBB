@@ -15,6 +15,96 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_stocks_ca(Container):
     @filter_call
     @validate_arguments
+    def balance(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Company balance sheet."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/ca/balance",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def cashflow(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Company cashflow."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/ca/cashflow",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def hcorr(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Company historical correlation."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/ca/hcorr",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def hist(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Company historical prices."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/ca/hist",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def income(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Company income statement."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/ca/income",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def peers(
         self,
         symbol: Annotated[
@@ -23,54 +113,42 @@ class CLASS_stocks_ca(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Company peers.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Wether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockPeers]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
-
         StockPeers
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol representing the entity requested in the data.
         peers_list : Optional[List[str]]
-            A list of stock peers based on sector, exchange and market cap.
+            A list of stock peers based on sector, exchange and market cap."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockPeers
-        ----------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -91,95 +169,11 @@ class CLASS_stocks_ca(Container):
 
     @filter_call
     @validate_arguments
-    def balance(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company balance sheet."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/ca/balance",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def cashflow(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company cashflow."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/ca/cashflow",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def hcorr(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company historical correlation."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/ca/hcorr",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def hist(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company historical prices."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/ca/hist",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def income(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company income statement."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/ca/income",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def scorr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company sector correlation."""  # noqa: E501
+        """Company sector correlation."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -196,7 +190,8 @@ class CLASS_stocks_ca(Container):
     def screener(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company screener."""  # noqa: E501
+        """Company screener."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -213,7 +208,8 @@ class CLASS_stocks_ca(Container):
     def sentiment(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company sentiment."""  # noqa: E501
+        """Company sentiment."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -230,7 +226,8 @@ class CLASS_stocks_ca(Container):
     def similar(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company similar."""  # noqa: E501
+        """Company similar."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -247,7 +244,8 @@ class CLASS_stocks_ca(Container):
     def volume(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company volume."""  # noqa: E501
+        """Company volume."""
+
         inputs = filter_inputs(
             chart=chart,
         )

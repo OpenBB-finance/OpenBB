@@ -32,78 +32,66 @@ class CLASS_fixedincome(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Get treasury rates.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Wether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[TreasuryRates]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
-
         TreasuryRates
         -------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        month_1 : float
+        month_1 : Optional[float]
             The 1 month treasury rate.
-        month_2 : float
+        month_2 : Optional[float]
             The 2 month treasury rate.
-        month_3 : float
+        month_3 : Optional[float]
             The 3 month treasury rate.
-        month_6 : float
+        month_6 : Optional[float]
             The 6 month treasury rate.
-        year_1 : float
+        year_1 : Optional[float]
             The 1 year treasury rate.
-        year_2 : float
+        year_2 : Optional[float]
             The 2 year treasury rate.
-        year_3 : float
+        year_3 : Optional[float]
             The 3 year treasury rate.
-        year_5 : float
+        year_5 : Optional[float]
             The 5 year treasury rate.
-        year_7 : float
+        year_7 : Optional[float]
             The 7 year treasury rate.
-        year_10 : float
+        year_10 : Optional[float]
             The 10 year treasury rate.
-        year_20 : float
+        year_20 : Optional[float]
             The 20 year treasury rate.
-        year_30 : float
-            The 30 year treasury rate.
+        year_30 : Optional[float]
+            The 30 year treasury rate."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        TreasuryRates
-        -------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -128,7 +116,8 @@ class CLASS_fixedincome(Container):
     def ycrv(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Yield curve."""  # noqa: E501
+        """Yield curve."""
+
         inputs = filter_inputs(
             chart=chart,
         )
