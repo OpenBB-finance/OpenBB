@@ -1,6 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 
+
 from openbb_core.app.static.container import Container
 
 
@@ -32,6 +33,14 @@ class Extensions(Container):
         from openbb_core.app.static.package import forex
 
         return forex.CLASS_forex(command_runner_session=self._command_runner_session)
+
+    @property
+    def futures(self):  # route = "/futures"
+        from openbb_core.app.static.package import futures
+
+        return futures.CLASS_futures(
+            command_runner_session=self._command_runner_session
+        )
 
     @property
     def news(self):  # route = "/news"

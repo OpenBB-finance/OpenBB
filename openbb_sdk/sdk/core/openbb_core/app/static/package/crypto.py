@@ -36,7 +36,7 @@ class CLASS_crypto(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Crypto Intraday Price.
+        r"""Crypto EOD Price.
 
         Parameters
         ----------
