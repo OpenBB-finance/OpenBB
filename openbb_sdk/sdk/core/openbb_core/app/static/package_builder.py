@@ -224,7 +224,7 @@ class ClassDefinition:
             path=path,
             path_list=path_list,
         )
-        for child_path in child_path_list:
+        for child_path in sorted(child_path_list):
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
                 code += MethodDefinition.build_command_method(
