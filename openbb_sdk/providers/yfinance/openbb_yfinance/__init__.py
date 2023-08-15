@@ -10,6 +10,9 @@ from openbb_yfinance.models.futures_eod import YFinanceFuturesEODFetcher
 from openbb_yfinance.models.major_indices_eod import YFinanceMajorIndicesEODFetcher
 from openbb_yfinance.models.stock_eod import YFinanceStockEODFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
+from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
+from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
+from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -26,5 +29,8 @@ yfinance_provider = Provider(
         "FuturesEOD": YFinanceFuturesEODFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
         "StockNews": YFinanceStockNewsFetcher,
+        "BalanceSheet": YFinanceBalanceSheetFetcher,
+        "CashFlowStatement": YFinanceCashFlowStatementFetcher,
+        "IncomeStatement": YFinanceIncomeStatementFetcher,
     },
 )
