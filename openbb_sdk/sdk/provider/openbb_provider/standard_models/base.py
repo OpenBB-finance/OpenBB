@@ -1,5 +1,5 @@
 """Base models for OpenBB Provider."""
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Optional, Set, Union
 
 from pydantic import BaseModel, Field, NonNegativeInt, validator
 
@@ -13,7 +13,7 @@ class BaseSymbol(BaseModel):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @validator("symbol", pre=True, check_fields=False, always=True)
-    def upper_symbol(cls, v: Union[str, List[str], set[str]]):
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
