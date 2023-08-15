@@ -35,6 +35,8 @@ class FMPRiskPremiumFetcher(
         List[FMPRiskPremiumData],
     ]
 ):
+    """FMP Risk Premium Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRiskPremiumQueryParams:
         return FMPRiskPremiumQueryParams(**params)

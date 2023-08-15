@@ -1,3 +1,4 @@
+"""OpenBB API Account Router."""
 from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from openbb_core.api.dependency.user import (
@@ -23,6 +24,7 @@ async def login_for_access_token(
     user_service: Annotated[UserService, Depends(get_user_service)],
     openbb_hub: bool = Form(True),
 ) -> TokenResponse:
+    """Login for access token."""
     user_settings = authenticate_user(
         password=form_data.password,
         user_service=user_service,
@@ -55,6 +57,7 @@ async def login_for_access_token(
 async def push_user_settings_to_hub(
     user_settings: Annotated[UserSettings, Depends(get_user)]
 ) -> UserSettings:
+    """Push user settings to hub."""
     if user_settings.profile.hub_session:
         hs = HubService(user_settings.profile.hub_session)
         hs.push(user_settings)
@@ -71,6 +74,7 @@ async def pull_user_settings_from_hub(
     user_settings: Annotated[UserSettings, Depends(get_user)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
+    """Pull user settings from hub."""
     if user_settings.profile.hub_session:
         hs = HubService(user_settings.profile.hub_session)
         incoming = hs.pull()
@@ -90,6 +94,7 @@ async def pull_user_settings_from_hub(
 async def disconnect_from_hub(
     user_settings: Annotated[UserSettings, Depends(get_user)],
 ) -> bool:
+    """Disconnect from hub."""
     if user_settings.profile.hub_session:
         hs = HubService(user_settings.profile.hub_session)
         result = hs.disconnect()
