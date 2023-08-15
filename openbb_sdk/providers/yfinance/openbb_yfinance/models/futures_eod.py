@@ -1,22 +1,26 @@
-"""yfinance Stock end of day fetcher."""
+"""yfinance Futures end of day fetcher."""
 
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
+from openbb_provider.standard_models.futures_eod import (
+    FuturesEODData,
+    FuturesEODQueryParams,
+)
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
+from openbb_yfinance.utils.futures_reference import MONTHS, futures_data
 from openbb_yfinance.utils.types import INTERVALS, PERIODS
 
 
-class YFinanceStockEODQueryParams(StockEODQueryParams):
-    """YFinance Stock end of day Query.
+class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
+    """YFinance Futures end of day Query.
 
-    Source: https://finance.yahoo.com/
+    Source: https://finance.yahoo.com/crypto/
     """
 
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
@@ -25,8 +29,8 @@ class YFinanceStockEODQueryParams(StockEODQueryParams):
     )
 
 
-class YFinanceStockEODData(StockEODData):
-    """YFinance Stock end of day Data."""
+class YFinanceFuturesEODData(FuturesEODData):
+    """YFinance Futures end of day Data."""
 
     class Config:
         fields = {
@@ -43,14 +47,14 @@ class YFinanceStockEODData(StockEODData):
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
-class YFinanceStockEODFetcher(
+class YFinanceFuturesEODFetcher(
     Fetcher[
-        YFinanceStockEODQueryParams,
-        List[YFinanceStockEODData],
+        YFinanceFuturesEODQueryParams,
+        List[YFinanceFuturesEODData],
     ]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceStockEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> YFinanceFuturesEODQueryParams:
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -58,27 +62,36 @@ class YFinanceStockEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return YFinanceStockEODQueryParams(**params)
+        return YFinanceFuturesEODQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: YFinanceStockEODQueryParams,
+        query: YFinanceFuturesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceStockEODData]:
+    ) -> List[YFinanceFuturesEODData]:
         now = datetime.now().date()
-        query.start_date = query.start_date or (now - timedelta(days=8))
+        query.start_date = query.start_date or (now - timedelta(days=365))
         query.end_date = query.end_date or (now - timedelta(days=1))
+        symbol = ""
+        if query.expiration:
+            expiry_date = datetime.strptime(query.expiration, "%Y-%m")
+            exchange = futures_data[futures_data["Ticker"] == query.symbol][
+                "Exchange"
+            ].values[0]
+            symbol = f"{query.symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
+
+        query_symbol = symbol if symbol else query.symbol + "=F"
 
         if query.period:
-            data = Ticker(query.symbol).history(
+            data = Ticker(query_symbol).history(
                 interval=query.interval,
                 period=query.period,
                 actions=False,
                 raise_errors=True,
             )
         else:
-            data = Ticker(query.symbol).history(
+            data = Ticker(query_symbol).history(
                 interval=query.interval,
                 start=query.start_date,
                 end=query.end_date,
@@ -92,10 +105,10 @@ class YFinanceStockEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceStockEODData.parse_obj(d) for d in data]
+        return [YFinanceFuturesEODData.parse_obj(d) for d in data]
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceStockEODData],
-    ) -> List[YFinanceStockEODData]:
+        data: List[YFinanceFuturesEODData],
+    ) -> List[YFinanceFuturesEODData]:
         return data

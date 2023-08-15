@@ -50,7 +50,7 @@ class CLASS_economy(Container):
         ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Get the constituents of an index.
 
@@ -216,7 +216,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """CPI.
 
@@ -346,8 +346,8 @@ class CLASS_economy(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs,
+        provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
+        **kwargs
     ) -> OBBject[List]:
         """Get OHLCV data for an index.
 
@@ -357,7 +357,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon, yfinance]
+        provider: Literal[yfinance, polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -398,6 +398,43 @@ class CLASS_economy(Container):
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
 
+        yfinance
+        ========
+
+        Parameters
+        ----------
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
+
+
+        MajorIndicesEOD
+        ---------------
+        All fields are standardized.
+
+        polygon
+        =======
+
+        Parameters
+        ----------
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data.
+        sort : Literal['asc', 'desc']
+            Sort order of the data.
+        limit : PositiveInt
+            The number of data entries to return.
+        adjusted : bool
+            Whether the data is adjusted.
+        multiplier : PositiveInt
+            The multiplier of the timespan.
+
+
+        MajorIndicesEOD
+        ---------------
+        n : PositiveInt
+            The number of transactions for the symbol in the time period.
+
         fmp
         ===
 
@@ -422,44 +459,7 @@ class CLASS_economy(Container):
         label : Optional[str]
             Human readable format of the date.
         changeOverTime : Optional[float]
-            Change \\% in the price of the symbol over a period of time.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        MajorIndicesEOD
-        ---------------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        MajorIndicesEOD
-        ---------------
-        All fields are standardized."""  # noqa: E501
+            Change \\% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

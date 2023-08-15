@@ -165,7 +165,7 @@ output = obb.stocks.load(
 
 ### 4.1.1. OBBject
 
-Each command will always return an `OBBject`. There you will find:
+Each command will always return a  `OBBject`. There you will find:
 
 - `results`: the data returned by the command `None`
 - `provider`: the provider name (only available provider names allowed) used to get the data or `None`
