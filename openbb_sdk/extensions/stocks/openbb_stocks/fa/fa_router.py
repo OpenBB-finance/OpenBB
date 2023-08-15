@@ -334,10 +334,15 @@ def rating() -> OBBject[Empty]:  # type: ignore
     return OBBject(results=Empty())
 
 
-@router.command
-def ratios() -> OBBject[Empty]:  # type: ignore
+@router.command(model="FinancialRatios")
+def ratios(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
     """Extensive set of ratios over time."""
-    return OBBject(results=Empty())
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command

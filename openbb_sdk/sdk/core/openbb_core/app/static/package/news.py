@@ -1,7 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
-from typing import Literal, Optional
+from typing import Annotated, List, Literal, Optional
 
 import pydantic
 from pydantic import validate_arguments
@@ -19,14 +18,14 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: typing.Annotated[
+        page: Annotated[
             pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The page of the global news."),
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
-        **kwargs
-    ) -> OBBject[typing.List]:
+        **kwargs,
+    ) -> OBBject[List]:
         """Global News.
 
 
@@ -61,9 +60,7 @@ class CLASS_news(Container):
             The published date of the news.
         title : str
             The title of the news.
-        image : Optional[str]
-            The image URL of the news.
-        text : str
+        text : Optional[str]
             The text/body of the news.
         url : str
             The URL of the news.
@@ -107,7 +104,16 @@ class CLASS_news(Container):
 
         GlobalNews
         ----------
-        All fields are standardized.
+        images : List[BenzingaImage]
+            The images associated with the news.
+        channels : Optional[List[str]]
+            The channels associated with the news.
+        stocks : Optional[List[str]]
+            The stocks associated with the news.
+        tags : Optional[List[str]]
+            The tags associated with the news.
+        teaser : Optional[str]
+            The teaser of the news.
 
         fmp
         ===
@@ -120,7 +126,7 @@ class CLASS_news(Container):
         GlobalNews
         ----------
         site : str
-            The site of the news."""
+            The site of the news."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -144,7 +150,7 @@ class CLASS_news(Container):
     def sectornews(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Sector news."""
+        """Sector news."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

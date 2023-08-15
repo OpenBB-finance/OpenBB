@@ -59,7 +59,7 @@ class PolygonForexEODData(ForexEODData):
 class PolygonForexEODFetcher(
     Fetcher[
         PolygonForexEODQueryParams,
-        PolygonForexEODData,
+        List[PolygonForexEODData],
     ]
 ):
     @staticmethod
@@ -83,10 +83,9 @@ class PolygonForexEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.symbol}/range/1/{query.timespan}/"
+            f"C:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url, **kwargs)
@@ -96,8 +95,7 @@ class PolygonForexEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonForexEODData(**d) for d in data]
+        return [PolygonForexEODData.parse_obj(d) for d in data.get("results", [])]
 
     @staticmethod
     def transform_data(data: List[PolygonForexEODData]) -> List[PolygonForexEODData]:

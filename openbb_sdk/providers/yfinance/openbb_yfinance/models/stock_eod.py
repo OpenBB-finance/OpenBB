@@ -46,7 +46,7 @@ class YFinanceStockEODData(StockEODData):
 class YFinanceStockEODFetcher(
     Fetcher[
         YFinanceStockEODQueryParams,
-        YFinanceStockEODData,
+        List[YFinanceStockEODData],
     ]
 ):
     @staticmethod

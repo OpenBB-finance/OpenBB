@@ -1,19 +1,29 @@
+"""Options Router."""
+
+from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.results.empty import Empty
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.app.query import Query
 from openbb_core.app.router import Router
+from pydantic import BaseModel
 
 router = Router(prefix="/options")
 
 
-@router.command
-def chains() -> OBBject[Empty]:  # type: ignore
-    """Return options chains with greeks."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def dte() -> OBBject[Empty]:  # type: ignore
-    return OBBject(results=Empty())
+@router.command(model="OptionsChains")
+def chains(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the complete options chain for a ticker."""
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
@@ -23,20 +33,8 @@ def eodchain() -> OBBject[Empty]:  # type: ignore
 
 
 @router.command
-def expirations() -> OBBject[Empty]:  # type: ignore
-    """Return options expirations."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def grhist() -> OBBject[Empty]:  # type: ignore
-    """Plot option greek history."""
-    return OBBject(results=Empty())
-
-
-@router.command
 def hist() -> OBBject[Empty]:  # type: ignore
-    """Plot option history."""
+    """Get historical data for a single option contract."""
     return OBBject(results=Empty())
 
 
@@ -47,47 +45,12 @@ def info() -> OBBject[Empty]:  # type: ignore
 
 
 @router.command
-def last_price() -> OBBject[Empty]:  # type: ignore
-    """Return last price of an option."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def oi() -> OBBject[Empty]:  # type: ignore
-    """Plot option open interest."""
-    return OBBject(results=Empty())
-
-
-@router.command
 def pcr() -> OBBject[Empty]:  # type: ignore
-    """Display put/call ratio for ticker."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def price() -> OBBject[Empty]:  # type: ignore
+    """Display historical rolling put/call ratio for ticker over a defined window."""
     return OBBject(results=Empty())
 
 
 @router.command
 def unu() -> OBBject[Empty]:  # type: ignore
     """Show unusual options activity."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def voi() -> OBBject[Empty]:  # type: ignore
-    """Plot volume and open interest."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def vol() -> OBBject[Empty]:  # type: ignore
-    """Plot volume."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def vsurf() -> OBBject[Empty]:  # type: ignore
-    """Show 3D volatility surface."""
     return OBBject(results=Empty())

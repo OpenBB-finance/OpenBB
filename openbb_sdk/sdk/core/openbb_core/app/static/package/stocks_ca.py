@@ -1,9 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
-from typing import Literal, Optional
+from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -18,13 +17,14 @@ class CLASS_stocks_ca(Container):
     @validate_arguments
     def peers(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[typing.List]:
+        **kwargs,
+    ) -> OBBject[BaseModel]:
         """Company peers.
 
 
@@ -35,7 +35,7 @@ class CLASS_stocks_ca(Container):
         ----------
         provider: Literal[fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
 
         Returns
@@ -70,13 +70,13 @@ class CLASS_stocks_ca(Container):
 
         StockPeers
         ----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
             chart=chart,
@@ -94,7 +94,7 @@ class CLASS_stocks_ca(Container):
     def balance(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company balance sheet."""
+        """Company balance sheet."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -111,7 +111,7 @@ class CLASS_stocks_ca(Container):
     def cashflow(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company cashflow."""
+        """Company cashflow."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -128,7 +128,7 @@ class CLASS_stocks_ca(Container):
     def hcorr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company historical correlation."""
+        """Company historical correlation."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -145,7 +145,7 @@ class CLASS_stocks_ca(Container):
     def hist(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company historical prices."""
+        """Company historical prices."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -162,7 +162,7 @@ class CLASS_stocks_ca(Container):
     def income(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company income statement."""
+        """Company income statement."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -179,7 +179,7 @@ class CLASS_stocks_ca(Container):
     def scorr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company sector correlation."""
+        """Company sector correlation."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -196,7 +196,7 @@ class CLASS_stocks_ca(Container):
     def screener(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company screener."""
+        """Company screener."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -213,7 +213,7 @@ class CLASS_stocks_ca(Container):
     def sentiment(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company sentiment."""
+        """Company sentiment."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -230,7 +230,7 @@ class CLASS_stocks_ca(Container):
     def similar(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company similar."""
+        """Company similar."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -247,7 +247,7 @@ class CLASS_stocks_ca(Container):
     def volume(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company volume."""
+        """Company volume."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

@@ -1,8 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -33,8 +32,8 @@ class CLASS_fixedincome(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[typing.List]:
+        **kwargs,
+    ) -> OBBject[List]:
         """Get treasury rates.
 
 
@@ -104,7 +103,7 @@ class CLASS_fixedincome(Container):
 
         TreasuryRates
         -------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -129,7 +128,7 @@ class CLASS_fixedincome(Container):
     def ycrv(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Yield curve."""
+        """Yield curve."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

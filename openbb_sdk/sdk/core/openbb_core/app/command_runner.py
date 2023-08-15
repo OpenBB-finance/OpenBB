@@ -18,7 +18,7 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.journal_query import JournalQuery
-from openbb_core.app.model.obbject import Error, OBBject
+from openbb_core.app.model.obbject import Error, OBBject, OpenBBError
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
@@ -228,8 +228,8 @@ class ParametersBuilder:
 
 
 class StaticCommandRunner:
-    logging_manager = LoggingManager()
-    charting_manager = ChartingManager()
+    logging_manager: LoggingManager = LoggingManager()
+    charting_manager: ChartingManager = ChartingManager()
 
     @staticmethod
     def __run_in_isolation(func, args=None, kwargs=None) -> OBBject:
@@ -267,11 +267,7 @@ class StaticCommandRunner:
                     obbject.warnings = list(map(cast_warning, warning_list))
 
         except Exception as e:
-            obbject = OBBject(
-                error=Error(message=str(e), error_kind=e.__class__.__name__)
-            )
-            if system_settings.debug_mode:
-                raise
+            raise OpenBBError(e) from e
 
         return obbject
 

@@ -53,7 +53,7 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 class FMPMajorIndicesConstituentsFetcher(
     Fetcher[
         FMPMajorIndicesConstituentsQueryParams,
-        FMPMajorIndicesConstituentsData,
+        List[FMPMajorIndicesConstituentsData],
     ]
 ):
     @staticmethod
@@ -78,5 +78,5 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPMajorIndicesConstituentsData],
-    ) -> List[FMPMajorIndicesConstituentsData]:
-        return data
+    ) -> List[MajorIndicesConstituentsData]:
+        return [MajorIndicesConstituentsData.parse_obj(d.dict()) for d in data]

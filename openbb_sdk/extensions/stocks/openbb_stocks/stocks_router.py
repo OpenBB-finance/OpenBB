@@ -1,6 +1,7 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """Stocks Router."""
 
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.results.empty import Empty
@@ -72,13 +73,34 @@ def tob() -> OBBject[Empty]:
     return OBBject(results=Empty())
 
 
-@router.command
-def quote() -> OBBject[Empty]:
-    """View the current price for a specific stock ticker."""
-    return OBBject(results=Empty())
+@router.command(model="StockSearch")
+def search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search for a company or stock ticker."""
+    return OBBject(results=Query(**locals()).execute())
 
 
-@router.command
-def search() -> OBBject[Empty]:
-    """Search a specific stock ticker for analysis."""
-    return OBBject(results=Empty())
+@router.command(model="StockQuote")
+def quote(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Load stock data for a specific ticker."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="StockInfo")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get general price and performance metrics of a stock."""
+    return OBBject(results=Query(**locals()).execute())

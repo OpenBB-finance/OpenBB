@@ -30,7 +30,7 @@ class FMPGlobalNewsData(GlobalNewsData):
 class FMPGlobalNewsFetcher(
     Fetcher[
         FMPGlobalNewsQueryParams,
-        FMPGlobalNewsData,
+        List[FMPGlobalNewsData],
     ]
 ):
     @staticmethod
@@ -41,7 +41,7 @@ class FMPGlobalNewsFetcher(
     def extract_data(
         query: FMPGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPGlobalNewsData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

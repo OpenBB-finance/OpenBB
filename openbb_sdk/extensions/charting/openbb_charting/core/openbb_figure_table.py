@@ -1,10 +1,7 @@
 from typing import List, Optional, Union
 
 import pandas as pd
-
-from openbb_sdk.extensions.charting.openbb_charting.core.openbb_figure import (
-    OpenBBFigure,
-)
+from openbb_charting.core.openbb_figure import OpenBBFigure
 
 
 class OpenBBFigureTable(OpenBBFigure):

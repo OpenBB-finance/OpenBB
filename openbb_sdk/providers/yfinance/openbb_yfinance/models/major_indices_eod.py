@@ -49,7 +49,7 @@ class YFinanceMajorIndicesEODData(MajorIndicesEODData):
 class YFinanceMajorIndicesEODFetcher(
     Fetcher[
         YFinanceMajorIndicesEODQueryParams,
-        YFinanceMajorIndicesEODData,
+        List[YFinanceMajorIndicesEODData],
     ]
 ):
     @staticmethod

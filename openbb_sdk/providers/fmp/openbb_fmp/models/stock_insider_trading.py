@@ -1,7 +1,6 @@
 """FMP Stock Insider Trading fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -9,7 +8,6 @@ from openbb_provider.standard_models.stock_insider_trading import (
     StockInsiderTradingData,
     StockInsiderTradingQueryParams,
 )
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -38,21 +36,24 @@ class FMPStockInsiderTradingData(StockInsiderTradingData):
             "form_type": "formType",
             "securities_transacted": "securitiesTransacted",
             "security_name": "securityName",
+            "investors_holding": "investorsHolding",
+            "last_number_of_13f_shares": "lastNumberOf13FShares",
+            "total_invested": "totalInvested",
+            "ownership_percent": "ownershipPercent",
+            "new_positions": "newPositions",
+            "increased_positions": "increasedPositions",
+            "closed_positions": "closedPositions",
+            "reduced_positions": "reducedPositions",
+            "total_calls": "totalCalls",
+            "total_puts": "totalPuts",
+            "put_call_ratio": "putCallRatio",
         }
-
-    @validator("filingDate", pre=True, check_fields=False)
-    def filing_date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-
-    @validator("transactionDate", pre=True, check_fields=False)
-    def transaction_date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d").date()
 
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[
         FMPStockInsiderTradingQueryParams,
-        FMPStockInsiderTradingData,
+        List[FMPStockInsiderTradingData],
     ]
 ):
     @staticmethod
@@ -63,7 +64,7 @@ class FMPStockInsiderTradingFetcher(
     def extract_data(
         query: FMPStockInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPStockInsiderTradingData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -76,6 +77,5 @@ class FMPStockInsiderTradingFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPStockInsiderTradingData],
-    ) -> List[FMPStockInsiderTradingData]:
-        return data
-        return data
+    ) -> List[StockInsiderTradingData]:
+        return [StockInsiderTradingData.parse_obj(d.dict()) for d in data]
