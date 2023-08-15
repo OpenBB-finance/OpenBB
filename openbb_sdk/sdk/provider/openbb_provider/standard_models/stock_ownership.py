@@ -52,7 +52,8 @@ class StockOwnershipQueryParams(QueryParams, BaseSymbol):
     )
 
     @validator("date", pre=True, check_fields=False)
-    def time_validate(cls, v: str):  # pylint: disable=E0213
+    def time_validate(cls, v: str):  # pylint: disable=E021
+        """Validate the date."""
         if v is None:
             v = dateType.today()
         if isinstance(v, str):

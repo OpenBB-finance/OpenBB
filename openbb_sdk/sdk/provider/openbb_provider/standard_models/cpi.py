@@ -1,3 +1,4 @@
+"""CPI data and query params."""
 from datetime import date as dateType
 from typing import List, Literal, Optional
 
@@ -101,6 +102,7 @@ class CPIData(Data):
 
     @validator("value", pre=True)
     def value_validate(cls, v: str):  # pylint: disable=E0213
+        """Validate value."""
         if v == ".":
             return 0.0
         return float(v)
