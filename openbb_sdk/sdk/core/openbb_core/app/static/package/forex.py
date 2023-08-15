@@ -17,8 +17,8 @@ class CLASS_forex(Container):
     def pairs(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
+        **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
@@ -28,7 +28,7 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         All fields are standardized.
 
@@ -51,25 +51,6 @@ class CLASS_forex(Container):
         ----------
         name : str
             The name of the currency pair.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        ForexPairs
-        ----------
-        symbol : str
-            The symbol of the currency pair.
-        currency : str
-            The base currency of the currency pair.
-        stockExchange : Optional[str]
-            The stock exchange of the currency pair.
-        exchange_short_name : Optional[str]
-            The short name of the stock exchange of the currency pair.
 
         polygon
         =======
@@ -109,7 +90,26 @@ class CLASS_forex(Container):
         last_updated_utc : datetime
             The last updated timestamp in UTC.
         delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC."""  # noqa: E501
+            The delisted timestamp in UTC.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        ForexPairs
+        ----------
+        symbol : str
+            The symbol of the currency pair.
+        currency : str
+            The base currency of the currency pair.
+        stockExchange : Optional[str]
+            The stock exchange of the currency pair.
+        exchange_short_name : Optional[str]
+            The short name of the stock exchange of the currency pair."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -147,8 +147,8 @@ class CLASS_forex(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs,
+        provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
+        **kwargs
     ) -> OBBject[List]:
         """Forex Intraday Price.
 
@@ -158,7 +158,7 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon, yfinance]
+        provider: Literal[yfinance, polygon, fmp]
             The provider to use for the query.
         symbol : str
             Symbol to get data for.
@@ -199,28 +199,20 @@ class CLASS_forex(Container):
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
 
-        fmp
-        ===
+        yfinance
+        ========
 
         Parameters
         ----------
-        All fields are standardized.
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
 
 
         ForexEOD
         --------
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \\% in the price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \\% in the price of the symbol over a period of time.
+        All fields are standardized.
 
         polygon
         =======
@@ -244,20 +236,28 @@ class CLASS_forex(Container):
         n : PositiveInt
             The number of transactions for the symbol in the time period.
 
-        yfinance
-        ========
+        fmp
+        ===
 
         Parameters
         ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
+        All fields are standardized.
 
 
         ForexEOD
         --------
-        All fields are standardized."""  # noqa: E501
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \\% in the price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \\% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,

@@ -245,7 +245,7 @@ class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
     @staticmethod
-    def get_object_description() -> str:
+    def get_OBBject_description() -> str:
         """Get the command output description."""
         obbject_description = (
             "\nReturns\n"
@@ -329,7 +329,7 @@ class DocstringGenerator:
                 section_docstring += f"{padding}{field_description}\n"
 
         if provider == "openbb" and section_name == "QueryParams":
-            section_docstring += cls.get_object_description()
+            section_docstring += cls.get_OBBject_description()
 
         return section_docstring
 
