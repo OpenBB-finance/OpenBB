@@ -3,7 +3,7 @@ import inspect
 import shutil
 import subprocess
 from collections import OrderedDict
-from dataclasses import MISSING, asdict
+from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
@@ -268,7 +268,7 @@ class DocstringGenerator:
         return obbject_description
 
     @classmethod
-    def _generate(
+    def generate_model_docstring(
         cls,
         model_name: str,
         summary: str,
@@ -276,14 +276,13 @@ class DocstringGenerator:
         params: dict,
         returns: dict,
     ) -> str:
-        """Generate the docstring for the provider."""
+        """Create the docstring for model."""
 
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
         docstring = summary
         docstring += "\n"
-
         docstring += "\nParameters\n----------\n"
 
         # Explicit parameters
@@ -320,12 +319,13 @@ class DocstringGenerator:
             docstring += f"{param_name} : {type_}\n"
             docstring += f"    {param.default.description}\n"
 
+        # Returns
         docstring += "\nReturns\n-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
-
         docstring += cls.get_object_description(model_name, available_providers)
 
+        # Schema
         underline = "-" * len(model_name)
         docstring += f"\n{model_name}\n{underline}\n"
 
@@ -348,7 +348,7 @@ class DocstringGenerator:
         func_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
     ) -> Callable:
-        """Generate the docstring for the command."""
+        """Generate the docstring for the function."""
         if model_name:
             params = cls.provider_interface.params.get(model_name, None)
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
@@ -358,7 +358,7 @@ class DocstringGenerator:
 
                 returns = return_schema.__fields__
 
-                func.__doc__ = cls._generate(
+                func.__doc__ = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
@@ -606,9 +606,7 @@ class MethodDefinition:
             func = DocstringGenerator.generate(
                 func=func, func_params=func_params, model_name=model_name
             )
-        code = (
-            f'        """{func.__doc__}"""\n\n' if func.__doc__ else ""
-        )
+        code = f'        """{func.__doc__}"""\n\n' if func.__doc__ else ""
 
         return code
 
