@@ -182,7 +182,7 @@ class LoggingManager(metaclass=SingletonMeta):
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
-        OBBject: OBBject,
+        obbject: OBBject,
         route: str,
         func: Callable,
         kwargs: Dict[str, Any],
@@ -196,7 +196,7 @@ class LoggingManager(metaclass=SingletonMeta):
             User Settings object.
         system_settings : SystemSettings
             System Settings object.
-        OBBject : OBBject
+        obbject : OBBject
             OBBject object containing command output and error information.
         route : str
             Route for the command.

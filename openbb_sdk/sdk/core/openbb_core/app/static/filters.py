@@ -48,7 +48,7 @@ def filter_inputs(**kwargs) -> dict:
     return kwargs
 
 
-def filter_output(OBBject: OBBject) -> OBBject:
+def filter_output(obbject: OBBject) -> OBBject:
     """Filter command output."""
     if obbject.warnings:
         for w in obbject.warnings:

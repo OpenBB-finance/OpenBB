@@ -274,7 +274,7 @@ class StaticCommandRunner:
     @classmethod
     def __chart(
         cls,
-        OBBject: OBBject,
+        obbject: OBBject,
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
