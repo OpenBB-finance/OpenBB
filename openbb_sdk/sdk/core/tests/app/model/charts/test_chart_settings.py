@@ -1,6 +1,6 @@
-from unittest.mock import MagicMock
-
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
+
+from unittest.mock import MagicMock, patch, Mock
 
 mock_user_settings = MagicMock()
 mock_user_settings.preferences.data_directory = "mock_data_directory"
@@ -23,11 +23,11 @@ mock_system_settings.debug_mode = True
 mock_system_settings.headless = True
 
 
-def test_charting_settings(mocker):
-    mocker.patch(
-        target="openbb_core.app.model.charts.charting_settings.get_app_id",
-        new=mocker.Mock(return_value="mock_app_id"),
-    )
+@patch(
+    target="openbb_core.app.model.charts.charting_settings.get_app_id",
+    new=Mock(return_value="mock_app_id"),
+)
+def test_charting_settings():
     charting_settings = ChartingSettings(
         user_settings=mock_user_settings, system_settings=mock_system_settings
     )
