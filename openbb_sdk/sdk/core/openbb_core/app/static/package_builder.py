@@ -306,7 +306,7 @@ class DocstringGenerator:
     no default."""
                 elif param_name == "chart":
                     type_ = "bool"
-                    description = "Wether to create a chart or not, by default False."
+                    description = "Whether to create a chart or not, by default False."
                 else:
                     type_ = ""
                     description = ""
