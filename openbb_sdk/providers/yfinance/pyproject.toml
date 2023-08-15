@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-yfinance"
+version = "0.1.1"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_yfinance" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+yfinance="^0.2.27"
+openbb-provider = { path = "../../sdk/provider" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+yfinance = "openbb_yfinance:yfinance_provider"

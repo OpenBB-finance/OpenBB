@@ -2,17 +2,17 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
-from openbb_core.app.model.obbject import Chart, Obbject, OpenBBError
+from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
 from openbb_provider.abstract.data import Data
 
 
 def test_obbject():
-    co = Obbject()
-    assert isinstance(co, Obbject)
+    co = OBBject()
+    assert isinstance(co, OBBject)
 
 
 def test_fields():
-    fields = Obbject.__fields__.keys()
+    fields = OBBject.__fields__.keys()
 
     assert "results" in fields
     assert "provider" in fields
@@ -22,7 +22,7 @@ def test_fields():
 
 
 def test_to_dataframe_no_results():
-    co = Obbject()
+    co = OBBject()
     with pytest.raises(Exception):
         co.to_dataframe()
 
@@ -53,7 +53,7 @@ def test_to_dataframe(results, expected_df):
     # Arrange
     if results:
         results = [Data(**d) for d in results]
-    co = Obbject(results=results)
+    co = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
@@ -92,7 +92,7 @@ def test_to_dict(results, expected):
     # Arrange
     if results:
         results = [Data(**d) for d in results]
-    co = Obbject(results=results)
+    co = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected, Exception):
@@ -108,10 +108,10 @@ def test_to_dict(results, expected):
 
 
 @patch("openbb_core.app.charting_manager.ChartingManager.to_chart")
-@patch("openbb_core.app.model.obbject.Obbject.to_dataframe")
+@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
 def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
     # Arrange
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     mock_instance.chart = Chart(content={"existing_chart_data": "some_data"})
 
     # mock the return value of ChartingManager.to_chart()
@@ -129,7 +129,7 @@ def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
     mock_to_dataframe.assert_called_once()
 
 
-@patch("openbb_core.app.model.obbject.Obbject.to_dataframe")
+@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
 @patch("openbb_core.app.model.obbject.ChartingManager")
 def test_to_plotly_json_with_new_chart(
     mock_charting_manager,
@@ -145,7 +145,7 @@ def test_to_plotly_json_with_new_chart(
         return pd.DataFrame(data)
 
     # Arrange
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     mock_charting_manager_instance = mock_charting_manager.return_value
     mock_charting_manager_instance.to_chart.return_value = Chart(
         content={"content": "some_new_content"}, fig={"fig": "some_mock_fig"}
@@ -167,7 +167,7 @@ def test_to_plotly_json_with_new_chart(
 
 
 def test_show_chart_exists():
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     # Arrange
     mock_instance.chart = MagicMock(spec=Chart)
     mock_instance.chart.fig = MagicMock()
@@ -181,7 +181,7 @@ def test_show_chart_exists():
 
 
 def test_show_chart_no_chart():
-    mock_instance = Obbject()
+    mock_instance = OBBject()
 
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):
@@ -189,7 +189,7 @@ def test_show_chart_no_chart():
 
 
 def test_show_chart_no_fig():
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     # Arrange
     mock_instance.chart = Chart()
 

@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from pydantic import BaseModel, Field, NonNegativeInt, validator
 
@@ -7,11 +7,13 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class BaseSymbol(BaseModel):
-    symbol: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True)
-    def upper_symbol(cls, v: str):  # pylint: disable=E0213
-        return v.upper()
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], set[str]]):
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class FinancialStatementQueryParams(QueryParams, BaseSymbol):

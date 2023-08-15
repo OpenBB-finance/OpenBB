@@ -4,7 +4,7 @@
 from pydantic import validate_arguments
 
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -14,8 +14,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def contracts(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Return government contracts."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Return government contracts."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -31,8 +31,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def government_trading(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Return government trading."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Return government trading."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -48,8 +48,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def gtrades(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Return government trades."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Return government trades."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -65,8 +65,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def histcont(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Historical quarterly government contracts."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Historical quarterly government contracts."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -82,8 +82,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def lastcontracts(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Return last government contracts given out."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Return last government contracts given out."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -99,8 +99,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def lasttrades(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Last trades."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Last trades."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -116,8 +116,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def lobbying(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Corporate lobbying details."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Corporate lobbying details."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -133,8 +133,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def qtrcontracts(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Quarterly government contracts analysis."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Quarterly government contracts analysis."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -150,8 +150,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def topbuys(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Show most purchased stocks."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Show most purchased stocks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -167,8 +167,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def toplobbying(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Top corporate lobbying tickers."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Top corporate lobbying tickers."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -184,8 +184,8 @@ class CLASS_stocks_gov(Container):
     @validate_arguments
     def topsells(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Show most sold stocks."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Show most sold stocks."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

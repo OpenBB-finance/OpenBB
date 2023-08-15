@@ -17,10 +17,16 @@ PROVIDERS = get_provider_interface().providers_literal
 
 
 class OpenBBError(Exception):
-    pass
+    """OpenBB Error."""
+
+    def __init__(self, original: Optional[Exception] = None):
+        self.original = original
+        super().__init__(str(original))
 
 
-class Obbject(GenericModel, Generic[T], Tagged):
+class OBBject(GenericModel, Generic[T], Tagged):
+    """OpenBB custom class that holds command outputs and utility methods."""
+
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",

@@ -52,7 +52,7 @@ class FMPCashFlowStatementData(CashFlowStatementData):
             "purchases_of_investments": "purchasesOfInvestments",
             "sales_maturities_of_investments": "salesMaturitiesOfInvestments",
             "other_investing_activities": "otherInvestingActivites",
-            "net_cash_flow_from_investing_activities": "netCashUsedForInvestingActivites",
+            "net_cash_used_for_investing_activities": "netCashUsedForInvestingActivites",
             "debt_repayment": "debtRepayment",
             "common_stock_issued": "commonStockIssued",
             "common_stock_repurchased": "commonStockRepurchased",
@@ -65,19 +65,21 @@ class FMPCashFlowStatementData(CashFlowStatementData):
             "cash_at_beginning_of_period": "cashAtBeginningOfPeriod",
             "operating_cash_flow": "operatingCashFlow",
             "capital_expenditure": "capitalExpenditure",
-            "net_cash_flow": "freeCashFlow",
+            "free_cash_flow": "freeCashFlow",
         }
 
     # Leftovers below
-    calendarYear: Optional[int]
+    calendar_year: Optional[int] = Field(
+        description="Calendar Year", alias="calendarYear"
+    )
     link: Optional[str]
-    finalLink: Optional[str]
+    final_link: Optional[str] = Field(description="Final Link", alias="finalLink")
 
 
 class FMPCashFlowStatementFetcher(
     Fetcher[
         FMPCashFlowStatementQueryParams,
-        FMPCashFlowStatementData,
+        List[FMPCashFlowStatementData],
     ]
 ):
     @staticmethod
@@ -103,4 +105,4 @@ class FMPCashFlowStatementFetcher(
     def transform_data(
         data: List[FMPCashFlowStatementData],
     ) -> List[FMPCashFlowStatementData]:
-        return data
+        return [CashFlowStatementData.parse_obj(d.dict()) for d in data]

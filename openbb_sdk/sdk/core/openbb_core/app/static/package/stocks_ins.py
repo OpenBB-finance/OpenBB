@@ -4,7 +4,7 @@
 from pydantic import validate_arguments
 
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -14,8 +14,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def act(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Insider activity over time."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Insider activity over time."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -31,8 +31,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def blcp(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest CEO/CFO purchaces ($25k+)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Big latest CEO/CFO purchaces ($25k+)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -48,8 +48,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def blcs(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest CEO/CFO sales ($100k+)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Big latest CEO/CFO sales ($100k+)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -65,8 +65,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def blip(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest insider purchaces ($25+)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Big latest insider purchaces ($25+)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -82,8 +82,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def blis(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest insider sales ($100k+)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Big latest insider sales ($100k+)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -99,8 +99,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def blop(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest officer purchaces ($25k+)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Big latest officer purchaces ($25k+)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -116,8 +116,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def blos(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest officer sales ($100k+)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Big latest officer sales ($100k+)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -133,8 +133,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def filt(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Filter insiders based on preset."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Filter insiders based on preset."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -150,8 +150,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def lcb(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Latest cluster buys."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Latest cluster buys."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -167,8 +167,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def lins(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Last insider trading of the company."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Last insider trading of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -184,8 +184,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def lip(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider purchaces."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Latest insider purchaces."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -201,8 +201,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def lis(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider sales."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Latest insider sales."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -218,8 +218,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def lit(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider trading (all filings)."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Latest insider trading (all filings)."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -235,8 +235,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def lpsb(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Latest penny stock buys."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Latest penny stock buys."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -252,8 +252,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def print_insider_data(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Print insider data."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Print insider data."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )
@@ -269,8 +269,8 @@ class CLASS_stocks_ins(Container):
     @validate_arguments
     def stats(
         self, chart: bool = False
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Insider stats of the company."""
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Insider stats of the company."""  # noqa: E501
         inputs = filter_inputs(
             chart=chart,
         )

@@ -84,7 +84,7 @@ class PolygonForexPairsData(ForexPairsData):
 class PolygonForexPairsFetcher(
     Fetcher[
         PolygonForexPairsQueryParams,
-        PolygonForexPairsData,
+        List[PolygonForexPairsData],
     ]
 ):
     @staticmethod

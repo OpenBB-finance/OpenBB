@@ -1,15 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
 from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -20,9 +19,11 @@ class CLASS_economy(Container):
     def corecpi(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """CORECPI."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """CORECPI."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -49,8 +50,8 @@ class CLASS_economy(Container):
         ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> OBBject[List]:
         """Get the constituents of an index.
 
 
@@ -66,7 +67,7 @@ class CLASS_economy(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -81,7 +82,7 @@ class CLASS_economy(Container):
 
         MajorIndicesConstituents
         ------------------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         name : str
             The name of the constituent company in the index.
@@ -108,7 +109,7 @@ class CLASS_economy(Container):
 
         MajorIndicesConstituents
         ------------------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -195,7 +196,7 @@ class CLASS_economy(Container):
             Literal["monthly", "quarterly", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
-        harmonized: typing.Annotated[
+        harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
@@ -215,8 +216,8 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
+        **kwargs,
+    ) -> OBBject[BaseModel]:
         """CPI.
 
 
@@ -242,7 +243,7 @@ class CLASS_economy(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -276,7 +277,7 @@ class CLASS_economy(Container):
 
         CPI
         ---
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -305,9 +306,11 @@ class CLASS_economy(Container):
     def cpi_options(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Get the options for v3 cpi(options=True)"""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Get the options for v3 cpi(options=True)"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -326,8 +329,9 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -342,10 +346,10 @@ class CLASS_economy(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
-        **kwargs
-    ) -> Obbject[typing.List]:
-        r"""Get OHLCV data for an index.
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
+        """Get OHLCV data for an index.
 
 
         openbb
@@ -353,9 +357,9 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
+        provider: Literal[fmp, polygon, yfinance]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format.
@@ -364,7 +368,7 @@ class CLASS_economy(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -379,6 +383,8 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
+        date : datetime
+            The date of the data.
         open : PositiveFloat
             The open price of the symbol.
         high : PositiveFloat
@@ -387,8 +393,36 @@ class CLASS_economy(Container):
             The low price of the symbol.
         close : PositiveFloat
             The close price of the symbol.
-        volume : PositiveFloat
+        volume : float
             The volume of the symbol.
+        vwap : Optional[float]
+            Volume Weighted Average Price of the symbol.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        timeseries : Optional[NonNegativeInt]
+            Number of days to look back.
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Interval of the data to fetch.
+
+
+        MajorIndicesEOD
+        ---------------
+        adjClose : Optional[float]
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : Optional[float]
+            Unadjusted volume of the symbol.
+        change : Optional[float]
+            Change in the price of the symbol from the previous day.
+        changePercent : Optional[float]
+            Change \\% in the price of the symbol.
+        label : Optional[str]
+            Human readable format of the date.
+        changeOverTime : Optional[float]
+            Change \\% in the price of the symbol over a period of time.
 
         polygon
         =======
@@ -409,46 +443,29 @@ class CLASS_economy(Container):
 
         MajorIndicesEOD
         ---------------
-        t : datetime
-            The timestamp of the data.
         n : PositiveInt
             The number of transactions for the symbol in the time period.
-        vw : PositiveFloat
-            The volume weighted average price of the symbol.
 
-        fmp
-        ===
+        yfinance
+        ========
 
         Parameters
         ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
 
 
         MajorIndicesEOD
         ---------------
-        date : datetime
-            The date of the data.
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \% in the price of the symbol.
-        vwap : float
-            Volume Weighted Average Price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \% in the price of the symbol over a period of time."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },
@@ -467,7 +484,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """AVAILABLE_INDICES.
 
 
@@ -482,7 +499,7 @@ class CLASS_economy(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -497,7 +514,7 @@ class CLASS_economy(Container):
 
         AvailableIndices
         ----------------
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         name : Optional[str]
             The name of the index.
@@ -518,7 +535,7 @@ class CLASS_economy(Container):
 
         AvailableIndices
         ----------------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -539,7 +556,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def risk(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> Obbject[typing.List]:
+    ) -> OBBject[List]:
         """Market Risk Premium.
 
 
@@ -554,7 +571,7 @@ class CLASS_economy(Container):
 
         Returns
         -------
-        Obbject
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -588,7 +605,7 @@ class CLASS_economy(Container):
 
         RiskPremium
         -----------
-        All fields are standardized."""
+        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -610,9 +627,11 @@ class CLASS_economy(Container):
     def macro(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """Query EconDB for macro data."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Query EconDB for macro data."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -632,9 +651,11 @@ class CLASS_economy(Container):
     def macro_countries(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_COUNTRIES."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """MACRO_COUNTRIES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -654,9 +675,11 @@ class CLASS_economy(Container):
     def macro_parameters(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_PARAMETERS."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """MACRO_PARAMETERS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -676,9 +699,11 @@ class CLASS_economy(Container):
     def balance(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """BALANCE."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """BALANCE."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -698,9 +723,11 @@ class CLASS_economy(Container):
     def bigmac(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """BIGMAC."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """BIGMAC."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -720,9 +747,11 @@ class CLASS_economy(Container):
     def country_codes(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """COUNTRY_CODES."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """COUNTRY_CODES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -742,9 +771,11 @@ class CLASS_economy(Container):
     def currencies(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """CURRENCIES."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """CURRENCIES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -764,9 +795,11 @@ class CLASS_economy(Container):
     def debt(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """DEBT."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """DEBT."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -786,9 +819,11 @@ class CLASS_economy(Container):
     def events(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """EVENTS."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """EVENTS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -808,9 +843,11 @@ class CLASS_economy(Container):
     def fgdp(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """FGDP."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FGDP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -830,9 +867,11 @@ class CLASS_economy(Container):
     def fred(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """FRED."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FRED."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -852,9 +891,11 @@ class CLASS_economy(Container):
     def fred_search(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """FRED Search (was fred_notes)."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FRED Search (was fred_notes)."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -874,9 +915,11 @@ class CLASS_economy(Container):
     def futures(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """FUTURES. 2 sources"""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FUTURES. 2 sources"""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -896,9 +939,11 @@ class CLASS_economy(Container):
     def gdp(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """GDP."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """GDP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -918,9 +963,11 @@ class CLASS_economy(Container):
     def glbonds(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """GLBONDS."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """GLBONDS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -940,9 +987,11 @@ class CLASS_economy(Container):
     def indices(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """INDICES."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """INDICES."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -962,9 +1011,11 @@ class CLASS_economy(Container):
     def overview(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """OVERVIEW."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """OVERVIEW."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -984,9 +1035,11 @@ class CLASS_economy(Container):
     def perfmap(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """PERFMAP."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """PERFMAP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1006,9 +1059,11 @@ class CLASS_economy(Container):
     def performance(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """PERFORMANCE."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """PERFORMANCE."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1028,9 +1083,11 @@ class CLASS_economy(Container):
     def revenue(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """REVENUE."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """REVENUE."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1050,9 +1107,11 @@ class CLASS_economy(Container):
     def rgdp(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """RGDP."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """RGDP."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1072,9 +1131,11 @@ class CLASS_economy(Container):
     def rtps(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """RTPS."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """RTPS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1094,9 +1155,11 @@ class CLASS_economy(Container):
     def search_index(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """SEARCH_INDEX."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """SEARCH_INDEX."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1116,9 +1179,11 @@ class CLASS_economy(Container):
     def spending(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """SPENDING."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """SPENDING."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1138,9 +1203,11 @@ class CLASS_economy(Container):
     def trust(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """TRUST."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """TRUST."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1160,9 +1227,11 @@ class CLASS_economy(Container):
     def usbonds(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """USBONDS."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """USBONDS."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1182,9 +1251,11 @@ class CLASS_economy(Container):
     def valuation(
         self,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "fred", "polygon"]] = None,
-    ) -> Obbject[openbb_core.app.model.results.empty.Empty]:
-        """VALUATION."""
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """VALUATION."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
