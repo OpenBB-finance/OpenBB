@@ -1,7 +1,11 @@
 import logging
 from unittest.mock import Mock, patch
 
-from openbb_core.app.logs.handlers_manager import HandlersManager
+from openbb_core.app.logs.handlers_manager import (
+    HandlersManager,
+    PosthogHandler,
+    PathTrackingFileHandler,
+)
 
 
 class MockPosthogHandler(logging.NullHandler):
@@ -39,7 +43,15 @@ def test_handlers_added_correctly():
         assert len(handlers) >= 5
 
         for handler in handlers:
-            assert isinstance(handler, (logging.NullHandler, logging.StreamHandler))
+            assert isinstance(
+                handler,
+                (
+                    logging.NullHandler,
+                    logging.StreamHandler,
+                    PathTrackingFileHandler,
+                    PosthogHandler,
+                ),
+            )
 
         for mock in [MockPosthogHandler, MockPathTrackingFileHandler]:
             assert any(isinstance(handler, mock) for handler in handlers)
