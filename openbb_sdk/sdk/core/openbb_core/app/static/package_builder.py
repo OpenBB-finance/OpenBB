@@ -347,7 +347,7 @@ class DocstringGenerator:
     def generate(
         cls,
         func: Callable,
-        func_params: OrderedDict[str, Parameter],
+        formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
     ) -> Callable:
         """Generate the docstring for the function."""
@@ -355,7 +355,7 @@ class DocstringGenerator:
             params = cls.provider_interface.params.get(model_name, None)
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
-                explicit_dict = dict(func_params)
+                explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
 
                 returns = return_schema.__fields__
@@ -601,13 +601,13 @@ class MethodDefinition:
     @staticmethod
     def build_command_method_doc(
         func: Callable,
-        func_params: OrderedDict[str, Parameter],
+        formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
     ):
         """Build the command method docstring."""
         if model_name:
             func = DocstringGenerator.generate(
-                func=func, func_params=func_params, model_name=model_name
+                func=func, formatted_params=formatted_params, model_name=model_name
             )
         code = f'        """{func.__doc__}"""\n\n' if func.__doc__ else ""
 
@@ -671,7 +671,7 @@ class MethodDefinition:
             model_name=model_name,
         )
         code += cls.build_command_method_doc(
-            func=func, func_params=func_params, model_name=model_name
+            func=func, formatted_params=formatted_params, model_name=model_name
         )
         code += cls.build_command_method_implementation(path=path, func=func)
 
