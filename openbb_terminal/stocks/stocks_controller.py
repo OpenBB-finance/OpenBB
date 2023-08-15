@@ -246,7 +246,7 @@ class StocksController(StockBaseController):
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=10,
+            limit=0,
         ):
             # Mapping
             sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
@@ -272,7 +272,6 @@ class StocksController(StockBaseController):
                 exchange=exchange,
                 exchange_country=exchange_country,
                 all_exchanges=ns_parser.all_exchanges,
-                limit=ns_parser.limit,
             )
             if ns_parser.export:
                 export_data(

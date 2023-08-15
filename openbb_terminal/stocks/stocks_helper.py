@@ -120,7 +120,6 @@ def search(
     exchange: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
-    limit: int = 0,
 ) -> pd.DataFrame:
     """Search selected query for tickers.
 
@@ -142,8 +141,6 @@ def search(
         Search by exchange country to find stock matching the criteria
     all_exchanges: bool
         Whether to search all exchanges, without this option only the United States market is searched
-    limit : int
-        The limit of results shown, where 0 means all the results
 
     Returns
     -------
