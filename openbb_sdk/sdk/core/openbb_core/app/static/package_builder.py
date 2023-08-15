@@ -13,11 +13,11 @@ from typing import (
     List,
     Literal,
     Optional,
+    OrderedDict,
     Type,
     Union,
     get_args,
     get_type_hints,
-    OrderedDict,
 )
 
 import pandas as pd
