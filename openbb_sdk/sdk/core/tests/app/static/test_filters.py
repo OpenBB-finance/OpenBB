@@ -39,6 +39,7 @@ def test_filter_inputs_df():
 
 def test_filter_output():
     """Test filter_output."""
-    OBBject = filter_output(OBBject())
+    obbject = OBBject()
+    filter_output(obbject)
 
     assert obbject is not None
