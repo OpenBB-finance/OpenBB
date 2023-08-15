@@ -533,15 +533,15 @@ class MethodDefinition:
                 od[param] = new_value
 
     @staticmethod
-    def build_func_params(func_params: OrderedDict[str, Parameter]) -> str:
+    def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
-        func_params_str = ", ".join(str(param) for param in func_params.values())
-        func_params_str = func_params_str.replace("NoneType", "None")
-        func_params_str = func_params_str.replace(
+        func_params = ", ".join(str(param) for param in formatted_params.values())
+        func_params = func_params.replace("NoneType", "None")
+        func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
 
-        return func_params_str
+        return func_params
 
     @staticmethod
     def build_func_returns(return_type: type) -> str:
@@ -576,25 +576,25 @@ class MethodDefinition:
     @staticmethod
     def build_command_method_signature(
         func_name: str,
-        func_params: OrderedDict[str, Parameter],
+        formatted_params: OrderedDict[str, Parameter],
         return_type: type,
         model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
         MethodDefinition.add_field_descriptions(
-            od=func_params, model_name=model_name
+            od=formatted_params, model_name=model_name
         )  # this modified `od` in place
-        func_params_str = MethodDefinition.build_func_params(func_params)
+        func_params = MethodDefinition.build_func_params(formatted_params)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
 
         extra = (
             "(config=dict(arbitrary_types_allowed=True))"
-            if "pandas.DataFrame" in func_params_str
+            if "pandas.DataFrame" in func_params
             else ""
         )
         code += f"\n    @validate_arguments{extra}"
-        code += f"\n    def {func_name}(self, {func_params_str}) -> {func_returns}:\n"
+        code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
 
@@ -662,11 +662,11 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        func_params = cls.format_params(parameter_map=parameter_map)
+        formatted_params = cls.format_params(parameter_map=parameter_map)
 
         code = cls.build_command_method_signature(
             func_name=func_name,
-            func_params=func_params,
+            formatted_params=formatted_params,
             return_type=sig.return_annotation,
             model_name=model_name,
         )
