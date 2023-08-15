@@ -66,7 +66,6 @@ def test_search(mocker, use_tab):
         exchange="",
         exchange_country="",
         all_exchanges=False,
-        limit=5,
     )
     stocks_helper.print_rich_table(
         df, show_index=False, title="Company Search Results", headers=df.columns
