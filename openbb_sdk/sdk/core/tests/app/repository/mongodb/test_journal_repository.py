@@ -1,20 +1,20 @@
 from typing import Any, List, Optional, Tuple, TypeVar
 from unittest.mock import MagicMock
 
-from openbb_core.app.repository.base.mongodb_repository import (
-    Repository,
+from openbb_core.app.repository.mongodb.journal_repository import (
+    JournalRepository,
 )
 from pydantic import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
 
 
-def test_repository():
-    class TestRepository(Repository):
-        def __init__(self, test_arg_1, test_arg_2, test_collection_name, mock_client):
+def test_journal_repository():
+    class TestJournalRepository(JournalRepository):
+        def __init__(self, test_arg_1, test_arg_2, mock_client):
             self.test_arg_1 = test_arg_1
             self.test_arg_2 = test_arg_2
-            super().__init__(collection_name=test_collection_name, client=mock_client)
+            super().__init__(client=mock_client)
 
         @property
         def collection_name(self):
@@ -53,5 +53,5 @@ def test_repository():
         def mock_method(self):
             return self.test_arg_1, self.test_arg_2
 
-    jr = TestRepository("xpto_1", "xpto_2", "test_collection_name", MagicMock())
-    assert isinstance(jr, Repository)
+    jr = TestJournalRepository("xpto_1", "xpto_2", MagicMock())
+    assert isinstance(jr, JournalRepository)
