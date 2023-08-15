@@ -274,12 +274,21 @@ class StocksController(StockBaseController):
                 all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
             )
-            stocks_helper.print_rich_table(
-                df,
-                show_index=False,
-                headers=df.columns,
-                title="Stock Search Results",
-            )
+            if ns_parser.export:
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "search",
+                    df,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                )
+            if not ns_parser.export:
+                stocks_helper.print_rich_table(
+                    df,
+                    show_index=False,
+                    headers=df.columns,
+                    title="Stock Search Results",
+                )
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
