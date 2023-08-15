@@ -79,3 +79,4 @@ lightning_logs/
 # user script to install all extensions and providers
 !openbb_sdk/install_all.sh
 openbb_sdk/sdk/core/tests/app/model/charts/test_chart_settings.py
+*/mocked_path
