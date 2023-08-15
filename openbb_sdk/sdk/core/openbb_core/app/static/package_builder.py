@@ -533,7 +533,7 @@ class MethodDefinition:
                 od[param] = new_value
 
     @staticmethod
-    def stringify_params(func_params: OrderedDict[str, Parameter]) -> str:
+    def build_func_params(func_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
         func_params_str = ", ".join(str(param) for param in func_params.values())
         func_params_str = func_params_str.replace("NoneType", "None")
@@ -544,7 +544,7 @@ class MethodDefinition:
         return func_params_str
 
     @staticmethod
-    def stringify_returns(return_type: type) -> str:
+    def build_func_returns(return_type: type) -> str:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
@@ -584,8 +584,8 @@ class MethodDefinition:
         MethodDefinition.add_field_descriptions(
             od=func_params, model_name=model_name
         )  # this modified `od` in place
-        func_params_str = MethodDefinition.stringify_params(func_params)
-        func_returns = MethodDefinition.stringify_returns(return_type)
+        func_params_str = MethodDefinition.build_func_params(func_params)
+        func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
 
         extra = (
