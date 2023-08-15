@@ -1,3 +1,4 @@
+"""Query executor module."""
 from typing import Any, Dict, Optional, Type
 
 from openbb_provider.abstract.fetcher import Fetcher, GenericDataType
@@ -6,6 +7,8 @@ from openbb_provider.registry import Registry, RegistryLoader
 
 
 class ProviderError(Exception):
+    """Exception raised for errors in the provider."""
+
     pass
 
 
@@ -13,6 +16,7 @@ class QueryExecutor:
     """Class to execute queries from providers."""
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
+        """Initialize the query executor."""
         self.registry = registry or RegistryLoader.from_extensions()
 
     def get_provider(self, provider_name: str) -> Provider:

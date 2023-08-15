@@ -28,7 +28,6 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
     date : date
         The most recent quarter date.
     """
-
     base = min(base, dateType.today())  # This prevents dates from being in the future
     exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
     for exact in exacts:
@@ -52,7 +51,8 @@ class StockOwnershipQueryParams(QueryParams, BaseSymbol):
     )
 
     @validator("date", pre=True, check_fields=False)
-    def time_validate(cls, v: str):  # pylint: disable=E0213
+    def time_validate(cls, v: str):  # pylint: disable=E021
+        """Validate the date."""
         if v is None:
             v = dateType.today()
         if isinstance(v, str):

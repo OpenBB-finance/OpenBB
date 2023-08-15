@@ -1,8 +1,9 @@
+"""Package Builder Class."""
+
 import builtins
 import inspect
 import shutil
 import subprocess
-from collections import OrderedDict
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -13,6 +14,7 @@ from typing import (
     List,
     Literal,
     Optional,
+    OrderedDict,
     Type,
     Union,
     get_args,
@@ -246,7 +248,7 @@ class DocstringGenerator:
     provider_interface = get_provider_interface()
 
     @staticmethod
-    def get_object_description(model_name: str, providers: Optional[str]) -> str:
+    def get_OBBject_description(model_name: str, providers: Optional[str]) -> str:
         """Get the command output description."""
 
         available_providers = providers or "Optional[PROVIDERS]"
@@ -323,7 +325,7 @@ class DocstringGenerator:
         docstring += "\nReturns\n-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
-        docstring += cls.get_object_description(model_name, available_providers)
+        docstring += cls.get_OBBject_description(model_name, available_providers)
 
         # Schema
         underline = "-" * len(model_name)
@@ -505,7 +507,6 @@ class MethodDefinition:
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
     ) -> OrderedDict[str, Parameter]:
         """Add the field description to the param signature."""
-
         if model_name:
             available_fields = (
                 get_provider_interface()
@@ -533,6 +534,7 @@ class MethodDefinition:
 
     @staticmethod
     def stringify_params(func_params: OrderedDict[str, Parameter]) -> str:
+        """Stringify function params."""
         func_params_str = ", ".join(str(param) for param in func_params.values())
         func_params_str = func_params_str.replace("NoneType", "None")
         func_params_str = func_params_str.replace(
@@ -578,6 +580,7 @@ class MethodDefinition:
         return_type: type,
         model_name: Optional[str] = None,
     ) -> str:
+        """Build the command method signature."""
         MethodDefinition.add_field_descriptions(
             od=func_params, model_name=model_name
         )  # this modified `od` in place
