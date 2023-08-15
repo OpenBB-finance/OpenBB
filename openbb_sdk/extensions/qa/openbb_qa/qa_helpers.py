@@ -41,6 +41,13 @@ def get_fama_raw(start_date: str, end_date: str) -> pd.DataFrame:
     df["HML"] = df["HML"] / 100
     df["RF"] = df["RF"] / 100
     df = df.set_index("Date")
+
+    dt_start_date = pd.to_datetime(start_date, format="%Y-%m-%d")
+    if dt_start_date > df.index.max():
+        raise ValueError(
+            f"Start date '{dt_start_date}' is after the last date available for Fama-French '{df.index[-1]}'"
+        )
+
     df = df.loc[start_date:end_date]  # type: ignore
 
     return df
