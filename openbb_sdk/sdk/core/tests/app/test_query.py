@@ -56,13 +56,6 @@ def test_init(query):
     assert query
 
 
-def test_to_query_params(query):
-    """Test to_query_params."""
-    standard_params = create_mock_query()
-
-    assert query.to_query_params(standard_params)
-
-
 def test_filter_extra_params(query):
     """Test filter_extra_params."""
     extra_params = create_mock_extra_params()
