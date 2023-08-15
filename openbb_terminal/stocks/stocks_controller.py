@@ -263,7 +263,7 @@ class StocksController(StockBaseController):
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
 
-            stocks_helper.search(
+            df = stocks_helper.search(
                 query=" ".join(ns_parser.query),
                 country=ns_parser.country,
                 sector=sector,
@@ -273,6 +273,12 @@ class StocksController(StockBaseController):
                 exchange_country=exchange_country,
                 all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
+            )
+            stocks_helper.print_rich_table(
+                df,
+                show_index=False,
+                headers=df.columns,
+                title="Stock Search Results",
             )
 
     @log_start_end(log=logger)
