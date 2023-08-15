@@ -20,7 +20,7 @@ class OpenBBFigureTable(OpenBBFigure):
     def show(
         self,
         show_index: Optional[bool] = True,
-        index_name: Optional[str] = "",
+        index_name: Optional[str] = "date",
         headers: Optional[Union[List[str], pd.Index]] = None,
         title: Optional[str] = "",
         source: Optional[str] = "",
