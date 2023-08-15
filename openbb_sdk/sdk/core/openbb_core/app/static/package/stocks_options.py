@@ -23,7 +23,7 @@ class CLASS_stocks_options(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
 

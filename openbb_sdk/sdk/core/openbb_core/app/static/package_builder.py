@@ -1,3 +1,5 @@
+"""Package Builder Class."""
+
 import builtins
 import shutil
 import subprocess
@@ -245,7 +247,7 @@ class DocstringGenerator:
     @staticmethod
     def get_OBBject_description() -> str:
         """Get the command output description."""
-        OBBject_description = (
+        obbject_description = (
             "\nReturns\n"
             "-------\n"
             "OBBject\n"
@@ -261,7 +263,7 @@ class DocstringGenerator:
             "        Chart object.\n"
         )
 
-        return OBBject_description
+        return obbject_description
 
     @staticmethod
     def get_available_providers(query_mapping: dict) -> str:
@@ -531,7 +533,6 @@ class MethodDefinition:
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
     ) -> OrderedDict[str, Parameter]:
         """Add the field description to the param signature."""
-
         if model_name:
             available_fields = (
                 get_provider_interface()
@@ -561,6 +562,7 @@ class MethodDefinition:
     def build_func_params(
         parameter_map: Dict[str, Parameter], model_name: Optional[str] = None
     ) -> str:
+        """Build the function params."""
         od = MethodDefinition.format_params(parameter_map=parameter_map)
         MethodDefinition.add_field_descriptions(
             od=od, model_name=model_name
@@ -611,6 +613,7 @@ class MethodDefinition:
         return_type: type,
         model_name: Optional[str] = None,
     ) -> str:
+        """Build the command method signature."""
         func_params = MethodDefinition.build_func_params(parameter_map, model_name)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"

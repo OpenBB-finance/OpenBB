@@ -1,6 +1,5 @@
 """Historical Employees data model."""
 
-
 from datetime import date, datetime
 
 from pydantic import Field, validator
@@ -38,12 +37,15 @@ class HistoricalEmployeesData(Data, BaseSymbol):
 
     @validator("acceptance_time", pre=True, check_fields=False)
     def acceptance_time_validate(cls, v):  # pylint: disable=E0213
+        """Validate acceptance time."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
     @validator("period_of_report", pre=True, check_fields=False)
     def period_of_report_validate(cls, v):  # pylint: disable=E0213
+        """Validate period of report."""
         return datetime.strptime(v, "%Y-%m-%d")
 
     @validator("filing_date", pre=True, check_fields=False)
     def filing_date_validate(cls, v):  # pylint: disable=E0213
+        """Validate filing date."""
         return datetime.strptime(v, "%Y-%m-%d")

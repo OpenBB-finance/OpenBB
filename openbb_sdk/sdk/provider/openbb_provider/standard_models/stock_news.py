@@ -24,6 +24,7 @@ class StockNewsQueryParams(QueryParams):
 
     @validator("symbols", pre=True)
     def symbols_validate(cls, v: str):  # pylint: disable=E0213
+        """Validate the symbols."""
         return v.upper()
 
 

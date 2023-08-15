@@ -41,4 +41,4 @@ def test_filter_output():
     """Test filter_output."""
     OBBject = filter_output(OBBject())
 
-    assert OBBject is not None
+    assert obbject is not None

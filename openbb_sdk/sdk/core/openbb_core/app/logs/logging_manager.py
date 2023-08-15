@@ -42,7 +42,7 @@ class LoggingManager(metaclass=SingletonMeta):
     __init__(system_settings, user_settings)
         Logging Manager Constructor.
 
-    log(user_settings, system_settings, OBBject, route, func, kwargs)
+    log(user_settings, system_settings, obbject, route, func, kwargs)
         Log command output and relevant information.
 
     logging_settings
@@ -225,14 +225,14 @@ class LoggingManager(metaclass=SingletonMeta):
             # Truncate kwargs if too long
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
-            log_level = logger.error if OBBject.error else logger.info
+            log_level = logger.error if obbject.error else logger.info
             log_level(
-                "ERROR: %s" if OBBject.error else "CMD: %s",
+                "ERROR: %s" if obbject.error else "CMD: %s",
                 json.dumps(
                     {
                         "route": route,
                         "input": kwargs,
-                        "error": OBBject.error,
+                        "error": obbject.error,
                     },
                     default=pydantic_encoder,
                 ),
