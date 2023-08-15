@@ -44,7 +44,7 @@ class Fetcher(
         cls,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
-        **kwargs
+        **kwargs,
     ) -> GenericDataType:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
@@ -63,3 +63,6 @@ class Fetcher(
         """Get the type of the provider data."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[1]
+
+
+# test
