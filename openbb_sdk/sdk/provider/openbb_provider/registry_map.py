@@ -14,6 +14,7 @@ class RegistryMap:
     """Class to store information about providers in the registry."""
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
+        """Initialize Registry Map."""
         self._registry = registry or RegistryLoader.from_extensions()
         self._required_credentials = self._get_required_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
@@ -42,6 +43,7 @@ class RegistryMap:
 
     @property
     def return_map(self) -> MapType:
+        """Get provider registry return map."""
         return self._return_map
 
     @property

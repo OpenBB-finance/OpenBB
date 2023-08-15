@@ -28,7 +28,6 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
     date : date
         The most recent quarter date.
     """
-
     base = min(base, dateType.today())  # This prevents dates from being in the future
     exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
     for exact in exacts:

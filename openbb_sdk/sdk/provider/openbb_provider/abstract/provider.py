@@ -1,4 +1,4 @@
-"""Abstract class for providers."""
+"""Provider Abstract Class."""
 
 from typing import Dict, List, Optional, Type
 
@@ -6,8 +6,7 @@ from openbb_provider.abstract.fetcher import Fetcher
 
 
 class Provider:
-    """This class serves as provider extensions entry point and must be
-    created by each provider."""
+    """Serves as provider extension entry point and must be created by each provider."""
 
     def __init__(
         self,

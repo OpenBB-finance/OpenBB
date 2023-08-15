@@ -5,6 +5,7 @@ import re
 from typing import Callable, Dict, List, Optional, Type, Union
 
 import requests
+
 from openbb_provider.abstract.fetcher import DataType, ProviderDataType
 
 
