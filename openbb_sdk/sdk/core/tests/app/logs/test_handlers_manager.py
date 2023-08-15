@@ -3,8 +3,8 @@ from unittest.mock import Mock, patch
 
 from openbb_core.app.logs.handlers_manager import (
     HandlersManager,
-    PosthogHandler,
     PathTrackingFileHandler,
+    PosthogHandler,
 )
 
 
