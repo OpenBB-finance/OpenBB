@@ -4,10 +4,9 @@
 from dataclasses import dataclass
 from inspect import _empty
 from types import NoneType
-import pandas
 
+import pandas
 import pytest
-from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
     DocstringGenerator,
