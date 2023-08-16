@@ -16,6 +16,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Most active stocks by intraday trade volumes."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -33,6 +34,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Order by ARK INvestment Management LLC."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -50,6 +52,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Small cap stocks with revenue and earnings growth more than 25%."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -83,6 +86,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """The most-recent form submissions to the SEC."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -100,6 +104,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Future IPOs dates."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -117,6 +122,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Show latest top gainers."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -134,6 +140,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Tech stocks with revenue and earnings growth more than 25%."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -151,6 +158,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Today's hot penny stocks."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -184,6 +192,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Show latest top losers."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -201,6 +210,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Low float stocks under 10M shares float."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -218,6 +228,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Past IPOs dates."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -235,6 +246,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Top 10 retail traded stocks per day."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -252,6 +264,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Trending news."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -269,6 +282,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Undervalued stocks with revenue and earnings growth above 25%."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -286,6 +300,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Potentially undervalued large cap stocks."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -303,6 +318,7 @@ class CLASS_stocks_disc(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Upcoming earnings release dates."""
+
         inputs = filter_inputs(
             chart=chart,
         )

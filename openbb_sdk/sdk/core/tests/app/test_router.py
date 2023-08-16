@@ -196,8 +196,9 @@ def test_complete_signature_error(signature_inspector):
     def valid_function() -> OBBject[int]:
         return OBBject(results=[1, 2, 3])
 
-    with pytest.raises(AttributeError):
-        signature_inspector.complete_signature(valid_function, "invalid_model")
+    assert (
+        signature_inspector.complete_signature(valid_function, "invalid_model") is None
+    )
 
 
 def test_validate_signature(signature_inspector):

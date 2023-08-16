@@ -1,9 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
-from typing import Literal, Optional
+from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -16,85 +15,11 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_stocks_ca(Container):
     @filter_call
     @validate_arguments
-    def peers(
-        self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[typing.List]:
-        """Company peers.
-
-
-        openbb
-        ======
-
-        Parameters
-        ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : ConstrainedStrValue
-            Symbol to get data for.
-
-        Returns
-        -------
-        OBBject
-            results: List[Data]
-                Serializable results.
-            provider: Optional[PROVIDERS]
-                Provider name.
-            warnings: Optional[List[Warning_]]
-                List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
-                Chart object.
-
-
-        StockPeers
-        ----------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        peers_list : Optional[List[str]]
-            A list of stock peers based on sector, exchange and market cap.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockPeers
-        ----------
-        All fields are standardized."""
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": symbol,
-            },
-            extra_params=kwargs,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/ca/peers",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def balance(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company balance sheet."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -112,6 +37,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company cashflow."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -129,6 +55,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company historical correlation."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -146,6 +73,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company historical prices."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -163,6 +91,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company income statement."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -176,10 +105,75 @@ class CLASS_stocks_ca(Container):
 
     @filter_call
     @validate_arguments
+    def peers(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        chart: bool = False,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Company peers.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[StockPeers]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        StockPeers
+        ----------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        peers_list : Optional[List[str]]
+            A list of stock peers based on sector, exchange and market cap."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/ca/peers",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def scorr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company sector correlation."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -197,6 +191,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company screener."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -214,6 +209,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company sentiment."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -231,6 +227,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company similar."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -248,6 +245,7 @@ class CLASS_stocks_ca(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Company volume."""
+
         inputs = filter_inputs(
             chart=chart,
         )

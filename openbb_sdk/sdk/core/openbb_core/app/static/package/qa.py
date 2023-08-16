@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import typing
 from typing import List, Literal, Union
 
 import openbb_provider
@@ -17,6 +16,231 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 
 
 class CLASS_qa(Container):
+    @filter_call
+    @validate_arguments
+    def acf(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Autocorrelation Function."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/acf",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def beta(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Beta."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/beta",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def bw(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Bandwidth."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/bw",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def capm(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        chart: bool = False,
+    ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
+        """Capital Asset Pricing Model."""
+
+        inputs = filter_inputs(
+            data=data,
+            target=target,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/capm",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def cdf(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Cumulative Distribution Function."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/cdf",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def cusum(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Cumulative Sum."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/cusum",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def decompose(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Decompose."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/decompose",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def es(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Expected Shortfall."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/es",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def hist(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Histogram."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/hist",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def kurtosis(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        window: pydantic.types.PositiveInt,
+        chart: bool = False,
+    ) -> OBBject[List]:
+        """Kurtosis.
+
+        Parameters
+        ----------
+        data : List[Data]
+            Time series data.
+        target : str
+            Target column name.
+        window : PositiveInt
+            Window size.
+
+        Returns
+        -------
+        OBBject[List[Data]]
+            Kurtosis.
+        """
+
+        inputs = filter_inputs(
+            data=data,
+            target=target,
+            window=window,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/kurtosis",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def line(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Line."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/line",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
     @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def normality(
@@ -46,6 +270,7 @@ class CLASS_qa(Container):
         OBBject[NormalityModel]
             Normality tests summary. See qa_models.NormalityModel for details.
         """
+
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -61,45 +286,6 @@ class CLASS_qa(Container):
 
     @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def capm(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        chart: bool = False,
-    ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
-        """Capital Asset Pricing Model."""
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/capm",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def qqplot(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """QQ Plot."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/qqplot",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -107,7 +293,7 @@ class CLASS_qa(Container):
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
         chart: bool = False,
-    ) -> OBBject[typing.List]:
+    ) -> OBBject[List]:
         """Omega Ratio.
 
         Parameters
@@ -126,6 +312,7 @@ class CLASS_qa(Container):
         OBBject[List[OmegaModel]]
             Omega ratios.
         """
+
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -142,50 +329,12 @@ class CLASS_qa(Container):
         return filter_output(o)
 
     @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def kurtosis(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        window: pydantic.types.PositiveInt,
-        chart: bool = False,
-    ) -> OBBject[typing.List]:
-        """Kurtosis.
-
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        window : PositiveInt
-            Window size.
-
-        Returns
-        -------
-        OBBject[List[Data]]
-            Kurtosis.
-        """
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            window=window,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/kurtosis",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pick(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Pick."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -199,16 +348,62 @@ class CLASS_qa(Container):
 
     @filter_call
     @validate_arguments
-    def spread(
+    def qqplot(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Spread."""
+        """QQ Plot."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/qa/spread",
+            "/qa/qqplot",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def quantile(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        window: pydantic.types.PositiveInt,
+        quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
+        chart: bool = False,
+    ) -> OBBject[List]:
+        """Quantile."""
+
+        inputs = filter_inputs(
+            data=data,
+            target=target,
+            window=window,
+            quantile_pct=quantile_pct,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/quantile",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def raw(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Raw."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/raw",
             **inputs,
         ).output
 
@@ -220,6 +415,7 @@ class CLASS_qa(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Rolling."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -232,17 +428,134 @@ class CLASS_qa(Container):
         return filter_output(o)
 
     @filter_call
-    @validate_arguments
-    def var(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Value at Risk."""
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def sh(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        rfr: float = 0.0,
+        window: pydantic.types.PositiveInt = 252,
+        chart: bool = False,
+    ) -> OBBject[List]:
+        """Sharpe Ratio.
+
+        Parameters
+        ----------
+        data : List[Data]
+            Time series data.
+        target : str
+            Target column name.
+        rfr : float, optional
+            Risk-free rate, by default 0.0
+        window : PositiveInt, optional
+            Window size, by default 252
+
+        Returns
+        -------
+        OBBject[List[Data]]
+            Sharpe ratio.
+        """
+
         inputs = filter_inputs(
+            data=data,
+            target=target,
+            rfr=rfr,
+            window=window,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/qa/var",
+            "/qa/sh",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def skew(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        window: pydantic.types.PositiveInt,
+        chart: bool = False,
+    ) -> OBBject[List]:
+        """Skewness.
+
+        Parameters
+        ----------
+        data : List[Data]
+            Time series data.
+        target : str
+            Target column name.
+        window : PositiveInt
+            Window size.
+
+        Returns
+        -------
+        OBBject[List[Data]]
+            Skewness.
+        """
+
+        inputs = filter_inputs(
+            data=data,
+            target=target,
+            window=window,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/skew",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def so(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        target_return: float = 0.0,
+        window: pydantic.types.PositiveInt = 252,
+        adjusted: bool = False,
+        chart: bool = False,
+    ) -> OBBject[List]:
+        """Sortino Ratio.
+
+        For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
+
+        Parameters
+        ----------
+        data : List[Data]
+            Time series data.
+        target : str
+            Target column name.
+        target_return : float, optional
+            Target return, by default 0.0
+        window : PositiveInt, optional
+            Window size, by default 252
+        adjusted : bool, optional
+            Adjust sortino ratio to compare it to sharpe ratio, by default False
+
+        Returns
+        -------
+        OBBject[List[Data]]
+            Sortino ratio.
+        """
+
+        inputs = filter_inputs(
+            data=data,
+            target=target,
+            target_return=target_return,
+            window=window,
+            adjusted=adjusted,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/qa/so",
             **inputs,
         ).output
 
@@ -250,33 +563,53 @@ class CLASS_qa(Container):
 
     @filter_call
     @validate_arguments
-    def line(
+    def spread(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Line."""
+        """Spread."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/qa/line",
+            "/qa/spread",
             **inputs,
         ).output
 
         return filter_output(o)
 
     @filter_call
-    @validate_arguments
-    def hist(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Histogram."""
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def summary(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        target: str,
+        chart: bool = False,
+    ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
+        """Summary.
+
+        Parameters
+        ----------
+        data : List[Data]
+            Time series data.
+        target : str
+            Target column name.
+
+        Returns
+        -------
+        OBBject[SummaryModel]
+            Summary table.
+        """
+
         inputs = filter_inputs(
+            data=data,
+            target=target,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/qa/hist",
+            "/qa/summary",
             **inputs,
         ).output
 
@@ -313,6 +646,7 @@ class CLASS_qa(Container):
         OBBject[UnitRootModel]
             Unit root tests summary.
         """
+
         inputs = filter_inputs(
             data=data,
             target=target,
@@ -330,327 +664,17 @@ class CLASS_qa(Container):
 
     @filter_call
     @validate_arguments
-    def beta(
+    def var(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Beta."""
+        """Value at Risk."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/qa/beta",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def sh(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        rfr: float = 0.0,
-        window: pydantic.types.PositiveInt = 252,
-        chart: bool = False,
-    ) -> OBBject[typing.List]:
-        """Sharpe Ratio.
-
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        rfr : float, optional
-            Risk-free rate, by default 0.0
-        window : PositiveInt, optional
-            Window size, by default 252
-
-        Returns
-        -------
-        OBBject[List[Data]]
-            Sharpe ratio.
-        """
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            rfr=rfr,
-            window=window,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/sh",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def so(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        target_return: float = 0.0,
-        window: pydantic.types.PositiveInt = 252,
-        adjusted: bool = False,
-        chart: bool = False,
-    ) -> OBBject[typing.List]:
-        """Sortino Ratio.
-
-        For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
-
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        target_return : float, optional
-            Target return, by default 0.0
-        window : PositiveInt, optional
-            Window size, by default 252
-        adjusted : bool, optional
-            Adjust sortino ratio to compare it to sharpe ratio, by default False
-
-        Returns
-        -------
-        OBBject[List[Data]]
-            Sortino ratio.
-        """
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            target_return=target_return,
-            window=window,
-            adjusted=adjusted,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/so",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def cusum(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Sum."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/cusum",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def raw(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Raw."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/raw",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def cdf(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Distribution Function."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/cdf",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def decompose(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Decompose."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/decompose",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def skew(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        window: pydantic.types.PositiveInt,
-        chart: bool = False,
-    ) -> OBBject[typing.List]:
-        """Skewness.
-
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        window : PositiveInt
-            Window size.
-
-        Returns
-        -------
-        OBBject[List[Data]]
-            Skewness.
-        """
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            window=window,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/skew",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def quantile(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        window: pydantic.types.PositiveInt,
-        quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
-        chart: bool = False,
-    ) -> OBBject[typing.List]:
-        """Quantile."""
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            window=window,
-            quantile_pct=quantile_pct,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/quantile",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def bw(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Bandwidth."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/bw",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def es(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Expected Shortfall."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/es",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def acf(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Autocorrelation Function."""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/acf",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def summary(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        chart: bool = False,
-    ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
-        """Summary.
-
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-
-        Returns
-        -------
-        OBBject[SummaryModel]
-            Summary table.
-        """
-        inputs = filter_inputs(
-            data=data,
-            target=target,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/qa/summary",
+            "/qa/var",
             **inputs,
         ).output
 

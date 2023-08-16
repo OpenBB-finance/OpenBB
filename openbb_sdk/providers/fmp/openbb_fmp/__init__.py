@@ -16,6 +16,7 @@ from openbb_fmp.models.esg_risk_rating import FMPESGRiskRatingFetcher
 from openbb_fmp.models.esg_score import FMPESGScoreFetcher
 from openbb_fmp.models.esg_sector import FMPESGSectorFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
+from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_eod import FMPForexEODFetcher
 from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
@@ -44,14 +45,17 @@ from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
+from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
+
+# mypy: disable-error-code="list-item"
 
 fmp_provider = Provider(
     name="fmp",
     website="https://financialmodelingprep.com/",
     description="""Financial Modeling Prep is a new concept that informs you about
-     stock market information (news, currencies, and stock prices).""",
+    stock market information (news, currencies, and stock prices).""",
     required_credentials=["api_key"],
     fetcher_dict={
         "KeyExecutives": FMPKeyExecutivesFetcher,
@@ -97,5 +101,7 @@ fmp_provider = Provider(
         "RiskPremium": FMPRiskPremiumFetcher,
         "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
         "DividendCalendar": FMPDividendCalendarFetcher,
+        "StockQuote": FMPStockQuoteFetcher,
+        "FinancialRatios": FMPFinancialRatiosFetcher,
     },
 )

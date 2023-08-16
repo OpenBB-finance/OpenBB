@@ -12,27 +12,11 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_stocks_dps(Container):
     @filter_call
     @validate_arguments
-    def psi(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Price vs short interest volume"""
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/dps/psi",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def ctb(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Cost to borrow of stocks."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -50,6 +34,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Dark pools (ATS) vs OTC data."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -67,6 +52,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Fails-to-deliver data."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -84,6 +70,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Show top high short interest stocks of over 20% ratio."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -101,6 +88,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Dark pool short position."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -118,12 +106,31 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Promising tickers based on dark pool shares regression."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
         o = self._command_runner_session.run(
             "/stocks/dps/prom",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def psi(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Price vs short interest volume"""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/dps/psi",
             **inputs,
         ).output
 
@@ -167,6 +174,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Most shorted stocks."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -184,6 +192,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Short interest and days to cover."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -201,6 +210,7 @@ class CLASS_stocks_dps(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Net short vs position."""
+
         inputs = filter_inputs(
             chart=chart,
         )

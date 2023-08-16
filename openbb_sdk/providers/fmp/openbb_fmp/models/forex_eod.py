@@ -48,7 +48,7 @@ class FMPForexEODData(ForexEODData):
 class FMPForexEODFetcher(
     Fetcher[
         FMPForexEODQueryParams,
-        FMPForexEODData,
+        List[FMPForexEODData],
     ]
 ):
     @staticmethod

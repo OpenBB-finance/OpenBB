@@ -27,7 +27,7 @@ class FMPStockSplitCalendarData(StockSplitCalendarData):
 class FMPStockSplitCalendarFetcher(
     Fetcher[
         FMPStockSplitCalendarQueryParams,
-        FMPStockSplitCalendarData,
+        List[FMPStockSplitCalendarData],
     ]
 ):
     @staticmethod

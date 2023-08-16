@@ -49,7 +49,7 @@ class YFinanceCryptoEODData(CryptoEODData):
 class YFinanceCryptoEODFetcher(
     Fetcher[
         YFinanceCryptoEODQueryParams,
-        YFinanceCryptoEODData,
+        List[YFinanceCryptoEODData],
     ]
 ):
     @staticmethod

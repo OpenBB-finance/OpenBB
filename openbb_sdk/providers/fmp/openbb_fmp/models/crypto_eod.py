@@ -16,6 +16,7 @@ from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPCryptoEODQueryParams(CryptoEODQueryParams):
+    # noqa: E501
     """FMP Crypto end of day Query.
 
     Source:
@@ -57,7 +58,7 @@ class FMPCryptoEODData(CryptoEODData):
 class FMPCryptoEODFetcher(
     Fetcher[
         FMPCryptoEODQueryParams,
-        FMPCryptoEODData,
+        List[FMPCryptoEODData],
     ]
 ):
     @staticmethod

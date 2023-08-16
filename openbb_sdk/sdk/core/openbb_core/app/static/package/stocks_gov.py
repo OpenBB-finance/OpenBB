@@ -16,6 +16,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Return government contracts."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -33,6 +34,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Return government trading."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -50,6 +52,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Return government trades."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -67,6 +70,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Historical quarterly government contracts."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -84,6 +88,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Return last government contracts given out."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -101,6 +106,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Last trades."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -118,6 +124,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Corporate lobbying details."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -135,6 +142,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Quarterly government contracts analysis."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -152,6 +160,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Show most purchased stocks."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -169,6 +178,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Top corporate lobbying tickers."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -186,6 +196,7 @@ class CLASS_stocks_gov(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Show most sold stocks."""
+
         inputs = filter_inputs(
             chart=chart,
         )

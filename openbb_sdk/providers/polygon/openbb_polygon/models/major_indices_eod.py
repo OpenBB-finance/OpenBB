@@ -10,7 +10,7 @@ from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveFloat, PositiveInt, validator
+from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -41,19 +41,17 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 
     class Config:
         fields = {
+            "date": "t",
             "open": "o",
             "high": "h",
             "low": "l",
             "close": "c",
             "volume": "v",
+            "vwap": "vw",
         }
 
-    t: datetime = Field(description="The timestamp of the data.")
     n: PositiveInt = Field(
         description="The number of transactions for the symbol in the time period."
-    )
-    vw: PositiveFloat = Field(
-        description="The volume weighted average price of the symbol."
     )
 
     @validator("t", pre=True, check_fields=False)
@@ -64,7 +62,7 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
 class PolygonMajorIndicesEODFetcher(
     Fetcher[
         PolygonMajorIndicesEODQueryParams,
-        PolygonMajorIndicesEODData,
+        List[PolygonMajorIndicesEODData],
     ]
 ):
     @staticmethod
@@ -88,10 +86,9 @@ class PolygonMajorIndicesEODFetcher(
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"I:{query.symbol}/range/1/{query.timespan}/"
+            f"I:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url, **kwargs)
@@ -101,11 +98,12 @@ class PolygonMajorIndicesEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonMajorIndicesEODData(**d) for d in data]
+        return [
+            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
+        ]
 
     @staticmethod
     def transform_data(
         data: List[PolygonMajorIndicesEODData],
-    ) -> List[PolygonMajorIndicesEODData]:
-        return data
+    ) -> List[MajorIndicesEODData]:
+        return [MajorIndicesEODData.parse_obj(d.dict()) for d in data]

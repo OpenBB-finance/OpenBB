@@ -46,7 +46,7 @@ class YFinanceStockEODData(StockEODData):
 class YFinanceStockEODFetcher(
     Fetcher[
         YFinanceStockEODQueryParams,
-        YFinanceStockEODData,
+        List[YFinanceStockEODData],
     ]
 ):
     @staticmethod
@@ -58,7 +58,7 @@ class YFinanceStockEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return YFinanceStockEODQueryParams(**transformed_params)
+        return YFinanceStockEODQueryParams(**params)
 
     @staticmethod
     def extract_data(

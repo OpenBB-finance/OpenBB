@@ -29,7 +29,7 @@ class CboeStockEODData(StockEODData):
 class CboeStockEODFetcher(
     Fetcher[
         CboeStockEODQueryParams,
-        CboeStockEODData,
+        List[CboeStockEODData],
     ]
 ):
     @staticmethod

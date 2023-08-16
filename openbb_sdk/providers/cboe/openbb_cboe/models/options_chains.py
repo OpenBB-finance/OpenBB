@@ -93,7 +93,7 @@ class CboeOptionsChainsData(OptionsChainsData):
 class CboeOptionsChainsFetcher(
     Fetcher[
         CboeOptionsChainsQueryParams,
-        CboeOptionsChainsData,
+        List[CboeOptionsChainsData],
     ]
 ):
     @staticmethod

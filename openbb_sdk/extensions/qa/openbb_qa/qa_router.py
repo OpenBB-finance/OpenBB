@@ -18,8 +18,8 @@ from pydantic import NonNegativeFloat, PositiveInt
 from scipy import stats
 from statsmodels.tsa import stattools
 
-from .qa_helpers import get_fama_raw
-from .qa_models import (
+from openbb_qa.qa_helpers import get_fama_raw
+from openbb_qa.qa_models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,
@@ -85,7 +85,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
     df_target = get_target_columns(df, ["date", target])
     df_target = df_target.set_index("date")
-    df_target["return"] = df_target.pct_change()
+    df_target.loc[:, "return"] = df_target.pct_change()
     df_target = df_target.dropna()
     start_date = df_target.index.min().strftime("%Y-%m-%d")
     end_date = df_target.index.max().strftime("%Y-%m-%d")

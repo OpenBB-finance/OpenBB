@@ -54,7 +54,7 @@ class FMPDividendCalendarData(DividendCalendarData):
 class FMPDividendCalendarFetcher(
     Fetcher[
         FMPDividendCalendarQueryParams,
-        FMPDividendCalendarData,
+        List[FMPDividendCalendarData],
     ]
 ):
     @staticmethod
@@ -85,5 +85,5 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_data(
         data: List[FMPDividendCalendarData],
-    ) -> List[FMPDividendCalendarData]:
-        return data
+    ) -> List[DividendCalendarData]:
+        return [DividendCalendarData.parse_obj(d.dict()) for d in data]
