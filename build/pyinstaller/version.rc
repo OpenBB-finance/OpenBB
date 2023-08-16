@@ -32,10 +32,10 @@ VSVersionInfo(
         [StringStruct('Comments', 'The OpenBB Terminal. For additional details, visit OpenBB.co'),
         StringStruct('CompanyName', 'OpenBB'),
         StringStruct('FileDescription', 'OpenBB Terminal Program'),
-        StringStruct('FileVersion', '3.2.0.0'),
+        StringStruct('FileVersion', '3.2.1.0'),
         StringStruct('InternalName', 'OpenBB Terminal'),
         StringStruct('ProductName', 'OpenBB Terminal'),
-        StringStruct('ProductVersion', '3.2.0.0')])
+        StringStruct('ProductVersion', '3.2.1.0')])
       ]),
     VarFileInfo([VarStruct('Translation', [1033, 1200])])
   ]
