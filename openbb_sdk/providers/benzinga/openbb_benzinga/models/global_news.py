@@ -54,11 +54,7 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
             "topic",
             "content_type",
         ]
-    ] = Field(
-        default=None,
-        description="The order in which to sort the news. "
-        "Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.",
-    )
+    ] = Field(default=None, description="The order in which to sort the news. ")
     isin: Optional[str] = Field(
         default=None, description="The ISIN of the news to retrieve."
     )

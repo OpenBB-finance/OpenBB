@@ -53,7 +53,7 @@ class CLASS_news(Container):
         publishedSince : Optional[int]
             The number of seconds since the news was published. (provider: benzinga)
         sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
-            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type. (provider: benzinga)
+            The order in which to sort the news.  (provider: benzinga)
         isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Optional[str]
