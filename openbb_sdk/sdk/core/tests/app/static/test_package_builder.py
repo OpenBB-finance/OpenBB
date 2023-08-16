@@ -225,9 +225,17 @@ def test_reorder_params(method_definition):
 def test_build_func_params(method_definition):
     """Test build func params."""
     param_map = {
-        "param1": Parameter(name="param1", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=NoneType),
-        "param2": Parameter("param2", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=int),
-        "param3": Parameter("param3", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=pandas.core.frame.DataFrame),
+        "param1": Parameter(
+            name="param1", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=NoneType
+        ),
+        "param2": Parameter(
+            "param2", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=int
+        ),
+        "param3": Parameter(
+            "param3",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=pandas.core.frame.DataFrame,
+        ),
     }
 
     expected_output = "param1: None, param2: int, param3: pandas.DataFrame"
@@ -257,7 +265,9 @@ def test_build_command_method_signature(method_definition):
     }
     return_type = int
     output = method_definition.build_command_method_signature(
-        func_name="test_func", formatted_params=formatted_params, return_type=return_type
+        func_name="test_func",
+        formatted_params=formatted_params,
+        return_type=return_type,
     )
     assert output
 
@@ -273,7 +283,9 @@ def test_build_command_method_doc(method_definition):
         "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
     }
 
-    output = method_definition.build_command_method_doc(func=some_func, formatted_params=formatted_params)
+    output = method_definition.build_command_method_doc(
+        func=some_func, formatted_params=formatted_params
+    )
     assert output
     assert isinstance(output, str)
 
@@ -469,71 +481,58 @@ def test_docstring_generator_init(docstring_generator):
 
 def test_get_OBBject_description(docstring_generator):
     """Test build docstring."""
-    docstring = docstring_generator.get_OBBject_description("SomeModel", "some_provider")
+    docstring = docstring_generator.get_OBBject_description(
+        "SomeModel", "some_provider"
+    )
     assert docstring
 
 
-def test_get_available_providers(docstring_generator):
-    """Test get available providers."""
-    provider_assert = ["fmp", "polygon"]
-    some_mapping = {"fmp": 1, "openbb": 2, "polygon": 3}
-    providers = docstring_generator.get_available_providers(query_mapping=some_mapping)
-    assert providers
-    for provider in provider_assert:
-        assert provider in providers
-
-
-def test_reorder_dictionary(docstring_generator):
-    """Test reorder dictionary."""
-    some_mapping = {"fmp": 1, "openbb": 2, "polygon": 3}
-    reordered = docstring_generator.reorder_dictionary(
-        dictionary=some_mapping, key_to_move_first="openbb"
-    )
-    assert reordered
-    assert list(reordered.keys())[0] == "openbb"
-
-
-def test_extract_field_details(docstring_generator):
-    """Test extract field details."""
-    mapping = get_provider_interface().map
-    section_docstring = docstring_generator.extract_field_details(
-        model_name="GlobalNews",
-        provider="openbb",
-        section_name="QueryParams",
-        section_docstring="some_param: str\n   Some param description\n",
-        mapping=mapping,
-    )
-    assert section_docstring
-    assert "some_param" in section_docstring
-
-
-def test_generate_provider_docstrings(docstring_generator):
-    """Test generate provider docstrings."""
+def test_generate_model_docstring(docstring_generator):
+    """Test generate model docstring."""
     docstring = ""
     model_name = "GlobalNews"
-    provider_interface_mapping = get_provider_interface().map
-    query_mapping = provider_interface_mapping.get(model_name, None)
-    docstring = docstring_generator.generate_provider_docstrings(
-        docstring=docstring,
-        query_mapping=query_mapping,
+    summary = "This is a summary."
+
+    pi = docstring_generator.provider_interface
+    params = pi.params[model_name]
+    return_schema = pi.return_schema[model_name]
+    returns = return_schema.__fields__
+
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+    explicit_dict = dict(formatted_params)
+
+    docstring = docstring_generator.generate_model_docstring(
         model_name=model_name,
-        provider_interface_mapping=provider_interface_mapping,
+        summary=summary,
+        explicit_params=explicit_dict,
+        params=params,
+        returns=returns,
     )
 
     assert docstring
-    assert "openbb" in docstring
+    assert summary in docstring
+    assert "Parameters" in docstring
+    assert "Returns" in docstring
     assert "GlobalNews" in docstring
 
 
-def test_generate_command_docstring(docstring_generator):
-    """Test generate command docstring."""
+def test_generate(docstring_generator):
+    """Test generate docstring."""
 
     def some_func():
         """Some func docstring."""
-        pass
 
-    docstring = docstring_generator.generate_command_docstring(
-        func=some_func, model_name="GlobalNews"
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+
+    f = docstring_generator.generate(
+        func=some_func, formatted_params=formatted_params, model_name="GlobalNews"
     )
-    assert docstring
-    assert "openbb" in docstring.__doc__
+    assert f
+    assert "Parameters" in f.__doc__
+    assert "Returns" in f.__doc__
