@@ -1,6 +1,6 @@
 """CBOE Stock Info fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -9,7 +9,7 @@ from openbb_provider.standard_models.stock_info import (
     StockInfoData,
     StockInfoQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field
 
 from openbb_cboe.utils.helpers import get_info
 
@@ -75,10 +75,6 @@ class CboeStockInfoData(StockInfoData):
         description="The 90-day high of realized volatility."
     )
 
-    @validator("symbol", pre=True, check_fields=False)
-    def name_validate(cls, v):  # pylint: disable=E0213
-        return v.upper()
-
 
 class CboeStockInfoFetcher(
     Fetcher[
@@ -86,8 +82,12 @@ class CboeStockInfoFetcher(
         CboeStockInfoData,
     ]
 ):
+    """Transform the query, extract and transform the data from the CBOE endpoints"""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockInfoQueryParams:
+        """Transform the query"""
+
         return CboeStockInfoQueryParams(**params)
 
     @staticmethod
@@ -96,9 +96,12 @@ class CboeStockInfoFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> CboeStockInfoData:
-        data = get_info(query.symbol).to_dict()
-        return CboeStockInfoData.parse_obj(data)
+        """Return the raw data from the CBOE endpoint"""
+
+        return get_info(query.symbol).to_dict()
 
     @staticmethod
     def transform_data(data: List[CboeStockInfoData]) -> CboeStockInfoData:
-        return data
+        """Transform the data to the standard format"""
+
+        return CboeStockInfoData.parse_obj(data)

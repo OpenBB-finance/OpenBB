@@ -13,10 +13,9 @@ class StockInfoQueryParams(QueryParams, BaseSymbol):
     """Stock Info Query Params"""
 
 
-class StockInfoData(Data):
+class StockInfoData(Data, BaseSymbol):
     """Stock Info Data."""
 
-    symbol: str = Field(description="The ticker symbol.")
     name: str = Field(description="The name associated with the ticker symbol.")
     price: float = Field(description="The last price of the stock.")
     open: Optional[float] = Field(description="The opening price of the stock.")

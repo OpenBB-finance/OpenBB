@@ -1,6 +1,6 @@
 """CBOE Company Search fetcher."""
 
-# IMPORT STANDARD
+
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -24,6 +24,8 @@ class CboeStockSearchData(StockSearchData):
     """CBOE Company Search Data."""
 
     class Config:
+        """Pydantic alias config using fields dict"""
+
         fields = {
             "name": "Company Name",
             "symbol": "Symbol",
@@ -38,10 +40,6 @@ class CboeStockSearchData(StockSearchData):
         alias="Post/Station",
     )
 
-    @validator("symbol", pre=True, check_fields=False)
-    def name_validate(cls, v):  # pylint: disable=E0213
-        return v.upper()
-
 
 class CboeStockSearchFetcher(
     Fetcher[
@@ -49,8 +47,12 @@ class CboeStockSearchFetcher(
         List[CboeStockSearchData],
     ]
 ):
+    """Transform the query, extract and transform the data from the CBOE endpoints"""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockSearchQueryParams:
+        """Transform the query"""
+
         return CboeStockSearchQueryParams(**params)
 
     @staticmethod
@@ -59,10 +61,17 @@ class CboeStockSearchFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[CboeStockSearchData]:
+        """Return the raw data from the CBOE endpoint"""
+
         data = stock_search(query.query, ticker=query.ticker)
 
-        return [CboeStockSearchData.parse_obj(d) for d in data.get("results", [])]
+        if "results" in data:
+            return data["results"]
+        else:
+            raise ValueError("No results found.")
 
     @staticmethod
     def transform_data(data: List[CboeStockSearchData]) -> List[CboeStockSearchData]:
-        return data
+        """Transform the data to the standard format"""
+
+        return [CboeStockSearchData.parse_obj(d) for d in data]

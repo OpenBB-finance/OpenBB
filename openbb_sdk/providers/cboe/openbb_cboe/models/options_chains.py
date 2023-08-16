@@ -1,6 +1,6 @@
 """CBOE Options Chains fetcher."""
 
-# IMPORT STANDARD
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -87,6 +87,8 @@ class CboeOptionsChainsData(OptionsChainsData):
 
     @validator("expiration", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the datetime object from the date string"""
+
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -96,8 +98,12 @@ class CboeOptionsChainsFetcher(
         List[CboeOptionsChainsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the CBOE endpoints"""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeOptionsChainsQueryParams:
+        """Transform the query"""
+
         return CboeOptionsChainsQueryParams(**params)
 
     @staticmethod
@@ -106,12 +112,14 @@ class CboeOptionsChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[CboeOptionsChainsData]:
-        data = get_chains(query.symbol).to_dict("records")
+        """Return the raw data from the CBOE endpoint"""
 
-        return [CboeOptionsChainsData.parse_obj(d) for d in data]
+        return get_chains(query.symbol).to_dict("records")
 
     @staticmethod
     def transform_data(
         data: List[CboeOptionsChainsData],
     ) -> List[CboeOptionsChainsData]:
-        return data
+        """Transform the data to the standard format"""
+
+        return [CboeOptionsChainsData.parse_obj(d) for d in data]

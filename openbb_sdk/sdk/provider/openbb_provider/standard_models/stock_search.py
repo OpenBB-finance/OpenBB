@@ -4,6 +4,7 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.standard_models.base import BaseSymbol
 
 
 class StockSearchQueryParams(QueryParams):
@@ -15,8 +16,7 @@ class StockSearchQueryParams(QueryParams):
     )
 
 
-class StockSearchData(Data):
+class StockSearchData(Data, BaseSymbol):
     """Company Search Data."""
 
-    symbol: str = Field(description="The ticker symbol of the company.")
     name: str = Field(description="The name of the company.")
