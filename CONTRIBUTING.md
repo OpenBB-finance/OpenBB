@@ -1212,6 +1212,9 @@ In order to do that, you'll simply need to choose from one the following files:
 1. [local_credentials.json](openbb_terminal/miscellaneous/models/local_credentials.json) --> credentials that should only be stored locally and not pushed to the [OpenBB Hub](https://my.openbb.co/) like brokerage keys or other very sensitive or personal to the user.
 2. [hub_credentials.json](openbb_terminal/miscellaneous/models/hub_credentials.json) --> credentials that should be stored in the [OpenBB Hub](https://my.openbb.co/) like API keys to access your favorite providers.
 
+Then just update [all_api_keys.json](openbb_terminal/miscellaneous/models/all_api_keys.json) with the instructions to get
+the api key from the data source website. Make sure that this file has the correct `.json` format, otherwise the API keys page in the Hub will break (e.g. in json the last element key-value pair shouldn't be followed by a comma, and the last object in a list of dictionaries should also not be followed by a comma).
+
 > Note: By differentiating between local and hub credentials, we can ensure that the user's credentials are not pushed to the [OpenBB Hub](https://my.openbb.co/) and are only stored locally. This does not mean that the credentials are not secure in the OpenBB Hub, but rather that the user can choose to store them locally if they wish.
 
 ### Setting and checking API key

@@ -35,7 +35,8 @@ def get_option_history(
     price : Union[str, Union[int, float]]
         Strike price for a specific option
     chain_id: str
-        OCC option symbol.  Overwrites other inputs
+        Option symbol.  Overwrites other inputs. ChartExchange uses the format:
+        `{TICKER}{YYYYMMDD}{C/P}{PRICE}`, where the price has no leading and trailing zeros.
 
     Returns
     -------

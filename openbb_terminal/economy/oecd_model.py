@@ -473,8 +473,8 @@ def no_data_message(error: str):
 
 @log_start_end(log=logger)
 def get_gdp(
-    countries: Optional[List[str]],
-    units: str = "USD_CAP",
+    countries: Optional[str] = "united_states",
+    units: str = "USD",
     start_date="",
     end_date="",
 ) -> pd.DataFrame:
@@ -496,7 +496,7 @@ def get_gdp(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'USD_CAP' or 'MLN_USD'.
+        Units to get data in. Either 'USD' or 'USD_CAP'.
         Default is US dollars per capita.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -518,17 +518,21 @@ def get_gdp(
     if isinstance(end_date, datetime):
         end_date = end_date.date()
 
-    if units not in ["USD_CAP", "MLN_USD"]:
-        return console.print(
-            "Use either USD_CAP (US dollars per capita) "
-            "or MLN_USD (millions of US dollars) for units"
+    units_dict = {"USD": "MLN_USD", "USD_CAP": "USD_CAP"}
+
+    if units not in units_dict:
+        console.print(
+            "Invalid choice, choices are either USD or USD_CAP. Defaulting to USD."
         )
+        units = "USD"
+
+    countries = [countries] if isinstance(countries, str) else countries  # type: ignore[assignment]
 
     df = pd.DataFrame()
 
     try:
         df = pd.read_csv(
-            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{units}.A/OECD?contentType=csv&detail=code"
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{units_dict[units]}.A/OECD?contentType=csv&detail=code"
             f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
@@ -552,6 +556,7 @@ def get_gdp(
 
     result.index = pd.to_datetime(result.index, format="%Y")
     result.sort_index(inplace=True)
+    result = result * 1000000 if units == "USD" else result
 
     return result
 

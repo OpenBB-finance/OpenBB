@@ -6,7 +6,7 @@ keywords: [basics, installation, commands, menus, your own data, introduction, o
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="Basics - SDK | OpenBB Docs" />`
+<HeadTitle title="Basics - SDK | OpenBB Docs" />
 
 ## Overview
 

@@ -44,6 +44,7 @@ class DashboardsController(BaseController):
         "futures",
         "forecasting",
         "indicators",
+        "options",
     ]
     PATH = "/dashboards/"
 
@@ -75,6 +76,7 @@ class DashboardsController(BaseController):
         mt.add_cmd("forecasting")
         mt.add_cmd("futures")
         mt.add_cmd("shortdata")
+        mt.add_cmd("options")
         console.print(text=mt.menu_text, menu="Dashboards")
 
     @log_start_end(log=logger)
@@ -111,6 +113,11 @@ class DashboardsController(BaseController):
     def call_indicators(self, other_args: List[str]):
         """Process indicators command."""
         self.create_call_streamlit(other_args, "Indicators")
+
+    @log_start_end(log=logger)
+    def call_options(self, other_args: List[str]):
+        """Process indicators command."""
+        self.create_call_streamlit(other_args, "Options")
 
     def kill_processes(self) -> None:
         """Kills all processes started by this class."""
@@ -250,7 +257,7 @@ class DashboardsController(BaseController):
             if self.check_processes():
                 plots_backend().send_url(
                     url=self.check_processes(name),
-                    title=f"{filename.title()} Dashboard",
+                    title=f"{filename.replace('_', ' ').title()} Dashboard",
                 )
 
 

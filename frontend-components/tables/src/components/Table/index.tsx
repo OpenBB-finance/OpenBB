@@ -181,7 +181,8 @@ export default function Table({
             : columns[0];
           const indexValue = indexLabel ? row[indexLabel] : null;
           const value = row[column];
-          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
+          const only_numbers =
+            value?.toString()?.split(".")?.[0]?.replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
             only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
@@ -197,7 +198,11 @@ export default function Table({
                   indexValue.toLowerCase().includes("hour") ||
                   indexValue.toLowerCase().includes("minute"))));
 
-          if (probablyDate && isoYearRegex.test(value?.toString()))
+          if (
+            probablyDate &&
+            value?.length === 4 &&
+            isoYearRegex.test(value?.toString())
+          )
             return value;
 
           if (probablyDate) {
@@ -219,7 +224,8 @@ export default function Table({
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
-          const only_numbers = value?.toString().replace(/[^0-9]/g, "") ?? "";
+          const only_numbers =
+            value?.toString()?.split(".")?.[0]?.replace(/[^0-9]/g, "") ?? "";
           const probablyDate =
             only_numbers?.length >= 4 &&
             (includesDateNames(column) ||
@@ -246,14 +252,15 @@ export default function Table({
               </a>
             );
           }
-          if (probablyDate && isoYearRegex.test(value?.toString())) {
-            return <p>{value}</p>;
-          }
+
           if (
             probablyDate &&
-            !isNaN(new Date(value).getTime()) &&
-            !isoYearRegex.test(value?.toString())
+            value?.length === 4 &&
+            isoYearRegex.test(value?.toString())
           ) {
+            return <p>{value}</p>;
+          }
+          if (probablyDate && !isNaN(new Date(value).getTime())) {
             if (typeof value === "string") {
               const date = value.split("T")[0];
               const time = value.split("T")[1]?.split(".")[0];

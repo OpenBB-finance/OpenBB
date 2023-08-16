@@ -63,3 +63,15 @@ jobs:
         uses: docker://avtodev/markdown-lint:v1
         with:
           args: "./*.md ./changelogs/*.md ./openbb_terminal/**/*.md ./discordbot/**/*.md"
+
+  json-yaml-validate:
+    name: JSON Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: json-yaml-validate
+        id: json-yaml-validate
+        uses: GrantBirki/json-yaml-validate@v2.0.0
+        with:
+          exclude_file: json_validate_exclude.txt

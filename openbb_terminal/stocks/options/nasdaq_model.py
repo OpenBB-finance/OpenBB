@@ -349,7 +349,7 @@ def get_available_greeks(OptionsChains, expiration: str = "") -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for Nasdaq.
 
     Parameters
@@ -496,4 +496,4 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         setattr(OptionsChainsPydantic, "get_available_greeks", get_greeks)
         return OptionsChainsPydantic
 
-    return None
+    return Options()

@@ -1953,6 +1953,24 @@ files = [
 ]
 
 [[package]]
+name = "ecdsa"
+version = "0.18.0"
+description = "ECDSA cryptographic signature library (pure python)"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "ecdsa-0.18.0-py2.py3-none-any.whl", hash = "sha256:80600258e7ed2f16b9aa1d7c295bd70194109ad5a30fdee0eaeefef1d4c559dd"},
+    {file = "ecdsa-0.18.0.tar.gz", hash = "sha256:190348041559e21b22a1d65cee485282ca11a6f81d503fddb84d5017e9ed1e49"},
+]
+
+[package.dependencies]
+six = ">=1.9.0"
+
+[package.extras]
+gmpy = ["gmpy"]
+gmpy2 = ["gmpy2"]
+
+[[package]]
 name = "ecos"
 version = "2.0.12"
 description = "This is the Python package for ECOS: Embedded Cone Solver. See Github page for more information."
@@ -2280,13 +2298,13 @@ user_agent = "*"
 
 [[package]]
 name = "finvizfinance"
-version = "0.14.5"
+version = "0.14.6rc2"
 description = "Finviz Finance. Information downloader."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "finvizfinance-0.14.5-py3-none-any.whl", hash = "sha256:1b22bfd7af36f01a08c6032e19f64e810ae3f42bfba681e9a2132226a5a90924"},
-    {file = "finvizfinance-0.14.5.tar.gz", hash = "sha256:c97fe0e69d681d9108113aed943988561665d0d4dbd64ffa0b666a2899c25899"},
+    {file = "finvizfinance-0.14.6rc2-py3-none-any.whl", hash = "sha256:70742b5054e84fbe5a1ffcc7cad97ca9225292e07ce0349dcb78462d5e5e51a0"},
+    {file = "finvizfinance-0.14.6rc2.tar.gz", hash = "sha256:736f3064faac1f8ba6d06fdd7c77f79a3e831c2048fc6442759861fce4c4a6e8"},
 ]
 
 [package.dependencies]
@@ -6097,7 +6115,7 @@ numpy = ">=1.16.6"
 name = "pyasn1"
 version = "0.5.0"
 description = "Pure-Python implementation of ASN.1 types and DER/BER/CER codecs (X.208)"
-optional = true
+optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 files = [
     {file = "pyasn1-0.5.0-py2.py3-none-any.whl", hash = "sha256:87a2121042a1ac9358cabcaf1d07680ff97ee6404333bacca15f76aa8ad01a57"},
@@ -6980,6 +6998,27 @@ files = [
 yaml = ["pyyaml (>=3.10)"]
 
 [[package]]
+name = "python-jose"
+version = "3.3.0"
+description = "JOSE implementation in Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-jose-3.3.0.tar.gz", hash = "sha256:55779b5e6ad599c6336191246e95eb2293a9ddebd555f796a65f838f07e5d78a"},
+    {file = "python_jose-3.3.0-py2.py3-none-any.whl", hash = "sha256:9b1376b023f8b298536eedd47ae1089bcdb848f1535ab30555cd92002d78923a"},
+]
+
+[package.dependencies]
+ecdsa = "!=0.15"
+pyasn1 = "*"
+rsa = "*"
+
+[package.extras]
+cryptography = ["cryptography (>=3.4.0)"]
+pycrypto = ["pyasn1", "pycrypto (>=2.6.0,<2.7.0)"]
+pycryptodome = ["pyasn1", "pycryptodome (>=3.3.1,<4.0.0)"]
+
+[[package]]
 name = "python-json-logger"
 version = "2.0.7"
 description = "A python library adding a json log formatter"
@@ -7694,7 +7733,7 @@ requests = "*"
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
-optional = true
+optional = false
 python-versions = ">=3.6,<4"
 files = [
     {file = "rsa-4.9-py3-none-any.whl", hash = "sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7"},
@@ -10451,4 +10490,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.11, !=3.9.7"
-content-hash = "09a307f72efb6144c29754ed42e716d70a29dc61607c082b0bd067fede7bdb87"
+content-hash = "cf28c86b1360b436443a486b5ed8b33101e35d3a6c02f81c7dc85515e520c634"

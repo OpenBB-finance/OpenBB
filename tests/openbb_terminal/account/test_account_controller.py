@@ -50,18 +50,21 @@ ROUTINES = {
             "description": "abc",
             "version": "0.0.0",
             "updated_date": "2021-01-01",
+            "uuid": "dad15f7d-4757-4fa6-a1e4-b9d150282ea0",
         },
         {
             "name": "script2",
             "description": "def",
             "version": "0.0.1",
             "updated_date": "2022-01-01",
+            "uuid": "4d87035e-33fa-4714-8b8f-9b699423595a",
         },
         {
             "name": "script3",
             "description": "ghi",
             "version": "0.0.2",
             "updated_date": "2023-01-01",
+            "uuid": "4d87035e-33fa-4714-8b8f-9b699423595b",
         },
     ],
     "total": 3,
@@ -401,7 +404,10 @@ def test_call_list(mocker, test_user):
     controller.call_list(other_args=["--page", "1", "--size", "10"])
 
     mock_list_routines.assert_called_once_with(
-        auth_header="Bearer 123", page=1, size=10
+        auth_header="Bearer 123",
+        page=1,
+        size=10,
+        base_url="https://payments.openbb.co/",
     )
 
 
@@ -443,12 +449,14 @@ def test_call_upload(mocker, test_user):
         routine="do something",
         tags="stocks",
         public=False,
+        base_url="https://payments.openbb.co/",
     )
 
 
 @pytest.mark.record_stdout
 def test_call_download(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
+    controller.REMOTE_CHOICES = {"script1": "script1"}
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
@@ -475,16 +483,12 @@ def test_call_download(mocker, test_user):
         return_value="path_to_file",
     )
 
-    controller.call_download(
-        other_args=[
-            "--name",
-            "script1",
-        ]
-    )
+    controller.call_download(other_args=["--name", "script1"])
 
     mock_download_routine.assert_called_once_with(
         auth_header="Bearer 123",
-        name="script1",
+        uuid="script1",
+        base_url="https://payments.openbb.co/",
     )
     mock_save_routine.assert_called_once_with(
         file_name="script1.openbb", routine=["do something", "personal"]
@@ -556,6 +560,7 @@ def test_call_generate(mocker, monkeypatch, test_user):
 
     mock_generate.assert_called_once_with(
         auth_header="Bearer 123",
+        base_url="https://payments.openbb.co/",
         days=30,
     )
 
