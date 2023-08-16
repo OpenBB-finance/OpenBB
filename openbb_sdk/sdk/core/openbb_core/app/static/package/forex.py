@@ -1,12 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
-from typing import Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
@@ -17,9 +17,9 @@ class CLASS_forex(Container):
     def pairs(
         self,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["polygon", "fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
+    ) -> OBBject[List]:
         """Forex Available Pairs.
 
 
@@ -28,13 +28,13 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[polygon, fmp]
             The provider to use for the query.
         All fields are standardized.
 
         Returns
         -------
-        CommandOutput
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -51,25 +51,6 @@ class CLASS_forex(Container):
         ----------
         name : str
             The name of the currency pair.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        ForexPairs
-        ----------
-        symbol : str
-            The symbol of the currency pair.
-        currency : str
-            The base currency of the currency pair.
-        stockExchange : Optional[str]
-            The stock exchange of the currency pair.
-        exchange_short_name : Optional[str]
-            The short name of the stock exchange of the currency pair.
 
         polygon
         =======
@@ -109,7 +90,26 @@ class CLASS_forex(Container):
         last_updated_utc : datetime
             The last updated timestamp in UTC.
         delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC."""
+            The delisted timestamp in UTC.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        ForexPairs
+        ----------
+        symbol : str
+            The symbol of the currency pair.
+        currency : str
+            The base currency of the currency pair.
+        stockExchange : Optional[str]
+            The stock exchange of the currency pair.
+        exchange_short_name : Optional[str]
+            The short name of the stock exchange of the currency pair."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -130,14 +130,27 @@ class CLASS_forex(Container):
     @validate_arguments
     def load(
         self,
-        symbol: str,
-        start_date: Union[datetime.date, None, str] = None,
-        end_date: Union[datetime.date, None, str] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
         **kwargs
-    ) -> CommandOutput[typing.List]:
-        """Forex Intraday Price.
+    ) -> OBBject[List]:
+        r"""Forex Intraday Price.
 
 
         openbb
@@ -145,9 +158,9 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
+        provider: Literal[yfinance, polygon, fmp]
             The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : str
             Symbol to get data for.
         start_date : Optional[date]
             Start date of the data, in YYYY-MM-DD format.
@@ -156,7 +169,7 @@ class CLASS_forex(Container):
 
         Returns
         -------
-        CommandOutput
+        OBBject
             results: List[Data]
                 Serializable results.
             provider: Optional[PROVIDERS]
@@ -186,28 +199,20 @@ class CLASS_forex(Container):
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
 
-        fmp
-        ===
+        yfinance
+        ========
 
         Parameters
         ----------
-        All fields are standardized.
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity.
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually).
 
 
         ForexEOD
         --------
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \\% in the price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \\% in the price of the symbol over a period of time.
+        All fields are standardized.
 
         polygon
         =======
@@ -229,13 +234,36 @@ class CLASS_forex(Container):
         ForexEOD
         --------
         n : PositiveInt
-            The number of transactions for the symbol in the time period."""
+            The number of transactions for the symbol in the time period.
+
+        fmp
+        ===
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        ForexEOD
+        --------
+        adjClose : float
+            Adjusted Close Price of the symbol.
+        unadjustedVolume : float
+            Unadjusted volume of the symbol.
+        change : float
+            Change in the price of the symbol from the previous day.
+        changePercent : float
+            Change \% in the price of the symbol.
+        label : str
+            Human readable format of the date.
+        changeOverTime : float
+            Change \% in the price of the symbol over a period of time."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },

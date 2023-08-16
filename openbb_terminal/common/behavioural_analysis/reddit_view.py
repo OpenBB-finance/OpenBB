@@ -282,8 +282,8 @@ def display_redditsent(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]]
-        If supplied, expect 1 external axis
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     fig = OpenBBFigure()
 

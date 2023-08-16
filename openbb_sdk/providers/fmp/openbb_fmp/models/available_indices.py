@@ -32,7 +32,7 @@ class FMPAvailableIndicesData(AvailableIndicesData):
 class FMPAvailableIndicesFetcher(
     Fetcher[
         FMPAvailableIndicesQueryParams,
-        FMPAvailableIndicesData,
+        List[FMPAvailableIndicesData],
     ]
 ):
     @staticmethod

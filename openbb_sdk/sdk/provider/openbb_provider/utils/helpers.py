@@ -1,6 +1,5 @@
 """Provider helpers."""
 
-
 import random
 import re
 from typing import Callable, Dict, List, Optional, Type, Union
@@ -11,21 +10,20 @@ from openbb_provider.abstract.fetcher import DataType, ProviderDataType
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
-    """Turns a dictionary into a querystring, excluding the keys in the exclude list.
+    """Turn a dictionary into a querystring, excluding the keys in the exclude list.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     items: dict
         The dictionary to be turned into a querystring.
 
     exclude: List[str]
         The keys to be excluded from the querystring.
 
-    Returns:
-    --------
+    Returns
+    -------
     str
         The querystring.
-
     """
     for item in exclude:
         items.pop(item)
@@ -36,6 +34,7 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
 def process(
     row: ProviderDataType, key: str, processors: Optional[Dict[str, Callable]] = None
 ):
+    """Process a specific field."""
     if not processors:
         return getattr(row, key)
     if key not in processors:
@@ -44,7 +43,7 @@ def process(
 
 
 def camel_to_snake(name: str) -> str:
-    "Converts a camelCase string to snake_case."
+    """Convert a camelCase string to snake_case."""
     pattern = re.compile(r"(?<!^)(?=[A-Z])")
     return pattern.sub("_", name).lower()
 
@@ -55,6 +54,7 @@ def convert_schema(
     mapping: Dict[str, str],
     processors: Optional[Dict[str, Callable]] = None,
 ):
+    """Convert a specific schema to a given new_schema."""
     mapped_fields = {
         value: process(row, key, processors) for key, value in mapping.items()
     }
@@ -62,7 +62,7 @@ def convert_schema(
 
 
 def check_alias(field) -> bool:
-    "Checks if a field has an alias."
+    """Check if a field has an alias."""
     alias = getattr(field, "alias")
     name = getattr(field, "name")
     return alias != name
@@ -72,11 +72,11 @@ def data_transformer(
     data: Union[List[ProviderDataType], ProviderDataType],
     new_schema: Type[DataType],
     processors: Optional[Dict[str, Callable]] = None,
-) -> List[DataType]:
-    """Converts a specific data into the standardised version
+) -> Union[List[DataType], DataType]:
+    """Convert a specific data into the standardised version.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     data: Union[List[ProviderDataType], ProviderDataType]
         A list of pydantic schemas
 
@@ -86,11 +86,10 @@ def data_transformer(
     processors: Optional[Dict[str, str]]
         A dictionary with fields and custom processing functions
 
-    Returns:
-    --------
+    Returns
+    -------
     List[DataType]
         A list of the newly formatted schemas
-
     """
     the_data = data[0] if isinstance(data, list) else data
     fields = the_data.__dict__.keys()
@@ -124,7 +123,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)  # nosec
+    return random.choice(user_agent_strings)  # nosec # noqa: S311
 
 
 def make_request(

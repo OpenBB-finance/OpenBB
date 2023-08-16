@@ -1,7 +1,8 @@
+"""Package Builder Class."""
+
 import builtins
 import shutil
 import subprocess
-from collections import OrderedDict
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -12,6 +13,7 @@ from typing import (
     List,
     Literal,
     Optional,
+    OrderedDict,
     Type,
     Union,
     get_args,
@@ -21,8 +23,9 @@ from typing import (
 import pandas as pd
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
-from typing_extensions import _AnnotatedAlias
+from typing_extensions import Annotated, _AnnotatedAlias
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
 
@@ -103,8 +106,8 @@ class PackageBuilder:
         package_folder.mkdir(exist_ok=True)
 
         print(package_path)
-        with package_path.open("w") as file:
-            file.write(module_code)
+        with package_path.open("w", encoding="utf-8", newline="\n") as file:
+            file.write(module_code.replace("typing.", ""))
 
 
 class ModuleBuilder:
@@ -178,7 +181,10 @@ class ImportDefinition:
         """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
-        code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
+        code += "\nfrom openbb_core.app.model.obbject import OBBject"
+        code += (
+            "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
+        )
 
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
@@ -187,9 +193,10 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_arguments"
+        code += "\nfrom pydantic import validate_arguments, BaseModel"
         code += "\nfrom inspect import Parameter"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nimport typing"
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
 
@@ -238,12 +245,12 @@ class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
     @staticmethod
-    def get_command_output_description() -> str:
+    def get_OBBject_description() -> str:
         """Get the command output description."""
-        command_output_description = (
+        obbject_description = (
             "\nReturns\n"
             "-------\n"
-            "CommandOutput\n"
+            "OBBject\n"
             "    results: List[Data]\n"
             "        Serializable results.\n"
             "    provider: Optional[PROVIDERS]\n"
@@ -256,7 +263,7 @@ class DocstringGenerator:
             "        Chart object.\n"
         )
 
-        return command_output_description
+        return obbject_description
 
     @staticmethod
     def get_available_providers(query_mapping: dict) -> str:
@@ -322,7 +329,7 @@ class DocstringGenerator:
                 section_docstring += f"{padding}{field_description}\n"
 
         if provider == "openbb" and section_name == "QueryParams":
-            section_docstring += cls.get_command_output_description()
+            section_docstring += cls.get_OBBject_description()
 
         return section_docstring
 
@@ -347,6 +354,7 @@ class DocstringGenerator:
                         section_docstring += (
                             f"{cls.get_available_providers(query_mapping)}"
                         )
+                        # TODO: How do we know if the model has a chart parameter?
                 elif section_name == "Data":
                     underline = "-" * len(model_name)
                     section_docstring += f"\n{model_name}\n{underline}\n"
@@ -366,23 +374,26 @@ class DocstringGenerator:
         return docstring
 
     @classmethod
-    def generate_command_docstring(cls, func: Callable, model_name: str) -> Callable:
+    def generate_command_docstring(
+        cls, func: Callable, model_name: Optional[str] = None
+    ) -> Callable:
         """Generate the docstring for the command."""
-        provider_interface_mapping = get_provider_interface().map
-        query_mapping = provider_interface_mapping.get(model_name, None)
-        if query_mapping:
-            docstring = func.__doc__ or ""
-            docstring += "\n\n"
+        if model_name:
+            provider_interface_mapping = get_provider_interface().map
+            query_mapping = provider_interface_mapping.get(model_name, None)
+            if query_mapping:
+                docstring = func.__doc__ or ""
+                docstring += "\n\n"
 
-            query_mapping_ordered = cls.reorder_dictionary(query_mapping, "openbb")
-            docstring = cls.generate_provider_docstrings(
-                docstring=docstring,
-                query_mapping=query_mapping_ordered,
-                model_name=model_name,
-                provider_interface_mapping=provider_interface_mapping,
-            )
+                query_mapping_ordered = cls.reorder_dictionary(query_mapping, "openbb")
+                docstring = cls.generate_provider_docstrings(
+                    docstring=docstring,
+                    query_mapping=query_mapping_ordered,
+                    model_name=model_name,
+                    provider_interface_mapping=provider_interface_mapping,
+                )
 
-            func.__doc__ = docstring
+                func.__doc__ = docstring
         return func
 
 
@@ -453,13 +464,14 @@ class MethodDefinition:
     @staticmethod
     def format_params(
         parameter_map: Dict[str, Parameter]
-    ) -> "OrderedDict[str, Parameter]":
+    ) -> OrderedDict[str, Parameter]:
         """Format the params."""
         # These are types we want to expand.
         # For example, start_date is always a 'date', but we also accept 'str' as input.
         # Be careful, if the type is not coercible by pydantic to the original type, you
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
+            "symbol": List[str],
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
@@ -517,9 +529,45 @@ class MethodDefinition:
         return MethodDefinition.reorder_params(params=formatted)
 
     @staticmethod
-    def build_func_params(parameter_map: Dict[str, Parameter]) -> str:
-        """Build the function parameters."""
+    def add_field_descriptions(
+        od: OrderedDict[str, Parameter], model_name: Optional[str] = None
+    ) -> OrderedDict[str, Parameter]:
+        """Add the field description to the param signature."""
+        if model_name:
+            available_fields = (
+                get_provider_interface()
+                .map[model_name]["openbb"]["QueryParams"]["fields"]
+                .keys()
+            )
+
+            for param, value in od.items():
+                if param not in available_fields:
+                    continue
+
+                description = (
+                    get_provider_interface()
+                    .map[model_name]["openbb"]["QueryParams"]["fields"][param]
+                    .field_info.description
+                )
+
+                new_value = value.replace(
+                    annotation=Annotated[
+                        value.annotation, OpenBBCustomParameter(description=description)
+                    ]
+                )
+
+                od[param] = new_value
+
+    @staticmethod
+    def build_func_params(
+        parameter_map: Dict[str, Parameter], model_name: Optional[str] = None
+    ) -> str:
+        """Build the function params."""
         od = MethodDefinition.format_params(parameter_map=parameter_map)
+        MethodDefinition.add_field_descriptions(
+            od=od, model_name=model_name
+        )  # this modified `od` in place
+
         func_params = ", ".join(str(param) for param in od.values())
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(
@@ -538,29 +586,35 @@ class MethodDefinition:
         else:
             item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
-                func_returns = f"CommandOutput[{item_type.__name__}]"
+                func_returns = f"OBBject[{item_type.__name__}]"
             # elif get_origin(item_type) == list:
             #     inner_type = get_args(item_type)[0]
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-            #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
+            #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 inner_type_name = (
                     item_type.__name__
                     if hasattr(item_type, "__name__")
                     else item_type._name
                 )
-                func_returns = (
-                    f"CommandOutput[{item_type.__module__}.{inner_type_name}]"
-                )
+                result_type = f"{item_type.__module__}.{inner_type_name}"
+
+                if "pydantic.main" in result_type:
+                    result_type = "BaseModel"
+
+                func_returns = f"OBBject[{result_type}]"
 
         return func_returns
 
     @staticmethod
     def build_command_method_signature(
-        func_name: str, parameter_map: Dict[str, Parameter], return_type: type
+        func_name: str,
+        parameter_map: Dict[str, Parameter],
+        return_type: type,
+        model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
-        func_params = MethodDefinition.build_func_params(parameter_map)
+        func_params = MethodDefinition.build_func_params(parameter_map, model_name)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
 
@@ -577,7 +631,7 @@ class MethodDefinition:
     @staticmethod
     def build_command_method_doc(func: Callable):
         """Build the command method docstring."""
-        code = f'        """{func.__doc__}"""\n' if func.__doc__ else ""
+        code = f'        """{func.__doc__}"""   # noqa: E501\n' if func.__doc__ else ""
 
         return code
 
@@ -603,6 +657,9 @@ class MethodDefinition:
                 value = {k: k for k in fields}
                 code += f"            {name}={{"
                 for k, v in value.items():
+                    if k == "symbol":
+                        code += f'"{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, '
+                        continue
                     code += f'"{k}": {v}, '
                 code += "},\n"
             else:
@@ -619,7 +676,7 @@ class MethodDefinition:
 
     @classmethod
     def build_command_method(
-        cls, path: str, func: Callable, model_name: Optional[str]
+        cls, path: str, func: Callable, model_name: Optional[str] = None
     ) -> str:
         """Build the command method."""
         func_name = func.__name__
@@ -627,15 +684,15 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        if model_name:
-            func = DocstringGenerator.generate_command_docstring(
-                func=func, model_name=model_name
-            )
+        func = DocstringGenerator.generate_command_docstring(
+            func=func, model_name=model_name
+        )
 
         code = cls.build_command_method_signature(
             func_name=func_name,
             parameter_map=parameter_map,
             return_type=sig.return_annotation,
+            model_name=model_name,
         )
         code += cls.build_command_method_doc(func=func)
         code += cls.build_command_method_implementation(path=path, func=func)

@@ -32,9 +32,11 @@ class FMPRiskPremiumData(RiskPremiumData):
 class FMPRiskPremiumFetcher(
     Fetcher[
         FMPRiskPremiumQueryParams,
-        FMPRiskPremiumData,
+        List[FMPRiskPremiumData],
     ]
 ):
+    """FMP Risk Premium Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRiskPremiumQueryParams:
         return FMPRiskPremiumQueryParams(**params)
@@ -43,7 +45,7 @@ class FMPRiskPremiumFetcher(
     def extract_data(
         query: FMPRiskPremiumQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[FMPRiskPremiumData]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

@@ -33,7 +33,7 @@ class PolygonCashFlowStatementData(CashFlowStatementData):
 class PolygonCashFlowStatementFetcher(
     Fetcher[
         PolygonCashFlowStatementQueryParams,
-        PolygonCashFlowStatementData,
+        List[PolygonCashFlowStatementData],
     ]
 ):
     @staticmethod

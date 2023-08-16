@@ -4,9 +4,9 @@
   - [Pre-requisites](#pre-requisites)
   - [Installation](#installation)
   - [API keys](#api-keys)
-    - [From local file](#from-local-file)
-    - [From runtime](#from-runtime)
-    - [From OpenBB Hub](#from-openbb-hub)
+    - [1. From local file](#1-from-local-file)
+    - [2. From runtime](#2-from-runtime)
+    - [3. From OpenBB Hub](#3-from-openbb-hub)
   - [Python Usage](#python-usage)
   - [API Usage](#api-usage)
   - [Docker](#docker)
@@ -14,13 +14,13 @@
 
 ## Pre-requisites
 
-To install and use you need:
+To install and use the SDK you need:
 
 - A fresh virtual environment
 - Python 3.8 or higher
 - API keys for the APIs you want to use
 
-To develop you need:
+For development you need:
 
 - Poetry 1.5.1 or higher
 - ruff 0.0.256
@@ -29,27 +29,27 @@ To develop you need:
 
 ## Installation
 
-To install the SDK in the virtual environment from the repo root run:
+To install the SDK in a virtual environment from the repo root run:
 
 ```bash
 pip install ./openbb_sdk
 ```
 
-This will install the SDK and all the dependencies into the site-packages folder of the virtual environment.
+This will install the SDK and all its dependencies into the site-packages directory of the virtual environment.
 
 ## API keys
 
-To connect to APIs you need to provide the API keys. Here 3 options how you can provide them:
+To use your API keys you need to configure them. Here are the 3 options on how to do it:
 
 1. From local file
 2. At runtime
 3. From OpenBB Hub
 
-### From local file
+### 1. From local file
 
-You can specify the keys from the `~/.openbb_sdk/user_settings.json` file.
+You can specify the keys in the `~/.openbb_sdk/user_settings.json` file.
 
-Create this file with the following template:
+Create this file using the following template and replace the values with your keys:
 
 ```json
 {
@@ -62,11 +62,9 @@ Create this file with the following template:
 }
 ```
 
-Then add your API keys there and it should work.
+### 2. From runtime
 
-### From runtime
-
-You can also specify the keys at runtime:
+You can also specify your keys at runtime:
 
 ```python
 from openbb import obb
@@ -74,7 +72,7 @@ obb.settings.credentials.fmp_api_key = "REPLACE_ME"
 obb.settings.credentials.polygon_api_key = "REPLACE_ME"
 ```
 
-### From OpenBB Hub
+### 3. From OpenBB Hub
 
 You can also load your the keys from the OpenBB Hub.
 
@@ -89,7 +87,7 @@ Import and basic usage:
 
 ```python
 from openbb import obb
-aapl = obb.stocks.load(symbol="AAPL", start_date="2020-01-01", provider="fmp")
+aapl = obb.stocks.load("AAPL")
 df = aapl.to_dataframe()
 df.head()
 ```
@@ -108,38 +106,36 @@ Authorize with the developer credentials: openbb/openbb
 
 ## Docker
 
-You can use the API through docker.
+You can use the API through Docker.
 
-To build the image from the repo root run:
+To build the image, from the repo root run:
 
 ```bash
 docker build -f build/docker/api.dockerfile -t openbb-sdk:latest .
 ```
 
-To run the image:
+To run this newly-built image:
 
 ```bash
 docker run --rm -p8000:8000 -v ~/.openbb_sdk:/root/.openbb_sdk openbb-sdk:latest
 ```
 
-This will mount the local `~/.openbb_sdk` folder into the docker container so you can use the API keys from there and it will expose the API on port 8000.
+This will mount the local `~/.openbb_sdk` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
 
 ## Development
 
-From the root of the OpenBB Terminal repo run:
+From the root of the OpenBB Terminal repo, run:
 
 `poetry install -C ./openbb_sdk`
 
-When developing a specific extension cd into the extension folder and run:
+When developing a specific extension `cd` into the extension directory and run:
 
 `pip install -U -e .`
 
-While we're still developing it is required to create the static python interface:
+While we're still developing, it is required to create the static python interface:
 
 ```python
-import openbb
-openbb._rebuild_python_interface()
-exit()
+python -c "import openbb; openbb._rebuild_python_interface()"
 ```
 
-Right now you need to do this before the first launch and every time you install or uninstall a new extension.
+Currently you need to do this before the first launch and every time you install or uninstall a new extension.

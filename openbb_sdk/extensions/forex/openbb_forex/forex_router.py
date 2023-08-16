@@ -1,5 +1,5 @@
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -19,9 +19,9 @@ def pairs(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> OBBject[BaseModel]:
     """Forex Available Pairs."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 
 
 # pylint: disable=unused-argument
@@ -31,6 +31,6 @@ def load(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
+) -> OBBject[BaseModel]:
     """Forex Intraday Price."""
-    return CommandOutput(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())

@@ -800,6 +800,7 @@ class OptionsController(BaseController):
                     call=not ns_parser.put,
                     price=ns_parser.strike,
                     limit=ns_parser.limit,
+                    raw=ns_parser.raw,
                     export=ns_parser.export,
                     chain_id=ns_parser.chain_id,
                     sheet_name=" ".join(ns_parser.sheet_name)

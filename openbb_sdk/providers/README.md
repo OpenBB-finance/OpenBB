@@ -4,30 +4,28 @@
 
 All currently supported providers are listed below.
 
-| Provider |
-| --- |
-| [FMP](./fmp/README.md) |
-| [Polygon](./polygon/README.md) |
-| [Benzinga](./benzinga/README.md) |
-| [FRED](./fred/README.md) |
+| Provider | URL |
+| --- | --- |
+| [FMP](./fmp/README.md) | https://financialmodelingprep.com/ |
+| [Polygon](./polygon/README.md) | https://polygon.io/ |
+| [Benzinga](./benzinga/README.md) | https://www.benzinga.com/ |
+| [FRED](./fred/README.md) | https://fred.stlouisfed.org/ |
 
 ## Default Provider Configuration
 
-To configure the default providers for each route, edit the `.openbb_sdk/user_settings.json` file in your home directory by adding the `defaults` section, a `routes` subsection and for every route, the default provider desired. A sample is shown below.
+To configure the default providers for each route, edit the `.openbb_sdk/user_settings.json` file in your home directory using the following template:
 
 ```json
 {
     "defaults": {
         "routes": {
-            "/stocks/fa/balance": {
-                "provider": "polygon"
-            },
             "/stocks/load": {
                 "provider": "fmp"
             },
-            "/stocks/news": {
-                "provider": "benzinga"
-            }
+            "/stocks/fa/balance": {
+                "provider": "polygon"
+            },
+            ...
         }
     }
 }
@@ -35,19 +33,24 @@ To configure the default providers for each route, edit the `.openbb_sdk/user_se
 
 ## Provider Information
 
-Every provider is located within a folder, with the following structure:
+Every provider is located within a directory, with the following structure:
 
 ```{.bash}
 openbb_sdk
 └───providers
     └───<provider_name>
         |   README.md
-        │   `pyproject.toml`
-        │   `poetry.lock`
+        │   pyproject.toml
+        │   poetry.lock
+        |───tests
         └───openbb_<provider_name>
-            │   `init.py`
-            │   <some functionality>.py
-            │   ...
+            │   __init__.py
+            |───models
+            |   |───<some model>.py
+            |   └───...
+            └───utils
+                |───<some helper>.py
+                └───...
 ```
 
-The `openbb_<provider_name>` folder contains the provider's source code. The `README.md` file contains the provider's documentation. The `pyproject.toml` and `poetry.lock` files contain the provider's dependencies.
+The models define the data structures that are used to query the provider endpoints and store the response data.

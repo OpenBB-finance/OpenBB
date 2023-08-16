@@ -41,57 +41,52 @@ def display_expo_forecast(
 ) -> Union[OpenBBFigure, None]:
     """Display Probabilistic Exponential Smoothing forecast
 
-        Parameters
-        ----------
-        data : Union[pd.Series, np.array]
-            Data to forecast
-        dataset_name: str
-            The name of the ticker to be predicted
-        target_column: Optional[str]:
-            Target column to forecast. Defaults to "close".
-        trend: str
-            Trend component.  One of [N, A, M]
-            Defaults to ADDITIVE.
-        seasonal: str
-            Seasonal component.  One of [N, A, M]
-            Defaults to ADDITIVE.
-        seasonal_periods: int
-            Number of seasonal periods in a year
-            If not set, inferred from frequency of the series.
-        dampen: str
-            Dampen the function
-        n_predict: int
-            Number of days to forecast
-        start_window: float
-            Size of sliding window from start of timeseries and onwards
-        forecast_horizon: int
-            Number of days to forecast when backtesting and retraining historical
-        sheet_name: str
-            Optionally specify the name of the sheet the data is exported to.
-        export: str
-            Format to export data
-        residuals: bool
-            Whether to show residuals for the model. Defaults to False.
-        forecast_only: bool
-            Whether to only show dates in the forecasting range. Defaults to False.
-        start_date: Optional[datetime]
-            The starting date to perform analysis, data before this is trimmed. Defaults to None.
-        end_date: Optional[datetime]
-            The ending date to perform analysis, data after this is trimmed. Defaults to None.
-        naive: bool
-            Whether to show the naive baseline. This just assumes the closing price will be the same
-            as the previous day's closing price. Defaults to False.
-    <<<<<<< HEAD
-        external_axes : bool, optional
-            Whether to return the figure object or not, by default False
-    =======
-        export_pred_raw: bool
-            Whether to export the raw predicted values. Defaults to False.
-        metric: str
-            The metric to use when backtesting. Defaults to "mape".
-        external_axes: Optional[List[plt.axes]]
-            External axes to plot on
-    >>>>>>> OpenBBTerminal-main
+    Parameters
+    ----------
+    data : Union[pd.Series, np.array]
+        Data to forecast
+    dataset_name: str
+        The name of the ticker to be predicted
+    target_column: Optional[str]:
+        Target column to forecast. Defaults to "close".
+    trend: str
+        Trend component.  One of [N, A, M]
+        Defaults to ADDITIVE.
+    seasonal: str
+        Seasonal component.  One of [N, A, M]
+        Defaults to ADDITIVE.
+    seasonal_periods: int
+        Number of seasonal periods in a year
+        If not set, inferred from frequency of the series.
+    dampen: str
+        Dampen the function
+    n_predict: int
+        Number of days to forecast
+    start_window: float
+        Size of sliding window from start of timeseries and onwards
+    forecast_horizon: int
+        Number of days to forecast when backtesting and retraining historical
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
+    residuals: bool
+        Whether to show residuals for the model. Defaults to False.
+    forecast_only: bool
+        Whether to only show dates in the forecasting range. Defaults to False.
+    start_date: Optional[datetime]
+        The starting date to perform analysis, data before this is trimmed. Defaults to None.
+    end_date: Optional[datetime]
+        The ending date to perform analysis, data after this is trimmed. Defaults to None.
+    naive: bool
+        Whether to show the naive baseline. This just assumes the closing price will be the same
+        as the previous day's closing price. Defaults to False.
+    export_pred_raw: bool
+        Whether to export the raw predicted values. Defaults to False.
+    metric: str
+        The metric to use when backtesting. Defaults to "mape".
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):

@@ -2,7 +2,7 @@
 
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Dict, Literal, Optional
 
 from pydantic import Field
 
@@ -27,6 +27,9 @@ class RevenueGeographicData(Data):
     """Revenue by Geographic Segments Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    geographic_segment: Dict[str, int] = Field(
+        description="Day level data containing the revenue of the geographic segment."
+    )
     americas: Optional[int] = Field(
         description="The revenue from the the American segment."
     )

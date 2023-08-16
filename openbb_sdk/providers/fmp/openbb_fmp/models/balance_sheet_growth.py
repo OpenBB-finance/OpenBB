@@ -75,7 +75,7 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
 class FMPBalanceSheetGrowthFetcher(
     Fetcher[
         FMPBalanceSheetGrowthQueryParams,
-        FMPBalanceSheetGrowthData,
+        List[FMPBalanceSheetGrowthData],
     ]
 ):
     @staticmethod

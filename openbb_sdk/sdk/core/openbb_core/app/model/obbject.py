@@ -17,10 +17,14 @@ PROVIDERS = get_provider_interface().providers_literal
 
 
 class OpenBBError(Exception):
-    pass
+    """OpenBB Error."""
+
+    def __init__(self, original: Optional[Exception] = None):
+        self.original = original
+        super().__init__(str(original))
 
 
-class CommandOutput(GenericModel, Generic[T], Tagged):
+class OBBject(GenericModel, Generic[T], Tagged):
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",
@@ -64,7 +68,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
         Union[pd.DataFrame, Dict[str, pd.DataFrame]]
             Pandas dataframe or dictionary of dataframes.
         """
-        if self.results is None:
+        if not self.results:
             raise OpenBBError("Results not found.")
 
         try:
@@ -130,6 +134,7 @@ class CommandOutput(GenericModel, Generic[T], Tagged):
 
     def show(self):
         """Displays chart."""
-        if not self.chart and not self.chart.fig:
+
+        if not self.chart or not self.chart.fig:
             raise OpenBBError("Chart not found.")
         self.chart.fig.show()
