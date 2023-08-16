@@ -1,7 +1,6 @@
 """CBOE Futures Curve fetcher."""
 
 # IMPORT STANDARD
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -9,7 +8,7 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field
 
 from openbb_cboe.utils.helpers import get_curve
 
