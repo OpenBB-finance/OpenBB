@@ -69,6 +69,13 @@ def get_sp500_multiples(
     collapse : Optional[Literal["daily", "weekly", "monthly", "quarterly", "annual"]]
         The frequency of the time series. Defaults to "monthly".
     transform : Optional[Literal["diff", "rdiff", "cumul", "normalize"]]
+    api_key : Optional[str]
+        Quandl API key.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with the results.
     """
 
     if series_name not in SP500MULTIPLES:
