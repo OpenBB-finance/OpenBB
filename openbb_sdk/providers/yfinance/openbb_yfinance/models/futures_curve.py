@@ -9,7 +9,7 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveQueryParams,
 )
 
-from openbb_yfinance.utils import helpers
+from openbb_yfinance.utils.helpers import get_futures_curve
 
 
 class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -42,9 +42,7 @@ class YFinanceFuturesCurveFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceFuturesCurveData]:
-        data = helpers.get_futures_curve(query.symbol, query.date).to_dict(
-            orient="records"
-        )
+        data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
         return [YFinanceFuturesCurveData.parse_obj(d) for d in data]
 
     @staticmethod

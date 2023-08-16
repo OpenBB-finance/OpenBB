@@ -13,8 +13,8 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
-from openbb_yfinance.utils.futures_reference import MONTHS, futures_data
-from openbb_yfinance.utils.types import INTERVALS, PERIODS
+from openbb_yfinance.utils.helpers import get_futures_data
+from openbb_yfinance.utils.references import INTERVALS, PERIODS, MONTHS
 
 
 class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
@@ -26,6 +26,13 @@ class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    prepost: bool = Field(
+        default=False, description="Include Pre and Post market data."
+    )
+    adjust: bool = Field(default=True, description="Adjust all the data automatically.")
+    back_adjust: bool = Field(
+        default=False, description="Back-adjusted data to mimic true historical prices."
     )
 
 
@@ -76,6 +83,7 @@ class YFinanceFuturesEODFetcher(
         symbol = ""
         if query.expiration:
             expiry_date = datetime.strptime(query.expiration, "%Y-%m")
+            futures_data = get_futures_data()
             exchange = futures_data[futures_data["Ticker"] == query.symbol][
                 "Exchange"
             ].values[0]
@@ -87,6 +95,9 @@ class YFinanceFuturesEODFetcher(
             data = Ticker(query_symbol).history(
                 interval=query.interval,
                 period=query.period,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
                 actions=False,
                 raise_errors=True,
             )
@@ -95,6 +106,9 @@ class YFinanceFuturesEODFetcher(
                 interval=query.interval,
                 start=query.start_date,
                 end=query.end_date,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
                 actions=False,
                 raise_errors=True,
             )

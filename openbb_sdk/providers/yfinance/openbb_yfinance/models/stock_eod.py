@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
-from openbb_yfinance.utils.types import INTERVALS, PERIODS
+from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceStockEODQueryParams(StockEODQueryParams):
@@ -22,6 +22,13 @@ class YFinanceStockEODQueryParams(StockEODQueryParams):
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    prepost: bool = Field(
+        default=False, description="Include Pre and Post market data."
+    )
+    adjust: bool = Field(default=True, description="Adjust all the data automatically.")
+    back_adjust: bool = Field(
+        default=False, description="Back-adjusted data to mimic true historical prices."
     )
 
 
@@ -74,6 +81,9 @@ class YFinanceStockEODFetcher(
             data = Ticker(query.symbol).history(
                 interval=query.interval,
                 period=query.period,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
                 actions=False,
                 raise_errors=True,
             )
@@ -82,6 +92,9 @@ class YFinanceStockEODFetcher(
                 interval=query.interval,
                 start=query.start_date,
                 end=query.end_date,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
                 actions=False,
                 raise_errors=True,
             )
