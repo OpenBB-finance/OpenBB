@@ -1,7 +1,8 @@
-"""yfinance Futures end of day fetcher."""
+"""yfinance Futures End of Day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -18,7 +19,7 @@ from openbb_yfinance.utils.references import INTERVALS, PERIODS, MONTHS
 
 
 class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
-    """YFinance Futures end of day Query.
+    """YFinance Futures End of Day Query.
 
     Source: https://finance.yahoo.com/crypto/
     """
@@ -37,7 +38,7 @@ class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
 
 
 class YFinanceFuturesEODData(FuturesEODData):
-    """YFinance Futures end of day Data."""
+    """YFinance Futures End of Day Data."""
 
     class Config:
         fields = {
@@ -62,13 +63,17 @@ class YFinanceFuturesEODFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesEODQueryParams:
-        now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+        if params.get("period") is None:
+            now = datetime.now().date()
+            transformed_params = params
 
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
+            if params.get("start_date") is None:
+                transformed_params["start_date"] = now - relativedelta(years=1)
+
+            if params.get("end_date") is None:
+                transformed_params["end_date"] = now
+            return YFinanceFuturesEODQueryParams(**transformed_params)
+
         return YFinanceFuturesEODQueryParams(**params)
 
     @staticmethod
@@ -77,10 +82,8 @@ class YFinanceFuturesEODFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceFuturesEODData]:
-        now = datetime.now().date()
-        query.start_date = query.start_date or (now - timedelta(days=365))
-        query.end_date = query.end_date or (now - timedelta(days=1))
         symbol = ""
+
         if query.expiration:
             expiry_date = datetime.strptime(query.expiration, "%Y-%m")
             futures_data = get_futures_data()
@@ -89,7 +92,7 @@ class YFinanceFuturesEODFetcher(
             ].values[0]
             symbol = f"{query.symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
 
-        query_symbol = symbol if symbol else query.symbol + "=F"
+        query_symbol = symbol if symbol else f"{query.symbol}=F"
 
         if query.period:
             data = Ticker(query_symbol).history(
@@ -119,10 +122,10 @@ class YFinanceFuturesEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceFuturesEODData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
         data: List[YFinanceFuturesEODData],
     ) -> List[YFinanceFuturesEODData]:
-        return data
+        return [YFinanceFuturesEODData.parse_obj(d) for d in data]

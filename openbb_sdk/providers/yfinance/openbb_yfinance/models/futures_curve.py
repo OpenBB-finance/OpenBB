@@ -1,4 +1,4 @@
-"""yfinance Futures end of day fetcher."""
+"""yfinance Futures End of Day fetcher."""
 
 
 from typing import Any, Dict, List, Optional
@@ -17,11 +17,10 @@ class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
 
 
 class YFinanceFuturesCurveData(FuturesCurveData):
-    """YFinance Futures end of day Data."""
+    """YFinance Futures End of Day Data."""
 
     class Config:
         fields = {
-            "expiration": "expiration",
             "price": "Last Price",
         }
 
@@ -42,11 +41,10 @@ class YFinanceFuturesCurveFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceFuturesCurveData]:
-        data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
-        return [YFinanceFuturesCurveData.parse_obj(d) for d in data]
+        return get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
     @staticmethod
     def transform_data(
         data: List[YFinanceFuturesCurveData],
     ) -> List[YFinanceFuturesCurveData]:
-        return data
+        return [YFinanceFuturesCurveData.parse_obj(d) for d in data]

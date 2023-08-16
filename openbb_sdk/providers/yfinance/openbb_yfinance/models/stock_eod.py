@@ -1,7 +1,8 @@
-"""yfinance Stock end of day fetcher."""
+"""yfinance Stock End of Day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -14,7 +15,7 @@ from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceStockEODQueryParams(StockEODQueryParams):
-    """YFinance Stock end of day Query.
+    """YFinance Stock End of Day Query.
 
     Source: https://finance.yahoo.com/
     """
@@ -33,7 +34,7 @@ class YFinanceStockEODQueryParams(StockEODQueryParams):
 
 
 class YFinanceStockEODData(StockEODData):
-    """YFinance Stock end of day Data."""
+    """YFinance Stock End of Day Data."""
 
     class Config:
         fields = {
@@ -58,13 +59,17 @@ class YFinanceStockEODFetcher(
 ):
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceStockEODQueryParams:
-        now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+        if params.get("period") is None:
+            now = datetime.now().date()
+            transformed_params = params
 
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
+            if params.get("start_date") is None:
+                transformed_params["start_date"] = now - relativedelta(years=1)
+
+            if params.get("end_date") is None:
+                transformed_params["end_date"] = now
+            return YFinanceStockEODQueryParams(**transformed_params)
+
         return YFinanceStockEODQueryParams(**params)
 
     @staticmethod
@@ -73,10 +78,6 @@ class YFinanceStockEODFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceStockEODData]:
-        now = datetime.now().date()
-        query.start_date = query.start_date or (now - timedelta(days=8))
-        query.end_date = query.end_date or (now - timedelta(days=1))
-
         if query.period:
             data = Ticker(query.symbol).history(
                 interval=query.interval,
@@ -105,10 +106,10 @@ class YFinanceStockEODFetcher(
         )
         data = data.to_dict("records")
 
-        return [YFinanceStockEODData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
         data: List[YFinanceStockEODData],
     ) -> List[YFinanceStockEODData]:
-        return data
+        return [YFinanceStockEODData.parse_obj(d) for d in data]
