@@ -95,7 +95,7 @@ class CboeOptionsChainsData(OptionsChainsData):
 class CboeOptionsChainsFetcher(
     Fetcher[
         CboeOptionsChainsQueryParams,
-        List[CboeOptionsChainsData],
+        CboeOptionsChainsData,
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""
