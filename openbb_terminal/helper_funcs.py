@@ -2088,6 +2088,8 @@ def request(
         Url to make the request to
     method : str, optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int
+        How many seconds to wait for the server to send data
 
     Returns
     -------
@@ -2108,21 +2110,13 @@ def request(
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
-    if method.upper() == "GET":
-        return requests.get(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    if method.upper() == "POST":
-        return requests.post(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    raise ValueError("Method must be GET or POST")
+    func = getattr(requests, method.lower())
+    return func(
+        url,
+        headers=headers,
+        timeout=timeout,
+        **kwargs,
+    )
 
 
 def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
