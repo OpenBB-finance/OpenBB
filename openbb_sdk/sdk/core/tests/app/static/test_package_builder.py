@@ -3,6 +3,8 @@
 
 from dataclasses import dataclass
 from inspect import _empty
+from types import NoneType
+import pandas
 
 import pytest
 from openbb_core.app.provider_interface import get_provider_interface
@@ -223,11 +225,12 @@ def test_reorder_params(method_definition):
 def test_build_func_params(method_definition):
     """Test build func params."""
     param_map = {
-        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
-        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param1": Parameter(name="param1", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=NoneType),
+        "param2": Parameter("param2", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=int),
+        "param3": Parameter("param3", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=pandas.core.frame.DataFrame),
     }
 
-    expected_output = "param1, param2, chart: bool = False"
+    expected_output = "param1: None, param2: int, param3: pandas.DataFrame"
     output = method_definition.build_func_params(param_map)
 
     assert output == expected_output
@@ -248,13 +251,13 @@ def test_build_func_returns(method_definition, return_type, expected_output):
 
 def test_build_command_method_signature(method_definition):
     """Test build command method signature."""
-    parameter_map = {
+    formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
         "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
     }
     return_type = int
     output = method_definition.build_command_method_signature(
-        func_name="test_func", parameter_map=parameter_map, return_type=return_type
+        func_name="test_func", formatted_params=formatted_params, return_type=return_type
     )
     assert output
 
@@ -265,7 +268,12 @@ def test_build_command_method_doc(method_definition):
     def some_func():
         """Do some func doc."""
 
-    output = method_definition.build_command_method_doc(func=some_func)
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+
+    output = method_definition.build_command_method_doc(func=some_func, formatted_params=formatted_params)
     assert output
     assert isinstance(output, str)
 
@@ -459,9 +467,9 @@ def test_docstring_generator_init(docstring_generator):
     assert docstring_generator
 
 
-def test_get_object_description(docstring_generator):
+def test_get_OBBject_description(docstring_generator):
     """Test build docstring."""
-    docstring = docstring_generator.get_OBBject_description()
+    docstring = docstring_generator.get_OBBject_description("SomeModel", "some_provider")
     assert docstring
 
 
