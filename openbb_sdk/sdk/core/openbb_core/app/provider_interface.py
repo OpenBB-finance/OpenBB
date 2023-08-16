@@ -193,7 +193,7 @@ class ProviderInterface:
         description = (
             f"{field.field_info.description} {provider_field}"
             if provider_name and field.field_info.description
-            else ""
+            else f"{field.field_info.description}"
         )
 
         if field.required:
@@ -362,7 +362,7 @@ class ProviderInterface:
         result: Dict = {}
 
         for model_name, providers in map_.items():
-            choices = list(providers.keys())
+            choices = sorted(list(providers.keys()))
             if "openbb" in choices:
                 choices.remove("openbb")
 

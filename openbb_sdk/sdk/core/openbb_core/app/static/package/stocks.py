@@ -17,14 +17,6 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 
 class CLASS_stocks(Container):
     @property
-    def fa(self):  # route = "/stocks/fa"
-        from openbb_core.app.static.package import stocks_fa
-
-        return stocks_fa.CLASS_stocks_fa(
-            command_runner_session=self._command_runner_session
-        )
-
-    @property
     def ca(self):  # route = "/stocks/ca"
         from openbb_core.app.static.package import stocks_ca
 
@@ -41,6 +33,14 @@ class CLASS_stocks(Container):
         )
 
     @property
+    def disc(self):  # route = "/stocks/disc"
+        from openbb_core.app.static.package import stocks_disc
+
+        return stocks_disc.CLASS_stocks_disc(
+            command_runner_session=self._command_runner_session
+        )
+
+    @property
     def dps(self):  # route = "/stocks/dps"
         from openbb_core.app.static.package import stocks_dps
 
@@ -49,10 +49,10 @@ class CLASS_stocks(Container):
         )
 
     @property
-    def disc(self):  # route = "/stocks/disc"
-        from openbb_core.app.static.package import stocks_disc
+    def fa(self):  # route = "/stocks/fa"
+        from openbb_core.app.static.package import stocks_fa
 
-        return stocks_disc.CLASS_stocks_disc(
+        return stocks_fa.CLASS_stocks_fa(
             command_runner_session=self._command_runner_session
         )
 
@@ -64,19 +64,131 @@ class CLASS_stocks(Container):
             command_runner_session=self._command_runner_session
         )
 
+    @filter_call
+    @validate_arguments
+    def info(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        chart: bool = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Get general price and performance metrics of a stock.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[StockInfo]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        StockInfo
+        ---------
+        symbol : Optional[str]
+            The ticker symbol.
+        name : Optional[str]
+            The name associated with the ticker symbol.
+        price : Optional[float]
+            The last price of the stock.
+        open : Optional[float]
+            The opening price of the stock.
+        high : Optional[float]
+            The high price of the current trading day.
+        low : Optional[float]
+            The low price of the current trading day.
+        close : Optional[float]
+            The closing price of the stock.
+        change : Optional[float]
+            The change in price over the current trading period.
+        change_percent : Optional[float]
+            The % change in price over the current trading period.
+        previous_close : Optional[float]
+            The previous closing price of the stock.
+        type : Optional[str]
+            The type of asset. (provider: cboe)
+        tick : Optional[str]
+            Whether the last sale was an up or down tick. (provider: cboe)
+        bid : Optional[float]
+            The current bid price. (provider: cboe)
+        bid_size : Optional[float]
+            The bid lot size. (provider: cboe)
+        ask : Optional[float]
+            The current ask price. (provider: cboe)
+        ask_size : Optional[float]
+            The ask lot size. (provider: cboe)
+        volume : Optional[float]
+            The stock volume for the current trading day. (provider: cboe)
+        iv_thirty : Optional[float]
+            The 30-day implied volatility of the stock. (provider: cboe)
+        iv_thirty_change : Optional[float]
+            The change in 30-day implied volatility of the stock. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            The last trade timestamp for the stock. (provider: cboe)
+        iv_thirty_one_year_high : Optional[float]
+            The 1-year high of implied volatility. (provider: cboe)
+        hv_thirty_one_year_high : Optional[float]
+            The 1-year high of realized volatility. (provider: cboe)
+        iv_thirty_one_year_low : Optional[float]
+            The 1-year low of implied volatility. (provider: cboe)
+        hv_thirty_one_year_low : Optional[float]
+            The 1-year low of realized volatility. (provider: cboe)
+        iv_sixty_one_year_high : Optional[float]
+            The 60-day high of implied volatility. (provider: cboe)
+        hv_sixty_one_year_high : Optional[float]
+            The 60-day high of realized volatility. (provider: cboe)
+        iv_sixty_one_year_low : Optional[float]
+            The 60-day low of implied volatility. (provider: cboe)
+        hv_sixty_one_year_low : Optional[float]
+            The 60-day low of realized volatility. (provider: cboe)
+        iv_ninety_one_year_high : Optional[float]
+            The 90-day high of implied volatility. (provider: cboe)
+        hv_ninety_one_year_high : Optional[float]
+            The 90-day high of realized volatility. (provider: cboe)"""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/info",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
     @property
     def ins(self):  # route = "/stocks/ins"
         from openbb_core.app.static.package import stocks_ins
 
         return stocks_ins.CLASS_stocks_ins(
-            command_runner_session=self._command_runner_session
-        )
-
-    @property
-    def options(self):  # route = "/stocks/options"
-        from openbb_core.app.static.package import stocks_options
-
-        return stocks_options.CLASS_stocks_options(
             command_runner_session=self._command_runner_session
         )
 
@@ -101,132 +213,88 @@ class CLASS_stocks(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["cboe", "yfinance", "polygon", "fmp"]] = None,
-        **kwargs,
+        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
+        **kwargs
     ) -> OBBject[List]:
         r"""Load stock data for a specific ticker.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[cboe, yfinance, polygon, fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']]
+            None
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually). (provider: yfinance)
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data. (provider: polygon)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. (provider: polygon)
+        limit : PositiveInt
+            The number of data entries to return. (provider: polygon)
+        adjusted : bool
+            Whether the data is adjusted. (provider: polygon)
+        multiplier : PositiveInt
+            The multiplier of the timespan. (provider: polygon)
+        timeseries : Optional[pydantic.types.NonNegativeInt]
+            Number of days to look back. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockEOD]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
 
         StockEOD
         --------
-        date : datetime
+        date : Optional[datetime]
             The date of the data.
-        open : PositiveFloat
+        open : Optional[PositiveFloat]
             The open price of the symbol.
-        high : PositiveFloat
+        high : Optional[PositiveFloat]
             The high price of the symbol.
-        low : PositiveFloat
+        low : Optional[PositiveFloat]
             The low price of the symbol.
-        close : PositiveFloat
+        close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : float
+        volume : Optional[float]
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-
-        cboe
-        ====
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockEOD
-        --------
-        All fields are standardized.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        StockEOD
-        --------
-        All fields are standardized.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        StockEOD
-        --------
         n : Optional[PositiveInt]
-            The number of transactions for the symbol in the time period.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Interval of the data to fetch.
-
-
-        StockEOD
-        --------
+            The number of transactions for the symbol in the time period. (provider: polygon)
         adjClose : Optional[float]
-            Adjusted Close Price of the symbol.
+            Adjusted Close Price of the symbol. (provider: fmp)
         unadjustedVolume : Optional[float]
-            Unadjusted volume of the symbol.
+            Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day.
+            Change in the price of the symbol from the previous day. (provider: fmp)
         changePercent : Optional[float]
-            Change \% in the price of the symbol.
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
-            Human readable format of the date.
+            Human readable format of the date. (provider: fmp)
         changeOverTime : Optional[float]
-            Change \% in the price of the symbol over a period of time."""  # noqa: E501
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
+        """
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -249,200 +317,6 @@ class CLASS_stocks(Container):
 
     @filter_call
     @validate_arguments
-    def news(
-        self,
-        symbols: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        page: Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="The page of the stock news to be retrieved."
-            ),
-        ] = 0,
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
-            OpenBBCustomParameter(
-                description="The number of results to return per page."
-            ),
-        ] = 15,
-        chart: bool = False,
-        provider: Optional[Literal["benzinga", "polygon", "fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List]:
-        """Get news for one or more stock tickers.
-
-
-        openbb
-        ======
-
-        Parameters
-        ----------
-        provider: Literal[benzinga, polygon, fmp]
-            The provider to use for the query.
-        symbols : ConstrainedStrValue
-            Symbol to get data for.
-        page : int
-            The page of the stock news to be retrieved.
-        limit : Optional[NonNegativeInt]
-            The number of results to return per page.
-
-        Returns
-        -------
-        OBBject
-            results: List[Data]
-                Serializable results.
-            provider: Optional[PROVIDERS]
-                Provider name.
-            warnings: Optional[List[Warning_]]
-                List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
-                Chart object.
-
-
-        StockNews
-        ---------
-        date : datetime
-            The published date of the news.
-        title : str
-            The title of the news.
-        text : Optional[str]
-            The text/body of the news.
-        url : str
-            The URL of the news.
-
-        benzinga
-        ========
-
-        Parameters
-        ----------
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
-            The type of data to return.
-        date : Optional[datetime]
-            The date of the news to retrieve.
-        dateFrom : Optional[datetime]
-            The start date of the news to retrieve.
-        dateTo : Optional[datetime]
-            The end date of the news to retrieve.
-        updatedSince : Optional[int]
-            The number of seconds since the news was updated.
-        publishedSince : Optional[int]
-            The number of seconds since the news was published.
-        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
-            The order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.
-        isin : Optional[str]
-            The ISIN of the news to retrieve.
-        cusip : Optional[str]
-            The CUSIP of the news to retrieve.
-        channels : Optional[str]
-            The channels of the news to retrieve.
-        topics : Optional[str]
-            The topics of the news to retrieve.
-        authors : Optional[str]
-            The authors of the news to retrieve.
-        content_types : Optional[str]
-            The content types of the news to retrieve.
-
-
-        StockNews
-        ---------
-        images : List[BenzingaImage]
-            The images associated with the news.
-        channels : Optional[List[str]]
-            The channels associated with the news.
-        stocks : Optional[List[str]]
-            The stocks associated with the news.
-        tags : Optional[List[str]]
-            The tags associated with the news.
-        teaser : Optional[str]
-            The teaser of the news.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        ticker_lt : Optional[str]
-            Less than, by default None
-        ticker_lte : Optional[str]
-            Less than or equal, by default None
-        ticker_gt : Optional[str]
-            Greater than, by default None
-        ticker_gte : Optional[str]
-            Greater than or equal, by default None
-        published_utc : Optional[str]
-            The published date of the query, by default None
-        published_utc_lt : Optional[str]
-            Less than, by default None
-        published_utc_lte : Optional[str]
-            Less than or equal, by default None
-        published_utc_gt : Optional[str]
-            Greater than, by default None
-        published_utc_gte : Optional[str]
-            Greater than or equal, by default None
-        order : Optional[Literal['asc', 'desc']]
-            The sort order of the query, by default None
-        sort : Optional[str]
-            The sort of the query, by default None
-
-
-        StockNews
-        ---------
-        amp_url : Optional[str]
-            AMP URL.
-        author : Optional[str]
-            Author of the article.
-        id : str
-            Article ID.
-        image_url : Optional[str]
-            Image URL.
-        keywords : Optional[List[str]]
-            Keywords in the article
-        publisher : PolygonPublisher
-            Publisher of the article.
-        tickers : List[str]
-            Tickers covered in the article.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockNews
-        ---------
-        symbol : str
-            Ticker of the fetched news.
-        image : Optional[str]
-            URL to the image of the news source.
-        site : str
-            Name of the news source."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbols": symbols,
-                "page": page,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/news",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def multiples(
         self,
         symbol: Annotated[
@@ -455,37 +329,36 @@ class CLASS_stocks(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Get valuation multiples for a stock ticker.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockMultiples]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
 
         StockMultiples
         --------------
@@ -608,19 +481,8 @@ class CLASS_stocks(Container):
         roe_ttm : Optional[float]
             Return on equity calculated as trailing twelve months.
         capex_per_share_ttm : Optional[float]
-            Capital expenditures per share calculated as trailing twelve months.
+            Capital expenditures per share calculated as trailing twelve months."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockMultiples
-        --------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -642,105 +504,172 @@ class CLASS_stocks(Container):
 
     @filter_call
     @validate_arguments
-    def tob(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/stocks/tob",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def search(
+    def news(
         self,
-        query: Annotated[
-            str, OpenBBCustomParameter(description="The search query.")
-        ] = "",
-        ticker: Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ] = False,
+        symbols: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        page: Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="The page of the stock news to be retrieved."
+            ),
+        ] = 0,
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
+            OpenBBCustomParameter(
+                description="The number of results to return per page."
+            ),
+        ] = 15,
         chart: bool = False,
-        provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
+        **kwargs
     ) -> OBBject[List]:
-        """Search for a company or stock ticker.
-
-
-        openbb
-        ======
+        """Get news for one or more stock tickers.
 
         Parameters
         ----------
-        provider: Literal[cboe]
-            The provider to use for the query.
-        query : str
-            The search query.
-        ticker : bool
-            Whether to search by ticker symbol.
+        symbols : str
+            Symbol to get data for.
+        page : int
+            The page of the stock news to be retrieved.
+        limit : Optional[pydantic.types.NonNegativeInt]
+            The number of results to return per page.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'benzinga' if there is
+            no default.
+        displayOutput : Literal['headline', 'summary', 'full', 'all']
+            The type of data to return. (provider: benzinga)
+        date : Optional[datetime.datetime]
+            The date of the news to retrieve. (provider: benzinga)
+        dateFrom : Optional[datetime.datetime]
+            The start date of the news to retrieve. (provider: benzinga)
+        dateTo : Optional[datetime.datetime]
+            The end date of the news to retrieve. (provider: benzinga)
+        updatedSince : Optional[int]
+            The number of seconds since the news was updated. (provider: benzinga)
+        publishedSince : Optional[int]
+            The number of seconds since the news was published. (provider: benzinga)
+        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
+            None
+        isin : Optional[str]
+            The ISIN of the news to retrieve. (provider: benzinga)
+        cusip : Optional[str]
+            The CUSIP of the news to retrieve. (provider: benzinga)
+        channels : Optional[str]
+            The channels of the news to retrieve. (provider: benzinga)
+        topics : Optional[str]
+            The topics of the news to retrieve. (provider: benzinga)
+        authors : Optional[str]
+            The authors of the news to retrieve. (provider: benzinga)
+        content_types : Optional[str]
+            The content types of the news to retrieve. (provider: benzinga)
+        ticker_lt : Optional[str]
+            Less than, by default None (provider: polygon)
+        ticker_lte : Optional[str]
+            Less than or equal, by default None (provider: polygon)
+        ticker_gt : Optional[str]
+            Greater than, by default None (provider: polygon)
+        ticker_gte : Optional[str]
+            Greater than or equal, by default None (provider: polygon)
+        published_utc : Optional[str]
+            The published date of the query, by default None (provider: polygon)
+        published_utc_lt : Optional[str]
+            Less than, by default None (provider: polygon)
+        published_utc_lte : Optional[str]
+            Less than or equal, by default None (provider: polygon)
+        published_utc_gt : Optional[str]
+            Greater than, by default None (provider: polygon)
+        published_utc_gte : Optional[str]
+            Greater than or equal, by default None (provider: polygon)
+        order : Optional[Literal['asc', 'desc']]
+            The sort order of the query, by default None (provider: polygon)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockNews]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
+        StockNews
+        ---------
+        date : Optional[datetime]
+            The published date of the news.
+        title : Optional[str]
+            The title of the news.
+        text : Optional[str]
+            The text/body of the news.
+        url : Optional[str]
+            The URL of the news.
+        images : Optional[List[BenzingaImage]]
+            The images associated with the news. (provider: benzinga)
+        channels : Optional[List[str]]
+            The channels associated with the news. (provider: benzinga)
+        stocks : Optional[List[str]]
+            The stocks associated with the news. (provider: benzinga)
+        tags : Optional[List[str]]
+            The tags associated with the news. (provider: benzinga)
+        teaser : Optional[str]
+            The teaser of the news. (provider: benzinga)
+        amp_url : Optional[str]
+            AMP URL. (provider: polygon)
+        author : Optional[str]
+            Author of the article. (provider: polygon)
+        id : Optional[str]
+            Article ID. (provider: polygon)
+        image_url : Optional[str]
+            Image URL. (provider: polygon)
+        keywords : Optional[List[str]]
+            Keywords in the article (provider: polygon)
+        publisher : Optional[PolygonPublisher]
+            Publisher of the article. (provider: polygon)
+        tickers : Optional[List[str]]
+            Tickers covered in the article. (provider: polygon)
+        symbol : Optional[str]
+            Ticker of the fetched news. (provider: fmp)
+        image : Optional[str]
+            URL to the image of the news source. (provider: fmp)
+        site : Optional[str]
+            Name of the news source. (provider: fmp)"""
 
-        StockSearch
-        -----------
-        symbol : str
-            The ticker symbol of the company.
-        name : str
-            The name of the company.
-
-        cboe
-        ====
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockSearch
-        -----------
-        dpmName : Optional[str]
-            The name of the primary market maker.
-        postStation : Optional[str]
-            The post and station location on the CBOE trading floor."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "query": query,
-                "ticker": ticker,
+                "symbols": symbols,
+                "page": page,
+                "limit": limit,
             },
             extra_params=kwargs,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/stocks/search",
+            "/stocks/news",
             **inputs,
         ).output
 
         return filter_output(o)
+
+    @property
+    def options(self):  # route = "/stocks/options"
+        from openbb_core.app.static.package import stocks_options
+
+        return stocks_options.CLASS_stocks_options(
+            command_runner_session=self._command_runner_session
+        )
 
     @filter_call
     @validate_arguments
@@ -752,39 +681,38 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockQuote]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
 
         StockQuote
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol of the company.
         name : Optional[str]
             The name of the company.
@@ -827,19 +755,8 @@ class CLASS_stocks(Container):
         shares_outstanding : Optional[int]
             The number of shares outstanding of the stock.
         date : Optional[datetime]
-            The timestamp of the stock quote.
+            The timestamp of the stock quote."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockQuote
-        ----------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -860,130 +777,91 @@ class CLASS_stocks(Container):
 
     @filter_call
     @validate_arguments
-    def info(
+    def search(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        query: Annotated[
+            str, OpenBBCustomParameter(description="The search query.")
+        ] = "",
+        ticker: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
-    ) -> OBBject[BaseModel]:
-        """Get general price and performance metrics of a stock.
-
-
-        openbb
-        ======
+        **kwargs
+    ) -> OBBject[List]:
+        """Search for a company or stock ticker.
 
         Parameters
         ----------
-        provider: Literal[cboe]
-            The provider to use for the query.
-        symbol : str
-            Symbol to get data for.
+        query : str
+            The search query.
+        ticker : bool
+            Whether to search by ticker symbol.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockSearch]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['cboe']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
+        StockSearch
+        -----------
+        symbol : Optional[str]
+            The ticker symbol of the company.
+        name : Optional[str]
+            The name of the company.
+        dpmName : Optional[str]
+            The name of the primary market maker. (provider: cboe)
+        postStation : Optional[str]
+            The post and station location on the CBOE trading floor. (provider: cboe)"""
 
-        StockInfo
-        ---------
-        symbol : str
-            The ticker symbol.
-        name : str
-            The name associated with the ticker symbol.
-        price : float
-            The last price of the stock.
-        open : Optional[float]
-            The opening price of the stock.
-        high : Optional[float]
-            The high price of the current trading day.
-        low : Optional[float]
-            The low price of the current trading day.
-        close : Optional[float]
-            The closing price of the stock.
-        change : Optional[float]
-            The change in price over the current trading period.
-        change_percent : Optional[float]
-            The % change in price over the current trading period.
-        previous_close : Optional[float]
-            The previous closing price of the stock.
-
-        cboe
-        ====
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockInfo
-        ---------
-        type : Optional[str]
-            The type of asset.
-        tick : Optional[str]
-            Whether the last sale was an up or down tick.
-        bid : Optional[float]
-            The current bid price.
-        bid_size : Optional[float]
-            The bid lot size.
-        ask : Optional[float]
-            The current ask price.
-        ask_size : Optional[float]
-            The ask lot size.
-        volume : Optional[float]
-            The stock volume for the current trading day.
-        iv_thirty : Optional[float]
-            The 30-day implied volatility of the stock.
-        iv_thirty_change : Optional[float]
-            The change in 30-day implied volatility of the stock.
-        last_trade_timestamp : Optional[datetime]
-            The last trade timestamp for the stock.
-        iv_thirty_one_year_high : Optional[float]
-            The 1-year high of implied volatility.
-        hv_thirty_one_year_high : Optional[float]
-            The 1-year high of realized volatility.
-        iv_thirty_one_year_low : Optional[float]
-            The 1-year low of implied volatility.
-        hv_thirty_one_year_low : Optional[float]
-            The 1-year low of realized volatility.
-        iv_sixty_one_year_high : Optional[float]
-            The 60-day high of implied volatility.
-        hv_sixty_one_year_high : Optional[float]
-            The 60-day high of realized volatility.
-        iv_sixty_one_year_low : Optional[float]
-            The 60-day low of implied volatility.
-        hv_sixty_one_year_low : Optional[float]
-            The 60-day low of realized volatility.
-        iv_ninety_one_year_high : Optional[float]
-            The 90-day high of implied volatility.
-        hv_ninety_one_year_high : Optional[float]
-            The 90-day high of realized volatility."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "query": query,
+                "ticker": ticker,
             },
             extra_params=kwargs,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/stocks/info",
+            "/stocks/search",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def tob(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """View top of book for loaded ticker (US exchanges only)."""
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/stocks/tob",
             **inputs,
         ).output
 

@@ -14,6 +14,77 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_futures(Container):
     @filter_call
     @validate_arguments
+    def curve(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(description="Historical date to search curve for."),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[Literal["yfinance"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Futures EOD Price.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        date : Optional[datetime.date]
+            Historical date to search curve for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['yfinance']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[FuturesCurve]
+                Serializable results.
+            provider : Optional[Literal['yfinance']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        FuturesCurve
+        ------------
+        expiration : Optional[str]
+            Futures expiration month.
+        price : Optional[float]
+            The close price of the symbol."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "date": date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/futures/curve",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def load(
         self,
         symbol: Annotated[
@@ -42,67 +113,56 @@ class CLASS_futures(Container):
     ) -> OBBject[List]:
         """Futures EOD Price.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[yfinance]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
         expiration : Optional[str]
             Future expiry date with format YYYY-MM
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['yfinance']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            no default.
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity. (provider: yfinance)
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually). (provider: yfinance)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[FuturesEOD]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['yfinance']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
-
         FuturesEOD
         ----------
-        date : datetime
+        date : Optional[datetime]
             The date of the data.
-        open : float
+        open : Optional[float]
             The open price of the symbol.
-        high : float
+        high : Optional[float]
             The high price of the symbol.
-        low : float
+        low : Optional[float]
             The low price of the symbol.
-        close : float
+        close : Optional[float]
             The close price of the symbol.
-        volume : float
-            The volume of the symbol.
+        volume : Optional[float]
+            The volume of the symbol."""
 
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        FuturesEOD
-        ----------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -119,89 +179,6 @@ class CLASS_futures(Container):
 
         o = self._command_runner_session.run(
             "/futures/load",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def curve(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        date: Annotated[
-            Optional[datetime.date],
-            OpenBBCustomParameter(description="Historical date to search curve for."),
-        ] = None,
-        chart: bool = False,
-        provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[List]:
-        """Futures EOD Price.
-
-
-        openbb
-        ======
-
-        Parameters
-        ----------
-        provider: Literal[yfinance]
-            The provider to use for the query.
-        symbol : str
-            Symbol to get data for.
-        date : Optional[date]
-            Historical date to search curve for.
-
-        Returns
-        -------
-        OBBject
-            results: List[Data]
-                Serializable results.
-            provider: Optional[PROVIDERS]
-                Provider name.
-            warnings: Optional[List[Warning_]]
-                List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
-                Chart object.
-
-
-        FuturesCurve
-        ------------
-        expiration : str
-            Futures expiration month.
-        price : float
-            The close price of the symbol.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        FuturesCurve
-        ------------
-        All fields are standardized."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "date": date,
-            },
-            extra_params=kwargs,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/futures/curve",
             **inputs,
         ).output
 
