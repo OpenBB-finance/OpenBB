@@ -20,6 +20,8 @@ class YFinanceFuturesCurveData(FuturesCurveData):
     """YFinance Futures End of Day Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "price": "Last Price",
         }
@@ -28,11 +30,15 @@ class YFinanceFuturesCurveData(FuturesCurveData):
 class YFinanceFuturesCurveFetcher(
     Fetcher[
         YFinanceFuturesCurveQueryParams,
-        List[YFinanceFuturesCurveData],
+        YFinanceFuturesCurveData,
     ]
 ):
+    """Transform the query, extract and transform the data from the yfinance endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
+        """Transform the query."""
+
         return YFinanceFuturesCurveQueryParams(**params)
 
     @staticmethod
@@ -41,10 +47,14 @@ class YFinanceFuturesCurveFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceFuturesCurveData]:
+        """Return the raw data from the yfinance endpoint."""
+
         return get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
     @staticmethod
     def transform_data(
         data: List[YFinanceFuturesCurveData],
     ) -> List[YFinanceFuturesCurveData]:
+        """Transform the data to the standard format."""
+
         return [YFinanceFuturesCurveData.parse_obj(d) for d in data]

@@ -1,3 +1,6 @@
+"""yfinance helpers module."""
+
+
 from datetime import datetime
 from typing import Optional
 
@@ -10,11 +13,13 @@ from openbb_yfinance.utils.references import MONTHS
 
 
 def get_futures_data() -> pd.DataFrame:
+    """Return the dataframe of the futures csv file"""
+
     return pd.read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
 def get_futures_curve(symbol: str, date: Optional[str]) -> pd.DataFrame:
-    """Helper to get the futures curve
+    """Get the futures curve for a given symbol.
 
     Parameters
     ----------

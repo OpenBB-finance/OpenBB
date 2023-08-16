@@ -41,6 +41,8 @@ class YFinanceFuturesEODData(FuturesEODData):
     """YFinance Futures End of Day Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "date": "Date",
             "open": "Open",
@@ -52,21 +54,27 @@ class YFinanceFuturesEODData(FuturesEODData):
 
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return datetime object from string."""
+
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
 class YFinanceFuturesEODFetcher(
     Fetcher[
         YFinanceFuturesEODQueryParams,
-        List[YFinanceFuturesEODData],
+        YFinanceFuturesEODData,
     ]
 ):
+    """Transform the query, extract and transform the data from the yfinance endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesEODQueryParams:
+        """Transform the query. Setting the start and end dates for a 1 year period."""
+
         if params.get("period") is None:
-            now = datetime.now().date()
             transformed_params = params
 
+            now = datetime.now().date()
             if params.get("start_date") is None:
                 transformed_params["start_date"] = now - relativedelta(years=1)
 
@@ -82,6 +90,8 @@ class YFinanceFuturesEODFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceFuturesEODData]:
+        """Return the raw data from the yfinance endpoint."""
+
         symbol = ""
 
         if query.expiration:
@@ -128,4 +138,6 @@ class YFinanceFuturesEODFetcher(
     def transform_data(
         data: List[YFinanceFuturesEODData],
     ) -> List[YFinanceFuturesEODData]:
+        """Transform the data to the standard format."""
+
         return [YFinanceFuturesEODData.parse_obj(d) for d in data]
