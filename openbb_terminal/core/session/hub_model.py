@@ -345,6 +345,7 @@ def upload_user_field(
     """
     console_print = console.print if not silent else lambda *args, **kwargs: None
     try:
+        console_print("Sending to OpenBB hub...")
         data: Dict[str, dict] = {key: value}
         response = requests.put(
             url=base_url + "user",
@@ -353,7 +354,6 @@ def upload_user_field(
             timeout=timeout,
         )
 
-        console_print("Sending to OpenBB hub...")
         if response.status_code == 200:
             console_print("[green]Saved remotely.[/green]")
         else:
