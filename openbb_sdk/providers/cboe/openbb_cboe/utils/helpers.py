@@ -4,7 +4,7 @@ import os
 from datetime import date, datetime, timedelta
 from io import BytesIO
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -140,7 +140,7 @@ def get_cboe_index_directory() -> pd.DataFrame:
             },
         )
 
-        indices_order: list[str] = [
+        indices_order: List[str] = [
             "Ticker",
             "Name",
             "Description",
@@ -198,7 +198,7 @@ def stock_search(query: str, ticker: bool = False) -> dict:
     return pd.DataFrame()
 
 
-def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
+def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
     """Gets basic info for the symbol and expiration dates
 
     Parameters

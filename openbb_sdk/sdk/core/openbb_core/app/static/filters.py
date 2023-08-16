@@ -48,19 +48,19 @@ def filter_inputs(**kwargs) -> dict:
     return kwargs
 
 
-def filter_output(OBBject: OBBject) -> OBBject:
+def filter_output(obbject: OBBject) -> OBBject:
     """Filter command output."""
-    if OBBject.warnings:
-        for w in OBBject.warnings:
+    if obbject.warnings:
+        for w in obbject.warnings:
             category = getattr(builtins, w.category, OpenBBWarning)
             print(f"{category.__name__}: {w.message}")
 
-    error = OBBject.error
+    error = obbject.error
     if error:
         raise OpenBBError(error.message)
 
-    chart = OBBject.chart
+    chart = obbject.chart
     if chart and chart.error:
         raise OpenBBError(chart.error.message)
 
-    return OBBject
+    return obbject

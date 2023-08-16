@@ -13,6 +13,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
+from openbb_yfinance.utils.futures_reference import MONTHS, futures_data
 from openbb_yfinance.utils.types import INTERVALS, PERIODS
 
 
@@ -70,18 +71,27 @@ class YFinanceFuturesEODFetcher(
         **kwargs: Any,
     ) -> List[YFinanceFuturesEODData]:
         now = datetime.now().date()
-        query.start_date = query.start_date or (now - timedelta(days=8))
+        query.start_date = query.start_date or (now - timedelta(days=365))
         query.end_date = query.end_date or (now - timedelta(days=1))
+        symbol = ""
+        if query.expiration:
+            expiry_date = datetime.strptime(query.expiration, "%Y-%m")
+            exchange = futures_data[futures_data["Ticker"] == query.symbol][
+                "Exchange"
+            ].values[0]
+            symbol = f"{query.symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
+
+        query_symbol = symbol if symbol else query.symbol + "=F"
 
         if query.period:
-            data = Ticker(query.symbol + "=F").history(
+            data = Ticker(query_symbol).history(
                 interval=query.interval,
                 period=query.period,
                 actions=False,
                 raise_errors=True,
             )
         else:
-            data = Ticker(query.symbol + "=F").history(
+            data = Ticker(query_symbol).history(
                 interval=query.interval,
                 start=query.start_date,
                 end=query.end_date,

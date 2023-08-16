@@ -68,7 +68,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Union[pd.DataFrame, Dict[str, pd.DataFrame]]
             Pandas dataframe or dictionary of dataframes.
         """
-        if self.results is None:
+        if not self.results:
             raise OpenBBError("Results not found.")
 
         try:
@@ -134,6 +134,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
     def show(self):
         """Displays chart."""
-        if not self.chart and not self.chart.fig:
+
+        if not self.chart or not self.chart.fig:
             raise OpenBBError("Chart not found.")
         self.chart.fig.show()

@@ -58,7 +58,7 @@ def handler():
     return PosthogHandler(logging_settings)
 
 
-def test_emit_calls_send(mocker, handler):
+def test_emit_calls_send(handler):
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -71,7 +71,7 @@ def test_emit_calls_send(mocker, handler):
     )
 
     # Mock the send method
-    handler.send = mocker.MagicMock()
+    handler.send = MagicMock()
 
     # Act
     handler.emit(record)
@@ -80,7 +80,7 @@ def test_emit_calls_send(mocker, handler):
     handler.send.assert_called_once_with(record=record)
 
 
-def test_emit_calls_handleError_when_send_raises_exception(mocker, handler):
+def test_emit_calls_handleError_when_send_raises_exception(handler):
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -93,10 +93,10 @@ def test_emit_calls_handleError_when_send_raises_exception(mocker, handler):
     )
 
     # Mock the send method to raise an exception
-    handler.send = mocker.MagicMock(side_effect=Exception)
+    handler.send = MagicMock(side_effect=Exception)
 
     # Mock the handleError method
-    handler.handleError = mocker.MagicMock()
+    handler.handleError = MagicMock()
 
     # Act
     handler.emit(record)
@@ -106,9 +106,7 @@ def test_emit_calls_handleError_when_send_raises_exception(mocker, handler):
     handler.handleError.assert_called_once_with(record)
 
 
-def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(
-    mocker, handler
-):
+def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(handler):
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -121,10 +119,10 @@ def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(
     )
 
     # Mock the send method to raise an exception of a specific type
-    handler.send = mocker.MagicMock(side_effect=ValueError)
+    handler.send = MagicMock(side_effect=ValueError)
 
     # Mock the handleError method
-    handler.handleError = mocker.MagicMock()
+    handler.handleError = MagicMock()
 
     # Act
     handler.emit(record)
@@ -134,9 +132,7 @@ def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(
     handler.handleError.assert_called_once_with(record)
 
 
-def test_emit_calls_handleError_when_send_raises_exception_of_another_type(
-    mocker, handler
-):
+def test_emit_calls_handleError_when_send_raises_exception_of_another_type(handler):
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -149,10 +145,10 @@ def test_emit_calls_handleError_when_send_raises_exception_of_another_type(
     )
 
     # Mock the send method to raise an exception of another type
-    handler.send = mocker.MagicMock(side_effect=TypeError)
+    handler.send = MagicMock(side_effect=TypeError)
 
     # Mock the handleError method
-    handler.handleError = mocker.MagicMock()
+    handler.handleError = MagicMock()
 
     # Act
     handler.emit(record)

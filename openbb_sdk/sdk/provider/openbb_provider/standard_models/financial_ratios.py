@@ -9,6 +9,8 @@ from openbb_provider.abstract.data import Data
 
 
 class FinancialRatiosData(Data):
+    """Financial ratios data model."""
+
     symbol: str = Field(description="The symbol of the company.")
     date: str = Field(description="The date of the financial ratios.")
     period: str = Field(description="The period of the financial ratios.")

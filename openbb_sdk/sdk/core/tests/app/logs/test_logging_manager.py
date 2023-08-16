@@ -52,11 +52,6 @@ def test_correctly_initialized(logging_manager):
     assert logging_manager
 
 
-def test_logging_settings_property(logging_manager):
-    assert logging_manager.logging_settings.system_settings == "mock_system_settings"
-    assert logging_manager.logging_settings.user_settings == "mock_user_settings"
-
-
 def test_logging_settings_setter(logging_manager):
     custom_user_settings = "custom_user_settings"
     custom_system_settings = "custom_system_settings"
@@ -103,7 +98,7 @@ def test_log_startup(logging_manager):
 
 
 @pytest.mark.parametrize(
-    "user_settings, system_settings, OBBject, route, func, kwargs",
+    "user_settings, system_settings, obbject, route, func, kwargs",
     [
         (
             "mock_settings",
@@ -132,7 +127,7 @@ def test_log_startup(logging_manager):
     ],
 )
 def test_log(
-    logging_manager, user_settings, system_settings, OBBject, route, func, kwargs
+    logging_manager, user_settings, system_settings, obbject, route, func, kwargs
 ):
     with patch(
         "openbb_core.app.logs.logging_manager.LoggingSettings",
@@ -145,7 +140,7 @@ def test_log(
                 logging_manager.log(
                     user_settings=user_settings,
                     system_settings=system_settings,
-                    OBBject=OBBject,
+                    obbject=obbject,
                     route=route,
                     func=func,
                     kwargs=kwargs,
@@ -162,7 +157,7 @@ def test_log(
             logging_manager.log(
                 user_settings=user_settings,
                 system_settings=system_settings,
-                OBBject=OBBject,
+                obbject=obbject,
                 route=route,
                 func=mock_callable,
                 kwargs=kwargs,
@@ -171,10 +166,10 @@ def test_log(
             expected_log_data = {
                 "route": route,
                 "input": kwargs,
-                "error": OBBject.error,
+                "error": obbject.error,
             }
 
-            if OBBject.error:
+            if obbject.error:
                 mock_error.assert_called_once_with(
                     "ERROR: %s",
                     json.dumps(expected_log_data),

@@ -32,6 +32,10 @@ class CLASS_futures(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+        expiration: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
+        ] = None,
         chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
@@ -52,6 +56,8 @@ class CLASS_futures(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[date]
             End date of the data, in YYYY-MM-DD format.
+        expiration : Optional[str]
+            Future expiry date with format YYYY-MM
 
         Returns
         -------
@@ -72,15 +78,15 @@ class CLASS_futures(Container):
         ----------
         date : datetime
             The date of the data.
-        open : PositiveFloat
+        open : float
             The open price of the symbol.
-        high : PositiveFloat
+        high : float
             The high price of the symbol.
-        low : PositiveFloat
+        low : float
             The low price of the symbol.
-        close : PositiveFloat
+        close : float
             The close price of the symbol.
-        volume : PositiveFloat
+        volume : float
             The volume of the symbol.
 
         yfinance
@@ -105,6 +111,7 @@ class CLASS_futures(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
+                "expiration": expiration,
             },
             extra_params=kwargs,
             chart=chart,
@@ -112,6 +119,89 @@ class CLASS_futures(Container):
 
         o = self._command_runner_session.run(
             "/futures/load",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def curve(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(description="Historical date to search curve for."),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[Literal["yfinance"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Futures EOD Price.
+
+
+        openbb
+        ======
+
+        Parameters
+        ----------
+        provider: Literal[yfinance]
+            The provider to use for the query.
+        symbol : str
+            Symbol to get data for.
+        date : Optional[date]
+            Historical date to search curve for.
+
+        Returns
+        -------
+        OBBject
+            results: List[Data]
+                Serializable results.
+            provider: Optional[PROVIDERS]
+                Provider name.
+            warnings: Optional[List[Warning_]]
+                List of warnings.
+            error: Optional[Error]
+                Caught exceptions.
+            chart: Optional[Chart]
+                Chart object.
+
+
+        FuturesCurve
+        ------------
+        expiration : str
+            Futures expiration month.
+        price : float
+            The close price of the symbol.
+
+        yfinance
+        ========
+
+        Parameters
+        ----------
+        All fields are standardized.
+
+
+        FuturesCurve
+        ------------
+        All fields are standardized."""  # noqa: E501
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "date": date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/futures/curve",
             **inputs,
         ).output
 
