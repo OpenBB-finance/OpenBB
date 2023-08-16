@@ -343,17 +343,20 @@ def upload_user_field(
     Optional[requests.Response]
         The response from the put request.
     """
-    console_print = console.print if not silent else lambda *args, **kwargs: None
+    response = requests.put(
+        url=base_url + "user",
+        headers={"Authorization": auth_header},
+        json=data,
+        timeout=timeout,
+    )
+    print(response.status_code)
+    print(response.json())
+    """
     try:
+        console_print = console.print if not silent else lambda *args, **kwargs: None
         data: Dict[str, dict] = {key: value}
 
         console_print("Sending to OpenBB hub...")
-        response = requests.put(
-            url=base_url + "user",
-            headers={"Authorization": auth_header},
-            json=data,
-            timeout=timeout,
-        )
         if response.status_code == 200:
             console_print("[green]Saved remotely.[/green]")
         else:
@@ -368,6 +371,7 @@ def upload_user_field(
     except Exception:
         console_print("[red]Failed to save remotely.[/red]")
         return None
+    """
 
 
 def upload_config(

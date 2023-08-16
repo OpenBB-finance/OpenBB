@@ -2078,7 +2078,7 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
 
 # Write an abstract helper to make requests from a url with potential headers and params
 def request(
-    url: str, method: str = "GET", timeout: int = 0, **kwargs
+    url: str, method: str = "get", timeout: int = 0, **kwargs
 ) -> requests.Response:
     """Abstract helper to make requests from a url with potential headers and params.
 
@@ -2086,8 +2086,9 @@ def request(
     ----------
     url : str
         Url to make the request to
-    method : str, optional
-        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    method : str
+        HTTP method to use.  Choose from:
+        delete, get, head, patch, post, put, by default "get"
     timeout : int
         How many seconds to wait for the server to send data
 
@@ -2101,6 +2102,9 @@ def request(
     ValueError
         If invalid method is passed
     """
+    method = method.lower()
+    if method not in ["delete", "get", "head", "patch", "post", "put"]:
+        raise ValueError(f"Invalid method: {method}")
     current_user = get_current_user()
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
@@ -2110,7 +2114,7 @@ def request(
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
-    func = getattr(requests, method.lower())
+    func = getattr(requests, method)
     return func(
         url,
         headers=headers,
