@@ -2,9 +2,9 @@
 
 
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.futures_eod import (
     FuturesEODData,
@@ -15,7 +15,7 @@ from pydantic import Field, validator
 from yfinance import Ticker
 
 from openbb_yfinance.utils.helpers import get_futures_data
-from openbb_yfinance.utils.references import INTERVALS, PERIODS, MONTHS
+from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 
 
 class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):

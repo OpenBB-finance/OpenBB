@@ -2,12 +2,12 @@
 
 
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
-from pathlib import Path
-from dateutil.relativedelta import relativedelta
 import pandas as pd
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 
 from openbb_yfinance.utils.references import MONTHS
 
