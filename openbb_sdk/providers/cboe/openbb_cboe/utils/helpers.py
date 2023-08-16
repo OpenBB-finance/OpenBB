@@ -787,7 +787,7 @@ def get_settlement_prices(
     return pd.DataFrame()
 
 
-def get_term_structure(
+def get_curve(
     symbol: str = "VX", date: Optional[date] = None, **kwargs
 ) -> pd.DataFrame:
     """Gets the term structure for a given futures product.
@@ -820,5 +820,4 @@ def get_term_structure(
     data = data.query("`product` == @symbol").rename(
         columns={"expiration_date": "expiration"}
     )
-
     return data.set_index("expiration")[["symbol", "price"]]
