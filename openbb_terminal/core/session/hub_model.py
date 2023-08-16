@@ -343,8 +343,8 @@ def upload_user_field(
     Optional[requests.Response]
         The response from the put request.
     """
+    console_print = console.print if not silent else lambda *args, **kwargs: None
     try:
-        console_print = console.print if not silent else lambda *args, **kwargs: None
         data: Dict[str, dict] = {key: value}
         response = requests.put(
             url=base_url + "user",
