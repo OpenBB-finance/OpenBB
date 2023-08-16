@@ -15,7 +15,8 @@ class CLASS_stocks_ins(Container):
     def act(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Insider activity over time."""  # noqa: E501
+        """Insider activity over time."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -32,7 +33,8 @@ class CLASS_stocks_ins(Container):
     def blcp(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest CEO/CFO purchaces ($25k+)."""  # noqa: E501
+        """Big latest CEO/CFO purchaces ($25k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -49,7 +51,8 @@ class CLASS_stocks_ins(Container):
     def blcs(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest CEO/CFO sales ($100k+)."""  # noqa: E501
+        """Big latest CEO/CFO sales ($100k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -66,7 +69,8 @@ class CLASS_stocks_ins(Container):
     def blip(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest insider purchaces ($25+)."""  # noqa: E501
+        """Big latest insider purchaces ($25+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -83,7 +87,8 @@ class CLASS_stocks_ins(Container):
     def blis(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest insider sales ($100k+)."""  # noqa: E501
+        """Big latest insider sales ($100k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -100,7 +105,8 @@ class CLASS_stocks_ins(Container):
     def blop(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest officer purchaces ($25k+)."""  # noqa: E501
+        """Big latest officer purchaces ($25k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -117,7 +123,8 @@ class CLASS_stocks_ins(Container):
     def blos(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest officer sales ($100k+)."""  # noqa: E501
+        """Big latest officer sales ($100k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -134,7 +141,8 @@ class CLASS_stocks_ins(Container):
     def filt(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Filter insiders based on preset."""  # noqa: E501
+        """Filter insiders based on preset."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -151,7 +159,8 @@ class CLASS_stocks_ins(Container):
     def lcb(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest cluster buys."""  # noqa: E501
+        """Latest cluster buys."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -168,7 +177,8 @@ class CLASS_stocks_ins(Container):
     def lins(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Last insider trading of the company."""  # noqa: E501
+        """Last insider trading of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -185,7 +195,8 @@ class CLASS_stocks_ins(Container):
     def lip(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider purchaces."""  # noqa: E501
+        """Latest insider purchaces."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -202,7 +213,8 @@ class CLASS_stocks_ins(Container):
     def lis(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider sales."""  # noqa: E501
+        """Latest insider sales."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -219,7 +231,8 @@ class CLASS_stocks_ins(Container):
     def lit(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider trading (all filings)."""  # noqa: E501
+        """Latest insider trading (all filings)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -236,7 +249,8 @@ class CLASS_stocks_ins(Container):
     def lpsb(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest penny stock buys."""  # noqa: E501
+        """Latest penny stock buys."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -253,7 +267,8 @@ class CLASS_stocks_ins(Container):
     def print_insider_data(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Print insider data."""  # noqa: E501
+        """Print insider data."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -270,7 +285,8 @@ class CLASS_stocks_ins(Container):
     def stats(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Insider stats of the company."""  # noqa: E501
+        """Insider stats of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )
