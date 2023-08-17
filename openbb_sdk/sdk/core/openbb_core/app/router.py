@@ -1,4 +1,3 @@
-import sys
 import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
@@ -21,7 +20,7 @@ from importlib_metadata import entry_points
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
-from typing_extensions import Annotated, _AnnotatedAlias
+from typing_extensions import Annotated, _AnnotatedAlias, ParamSpec
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -32,11 +31,6 @@ from openbb_core.app.provider_interface import (
     StandardParams,
     get_provider_interface,
 )
-
-if sys.version_info < (3, 10):
-    from typing_extensions import ParamSpec
-else:
-    from typing import ParamSpec
 
 P = ParamSpec("P")
 
