@@ -23,12 +23,12 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "tab",
+    "raw",
     [True, False],
 )
-def test_display_raw(mocker, tab):
+def test_display_raw(mocker, raw):
     # MOCK CHARTS
-    preferences = PreferencesModel(USE_TABULATE_DF=tab)
+    preferences = PreferencesModel(USE_TABULATE_DF=raw)
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.__current_user",
@@ -39,9 +39,5 @@ def test_display_raw(mocker, tab):
     mocker.patch(target="openbb_terminal.stocks.options.chartexchange_view.plot_chart")
 
     chartexchange_view.display_raw(
-        export="",
-        symbol="GME",
-        expiry="2021-02-05",
-        call=True,
-        price=90,
+        export="", symbol="GME", expiry="2021-02-05", call=True, price=90, raw=raw
     )

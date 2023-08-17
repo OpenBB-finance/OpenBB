@@ -54,6 +54,7 @@ class SystemModel(BaseModel):
     # Others
     TEST_MODE: bool = False
     DEBUG_MODE: bool = False
+    DEV_BACKEND: bool = False
     ENABLE_AUTHENTICATION: bool = True
     HEADLESS: bool = False
 

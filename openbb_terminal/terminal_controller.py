@@ -20,7 +20,6 @@ import certifi
 import pandas as pd
 import requests
 from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
@@ -34,9 +33,10 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
-from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session import constants, session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -90,6 +90,7 @@ class TerminalController(BaseController):
         "news",
         "intro",
         "askobb",
+        "record",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -142,50 +143,66 @@ class TerminalController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices."""
-        self.ROUTINE_FILES = {
-            filepath.name: filepath
-            for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
-                "*.openbb"
-            )
-        }
-        if get_current_user().profile.get_token():
-            self.ROUTINE_DEFAULT_FILES = {
-                filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "default"
-                ).rglob("*.openbb")
-            }
-            self.ROUTINE_PERSONAL_FILES = {
-                filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "personal"
-                ).rglob("*.openbb")
-            }
-
-        self.ROUTINE_CHOICES["--file"] = {
-            filename: None for filename in self.ROUTINE_FILES
-        }
-        self.ROUTINE_CHOICES["--example"] = None
-        self.ROUTINE_CHOICES["-e"] = None
-        self.ROUTINE_CHOICES["--input"] = None
-        self.ROUTINE_CHOICES["-i"] = None
-        self.ROUTINE_CHOICES["--help"] = None
-        self.ROUTINE_CHOICES["--h"] = None
-
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
             choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
             choices["hold"]["off"] = {"--title": None}
             if biztoc_model.BIZTOC_TAGS:
                 choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
+
+            self.ROUTINE_FILES = {
+                filepath.name: filepath
+                for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
+                    "*.openbb"
+                )
+            }
+            if get_current_user().profile.get_token():
+                self.ROUTINE_DEFAULT_FILES = {
+                    filepath.name: filepath
+                    for filepath in Path(
+                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                        / "hub"
+                        / "default"
+                    ).rglob("*.openbb")
+                }
+                self.ROUTINE_PERSONAL_FILES = {
+                    filepath.name: filepath
+                    for filepath in Path(
+                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                        / "hub"
+                        / "personal"
+                    ).rglob("*.openbb")
+                }
+
+            choices["exe"] = {
+                "--file": {
+                    filename: {} for filename in list(self.ROUTINE_FILES.keys())
+                },
+                "-f": "--file",
+                "--example": None,
+                "-e": "--example",
+                "--input": None,
+                "-i": "--input",
+                "--url": None,
+            }
+
+            choices["record"] = {
+                "--name": None,
+                "-n": "--name",
+                "--description": None,
+                "-d": "--description",
+                "--public": None,
+                "-p": "--public",
+                "--local": None,
+                "-l": "--local",
+                "--tag1": {c: None for c in constants.SCRIPT_TAGS},
+                "--tag2": {c: None for c in constants.SCRIPT_TAGS},
+                "--tag3": {c: None for c in constants.SCRIPT_TAGS},
+            }
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -1084,6 +1101,7 @@ def run_routine(file: str, routines_args=Optional[str]):
 
 def main(
     debug: bool,
+    dev: bool,
     path_list: List[str],
     routines_args: Optional[List[str]] = None,
     **kwargs,
@@ -1094,6 +1112,8 @@ def main(
     ----------
     debug : bool
         Whether to run the terminal in debug mode
+    dev:
+        Points backend towards development environment instead of production
     test : bool
         Whether to run the terminal in integrated test mode
     filtert : str
@@ -1112,6 +1132,11 @@ def main(
 
     if debug:
         set_system_variable("DEBUG_MODE", True)
+
+    if dev:
+        set_system_variable("DEV_BACKEND", True)
+        constants.BackendEnvironment.BASE_URL = "https://payments.openbb.dev/"
+        constants.BackendEnvironment.HUB_URL = "https://my.openbb.dev/"
 
     cfg.start_plot_backend()
 
@@ -1139,6 +1164,13 @@ def parse_args_and_run():
         action="store_true",
         default=False,
         help="Runs the terminal in debug mode.",
+    )
+    parser.add_argument(
+        "--dev",
+        dest="dev",
+        action="store_true",
+        default=False,
+        help="Points backend towards development environment instead of production",
     )
     parser.add_argument(
         "--file",
@@ -1211,6 +1243,7 @@ def parse_args_and_run():
 
     main(
         ns_parser.debug,
+        ns_parser.dev,
         ns_parser.path,
         ns_parser.routine_args,
         module=ns_parser.module,
