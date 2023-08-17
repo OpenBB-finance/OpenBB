@@ -2,7 +2,7 @@
 
 from typing import Dict
 
-import importlib_metadata
+from importlib_metadata import entry_points
 
 from openbb_provider.abstract.provider import Provider
 
@@ -27,8 +27,6 @@ class Registry:
 class LoadingError(Exception):
     """Error loading providers."""
 
-    pass
-
 
 class RegistryLoader:
     """Load providers from entry points."""
@@ -37,13 +35,9 @@ class RegistryLoader:
     def from_extensions() -> Registry:
         """Load providers from entry points."""
         registry = Registry()
-        for entry_point in importlib_metadata.entry_points(
-            group="openbb_provider_extension"
-        ):
+        for entry_point in sorted(entry_points(group="openbb_provider_extension")):
             try:
-                registry.include_provider(
-                    provider=entry_point.load(),
-                )
+                registry.include_provider(provider=entry_point.load())
             except Exception as e:
                 raise LoadingError(f"Invalid provider '{entry_point.name}': {e}") from e
 

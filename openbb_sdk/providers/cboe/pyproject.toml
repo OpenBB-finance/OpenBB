@@ -9,6 +9,8 @@ packages = [{ include = "openbb_cboe" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 openbb-provider = { path = "../../sdk/provider" }
+numpy = "^1.24"
+pandas = "^2.0.3"
 
 [build-system]
 requires = ["poetry-core"]

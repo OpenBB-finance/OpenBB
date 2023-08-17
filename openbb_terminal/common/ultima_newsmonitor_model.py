@@ -18,7 +18,7 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-BASE_URL = "https://api.ultimainsights.ai/v1"
+ULTIMA_BASE_URL = "https://api.ultimainsights.ai/v1"
 NO_API_KEY = "REPLACE_ME"
 
 
@@ -69,10 +69,10 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
             if term in supported_terms():
                 if auth_header:
                     data = request(
-                        f"{BASE_URL}/getNewsArticles/{term}", headers=auth_header
+                        f"{ULTIMA_BASE_URL}/getNewsArticles/{term}", headers=auth_header
                     )
                 else:
-                    data = request(f"{BASE_URL}/getNewsArticles/{term}")
+                    data = request(f"{ULTIMA_BASE_URL}/getNewsArticles/{term}")
             else:
                 console.print(
                     "[red]Ticker not supported. Unable to retrieve data\n[/red]"
@@ -150,7 +150,7 @@ def supported_terms() -> list:
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
-    data = request(f"{BASE_URL}/supportedTickers")
+    data = request(f"{ULTIMA_BASE_URL}/supportedTickers")
     return list(data.json())
 
 
@@ -176,7 +176,7 @@ def get_company_info(ticker: str) -> dict:
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     if ticker in supported_terms():
-        data = request(f"{BASE_URL}/getCompanyInfo/{ticker}")
+        data = request(f"{ULTIMA_BASE_URL}/getCompanyInfo/{ticker}")
         return data.json()
     console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
     return {}
@@ -213,9 +213,11 @@ def get_top_headlines(ticker: str) -> dict:
 
     if ticker in supported_terms():
         if auth_header:
-            data = request(f"{BASE_URL}/getTopHeadlines/{ticker}", headers=auth_header)
+            data = request(
+                f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}", headers=auth_header
+            )
         else:
-            data = request(f"{BASE_URL}/getTopHeadlines/{ticker}")
+            data = request(f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}")
         if (
             hasattr(data, "status") and data.status_code == 429
         ):  # If data request failed

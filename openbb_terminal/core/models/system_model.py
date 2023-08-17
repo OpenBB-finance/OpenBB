@@ -28,7 +28,7 @@ class SystemModel(BaseModel):
     PLATFORM: str = str(platform.platform())
 
     # OpenBB section
-    VERSION: str = "3.2.0"
+    VERSION: str = "3.2.1"
 
     # Logging section
     LOGGING_APP_ID: str = "REPLACE_ME"
@@ -54,6 +54,7 @@ class SystemModel(BaseModel):
     # Others
     TEST_MODE: bool = False
     DEBUG_MODE: bool = False
+    DEV_BACKEND: bool = False
     ENABLE_AUTHENTICATION: bool = True
     HEADLESS: bool = False
 
