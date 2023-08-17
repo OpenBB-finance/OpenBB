@@ -85,7 +85,7 @@ class YFinanceForexEODFetcher(
         query: YFinanceForexEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceForexEODData]:
+    ) -> dict:
         """Return the raw data from the yfinance endpoint."""
 
         query.symbol = f"{query.symbol}=X"
@@ -118,13 +118,11 @@ class YFinanceForexEODFetcher(
             data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
 
-        data = data.to_dict("records")
-
-        return data
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceForexEODData],
+        data: dict,
     ) -> List[YFinanceForexEODData]:
         """Transform the data to the standard format."""
 

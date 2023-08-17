@@ -88,7 +88,7 @@ class YFinanceCryptoEODFetcher(
         query: YFinanceCryptoEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceCryptoEODData]:
+    ) -> dict:
         """Return the raw data from the yfinance endpoint."""
 
         if query.period:
@@ -117,13 +117,11 @@ class YFinanceCryptoEODFetcher(
         data["Date"] = (
             data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
-        data = data.to_dict("records")
-
-        return data
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceCryptoEODData],
+        data: dict,
     ) -> List[YFinanceCryptoEODData]:
         """Transform the data to the standard format."""
 

@@ -46,14 +46,14 @@ class YFinanceFuturesCurveFetcher(
         query: YFinanceFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceFuturesCurveData]:
+    ) -> dict:
         """Return the raw data from the yfinance endpoint."""
 
         return get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceFuturesCurveData],
+        data: dict,
     ) -> List[YFinanceFuturesCurveData]:
         """Transform the data to the standard format."""
 
