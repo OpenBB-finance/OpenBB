@@ -20,7 +20,7 @@ from importlib_metadata import entry_points
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
-from typing_extensions import Annotated, _AnnotatedAlias, ParamSpec
+from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext

@@ -1,7 +1,6 @@
 """Hub manager class."""
 from typing import Optional
 
-import requests
 from fastapi import HTTPException
 from jose import JWTError, jwt
 from openbb_core.app.model.credentials import Credentials
@@ -10,6 +9,7 @@ from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.hub.hub_user_settings import HubUserSettings
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
+from requests import get, post, put
 
 
 class OpenBBError(Exception):
@@ -90,7 +90,7 @@ class HubService:
         if not password:
             raise OpenBBError("Password not found.")
 
-        response = requests.post(
+        response = post(
             url=cls.BASE_URL + "/login",
             json={
                 "email": email,
@@ -139,7 +139,7 @@ class HubService:
 
         cls.check_token_expiration(token)
 
-        response = requests.post(
+        response = post(
             url=cls.BASE_URL + "/sdk/login",
             json={
                 "token": token,
@@ -169,7 +169,7 @@ class HubService:
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
-        response = requests.get(
+        response = get(
             url=cls.BASE_URL + "/logout",
             headers={"Authorization": authorization},
             json={"token": access_token},
@@ -191,7 +191,7 @@ class HubService:
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
-        response = requests.get(
+        response = get(
             url=cls.BASE_URL + "/terminal/user",
             headers={"Authorization": authorization},
             timeout=cls.TIMEOUT,
@@ -211,7 +211,7 @@ class HubService:
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
-        response = requests.put(
+        response = put(
             url=cls.BASE_URL + "/user",
             headers={"Authorization": authorization},
             json=settings.dict(),
