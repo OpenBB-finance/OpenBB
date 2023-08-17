@@ -231,7 +231,7 @@ class SettingsController(BaseController):
             " Then, place the downloaded file 'openbb_config.richstyle.json'"
             f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY} or "
             f"{STYLES_DIRECTORY_REPO}. If you have a hub account you can change colors "
-            f"here {BackendEnvironment.HUB_URL + 'app/terminal/theme'}.",
+            f"here {BackendEnvironment.BASE_URL + 'app/terminal/theme'}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -246,7 +246,6 @@ class SettingsController(BaseController):
                     value=ns_parser.style,
                     type_="settings",
                     auth_header=get_current_user().profile.get_auth_header(),
-                    base_url=BackendEnvironment.HUB_URL,
                 )
                 console.print("")
             console.print("Colors updated.")
@@ -267,7 +266,7 @@ class SettingsController(BaseController):
             dest="style",
             choices=["dark", "light"],
             help="Choose chart style. If you have a hub account you can change theme "
-            f"here {BackendEnvironment.HUB_URL + 'app/terminal/theme/charts-tables'}.",
+            f"here {BackendEnvironment.BASE_URL + 'app/terminal/theme/charts-tables'}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -283,7 +282,6 @@ class SettingsController(BaseController):
                     value=ns_parser.style,
                     type_="terminal_style",
                     auth_header=get_current_user().profile.get_auth_header(),
-                    base_url=BackendEnvironment.HUB_URL,
                 )
                 console.print("")
             theme.apply_style(ns_parser.style)
@@ -305,7 +303,7 @@ class SettingsController(BaseController):
             dest="style",
             choices=["dark", "light"],
             help="Choose table style. If you have a hub account you can change theme "
-            f"here {BackendEnvironment.HUB_URL + 'app/terminal/theme/charts-tables'}.",
+            f"here {BackendEnvironment.BASE_URL + 'app/terminal/theme/charts-tables'}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -321,7 +319,6 @@ class SettingsController(BaseController):
                     value=ns_parser.style,
                     type_="terminal_style",
                     auth_header=get_current_user().profile.get_auth_header(),
-                    base_url=BackendEnvironment.HUB_URL,
                 )
                 console.print("")
             console.print("Table theme updated.\n")
