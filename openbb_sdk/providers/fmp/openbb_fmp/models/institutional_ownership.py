@@ -81,14 +81,14 @@ class FMPInstitutionalOwnershipFetcher(
         query: FMPInstitutionalOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPInstitutionalOwnershipData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "institutional-ownership/symbol-ownership", api_key, query)
-        return get_data_many(url, FMPInstitutionalOwnershipData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPInstitutionalOwnershipData],
-    ) -> List[InstitutionalOwnershipData]:
-        return [InstitutionalOwnershipData.parse_obj(d.dict()) for d in data]
+        data: List[dict],
+    ) -> List[FMPInstitutionalOwnershipData]:
+        return [FMPInstitutionalOwnershipData(**d) for d in data]
