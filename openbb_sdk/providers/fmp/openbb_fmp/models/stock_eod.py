@@ -81,7 +81,7 @@ class FMPStockEODFetcher(
         query: FMPStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockEODData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -96,8 +96,8 @@ class FMPStockEODFetcher(
             )
             url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPStockEODData, "historical", **kwargs)
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockEODData]) -> List[FMPStockEODData]:
-        return data
+    def transform_data(data: List[dict]) -> List[FMPStockEODData]:
+        return [FMPStockEODData(**d) for d in data]
