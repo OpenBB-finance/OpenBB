@@ -46,14 +46,14 @@ class FMPPriceTargetConsensusFetcher(
         query: FMPPriceTargetConsensusQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> FMPPriceTargetConsensusData:
+    ) -> dict:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
-        return get_data_one(url, FMPPriceTargetConsensusData, **kwargs)
+        return get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: FMPPriceTargetConsensusData,
-    ) -> PriceTargetConsensusData:
-        return PriceTargetConsensusData.parse_obj(data.dict())
+        data: dict,
+    ) -> FMPPriceTargetConsensusData:
+        return FMPPriceTargetConsensusData(**data)
