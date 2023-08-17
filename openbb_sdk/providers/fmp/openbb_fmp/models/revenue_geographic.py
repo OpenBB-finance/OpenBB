@@ -44,7 +44,7 @@ class FMPRevenueGeographicFetcher(
         query: FMPRevenueGeographicQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPRevenueGeographicData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -55,6 +55,12 @@ class FMPRevenueGeographicFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
+        return data
+
+    @staticmethod
+    def transform_data(
+        data: List[dict],
+    ) -> List[FMPRevenueGeographicData]:
         return [
             FMPRevenueGeographicData(
                 date=key,
@@ -73,9 +79,3 @@ class FMPRevenueGeographicFetcher(
             for key, v in d.items()
             if isinstance(v, dict)
         ]
-
-    @staticmethod
-    def transform_data(
-        data: List[FMPRevenueGeographicData],
-    ) -> List[FMPRevenueGeographicData]:
-        return data
