@@ -47,15 +47,15 @@ class FMPStockSplitCalendarFetcher(
         query: FMPStockSplitCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockSplitCalendarData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query_str = f"from={query.start_date}&to={query.end_date}"
         url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
-        return get_data_many(url, FMPStockSplitCalendarData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPStockSplitCalendarData],
+        data: List[dict],
     ) -> List[FMPStockSplitCalendarData]:
-        return data
+        return [FMPStockSplitCalendarData(**d) for d in data]

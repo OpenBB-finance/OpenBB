@@ -77,4 +77,4 @@ class FMPTreasuryRatesFetcher(
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[FMPTreasuryRatesData]:
-        return [FMPTreasuryRatesData.parse_obj(d) for d in data]
+        return [FMPTreasuryRatesData(**d) for d in data]
