@@ -9,8 +9,6 @@ from openbb_provider.registry import Registry, RegistryLoader
 class ProviderError(Exception):
     """Exception raised for errors in the provider."""
 
-    pass
-
 
 class QueryExecutor:
     """Class to execute queries from providers."""
