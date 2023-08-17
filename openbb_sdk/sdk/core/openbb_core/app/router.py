@@ -433,7 +433,7 @@ class CommandMap:
 
 
 class LoadingError(Exception):
-    pass
+    """Error loading extension."""
 
 
 class RouterLoader:
