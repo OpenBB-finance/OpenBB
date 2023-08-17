@@ -20,8 +20,11 @@ class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
 
 
 class FMPGlobalNewsData(GlobalNewsData):
-    # publishedDate: datetime = Field(alias="date")
+    """FMP Global News Data."""
+
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {"date": "publishedDate"}
 
     site: str = Field(description="Site of the news.")
@@ -33,8 +36,12 @@ class FMPGlobalNewsFetcher(
         List[FMPGlobalNewsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPGlobalNewsQueryParams:
+        """Transform the query params."""
+
         return FMPGlobalNewsQueryParams(**params)
 
     @staticmethod
@@ -42,12 +49,17 @@ class FMPGlobalNewsFetcher(
         query: FMPGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPGlobalNewsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "general_news", api_key, query)
-        return get_data_many(url, FMPGlobalNewsData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPGlobalNewsData]) -> List[FMPGlobalNewsData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPGlobalNewsData]:
+        """Return the transformed data."""
+
+        return [FMPGlobalNewsData(**d) for d in data]

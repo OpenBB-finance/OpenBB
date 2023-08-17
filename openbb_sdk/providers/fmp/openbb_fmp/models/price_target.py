@@ -29,6 +29,8 @@ class FMPPriceTargetData(PriceTargetData):
     """FMP Price Target Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "published_date": "publishedDate",
             "news_url": "newsURL",
@@ -53,8 +55,12 @@ class FMPPriceTargetFetcher(
         List[FMPPriceTargetData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPPriceTargetQueryParams:
+        """Transform the query params."""
+
         return FMPPriceTargetQueryParams(**params)
 
     @staticmethod
@@ -62,13 +68,18 @@ class FMPPriceTargetFetcher(
         query: FMPPriceTargetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
         endpoint = "upgrades-downgrades" if query.with_grade else "price-target"
 
         url = create_url(4, endpoint, api_key, query)
+
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[FMPPriceTargetData]:
+    def transform_data(data: List[Dict]) -> List[FMPPriceTargetData]:
+        """Return the transformed data."""
+
         return [FMPPriceTargetData(**d) for d in data]

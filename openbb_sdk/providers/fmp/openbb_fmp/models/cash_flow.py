@@ -23,6 +23,7 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
+        """Validate that either a symbol or CIK is provided."""
         if values.get("symbol") is None and values.get("cik") is None:
             raise ValueError("symbol or cik must be provided")
         return values
@@ -32,6 +33,8 @@ class FMPCashFlowStatementData(CashFlowStatementData):
     """FMP Cash Flow Statement Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "currency": "reportedCurrency",
             "filing_date": "fillingDate",
@@ -82,8 +85,12 @@ class FMPCashFlowStatementFetcher(
         List[FMPCashFlowStatementData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
+        """Transform the query params."""
+
         return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
@@ -91,7 +98,9 @@ class FMPCashFlowStatementFetcher(
         query: FMPCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPCashFlowStatementData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -99,10 +108,11 @@ class FMPCashFlowStatementFetcher(
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPCashFlowStatementData],
-    ) -> List[FMPCashFlowStatementData]:
-        return [CashFlowStatementData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPCashFlowStatementData]:
+        """Return the transformed data."""
+
+        return [FMPCashFlowStatementData(**d) for d in data]

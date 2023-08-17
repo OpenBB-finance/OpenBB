@@ -9,7 +9,7 @@ from openbb_provider.standard_models.company_overview import (
     CompanyOverviewQueryParams,
 )
 
-from openbb_fmp.utils.helpers import get_data
+from openbb_fmp.utils.helpers import get_data_one
 
 # This part is only provided by FMP and not by the other providers for now.
 
@@ -25,6 +25,8 @@ class FMPCompanyOverviewData(CompanyOverviewData):
     """FMP Company Overview Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "vol_avg": "volAvg",
             "mkt_cap": "mktCap",
@@ -48,8 +50,12 @@ class FMPCompanyOverviewFetcher(
         FMPCompanyOverviewData,
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCompanyOverviewQueryParams:
+        """Transform the query params."""
+
         return FMPCompanyOverviewQueryParams(**params)
 
     @staticmethod
@@ -57,19 +63,20 @@ class FMPCompanyOverviewFetcher(
         query: FMPCompanyOverviewQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPCompanyOverviewData]:
+    ) -> Dict:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/api/v3/"
-        request_url = f"{base_url}profile/{query.symbol}?apikey={api_key}"
-        data = get_data(request_url, **kwargs)
-        if isinstance(data, dict):
-            raise ValueError("Expected list of dicts, got dict")
+        base_url = "https://financialmodelingprep.com/api/v3"
+        url = f"{base_url}/profile/{query.symbol}?apikey={api_key}"
 
-        return FMPCompanyOverviewData.parse_obj(data[0])
+        return get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(  # type: ignore
-        data: FMPCompanyOverviewData,
-    ) -> CompanyOverviewData:
-        return CompanyOverviewData.parse_obj(data.dict())
+        data: Dict,
+    ) -> FMPCompanyOverviewData:
+        """Return the transformed data."""
+
+        return FMPCompanyOverviewData(**data)

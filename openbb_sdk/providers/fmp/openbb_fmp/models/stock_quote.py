@@ -25,6 +25,8 @@ class FMPStockQuoteData(StockQuoteData):
     """FMP Stock end of day Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "changes_percentage": "changesPercentage",
             "day_low": "dayLow",
@@ -43,6 +45,7 @@ class FMPStockQuoteData(StockQuoteData):
 
     @validator("timestamp", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -52,8 +55,12 @@ class FMPStockQuoteFetcher(
         List[FMPStockQuoteData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockQuoteQueryParams:
+        """Transform the query params."""
+
         return FMPStockQuoteQueryParams(**params)
 
     @staticmethod
@@ -61,15 +68,19 @@ class FMPStockQuoteFetcher(
         query: FMPStockQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(), ["symbol"])
+        query_str = get_querystring(query.Dict(), ["symbol"])
         url = f"{base_url}/quote/{query.symbol}?{query_str}&apikey={api_key}"
 
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[StockQuoteData]:
+    def transform_data(data: List[Dict]) -> List[StockQuoteData]:
+        """Return the transformed data."""
+
         return [StockQuoteData(**d) for d in data]

@@ -1,9 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import Annotated, List, Literal, Optional, Union
 
-import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -19,20 +18,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get treasury rates.
@@ -45,7 +44,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -55,7 +54,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[TreasuryRates]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -69,29 +68,29 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         month_1 : Optional[float]
-            The 1 month treasury rate.
+            1 month treasury rate.
         month_2 : Optional[float]
-            The 2 month treasury rate.
+            2 month treasury rate.
         month_3 : Optional[float]
-            The 3 month treasury rate.
+            3 month treasury rate.
         month_6 : Optional[float]
-            The 6 month treasury rate.
+            6 month treasury rate.
         year_1 : Optional[float]
-            The 1 year treasury rate.
+            1 year treasury rate.
         year_2 : Optional[float]
-            The 2 year treasury rate.
+            2 year treasury rate.
         year_3 : Optional[float]
-            The 3 year treasury rate.
+            3 year treasury rate.
         year_5 : Optional[float]
-            The 5 year treasury rate.
+            5 year treasury rate.
         year_7 : Optional[float]
-            The 7 year treasury rate.
+            7 year treasury rate.
         year_10 : Optional[float]
-            The 10 year treasury rate.
+            10 year treasury rate.
         year_20 : Optional[float]
-            The 20 year treasury rate.
+            20 year treasury rate.
         year_30 : Optional[float]
-            The 30 year treasury rate."""
+            30 year treasury rate."""
 
         inputs = filter_inputs(
             provider_choices={

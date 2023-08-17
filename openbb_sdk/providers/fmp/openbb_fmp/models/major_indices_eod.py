@@ -63,6 +63,7 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
 
     @validator("date", pre=True)
     def date_validate(cls, v, values: Dict[str, Any]) -> datetime:
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -72,8 +73,12 @@ class FMPMajorIndicesEODFetcher(
         List[FMPMajorIndicesEODData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesEODQueryParams:
+        """Transform the query params."""
+
         return FMPMajorIndicesEODQueryParams(**params)
 
     @staticmethod
@@ -81,14 +86,16 @@ class FMPMajorIndicesEODFetcher(
         query: FMPMajorIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/historical-chart/{query.interval}/%5E{query.symbol}?&apikey={api_key}"
 
         if query.interval == "1day":
-            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
+            query_str = get_querystring(query.Dict(by_alias=True), ["symbol"])
             query_str = query_str.replace("start_date", "from").replace(
                 "end_date", "to"
             )
@@ -97,7 +104,7 @@ class FMPMajorIndicesEODFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[dict],
-    ) -> List[FMPMajorIndicesEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesEODData]:
+        """Return the transformed data."""
+
         return [FMPMajorIndicesEODData(**d) for d in data]

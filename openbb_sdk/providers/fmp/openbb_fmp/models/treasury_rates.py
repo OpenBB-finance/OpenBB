@@ -27,6 +27,8 @@ class FMPTreasuryRatesData(TreasuryRatesData):
     """FMP Treasury Rates Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "month_1": "month1",
             "month_2": "month2",
@@ -44,6 +46,7 @@ class FMPTreasuryRatesData(TreasuryRatesData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -53,8 +56,12 @@ class FMPTreasuryRatesFetcher(
         List[FMPTreasuryRatesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPTreasuryRatesQueryParams:
+        """Transform the query params."""
+
         return FMPTreasuryRatesQueryParams(**params)
 
     @staticmethod
@@ -62,19 +69,23 @@ class FMPTreasuryRatesFetcher(
         query: FMPTreasuryRatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.start_date = (datetime.now() - timedelta(91)).date()
         query.end_date = (datetime.now() - timedelta(1)).date()
 
         base_url = "https://financialmodelingprep.com/api/v4/"
-        query_str = get_querystring(query.dict(by_alias=True), [])
+        query_str = get_querystring(query.Dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
 
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[FMPTreasuryRatesData]:
+    def transform_data(data: List[Dict]) -> List[FMPTreasuryRatesData]:
+        """Return the transformed data."""
+
         return [FMPTreasuryRatesData(**d) for d in data]

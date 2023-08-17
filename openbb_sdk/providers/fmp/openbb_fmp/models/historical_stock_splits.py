@@ -26,6 +26,7 @@ class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
@@ -35,8 +36,12 @@ class FMPHistoricalStockSplitsFetcher(
         List[FMPHistoricalStockSplitsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalStockSplitsQueryParams:
+        """Transform the query params."""
+
         return FMPHistoricalStockSplitsQueryParams(**params)
 
     @staticmethod
@@ -44,16 +49,19 @@ class FMPHistoricalStockSplitsFetcher(
         query: FMPHistoricalStockSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPHistoricalStockSplitsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"historical-price-full/stock_split/{query.symbol}", api_key
         )
-        return get_data_many(url, FMPHistoricalStockSplitsData, "historical", **kwargs)
+
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPHistoricalStockSplitsData],
-    ) -> List[FMPHistoricalStockSplitsData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPHistoricalStockSplitsData]:
+        """Return the transformed data."""
+
+        return [FMPHistoricalStockSplitsData(**d) for d in data]

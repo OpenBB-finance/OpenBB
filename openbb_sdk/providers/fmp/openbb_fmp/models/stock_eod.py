@@ -52,6 +52,7 @@ class FMPStockEODData(StockEODData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         try:
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
         except ValueError:
@@ -64,10 +65,15 @@ class FMPStockEODFetcher(
         List[FMPStockEODData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
-        now = datetime.now().date()
+        """Transform the query params."""
+
         transformed_params = params
+
+        now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - timedelta(days=7)
 
@@ -81,16 +87,18 @@ class FMPStockEODFetcher(
         query: FMPStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
+        query_str = get_querystring(query.Dict(by_alias=True), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/historical-chart/{query.interval}/{query.symbol}?&apikey={api_key}"
 
         if query.interval == "1day":
-            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
+            query_str = get_querystring(query.Dict(by_alias=True), ["symbol"])
             query_str = query_str.replace("start_date", "from").replace(
                 "end_date", "to"
             )
@@ -99,5 +107,7 @@ class FMPStockEODFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[FMPStockEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPStockEODData]:
+        """Return the transformed data."""
+
         return [FMPStockEODData(**d) for d in data]

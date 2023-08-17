@@ -23,6 +23,8 @@ class FMPStockInsiderTradingData(StockInsiderTradingData):
     """FMP Stock Insider Trading Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "filing_date": "filingDate",
             "transaction_date": "transactionDate",
@@ -56,8 +58,12 @@ class FMPStockInsiderTradingFetcher(
         List[FMPStockInsiderTradingData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockInsiderTradingQueryParams:
+        """Transform the query params."""
+
         return FMPStockInsiderTradingQueryParams(**params)
 
     @staticmethod
@@ -65,7 +71,9 @@ class FMPStockInsiderTradingFetcher(
         query: FMPStockInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         # This changes the actual type of a pydantic class, but its a quick and clean way to format properly
@@ -75,7 +83,7 @@ class FMPStockInsiderTradingFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[dict],
-    ) -> List[FMPStockInsiderTradingData]:
+    def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
+        """Return the transformed data."""
+
         return [FMPStockInsiderTradingData(**d) for d in data]

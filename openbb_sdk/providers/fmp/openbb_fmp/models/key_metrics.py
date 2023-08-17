@@ -25,6 +25,8 @@ class FMPKeyMetricsData(KeyMetricsData):
     """FMP Key Metrics Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "revenue_per_share": "revenuePerShare",
             "net_income_per_share": "netIncomePerShare",
@@ -92,8 +94,12 @@ class FMPKeyMetricsFetcher(
         List[FMPKeyMetricsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
+        """Transform the query params."""
+
         return FMPKeyMetricsQueryParams(**params)
 
     @staticmethod
@@ -101,14 +107,16 @@ class FMPKeyMetricsFetcher(
         query: FMPKeyMetricsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
 
-        data: List[dict] = []
+        data: List[Dict] = []
 
-        def multiple_symbols(symbol: str, data: List[dict]) -> None:
+        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
             url = create_url(
                 3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
             )
@@ -120,5 +128,7 @@ class FMPKeyMetricsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[FMPKeyMetricsData]:
+    def transform_data(data: List[Dict]) -> List[FMPKeyMetricsData]:
+        """Return the transformed data."""
+
         return [FMPKeyMetricsData(**d) for d in data]

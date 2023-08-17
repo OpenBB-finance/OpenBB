@@ -26,6 +26,7 @@ class FMPRevenueBusinessLineData(RevenueBusinessLineData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -35,8 +36,12 @@ class FMPRevenueBusinessLineFetcher(
         List[FMPRevenueBusinessLineData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRevenueBusinessLineQueryParams:
+        """Transform the query params."""
+
         return FMPRevenueBusinessLineQueryParams(**params)
 
     @staticmethod
@@ -44,7 +49,9 @@ class FMPRevenueBusinessLineFetcher(
         query: FMPRevenueBusinessLineQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -52,15 +59,15 @@ class FMPRevenueBusinessLineFetcher(
         url = create_url(4, "revenue-product-segmentation", api_key, query)
         data = get_data(url, **kwargs)
 
-        if isinstance(data, dict):
-            raise ValueError("Expected list of dicts, got dict")
+        if isinstance(data, Dict):
+            raise ValueError("Expected list of Dicts, got Dict")
 
         return data
 
     @staticmethod
-    def transform_data(
-        data: List[dict],
-    ) -> List[FMPRevenueBusinessLineData]:
+    def transform_data(data: List[Dict]) -> List[FMPRevenueBusinessLineData]:
+        """Return the transformed data."""
+
         return [
             FMPRevenueBusinessLineData(date=key, business_line=value)
             for d in data

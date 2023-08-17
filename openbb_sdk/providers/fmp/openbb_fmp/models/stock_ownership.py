@@ -23,6 +23,8 @@ class FMPStockOwnershipData(StockOwnershipData):
     """FMP Stock Ownership Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "filing_date": "filingDate",
             "investor_name": "investorName",
@@ -66,8 +68,12 @@ class FMPStockOwnershipFetcher(
         List[FMPStockOwnershipData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockOwnershipQueryParams:
+        """Transform the query params."""
+
         return FMPStockOwnershipQueryParams(**params)
 
     @staticmethod
@@ -75,9 +81,10 @@ class FMPStockOwnershipFetcher(
         query: FMPStockOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
-        api_key = credentials.get("fmp_api_key") if credentials else ""
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
 
+        api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(
             4,
             "institutional-ownership/institutional-holders/symbol-ownership-percent",
@@ -88,7 +95,9 @@ class FMPStockOwnershipFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[FMPStockOwnershipData]:
+    def transform_data(data: List[Dict]) -> List[FMPStockOwnershipData]:
+        """Return the transformed data."""
+
         own = [FMPStockOwnershipData(**d) for d in data]
         own.sort(key=lambda x: x.filing_date, reverse=True)
         return own

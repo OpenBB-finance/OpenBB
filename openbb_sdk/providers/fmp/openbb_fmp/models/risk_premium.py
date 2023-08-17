@@ -23,6 +23,8 @@ class FMPRiskPremiumData(RiskPremiumData):
     """FMP Risk Premium data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "total_equity_risk_premium": "totalEquityRiskPremium",
             "country_risk_premium": "countryRiskPremium",
@@ -35,10 +37,12 @@ class FMPRiskPremiumFetcher(
         List[FMPRiskPremiumData],
     ]
 ):
-    """FMP Risk Premium Fetcher."""
+    """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRiskPremiumQueryParams:
+        """Transform the query params."""
+
         return FMPRiskPremiumQueryParams(**params)
 
     @staticmethod
@@ -46,7 +50,9 @@ class FMPRiskPremiumFetcher(
         query: FMPRiskPremiumQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "market_risk_premium", api_key)
@@ -54,5 +60,7 @@ class FMPRiskPremiumFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[FMPRiskPremiumData]:
+    def transform_data(data: List[Dict]) -> List[FMPRiskPremiumData]:
+        """Return the transformed data."""
+
         return [FMPRiskPremiumData(**item) for item in data]
