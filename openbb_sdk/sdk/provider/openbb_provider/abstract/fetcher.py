@@ -36,8 +36,8 @@ class Fetcher(Generic[Q, D]):
     ) -> D:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
-        raw_data = cls.extract_data(query=query, credentials=credentials, **kwargs)
-        return cls.transform_data(data=raw_data)
+        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
+        return cls.transform_data(data=data)
 
     @property
     def provider_query_params_type(self):
