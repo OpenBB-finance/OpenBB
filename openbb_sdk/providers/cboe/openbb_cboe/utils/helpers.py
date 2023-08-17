@@ -5,13 +5,20 @@ from datetime import date, datetime, timedelta
 from io import BytesIO
 from pathlib import Path
 from typing import List, Optional, Tuple
+from io import StringIO
 
 import numpy as np
 import pandas as pd
 import requests
 from requests import HTTPError
+import requests_cache
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
+# This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
+# Only used on functions run on import
+cboe_session = requests_cache.CachedSession(
+    "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
+)
 
 
 def get_user_agent() -> str:
@@ -40,6 +47,8 @@ def request(
         Url to make the request to
     method : str, optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10
 
     Returns
     -------
@@ -58,8 +67,10 @@ def request(
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
-    if method.upper() == "GET":
-        return requests.get(
+
+    if (func := getattr(requests, method.lower(), None)) is not None:
+
+        return func(
             url,
             headers=headers,
             timeout=timeout,
@@ -74,10 +85,11 @@ def request(
         )
     raise ValueError("Method must be GET or POST")
 
+    raise ValueError("Method must be valid HTTP method")
 
 def camel_to_snake(str):
     """Convert camelCase to snake_case."""
-    return "".join(["_" + i.lower() if i.isupper() else i for i in str]).lstrip("_")
+    return "".join(["_" + i.lower() if i.isupper() else i for i in string]).lstrip("_")
 
 
 def get_cboe_directory() -> pd.DataFrame:
@@ -88,20 +100,25 @@ def get_cboe_directory() -> pd.DataFrame:
     pd.DataFrame: CBOE_DIRECTORY
         DataFrame of the CBOE listings directory
     """
-    url = "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
-    r = request(url)
-    if r.status_code != 200:
-        raise HTTPError(r.status_code)
-    CBOE_DIRECTORY = pd.read_csv(BytesIO(r.content), index_col=None)
-    CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
-        columns={
-            " Stock Symbol": "Symbol",
-            " DPM Name": "DPM Name",
-            " Post/Station": "Post/Station",
-        }
-    ).set_index("Symbol")
-
-    return CBOE_DIRECTORY
+    try:
+        CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
+            StringIO(
+                cboe_session.get(
+                    "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv",
+                    timeout=10,
+                ).text
+            )
+        )
+        CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
+            columns={
+                " Stock Symbol": "Symbol",
+                " DPM Name": "DPM Name",
+                " Post/Station": "Post/Station",
+            }
+        ).set_index("Symbol")
+        return CBOE_DIRECTORY
+    except HTTPError:
+        return pd.DataFrame()
 
 
 def get_cboe_index_directory() -> pd.DataFrame:
@@ -112,8 +129,9 @@ def get_cboe_index_directory() -> pd.DataFrame:
     pd.DataFrame: CBOE_INDEXES
     """
     try:
-        r = request(
-            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+        r = cboe_session.get(
+            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json",
+            timeout=10,
         )
 
         if r.status_code != 200:

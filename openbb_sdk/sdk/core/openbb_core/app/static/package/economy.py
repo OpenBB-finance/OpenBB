@@ -16,14 +16,74 @@ from openbb_core.app.static.filters import filter_call, filter_inputs, filter_ou
 class CLASS_economy(Container):
     @filter_call
     @validate_arguments
-    def corecpi(
+    def available_indices(
+        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
+    ) -> OBBject[List]:
+        """AVAILABLE_INDICES.
+
+        Parameters
+        ----------
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[AvailableIndices]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        AvailableIndices
+        ----------------
+        symbol : Optional[str]
+            Symbol to get data for.
+        name : Optional[str]
+            The name of the index.
+        currency : Optional[str]
+            The currency the index is traded in.
+        stock_exchange : Optional[str]
+            The stock exchange where the index is listed.
+        exchange_short_name : Optional[str]
+            The short name of the stock exchange where the index is listed."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={},
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/available_indices",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def balance(
         self,
         chart: bool = False,
         provider: Optional[
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """CORECPI."""  # noqa: E501
+        """BALANCE."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -32,7 +92,32 @@ class CLASS_economy(Container):
         )
 
         o = self._command_runner_session.run(
-            "/economy/corecpi",
+            "/economy/balance",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def bigmac(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """BIGMAC."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/bigmac",
             **inputs,
         ).output
 
@@ -54,39 +139,38 @@ class CLASS_economy(Container):
     ) -> OBBject[List]:
         """Get the constituents of an index.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
         index : Literal['nasdaq', 'sp500', 'dowjones']
             The index for which we want to fetch the constituents.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[MajorIndicesConstituents]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
 
         MajorIndicesConstituents
         ------------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        name : str
+        name : Optional[str]
             The name of the constituent company in the index.
-        sector : str
+        sector : Optional[str]
             The sector the constituent company in the index belongs to.
         sub_sector : Optional[str]
             The sub-sector the constituent company in the index belongs to.
@@ -94,22 +178,11 @@ class CLASS_economy(Container):
             The location of the headquarter of the constituent company in the index.
         date_first_added : Union[date, str, NoneType]
             The date the constituent company was added to the index.
-        cik : int
+        cik : Optional[int]
             The Central Index Key of the constituent company in the index.
         founded : Union[date, str]
-            The founding year of the constituent company in the index.
+            The founding year of the constituent company in the index."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        MajorIndicesConstituents
-        ------------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -123,6 +196,56 @@ class CLASS_economy(Container):
 
         o = self._command_runner_session.run(
             "/economy/const",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def corecpi(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """CORECPI."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/corecpi",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def country_codes(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """COUNTRY_CODES."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/country_codes",
             **inputs,
         ).output
 
@@ -220,14 +343,8 @@ class CLASS_economy(Container):
     ) -> OBBject[BaseModel]:
         """CPI.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fred]
-            The provider to use for the query.
         countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania', 'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states']]
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
@@ -236,48 +353,42 @@ class CLASS_economy(Container):
             The data time frequency.
         harmonized : bool
             Whether you wish to obtain harmonized data.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[CPI]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fred']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
-
         CPI
         ---
-        date : date
+        date : Optional[date]
             The date of the data.
-        realtime_start : date
+        realtime_start : Optional[date]
             The date the data was updated.
-        realtime_end : date
+        realtime_end : Optional[date]
             The date the data was updated.
-        value : float
-            The value of the data.
+        value : Optional[float]
+            The value of the data."""
 
-        fred
-        ====
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        CPI
-        ---
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -310,7 +421,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Get the options for v3 cpi(options=True)"""  # noqa: E501
+        """Get the options for v3 cpi(options=True)"""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -320,6 +432,231 @@ class CLASS_economy(Container):
 
         o = self._command_runner_session.run(
             "/economy/cpi_options",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def currencies(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """CURRENCIES."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/currencies",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def debt(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """DEBT."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/debt",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def events(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """EVENTS."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/events",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def fgdp(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FGDP."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/fgdp",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def fred(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FRED."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/fred",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def fred_search(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FRED Search (was fred_notes)."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/fred_search",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def futures(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """FUTURES. 2 sources"""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/futures",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def gdp(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """GDP."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/gdp",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def glbonds(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """GLBONDS."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/glbonds",
             **inputs,
         ).output
 
@@ -346,120 +683,88 @@ class CLASS_economy(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["yfinance", "polygon", "fmp"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         r"""Get OHLCV data for an index.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[yfinance, polygon, fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']]
+            None
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return (quarterly or annually). (provider: yfinance)
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            The timespan of the data. (provider: polygon)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. (provider: polygon)
+        limit : PositiveInt
+            The number of data entries to return. (provider: polygon)
+        adjusted : bool
+            Whether the data is adjusted. (provider: polygon)
+        multiplier : PositiveInt
+            The multiplier of the timespan. (provider: polygon)
+        timeseries : Optional[pydantic.types.NonNegativeInt]
+            Number of days to look back. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[MajorIndicesEOD]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
 
         MajorIndicesEOD
         ---------------
-        date : datetime
+        date : Optional[datetime]
             The date of the data.
-        open : PositiveFloat
+        open : Optional[PositiveFloat]
             The open price of the symbol.
-        high : PositiveFloat
+        high : Optional[PositiveFloat]
             The high price of the symbol.
-        low : PositiveFloat
+        low : Optional[PositiveFloat]
             The low price of the symbol.
-        close : PositiveFloat
+        close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : float
+        volume : Optional[float]
             The volume of the symbol.
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
-
-        yfinance
-        ========
-
-        Parameters
-        ----------
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity.
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
-            Period of the data to return (quarterly or annually).
-
-
-        MajorIndicesEOD
-        ---------------
-        All fields are standardized.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        MajorIndicesEOD
-        ---------------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Interval of the data to fetch.
-
-
-        MajorIndicesEOD
-        ---------------
+        n : Optional[PositiveInt]
+            The number of transactions for the symbol in the time period. (provider: polygon)
         adjClose : Optional[float]
-            Adjusted Close Price of the symbol.
+            Adjusted Close Price of the symbol. (provider: fmp)
         unadjustedVolume : Optional[float]
-            Unadjusted volume of the symbol.
+            Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day.
+            Change in the price of the symbol from the previous day. (provider: fmp)
         changePercent : Optional[float]
-            Change \% in the price of the symbol.
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
-            Human readable format of the date.
+            Human readable format of the date. (provider: fmp)
         changeOverTime : Optional[float]
-            Change \% in the price of the symbol over a period of time."""  # noqa: E501
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
+        """
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -482,141 +787,24 @@ class CLASS_economy(Container):
 
     @filter_call
     @validate_arguments
-    def available_indices(
-        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List]:
-        """AVAILABLE_INDICES.
+    def indices(
+        self,
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+        ] = None,
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """INDICES."""
 
-
-        openbb
-        ======
-
-        Parameters
-        ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        All fields are standardized.
-
-        Returns
-        -------
-        OBBject
-            results: List[Data]
-                Serializable results.
-            provider: Optional[PROVIDERS]
-                Provider name.
-            warnings: Optional[List[Warning_]]
-                List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
-                Chart object.
-
-
-        AvailableIndices
-        ----------------
-        symbol : str
-            Symbol to get data for.
-        name : Optional[str]
-            The name of the index.
-        currency : Optional[str]
-            The currency the index is traded in.
-        stock_exchange : str
-            The stock exchange where the index is listed.
-        exchange_short_name : str
-            The short name of the stock exchange where the index is listed.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        AvailableIndices
-        ----------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
-            standard_params={},
-            extra_params=kwargs,
             chart=chart,
         )
 
         o = self._command_runner_session.run(
-            "/economy/available_indices",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def risk(
-        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List]:
-        """Market Risk Premium.
-
-
-        openbb
-        ======
-
-        Parameters
-        ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        All fields are standardized.
-
-        Returns
-        -------
-        OBBject
-            results: List[Data]
-                Serializable results.
-            provider: Optional[PROVIDERS]
-                Provider name.
-            warnings: Optional[List[Warning_]]
-                List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
-                Chart object.
-
-
-        RiskPremium
-        -----------
-        country : str
-            Market country.
-        continent : Optional[str]
-            Continent of the country.
-        total_equity_risk_premium : PositiveFloat
-            The total equity risk premium for the country.
-        country_risk_premium : NonNegativeFloat
-            The country-specific risk premium.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        RiskPremium
-        -----------
-        All fields are standardized."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={},
-            extra_params=kwargs,
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/risk",
+            "/economy/indices",
             **inputs,
         ).output
 
@@ -631,7 +819,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Query EconDB for macro data."""  # noqa: E501
+        """Query EconDB for macro data."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -655,7 +844,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_COUNTRIES."""  # noqa: E501
+        """MACRO_COUNTRIES."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -679,7 +869,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_PARAMETERS."""  # noqa: E501
+        """MACRO_PARAMETERS."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -696,318 +887,6 @@ class CLASS_economy(Container):
 
     @filter_call
     @validate_arguments
-    def balance(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """BALANCE."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/balance",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def bigmac(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """BIGMAC."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/bigmac",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def country_codes(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """COUNTRY_CODES."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/country_codes",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def currencies(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """CURRENCIES."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/currencies",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def debt(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """DEBT."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/debt",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def events(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """EVENTS."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/events",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def fgdp(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FGDP."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/fgdp",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def fred(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FRED."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/fred",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def fred_search(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FRED Search (was fred_notes)."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/fred_search",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def futures(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FUTURES. 2 sources"""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/futures",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def gdp(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """GDP."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/gdp",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def glbonds(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """GLBONDS."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/glbonds",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
-    def indices(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """INDICES."""  # noqa: E501
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        o = self._command_runner_session.run(
-            "/economy/indices",
-            **inputs,
-        ).output
-
-        return filter_output(o)
-
-    @filter_call
-    @validate_arguments
     def overview(
         self,
         chart: bool = False,
@@ -1015,7 +894,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """OVERVIEW."""  # noqa: E501
+        """OVERVIEW."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1039,7 +919,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """PERFMAP."""  # noqa: E501
+        """PERFMAP."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1063,7 +944,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """PERFORMANCE."""  # noqa: E501
+        """PERFORMANCE."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1087,7 +969,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """REVENUE."""  # noqa: E501
+        """REVENUE."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1111,7 +994,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """RGDP."""  # noqa: E501
+        """RGDP."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1128,6 +1012,63 @@ class CLASS_economy(Container):
 
     @filter_call
     @validate_arguments
+    def risk(
+        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
+    ) -> OBBject[List]:
+        """Market Risk Premium.
+
+        Parameters
+        ----------
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[RiskPremium]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        RiskPremium
+        -----------
+        country : Optional[str]
+            Market country.
+        continent : Optional[str]
+            Continent of the country.
+        total_equity_risk_premium : Optional[PositiveFloat]
+            The total equity risk premium for the country.
+        country_risk_premium : Optional[NonNegativeFloat]
+            The country-specific risk premium."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={},
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/economy/risk",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def rtps(
         self,
         chart: bool = False,
@@ -1135,7 +1076,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """RTPS."""  # noqa: E501
+        """RTPS."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1159,7 +1101,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """SEARCH_INDEX."""  # noqa: E501
+        """SEARCH_INDEX."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1183,7 +1126,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """SPENDING."""  # noqa: E501
+        """SPENDING."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1207,7 +1151,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """TRUST."""  # noqa: E501
+        """TRUST."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1231,7 +1176,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """USBONDS."""  # noqa: E501
+        """USBONDS."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1255,7 +1201,8 @@ class CLASS_economy(Container):
             Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """VALUATION."""  # noqa: E501
+        """VALUATION."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
