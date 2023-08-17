@@ -17,12 +17,10 @@ from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
-from openbb_core.app.model.journal_query import JournalQuery
 from openbb_core.app.model.obbject import Error, OBBject, OpenBBError
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
-from openbb_core.app.service.journal_service import JournalService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 
@@ -35,13 +33,11 @@ class ExecutionContext:
         system_settings: SystemSettings,
         user_settings: UserSettings,
         journal: Optional[Journal] = None,
-        journal_service: Optional[JournalService] = None,
     ) -> None:
         self.command_map = command_map
         self.journal = journal or Journal()
         self.route = route
         self.system_settings = system_settings
-        self.journal_service = journal_service or JournalService()
         self.user_settings = user_settings
 
 
@@ -93,33 +89,6 @@ class ParametersBuilder:
                 parameter_map[parameter.name] = None
 
         return parameter_map
-
-    @classmethod
-    def update_journal_query(
-        cls,
-        kwargs: Dict[str, Any],
-        journal: Journal,
-        journal_service: JournalService,
-    ) -> Dict[str, Any]:
-        for parameter_name, parameter_value in kwargs.items():
-            if isinstance(parameter_value, JournalQuery):
-                journal_query = parameter_value
-                journal_entry_id = journal_query.journal_entry_id
-
-                journal_entry = journal_service.journal_entry_repository.read(
-                    filter_list=[("_id", journal_entry_id)],
-                )
-
-                if journal_entry and journal_entry.journal_id == journal.id:
-                    kwargs[parameter_name] = journal_entry.output.results
-                else:
-                    raise AttributeError(
-                        f"Cannot find JournalEntry for the JournalQuery: {journal_query}.\n"
-                        f"parameter_name  = {parameter_name}\n"
-                        f"parameter_value = {parameter_value}\n"
-                    )
-
-        return kwargs
 
     @staticmethod
     def update_command_context(
@@ -195,21 +164,14 @@ class ParametersBuilder:
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
         func = cls.get_polished_func(func=func)
-        journal = execution_context.journal
         system_settings = execution_context.system_settings
         user_settings = execution_context.user_settings
-        journal_service = execution_context.journal_service
         command_map = execution_context.command_map
 
         kwargs = cls.merge_args_and_kwargs(
             func=func,
             args=args,
             kwargs=kwargs,
-        )
-        kwargs = cls.update_journal_query(
-            kwargs=kwargs,
-            journal=journal,
-            journal_service=journal_service,
         )
         kwargs = cls.update_command_context(
             func=func,
@@ -375,7 +337,6 @@ class StaticCommandRunner:
         command_map = execution_context.command_map
         journal = execution_context.journal
         route = execution_context.route
-        journal_service = execution_context.journal_service
 
         cls.__update_managers_settings(
             execution_context.system_settings, execution_context.user_settings
@@ -405,8 +366,6 @@ class StaticCommandRunner:
             timestamp=timestamp,
         )
 
-        journal_service.journal_entry_repository.create(model=journal_entry)
-
         return journal_entry
 
 
@@ -415,13 +374,11 @@ class CommandRunner:
         self,
         command_map: Optional[CommandMap] = None,
         system_settings: Optional[SystemSettings] = None,
-        journal_service: Optional[JournalService] = None,
     ) -> None:
         self._command_map = command_map or CommandMap()
         self._system_settings = (
             system_settings or SystemService.read_default_system_settings()
         )
-        self._journal_service = journal_service or JournalService()
 
     @property
     def command_map(self) -> CommandMap:
@@ -430,10 +387,6 @@ class CommandRunner:
     @property
     def system_settings(self) -> SystemSettings:
         return self._system_settings
-
-    @property
-    def journal_service(self) -> JournalService:
-        return self._journal_service
 
     def run(
         self,
@@ -447,14 +400,12 @@ class CommandRunner:
         command_map = self._command_map
         # Getting the most updated system settings to allow debug_mode without reload
         system_settings = self._system_settings
-        journal_service = self._journal_service
 
         execution_context = ExecutionContext(
             command_map=command_map,
             journal=journal,
             route=route,
             system_settings=system_settings,
-            journal_service=journal_service,
             user_settings=user_settings,
         )
 
