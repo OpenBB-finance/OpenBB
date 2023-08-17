@@ -3528,7 +3528,7 @@ class ForecastController(BaseController):
             "--datefeatures",
             help="Specifies which date attributes have highest weight according to model.",
             dest="date_features",
-            type=check_list_values(["year", "month", "week", "day", "weekday"]),
+            type=check_list_values(["auto", "year", "month", "week", "day", "weekday"]),
             default=[],
         )
         parser = self.add_standard_args(

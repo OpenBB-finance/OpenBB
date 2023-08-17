@@ -11,6 +11,7 @@ from nixtlats import TimeGPT
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +71,8 @@ def get_timegpt_model(
     elif isinstance(data[time_col].values[0], numpy.datetime64):
         data[time_col] = pd.to_datetime(data[time_col]).dt.strftime("%Y-%m-%d")
 
+    date_features_param = True if "auto" in date_features else date_features
+
     fcst_df = timegpt.forecast(
         data,
         time_col=time_col,
@@ -80,13 +83,7 @@ def get_timegpt_model(
         finetune_steps=finetune_steps,
         clean_ex_first=clean_ex_first,
         add_history=residuals,
-        date_features=date_features,
+        date_features=date_features_param if date_features else False,
     )
 
-    # Plot feature importance
-    # This requires more work, but there's an issue and that needs to be fixed before
-    # implementing this
-    if False:
-        timegpt.weights_x.plot.barh(x='features', y='weights', figsize=(10, 10))
-
-    return fcst_df
+    return fcst_df, timegpt.weights_x

@@ -9,7 +9,7 @@ from typing import List, Optional, Union
 import pandas as pd
 import plotly.graph_objs as go
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forecast import helpers, timegpt_model
 from openbb_terminal.helper_funcs import export_data
@@ -101,7 +101,7 @@ def display_timegpt_forecast(
     if not helpers.check_data(data, target_col, None):
         return None
 
-    df = timegpt_model.get_timegpt_model(
+    df, datefeatures_df = timegpt_model.get_timegpt_model(
         data=data,
         time_col=time_col,
         target_col=target_col,
@@ -210,8 +210,20 @@ def display_timegpt_forecast(
         line_color="gold",
         mode="lines",
     )
-
     fig.show(external=external_axes)
+
+    if date_features:
+        fig2 = OpenBBFigure(xaxis_title="Weights")
+
+        fig2.set_title(f"Date features weight")
+
+        fig2.add_bar(
+            y=datefeatures_df["features"],
+            x=datefeatures_df["weights"],
+            marker_color=theme.up_color,
+            orientation="h",
+        )
+        fig2.show(external=external_axes)
 
     export_data(
         export,
