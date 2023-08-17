@@ -111,14 +111,14 @@ class CboeOptionsChainsFetcher(
         query: CboeOptionsChainsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[CboeOptionsChainsData]:
+    ) -> dict:
         """Return the raw data from the CBOE endpoint"""
 
         return get_chains(query.symbol).to_dict("records")
 
     @staticmethod
     def transform_data(
-        data: List[CboeOptionsChainsData],
+        data: dict,
     ) -> List[CboeOptionsChainsData]:
         """Transform the data to the standard format"""
 

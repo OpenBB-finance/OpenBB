@@ -60,7 +60,7 @@ class CboeStockSearchFetcher(
         query: CboeStockSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[CboeStockSearchData]:
+    ) -> dict:
         """Return the raw data from the CBOE endpoint"""
 
         data = stock_search(query.query, ticker=query.ticker)
@@ -71,7 +71,7 @@ class CboeStockSearchFetcher(
             raise ValueError("No results found.")
 
     @staticmethod
-    def transform_data(data: List[CboeStockSearchData]) -> List[CboeStockSearchData]:
+    def transform_data(data: dict) -> List[CboeStockSearchData]:
         """Transform the data to the standard format"""
 
         return [CboeStockSearchData.parse_obj(d) for d in data]
