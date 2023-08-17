@@ -67,16 +67,16 @@ class FMPMajorIndicesConstituentsFetcher(
         query: FMPMajorIndicesConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPMajorIndicesConstituentsData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/{query.index}_constituent/?apikey={api_key}"
 
-        return get_data_many(url, FMPMajorIndicesConstituentsData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPMajorIndicesConstituentsData],
-    ) -> List[MajorIndicesConstituentsData]:
-        return [MajorIndicesConstituentsData.parse_obj(d.dict()) for d in data]
+        data: List[dict],
+    ) -> List[FMPMajorIndicesConstituentsData]:
+        return [FMPMajorIndicesConstituentsData(**d) for d in data]
