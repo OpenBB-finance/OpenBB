@@ -101,18 +101,18 @@ class FMPKeyMetricsFetcher(
         query: FMPKeyMetricsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPKeyMetricsData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
 
-        data = []
+        data: List[dict] = []
 
-        def multiple_symbols(symbol: str, data: List[FMPKeyMetricsData]) -> None:
+        def multiple_symbols(symbol: str, data: List[dict]) -> None:
             url = create_url(
                 3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
             )
-            return data.extend(get_data_many(url, FMPKeyMetricsData, **kwargs))
+            return data.extend(get_data_many(url, **kwargs))
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
@@ -120,5 +120,5 @@ class FMPKeyMetricsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:
-        return [KeyMetricsData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[dict]) -> List[FMPKeyMetricsData]:
+        return [FMPKeyMetricsData(**d) for d in data]
