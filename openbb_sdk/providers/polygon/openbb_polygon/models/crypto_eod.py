@@ -4,6 +4,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_eod import (
     CryptoEODData,
@@ -11,8 +12,6 @@ from openbb_provider.standard_models.crypto_eod import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
-
-from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
