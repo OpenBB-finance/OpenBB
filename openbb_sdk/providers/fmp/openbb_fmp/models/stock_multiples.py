@@ -103,17 +103,17 @@ class FMPStockMultiplesFetcher(
         query: FMPStockMultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockMultiplesData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"key-metrics-ttm/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, FMPStockMultiplesData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: FMPStockMultiplesData,
-    ) -> List[StockMultiplesData]:
-        return [StockMultiplesData.parse_obj(d.dict()) for d in data]
+        data: List[dict],
+    ) -> List[FMPStockMultiplesData]:
+        return [FMPStockMultiplesData(**d) for d in data]
