@@ -128,7 +128,7 @@ def get_data_many(
     return data
 
 
-def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
+def get_data_one(url: str, **kwargs: Any) -> dict:
     """Get data from FMP endpoint and convert to schema."""
     data = get_data(url, **kwargs)
     if isinstance(data, list):
@@ -140,7 +140,7 @@ def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
         except TypeError as e:
             raise ValueError("Expected dict, got list of dicts") from e
 
-    return to_schema.parse_obj(data)  # type: ignore
+    return data
 
 
 class BaseStockPriceData(Data):

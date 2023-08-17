@@ -43,12 +43,11 @@ class FMPStockPeersFetcher(
         query: FMPStockPeersQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> FMPStockPeersData:
+    ) -> dict:
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
         url = create_url(4, "stock_peers", api_key, query)
-        return get_data_one(url, FMPStockPeersData, **kwargs)
+        return get_data_one(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: FMPStockPeersData) -> StockPeersData:
-        return StockPeersData.parse_obj(data.dict())
+    def transform_data(data: dict) -> StockPeersData:
+        return StockPeersData(**data)
