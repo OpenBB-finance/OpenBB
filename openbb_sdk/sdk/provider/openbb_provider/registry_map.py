@@ -97,7 +97,7 @@ class RegistryMap:
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        super_model = getattr(fetcher, f"provider_{type_}_type")
+        super_model = getattr(fetcher, type_)
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
@@ -131,4 +131,4 @@ class RegistryMap:
     @staticmethod
     def extract_return_type(fetcher: Fetcher):
         """Extract return info from fetcher."""
-        return getattr(fetcher, "generic_return_type", None)
+        return getattr(fetcher, "return_type", None)

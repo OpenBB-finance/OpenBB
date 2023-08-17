@@ -41,25 +41,25 @@ class Fetcher(Generic[Q, R]):
         return cls.transform_data(data=data)
 
     @property
-    def provider_query_params_type(self) -> Q:
-        """Get the type of the provider query."""
+    def query_params(self) -> Q:
+        """Get the type of query."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[0]  # type: ignore
 
     @property
-    def generic_return_type(self) -> R:
-        """Get the type of the return."""
+    def return_type(self) -> R:
+        """Get the type of return."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[1]  # type: ignore
 
     @property
-    def provider_data_type(self) -> D:  # type: ignore
-        """Get the type of the provider data."""
+    def data(self) -> D:  # type: ignore
+        """Get the type data."""
         # pylint: disable=E1101
-        return self.get_data_type(self.__orig_bases__[0].__args__[1])  # type: ignore
+        return self._get_data_type(self.__orig_bases__[0].__args__[1])  # type: ignore
 
     @staticmethod
-    def get_data_type(data: Any) -> D:  # type: ignore
+    def _get_data_type(data: Any) -> D:  # type: ignore
         """Get the type of the data."""
         if get_origin(data) == list:
             data = get_args(data)[0]
