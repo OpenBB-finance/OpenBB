@@ -106,7 +106,7 @@ class CLASS_stocks(Container):
         StockInfo
         ---------
         symbol : Optional[str]
-            The ticker symbol.
+            Symbol to get data for.
         name : Optional[str]
             The name associated with the ticker symbol.
         price : Optional[float]
@@ -236,6 +236,12 @@ class CLASS_stocks(Container):
             None
         period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return (quarterly or annually). (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        adjust : bool
+            Adjust all the data automatically. (provider: yfinance)
+        back_adjust : bool
+            Back-adjusted data to mimic true historical prices. (provider: yfinance)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             The timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -789,7 +795,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Search for a company or stock ticker.
 
         Parameters
@@ -822,7 +828,7 @@ class CLASS_stocks(Container):
         StockSearch
         -----------
         symbol : Optional[str]
-            The ticker symbol of the company.
+            Symbol to get data for.
         name : Optional[str]
             The name of the company.
         dpmName : Optional[str]

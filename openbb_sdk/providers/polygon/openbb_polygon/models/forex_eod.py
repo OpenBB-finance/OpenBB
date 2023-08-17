@@ -71,6 +71,7 @@ class PolygonForexEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+
         return PolygonForexEODQueryParams(**transformed_params)
 
     @staticmethod
@@ -78,7 +79,7 @@ class PolygonForexEODFetcher(
         query: PolygonForexEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonForexEODData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -95,8 +96,8 @@ class PolygonForexEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        return [PolygonForexEODData.parse_obj(d) for d in data.get("results", [])]
+        return data
 
     @staticmethod
-    def transform_data(data: List[PolygonForexEODData]) -> List[PolygonForexEODData]:
-        return data
+    def transform_data(data: dict) -> List[PolygonForexEODData]:
+        return [PolygonForexEODData.parse_obj(d) for d in data.get("results", [])]

@@ -2,7 +2,7 @@
 
 from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -24,7 +24,7 @@ class CLASS_stocks_options(Container):
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Get the complete options chain for a ticker.
 
         Parameters

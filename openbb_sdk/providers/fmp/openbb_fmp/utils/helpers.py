@@ -8,10 +8,7 @@ from typing import Any, List, Optional, Type, TypeVar, Union
 import requests
 from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provider.utils.helpers import (
-    get_querystring,
-)
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import BaseModel, PositiveFloat, validator
 from requests.exceptions import SSLError
 
@@ -76,7 +73,7 @@ def create_url(
     version: int,
     endpoint: str,
     api_key: Optional[str],
-    query: Optional[QueryParamsType] = None,
+    query: Optional[BaseModel] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
     """Creates a URL for the FMP API.
@@ -89,7 +86,7 @@ def create_url(
         The endpoint to use.
     api_key: str
         The API key to use.
-    query: Optional[QueryParamsType]
+    query: Optional[BaseModel]
         The dictionary to be turned into a querystring.
     exclude: List[str]
         The keys to be excluded from the querystring.

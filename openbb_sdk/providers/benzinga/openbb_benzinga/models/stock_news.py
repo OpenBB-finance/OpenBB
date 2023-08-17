@@ -5,16 +5,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsQueryParams,
-)
+from openbb_provider.standard_models.stock_news import StockNewsQueryParams
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field
 
-from openbb_benzinga.utils.helpers import (
-    BenzingaStockNewsData,
-    get_data,
-)
+from openbb_benzinga.utils.helpers import BenzingaStockNewsData, get_data
 
 
 class BenzingaStockNewsQueryParams(StockNewsQueryParams):
@@ -97,7 +92,7 @@ class BenzingaStockNewsFetcher(
         query: BenzingaStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[BenzingaStockNewsData]:
+    ) -> dict:
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
@@ -108,10 +103,10 @@ class BenzingaStockNewsFetcher(
         if len(data) == 0:
             raise RuntimeError("No news found")
 
-        return [BenzingaStockNewsData.from_dict(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[BenzingaStockNewsData],
+        data: dict,
     ) -> List[BenzingaStockNewsData]:
-        return data
+        return [BenzingaStockNewsData.from_dict(d) for d in data]

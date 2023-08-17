@@ -1,7 +1,7 @@
 """Query executor module."""
 from typing import Any, Dict, Optional, Type
 
-from openbb_provider.abstract.fetcher import Fetcher, GenericDataType
+from openbb_provider.abstract.fetcher import Fetcher, ReturnType
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
 
@@ -55,7 +55,7 @@ class QueryExecutor:
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs: Any,
-    ) -> GenericDataType:
+    ) -> ReturnType:
         """Execute query.
 
         Parameters
@@ -72,7 +72,7 @@ class QueryExecutor:
 
         Returns
         -------
-        GenericDataType
+        ReturnType
             Query result.
         """
         provider = self.get_provider(provider_name)

@@ -81,7 +81,7 @@ class PolygonMajorIndicesEODFetcher(
         query: PolygonMajorIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonMajorIndicesEODData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -98,12 +98,12 @@ class PolygonMajorIndicesEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        return [
-            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
-        ]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[PolygonMajorIndicesEODData],
+        data: dict,
     ) -> List[MajorIndicesEODData]:
-        return [MajorIndicesEODData.parse_obj(d.dict()) for d in data]
+        return [
+            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
+        ]

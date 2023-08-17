@@ -2,11 +2,9 @@
 
 import random
 import re
-from typing import Callable, Dict, List, Optional, Type, Union
+from typing import List
 
 import requests
-
-from openbb_provider.abstract.fetcher import DataType, ProviderDataType
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
@@ -31,34 +29,10 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return "&".join([f"{k}={v}" for k, v in params.items()])
 
 
-def process(
-    row: ProviderDataType, key: str, processors: Optional[Dict[str, Callable]] = None
-):
-    """Process a specific field."""
-    if not processors:
-        return getattr(row, key)
-    if key not in processors:
-        return getattr(row, key)
-    return processors[key](getattr(row, key))
-
-
 def camel_to_snake(name: str) -> str:
     """Convert a camelCase string to snake_case."""
     pattern = re.compile(r"(?<!^)(?=[A-Z])")
     return pattern.sub("_", name).lower()
-
-
-def convert_schema(
-    row: ProviderDataType,
-    new_schema: Type[DataType],
-    mapping: Dict[str, str],
-    processors: Optional[Dict[str, Callable]] = None,
-):
-    """Convert a specific schema to a given new_schema."""
-    mapped_fields = {
-        value: process(row, key, processors) for key, value in mapping.items()
-    }
-    return new_schema.parse_obj(mapped_fields)
 
 
 def check_alias(field) -> bool:
@@ -66,49 +40,6 @@ def check_alias(field) -> bool:
     alias = getattr(field, "alias")
     name = getattr(field, "name")
     return alias != name
-
-
-def data_transformer(
-    data: Union[List[ProviderDataType], ProviderDataType],
-    new_schema: Type[DataType],
-    processors: Optional[Dict[str, Callable]] = None,
-) -> Union[List[DataType], DataType]:
-    """Convert a specific data into the standardised version.
-
-    Parameters
-    ----------
-    data: Union[List[ProviderDataType], ProviderDataType]
-        A list of pydantic schemas
-
-    new_schema: DataType
-        The standardised pydantic schema
-
-    processors: Optional[Dict[str, str]]
-        A dictionary with fields and custom processing functions
-
-    Returns
-    -------
-    List[DataType]
-        A list of the newly formatted schemas
-    """
-    the_data = data[0] if isinstance(data, list) else data
-    fields = the_data.__dict__.keys()
-    final_mapping = {x: camel_to_snake(x) for x in fields}
-    mapping = {
-        attr: field.alias
-        for attr, field in the_data.__fields__.items()
-        if check_alias(field)
-    }
-    if mapping:
-        for key, value in mapping.items():
-            final_mapping[key] = value
-    if not isinstance(data, list):
-        return convert_schema(data, new_schema, final_mapping, processors)
-    new_data = []
-    for row in data:
-        schema = convert_schema(row, new_schema, final_mapping, processors)
-        new_data.append(schema)
-    return new_data
 
 
 def get_user_agent() -> str:

@@ -5,9 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.global_news import (
-    GlobalNewsQueryParams,
-)
+from openbb_provider.standard_models.global_news import GlobalNewsQueryParams
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field
 
@@ -93,7 +91,7 @@ class BenzingaGlobalNewsFetcher(
         query: BenzingaGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[BenzingaStockNewsData]:
+    ) -> dict:
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
@@ -104,10 +102,10 @@ class BenzingaGlobalNewsFetcher(
         if len(data) == 0:
             raise RuntimeError("No news found")
 
-        return [BenzingaStockNewsData.from_dict(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[BenzingaStockNewsData],
+        data: dict,
     ) -> List[BenzingaStockNewsData]:
-        return data
+        return [BenzingaStockNewsData.from_dict(d) for d in data]

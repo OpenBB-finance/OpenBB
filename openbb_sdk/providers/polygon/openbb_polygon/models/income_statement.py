@@ -2,9 +2,7 @@ from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.income_statement import (
-    IncomeStatementData,
-)
+from openbb_provider.standard_models.income_statement import IncomeStatementData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
 
@@ -71,7 +69,7 @@ class PolygonIncomeStatementFetcher(
         query: PolygonIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonIncomeStatementData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -84,6 +82,12 @@ class PolygonIncomeStatementFetcher(
         if len(data) == 0:
             raise RuntimeError("No Income Statement found")
 
+        return data
+
+    @staticmethod
+    def transform_data(
+        data: dict,
+    ) -> List[IncomeStatementData]:
         FIELDS = [
             "revenues",
             "cost_of_revenue",
@@ -120,9 +124,3 @@ class PolygonIncomeStatementFetcher(
 
             to_return.append(PolygonIncomeStatementData(**new))
         return to_return
-
-    @staticmethod
-    def transform_data(
-        data: List[PolygonIncomeStatementData],
-    ) -> List[IncomeStatementData]:
-        return data

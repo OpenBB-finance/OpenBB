@@ -3,7 +3,7 @@
 import datetime
 from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -27,7 +27,7 @@ class CLASS_futures(Container):
         chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Futures EOD Price.
 
         Parameters
@@ -110,7 +110,7 @@ class CLASS_futures(Container):
         chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Futures EOD Price.
 
         Parameters
@@ -133,6 +133,12 @@ class CLASS_futures(Container):
             Data granularity. (provider: yfinance)
         period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return (quarterly or annually). (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        adjust : bool
+            Adjust all the data automatically. (provider: yfinance)
+        back_adjust : bool
+            Back-adjusted data to mimic true historical prices. (provider: yfinance)
 
         Returns
         -------

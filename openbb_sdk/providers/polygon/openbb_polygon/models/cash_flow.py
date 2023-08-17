@@ -1,9 +1,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cash_flows import (
-    CashFlowStatementData,
-)
+from openbb_provider.standard_models.cash_flows import CashFlowStatementData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
 
@@ -45,7 +43,7 @@ class PolygonCashFlowStatementFetcher(
         query: PolygonCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonCashFlowStatementData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -58,6 +56,12 @@ class PolygonCashFlowStatementFetcher(
         if len(data) == 0:
             raise RuntimeError("No Cash Flow Statement found")
 
+        return data
+
+    @staticmethod
+    def transform_data(
+        data: dict,
+    ) -> List[CashFlowStatementData]:
         FIELDS = [
             "net_cash_flow_from_financing_activities",
             "net_cash_flow_from_investing_activities",
@@ -78,9 +82,3 @@ class PolygonCashFlowStatementFetcher(
 
             to_return.append(PolygonCashFlowStatementData(**new))
         return to_return
-
-    @staticmethod
-    def transform_data(
-        data: List[PolygonCashFlowStatementData],
-    ) -> List[CashFlowStatementData]:
-        return data
