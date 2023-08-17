@@ -66,7 +66,7 @@ class StockQuoteData(Data):
         default=None,
         description="The average volume of the stock in the last 10 trading days.",
     )
-    exchange: Optional[str] = Field(description="The exchange the stock is traded on.")
+    exchange: Optional[str] = Field(description="Exchange the stock is traded on.")
     open: Optional[float] = Field(
         default=None,
         description="The opening price of the stock in the current trading day.",
@@ -74,7 +74,7 @@ class StockQuoteData(Data):
     previous_close: Optional[float] = Field(
         description="The previous closing price of the stock."
     )
-    eps: Optional[float] = Field(description="The earnings per share of the stock.")
+    eps: Optional[float] = Field(description="Earnings per share of the stock.")
     pe: Optional[float] = Field(description="The price earnings ratio of the stock.")
     earnings_announcement: Optional[str] = Field(
         description="The earnings announcement date of the stock."

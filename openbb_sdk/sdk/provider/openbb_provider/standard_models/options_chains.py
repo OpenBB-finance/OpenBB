@@ -16,7 +16,7 @@ class OptionsChainsQueryParams(QueryParams, BaseSymbol):
 class OptionsChainsData(Data):
     """Options Chains Data."""
 
-    expiration: datetime = Field(description="The expiration date of the contract.")
+    expiration: datetime = Field(description="Expiration date of the contract.")
     strike: float = Field(description="The strike price of the contract.")
     optionType: str = Field(description="Call or Put.")
     bid: float = Field(description="The bid price of the contract.")

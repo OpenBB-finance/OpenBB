@@ -33,7 +33,7 @@ class CompanyOverviewData(Data, BaseSymbol):
     cik: Optional[str] = Field(description="The CIK of the company.")
     isin: Optional[str] = Field(description="The ISIN of the company.")
     cusip: Optional[str] = Field(description="The CUSIP of the company.")
-    exchange: str = Field(description="The exchange of the company.")
+    exchange: str = Field(description="Exchange of the company.")
     exchange_short_name: str = Field(
         description="The exchange short name of the company."
     )
