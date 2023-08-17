@@ -47,16 +47,16 @@ class Fetcher(Generic[Q, D]):
         return self.__orig_bases__[0].__args__[0]
 
     @property
-    def provider_data_type(self):
-        """Get the type of the provider data."""
-        # pylint: disable=E1101
-        return self.get_data_type(self.__orig_bases__[0].__args__[1])
-
-    @property
     def generic_return_type(self):
         """Get the type of the return."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[1]
+
+    @property
+    def provider_data_type(self):
+        """Get the type of the provider data."""
+        # pylint: disable=E1101
+        return self.get_data_type(self.__orig_bases__[0].__args__[1])
 
     @staticmethod
     def get_data_type(data: Any) -> ReturnType:
