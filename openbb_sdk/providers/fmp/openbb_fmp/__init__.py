@@ -46,8 +46,6 @@ from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
-# mypy: disable-error-code="list-item"
-
 fmp_provider = Provider(
     name="fmp",
     website="https://financialmodelingprep.com/",

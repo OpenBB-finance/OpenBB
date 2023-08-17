@@ -1,4 +1,3 @@
-import inspect
 import multiprocessing
 import warnings
 from contextlib import nullcontext
@@ -171,7 +170,7 @@ class ParametersBuilder:
             arbitrary_types_allowed = True
             extra = Extra.allow
 
-        sig = inspect.signature(func)
+        sig = signature(func)
         fields = {
             n: (
                 p.annotation,
