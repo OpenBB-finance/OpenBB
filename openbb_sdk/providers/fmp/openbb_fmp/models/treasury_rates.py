@@ -62,20 +62,19 @@ class FMPTreasuryRatesFetcher(
         query: FMPTreasuryRatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPTreasuryRatesData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.start_date = (datetime.now() - timedelta(91)).date()
         query.end_date = (datetime.now() - timedelta(1)).date()
 
         base_url = "https://financialmodelingprep.com/api/v4/"
-        # query_str = get_querystring(query.dict(by_alias=True), [])
-        query_str = get_querystring(query.dict(), [])
+        query_str = get_querystring(query.dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPTreasuryRatesData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPTreasuryRatesData]) -> List[FMPTreasuryRatesData]:
-        return data
+    def transform_data(data: List[dict]) -> List[FMPTreasuryRatesData]:
+        return [FMPTreasuryRatesData.parse_obj(d) for d in data]

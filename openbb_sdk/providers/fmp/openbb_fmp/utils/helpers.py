@@ -104,30 +104,28 @@ def create_url(
 
 
 def get_data_many(
-    url: str, to_schema: Type[T], sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[T]:
+    url: str, sub_dict: Optional[str] = None, **kwargs: Any
+) -> List[dict]:
     """Get data from FMP endpoint and convert to list of schemas.
 
     Parameters:
     -----------
     url: str
         The URL to get the data from.
-    to_schema: T
-        The schema to convert the data to.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
     Returns:
     --------
-    List[T]
-        The list of schemas.
+    List[dict]
+        Dictionary of data.
     """
     data = get_data(url, **kwargs)
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
         raise ValueError("Expected list of dicts, got dict")
-    return [to_schema.parse_obj(d) for d in data]  # type: ignore
+    return data
 
 
 def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
