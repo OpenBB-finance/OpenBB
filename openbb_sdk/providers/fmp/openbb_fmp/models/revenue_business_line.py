@@ -44,7 +44,7 @@ class FMPRevenueBusinessLineFetcher(
         query: FMPRevenueBusinessLineQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPRevenueBusinessLineData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -55,14 +55,14 @@ class FMPRevenueBusinessLineFetcher(
         if isinstance(data, dict):
             raise ValueError("Expected list of dicts, got dict")
 
+        return data
+
+    @staticmethod
+    def transform_data(
+        data: List[dict],
+    ) -> List[FMPRevenueBusinessLineData]:
         return [
             FMPRevenueBusinessLineData(date=key, business_line=value)
             for d in data
             for key, value in d.items()
         ]
-
-    @staticmethod
-    def transform_data(
-        data: List[FMPRevenueBusinessLineData],
-    ) -> List[FMPRevenueBusinessLineData]:
-        return data
