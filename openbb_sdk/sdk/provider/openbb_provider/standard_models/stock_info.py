@@ -16,22 +16,22 @@ class StockInfoQueryParams(QueryParams, BaseSymbol):
 class StockInfoData(Data, BaseSymbol):
     """Stock Info Data."""
 
-    name: str = Field(description="The name associated with the ticker symbol.")
-    price: float = Field(description="The last price of the stock.")
-    open: Optional[float] = Field(description="The opening price of the stock.")
+    name: str = Field(description="Name associated with the ticker symbol.")
+    price: float = Field(description="Last price of the stock.")
+    open: Optional[float] = Field(description="Opening price of the stock.")
     high: Optional[float] = Field(
-        description="The high price of the current trading day."
+        description="High price of the current trading day."
     )
     low: Optional[float] = Field(
-        description="The low price of the current trading day."
+        description="Low price of the current trading day."
     )
-    close: Optional[float] = Field(description="The closing price of the stock.")
+    close: Optional[float] = Field(description="Closing price of the stock.")
     change: Optional[float] = Field(
-        description="The change in price over the current trading period."
+        description="Change in price over the current trading period."
     )
     change_percent: Optional[float] = Field(
-        description="The % change in price over the current trading period."
+        description="% change in price over the current trading period."
     )
     previous_close: Optional[float] = Field(
-        description="The previous closing price of the stock."
+        description="Previous closing price of the stock."
     )

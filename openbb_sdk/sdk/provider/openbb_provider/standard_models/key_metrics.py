@@ -27,7 +27,7 @@ class KeyMetricsData(Data, BaseSymbol):
     """Key Metrics Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="The period of the data.")
+    period: str = Field(description="Period of the data.")
     revenue_per_share: Optional[float] = Field(description="Revenue per share")
     net_income_per_share: Optional[float] = Field(description="Net income per share")
     operating_cash_flow_per_share: Optional[float] = Field(

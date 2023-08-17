@@ -22,24 +22,24 @@ class ExecutiveCompensationData(Data, BaseSymbol):
     """Return Executive Compensation Data."""
 
     cik: Optional[str] = Field(
-        description="The Central Index Key (CIK) of the company."
+        description="Central Index Key (CIK) of the company."
     )
-    filing_date: dateType = Field(description="The date of the filing.")
-    accepted_date: datetime = Field(description="The date the filing was accepted.")
+    filing_date: dateType = Field(description="Date of the filing.")
+    accepted_date: datetime = Field(description="Date the filing was accepted.")
     name_and_position: str = Field(
-        description="The name and position of the executive."
+        description="Name and position of the executive."
     )
-    year: int = Field(description="The year of the compensation.")
-    salary: PositiveFloat = Field(description="The salary of the executive.")
-    bonus: NonNegativeFloat = Field(description="The bonus of the executive.")
+    year: int = Field(description="Year of the compensation.")
+    salary: PositiveFloat = Field(description="Salary of the executive.")
+    bonus: NonNegativeFloat = Field(description="Bonus of the executive.")
     stock_award: NonNegativeFloat = Field(
-        description="The stock award of the executive."
+        description="Stock award of the executive."
     )
     incentive_plan_compensation: NonNegativeFloat = Field(
-        description="The incentive plan compensation of the executive."
+        description="Incentive plan compensation of the executive."
     )
     all_other_compensation: NonNegativeFloat = Field(
-        description="The all other compensation of the executive."
+        description="All other compensation of the executive."
     )
-    total: PositiveFloat = Field(description="The total compensation of the executive.")
-    url: str = Field(description="The URL of the filing data.")
+    total: PositiveFloat = Field(description="Total compensation of the executive.")
+    url: str = Field(description="URL of the filing data.")

@@ -30,58 +30,58 @@ class StockQuoteData(Data):
     """Stock Quote data."""
 
     symbol: str = Field(description="Symbol of the company.")
-    name: Optional[str] = Field(description="The name of the company.")
+    name: Optional[str] = Field(description="Name of the company.")
     price: Optional[float] = Field(
-        description="The current trading price of the stock."
+        description="Current trading price of the stock."
     )
     changes_percentage: Optional[float] = Field(
-        description="The change percentage of the stock price."
+        description="Change percentage of the stock price."
     )
-    change: Optional[float] = Field(description="The change of the stock price.")
+    change: Optional[float] = Field(description="Change of the stock price.")
     day_low: Optional[float] = Field(
         default=None,
-        description="The lowest price of the stock in the current trading day.",
+        description="Lowest price of the stock in the current trading day.",
     )
     day_high: Optional[float] = Field(
         default=None,
-        description="The highest price of the stock in the current trading day.",
+        description="Highest price of the stock in the current trading day.",
     )
     year_high: Optional[float] = Field(
-        description="The highest price of the stock in the last 52 weeks."
+        description="Highest price of the stock in the last 52 weeks."
     )
     year_low: Optional[float] = Field(
-        description="The lowest price of the stock in the last 52 weeks."
+        description="Lowest price of the stock in the last 52 weeks."
     )
-    market_cap: Optional[float] = Field(description="The market cap of the company.")
+    market_cap: Optional[float] = Field(description="Market cap of the company.")
     price_avg50: Optional[float] = Field(
-        description="The 50 days average price of the stock."
+        description="50 days average price of the stock."
     )
     price_avg200: Optional[float] = Field(
-        description="The 200 days average price of the stock."
+        description="200 days average price of the stock."
     )
     volume: Optional[int] = Field(
-        description="The volume of the stock in the current trading day."
+        description="Volume of the stock in the current trading day."
     )
     avg_volume: Optional[int] = Field(
         default=None,
-        description="The average volume of the stock in the last 10 trading days.",
+        description="Average volume of the stock in the last 10 trading days.",
     )
     exchange: Optional[str] = Field(description="Exchange the stock is traded on.")
     open: Optional[float] = Field(
         default=None,
-        description="The opening price of the stock in the current trading day.",
+        description="Opening price of the stock in the current trading day.",
     )
     previous_close: Optional[float] = Field(
-        description="The previous closing price of the stock."
+        description="Previous closing price of the stock."
     )
     eps: Optional[float] = Field(description="Earnings per share of the stock.")
-    pe: Optional[float] = Field(description="The price earnings ratio of the stock.")
+    pe: Optional[float] = Field(description="Price earnings ratio of the stock.")
     earnings_announcement: Optional[str] = Field(
-        description="The earnings announcement date of the stock."
+        description="Earnings announcement date of the stock."
     )
     shares_outstanding: Optional[int] = Field(
-        description="The number of shares outstanding of the stock."
+        description="Number of shares outstanding of the stock."
     )
     date: Optional[datetime] = Field(
-        description="The timestamp of the stock quote.", alias="timestamp"
+        description="Timestamp of the stock quote.", alias="timestamp"
     )

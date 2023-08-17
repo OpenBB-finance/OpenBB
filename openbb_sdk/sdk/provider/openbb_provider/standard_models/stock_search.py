@@ -10,7 +10,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 class StockSearchQueryParams(QueryParams):
     """Company Search Query Params"""
 
-    query: str = Field(description="The search query.", default="")
+    query: str = Field(description="Search query.", default="")
     ticker: bool = Field(
         description="Whether to search by ticker symbol.", default=False
     )
@@ -19,4 +19,4 @@ class StockSearchQueryParams(QueryParams):
 class StockSearchData(Data, BaseSymbol):
     """Company Search Data."""
 
-    name: str = Field(description="The name of the company.")
+    name: str = Field(description="Name of the company.")

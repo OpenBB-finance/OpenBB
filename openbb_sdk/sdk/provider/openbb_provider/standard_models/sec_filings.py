@@ -119,7 +119,7 @@ class SECFilingsQueryParams(QueryParams, BaseSymbol):
     """SEC Filings Query."""
 
     type: FORM_TYPES = Field(
-        default="10-K", description="The type of the SEC filing form."
+        default="10-K", description="Type of the SEC filing form."
     )
     page: Optional[int] = Field(default=0, description="Page number of the results.")
     limit: Optional[int] = Field(
@@ -130,9 +130,9 @@ class SECFilingsQueryParams(QueryParams, BaseSymbol):
 class SECFilingsData(Data, BaseSymbol):
     """SEC Filings Data."""
 
-    filling_date: datetime = Field(description="The filling date of the SEC filing.")
-    accepted_date: datetime = Field(description="The accepted date of the SEC filing.")
-    cik: str = Field(description="The CIK of the SEC filing.")
-    type: str = Field(description="The type of the SEC filing.")
-    link: str = Field(description="The link of the SEC filing.")
-    final_link: str = Field(description="The final link of the SEC filing.")
+    filling_date: datetime = Field(description="Filling date of the SEC filing.")
+    accepted_date: datetime = Field(description="Accepted date of the SEC filing.")
+    cik: str = Field(description="CIK of the SEC filing.")
+    type: str = Field(description="Type of the SEC filing.")
+    link: str = Field(description="Link of the SEC filing.")
+    final_link: str = Field(description="Final link of the SEC filing.")

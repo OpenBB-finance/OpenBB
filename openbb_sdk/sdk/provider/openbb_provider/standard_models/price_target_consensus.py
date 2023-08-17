@@ -16,14 +16,14 @@ class PriceTargetConsensusData(Data, BaseSymbol):
     """Price target consensus Data."""
 
     target_high: float = Field(
-        description="The high target of the price target consensus."
+        description="High target of the price target consensus."
     )
     target_low: float = Field(
-        description="The low target of the price target consensus."
+        description="Low target of the price target consensus."
     )
     target_consensus: float = Field(
-        description="The consensus target of the price target consensus."
+        description="Consensus target of the price target consensus."
     )
     target_median: float = Field(
-        description="The median target of the price target consensus."
+        description="Median target of the price target consensus."
     )
