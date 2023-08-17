@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_info import (
@@ -79,7 +79,7 @@ class CboeStockInfoData(StockInfoData):
 class CboeStockInfoFetcher(
     Fetcher[
         CboeStockInfoQueryParams,
-        CboeStockInfoData,
+        List[CboeStockInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""

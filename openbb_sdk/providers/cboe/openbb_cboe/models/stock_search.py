@@ -44,7 +44,7 @@ class CboeStockSearchData(StockSearchData):
 class CboeStockSearchFetcher(
     Fetcher[
         CboeStockSearchQueryParams,
-        CboeStockSearchData,
+        List[CboeStockSearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""

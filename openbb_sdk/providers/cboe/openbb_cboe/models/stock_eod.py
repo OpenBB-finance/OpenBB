@@ -32,7 +32,7 @@ class CboeStockEODData(StockEODData):
 class CboeStockEODFetcher(
     Fetcher[
         CboeStockEODQueryParams,
-        CboeStockEODData,
+        List[CboeStockEODData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""
