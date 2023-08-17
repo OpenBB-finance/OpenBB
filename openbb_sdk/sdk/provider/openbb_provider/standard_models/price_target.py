@@ -19,20 +19,20 @@ class PriceTargetData(Data, BaseSymbol):
     """Price target Data."""
 
     published_date: datetime = Field(
-        description="The published date of the price target."
+        description="Published date of the price target."
     )
-    news_url: str = Field(description="The news URL of the price target.")
-    news_title: Optional[str] = Field(description="The news title of the price target.")
+    news_url: str = Field(description="News URL of the price target.")
+    news_title: Optional[str] = Field(description="News title of the price target.")
     analyst_name: Optional[str] = Field(
-        description="The analyst name of the price target."
+        description="Analyst name."
     )
-    price_target: float = Field(description="The price target of the price target.")
-    adj_price_target: float = Field(
-        description="The adjusted price target of the price target."
+    analyst_company: Optional[str] = Field(description="Analyst company.")
+    price_target: Optional[float] = Field(description="Price target.")
+    adj_price_target: Optional[float] = Field(
+        description="Adjusted price target."
     )
-    price_when_posted: float = Field(
-        description="The price when posted of the price target."
+    price_when_posted: Optional[float] = Field(
+        description="Price when posted."
     )
-    news_publisher: str = Field(description="The news publisher of the price target.")
-    news_base_url: str = Field(description="The news base URL of the price target.")
-    analyst_company: str = Field(description="The analyst company of the price target.")
+    news_publisher: str = Field(description="News publisher of the price target.")
+    news_base_url: str = Field(description="News base URL of the price target.")
