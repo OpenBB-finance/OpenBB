@@ -7,7 +7,7 @@ from openbb_provider.abstract.query_params import QueryParams
 
 Q = TypeVar("Q", bound=QueryParams)
 D = TypeVar("D")  # Data
-R = TypeVar("R")  # Return, usually the same as Data but can be List[Data] for example
+R = TypeVar("R")  # Return, usually List[D], but can be just D for example
 
 
 class Fetcher(Generic[Q, R]):
