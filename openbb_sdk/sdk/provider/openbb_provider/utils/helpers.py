@@ -1,7 +1,6 @@
 """Provider helpers."""
 
 import random
-import re
 from typing import List
 
 import requests
@@ -27,19 +26,6 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
         items.pop(item)
     params = {k: v for k, v in items.items() if v is not None}
     return "&".join([f"{k}={v}" for k, v in params.items()])
-
-
-def camel_to_snake(name: str) -> str:
-    """Convert a camelCase string to snake_case."""
-    pattern = re.compile(r"(?<!^)(?=[A-Z])")
-    return pattern.sub("_", name).lower()
-
-
-def check_alias(field) -> bool:
-    """Check if a field has an alias."""
-    alias = getattr(field, "alias")
-    name = getattr(field, "name")
-    return alias != name
 
 
 def get_user_agent() -> str:
