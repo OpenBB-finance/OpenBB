@@ -24,7 +24,7 @@ class FMPGlobalNewsData(GlobalNewsData):
     class Config:
         fields = {"date": "publishedDate"}
 
-    site: str = Field(description="The site of the news.")
+    site: str = Field(description="Site of the news.")
 
 
 class FMPGlobalNewsFetcher(

@@ -23,7 +23,7 @@ class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
 
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="The timespan of the data.")
+    ] = Field(default="day", description="Timespan of the data.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -32,7 +32,7 @@ class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
     multiplier: PositiveInt = Field(
-        default=1, description="The multiplier of the timespan."
+        default=1, description="Multiplier of the timespan."
     )
 
 
@@ -51,7 +51,7 @@ class PolygonCryptoEODData(CryptoEODData):
         }
 
     n: PositiveInt = Field(
-        description="The number of transactions for the symbol in the time period."
+        description="Number of transactions for the symbol in the time period."
     )
 
     @validator("t", pre=True, check_fields=False)

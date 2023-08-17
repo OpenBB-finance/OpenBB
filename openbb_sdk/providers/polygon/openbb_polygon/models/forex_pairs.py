@@ -61,15 +61,15 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
 class PolygonForexPairsData(ForexPairsData):
     """Polygon available pairs Data."""
 
-    market: str = Field(description="The name of the trading market. Always 'fx'.")
-    locale: str = Field(description="The locale of the currency pair.")
-    currency_symbol: str = Field(description="The symbol of the quote currency.")
-    currency_name: str = Field(description="The name of the quote currency.")
-    base_currency_symbol: str = Field(description="The symbol of the base currency.")
-    base_currency_name: str = Field(description="The name of the base currency.")
-    last_updated_utc: datetime = Field(description="The last updated timestamp in UTC.")
+    market: str = Field(description="Name of the trading market. Always 'fx'.")
+    locale: str = Field(description="Locale of the currency pair.")
+    currency_symbol: str = Field(description="Symbol of the quote currency.")
+    currency_name: str = Field(description="Name of the quote currency.")
+    base_currency_symbol: str = Field(description="Symbol of the base currency.")
+    base_currency_name: str = Field(description="Name of the base currency.")
+    last_updated_utc: datetime = Field(description="Last updated timestamp in UTC.")
     delisted_utc: Optional[datetime] = Field(
-        description="The delisted timestamp in UTC."
+        description="Delisted timestamp in UTC."
     )
 
     @validator("last_updated_utc", pre=True, check_fields=False)

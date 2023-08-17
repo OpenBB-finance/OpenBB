@@ -36,7 +36,7 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         default=None, description="Greater than or equal, by default None"
     )
     published_utc: Optional[str] = Field(
-        default=None, description="The published date of the query, by default None"
+        default=None, description="Published date of the query, by default None"
     )
     published_utc_lt: Optional[str] = Field(
         default=None, description="Less than, by default None"
@@ -51,10 +51,10 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         default=None, description="Greater than or equal, by default None"
     )
     order: Optional[Literal["asc", "desc"]] = Field(
-        default=None, description="The sort order of the query, by default None"
+        default=None, description="Sort order of the query, by default None"
     )
     sort: Optional[str] = Field(
-        default=None, description="The sort of the query, by default None"
+        default=None, description="Sort of the query, by default None"
     )
 
 

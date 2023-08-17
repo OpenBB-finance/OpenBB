@@ -34,16 +34,16 @@ class BenzingaStockNewsData(StockNewsData):
     """Benzinga Global News data."""
 
     images: List[BenzingaImage] = Field(
-        description="The images associated with the news."
+        description="Images associated with the news."
     )
     channels: Optional[List[str]] = Field(
-        description="The channels associated with the news."
+        description="Channels associated with the news."
     )
     stocks: Optional[List[str]] = Field(
-        description="The stocks associated with the news."
+        description="Stocks associated with the news."
     )
-    tags: Optional[List[str]] = Field(description="The tags associated with the news.")
-    teaser: Optional[str] = Field(description="The teaser of the news.")
+    tags: Optional[List[str]] = Field(description="Tags associated with the news.")
+    teaser: Optional[str] = Field(description="Teaser of the news.")
 
     @staticmethod
     def from_dict(d: Dict) -> "BenzingaStockNewsData":

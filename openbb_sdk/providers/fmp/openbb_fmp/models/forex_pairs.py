@@ -23,14 +23,14 @@ class FMPForexPairsQueryParams(ForexPairsQueryParams):
 class FMPForexPairsData(ForexPairsData):
     """FMP Forex available pairs Data."""
 
-    symbol: str = Field(description="The symbol of the currency pair.")
-    currency: str = Field(description="The base currency of the currency pair.")
+    symbol: str = Field(description="Symbol of the currency pair.")
+    currency: str = Field(description="Base currency of the currency pair.")
     stockExchange: Optional[str] = Field(
-        description="The stock exchange of the currency pair.",
+        description="Stock exchange of the currency pair.",
         alias="stock_exchange",
     )
     exchange_short_name: Optional[str] = Field(
-        description="The short name of the stock exchange of the currency pair.",
+        description="Short name of the stock exchange of the currency pair.",
         alias="exchange_short_name",
     )
 

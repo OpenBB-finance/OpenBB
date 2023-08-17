@@ -22,24 +22,24 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
         fields = {"symbols": "tickers", "limit": "pageSize"}
 
     displayOutput: Literal["headline", "summary", "full", "all"] = Field(
-        default="headline", description="The type of data to return."
+        default="headline", description="Type of data to return."
     )
     date: Optional[datetime] = Field(
-        default=None, description="The date of the news to retrieve."
+        default=None, description="Date of the news to retrieve."
     )
     dateFrom: Optional[datetime] = Field(
-        default=None, description="The start date of the news to retrieve."
+        default=None, description="Start date of the news to retrieve."
     )
     dateTo: Optional[datetime] = Field(
-        default=None, description="The end date of the news to retrieve."
+        default=None, description="End date of the news to retrieve."
     )
     updatedSince: Optional[int] = Field(
         default=None,
-        description="The number of seconds since the news was updated.",
+        description="Number of seconds since the news was updated.",
     )
     publishedSince: Optional[int] = Field(
         default=None,
-        description="The number of seconds since the news was published.",
+        description="Number of seconds since the news was published.",
     )
     sort: Optional[
         Literal[
@@ -54,7 +54,7 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
         ]
     ] = Field(
         default=None,
-        description="The order in which to sort the news. "
+        description="Order in which to sort the news. "
         "Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type.",
     )
     isin: Optional[str] = Field(
@@ -64,16 +64,16 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
         default=None, description="The CUSIP of the news to retrieve."
     )
     channels: Optional[str] = Field(
-        default=None, description="The channels of the news to retrieve."
+        default=None, description="Channels of the news to retrieve."
     )
     topics: Optional[str] = Field(
-        default=None, description="The topics of the news to retrieve."
+        default=None, description="Topics of the news to retrieve."
     )
     authors: Optional[str] = Field(
-        default=None, description="The authors of the news to retrieve."
+        default=None, description="Authors of the news to retrieve."
     )
     content_types: Optional[str] = Field(
-        default=None, description="The content types of the news to retrieve."
+        default=None, description="Content types of the news to retrieve."
     )
 
 

@@ -38,7 +38,7 @@ class CompanyOverviewData(Data, BaseSymbol):
         description="Exchange short name of the company."
     )
     industry: str = Field(description="Industry of the company.")
-    website: str = Field(description="website of the company.")
+    website: str = Field(description="Website of the company.")
     description: str = Field(description="Description of the company.")
     ceo: str = Field(description="CEO of the company.")
     sector: str = Field(description="Sector of the company.")

@@ -32,11 +32,11 @@ class CboeStockSearchData(StockSearchData):
         }
 
     dpmName: Optional[str] = Field(
-        description="The name of the primary market maker.",
+        description="Name of the primary market maker.",
         alias="DPM Name",
     )
     postStation: Optional[str] = Field(
-        description="The post and station location on the CBOE trading floor.",
+        description="Post and station location on the CBOE trading floor.",
         alias="Post/Station",
     )
 

@@ -97,7 +97,7 @@ class StockOwnershipData(Data):
         ...,
         description="Industry title of the stock ownership.",
     )
-    weight: float = Field(description="weight of the stock ownership.")
+    weight: float = Field(description="Weight of the stock ownership.")
     last_weight: float = Field(description="Last weight of the stock ownership.")
     change_in_weight: float = Field(
         ...,
