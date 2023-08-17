@@ -51,6 +51,7 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
             fields=["name", "script"],
             page=1,
             size=100,
+            base_url=Hub.BackendEnvironment.BASE_URL,
             silent=silent,
         )
         if response and response.status_code == 200:
