@@ -3,11 +3,10 @@
 
 from dataclasses import dataclass
 from inspect import _empty
-from types import NoneType
+
 import pandas
 
 import pytest
-from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
     DocstringGenerator,
@@ -226,7 +225,7 @@ def test_build_func_params(method_definition):
     """Test build func params."""
     param_map = {
         "param1": Parameter(
-            name="param1", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=NoneType
+            name="param1", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=type(None)
         ),
         "param2": Parameter(
             "param2", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=int
