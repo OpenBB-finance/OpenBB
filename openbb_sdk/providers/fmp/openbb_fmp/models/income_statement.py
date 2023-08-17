@@ -87,7 +87,7 @@ class FMPIncomeStatementFetcher(
         query: FMPIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPIncomeStatementData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -99,10 +99,10 @@ class FMPIncomeStatementFetcher(
             f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
 
-        return get_data_many(url, FMPIncomeStatementData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
         data: List[FMPIncomeStatementData],
-    ) -> List[IncomeStatementData]:
-        return [IncomeStatementData.parse_obj(d.dict()) for d in data]
+    ) -> List[FMPIncomeStatementData]:
+        return [FMPIncomeStatementData(**d) for d in data]
