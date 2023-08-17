@@ -35,7 +35,9 @@ class PackageBuilder:
     """Build the extension package for the SDK."""
 
     @classmethod
-    def build(cls, modules: Optional[List[str]] = None, lint: bool = True) -> None:
+    def build(
+        cls, modules: Optional[Union[str, List[str]]] = None, lint: bool = True
+    ) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
         cls.save_module_map()
@@ -505,7 +507,7 @@ class MethodDefinition:
     @staticmethod
     def add_field_descriptions(
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
-    ) -> OrderedDict[str, Parameter]:
+    ):
         """Add the field description to the param signature."""
         if model_name:
             available_fields = (
