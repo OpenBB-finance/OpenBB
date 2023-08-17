@@ -8,7 +8,7 @@ altair==5.0.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7
 ansiwrap==0.8.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 anyio==3.7.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 appdirs==1.4.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
-appnope==0.1.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and sys_platform == "darwin" or python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and platform_system == "Darwin"
+appnope==0.1.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (sys_platform == "darwin" or platform_system == "Darwin")
 arch==5.6.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 argon2-cffi-bindings==21.2.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 argon2-cffi==21.3.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
@@ -65,7 +65,7 @@ ffn==0.3.6 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" a
 financedatabase==2.1.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 finnhub-python==2.4.18 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 finviz==1.4.6 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
-finvizfinance==0.14.5 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
+finvizfinance==0.14.6rc2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 flake8==6.0.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 fonttools==4.41.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 formulaic==0.6.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
@@ -80,7 +80,7 @@ future==0.18.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.
 gitdb==4.0.10 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 gitpython==3.1.32 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 graphlib-backport==1.0.3 ; python_full_version >= "3.8.1" and python_version < "3.9"
-greenlet==2.0.2 ; python_full_version >= "3.8.1" and platform_machine == "aarch64" and python_full_version != "3.9.7" and python_version < "3.11" or python_full_version >= "3.8.1" and platform_machine == "ppc64le" and python_full_version != "3.9.7" and python_version < "3.11" or python_full_version >= "3.8.1" and platform_machine == "x86_64" and python_full_version != "3.9.7" and python_version < "3.11" or python_full_version >= "3.8.1" and platform_machine == "amd64" and python_full_version != "3.9.7" and python_version < "3.11" or python_full_version >= "3.8.1" and platform_machine == "AMD64" and python_full_version != "3.9.7" and python_version < "3.11" or python_full_version >= "3.8.1" and platform_machine == "win32" and python_full_version != "3.9.7" and python_version < "3.11" or python_full_version >= "3.8.1" and platform_machine == "WIN32" and python_full_version != "3.9.7" and python_version < "3.11"
+greenlet==2.0.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (platform_machine == "win32" or platform_machine == "WIN32" or platform_machine == "AMD64" or platform_machine == "amd64" or platform_machine == "x86_64" or platform_machine == "ppc64le" or platform_machine == "aarch64")
 grpcio==1.56.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 h11==0.14.0 ; python_full_version >= "3.8.1" and python_version < "3.11" and python_full_version != "3.9.7"
 hijri-converter==2.3.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
@@ -178,7 +178,7 @@ prompt-toolkit==3.0.39 ; python_full_version >= "3.8.1" and python_full_version 
 property-cached==1.6.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 protobuf==3.20.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 psutil==5.9.5 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
-ptyprocess==0.7.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and sys_platform != "win32" or python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and os_name != "nt"
+ptyprocess==0.7.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (sys_platform != "win32" or os_name != "nt")
 pure-eval==0.2.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 pyarrow==12.0.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 pyasn1==0.5.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
