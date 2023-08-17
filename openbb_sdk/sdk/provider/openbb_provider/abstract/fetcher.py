@@ -1,14 +1,12 @@
 """Abstract class for the fetcher."""
 
 
-from typing import Any, Dict, Generic, List, Optional, TypeVar, get_args, get_origin
+from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
 from openbb_provider.abstract.query_params import QueryParams
 
 Q = TypeVar("Q", bound=QueryParams)
-D = TypeVar("D")
-ReturnType = List[D]
-
+D = TypeVar("D") # Data
 
 class Fetcher(Generic[Q, D]):
     """Abstract class for the fetcher."""
@@ -24,7 +22,7 @@ class Fetcher(Generic[Q, D]):
         raise NotImplementedError
 
     @staticmethod
-    def transform_data(data: Any) -> ReturnType:
+    def transform_data(data: Any) -> D:
         """Transform the provider-specific data."""
         raise NotImplementedError
 
@@ -34,7 +32,7 @@ class Fetcher(Generic[Q, D]):
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs,
-    ) -> ReturnType:
+    ) -> D:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         raw_data = cls.extract_data(query=query, credentials=credentials, **kwargs)
@@ -59,7 +57,7 @@ class Fetcher(Generic[Q, D]):
         return self.get_data_type(self.__orig_bases__[0].__args__[1])
 
     @staticmethod
-    def get_data_type(data: Any) -> ReturnType:
+    def get_data_type(data: Any) -> D:
         """Get the type of the data."""
         if get_origin(data) == list:
             data = get_args(data)[0]
