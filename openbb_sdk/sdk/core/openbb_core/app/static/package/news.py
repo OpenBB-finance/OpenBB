@@ -1,8 +1,9 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Annotated, List, Literal, Optional
+from typing import List, Literal, Union
 
 import pydantic
+import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -18,12 +19,12 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: Annotated[
+        page: typing_extensions.Annotated[
             pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The page of the global news."),
         ] = 0,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Union[Literal["benzinga", "fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -34,7 +35,7 @@ class CLASS_news(Container):
             The page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['benzinga', 'fmp']]
+        provider : Union[Literal['benzinga', 'fmp'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -42,31 +43,31 @@ class CLASS_news(Container):
             The number of results to return per page. (provider: benzinga)
         displayOutput : Literal['headline', 'summary', 'full', 'all']
             The type of data to return. (provider: benzinga)
-        date : Optional[datetime.datetime]
+        date : Union[datetime.datetime, NoneType]
             The date of the news to retrieve. (provider: benzinga)
-        dateFrom : Optional[datetime.datetime]
+        dateFrom : Union[datetime.datetime, NoneType]
             The start date of the news to retrieve. (provider: benzinga)
-        dateTo : Optional[datetime.datetime]
+        dateTo : Union[datetime.datetime, NoneType]
             The end date of the news to retrieve. (provider: benzinga)
-        updatedSince : Optional[int]
+        updatedSince : Union[int, NoneType]
             The number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Optional[int]
+        publishedSince : Union[int, NoneType]
             The number of seconds since the news was published. (provider: benzinga)
-        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType]
             The order in which to sort the news.  (provider: benzinga)
-        isin : Optional[str]
+        isin : Union[str, NoneType]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Optional[str]
+        cusip : Union[str, NoneType]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        tickers : Optional[str]
+        tickers : Union[str, NoneType]
             The tickers of the news to retrieve. (provider: benzinga)
-        channels : Optional[str]
+        channels : Union[str, NoneType]
             The channels of the news to retrieve. (provider: benzinga)
-        topics : Optional[str]
+        topics : Union[str, NoneType]
             The topics of the news to retrieve. (provider: benzinga)
-        authors : Optional[str]
+        authors : Union[str, NoneType]
             The authors of the news to retrieve. (provider: benzinga)
-        content_types : Optional[str]
+        content_types : Union[str, NoneType]
             The content types of the news to retrieve. (provider: benzinga)
 
         Returns
@@ -74,7 +75,7 @@ class CLASS_news(Container):
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp']]
+            provider : Union[Literal['benzinga', 'fmp'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
