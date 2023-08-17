@@ -75,7 +75,7 @@ class FMPStockOwnershipFetcher(
         query: FMPStockOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockOwnershipData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -85,11 +85,10 @@ class FMPStockOwnershipFetcher(
             query,
         )
 
-        sorted_data = get_data_many(url, FMPStockOwnershipData, **kwargs)
-        sorted_data.sort(key=lambda x: x.filing_date, reverse=True)
-
-        return sorted_data
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockOwnershipData]) -> List[StockOwnershipData]:
-        return [StockOwnershipData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[dict]) -> List[FMPStockOwnershipData]:
+        own = [FMPStockOwnershipData(**d) for d in data]
+        own.sort(key=lambda x: x.filing_date, reverse=True)
+        return own
