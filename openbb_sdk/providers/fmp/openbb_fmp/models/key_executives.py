@@ -51,16 +51,16 @@ class FMPKeyExecutivesFetcher(
         query: FMPKeyExecutivesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPKeyExecutivesData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/key-executives/{query.symbol}?apikey={api_key}"
 
-        return get_data_many(url, FMPKeyExecutivesData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPKeyExecutivesData],
-    ) -> List[KeyExecutivesData]:
-        return [KeyExecutivesData.parse_obj(d.dict()) for d in data]
+        data: List[dict],
+    ) -> List[FMPKeyExecutivesData]:
+        return [FMPKeyExecutivesData(**d) for d in data]
