@@ -61,7 +61,7 @@ class YFinanceMajorIndicesEODData(MajorIndicesEODData):
 class YFinanceMajorIndicesEODFetcher(
     Fetcher[
         YFinanceMajorIndicesEODQueryParams,
-        YFinanceMajorIndicesEODData,
+        List[YFinanceMajorIndicesEODData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""

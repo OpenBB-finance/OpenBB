@@ -61,7 +61,7 @@ class YFinanceCryptoEODData(CryptoEODData):
 class YFinanceCryptoEODFetcher(
     Fetcher[
         YFinanceCryptoEODQueryParams,
-        YFinanceCryptoEODData,
+        List[YFinanceCryptoEODData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""

@@ -58,7 +58,7 @@ class YFinanceStockEODData(StockEODData):
 class YFinanceStockEODFetcher(
     Fetcher[
         YFinanceStockEODQueryParams,
-        YFinanceStockEODData,
+        List[YFinanceStockEODData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""

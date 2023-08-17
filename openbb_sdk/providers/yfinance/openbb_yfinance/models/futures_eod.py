@@ -62,7 +62,7 @@ class YFinanceFuturesEODData(FuturesEODData):
 class YFinanceFuturesEODFetcher(
     Fetcher[
         YFinanceFuturesEODQueryParams,
-        YFinanceFuturesEODData,
+        List[YFinanceFuturesEODData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
