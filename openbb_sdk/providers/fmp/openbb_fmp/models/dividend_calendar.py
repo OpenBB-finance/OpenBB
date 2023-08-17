@@ -1,10 +1,10 @@
 """FMP Dividend Calendar fetcher."""
 
 
-from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.dividend_calendar import (
     DividendCalendarData,
