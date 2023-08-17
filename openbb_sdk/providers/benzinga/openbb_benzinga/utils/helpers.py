@@ -33,15 +33,11 @@ class BenzingaImage(BaseModel):
 class BenzingaStockNewsData(StockNewsData):
     """Benzinga Global News data."""
 
-    images: List[BenzingaImage] = Field(
-        description="Images associated with the news."
-    )
+    images: List[BenzingaImage] = Field(description="Images associated with the news.")
     channels: Optional[List[str]] = Field(
         description="Channels associated with the news."
     )
-    stocks: Optional[List[str]] = Field(
-        description="Stocks associated with the news."
-    )
+    stocks: Optional[List[str]] = Field(description="Stocks associated with the news.")
     tags: Optional[List[str]] = Field(description="Tags associated with the news.")
     teaser: Optional[str] = Field(description="Teaser of the news.")
 

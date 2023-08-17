@@ -63,9 +63,7 @@ class StockInsiderTradingData(Data, BaseSymbol):
     securities_owned: int = Field(
         description="Securities owned of the stock insider trading."
     )
-    company_cik: int = Field(
-        description="Company CIK of the stock insider trading."
-    )
+    company_cik: int = Field(description="Company CIK of the stock insider trading.")
     reporting_name: str = Field(
         description="Reporting name of the stock insider trading."
     )

@@ -22,9 +22,7 @@ class AvailableIndicesData(Data, BaseSymbol):
 
     name: Optional[str] = Field(description="Name of the index.")
     currency: Optional[str] = Field(description="Currency the index is traded in.")
-    stock_exchange: str = Field(
-        description="Stock exchange where the index is listed."
-    )
+    stock_exchange: str = Field(description="Stock exchange where the index is listed.")
     exchange_short_name: str = Field(
         description="Short name of the stock exchange where the index is listed."
     )

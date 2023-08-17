@@ -36,16 +36,10 @@ class AnalystEstimatesData(Data, BaseSymbol):
     estimated_ebit_avg: int = Field(description="Estimated EBIT average.")
     estimated_net_income_low: int = Field(description="Estimated net income low.")
     estimated_net_income_high: int = Field(description="Estimated net income high.")
-    estimated_net_income_avg: int = Field(
-        description="Estimated net income average."
-    )
+    estimated_net_income_avg: int = Field(description="Estimated net income average.")
     estimated_sga_expense_low: int = Field(description="Estimated SGA expense low.")
-    estimated_sga_expense_high: int = Field(
-        description="Estimated SGA expense high."
-    )
-    estimated_sga_expense_avg: int = Field(
-        description="Estimated SGA expense average."
-    )
+    estimated_sga_expense_high: int = Field(description="Estimated SGA expense high.")
+    estimated_sga_expense_avg: int = Field(description="Estimated SGA expense average.")
     estimated_eps_avg: float = Field(description="Estimated EPS average.")
     estimated_eps_high: float = Field(description="Estimated EPS high.")
     estimated_eps_low: float = Field(description="Estimated EPS low.")

@@ -26,9 +26,7 @@ class InstitutionalOwnershipData(Data, BaseSymbol):
 
     cik: Optional[str] = Field(description="CIK of the company.")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    investors_holding: int = Field(
-        description="Number of investors holding the stock."
-    )
+    investors_holding: int = Field(description="Number of investors holding the stock.")
     last_investors_holding: int = Field(
         description="Number of investors holding the stock in the last quarter."
     )

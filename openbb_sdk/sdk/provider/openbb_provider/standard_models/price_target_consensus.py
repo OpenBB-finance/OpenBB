@@ -15,12 +15,8 @@ class PriceTargetConsensusQueryParams(QueryParams, BaseSymbol):
 class PriceTargetConsensusData(Data, BaseSymbol):
     """Price target consensus Data."""
 
-    target_high: float = Field(
-        description="High target of the price target consensus."
-    )
-    target_low: float = Field(
-        description="Low target of the price target consensus."
-    )
+    target_high: float = Field(description="High target of the price target consensus.")
+    target_low: float = Field(description="Low target of the price target consensus.")
     target_consensus: float = Field(
         description="Consensus target of the price target consensus."
     )

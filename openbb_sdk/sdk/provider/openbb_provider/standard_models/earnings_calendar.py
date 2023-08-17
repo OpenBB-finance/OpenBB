@@ -24,9 +24,7 @@ class EarningsCalendarData(Data, BaseSymbol):
     """Earnings calendar Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    eps: Optional[NonNegativeFloat] = Field(
-        description="EPS of the earnings calendar."
-    )
+    eps: Optional[NonNegativeFloat] = Field(description="EPS of the earnings calendar.")
     eps_estimated: Optional[NonNegativeFloat] = Field(
         description="Estimated EPS of the earnings calendar."
     )

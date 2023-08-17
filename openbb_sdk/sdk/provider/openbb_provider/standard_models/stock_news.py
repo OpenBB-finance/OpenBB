@@ -15,9 +15,7 @@ class StockNewsQueryParams(QueryParams):
     """Stock news query."""
 
     symbols: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    page: int = Field(
-        default=0, description="Page of the stock news to be retrieved."
-    )
+    page: int = Field(default=0, description="Page of the stock news to be retrieved.")
     limit: Optional[NonNegativeInt] = Field(
         default=15, description="Number of results to return per page."
     )

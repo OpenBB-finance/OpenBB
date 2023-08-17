@@ -31,9 +31,7 @@ class StockQuoteData(Data):
 
     symbol: str = Field(description="Symbol of the company.")
     name: Optional[str] = Field(description="Name of the company.")
-    price: Optional[float] = Field(
-        description="Current trading price of the stock."
-    )
+    price: Optional[float] = Field(description="Current trading price of the stock.")
     changes_percentage: Optional[float] = Field(
         description="Change percentage of the stock price."
     )

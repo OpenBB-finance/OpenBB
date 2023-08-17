@@ -34,18 +34,14 @@ class CompanyOverviewData(Data, BaseSymbol):
     isin: Optional[str] = Field(description="ISIN of the company.")
     cusip: Optional[str] = Field(description="CUSIP of the company.")
     exchange: str = Field(description="Exchange of the company.")
-    exchange_short_name: str = Field(
-        description="Exchange short name of the company."
-    )
+    exchange_short_name: str = Field(description="Exchange short name of the company.")
     industry: str = Field(description="Industry of the company.")
     website: str = Field(description="Website of the company.")
     description: str = Field(description="Description of the company.")
     ceo: str = Field(description="CEO of the company.")
     sector: str = Field(description="Sector of the company.")
     country: str = Field(description="Country of the company.")
-    full_time_employees: str = Field(
-        description="Full time employees of the company."
-    )
+    full_time_employees: str = Field(description="Full time employees of the company.")
     phone: str = Field(description="Phone of the company.")
     address: str = Field(description="Address of the company.")
     city: str = Field(description="City of the company.")

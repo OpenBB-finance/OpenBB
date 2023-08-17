@@ -33,9 +33,7 @@ class RevenueGeographicData(Data):
     americas: Optional[int] = Field(
         description="Revenue from the the American segment."
     )
-    europe: Optional[int] = Field(
-        description="Revenue from the the European segment."
-    )
+    europe: Optional[int] = Field(description="Revenue from the the European segment.")
     greater_china: Optional[int] = Field(
         description="Revenue from the the Greater China segment."
     )

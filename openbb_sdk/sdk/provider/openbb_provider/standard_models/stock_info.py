@@ -19,12 +19,8 @@ class StockInfoData(Data, BaseSymbol):
     name: str = Field(description="Name associated with the ticker symbol.")
     price: float = Field(description="Last price of the stock.")
     open: Optional[float] = Field(description="Opening price of the stock.")
-    high: Optional[float] = Field(
-        description="High price of the current trading day."
-    )
-    low: Optional[float] = Field(
-        description="Low price of the current trading day."
-    )
+    high: Optional[float] = Field(description="High price of the current trading day.")
+    low: Optional[float] = Field(description="Low price of the current trading day.")
     close: Optional[float] = Field(description="Closing price of the stock.")
     change: Optional[float] = Field(
         description="Change in price over the current trading period."
