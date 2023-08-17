@@ -2,10 +2,11 @@
 
 
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta
+from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
@@ -69,7 +70,7 @@ class PolygonStockEODFetcher(
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now

@@ -1,9 +1,10 @@
 """Polygon major indices end of day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODData,
@@ -70,7 +71,7 @@ class PolygonMajorIndicesEODFetcher(
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
