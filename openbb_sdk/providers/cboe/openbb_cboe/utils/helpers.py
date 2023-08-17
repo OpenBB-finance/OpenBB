@@ -2,16 +2,15 @@
 
 import os
 from datetime import date, datetime, timedelta
-from io import BytesIO
+from io import BytesIO, StringIO
 from pathlib import Path
 from typing import List, Optional, Tuple
-from io import StringIO
 
 import numpy as np
 import pandas as pd
 import requests
-from requests import HTTPError
 import requests_cache
+from requests import HTTPError
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 # This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
@@ -69,25 +68,17 @@ def request(
         headers["User-Agent"] = get_user_agent()
 
     if (func := getattr(requests, method.lower(), None)) is not None:
-
         return func(
             url,
             headers=headers,
             timeout=timeout,
             **kwargs,
         )
-    if method.upper() == "POST":
-        return requests.post(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    raise ValueError("Method must be GET or POST")
 
     raise ValueError("Method must be valid HTTP method")
 
-def camel_to_snake(str):
+
+def camel_to_snake(string):
     """Convert camelCase to snake_case."""
     return "".join(["_" + i.lower() if i.isupper() else i for i in string]).lstrip("_")
 
