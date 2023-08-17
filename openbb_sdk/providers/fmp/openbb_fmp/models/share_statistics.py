@@ -56,15 +56,15 @@ class FMPShareStatisticsFetcher(
         query: FMPShareStatisticsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPShareStatisticsData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "shares_float", api_key, query)
 
-        return get_data_many(url, FMPShareStatisticsData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPShareStatisticsData],
-    ) -> List[ShareStatisticsData]:
-        return [ShareStatisticsData.parse_obj(d.dict()) for d in data]
+        data: List[dict],
+    ) -> List[FMPShareStatisticsData]:
+        return [FMPShareStatisticsData(**d) for d in data]
