@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pydantic import Field
 
@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 
 
 class JournalEntry(Tagged):
-    journal_id: str = Field(description="Id of the Journal.")
+    journal_id: Optional[str] = Field(description="Id of the Journal.", default=None)
     arguments: Dict[str, Any] = Field(
         default_factory=dict,
         description="Arguments of the command.",

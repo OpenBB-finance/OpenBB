@@ -15,7 +15,6 @@ from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.obbject import Error, OBBject, OpenBBError
 from openbb_core.app.model.system_settings import SystemSettings
@@ -32,10 +31,8 @@ class ExecutionContext:
         route: str,
         system_settings: SystemSettings,
         user_settings: UserSettings,
-        journal: Optional[Journal] = None,
     ) -> None:
         self.command_map = command_map
-        self.journal = journal or Journal()
         self.route = route
         self.system_settings = system_settings
         self.user_settings = user_settings
@@ -335,7 +332,6 @@ class StaticCommandRunner:
         start_ns = perf_counter_ns()
 
         command_map = execution_context.command_map
-        journal = execution_context.journal
         route = execution_context.route
 
         cls.__update_managers_settings(
@@ -358,7 +354,6 @@ class StaticCommandRunner:
         duration = perf_counter_ns() - start_ns
 
         journal_entry = JournalEntry(
-            journal_id=journal.id,
             arguments=kwargs,
             duration=duration,
             output=obbject,
@@ -390,7 +385,6 @@ class CommandRunner:
 
     def run(
         self,
-        journal: Journal,
         user_settings: UserSettings,
         route: str,
         /,
@@ -403,7 +397,6 @@ class CommandRunner:
 
         execution_context = ExecutionContext(
             command_map=command_map,
-            journal=journal,
             route=route,
             system_settings=system_settings,
             user_settings=user_settings,
@@ -448,11 +441,9 @@ class CommandRunnerSession:
     def __init__(
         self,
         command_runner: Optional[CommandRunner] = None,
-        journal: Optional[Journal] = None,
         user_settings: Optional[UserSettings] = None,
     ) -> None:
         self._command_runner = command_runner or CommandRunner()
-        self._journal = journal or Journal()
         self._user_settings = user_settings or UserService.read_default_user_settings()
 
     @property
@@ -464,14 +455,6 @@ class CommandRunnerSession:
         self._command_runner = command_runner
 
     @property
-    def journal(self) -> Journal:
-        return self._journal
-
-    @journal.setter
-    def journal(self, journal: Journal) -> None:
-        self._journal = journal
-
-    @property
     def user_settings(self) -> UserSettings:
         return self._user_settings
 
@@ -481,11 +464,9 @@ class CommandRunnerSession:
 
     def run(self, route: str, /, *args, **kwargs) -> JournalEntry:
         command_runner = self._command_runner
-        journal = self._journal
         user_settings = self._user_settings
 
         journal_entry = command_runner.run(
-            journal,
             user_settings,
             route,
             *args,
