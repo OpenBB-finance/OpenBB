@@ -63,9 +63,7 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
 
     @validator("date", pre=True)
     def date_validate(cls, v, values: Dict[str, Any]) -> datetime:
-        if values.get("changeOverTime", None) is not None:
-            return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPMajorIndicesEODFetcher(
@@ -83,7 +81,7 @@ class FMPMajorIndicesEODFetcher(
         query: FMPMajorIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPMajorIndicesEODData]:
+    ) -> List[dict]:
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -96,10 +94,10 @@ class FMPMajorIndicesEODFetcher(
             )
             url = f"{base_url}/historical-price-full/index/%5E{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPMajorIndicesEODData, "historical", **kwargs)
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPMajorIndicesEODData],
+        data: List[dict],
     ) -> List[FMPMajorIndicesEODData]:
-        return data
+        return [FMPMajorIndicesEODData(**d) for d in data]
