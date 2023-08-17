@@ -74,7 +74,7 @@ class FMPStockQuoteFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.Dict(), ["symbol"])
+        query_str = get_querystring(query.dict(), ["symbol"])
         url = f"{base_url}/quote/{query.symbol}?{query_str}&apikey={api_key}"
 
         return get_data_many(url, **kwargs)

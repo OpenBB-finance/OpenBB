@@ -60,9 +60,18 @@ class FMPTreasuryRatesFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPTreasuryRatesQueryParams:
-        """Transform the query params."""
+        """Transform the query params. Start and end dates are set to a 90 day interval."""
 
-        return FMPTreasuryRatesQueryParams(**params)
+        transformed_params = params
+
+        now = datetime.now().date()
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(90)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
+        return FMPTreasuryRatesQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -74,11 +83,8 @@ class FMPTreasuryRatesFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.start_date = (datetime.now() - timedelta(91)).date()
-        query.end_date = (datetime.now() - timedelta(1)).date()
-
         base_url = "https://financialmodelingprep.com/api/v4/"
-        query_str = get_querystring(query.Dict(by_alias=True), [])
+        query_str = get_querystring(query.dict(by_alias=True), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
 

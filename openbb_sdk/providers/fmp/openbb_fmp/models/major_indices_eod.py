@@ -95,7 +95,7 @@ class FMPMajorIndicesEODFetcher(
         url = f"{base_url}/historical-chart/{query.interval}/%5E{query.symbol}?&apikey={api_key}"
 
         if query.interval == "1day":
-            query_str = get_querystring(query.Dict(by_alias=True), ["symbol"])
+            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
             query_str = query_str.replace("start_date", "from").replace(
                 "end_date", "to"
             )

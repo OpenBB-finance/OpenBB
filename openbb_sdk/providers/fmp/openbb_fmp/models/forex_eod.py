@@ -1,9 +1,10 @@
 """FMP Forex end of day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
@@ -62,7 +63,7 @@ class FMPForexEODFetcher(
 
         now = datetime.now().date()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -80,7 +81,7 @@ class FMPForexEODFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.Dict(by_alias=True), ["symbol"])
+        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/historical-price-full/forex/{query.symbol}?{query_str}&apikey={api_key}"
 
