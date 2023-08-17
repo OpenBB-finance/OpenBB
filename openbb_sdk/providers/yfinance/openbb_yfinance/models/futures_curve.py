@@ -30,7 +30,7 @@ class YFinanceFuturesCurveData(FuturesCurveData):
 class YFinanceFuturesCurveFetcher(
     Fetcher[
         YFinanceFuturesCurveQueryParams,
-        YFinanceFuturesCurveData,
+        List[YFinanceFuturesCurveData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
