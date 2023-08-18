@@ -17,6 +17,8 @@ PROVIDERS = get_provider_interface().providers_literal
 
 
 class OBBject(GenericModel, Generic[T], Tagged):
+    """OpenBB object."""
+
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",
