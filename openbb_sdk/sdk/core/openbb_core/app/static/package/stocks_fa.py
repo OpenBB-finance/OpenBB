@@ -1,18 +1,25 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
 import pydantic
-import pydantic.main
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_stocks_fa(Container):
@@ -1604,7 +1611,7 @@ class CLASS_stocks_fa(Container):
             Date of the income statement.
         symbol : Optional[str]
             Symbol of the company.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key.
         currency : Optional[str]
             Reporting currency.
@@ -2107,8 +2114,7 @@ class CLASS_stocks_fa(Container):
         last_put_call_ratio : Optional[float]
             Put-call ratio on the previous reporting date.
         put_call_ratio_change : Optional[float]
-            Change in the put-call ratio between the current and previous reporting dates.
-        """
+            Change in the put-call ratio between the current and previous reporting dates."""
 
         inputs = filter_inputs(
             provider_choices={

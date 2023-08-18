@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import List
 
-YIELD_CURVE_NOMINAL_RATES = [round(1 / 12,3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
+YIELD_CURVE_NOMINAL_RATES = [round(1 / 12, 3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
 YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
 YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
@@ -27,6 +27,8 @@ YIELD_CURVE_SERIES_REAL = {
     "20Year": "DFII20",
     "30Year": "DFII30",
 }
+
+
 def all_cpi_options(harmonized: bool = False) -> List[dict]:
     data = []
 

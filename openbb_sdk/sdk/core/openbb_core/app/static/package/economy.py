@@ -1,16 +1,25 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import BaseModel, validate_arguments
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_economy(Container):
@@ -686,7 +695,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Get OHLCV data for an index.
+        """Get OHLCV data for an index.
 
         Parameters
         ----------
@@ -768,8 +777,7 @@ class CLASS_economy(Container):
         changeOverTime : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
-        """
+            Number of transactions for the symbol in the time period. (provider: polygon)"""
 
         inputs = filter_inputs(
             provider_choices={
