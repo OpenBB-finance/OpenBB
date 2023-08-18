@@ -23,8 +23,8 @@ class BaseSymbol(BaseModel):
 class FinancialStatementQueryParams(QueryParams, BaseSymbol):
     """Base model for financial statement query params."""
 
-    period: Literal["annually", "quarterly"] = Field(
-        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: Optional[NonNegativeInt] = Field(
         default=12, description=QUERY_DESCRIPTIONS.get("limit", "")

@@ -23,14 +23,14 @@ class FMPForexPairsQueryParams(ForexPairsQueryParams):
 class FMPForexPairsData(ForexPairsData):
     """FMP Forex available pairs Data."""
 
-    symbol: str = Field(description="The symbol of the currency pair.")
-    currency: str = Field(description="The base currency of the currency pair.")
+    symbol: str = Field(description="Symbol of the currency pair.")
+    currency: str = Field(description="Base currency of the currency pair.")
     stockExchange: Optional[str] = Field(
-        description="The stock exchange of the currency pair.",
+        description="Stock exchange of the currency pair.",
         alias="stock_exchange",
     )
     exchange_short_name: Optional[str] = Field(
-        description="The short name of the stock exchange of the currency pair.",
+        description="Short name of the stock exchange of the currency pair.",
         alias="exchange_short_name",
     )
 
@@ -41,8 +41,12 @@ class FMPForexPairsFetcher(
         List[FMPForexPairsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPForexPairsQueryParams:
+        """Transform the query params."""
+
         return FMPForexPairsQueryParams(**params)
 
     @staticmethod
@@ -50,14 +54,18 @@ class FMPForexPairsFetcher(
         query: FMPForexPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPForexPairsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
 
-        return get_data_many(url, FMPForexPairsData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPForexPairsData]) -> List[FMPForexPairsData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPForexPairsData]:
+        """Return the transformed data."""
+
+        return [FMPForexPairsData(**d) for d in data]

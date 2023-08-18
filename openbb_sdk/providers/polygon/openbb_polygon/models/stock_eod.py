@@ -2,10 +2,11 @@
 
 
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta
+from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
@@ -22,7 +23,7 @@ class PolygonStockEODQueryParams(StockEODQueryParams):
 
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="The timespan of the data.")
+    ] = Field(default="day", description="Timespan of the data.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -31,7 +32,7 @@ class PolygonStockEODQueryParams(StockEODQueryParams):
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
     multiplier: PositiveInt = Field(
-        default=1, description="The multiplier of the timespan."
+        default=1, description="Multiplier of the timespan."
     )
 
 
@@ -50,7 +51,7 @@ class PolygonStockEODData(StockEODData):
         }
 
     n: Optional[PositiveInt] = Field(
-        description="The number of transactions for the symbol in the time period."
+        description="Number of transactions for the symbol in the time period."
     )
 
     @validator("t", pre=True, check_fields=False)
@@ -69,7 +70,7 @@ class PolygonStockEODFetcher(
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -80,10 +81,10 @@ class PolygonStockEODFetcher(
         query: PolygonStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonStockEODData]:
+    ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        data = []
+        data: list = []
 
         def multiple_symbols(symbol: str, data: List[PolygonStockEODData]) -> None:
             request_url = (
@@ -110,5 +111,5 @@ class PolygonStockEODFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[PolygonStockEODData]) -> List[StockEODData]:
-        return [StockEODData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[dict]) -> List[PolygonStockEODData]:
+        return [PolygonStockEODData.parse_obj(d) for d in data]

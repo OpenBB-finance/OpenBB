@@ -63,10 +63,16 @@ class PolygonForexPairsData(ForexPairsData):
 
     market: str = Field(description="The name of the trading market. Always 'fx'.")
     locale: str = Field(description="The locale of the currency pair.")
-    currency_symbol: str = Field(description="The symbol of the quote currency.")
-    currency_name: str = Field(description="The name of the quote currency.")
-    base_currency_symbol: str = Field(description="The symbol of the base currency.")
-    base_currency_name: str = Field(description="The name of the base currency.")
+    currency_symbol: Optional[str] = Field(
+        description="The symbol of the quote currency."
+    )
+    currency_name: Optional[str] = Field(description="The name of the quote currency.")
+    base_currency_symbol: Optional[str] = Field(
+        description="The symbol of the base currency."
+    )
+    base_currency_name: Optional[str] = Field(
+        description="The name of the base currency."
+    )
     last_updated_utc: datetime = Field(description="The last updated timestamp in UTC.")
     delisted_utc: Optional[datetime] = Field(
         description="The delisted timestamp in UTC."
@@ -74,10 +80,14 @@ class PolygonForexPairsData(ForexPairsData):
 
     @validator("last_updated_utc", pre=True, check_fields=False)
     def last_updated_utc_validate(cls, v):  # pylint: disable=E0213
+        """Return the parsed last updated timestamp in UTC."""
+
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
     @validator("delisted_utc", pre=True, check_fields=False)
     def delisted_utc_validate(cls, v):  # pylint: disable=E0213
+        """Return the parsed delisted timestamp in UTC."""
+
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -87,22 +97,31 @@ class PolygonForexPairsFetcher(
         List[PolygonForexPairsData],
     ]
 ):
+    """Polygon available pairs Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
-        return PolygonForexPairsQueryParams(**params)
+        """Transform the query parameters. Ticker is set if symbol is provided."""
+
+        transform_params = params
+        transform_params["symbol"] = (
+            f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
+        )
+        return PolygonForexPairsQueryParams(**transform_params)
 
     @staticmethod
     def extract_data(
         query: PolygonForexPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonForexPairsData]:
+    ) -> List[dict]:
+        """Extract the data from the Polygon API."""
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        tickers = f"ticker=C:{query.symbol}" if query.symbol else ""
         request_url = (
             f"https://api.polygon.io/v3/reference/"
-            f"tickers?{tickers}&market=fx&date={query.date}&"
+            f"tickers?{query.symbol}&market=fx&date={query.date}&"
             f"search={query.search}&active={query.active}&order={query.order}&"
             f"limit={query.limit}&sort={query.sort}&apiKey={api_key}"
         )
@@ -122,7 +141,12 @@ class PolygonForexPairsFetcher(
                 )
 
             if data["status"] == "OK":
-                all_data.extend(data["results"])
+                results = data.get("results")
+                if not isinstance(results, list):
+                    raise ValueError(
+                        "Expected 'results' to be a list, got something else."
+                    )
+                all_data.extend(results)
             elif data["status"] == "ERROR":
                 raise UserWarning(data["error"])
 
@@ -133,6 +157,8 @@ class PolygonForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[PolygonForexPairsData],
+        data: List[dict],
     ) -> List[PolygonForexPairsData]:
-        return data
+        """Transform the data into a list of PolygonForexPairsData."""
+
+        return [PolygonForexPairsData(**d) for d in data]

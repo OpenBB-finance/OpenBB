@@ -21,8 +21,8 @@ class IncomeStatementData(Data):
     """Income Statement Data."""
 
     date: dateType = Field(description="Date of the income statement.")
-    symbol: str = Field(description="Symbol of the company.")
-    cik: Optional[int] = Field(description="Central Index Key.")
+    symbol: Optional[str] = Field(description="Symbol of the company.")
+    cik: Optional[str] = Field(description="Central Index Key.")
 
     currency: Optional[str] = Field(description="Reporting currency.")
     filing_date: Optional[dateType] = Field(description="Filling date.")
@@ -50,7 +50,6 @@ class IncomeStatementData(Data):
     )
     other_expenses: Optional[int] = Field(description="Other expenses.")
     operating_expenses: Optional[int] = Field(description="Operating expenses.")
-    cost_and_expenses: Optional[int] = Field(description="Cost and expenses.")
 
     depreciation_and_amortization: Optional[int] = Field(
         description="Depreciation and amortization."

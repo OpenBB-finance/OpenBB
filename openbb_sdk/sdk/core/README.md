@@ -291,6 +291,9 @@ You can login to your OpenBB Hub account and save your credentials there to acce
 ```python
 from openbb import obb
 
+# Login with personal access token
+obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
+
 # Login with email, password or SDK token
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 

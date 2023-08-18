@@ -1,4 +1,6 @@
-"""cboe provider module."""
+"""CBOE provider module."""
+
+
 from openbb_provider.abstract.provider import Provider
 
 from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
