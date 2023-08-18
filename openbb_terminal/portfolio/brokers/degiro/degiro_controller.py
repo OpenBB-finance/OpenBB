@@ -43,7 +43,7 @@ class DegiroController(BaseController):
         self.__degiro_view = DegiroView()
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
 
             zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
 

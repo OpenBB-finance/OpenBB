@@ -6,13 +6,10 @@ from functools import wraps
 import pandas as pd
 from pydantic import ValidationError
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.utils import df_to_basemodel
-
-
-class OpenBBError(Exception):
-    """A custom exception for OpenBB errors."""
 
 
 def filter_call(func):

@@ -20,7 +20,7 @@ class CLASS_news(Container):
         self,
         page: Annotated[
             pydantic.types.NonNegativeInt,
-            OpenBBCustomParameter(description="The page of the global news."),
+            OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
@@ -31,7 +31,7 @@ class CLASS_news(Container):
         Parameters
         ----------
         page : NonNegativeInt
-            The page of the global news.
+            Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Optional[Literal['benzinga', 'fmp']]
@@ -39,35 +39,35 @@ class CLASS_news(Container):
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         pageSize : int
-            The number of results to return per page. (provider: benzinga)
+            Number of results to return per page. (provider: benzinga)
         displayOutput : Literal['headline', 'summary', 'full', 'all']
-            The type of data to return. (provider: benzinga)
+            Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
-            The date of the news to retrieve. (provider: benzinga)
+            Date of the news to retrieve. (provider: benzinga)
         dateFrom : Optional[datetime.datetime]
-            The start date of the news to retrieve. (provider: benzinga)
+            Start date of the news to retrieve. (provider: benzinga)
         dateTo : Optional[datetime.datetime]
-            The end date of the news to retrieve. (provider: benzinga)
+            End date of the news to retrieve. (provider: benzinga)
         updatedSince : Optional[int]
-            The number of seconds since the news was updated. (provider: benzinga)
+            Number of seconds since the news was updated. (provider: benzinga)
         publishedSince : Optional[int]
-            The number of seconds since the news was published. (provider: benzinga)
+            Number of seconds since the news was published. (provider: benzinga)
         sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
-            The order in which to sort the news.  (provider: benzinga)
+            Order in which to sort the news.  (provider: benzinga)
         isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
         tickers : Optional[str]
-            The tickers of the news to retrieve. (provider: benzinga)
+            Tickers of the news to retrieve. (provider: benzinga)
         channels : Optional[str]
-            The channels of the news to retrieve. (provider: benzinga)
+            Channels of the news to retrieve. (provider: benzinga)
         topics : Optional[str]
-            The topics of the news to retrieve. (provider: benzinga)
+            Topics of the news to retrieve. (provider: benzinga)
         authors : Optional[str]
-            The authors of the news to retrieve. (provider: benzinga)
+            Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
-            The content types of the news to retrieve. (provider: benzinga)
+            Content types of the news to retrieve. (provider: benzinga)
 
         Returns
         -------
@@ -86,25 +86,25 @@ class CLASS_news(Container):
         GlobalNews
         ----------
         date : Optional[datetime]
-            The published date of the news.
+            Published date of the news.
         title : Optional[str]
-            The title of the news.
+            Title of the news.
         text : Optional[str]
-            The text/body of the news.
+            Text/body of the news.
         url : Optional[str]
-            The URL of the news.
+            URL of the news.
         images : Optional[List[BenzingaImage]]
-            The images associated with the news. (provider: benzinga)
+            Images associated with the news. (provider: benzinga)
         channels : Optional[List[str]]
-            The channels associated with the news. (provider: benzinga)
+            Channels associated with the news. (provider: benzinga)
         stocks : Optional[List[str]]
-            The stocks associated with the news. (provider: benzinga)
+            Stocks associated with the news. (provider: benzinga)
         tags : Optional[List[str]]
-            The tags associated with the news. (provider: benzinga)
+            Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
-            The teaser of the news. (provider: benzinga)
+            Teaser of the news. (provider: benzinga)
         site : Optional[str]
-            The site of the news. (provider: fmp)"""
+            Site of the news. (provider: fmp)"""
 
         inputs = filter_inputs(
             provider_choices={

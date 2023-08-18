@@ -46,7 +46,7 @@ def test_connect_with_sdk_token():
             HubService, "get_session_from_sdk_token", return_value=mock_hub_session
         ):
             hub_service = HubService()
-            result = hub_service.connect(sdk_token="sdk_token")
+            result = hub_service.connect(pat="pat")
 
             assert result == mock_hub_session
             assert hub_service.session == mock_hub_session
@@ -56,7 +56,7 @@ def test_connect_without_credentials():
     """Test connect without credentials."""
     hub_service = HubService()
     with pytest.raises(
-        OpenBBError, match="Please provide 'email' and 'password' or 'sdk_token'"
+        OpenBBError, match="Please provide 'email' and 'password' or 'pat'"
     ):
         hub_service.connect()
 

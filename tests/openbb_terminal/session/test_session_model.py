@@ -75,7 +75,9 @@ def test_login_no_response(mocker):
 
     assert session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
 
-    mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
+    mock_fetch_user_configs.assert_called_once_with(
+        TEST_SESSION, "https://payments.openbb.co/"
+    )
     mock_apply_configs.assert_not_called()
     mock_update_flair.assert_not_called()
     mock_get_updated_hub_sources.assert_not_called()
@@ -96,7 +98,9 @@ def test_login_fail_response(mocker):
 
     assert session_model.login(TEST_SESSION) == session_model.LoginStatus.FAILED
 
-    mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
+    mock_fetch_user_configs.assert_called_once_with(
+        TEST_SESSION, "https://payments.openbb.co/"
+    )
     mock_apply_configs.assert_not_called()
     mock_update_flair.assert_not_called()
     mock_get_updated_hub_sources.assert_not_called()
@@ -119,7 +123,9 @@ def test_login_success_response(mocker):
 
     assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS
 
-    mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
+    mock_fetch_user_configs.assert_called_once_with(
+        TEST_SESSION, "https://payments.openbb.co/"
+    )
     mock_apply_configs.assert_called_once()
     mock_update_flair.assert_called_once()
 
@@ -142,10 +148,13 @@ def test_logout_user(mocker, guest):
 
     auth_header = "Bearer test_token"
     token = "test_token"
+    base_url = "https://payments.openbb.co/"
     session_model.logout(auth_header, token)
 
     if not guest:
-        mock_delete_session.assert_called_once_with(auth_header, token)
+        mock_delete_session.assert_called_once_with(
+            auth_header, token, base_url=base_url
+        )
         assert mock_remove.call_args_list[0] == mocker.call(SESSION_FILE_PATH)
         assert mock_remove.call_args_list[1] == mocker.call(HIST_FILE_PATH)
         assert mock_remove.call_args_list[2] == mocker.call(

@@ -68,29 +68,29 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         month_1 : Optional[float]
-            The 1 month treasury rate.
+            1 month treasury rate.
         month_2 : Optional[float]
-            The 2 month treasury rate.
+            2 month treasury rate.
         month_3 : Optional[float]
-            The 3 month treasury rate.
+            3 month treasury rate.
         month_6 : Optional[float]
-            The 6 month treasury rate.
+            6 month treasury rate.
         year_1 : Optional[float]
-            The 1 year treasury rate.
+            1 year treasury rate.
         year_2 : Optional[float]
-            The 2 year treasury rate.
+            2 year treasury rate.
         year_3 : Optional[float]
-            The 3 year treasury rate.
+            3 year treasury rate.
         year_5 : Optional[float]
-            The 5 year treasury rate.
+            5 year treasury rate.
         year_7 : Optional[float]
-            The 7 year treasury rate.
+            7 year treasury rate.
         year_10 : Optional[float]
-            The 10 year treasury rate.
+            10 year treasury rate.
         year_20 : Optional[float]
-            The 20 year treasury rate.
+            20 year treasury rate.
         year_30 : Optional[float]
-            The 30 year treasury rate."""
+            30 year treasury rate."""
 
         inputs = filter_inputs(
             provider_choices={

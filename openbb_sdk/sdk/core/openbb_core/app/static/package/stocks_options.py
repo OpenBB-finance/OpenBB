@@ -55,59 +55,59 @@ class CLASS_stocks_options(Container):
         OptionsChains
         -------------
         expiration : Optional[datetime]
-            The expiration date of the contract.
+            Expiration date of the contract.
         strike : Optional[float]
-            The strike price of the contract.
+            Strike price of the contract.
         optionType : Optional[str]
             Call or Put.
         bid : Optional[float]
-            The bid price of the contract.
+            Bid price of the contract.
         ask : Optional[float]
-            The ask price of the contract.
+            Ask price of the contract.
         openInterest : Optional[float]
-            The open interest on the contract.
+            Open interest on the contract.
         volume : Optional[float]
-            The current trading volume on the contract.
+            Current trading volume on the contract.
         contractSymbol : Optional[str]
-            The contract symbol for the option. (provider: cboe)
+            Contract symbol for the option. (provider: cboe)
         dte : Optional[int]
-            The days to expiration for the option. (provider: cboe)
+            Days to expiration for the option. (provider: cboe)
         bidSize : Optional[int]
-            The bid size for the option. (provider: cboe)
+            Bid size for the option. (provider: cboe)
         askSize : Optional[int]
-            The ask size for the option. (provider: cboe)
+            Ask size for the option. (provider: cboe)
         impliedVolatility : Optional[float]
-            The implied volatility of the option. (provider: cboe)
+            Implied volatility of the option. (provider: cboe)
         delta : Optional[float]
-            The delta of the option. (provider: cboe)
+            Delta of the option. (provider: cboe)
         gamma : Optional[float]
-            The gamma of the option. (provider: cboe)
+            Gamma of the option. (provider: cboe)
         theta : Optional[float]
-            The theta of the option. (provider: cboe)
+            Theta of the option. (provider: cboe)
         rho : Optional[float]
-            The rho of the option. (provider: cboe)
+            Rho of the option. (provider: cboe)
         vega : Optional[float]
-            The vega of the option. (provider: cboe)
+            Vega of the option. (provider: cboe)
         theoretical : Optional[float]
-            The theoretical value of the option. (provider: cboe)
+            Theoretical value of the option. (provider: cboe)
         open : Optional[float]
-            The opening price of the option. (provider: cboe)
+            Opening price of the option. (provider: cboe)
         high : Optional[float]
-            The high price of the option. (provider: cboe)
+            High price of the option. (provider: cboe)
         low : Optional[float]
-            The low price of the option. (provider: cboe)
+            Low price of the option. (provider: cboe)
         lastTradePrice : Optional[float]
-            The last trade price of the option. (provider: cboe)
+            Last trade price of the option. (provider: cboe)
         tick : Optional[str]
             Whether the last tick was up or down in price. (provider: cboe)
         previousClose : Optional[float]
-            The previous closing price of the option. (provider: cboe)
+            Previous closing price of the option. (provider: cboe)
         change : Optional[float]
-            The change in  price of the option. (provider: cboe)
+            Change in  price of the option. (provider: cboe)
         changePercent : Optional[float]
-            The change, in percent, of the option. (provider: cboe)
+            Change, in percent, of the option. (provider: cboe)
         lastTradeTimestamp : Optional[datetime]
-            The last trade timestamp of the option. (provider: cboe)"""
+            Last trade timestamp of the option. (provider: cboe)"""
 
         inputs = filter_inputs(
             provider_choices={

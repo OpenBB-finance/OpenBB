@@ -5,10 +5,7 @@ import numpy as np
 import pandas as pd
 from openbb_charting.core.config.openbb_styles import PLT_FIB_COLORWAY
 from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.plotly_ta.base import (
-    PltTA,
-    indicator,
-)
+from openbb_charting.core.plotly_ta.base import PltTA, indicator
 
 
 class Custom(PltTA):
@@ -122,7 +119,6 @@ class Custom(PltTA):
     @indicator()
     def plot_fib(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Add fibonacci to plotly figure."""
-
         try:
             from openbb_ta.ta_helpers import calculate_fib_levels
         except ImportError:
@@ -135,6 +131,7 @@ class Custom(PltTA):
         limit = self.params["fib"].get_argument_values("limit") or 120
         start_date = self.params["fib"].get_argument_values("start_date") or None
         end_date = self.params["fib"].get_argument_values("end_date") or None
+        close = self.params["fib"].get_argument_values("close") or "close"
         (
             df_fib,
             min_date,
@@ -142,7 +139,7 @@ class Custom(PltTA):
             min_pr,
             max_pr,
             lvl_text,
-        ) = calculate_fib_levels(df_ta, limit, start_date, end_date)
+        ) = calculate_fib_levels(df_ta, close, limit, start_date, end_date)
         levels = df_fib.Price
         fibs = [
             "<b>0</b>",

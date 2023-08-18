@@ -21,7 +21,7 @@ class CashFlowStatementGrowthData(Data, BaseSymbol):
     """Cash Flow Statement Growth Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="The period the statement is returned for.")
+    period: str = Field(description="Period the statement is returned for.")
     growth_net_income: float = Field(description="Growth rate of net income.")
     growth_depreciation_and_amortization: float = Field(
         description="Growth rate of depreciation and amortization."

@@ -1,4 +1,3 @@
-import sys
 import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
@@ -16,12 +15,12 @@ from typing import (
     overload,
 )
 
-import importlib_metadata
 from fastapi import APIRouter, Depends
+from importlib_metadata import entry_points
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
-from typing_extensions import Annotated, _AnnotatedAlias
+from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -32,11 +31,6 @@ from openbb_core.app.provider_interface import (
     StandardParams,
     get_provider_interface,
 )
-
-if sys.version_info < (3, 10):
-    from typing_extensions import ParamSpec
-else:
-    from typing import ParamSpec
 
 P = ParamSpec("P")
 
@@ -73,7 +67,7 @@ class CommandValidator:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return type(annotation) is _AnnotatedAlias and hasattr(
+        return isinstance(annotation, _AnnotatedAlias) and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
@@ -395,9 +389,9 @@ class CommandMap:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
                             rp = (
-                                route.path
+                                route.path  # type: ignore
                                 if sep is None
-                                else route.path.replace("/", sep)
+                                else route.path.replace("/", sep)  # type: ignore
                             )
                             coverage_map[provider].append(rp)
 
@@ -422,8 +416,10 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
-                        rp = route.path if sep is None else route.path.replace("/", sep)
-                        if route.path not in coverage_map:
+                        rp = (
+                            route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                        )
+                        if route.path not in coverage_map:  # type: ignore
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
         return coverage_map
@@ -433,7 +429,7 @@ class CommandMap:
 
 
 class LoadingError(Exception):
-    pass
+    """Error loading extension."""
 
 
 class RouterLoader:
@@ -441,9 +437,7 @@ class RouterLoader:
     def from_extensions() -> Router:
         router = Router()
 
-        for entry_point in importlib_metadata.entry_points(
-            group="openbb_core_extension"
-        ):
+        for entry_point in entry_points(group="openbb_core_extension"):
             try:
                 router.include_router(
                     router=entry_point.load(), prefix=f"/{entry_point.name}"

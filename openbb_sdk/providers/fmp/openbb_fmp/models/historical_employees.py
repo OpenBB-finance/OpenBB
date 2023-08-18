@@ -23,6 +23,8 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
     """FMP Historical Employees Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "acceptance_time": "acceptanceTime",
             "period_of_report": "periodOfReport",
@@ -39,8 +41,12 @@ class FMPHistoricalEmployeesFetcher(
         List[FMPHistoricalEmployeesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalEmployeesQueryParams:
+        """Transform the query params."""
+
         return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
@@ -48,14 +54,17 @@ class FMPHistoricalEmployeesFetcher(
         query: FMPHistoricalEmployeesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPHistoricalEmployeesData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "historical/employee_count", api_key, query)
-        return get_data_many(url, FMPHistoricalEmployeesData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPHistoricalEmployeesData],
-    ) -> List[FMPHistoricalEmployeesData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPHistoricalEmployeesData]:
+        """Return the transformed data."""
+
+        return [FMPHistoricalEmployeesData(**d) for d in data]

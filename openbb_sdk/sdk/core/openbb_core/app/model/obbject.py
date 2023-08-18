@@ -5,7 +5,7 @@ from pydantic import Field
 from pydantic.generics import GenericModel
 
 from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.app.model.abstract.error import Error
+from openbb_core.app.model.abstract.error import Error, OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
@@ -16,15 +16,9 @@ T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
 
 
-class OpenBBError(Exception):
-    """OpenBB Error."""
-
-    def __init__(self, original: Optional[Exception] = None):
-        self.original = original
-        super().__init__(str(original))
-
-
 class OBBject(GenericModel, Generic[T], Tagged):
+    """OpenBB object."""
+
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",

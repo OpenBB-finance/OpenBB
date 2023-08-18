@@ -35,7 +35,9 @@ class PackageBuilder:
     """Build the extension package for the SDK."""
 
     @classmethod
-    def build(cls, modules: Optional[List[str]] = None, lint: bool = True) -> None:
+    def build(
+        cls, modules: Optional[Union[str, List[str]]] = None, lint: bool = True
+    ) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
         cls.save_module_map()
@@ -60,7 +62,7 @@ class PackageBuilder:
         )
 
     @classmethod
-    def save_modules(cls, modules: Optional[List[str]] = None):
+    def save_modules(cls, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -198,6 +200,7 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
+        code += "\nimport typing_extensions"  # TODO: this should only bring `Annotated`
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
 
@@ -505,7 +508,7 @@ class MethodDefinition:
     @staticmethod
     def add_field_descriptions(
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
-    ) -> OrderedDict[str, Parameter]:
+    ):
         """Add the field description to the param signature."""
         if model_name:
             available_fields = (
