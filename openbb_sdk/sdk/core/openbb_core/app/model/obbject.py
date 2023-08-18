@@ -9,6 +9,7 @@ from openbb_core.app.model.abstract.error import Error
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
+from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.utils import basemodel_to_df
 
@@ -44,6 +45,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
     chart: Optional[Chart] = Field(
         default=None,
         description="Chart object.",
+    )
+    metadata: Optional[Metadata] = Field(
+        default=None,
+        description="Metadata info about the command execution.",
     )
 
     def __repr__(self) -> str:

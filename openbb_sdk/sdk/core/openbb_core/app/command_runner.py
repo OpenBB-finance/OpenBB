@@ -15,7 +15,6 @@ from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.obbject import Error, OBBject, OpenBBError
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -327,7 +326,7 @@ class StaticCommandRunner:
         /,
         *args,
         **kwargs,
-    ) -> JournalEntry:
+    ) -> OBBject:
         timestamp = datetime.now()
         start_ns = perf_counter_ns()
 
@@ -338,9 +337,7 @@ class StaticCommandRunner:
             execution_context.system_settings, execution_context.user_settings
         )
 
-        func = command_map.get_command(route=route)
-
-        if func:
+        if func := command_map.get_command(route=route):
             obbject = cls.__execute_func(
                 route=route,
                 args=args,  # type: ignore
@@ -353,15 +350,15 @@ class StaticCommandRunner:
 
         duration = perf_counter_ns() - start_ns
 
-        journal_entry = JournalEntry(
-            arguments=kwargs,
-            duration=duration,
-            output=obbject,
-            route=route,
-            timestamp=timestamp,
-        )
+        if execution_context.user_settings.preferences.metadata:
+            obbject.metadata = {
+                "arguments": kwargs,
+                "duration": duration,
+                "route": route,
+                "timestamp": timestamp,
+            }
 
-        return journal_entry
+        return obbject
 
 
 class CommandRunner:
@@ -390,7 +387,7 @@ class CommandRunner:
         /,
         *args,
         **kwargs,
-    ) -> JournalEntry:
+    ) -> OBBject:
         command_map = self._command_map
         # Getting the most updated system settings to allow debug_mode without reload
         system_settings = self._system_settings
@@ -402,13 +399,11 @@ class CommandRunner:
             user_settings=user_settings,
         )
 
-        journal_entry = StaticCommandRunner.run(
+        return StaticCommandRunner.run(
             execution_context,
             *args,
             **kwargs,
         )
-
-        return journal_entry
 
     def run_once(
         self,
@@ -417,7 +412,7 @@ class CommandRunner:
         /,
         *args,
         **kwargs,
-    ) -> JournalEntry:
+    ) -> OBBject:
         command_map = self._command_map
         system_settings = self._system_settings
 
@@ -428,13 +423,11 @@ class CommandRunner:
             user_settings=user_settings,
         )
 
-        journal_entry = StaticCommandRunner.run(
+        return StaticCommandRunner.run(
             execution_context,
             *args,
             **kwargs,
         )
-
-        return journal_entry
 
 
 class CommandRunnerSession:
@@ -462,15 +455,13 @@ class CommandRunnerSession:
     def user_settings(self, user_settings: UserSettings) -> None:
         self._user_settings = user_settings
 
-    def run(self, route: str, /, *args, **kwargs) -> JournalEntry:
+    def run(self, route: str, /, *args, **kwargs) -> OBBject:
         command_runner = self._command_runner
         user_settings = self._user_settings
 
-        journal_entry = command_runner.run(
+        return command_runner.run(
             user_settings,
             route,
             *args,
             **kwargs,
         )
-
-        return journal_entry

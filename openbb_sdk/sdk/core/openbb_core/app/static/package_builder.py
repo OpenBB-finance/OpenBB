@@ -647,7 +647,7 @@ class MethodDefinition:
         code += "        o = self._command_runner_session.run(\n"
         code += f"""            "{path}",\n"""
         code += "            **inputs,\n"
-        code += "        ).output\n"
+        code += "        )\n"
         code += "\n"
         code += "        return filter_output(o)\n"
 
