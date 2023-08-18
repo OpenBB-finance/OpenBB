@@ -15,8 +15,8 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class RevenueBusinessLineQueryParams(QueryParams, BaseSymbol):
     """Revenue Business Line Query."""
 
-    period: Literal["quarterly", "annually"] = Field(
-        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Literal["quarter", "annual"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     structure: Literal["hierarchical", "flat"] = Field(
         default="flat", description="Structure of the returned data."

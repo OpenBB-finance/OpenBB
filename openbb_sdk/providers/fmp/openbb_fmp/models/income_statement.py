@@ -101,7 +101,6 @@ class FMPIncomeStatementFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
         symbol = query.symbol or query.cik
         base_url = "https://financialmodelingprep.com/api/v3"
 

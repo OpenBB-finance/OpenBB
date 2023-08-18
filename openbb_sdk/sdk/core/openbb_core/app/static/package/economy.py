@@ -316,7 +316,7 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(description="The data units."),
         ] = "growth_same",
         frequency: Annotated[
-            Literal["monthly", "quarterly", "annual"],
+            Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
         harmonized: Annotated[
@@ -349,7 +349,7 @@ class CLASS_economy(Container):
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The data units.
-        frequency : Literal['monthly', 'quarterly', 'annual']
+        frequency : Literal['monthly', 'quarter', 'annual']
             The data time frequency.
         harmonized : bool
             Whether you wish to obtain harmonized data.

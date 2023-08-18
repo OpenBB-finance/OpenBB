@@ -86,8 +86,6 @@ class FMPIncomeStatementGrowthFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
-
         url = create_url(
             3, f"income-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )

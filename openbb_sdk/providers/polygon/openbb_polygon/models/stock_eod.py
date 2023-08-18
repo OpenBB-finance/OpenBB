@@ -81,10 +81,10 @@ class PolygonStockEODFetcher(
         query: PolygonStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonStockEODData]:
+    ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        data = []
+        data: list = []
 
         def multiple_symbols(symbol: str, data: List[PolygonStockEODData]) -> None:
             request_url = (
@@ -111,5 +111,5 @@ class PolygonStockEODFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[PolygonStockEODData]) -> List[StockEODData]:
-        return [StockEODData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[dict]) -> List[PolygonStockEODData]:
+        return [PolygonStockEODData.parse_obj(d) for d in data]

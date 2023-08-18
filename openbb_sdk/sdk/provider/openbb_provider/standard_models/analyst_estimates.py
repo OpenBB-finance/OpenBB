@@ -15,8 +15,8 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 class AnalystEstimatesQueryParams(QueryParams, BaseSymbol):
     """Analyst Estimates query."""
 
-    period: Literal["quarterly", "annually"] = Field(
-        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Literal["quarter", "annual"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 

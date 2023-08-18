@@ -43,9 +43,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -60,7 +60,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
@@ -499,9 +499,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -516,7 +516,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
@@ -1316,9 +1316,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -1333,7 +1333,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : int
             The number of data entries to return.
@@ -1522,9 +1522,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -1539,7 +1539,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
@@ -1724,9 +1724,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1739,7 +1739,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -2155,9 +2155,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -2172,7 +2172,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
@@ -2919,9 +2919,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -2936,7 +2936,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
@@ -3125,9 +3125,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
@@ -3142,7 +3142,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3213,9 +3213,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annually", "quarterly"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ] = "annually",
+        ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
@@ -3230,7 +3230,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
