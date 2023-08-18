@@ -54,7 +54,7 @@ def create_app():
 
         @property
         def system(self) -> SystemSettings:
-            return self._command_runner.command_runner.system_settings
+            return self._command_runner.system_settings
 
         @property
         def coverage(self) -> Coverage:
