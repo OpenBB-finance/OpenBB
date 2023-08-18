@@ -142,7 +142,7 @@ class Backend(PyWry):
 
     def get_json_update(
         self,
-        cmd_loc: str,
+        cmd_loc: Optional[str] = None,
         theme: Optional[str] = None,
     ) -> dict:
         """Get the json update for the backend."""
