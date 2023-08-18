@@ -8,7 +8,7 @@ from openbb_provider.standard_models.stock_news import (
     StockNewsData,
     StockNewsQueryParams,
 )
-from openbb_provider.utils.helpers import data_transformer, get_querystring
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import BaseModel, Field
 
 from openbb_polygon.utils.helpers import get_data
@@ -36,7 +36,7 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         default=None, description="Greater than or equal, by default None"
     )
     published_utc: Optional[str] = Field(
-        default=None, description="The published date of the query, by default None"
+        default=None, description="Published date of the query, by default None"
     )
     published_utc_lt: Optional[str] = Field(
         default=None, description="Less than, by default None"
@@ -51,10 +51,10 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         default=None, description="Greater than or equal, by default None"
     )
     order: Optional[Literal["asc", "desc"]] = Field(
-        default=None, description="The sort order of the query, by default None"
+        default=None, description="Sort order of the query, by default None"
     )
     sort: Optional[str] = Field(
-        default=None, description="The sort of the query, by default None"
+        default=None, description="Sort of the query, by default None"
     )
 
 
@@ -99,7 +99,7 @@ class PolygonStockNewsFetcher(
         query: PolygonStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonStockNewsData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
@@ -110,11 +110,10 @@ class PolygonStockNewsFetcher(
         if len(data) == 0:
             raise RuntimeError("No news found")
 
-        return [PolygonStockNewsData(**d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[PolygonStockNewsData],
+        data: dict,
     ) -> List[StockNewsData]:
-        processors = {"publisher": lambda x: x.favicon_url}
-        return data_transformer(data, StockNewsData, processors)
+        return [PolygonStockNewsData(**d) for d in data]

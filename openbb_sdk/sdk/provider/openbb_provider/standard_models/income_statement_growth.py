@@ -25,7 +25,7 @@ class IncomeStatementGrowthData(Data, BaseSymbol):
     """Income Statement Growth Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="The period the statement is returned for.")
+    period: str = Field(description="Period the statement is returned for.")
     growth_revenue: float = Field(description="Growth rate of total revenue.")
     growth_cost_of_revenue: float = Field(
         description="Growth rate of cost of goods sold."

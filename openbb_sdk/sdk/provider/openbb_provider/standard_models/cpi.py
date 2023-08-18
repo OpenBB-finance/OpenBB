@@ -93,12 +93,12 @@ class CPIData(Data):
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     realtime_start: dateType = Field(
-        description="The date the data was updated."
+        description="Date the data was updated."
     )  # TODO: What is this?
     realtime_end: dateType = Field(
-        description="The date the data was updated."
+        description="Date the data was updated."
     )  # TODO: What is this?
-    value: float = Field(description="The value of the data.")
+    value: float = Field(description="Value of the data.")
 
     @validator("value", pre=True)
     def value_validate(cls, v: str):  # pylint: disable=E0213

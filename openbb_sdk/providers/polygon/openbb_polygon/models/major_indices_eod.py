@@ -1,9 +1,10 @@
 """Polygon major indices end of day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODData,
@@ -23,7 +24,7 @@ class PolygonMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
 
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="The timespan of the data.")
+    ] = Field(default="day", description="Timespan of the data.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -32,7 +33,7 @@ class PolygonMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
     multiplier: PositiveInt = Field(
-        default=1, description="The multiplier of the timespan."
+        default=1, description="Multiplier of the timespan."
     )
 
 
@@ -51,7 +52,7 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
         }
 
     n: PositiveInt = Field(
-        description="The number of transactions for the symbol in the time period."
+        description="Number of transactions for the symbol in the time period."
     )
 
     @validator("t", pre=True, check_fields=False)
@@ -70,7 +71,7 @@ class PolygonMajorIndicesEODFetcher(
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -81,7 +82,7 @@ class PolygonMajorIndicesEODFetcher(
         query: PolygonMajorIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonMajorIndicesEODData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -98,12 +99,12 @@ class PolygonMajorIndicesEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        return [
-            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
-        ]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[PolygonMajorIndicesEODData],
+        data: dict,
     ) -> List[MajorIndicesEODData]:
-        return [MajorIndicesEODData.parse_obj(d.dict()) for d in data]
+        return [
+            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
+        ]

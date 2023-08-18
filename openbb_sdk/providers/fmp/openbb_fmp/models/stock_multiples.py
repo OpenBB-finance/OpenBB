@@ -23,6 +23,8 @@ class FMPStockMultiplesData(StockMultiplesData):
     """FMP Stock Multiples Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "revenue_per_share_ttm": "revenuePerShareTTM",
             "net_income_per_share_ttm": "netIncomePerShareTTM",
@@ -94,8 +96,12 @@ class FMPStockMultiplesFetcher(
         List[FMPStockMultiplesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockMultiplesQueryParams:
+        """Transform the query params."""
+
         return FMPStockMultiplesQueryParams(**params)
 
     @staticmethod
@@ -103,17 +109,18 @@ class FMPStockMultiplesFetcher(
         query: FMPStockMultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockMultiplesData]:
-        api_key = credentials.get("fmp_api_key") if credentials else ""
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
 
+        api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(
             3, f"key-metrics-ttm/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, FMPStockMultiplesData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: FMPStockMultiplesData,
-    ) -> List[StockMultiplesData]:
-        return [StockMultiplesData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPStockMultiplesData]:
+        """Return the transformed data."""
+
+        return [FMPStockMultiplesData(**d) for d in data]

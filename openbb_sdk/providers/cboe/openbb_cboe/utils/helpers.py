@@ -8,7 +8,6 @@ from typing import List, Optional, Tuple
 import numpy as np
 import pandas as pd
 import requests
-from requests import HTTPError
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 
@@ -74,13 +73,13 @@ def request(
     raise ValueError("Method must be GET or POST")
 
 
-def camel_to_snake(str):
+def camel_to_snake(string: str) -> str:
     """Convert camelCase to snake_case."""
-    return "".join(["_" + i.lower() if i.isupper() else i for i in str]).lstrip("_")
+    return "".join(["_" + i.lower() if i.isupper() else i for i in string]).lstrip("_")
 
 
 def get_cboe_directory() -> pd.DataFrame:
-    """Gets the US Listings Directory for the CBOE.
+    """Get the US Listings Directory for the CBOE.
 
     Returns
     -------
@@ -99,12 +98,12 @@ def get_cboe_directory() -> pd.DataFrame:
             }
         ).set_index("Symbol")
         return CBOE_DIRECTORY
-    except HTTPError:
+    except requests.HTTPError:
         return pd.DataFrame()
 
 
 def get_cboe_index_directory() -> pd.DataFrame:
-    """Gets the US Listings Directory for the CBOE
+    """Get the US Listings Directory for the CBOE
 
     Returns
     -------
@@ -116,7 +115,7 @@ def get_cboe_index_directory() -> pd.DataFrame:
         )
 
         if r.status_code != 200:
-            raise HTTPError
+            raise requests.HTTPError
 
         CBOE_INDEXES = pd.DataFrame(r.json())
 
@@ -156,7 +155,7 @@ def get_cboe_index_directory() -> pd.DataFrame:
 
         return CBOE_INDEXES
 
-    except HTTPError:
+    except requests.HTTPError:
         return pd.DataFrame()
 
 
@@ -198,7 +197,7 @@ def stock_search(query: str, ticker: bool = False) -> dict:
 
 
 def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
-    """Gets basic info for the symbol and expiration dates
+    """Get basic info for the symbol and expiration dates
 
     Parameters
     ----------
@@ -228,7 +227,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
             elif symbol in INDEXES:
                 new_ticker = "^" + symbol
 
-                # Gets the data to return, and if none returns empty Tuple #
+                # Get the data to return, and if none returns empty Tuple #
 
         symbol_info_url = (
             "https://www.cboe.com/education/tools/trade-optimizer/symbol-info/?symbol="
@@ -342,7 +341,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
                     .transpose()
                 ).rename(columns={f"{new_ticker}": f"{symbol}"})
 
-    except HTTPError:
+    except requests.HTTPError:
         print("There was an error with the request'\n")
         ticker_details = pd.DataFrame()
         ticker_expirations = list()
@@ -352,7 +351,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
 
 
 def get_ticker_iv(symbol: str) -> pd.DataFrame:
-    """Gets annualized high/low historical and implied volatility over 30/60/90 day windows.
+    """Get annualized high/low historical and implied volatility over 30/60/90 day windows.
 
     Parameters
     ----------
@@ -429,14 +428,14 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
         ]
 
         ticker_iv = pd.DataFrame(h_data).transpose()
-    except HTTPError:
+    except requests.HTTPError:
         print("There was an error with the request'\n")
 
     return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
 
 
 def get_chains(symbol: str) -> pd.DataFrame:
-    """Gets the complete options chains for a ticker.
+    """Get the complete options chains for a ticker.
 
     Parameters
     ----------
@@ -542,7 +541,7 @@ def get_chains(symbol: str) -> pd.DataFrame:
         quotes["previousClose"] = round(quotes["previousClose"], 2)
         quotes["changePercent"] = round(quotes["changePercent"], 2)
 
-    except HTTPError:
+    except requests.HTTPError:
         print("There was an error with the request'\n")
         return pd.DataFrame()
 
@@ -552,7 +551,7 @@ def get_chains(symbol: str) -> pd.DataFrame:
 def __generate_historical_prices_url(
     symbol, data_type: Optional[str] = "historical"
 ) -> str:
-    """Generates the final URL for historical prices data."""
+    """Generate the final URL for historical prices data."""
 
     url: str = ""
 
@@ -590,7 +589,7 @@ def get_eod_prices(
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
 ) -> pd.DataFrame:
-    """Gets EOD data from CBOE.
+    """Get EOD data from CBOE.
 
     Parameters
     ----------
@@ -676,7 +675,7 @@ def get_eod_prices(
 
 
 def get_info(symbol: str) -> pd.DataFrame:
-    """Gets information and current statistics for a ticker.
+    """Get information and current statistics for a ticker.
 
     Parameters
     ----------

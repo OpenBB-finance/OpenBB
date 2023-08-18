@@ -31,7 +31,7 @@ def get_app_id(contextual_user_data_directory: str) -> str:
     return app_id
 
 
-def get_log_dir(contextual_user_data_directory: str) -> Path:
+def get_log_dir(contextual_user_data_directory: str) -> str:
     """Retrieve application's log directory."""
 
     log_dir = create_log_dir_if_not_exists(contextual_user_data_directory)
@@ -41,7 +41,7 @@ def get_log_dir(contextual_user_data_directory: str) -> Path:
     return uuid_log_dir
 
 
-def create_log_dir_if_not_exists(contextual_user_data_directory: str) -> None:
+def create_log_dir_if_not_exists(contextual_user_data_directory: str) -> Path:
     log_dir = Path(contextual_user_data_directory).joinpath("logs").absolute()
     if not log_dir.is_dir():
         log_dir.mkdir(parents=True, exist_ok=True)

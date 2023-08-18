@@ -19,7 +19,7 @@ class RevenueBusinessLineQueryParams(QueryParams, BaseSymbol):
         default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     structure: Literal["hierarchical", "flat"] = Field(
-        default="flat", description="The structure of the returned data."
+        default="flat", description="Structure of the returned data."
     )  # should always be flat
 
 

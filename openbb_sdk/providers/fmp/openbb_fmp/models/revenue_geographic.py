@@ -26,6 +26,7 @@ class FMPRevenueGeographicData(RevenueGeographicData):
 
     @validator("date", pre=True)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -35,8 +36,12 @@ class FMPRevenueGeographicFetcher(
         List[FMPRevenueGeographicData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRevenueGeographicQueryParams:
+        """Transform the query params."""
+
         return FMPRevenueGeographicQueryParams(**params)
 
     @staticmethod
@@ -44,7 +49,9 @@ class FMPRevenueGeographicFetcher(
         query: FMPRevenueGeographicQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPRevenueGeographicData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "annual" if query.period == "annually" else "quarter"
@@ -52,8 +59,14 @@ class FMPRevenueGeographicFetcher(
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
         data = get_data(url, **kwargs)
 
-        if isinstance(data, dict):
-            raise ValueError("Expected list of dicts, got dict")
+        if isinstance(data, Dict):
+            raise ValueError("Expected list of Dicts, got Dict")
+
+        return data
+
+    @staticmethod
+    def transform_data(data: List[Dict]) -> List[FMPRevenueGeographicData]:
+        """Return the transformed data."""
 
         return [
             FMPRevenueGeographicData(
@@ -71,11 +84,5 @@ class FMPRevenueGeographicFetcher(
             )
             for d in data
             for key, v in d.items()
-            if isinstance(v, dict)
+            if isinstance(v, Dict)
         ]
-
-    @staticmethod
-    def transform_data(
-        data: List[FMPRevenueGeographicData],
-    ) -> List[FMPRevenueGeographicData]:
-        return data

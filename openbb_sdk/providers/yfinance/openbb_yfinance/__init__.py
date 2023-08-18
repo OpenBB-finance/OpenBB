@@ -1,4 +1,6 @@
 """yfinance (Yahoo!Finance) provider module."""
+
+
 from openbb_provider.abstract.provider import Provider
 
 from openbb_yfinance.models.crypto_eod import YFinanceCryptoEODFetcher

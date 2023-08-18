@@ -345,7 +345,7 @@ class Backend(PyWry):
         )
         self.send_outgoing(outgoing)
 
-    def get_kwargs(self, title: str = "") -> dict:
+    def get_kwargs(self, title: Optional[str] = "") -> dict:
         """Get the kwargs for the backend."""
         return {
             "title": f"OpenBB - {title}",

@@ -1,4 +1,4 @@
-"""yfinance Futures end of day fetcher."""
+"""yfinance Futures End of Day fetcher."""
 
 
 from typing import Any, Dict, List, Optional
@@ -9,7 +9,7 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveQueryParams,
 )
 
-from openbb_yfinance.utils import helpers
+from openbb_yfinance.utils.helpers import get_futures_curve
 
 
 class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -17,11 +17,12 @@ class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
 
 
 class YFinanceFuturesCurveData(FuturesCurveData):
-    """YFinance Futures end of day Data."""
+    """YFinance Futures End of Day Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
-            "expiration": "expiration",
             "price": "Last Price",
         }
 
@@ -32,8 +33,12 @@ class YFinanceFuturesCurveFetcher(
         List[YFinanceFuturesCurveData],
     ]
 ):
+    """Transform the query, extract and transform the data from the yfinance endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
+        """Transform the query."""
+
         return YFinanceFuturesCurveQueryParams(**params)
 
     @staticmethod
@@ -41,14 +46,15 @@ class YFinanceFuturesCurveFetcher(
         query: YFinanceFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceFuturesCurveData]:
-        data = helpers.get_futures_curve(query.symbol, query.date).to_dict(
-            orient="records"
-        )
-        return [YFinanceFuturesCurveData.parse_obj(d) for d in data]
+    ) -> dict:
+        """Return the raw data from the yfinance endpoint."""
+
+        return get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceFuturesCurveData],
+        data: dict,
     ) -> List[YFinanceFuturesCurveData]:
-        return data
+        """Transform the data to the standard format."""
+
+        return [YFinanceFuturesCurveData.parse_obj(d) for d in data]

@@ -74,10 +74,14 @@ class PolygonForexPairsData(ForexPairsData):
 
     @validator("last_updated_utc", pre=True, check_fields=False)
     def last_updated_utc_validate(cls, v):  # pylint: disable=E0213
+        """Return the parsed last updated timestamp in UTC."""
+
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
     @validator("delisted_utc", pre=True, check_fields=False)
     def delisted_utc_validate(cls, v):  # pylint: disable=E0213
+        """Return the parsed delisted timestamp in UTC."""
+
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -87,22 +91,31 @@ class PolygonForexPairsFetcher(
         List[PolygonForexPairsData],
     ]
 ):
+    """Polygon available pairs Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
-        return PolygonForexPairsQueryParams(**params)
+        """Transform the query parameters. Ticker is set if symbol is provided."""
+
+        transform_params = params
+        transform_params["symbol"] = (
+            f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
+        )
+        return PolygonForexPairsQueryParams(**transform_params)
 
     @staticmethod
     def extract_data(
         query: PolygonForexPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonForexPairsData]:
+    ) -> dict:
+        """Extract the data from the Polygon API."""
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        tickers = f"ticker=C:{query.symbol}" if query.symbol else ""
         request_url = (
             f"https://api.polygon.io/v3/reference/"
-            f"tickers?{tickers}&market=fx&date={query.date}&"
+            f"tickers?{query.symbol}&market=fx&date={query.date}&"
             f"search={query.search}&active={query.active}&order={query.order}&"
             f"limit={query.limit}&sort={query.sort}&apiKey={api_key}"
         )
@@ -133,6 +146,8 @@ class PolygonForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[PolygonForexPairsData],
+        data: dict,
     ) -> List[PolygonForexPairsData]:
-        return data
+        """Transform the data into a list of PolygonForexPairsData."""
+
+        return [PolygonForexPairsData(**d) for d in data]

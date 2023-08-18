@@ -50,7 +50,6 @@ class IncomeStatementData(Data):
     )
     other_expenses: Optional[int] = Field(description="Other expenses.")
     operating_expenses: Optional[int] = Field(description="Operating expenses.")
-    cost_and_expenses: Optional[int] = Field(description="Cost and expenses.")
 
     depreciation_and_amortization: Optional[int] = Field(
         description="Depreciation and amortization."

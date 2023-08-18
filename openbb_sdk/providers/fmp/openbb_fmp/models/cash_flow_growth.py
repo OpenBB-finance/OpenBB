@@ -25,6 +25,8 @@ class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
     """FMP Cash Flow Statement Growth Data."""
 
     class Config:
+        """Pydantic alias config using fields Dict."""
+
         fields = {
             "growth_net_income": "growthNetIncome",
             "growth_depreciation_and_amortization": "growthDepreciationAndAmortization",
@@ -60,6 +62,7 @@ class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -69,10 +72,14 @@ class FMPCashFlowStatementGrowthFetcher(
         List[FMPCashFlowStatementGrowthData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> FMPCashFlowStatementGrowthQueryParams:
+        """Transform the query params."""
+
         return FMPCashFlowStatementGrowthQueryParams(**params)
 
     @staticmethod
@@ -80,16 +87,19 @@ class FMPCashFlowStatementGrowthFetcher(
         query: FMPCashFlowStatementGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPCashFlowStatementGrowthData]:
+    ) -> List[Dict]:
+        """Transform the query, extract and transform the data from the FMP endpoints."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"cash-flow-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementGrowthData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPCashFlowStatementGrowthData],
-    ) -> List[CashFlowStatementGrowthData]:
-        return [CashFlowStatementGrowthData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPCashFlowStatementGrowthData]:
+        """Return the transformed data."""
+
+        return [FMPCashFlowStatementGrowthData(**d) for d in data]
