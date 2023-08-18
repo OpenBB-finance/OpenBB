@@ -820,29 +820,3 @@ def test_set_tokenterminal_key(
         show_output=show_output,
     )
     mock_check.assert_called_once_with(show_output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize(
-    "args, persist, show_output",
-    [
-        (
-            ["test_key"],
-            False,
-            True,
-        ),
-        (
-            ["test_key"],
-            False,
-            False,
-        ),
-    ],
-)
-def test_set_shroom_key(args: List[str], persist: bool, show_output: bool, mocker):
-    mock_check = mocker.patch("openbb_terminal.keys_model.check_shroom_key")
-    keys_model.set_shroom_key(
-        key=args[0],
-        persist=persist,
-        show_output=show_output,
-    )
-    mock_check.assert_called_once_with(show_output)

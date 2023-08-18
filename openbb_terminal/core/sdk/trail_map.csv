@@ -119,7 +119,6 @@ crypto.onchain.hr,crypto_dd_glassnode_model.get_hashrate,crypto_dd_glassnode_vie
 crypto.onchain.info,crypto_onchain_ethplorer_model.get_token_info,crypto_onchain_ethplorer_view.display_token_info
 crypto.onchain.lt,crypto_onchain_bitquery_model.get_dex_trades_by_exchange,crypto_onchain_bitquery_view.display_dex_trades
 crypto.onchain.prices,crypto_onchain_ethplorer_model.get_token_historical_price,crypto_onchain_ethplorer_view.display_token_historical_prices
-crypto.onchain.query,crypto_onchain_shroom_model.get_query_data,crypto_onchain_shroom_view.display_query
 crypto.onchain.query_graph,crypto_onchain_bitquery_model.query_graph,
 crypto.onchain.th,crypto_onchain_ethplorer_model.get_token_history,crypto_onchain_ethplorer_view.display_token_history
 crypto.onchain.token_decimals,crypto_onchain_ethplorer_model.get_token_decimals,
@@ -307,7 +306,6 @@ keys.reddit,keys_model.set_reddit_key,
 keys.rh,keys_model.set_rh_key,
 keys.santiment,keys_model.set_santiment_key,
 keys.set_keys,keys_model.set_keys,
-keys.shroom,keys_model.set_shroom_key,
 keys.smartstake,keys_model.set_smartstake_key,
 keys.stocksera,keys_model.set_stocksera_key,
 keys.tokenterminal,keys_model.set_tokenterminal_key,
