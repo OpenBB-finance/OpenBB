@@ -17,4 +17,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-fred = "openbb_quandl:quandl_provider"
+quandl = "openbb_quandl:quandl_provider"
