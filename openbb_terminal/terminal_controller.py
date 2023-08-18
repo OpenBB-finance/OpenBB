@@ -792,7 +792,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
         commands = jobs_cmds[0].split("/")
-        commands = [x for x in commands if x]
         first_split = commands[0].split(" ")
         if len(first_split) > 1:
             export_path = first_split[1]
