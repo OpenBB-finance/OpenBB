@@ -116,7 +116,7 @@ class FMPFinancialRatiosFetcher(
 
         data = []
 
-        def multiple_symbols(symbol: str, data: List[FMPFinancialRatiosData]) -> None:
+        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
             url = (
                 f"{base_url}/ratios/{symbol}?"
                 f"period={query.period}&limit={query.limit}&apikey={api_key}"
