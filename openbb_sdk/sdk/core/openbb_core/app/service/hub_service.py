@@ -2,7 +2,9 @@
 from typing import Optional
 
 from fastapi import HTTPException
-from jose import JWTError, jwt
+from jose import JWTError
+from jose.exceptions import ExpiredSignatureError
+from jose.jwt import decode, get_unverified_header
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from openbb_core.app.model.hub.hub_session import HubSession
@@ -34,16 +36,16 @@ class HubService:
         self,
         email: Optional[str] = None,
         password: Optional[str] = None,
-        sdk_token: Optional[str] = None,
+        pat: Optional[str] = None,
     ) -> HubSession:
         """Connect to Hub."""
         if email and password:
             self._session = self.get_session_from_email_password(email, password)
             return self._session
-        if sdk_token:
-            self._session = self.get_session_from_sdk_token(sdk_token)
+        if pat:
+            self._session = self.get_session_from_sdk_token(pat)
             return self._session
-        raise OpenBBError("Please provide 'email' and 'password' or 'sdk_token'")
+        raise OpenBBError("Please provide 'email' and 'password' or 'pat'")
 
     def disconnect(self) -> bool:
         """Disconnect from Hub."""
@@ -119,14 +121,14 @@ class HubService:
     def check_token_expiration(cls, token: str) -> None:
         """Check token expiration, raises exception if expired."""
         try:
-            header_data = jwt.get_unverified_header(token)
-            jwt.decode(
+            header_data = get_unverified_header(token)
+            decode(
                 token,
                 key="secret",
                 algorithms=[header_data["alg"]],
                 options={"verify_signature": False, "verify_exp": True},
             )
-        except jwt.ExpiredSignatureError as e:
+        except ExpiredSignatureError as e:
             raise OpenBBError("SDK personal access token expired.") from e
         except JWTError as e:
             raise OpenBBError("Failed to decode SDK token.") from e
