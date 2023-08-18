@@ -2,12 +2,12 @@
 
 import inspect
 import os
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Tuple
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
 
-MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
+MapType = dict[str, dict[str, dict[str, dict[str, Any]]]]
 
 
 class RegistryMap:
@@ -63,7 +63,7 @@ class RegistryMap:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def _get_map(self, registry: Registry) -> MapType:
+    def _get_map(self, registry: Registry) ->  Tuple[MapType, MapType]:
         """Generate map for the provider package."""
         map_: MapType = {}
         return_map: MapType = {}
