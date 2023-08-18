@@ -63,7 +63,7 @@ class RegistryMap:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def _get_map(self, registry: Registry) ->  Tuple[MapType, MapType]:
+    def _get_map(self, registry: Registry) -> Tuple[MapType, MapType]:
         """Generate map for the provider package."""
         map_: MapType = {}
         return_map: MapType = {}
