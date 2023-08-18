@@ -791,8 +791,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
     export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
-        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
-        jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
+        commands = jobs_cmds[0].split("/")
+        first_split = commands[0].split(" ")
+        if len(first_split) > 1:
+            export_path = first_split[1]
+        jobs_cmds = ["/".join(commands[1:])]
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
