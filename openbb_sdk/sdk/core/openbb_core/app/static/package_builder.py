@@ -62,7 +62,7 @@ class PackageBuilder:
         )
 
     @classmethod
-    def save_modules(cls, modules: Optional[List[str]] = None):
+    def save_modules(cls, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
