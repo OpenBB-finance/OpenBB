@@ -15,8 +15,8 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class KeyMetricsQueryParams(QueryParams, BaseSymbol):
     """Key Metrics Query."""
 
-    period: Literal["annually", "quarterly"] = Field(
-        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")

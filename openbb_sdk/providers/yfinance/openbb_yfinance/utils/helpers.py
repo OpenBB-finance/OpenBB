@@ -1,7 +1,10 @@
 """yfinance helpers module."""
 
 
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from pathlib import Path
 from typing import Optional
 
@@ -18,7 +21,7 @@ def get_futures_data() -> pd.DataFrame:
     return pd.read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
-def get_futures_curve(symbol: str, date: Optional[str]) -> pd.DataFrame:
+def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
     """Get the futures curve for a given symbol.
 
     Parameters
@@ -33,7 +36,6 @@ def get_futures_curve(symbol: str, date: Optional[str]) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with futures curve
     """
-
     futures_data = get_futures_data()
     exchange = futures_data[futures_data["Ticker"] == symbol]["Exchange"].values[0]
     today = datetime.today()

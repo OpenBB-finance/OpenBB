@@ -62,7 +62,7 @@ CPI_COUNTRIES = Literal[
 
 CPI_UNITS = Literal["growth_previous", "growth_same", "index_2015"]
 
-CPI_FREQUENCY = Literal["monthly", "quarterly", "annual"]
+CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 
 
 class CPIQueryParams(QueryParams):

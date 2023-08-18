@@ -108,14 +108,9 @@ class FMPFinancialRatiosFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = (
-            "annual" if query.period == "annually" else "quarter"  # mypy: ignore
-        )
         base_url = "https://financialmodelingprep.com/api/v3"
-
         data: List[Dict] = []
 
         def multiple_symbols(symbol: str, data: List[Dict]) -> None:

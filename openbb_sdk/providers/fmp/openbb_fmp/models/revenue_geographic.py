@@ -51,10 +51,7 @@ class FMPRevenueGeographicFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
         data = get_data(url, **kwargs)

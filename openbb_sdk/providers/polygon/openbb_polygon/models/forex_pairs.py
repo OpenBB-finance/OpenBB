@@ -63,10 +63,16 @@ class PolygonForexPairsData(ForexPairsData):
 
     market: str = Field(description="The name of the trading market. Always 'fx'.")
     locale: str = Field(description="The locale of the currency pair.")
-    currency_symbol: str = Field(description="The symbol of the quote currency.")
-    currency_name: str = Field(description="The name of the quote currency.")
-    base_currency_symbol: str = Field(description="The symbol of the base currency.")
-    base_currency_name: str = Field(description="The name of the base currency.")
+    currency_symbol: Optional[str] = Field(
+        description="The symbol of the quote currency."
+    )
+    currency_name: Optional[str] = Field(description="The name of the quote currency.")
+    base_currency_symbol: Optional[str] = Field(
+        description="The symbol of the base currency."
+    )
+    base_currency_name: Optional[str] = Field(
+        description="The name of the base currency."
+    )
     last_updated_utc: datetime = Field(description="The last updated timestamp in UTC.")
     delisted_utc: Optional[datetime] = Field(
         description="The delisted timestamp in UTC."
@@ -108,7 +114,7 @@ class PolygonForexPairsFetcher(
         query: PolygonForexPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[dict]:
         """Extract the data from the Polygon API."""
 
         api_key = credentials.get("polygon_api_key") if credentials else ""
@@ -135,7 +141,12 @@ class PolygonForexPairsFetcher(
                 )
 
             if data["status"] == "OK":
-                all_data.extend(data["results"])
+                results = data.get("results")
+                if not isinstance(results, list):
+                    raise ValueError(
+                        "Expected 'results' to be a list, got something else."
+                    )
+                all_data.extend(results)
             elif data["status"] == "ERROR":
                 raise UserWarning(data["error"])
 
@@ -146,7 +157,7 @@ class PolygonForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: List[dict],
     ) -> List[PolygonForexPairsData]:
         """Transform the data into a list of PolygonForexPairsData."""
 

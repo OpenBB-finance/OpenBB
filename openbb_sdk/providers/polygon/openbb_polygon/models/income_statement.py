@@ -72,8 +72,6 @@ class PolygonIncomeStatementFetcher(
     ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
-
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"

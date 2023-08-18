@@ -16,8 +16,8 @@ class IncomeStatementGrowthQueryParams(QueryParams, BaseSymbol):
     """Income Statement Growth Query."""
 
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
-    period: Literal["annually", "quarterly"] = Field(
-        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
 
 
