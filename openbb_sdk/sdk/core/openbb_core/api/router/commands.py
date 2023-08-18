@@ -143,7 +143,7 @@ def build_api_wrapper(
                 SystemService.read_default_system_settings(),
             )
         )
-        execute = partial(command_runner.run_once, user_settings, path)
+        execute = partial(command_runner.run, user_settings, path)
         output: OBBject = execute(*args, **kwargs)
 
         return validate_output(output)

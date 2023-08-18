@@ -366,11 +366,13 @@ class CommandRunner:
         self,
         command_map: Optional[CommandMap] = None,
         system_settings: Optional[SystemSettings] = None,
+        user_settings: Optional[UserSettings] = None,
     ) -> None:
         self._command_map = command_map or CommandMap()
         self._system_settings = (
             system_settings or SystemService.read_default_system_settings()
         )
+        self._user_settings = user_settings or UserService.read_default_user_settings()
 
     @property
     def command_map(self) -> CommandMap:
@@ -380,6 +382,10 @@ class CommandRunner:
     def system_settings(self) -> SystemSettings:
         return self._system_settings
 
+    @property
+    def user_settings(self) -> UserSettings:
+        return self._user_settings
+
     def run(
         self,
         user_settings: UserSettings,
@@ -388,39 +394,13 @@ class CommandRunner:
         *args,
         **kwargs,
     ) -> OBBject:
-        command_map = self._command_map
-        # Getting the most updated system settings to allow debug_mode without reload
-        system_settings = self._system_settings
+        """Run a command and return the OBBject as output."""
 
         execution_context = ExecutionContext(
-            command_map=command_map,
+            command_map=self._command_map,
             route=route,
-            system_settings=system_settings,
-            user_settings=user_settings,
-        )
-
-        return StaticCommandRunner.run(
-            execution_context,
-            *args,
-            **kwargs,
-        )
-
-    def run_once(
-        self,
-        user_settings: UserSettings,
-        route: str,
-        /,
-        *args,
-        **kwargs,
-    ) -> OBBject:
-        command_map = self._command_map
-        system_settings = self._system_settings
-
-        execution_context = ExecutionContext(
-            command_map=command_map,
-            route=route,
-            system_settings=system_settings,
-            user_settings=user_settings,
+            system_settings=self._system_settings,
+            user_settings=user_settings or self._user_settings,
         )
 
         return StaticCommandRunner.run(
