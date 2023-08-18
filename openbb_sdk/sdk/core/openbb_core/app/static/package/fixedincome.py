@@ -1,16 +1,24 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import validate_arguments
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_fixedincome(Container):
@@ -114,11 +122,66 @@ class CLASS_fixedincome(Container):
     @filter_call
     @validate_arguments
     def ycrv(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Yield curve."""
+        self,
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(
+                description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
+            ),
+        ] = None,
+        inflation_adjusted: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Get inflation adjusted rates."),
+        ] = False,
+        chart: bool = False,
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Get United States yield curve.
+
+        Parameters
+        ----------
+        date : Optional[datetime.date]
+            Date to get Yield Curve data.  Defaults to the most recent FRED entry.
+        inflation_adjusted : Optional[bool]
+            Get inflation adjusted rates.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[USYieldCurve]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        USYieldCurve
+        ------------
+        maturity : Optional[float]
+            Maturity of the treasury rate in years.
+        rate : Optional[float]
+            Associated rate given in decimal form (0.05 is 5%)"""
 
         inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "date": date,
+                "inflation_adjusted": inflation_adjusted,
+            },
+            extra_params=kwargs,
             chart=chart,
         )
 

@@ -26,7 +26,11 @@ def treasury(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command
-def ycrv() -> OBBject[Empty]:  # type: ignore
-    """Yield curve."""
-    return OBBject(results=Empty())
+@router.command(model="USYieldCurve")
+def ycrv(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,) -> OBBject[BaseModel]:  # type: ignore
+    """Get United States yield curve."""
+    return OBBject(results=Query(**locals()).execute())
