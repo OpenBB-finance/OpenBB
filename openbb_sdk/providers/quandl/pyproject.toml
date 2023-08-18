@@ -10,6 +10,7 @@ packages = [{ include = "openbb_quandl" }]
 python = "^3.8"
 openbb-provider = { path = "../../sdk/provider" }
 quandl = "^3.7.0"
+pandas = "^2.0.3"
 
 [build-system]
 requires = ["poetry-core"]
