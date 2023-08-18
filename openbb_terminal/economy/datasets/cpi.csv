@@ -37,24 +37,24 @@ Consumer Price Index for Chile,chile,monthly,growth_same,CPALTT01CLM659N
 Consumer Price Index for Chile,chile,quarterly,growth_previous,CPALTT01CLQ657N
 Consumer Price Index for Chile,chile,quarterly,growth_same,CPALTT01CLQ659N
 Consumer Price Index for China,china,annual,growth_previous,CPALTT01CNA657N
-Consumer Price Index for China,china,monthly,growth_same,CPALTT01CNM657N
-Consumer Price Index for China,china,monthly,growth_previous,CPALTT01CNM659N
-Consumer Price Index for China,china,quarterly,growth_same,CPALTT01CNQ657N
-Consumer Price Index for China,china,quarterly,growth_previous,CPALTT01CNQ659N
-Consumer Price Index for Denmark,denmark,annual,growth_same,CPALTT01DKA657N
-Consumer Price Index for Denmark,denmark,annual,growth_previous,CPALTT01DKA659N
-Consumer Price Index for Denmark,denmark,monthly,growth_same,CPALTT01DKM657N
-Consumer Price Index for Denmark,denmark,monthly,growth_previous,CPALTT01DKM659N
-Consumer Price Index for Denmark,denmark,quarterly,growth_same,CPALTT01DKQ657N
-Consumer Price Index for Denmark,denmark,quarterly,growth_previous,CPALTT01DKQ659N
-Consumer Price Index for Estonia,estonia,annual,growth_same,CPALTT01EEA657N
-Consumer Price Index for Estonia,estonia,annual,growth_previous,CPALTT01EEA659N
+Consumer Price Index for China,china,monthly,growth_previous,CPALTT01CNM657N
+Consumer Price Index for China,china,monthly,growth_same,CPALTT01CNM659N
+Consumer Price Index for China,china,quarterly,growth_previous,CPALTT01CNQ657N
+Consumer Price Index for China,china,quarterly,growth_same,CPALTT01CNQ659N
+Consumer Price Index for Denmark,denmark,annual,growth_previous,CPALTT01DKA657N
+Consumer Price Index for Denmark,denmark,annual,growth_same,CPALTT01DKA659N
+Consumer Price Index for Denmark,denmark,monthly,growth_previous,CPALTT01DKM657N
+Consumer Price Index for Denmark,denmark,monthly,growth_same,CPALTT01DKM659N
+Consumer Price Index for Denmark,denmark,quarterly,growth_previous,CPALTT01DKQ657N
+Consumer Price Index for Denmark,denmark,quarterly,growth_same,CPALTT01DKQ659N
+Consumer Price Index for Estonia,estonia,annual,growth_previous,CPALTT01EEA657N
+Consumer Price Index for Estonia,estonia,annual,growth_same,CPALTT01EEA659N
 Consumer Price Index for Estonia,estonia,annual,index_2015,CPALTT01EEA661N
 Consumer Price Index for Estonia,estonia,monthly,growth_previous,CPALTT01EEM657N
 Consumer Price Index for Estonia,estonia,monthly,growth_same,CPALTT01EEM659N
 Consumer Price Index for Estonia,estonia,monthly,index_2015,CPALTT01EEM661N
-Consumer Price Index for Estonia,estonia,quarterly,growth_same,CPALTT01EEQ657N
-Consumer Price Index for Estonia,estonia,quarterly,growth_previous,CPALTT01EEQ659N
+Consumer Price Index for Estonia,estonia,quarterly,growth_previous,CPALTT01EEQ657N
+Consumer Price Index for Estonia,estonia,quarterly,growth_same,CPALTT01EEQ659N
 Consumer Price Index for Estonia,estonia,quarterly,index_2015,CPALTT01EEQ661N
 Consumer Price Index for Finland,finland,annual,growth_previous,CPALTT01FIA657N
 Consumer Price Index for Finland,finland,annual,growth_same,CPALTT01FIA659N
@@ -68,12 +68,12 @@ Consumer Price Index for France,france,monthly,growth_previous,CPALTT01FRM657N
 Consumer Price Index for France,france,monthly,growth_same,CPALTT01FRM659N
 Consumer Price Index for France,france,quarterly,growth_previous,CPALTT01FRQ657N
 Consumer Price Index for France,france,quarterly,growth_same,CPALTT01FRQ659N
-Consumer Price Index for Germany,germany,annual,growth_same,CPALTT01DEA657N
-Consumer Price Index for Germany,germany,annual,growth_previous,CPALTT01DEA659N
-Consumer Price Index for Germany,germany,monthly,growth_same,CPALTT01DEM657N
-Consumer Price Index for Germany,germany,monthly,growth_previous,CPALTT01DEM659N
-Consumer Price Index for Germany,germany,quarterly,growth_same,CPALTT01DEQ657N
-Consumer Price Index for Germany,germany,quarterly,growth_previous,CPALTT01DEQ659N
+Consumer Price Index for Germany,germany,annual,growth_previous,CPALTT01DEA657N
+Consumer Price Index for Germany,germany,annual,growth_same,CPALTT01DEA659N
+Consumer Price Index for Germany,germany,monthly,growth_previous,CPALTT01DEM657N
+Consumer Price Index for Germany,germany,monthly,growth_same,CPALTT01DEM659N
+Consumer Price Index for Germany,germany,quarterly,growth_previous,CPALTT01DEQ657N
+Consumer Price Index for Germany,germany,quarterly,growth_same,CPALTT01DEQ659N
 Consumer Price Index for Greece,greece,annual,growth_previous,CPALTT01GRA657N
 Consumer Price Index for Greece,greece,annual,growth_same,CPALTT01GRA659N
 Consumer Price Index for Greece,greece,monthly,growth_previous,CPALTT01GRM657N
@@ -127,8 +127,8 @@ Consumer Price Index for Japan,japan,quarterly,index_2015,CPALCY01JPQ661N
 Consumer Price Index for Japan,japan,monthly,growth_previous,CPALTT01JPM657N
 Consumer Price Index for Japan,japan,monthly,growth_same,CPALTT01JPM659N
 Consumer Price Index for Japan,japan,monthly,index_2015,CPALTT01JPM661S
-Consumer Price Index for Japan,japan,quarterly,growth_same,CPALTT01JPQ657N
-Consumer Price Index for Japan,japan,quarterly,growth_previous,CPALTT01JPQ659N
+Consumer Price Index for Japan,japan,quarterly,growth_previous,CPALTT01JPQ657N
+Consumer Price Index for Japan,japan,quarterly,growth_same,CPALTT01JPQ659N
 Consumer Price Index for Japan,japan,quarterly,index_2015,CPALTT01JPQ661S
 Consumer Price Index for Luxembourg,luxembourg,annual,growth_previous,CPALTT01LUA657N
 Consumer Price Index for Luxembourg,luxembourg,annual,growth_same,CPALTT01LUA659N
@@ -199,12 +199,12 @@ Consumer Price Index for Switzerland,switzerland,monthly,growth_previous,CPALTT0
 Consumer Price Index for Switzerland,switzerland,monthly,growth_same,CPALTT01CHM659N
 Consumer Price Index for Switzerland,switzerland,quarterly,growth_previous,CPALTT01CHQ657N
 Consumer Price Index for Switzerland,switzerland,quarterly,growth_same,CPALTT01CHQ659N
-Consumer Price Index for the Czech Republic,czech_republic,annual,growth_same,CPALTT01CZA657N
-Consumer Price Index for the Czech Republic,czech_republic,annual,growth_previous,CPALTT01CZA659N
-Consumer Price Index for the Czech Republic,czech_republic,monthly,growth_same,CPALTT01CZM657N
-Consumer Price Index for the Czech Republic,czech_republic,monthly,growth_previous,CPALTT01CZM659N
-Consumer Price Index for the Czech Republic,czech_republic,quarterly,growth_same,CPALTT01CZQ657N
-Consumer Price Index for the Czech Republic,czech_republic,quarterly,growth_previous,CPALTT01CZQ659N
+Consumer Price Index for the Czech Republic,czech_republic,annual,growth_previous,CPALTT01CZA657N
+Consumer Price Index for the Czech Republic,czech_republic,annual,growth_same,CPALTT01CZA659N
+Consumer Price Index for the Czech Republic,czech_republic,monthly,growth_previous,CPALTT01CZM657N
+Consumer Price Index for the Czech Republic,czech_republic,monthly,growth_same,CPALTT01CZM659N
+Consumer Price Index for the Czech Republic,czech_republic,quarterly,growth_previous,CPALTT01CZQ657N
+Consumer Price Index for the Czech Republic,czech_republic,quarterly,growth_same,CPALTT01CZQ659N
 Consumer Price Index for the Netherlands,netherlands,annual,growth_previous,CPALTT01NLA657N
 Consumer Price Index for the Netherlands,netherlands,annual,growth_same,CPALTT01NLA659N
 Consumer Price Index for the Netherlands,netherlands,monthly,growth_previous,CPALTT01NLM657N
