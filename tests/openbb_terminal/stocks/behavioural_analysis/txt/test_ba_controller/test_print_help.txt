@@ -12,8 +12,6 @@ Ticker: TSLA
     stalker            stalk stocktwits user's last messages                           [Stocktwits]
     bullbear           estimate quick sentiment from last 30 messages on board         [Stocktwits]
     messages           output up to the 30 last messages on the board                  [Stocktwits]
-    infer              infer about stock's sentiment from latest tweets                [Twitter]
-    sentiment          in-depth sentiment prediction from tweets over time             [Twitter]
     mentions           interest over time based on stock's mentions                    [Google]
     regions            regions that show highest interest in stock                     [Google]
     interest           interest over time of sentences versus stock price              [Google]
