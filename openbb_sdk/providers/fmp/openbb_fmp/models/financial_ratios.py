@@ -114,7 +114,7 @@ class FMPFinancialRatiosFetcher(
         query.period = "annual" if query.period == "annually" else "quarter"
         base_url = "https://financialmodelingprep.com/api/v3"
 
-        data = []
+        data: List[Dict] = []
 
         def multiple_symbols(symbol: str, data: List[Dict]) -> None:
             url = (
