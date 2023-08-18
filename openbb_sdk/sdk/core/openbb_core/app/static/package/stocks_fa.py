@@ -31,7 +31,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/analysis",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -249,7 +249,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/balance",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -400,7 +400,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/balance_growth",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -487,7 +487,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/cal",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -677,7 +677,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/cash",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -810,7 +810,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/cash_growth",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -896,7 +896,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/comp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -977,7 +977,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/comsplit",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -995,7 +995,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/customer",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1013,7 +1013,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/dcfc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1087,7 +1087,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/divs",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1105,7 +1105,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/dupont",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1190,7 +1190,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/earning",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1268,7 +1268,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/emp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1286,7 +1286,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/enterprise",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1304,7 +1304,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/epsfc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1422,7 +1422,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/est",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1440,7 +1440,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/fama_coe",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1458,7 +1458,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/fama_raw",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1476,7 +1476,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/fraud",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1494,7 +1494,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/growth",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1510,7 +1510,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/historical_5",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1708,7 +1708,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/income",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1840,7 +1840,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/income_growth",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1982,7 +1982,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/ins",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2128,7 +2128,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/ins_own",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2144,7 +2144,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/key",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2338,7 +2338,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/metrics",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2412,7 +2412,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/mgmt",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2430,7 +2430,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/mktcap",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2446,7 +2446,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/news",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2578,7 +2578,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/overview",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2730,7 +2730,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/own",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2800,7 +2800,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/pt",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2884,7 +2884,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/pta",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -2902,7 +2902,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/rating",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3090,7 +3090,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/ratios",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3108,7 +3108,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/revfc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3196,7 +3196,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/revgeo",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3274,7 +3274,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/revseg",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3292,7 +3292,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/rot",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3310,7 +3310,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/score",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3326,7 +3326,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/sec",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3342,7 +3342,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/shares",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3414,7 +3414,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/shrs",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3482,7 +3482,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/split",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3500,7 +3500,7 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/supplier",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -3588,6 +3588,6 @@ class CLASS_stocks_fa(Container):
         o = self._command_runner_session.run(
             "/stocks/fa/transcript",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

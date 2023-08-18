@@ -108,7 +108,7 @@ class CLASS_fixedincome(Container):
         o = self._command_runner_session.run(
             "/fixedincome/treasury",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -126,6 +126,6 @@ class CLASS_fixedincome(Container):
         o = self._command_runner_session.run(
             "/fixedincome/ycrv",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

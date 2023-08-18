@@ -80,7 +80,7 @@ class CLASS_futures(Container):
         o = self._command_runner_session.run(
             "/futures/curve",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -181,6 +181,6 @@ class CLASS_futures(Container):
         o = self._command_runner_session.run(
             "/futures/load",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

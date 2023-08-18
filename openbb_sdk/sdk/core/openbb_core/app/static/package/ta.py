@@ -68,7 +68,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/ad",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -126,7 +126,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/adosc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -183,7 +183,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/adx",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -245,7 +245,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/aroon",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -305,7 +305,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/atr",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -381,7 +381,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/bbands",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -430,7 +430,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/cci",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -481,7 +481,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/cg",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -532,7 +532,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/clenow",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -619,7 +619,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/cones",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -678,7 +678,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/demark",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -738,7 +738,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/donchian",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -801,7 +801,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/ema",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -854,7 +854,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/fib",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -909,7 +909,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/fisher",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -967,7 +967,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/hma",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1022,7 +1022,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/ichimoku",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1085,7 +1085,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/kc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1152,7 +1152,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/macd",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1170,7 +1170,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/multi",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1225,7 +1225,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/obv",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1243,7 +1243,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/recom",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1306,7 +1306,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/rsi",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1324,7 +1324,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/rsp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1385,7 +1385,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/sma",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1445,7 +1445,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/stoch",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1463,7 +1463,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/summary",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1481,7 +1481,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/tv",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1535,7 +1535,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/vwap",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1593,7 +1593,7 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/wma",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1654,6 +1654,6 @@ class CLASS_ta(Container):
         o = self._command_runner_session.run(
             "/ta/zlma",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

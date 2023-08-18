@@ -24,7 +24,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/act",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -42,7 +42,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/blcp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -60,7 +60,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/blcs",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -78,7 +78,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/blip",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -96,7 +96,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/blis",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -114,7 +114,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/blop",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -132,7 +132,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/blos",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -150,7 +150,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/filt",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -168,7 +168,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/lcb",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -186,7 +186,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/lins",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -204,7 +204,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/lip",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -222,7 +222,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/lis",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -240,7 +240,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/lit",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -258,7 +258,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/lpsb",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -276,7 +276,7 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/print_insider_data",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -294,6 +294,6 @@ class CLASS_stocks_ins(Container):
         o = self._command_runner_session.run(
             "/stocks/ins/stats",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

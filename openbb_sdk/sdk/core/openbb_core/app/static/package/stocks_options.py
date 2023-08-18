@@ -124,7 +124,7 @@ class CLASS_stocks_options(Container):
         o = self._command_runner_session.run(
             "/stocks/options/chains",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -142,7 +142,7 @@ class CLASS_stocks_options(Container):
         o = self._command_runner_session.run(
             "/stocks/options/eodchain",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -160,7 +160,7 @@ class CLASS_stocks_options(Container):
         o = self._command_runner_session.run(
             "/stocks/options/hist",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -178,7 +178,7 @@ class CLASS_stocks_options(Container):
         o = self._command_runner_session.run(
             "/stocks/options/info",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -196,7 +196,7 @@ class CLASS_stocks_options(Container):
         o = self._command_runner_session.run(
             "/stocks/options/pcr",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -214,6 +214,6 @@ class CLASS_stocks_options(Container):
         o = self._command_runner_session.run(
             "/stocks/options/unu",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

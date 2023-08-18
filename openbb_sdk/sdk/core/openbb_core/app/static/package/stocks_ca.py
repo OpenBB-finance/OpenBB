@@ -28,7 +28,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/balance",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -46,7 +46,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/cashflow",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -64,7 +64,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/hcorr",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -82,7 +82,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/hist",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -100,7 +100,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/income",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -164,7 +164,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/peers",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -182,7 +182,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/scorr",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -200,7 +200,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/screener",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -218,7 +218,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/sentiment",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -236,7 +236,7 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/similar",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -254,6 +254,6 @@ class CLASS_stocks_ca(Container):
         o = self._command_runner_session.run(
             "/stocks/ca/volume",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

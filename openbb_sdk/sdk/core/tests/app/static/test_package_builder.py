@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from inspect import _empty
 
 import pandas
-
 import pytest
 from openbb_core.app.static.package_builder import (
     ClassDefinition,

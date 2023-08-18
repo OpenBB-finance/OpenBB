@@ -181,7 +181,7 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/info",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -312,7 +312,7 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/load",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -499,7 +499,7 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/multiples",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -660,7 +660,7 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/news",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -772,7 +772,7 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/quote",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -846,7 +846,7 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/search",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -864,6 +864,6 @@ class CLASS_stocks(Container):
         o = self._command_runner_session.run(
             "/stocks/tob",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

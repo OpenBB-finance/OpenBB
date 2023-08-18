@@ -24,7 +24,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/ctb",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -42,7 +42,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/dpotc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -60,7 +60,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/ftd",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -78,7 +78,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/hsi",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -96,7 +96,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/pos",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -114,7 +114,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/prom",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -132,7 +132,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/psi",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -148,7 +148,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/psi_q",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -164,7 +164,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/psi_sg",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -182,7 +182,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/shorted",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -200,7 +200,7 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/sidtc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -218,6 +218,6 @@ class CLASS_stocks_dps(Container):
         o = self._command_runner_session.run(
             "/stocks/dps/spos",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

@@ -121,7 +121,7 @@ class CLASS_news(Container):
         o = self._command_runner_session.run(
             "/news/globalnews",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -139,6 +139,6 @@ class CLASS_news(Container):
         o = self._command_runner_session.run(
             "/news/sectornews",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

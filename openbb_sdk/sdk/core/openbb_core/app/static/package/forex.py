@@ -130,7 +130,7 @@ class CLASS_forex(Container):
         o = self._command_runner_session.run(
             "/forex/load",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -223,6 +223,6 @@ class CLASS_forex(Container):
         o = self._command_runner_session.run(
             "/forex/pairs",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

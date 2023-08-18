@@ -24,7 +24,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/contracts",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -42,7 +42,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/government_trading",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -60,7 +60,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/gtrades",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -78,7 +78,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/histcont",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -96,7 +96,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/lastcontracts",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -114,7 +114,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/lasttrades",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -132,7 +132,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/lobbying",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -150,7 +150,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/qtrcontracts",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -168,7 +168,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/topbuys",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -186,7 +186,7 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/toplobbying",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -204,6 +204,6 @@ class CLASS_stocks_gov(Container):
         o = self._command_runner_session.run(
             "/stocks/gov/topsells",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

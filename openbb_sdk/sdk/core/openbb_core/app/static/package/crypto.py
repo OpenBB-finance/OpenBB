@@ -132,6 +132,6 @@ class CLASS_crypto(Container):
         o = self._command_runner_session.run(
             "/crypto/load",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

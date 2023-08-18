@@ -204,6 +204,6 @@ class CLASS_stocks_dd(Container):
         o = self._command_runner_session.run(
             "/stocks/dd/sec",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

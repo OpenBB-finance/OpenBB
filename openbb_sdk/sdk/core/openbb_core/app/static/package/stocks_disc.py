@@ -24,7 +24,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/active",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -42,7 +42,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/arkord",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -60,7 +60,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/asc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -76,7 +76,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/dividends",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -94,7 +94,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/filings",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -112,7 +112,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/fipo",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -130,7 +130,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/gainers",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -148,7 +148,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/gtech",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -166,7 +166,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/hotpenny",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -182,7 +182,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/ipo",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -200,7 +200,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/losers",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -218,7 +218,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/lowfloat",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -236,7 +236,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/pipo",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -254,7 +254,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/rtat",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -272,7 +272,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/trending",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -290,7 +290,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/ugs",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -308,7 +308,7 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/ulc",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -326,6 +326,6 @@ class CLASS_stocks_disc(Container):
         o = self._command_runner_session.run(
             "/stocks/disc/upcoming",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

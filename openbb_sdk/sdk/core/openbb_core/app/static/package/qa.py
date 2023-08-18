@@ -30,7 +30,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/acf",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -48,7 +48,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/beta",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -66,7 +66,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/bw",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -89,7 +89,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/capm",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -107,7 +107,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/cdf",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -125,7 +125,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/cusum",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -143,7 +143,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/decompose",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -161,7 +161,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/es",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -179,7 +179,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/hist",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -219,7 +219,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/kurtosis",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -237,7 +237,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/line",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -280,7 +280,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/normality",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -324,7 +324,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/om",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -342,7 +342,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/pick",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -360,7 +360,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/qqplot",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -387,7 +387,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/quantile",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -405,7 +405,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/raw",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -423,7 +423,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/rolling",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -467,7 +467,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/sh",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -507,7 +507,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/skew",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -557,7 +557,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/so",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -575,7 +575,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/spread",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -611,7 +611,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/summary",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -658,7 +658,7 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/unitroot",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -676,6 +676,6 @@ class CLASS_qa(Container):
         o = self._command_runner_session.run(
             "/qa/var",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)

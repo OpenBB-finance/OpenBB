@@ -73,7 +73,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/available_indices",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -98,7 +98,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/balance",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -123,7 +123,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/bigmac",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -201,7 +201,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/const",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -226,7 +226,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/corecpi",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -251,7 +251,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/country_codes",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -412,7 +412,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/cpi",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -437,7 +437,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/cpi_options",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -462,7 +462,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/currencies",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -487,7 +487,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/debt",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -512,7 +512,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/events",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -537,7 +537,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/fgdp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -562,7 +562,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/fred",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -587,7 +587,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/fred_search",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -612,7 +612,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/futures",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -637,7 +637,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/gdp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -662,7 +662,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/glbonds",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -785,7 +785,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/index",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -810,7 +810,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/indices",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -835,7 +835,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/macro",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -860,7 +860,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/macro_countries",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -885,7 +885,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/macro_parameters",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -910,7 +910,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/overview",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -935,7 +935,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/perfmap",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -960,7 +960,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/performance",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -985,7 +985,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/revenue",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1010,7 +1010,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/rgdp",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1070,7 +1070,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/risk",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1095,7 +1095,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/rtps",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1120,7 +1120,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/search_index",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1145,7 +1145,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/spending",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1170,7 +1170,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/trust",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1195,7 +1195,7 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/usbonds",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
 
@@ -1220,6 +1220,6 @@ class CLASS_economy(Container):
         o = self._command_runner_session.run(
             "/economy/valuation",
             **inputs,
-        ).output
+        )
 
         return filter_output(o)
