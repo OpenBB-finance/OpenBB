@@ -67,7 +67,7 @@ class CommandValidator:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return type(annotation) is _AnnotatedAlias and hasattr(
+        return isinstance(annotation, _AnnotatedAlias) and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
