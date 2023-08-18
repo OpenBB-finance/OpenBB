@@ -7,6 +7,7 @@ from openbb_provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
     SP500MultiplesQueryParams,
 )
+
 from openbb_quandl.utils.helpers import get_sp500_multiples
 
 
