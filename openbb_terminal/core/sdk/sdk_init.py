@@ -170,8 +170,6 @@ from openbb_terminal.cryptocurrency.defi import (
     coindix_view as crypto_defi_coindix_view,
     cryptosaurio_model as crypto_defi_cryptosaurio_model,
     cryptosaurio_view as crypto_defi_cryptosaurio_view,
-    graph_model as crypto_defi_graph_model,
-    graph_view as crypto_defi_graph_view,
     llama_model as crypto_defi_llama_model,
     llama_view as crypto_defi_llama_view,
     smartstake_model as crypto_defi_smartstake_model,
