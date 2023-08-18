@@ -120,7 +120,6 @@ def search(
     exchange: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
-    limit: int = 0,
 ) -> pd.DataFrame:
     """Search selected query for tickers.
 
@@ -142,8 +141,6 @@ def search(
         Search by exchange country to find stock matching the criteria
     all_exchanges: bool
         Whether to search all exchanges, without this option only the United States market is searched
-    limit : int
-        The limit of results shown, where 0 means all the results
 
     Returns
     -------
@@ -228,43 +225,11 @@ def search(
 
     df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
     # To automate renaming columns
-    headers = [col.replace("_", " ") for col in df.columns.tolist()]
-
-    title = "Companies found"
-    if query:
-        title += f" on term {query}"
-    if exchange_country and exchange:
-        title += f" on the exchange {exchange} in {exchange_country.replace('_', ' ').title()}"
-    if exchange and not exchange_country:
-        title += f" on the exchange {exchange}"
-    if exchange_country and not exchange:
-        title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
-    if country:
-        title += f" in {country.replace('_', ' ').title()}"
-    if sector:
-        title += f" within {sector}"
-        if industry_group:
-            title += f" and {industry_group}"
-        if industry:
-            title += f" and {industry}"
-    if not sector and industry_group:
-        title += f" within {industry_group}"
-    if not sector and industry:
-        title += f" within {industry}"
-
+    df.columns = [col.replace("_", " ") for col in df.columns.tolist()]
     df = df.fillna(value=np.nan)
     df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
-    print_rich_table(
-        df,
-        show_index=True,
-        headers=headers,
-        index_name="Symbol",
-        title=title,
-        limit=limit,
-    )
-
-    return df
+    return df.reset_index()
 
 
 def load(  # pylint: disable=too-many-return-statements
@@ -1108,3 +1073,45 @@ def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
     ]
 
     return pd.concat([data, ha], axis=1)
+
+
+def calculate_adjusted_prices(df: pd.DataFrame, column: str, dividends: bool = False):
+    """Calculates the split-adjusted prices, or split and dividend adjusted prices.
+
+    Parameters
+    ------------
+    df: pd.DataFrame
+        DataFrame with unadjusted OHLCV values + Split Factor + Dividend
+    column: str
+        The column name to adjust.
+    dividends: bool
+        Whether to adjust for both splits and dividends. Default is split-adjusted only.
+
+    Returns
+    --------
+    pd.DataFrame
+        DataFrame with adjusted prices.
+    """
+
+    df = df.copy()
+    adj_column = "Adj " + column
+
+    # Reverse the DataFrame order, sorting by date in descending order
+    df.sort_index(ascending=False, inplace=True)
+
+    price_col = df[column].values
+    split_col = df["Volume Factor"] if column == "Volume" else df["Split Factor"].values
+    dividend_col = df["Dividend"].values if dividends else np.zeros(len(price_col))
+    adj_price_col = np.zeros(len(df.index))
+    adj_price_col[0] = price_col[0]
+
+    for i in range(1, len(price_col)):
+        adj_price_col[i] = adj_price_col[i - 1] + adj_price_col[i - 1] * (
+            ((price_col[i] * split_col[i - 1]) - price_col[i - 1] - dividend_col[i - 1])
+            / price_col[i - 1]
+        )
+    df[adj_column] = adj_price_col
+
+    # Change the DataFrame order back to dates ascending
+    df.sort_index(ascending=True, inplace=True)
+    return df
