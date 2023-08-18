@@ -817,8 +817,7 @@ class CLASS_ta(Container):
         end_date: Optional[str] = None,
         chart: bool = False,
     ) -> OBBject[List]:
-        """
-        Fibonacci Retracement Levels.
+        """Create Fibonacci Retracement Levels.
 
         Parameters
         ----------
