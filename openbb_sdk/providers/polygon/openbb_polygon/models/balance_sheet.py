@@ -22,7 +22,6 @@ class PolygonBalanceSheetData(BalanceSheetData):
     class Config:
         fields = {
             "date": "start_date",
-            "equity": "total_equity",
             "total_liabilities_and_stockholders_equity": "liabilities_and_equity",
             "minority_interest": "equity_attributable_to_noncontrolling_interest",
         }

@@ -334,14 +334,14 @@ class DocstringGenerator:
         underline = "-" * len(model_name)
         docstring += f"\n{model_name}\n{underline}\n"
 
-        for field_name, field in returns.items():
+        for _, field in returns.items():
             try:
                 field_type = field.__repr_args__()[1][1]
             except AttributeError:
                 # Fallback to the annotation if the repr fails
                 field_type = field.annotation
 
-            docstring += f"{field_name} : {field_type}\n"
+            docstring += f"{field.field_info.alias or field.alias} : {field_type}\n"
             docstring += f"    {field.field_info.description}\n"
 
         return docstring

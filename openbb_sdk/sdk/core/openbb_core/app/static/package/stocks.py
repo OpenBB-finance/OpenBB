@@ -4,7 +4,7 @@ import datetime
 from typing import Annotated, List, Literal, Optional, Union
 
 import pydantic
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -73,8 +73,8 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[List]:
+        **kwargs,
+    ) -> OBBject[BaseModel]:
         """Get general price and performance metrics of a stock.
 
         Parameters
@@ -213,9 +213,9 @@ class CLASS_stocks(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -284,19 +284,19 @@ class CLASS_stocks(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+        change_percent : Optional[float]
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+        change_over_time : Optional[float]
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """
 
@@ -334,7 +334,7 @@ class CLASS_stocks(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Get valuation multiples for a stock ticker.
 
@@ -526,7 +526,7 @@ class CLASS_stocks(Container):
         ] = 15,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Get news for one or more stock tickers.
 
@@ -684,7 +684,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
 
@@ -758,7 +758,7 @@ class CLASS_stocks(Container):
         shares_outstanding : Optional[int]
             Number of shares outstanding of the stock.
         date : Optional[datetime]
-            Timestamp of the stock quote."""
+            Date of the stock quote."""
 
         inputs = filter_inputs(
             provider_choices={
@@ -789,7 +789,7 @@ class CLASS_stocks(Container):
         ] = False,
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Search for a company or stock ticker.
 
@@ -826,9 +826,9 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         name : Optional[str]
             Name of the company.
-        dpmName : Optional[str]
+        DPM Name : Optional[str]
             Name of the primary market maker. (provider: cboe)
-        postStation : Optional[str]
+        Post/Station : Optional[str]
             Post and station location on the CBOE trading floor. (provider: cboe)"""
 
         inputs = filter_inputs(

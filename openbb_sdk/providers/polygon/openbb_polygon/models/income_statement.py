@@ -1,10 +1,9 @@
-from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import IncomeStatementData
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import validator
+from pydantic import Field, validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
@@ -31,21 +30,29 @@ class PolygonIncomeStatementData(IncomeStatementData):
             "symbol": "tickers",
         }
 
-    # tickers: Optional[List[str]]
-    cik: Optional[str]
-    filing_date: Optional[dateType]
-    cost_of_revenue: Optional[int]
-    gross_profit: Optional[int]
-    operating_expenses: Optional[int]
-    income_loss_from_continuing_operations_after_tax: Optional[float]
-    benefits_costs_expenses: Optional[float]
-    net_income_loss_attributable_to_noncontrolling_interest: Optional[int]
-    net_income_loss_attributable_to_parent: Optional[float]
-    net_income_loss_available_to_common_stockholders_basic: Optional[float]
+    income_loss_from_continuing_operations_after_tax: Optional[float] = Field(
+        description="Income (loss) from continuing operations after tax"
+    )
+    benefits_costs_expenses: Optional[float] = Field(
+        description="Benefits, costs and expenses"
+    )
+    net_income_loss_attributable_to_noncontrolling_interest: Optional[int] = Field(
+        description="Net income (loss) attributable to noncontrolling interest"
+    )
+    net_income_loss_attributable_to_parent: Optional[float] = Field(
+        description="Net income (loss) attributable to parent"
+    )
+    net_income_loss_available_to_common_stockholders_basic: Optional[float] = Field(
+        description="Net income (loss) available to common stockholders basic"
+    )
     participating_securities_distributed_and_undistributed_earnings_loss_basic: Optional[
         float
-    ]
-    preferred_stock_dividends_and_other_adjustments: Optional[float]
+    ] = Field(
+        description="Participating securities distributed and undistributed earnings (loss) basic"
+    )
+    preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
+        description="Preferred stock dividends and other adjustments"
+    )
 
     @validator("symbol", pre=True, check_fields=False)
     def symbol_from_tickers(cls, v):  # pylint: disable=E0213

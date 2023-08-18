@@ -8,7 +8,7 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from pydantic import root_validator
+from pydantic import Field, root_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -50,7 +50,7 @@ class FMPBalanceSheetData(BalanceSheetData):
             "other_non_current_assets": "otherNonCurrentAssets",
             "tax_assets": "taxAssets",
             "other_assets": "otherAssets",
-            "noncurrent_assets": "totalNonCurrentAssets",
+            "non_current_assets": "totalNonCurrentAssets",
             "assets": "totalAssets",
             "account_payables": "accountPayables",
             "other_current_liabilities": "otherCurrentLiabilities",
@@ -61,7 +61,7 @@ class FMPBalanceSheetData(BalanceSheetData):
             "long_term_debt": "longTermDebt",
             "other_non_current_liabilities": "otherNonCurrentLiabilities",
             "other_liabilities": "otherLiabilities",
-            "noncurrent_liabilities": "totalNonCurrentLiabilities",
+            "non_current_liabilities": "totalNonCurrentLiabilities",
             "liabilities": "totalLiabilities",
             "common_stock": "commonStock",
             "other_stockholder_equity": "othertotalStockholdersEquity",
@@ -76,20 +76,37 @@ class FMPBalanceSheetData(BalanceSheetData):
         }
 
     # Leftovers below
-    calendarYear: Optional[int]
-    link: Optional[str]
-    finalLink: Optional[str]
+    calendarYear: Optional[int] = Field(
+        description="Calendar Year", alias="calendar_year"
+    )
+    link: Optional[str] = Field(description="Link")
+    finalLink: Optional[str] = Field(description="Final Link", alias="final_link")
 
-    cashAndShortTermInvestments: Optional[int]
-    goodwillAndIntangibleAssets: Optional[int]
-    deferredRevenueNonCurrent: Optional[int]
-    totalInvestments: Optional[int]
+    cashAndShortTermInvestments: Optional[int] = Field(
+        description="Cash and Short Term Investments",
+        alias="cash_and_short_term_investments",
+    )
+    goodwillAndIntangibleAssets: Optional[int] = Field(
+        description="Goodwill and Intangible Assets",
+        alias="goodwill_and_intangible_assets",
+    )
+    deferredRevenueNonCurrent: Optional[int] = Field(
+        description="Deferred Revenue Non Current", alias="deferred_revenue_non_current"
+    )
+    totalInvestments: Optional[int] = Field(
+        description="Total Investments", alias="total_investments"
+    )
 
-    capitalLeaseObligations: Optional[int]
-    deferredTaxLiabilitiesNonCurrent: Optional[int]
-    totalNonCurrentLiabilities: Optional[int]
-    totalDebt: Optional[int]
-    netDebt: Optional[int]
+    capitalLeaseObligations: Optional[int] = Field(
+        description="Capital Lease Obligations", alias="capital_lease_obligations"
+    )
+    deferredTaxLiabilitiesNonCurrent: Optional[int] = Field(
+        description="Deferred Tax Liabilities Non Current",
+        alias="deferred_tax_liabilities_non_current",
+    )
+
+    totalDebt: Optional[int] = Field(description="Total Debt", alias="total_debt")
+    netDebt: Optional[int] = Field(description="Net Debt", alias="net_debt")
 
 
 class FMPBalanceSheetFetcher(

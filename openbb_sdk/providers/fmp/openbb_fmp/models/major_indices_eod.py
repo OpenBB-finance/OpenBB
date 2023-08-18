@@ -64,7 +64,9 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
     @validator("date", pre=True)
     def date_validate(cls, v, values: Dict[str, Any]) -> datetime:
         """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
+        if values.get("changeOverTime", None) is not None:
+            return datetime.strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPMajorIndicesEODFetcher(

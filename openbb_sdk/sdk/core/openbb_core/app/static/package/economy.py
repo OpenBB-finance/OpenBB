@@ -135,7 +135,7 @@ class CLASS_economy(Container):
         ] = "dowjones",
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Get the constituents of an index.
 
@@ -339,7 +339,7 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[BaseModel]:
         """CPI.
 
@@ -684,9 +684,9 @@ class CLASS_economy(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
-        r"""Get OHLCV data for an index.
+        """Get OHLCV data for an index.
 
         Parameters
         ----------
@@ -755,19 +755,19 @@ class CLASS_economy(Container):
             The volume of the symbol.
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+        change_percent : Optional[float]
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+        change_over_time : Optional[float]
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """
 

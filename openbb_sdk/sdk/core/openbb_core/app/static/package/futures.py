@@ -26,7 +26,7 @@ class CLASS_futures(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Futures EOD Price.
 
@@ -109,7 +109,7 @@ class CLASS_futures(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Futures EOD Price.
 

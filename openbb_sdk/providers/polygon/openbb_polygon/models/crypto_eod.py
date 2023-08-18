@@ -51,8 +51,9 @@ class PolygonCryptoEODData(CryptoEODData):
             "vwap": "vw",
         }
 
-    n: PositiveInt = Field(
-        description="Number of transactions for the symbol in the time period."
+    n: Optional[PositiveInt] = Field(
+        description="Number of transactions for the symbol in the time period.",
+        alias="transactions",
     )
 
     @validator("t", pre=True, check_fields=False)

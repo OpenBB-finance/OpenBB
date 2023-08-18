@@ -61,18 +61,16 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
 class PolygonForexPairsData(ForexPairsData):
     """Polygon available pairs Data."""
 
-    market: str = Field(description="The name of the trading market. Always 'fx'.")
-    locale: str = Field(description="The locale of the currency pair.")
+    market: str = Field(description="Name of the trading market. Always 'fx'.")
+    locale: str = Field(description="Locale of the currency pair.")
     currency_symbol: Optional[str] = Field(
         description="The symbol of the quote currency."
     )
-    currency_name: Optional[str] = Field(description="The name of the quote currency.")
+    currency_name: Optional[str] = Field(description="Name of the quote currency.")
     base_currency_symbol: Optional[str] = Field(
         description="The symbol of the base currency."
     )
-    base_currency_name: Optional[str] = Field(
-        description="The name of the base currency."
-    )
+    base_currency_name: Optional[str] = Field(description="Name of the base currency.")
     last_updated_utc: datetime = Field(description="The last updated timestamp in UTC.")
     delisted_utc: Optional[datetime] = Field(
         description="The delisted timestamp in UTC."

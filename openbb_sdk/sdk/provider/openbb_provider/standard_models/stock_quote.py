@@ -78,6 +78,4 @@ class StockQuoteData(Data):
     shares_outstanding: Optional[int] = Field(
         description="Number of shares outstanding of the stock."
     )
-    date: Optional[datetime] = Field(
-        description="Timestamp of the stock quote.", alias="timestamp"
-    )
+    date: Optional[datetime] = Field(description="Date of the stock quote.")

@@ -24,7 +24,7 @@ class CLASS_news(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Global News.
 

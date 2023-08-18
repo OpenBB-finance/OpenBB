@@ -198,40 +198,39 @@ class CLASS_ta(Container):
         chart: bool = False,
     ) -> OBBject[List]:
         """
-           The word aroon is Sanskrit for "dawn's early light." The Aroon
-           indicator attempts to show when a new trend is dawning. The indicator consists
-           of two lines (Up and Down) that measure how long it has been since the highest
-           high/lowest low has occurred within an n period range.
+        The word aroon is Sanskrit for "dawn's early light." The Aroon
+        indicator attempts to show when a new trend is dawning. The indicator consists
+        of two lines (Up and Down) that measure how long it has been since the highest
+        high/lowest low has occurred within an n period range.
 
-        When the Aroon Up is
-           staying between 70 and 100 then it indicates an upward trend. When the Aroon Down
-           is staying between 70 and 100 then it indicates an downward trend. A strong upward
-           trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
-           Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while
-           the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above
-           the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
+        When the Aroon Up is staying between 70 and 100 then it indicates an upward trend.
+        When the Aroon Down is staying between 70 and 100 then it indicates an downward trend.
+        A strong upward trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
+        Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while
+        the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above
+        the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
 
-           Parameters
-           ----------
-           data : List[Data]
-               List of data to be used for the calculation.
-           index: str, optional
-               Index column name to use with `data`, by default "date".
-           length : int, optional
-               Number of periods to be used for the calculation, by default 25.
-           scalar : int, optional
-               Scalar to be used for the calculation, by default 100.
+        Parameters
+        ----------
+        data : List[Data]
+            List of data to be used for the calculation.
+        index: str, optional
+            Index column name to use with `data`, by default "date".
+        length : int, optional
+            Number of periods to be used for the calculation, by default 25.
+        scalar : int, optional
+            Scalar to be used for the calculation, by default 100.
 
-           Returns
-           -------
-           OBBject[List[Data]]
-               The calculated data.
+        Returns
+        -------
+        OBBject[List[Data]]
+            The calculated data.
 
-           Examples
-           --------
-           >>> from openbb import obb
-           >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-           >>> aroon_data = obb.ta.aroon(data=stock_data.results, length=25, scalar=100)
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+        >>> aroon_data = obb.ta.aroon(data=stock_data.results, length=25, scalar=100)
         """
 
         inputs = filter_inputs(
@@ -323,48 +322,48 @@ class CLASS_ta(Container):
         chart: bool = False,
     ) -> OBBject[List]:
         """
-            Bollinger Bands consist of three lines. The middle band is a simple
-            moving average (generally 20 periods) of the typical price (TP). The upper and lower
-            bands are F standard deviations (generally 2) above and below the middle band.
-            The bands widen and narrow when the volatility of the price is higher or lower,
-            respectively.
+        Bollinger Bands consist of three lines. The middle band is a simple
+        moving average (generally 20 periods) of the typical price (TP). The upper and lower
+        bands are F standard deviations (generally 2) above and below the middle band.
+        The bands widen and narrow when the volatility of the price is higher or lower,
+        respectively.
 
         Bollinger Bands do not, in themselves, generate buy or sell signals;
-            they are an indicator of overbought or oversold conditions. When the price is near the
-            upper or lower band it indicates that a reversal may be imminent. The middle band
-            becomes a support or resistance level. The upper and lower bands can also be
-            interpreted as price targets. When the price bounces off of the lower band and crosses
-            the middle band, then the upper band becomes the price target.
+        they are an indicator of overbought or oversold conditions. When the price is near the
+        upper or lower band it indicates that a reversal may be imminent. The middle band
+        becomes a support or resistance level. The upper and lower bands can also be
+        interpreted as price targets. When the price bounces off of the lower band and crosses
+        the middle band, then the upper band becomes the price target.
 
-            Parameters
-            ----------
-            data : List[Data]
-                List of data to be used for the calculation.
-            target : str
-                Target column name.
-            index : str, optional
-                Index column name to use with `data`, by default "date".
-            length : int, optional
-                Number of periods to be used for the calculation, by default 50.
-            std : NonNegativeFloat, optional
-                Standard deviation to be used for the calculation, by default 2.
-            mamode : Literal["sma", "ema", "wma", "rma"], optional
-                Moving average mode to be used for the calculation, by default "sma".
-            offset : int, optional
-                Offset to be used for the calculation, by default 0.
+        Parameters
+        ----------
+        data : List[Data]
+            List of data to be used for the calculation.
+        target : str
+            Target column name.
+        index : str, optional
+            Index column name to use with `data`, by default "date".
+        length : int, optional
+            Number of periods to be used for the calculation, by default 50.
+        std : NonNegativeFloat, optional
+            Standard deviation to be used for the calculation, by default 2.
+        mamode : Literal["sma", "ema", "wma", "rma"], optional
+            Moving average mode to be used for the calculation, by default "sma".
+        offset : int, optional
+            Offset to be used for the calculation, by default 0.
 
-            Returns
-            -------
-            OBBject[List[Data]]
-                The calculated data.
+        Returns
+        -------
+        OBBject[List[Data]]
+            The calculated data.
 
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-            >>> bbands = obb.ta.bbands(
-            >>>     data=stock_data.results, target="close", length=50, std=2, mamode="sma", offset=0
-            >>> )
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+        >>> bbands = obb.ta.bbands(
+        >>>     data=stock_data.results, target="close", length=50, std=2, mamode="sma", offset=0
+        >>> )
         """
 
         inputs = filter_inputs(
@@ -1101,41 +1100,41 @@ class CLASS_ta(Container):
         chart: bool = False,
     ) -> OBBject[List]:
         """
-           The Moving Average Convergence Divergence (MACD) is the difference
-           between two Exponential Moving Averages. The Signal line is an Exponential Moving
-           Average of the MACD.
+        The Moving Average Convergence Divergence (MACD) is the difference
+        between two Exponential Moving Averages. The Signal line is an Exponential Moving
+        Average of the MACD.
 
-        The MACD signals trend changes and indicates the start
-           of new trend direction. High values indicate overbought conditions, low values
-           indicate oversold conditions. Divergence with the price indicates an end to the
-           current trend, especially if the MACD is at extreme high or low values. When the MACD
-           line crosses above the signal line a buy signal is generated. When the MACD crosses
-           below the signal line a sell signal is generated. To confirm the signal, the MACD
-           should be above zero for a buy, and below zero for a sell.
+        The MACD signals trend changes and indicates the start of new trend direction.
+        High values indicate overbought conditions, low values indicate oversold conditions.
+        Divergence with the price indicates an end to the current trend, especially if the
+        MACD is at extreme high or low values. When the MACD line crosses above the
+        signal line a buy signal is generated. When the MACD crosses below the signal line a
+        sell signal is generated. To confirm the signal, the MACD should be above zero for a buy,
+        and below zero for a sell.
 
-           Parameters
-           ----------
-           data : List[Data]
-               List of data to be used for the calculation.
-           target : str
-               Target column name.
-           fast : int, optional
-               Number of periods for the fast EMA, by default 12.
-           slow : int, optional
-               Number of periods for the slow EMA, by default 26.
-           signal : int, optional
-               Number of periods for the signal EMA, by default 9.
+        Parameters
+        ----------
+        data : List[Data]
+            List of data to be used for the calculation.
+        target : str
+            Target column name.
+        fast : int, optional
+            Number of periods for the fast EMA, by default 12.
+        slow : int, optional
+            Number of periods for the slow EMA, by default 26.
+        signal : int, optional
+            Number of periods for the signal EMA, by default 9.
 
-           Returns
-           -------
-           OBBject[List[Data]]
-               The calculated data.
+        Returns
+        -------
+        OBBject[List[Data]]
+            The calculated data.
 
-           Examples
-           --------
-           >>> from openbb import obb
-           >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-           >>> macd_data = obb.ta.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+        >>> macd_data = obb.ta.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
         """
 
         inputs = filter_inputs(
@@ -1183,35 +1182,35 @@ class CLASS_ta(Container):
         chart: bool = False,
     ) -> OBBject[List]:
         """
-           The On Balance Volume (OBV) is a cumulative total of the up and
-           down volume. When the close is higher than the previous close, the volume is added
-           to the running total, and when the close is lower than the previous close, the volume
-           is subtracted from the running total.
+        The On Balance Volume (OBV) is a cumulative total of the up and
+        down volume. When the close is higher than the previous close, the volume is added
+        to the running total, and when the close is lower than the previous close, the volume
+        is subtracted from the running total.
 
         To interpret the OBV, look for the OBV
-           to move with the price or precede price moves. If the price moves before the OBV,
-           then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the
-           OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
+        to move with the price or precede price moves. If the price moves before the OBV,
+        then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the
+        OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
 
-           Parameters
-           ----------
-           data : List[Data]
-               List of data to apply the indicator to.
-           index : str, optional
-               Index column name, by default "date"
-           offset : int, optional
-               How many periods to offset the result, by default 0.
+        Parameters
+        ----------
+        data : List[Data]
+            List of data to apply the indicator to.
+        index : str, optional
+            Index column name, by default "date"
+        offset : int, optional
+            How many periods to offset the result, by default 0.
 
-           Returns
-           -------
-           OBBject[List[Data]]
-               List of data with the indicator applied.
+        Returns
+        -------
+        OBBject[List[Data]]
+            List of data with the indicator applied.
 
-           Examples
-           --------
-           >>> from openbb import obb
-           >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-           >>> obv_data = obb.ta.obv(data=stock_data.results, offset=0)
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+        >>> obv_data = obb.ta.obv(data=stock_data.results, offset=0)
         """
 
         inputs = filter_inputs(
@@ -1551,7 +1550,7 @@ class CLASS_ta(Container):
     ) -> OBBject[List]:
         """
         A Weighted Moving Average puts more weight on recent data and less on past data.
-        This is done by multiplying each bar’s price by a weighting factor. Because of its
+        This is done by multiplying each bar's price by a weighting factor. Because of its
         unique calculation, WMA will follow prices more closely than a corresponding Simple
         Moving Average.
 

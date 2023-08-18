@@ -34,9 +34,9 @@ class CLASS_forex(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
-        r"""Forex Intraday Price.
+        """Forex Intraday Price.
 
         Parameters
         ----------
@@ -103,19 +103,19 @@ class CLASS_forex(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+        change_percent : Optional[float]
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+        change_over_time : Optional[float]
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """
 
@@ -145,7 +145,7 @@ class CLASS_forex(Container):
         self,
         chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
@@ -194,22 +194,22 @@ class CLASS_forex(Container):
             Symbol of the currency pair. (provider: fmp)
         currency : Optional[str]
             Base currency of the currency pair. (provider: fmp)
-        stockExchange : Optional[str]
+        stock_exchange : Optional[str]
             Stock exchange of the currency pair. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange of the currency pair. (provider: fmp)
         market : Optional[str]
-            The name of the trading market. Always 'fx'. (provider: polygon)
+            Name of the trading market. Always 'fx'. (provider: polygon)
         locale : Optional[str]
-            The locale of the currency pair. (provider: polygon)
+            Locale of the currency pair. (provider: polygon)
         currency_symbol : Optional[str]
             The symbol of the quote currency. (provider: polygon)
         currency_name : Optional[str]
-            The name of the quote currency. (provider: polygon)
+            Name of the quote currency. (provider: polygon)
         base_currency_symbol : Optional[str]
             The symbol of the base currency. (provider: polygon)
         base_currency_name : Optional[str]
-            The name of the base currency. (provider: polygon)
+            Name of the base currency. (provider: polygon)
         last_updated_utc : Optional[datetime]
             The last updated timestamp in UTC. (provider: polygon)
         delisted_utc : Optional[datetime]

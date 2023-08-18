@@ -51,7 +51,8 @@ class PolygonStockEODData(StockEODData):
         }
 
     n: Optional[PositiveInt] = Field(
-        description="Number of transactions for the symbol in the time period."
+        description="Number of transactions for the symbol in the time period.",
+        alias="transactions",
     )
 
     @validator("t", pre=True, check_fields=False)

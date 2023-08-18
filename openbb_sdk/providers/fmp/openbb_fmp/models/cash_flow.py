@@ -72,11 +72,11 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         }
 
     # Leftovers below
-    calendar_year: Optional[int] = Field(
-        description="Calendar Year", alias="calendarYear"
+    calendarYear: Optional[int] = Field(
+        description="Calendar Year", alias="calendar_year"
     )
-    link: Optional[str]
-    final_link: Optional[str] = Field(description="Final Link", alias="finalLink")
+    link: Optional[str] = Field(description="Link")
+    finalLink: Optional[str] = Field(description="Final Link", alias="final_link")
 
 
 class FMPCashFlowStatementFetcher(

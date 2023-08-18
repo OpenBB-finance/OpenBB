@@ -120,7 +120,12 @@ class RegistryMap:
             else:
                 all_fields.update(model.__fields__)
 
-        extra_info = {"fields": {}, "docstring": super_model.__doc__}
+        config_fields = super_model.__config__.fields or {}
+        extra_info = {
+            "fields": {},
+            "docstring": super_model.__doc__,
+            "config_fields": config_fields,
+        }
 
         for name, field in all_fields.items():
             if name not in standard_info["fields"]:

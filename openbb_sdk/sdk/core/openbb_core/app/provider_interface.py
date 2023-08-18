@@ -213,7 +213,10 @@ class ProviderInterface:
             )
         elif provider_name:
             default = Field(
-                default=default, title=provider_name, description=description
+                default=default,
+                title=provider_name,
+                description=description,
+                alias=field.field_info.alias or field.alias,
             )
 
         return DataclassField(new_name, type_, default)
@@ -269,9 +272,12 @@ class ProviderInterface:
     def _extract_data(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, TupleFieldType], Dict[str, TupleFieldType]]:
+    ) -> Tuple[
+        Dict[str, TupleFieldType], Dict[str, TupleFieldType], Dict[str, Dict[str, str]]
+    ]:
         standard: Dict[str, TupleFieldType] = {}
         extra: Dict[str, TupleFieldType] = {}
+        config_fields: Dict[str, str] = {}
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -284,10 +290,24 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
+                # config fields from providers models
+                # reversed to be used in the fastapi endpoint
+                # return schema
+                config_fields.update(
+                    {
+                        v: k
+                        for k, v in model_details.get("Data", {})
+                        .get("config_fields", {})
+                        .items()
+                    }
+                )
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
                         incoming = cls._create_field(
-                            name, field, provider_name, force_optional=True
+                            name,
+                            field,
+                            provider_name,
+                            force_optional=True,
                         )
 
                         if incoming.name in extra:
@@ -302,7 +322,7 @@ class ProviderInterface:
                             updated.default,
                         )
 
-        return standard, extra
+        return standard, extra, config_fields
 
     def _generate_params_dc(
         self, map_: MapType
@@ -376,7 +396,7 @@ class ProviderInterface:
 
     def _generate_data_dc(
         self, map_: MapType
-    ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
+    ) -> Dict[str, Dict[str, Union[StandardData, ExtraData, Dict[str, str]]]]:
         """Generate dataclasses for data.
 
         This creates a dictionary of dataclasses.
@@ -397,7 +417,7 @@ class ProviderInterface:
         for model_name, providers in map_.items():
             standard: dict
             extra: dict
-            standard, extra = self._extract_data(providers)
+            standard, extra, config_fields = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
                     cls_name=model_name,
@@ -409,13 +429,14 @@ class ProviderInterface:
                     fields=list(extra.values()),
                     bases=(ExtraData,),
                 ),
+                "config_fields": config_fields,  # type: ignore
             }
 
         return result
 
     def _generate_return_schema(
         self,
-        data: Dict[str, Dict[str, Union[StandardData, ExtraData]]],
+        data: Dict[str, Dict[str, Union[StandardData, ExtraData, Dict[str, str]]]],
     ) -> Dict[str, Type[BaseModel]]:
         """Merge standard data with extra data into a single BaseModel to be injected as FastAPI dependency."""
         result: Dict = {}
@@ -434,11 +455,14 @@ class ProviderInterface:
                         default=field.default,
                         title=field.field_info.title,
                         description=field.field_info.description,
+                        alias=field.field_info.alias or field.alias,
                     ),
                 )
 
             class Config(BaseConfig):
                 extra = Extra.allow
+                # we need the fields dict so we can use the alias
+                fields = dataclasses.get("config_fields", {})
 
             result[model_name] = create_model(  # type: ignore
                 model_name,

@@ -44,9 +44,13 @@ class FMPPriceTargetData(PriceTargetData):
             "news_publisher": "newsPublisher",
         }
 
-    newGrade: Optional[str] = Field(alias="new_grade", default=None)
-    previousGrade: Optional[str] = Field(alias="previous_grade", default=None)
-    gradingCompany: Optional[str] = Field(alias="grading_company", default=None)
+    newGrade: Optional[str] = Field(description="New grade", alias="new_grade")
+    previousGrade: Optional[str] = Field(
+        description="Previous grade", alias="previous_grade"
+    )
+    gradingCompany: Optional[str] = Field(
+        description="Grading company", alias="grading_company"
+    )
 
 
 class FMPPriceTargetFetcher(
