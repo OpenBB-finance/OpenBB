@@ -12,7 +12,6 @@ from openbb_terminal.core.session.current_user import (
 )
 from openbb_terminal.cryptocurrency.defi import defi_controller
 
-
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
@@ -268,41 +267,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_newsletter",
             [],
             "substack_view.display_newsletters",
-            [],
-            dict(),
-        ),
-        (
-            "call_tokens",
-            [],
-            "graph_view.display_uni_tokens",
-            [],
-            dict(),
-        ),
-        (
-            "call_stats",
-            [],
-            "graph_view.display_uni_stats",
-            [],
-            dict(),
-        ),
-        (
-            "call_pairs",
-            [],
-            "graph_view.display_recently_added",
-            [],
-            dict(),
-        ),
-        (
-            "call_pools",
-            [],
-            "graph_view.display_uni_pools",
-            [],
-            dict(),
-        ),
-        (
-            "call_swaps",
-            [],
-            "graph_view.display_last_uni_swaps",
             [],
             dict(),
         ),
