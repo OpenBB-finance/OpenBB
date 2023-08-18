@@ -34,7 +34,9 @@ class LoggingSettings:
 
         # System
         self.commit_hash: Optional[str] = system_settings.logging_commit_hash
-        self.branch: Optional[str] = get_branch(self.commit_hash) if self.commit_hash else None
+        self.branch: Optional[str] = (
+            get_branch(self.commit_hash) if self.commit_hash else None
+        )
         self.app_name: str = system_settings.logging_app_name
         self.app_id: str = get_app_id(user_data_directory)
         self.session_id: str = get_session_id()

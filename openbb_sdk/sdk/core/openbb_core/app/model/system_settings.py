@@ -13,7 +13,7 @@ from openbb_core.app.constants import (
     SYSTEM_SETTINGS_PATH,
     USER_SETTINGS_PATH,
 )
-from openbb_core.app.logs.utils.system_utils import get_branch, get_commit_hash
+from openbb_core.app.logs.utils.system_utils import get_commit_hash
 from openbb_core.app.model.abstract.tagged import Tagged
 
 FrozenField = partial(Field, allow_mutation=False)

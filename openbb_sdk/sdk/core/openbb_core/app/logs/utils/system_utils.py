@@ -19,7 +19,9 @@ GITHUB_PROJECT_URL = (
 
 UNKNOWN_COMMIT_PLACEHOLDER = "unknown-commit"
 UNKNOWN_BRANCH_PLACEHOLDER = "unknown-branch"
-REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent.parent.parent.parent.parent
+REPOSITORY_DIRECTORY = Path(
+    __file__
+).parent.parent.parent.parent.parent.parent.parent.parent
 
 
 def get_commit_hash() -> str:
