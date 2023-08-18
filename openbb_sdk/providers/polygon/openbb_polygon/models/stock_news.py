@@ -115,5 +115,5 @@ class PolygonStockNewsFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[StockNewsData]:
+    ) -> List[PolygonStockNewsData]:
         return [PolygonStockNewsData(**d) for d in data]

@@ -58,7 +58,6 @@ class FMPStockPeersFetcher(
         return get_data_one(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: Dict) -> StockPeersData:
+    def transform_data(data: Dict) -> FMPStockPeersData:
         """Return the transformed data."""
-
-        return StockPeersData(**data)
+        return FMPStockPeersData(**data)

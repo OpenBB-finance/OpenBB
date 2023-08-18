@@ -389,9 +389,9 @@ class CommandMap:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
                             rp = (
-                                route.path
+                                route.path  # type: ignore
                                 if sep is None
-                                else route.path.replace("/", sep)
+                                else route.path.replace("/", sep)  # type: ignore
                             )
                             coverage_map[provider].append(rp)
 
@@ -416,8 +416,10 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
-                        rp = route.path if sep is None else route.path.replace("/", sep)
-                        if route.path not in coverage_map:
+                        rp = (
+                            route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                        )
+                        if route.path not in coverage_map:  # type: ignore
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
         return coverage_map

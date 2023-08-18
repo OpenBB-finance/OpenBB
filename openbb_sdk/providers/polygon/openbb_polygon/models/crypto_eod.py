@@ -106,5 +106,5 @@ class PolygonCryptoEODFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[CryptoEODData]:
+    def transform_data(data: dict) -> List[PolygonCryptoEODData]:
         return [PolygonCryptoEODData.parse_obj(d) for d in data.get("results", [])]

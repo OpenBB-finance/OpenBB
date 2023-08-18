@@ -111,7 +111,9 @@ class FMPFinancialRatiosFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
+        query.period = (
+            "annual" if query.period == "annually" else "quarter"  # mypy: ignore
+        )
         base_url = "https://financialmodelingprep.com/api/v3"
 
         data: List[Dict] = []

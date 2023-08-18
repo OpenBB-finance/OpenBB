@@ -104,7 +104,7 @@ class PolygonMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[MajorIndicesEODData]:
+    ) -> List[PolygonMajorIndicesEODData]:
         return [
             PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
         ]

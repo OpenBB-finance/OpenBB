@@ -80,7 +80,6 @@ class FMPStockQuoteFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[StockQuoteData]:
+    def transform_data(data: List[Dict]) -> List[FMPStockQuoteData]:
         """Return the transformed data."""
-
-        return [StockQuoteData(**d) for d in data]
+        return [FMPStockQuoteData(**d) for d in data]

@@ -21,9 +21,7 @@ class StockQuoteQueryParams(QueryParams, BaseSymbol):
         Comma separated list of symbols.
     """
 
-    symbol: Optional[str] = Field(
-        default=None, description="Comma separated list of symbols."
-    )
+    symbol: str = Field(default=None, description="Comma separated list of symbols.")
 
 
 class StockQuoteData(Data):

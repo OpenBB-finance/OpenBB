@@ -34,9 +34,9 @@ class PolygonIncomeStatementData(IncomeStatementData):
     # tickers: Optional[List[str]]
     cik: Optional[str]
     filing_date: Optional[dateType]
-    cost_of_revenue: Optional[float]
-    gross_profit: Optional[float]
-    operating_expenses: Optional[float]
+    cost_of_revenue: Optional[int]
+    gross_profit: Optional[int]
+    operating_expenses: Optional[int]
     income_loss_from_continuing_operations_after_tax: Optional[float]
     benefits_costs_expenses: Optional[float]
     net_income_loss_attributable_to_noncontrolling_interest: Optional[int]
@@ -87,7 +87,7 @@ class PolygonIncomeStatementFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[IncomeStatementData]:
+    ) -> List[PolygonIncomeStatementData]:
         FIELDS = [
             "revenues",
             "cost_of_revenue",

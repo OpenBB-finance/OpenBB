@@ -101,7 +101,7 @@ class CboeStockInfoFetcher(
         return get_info(query.symbol).to_dict()
 
     @staticmethod
-    def transform_data(data: dict) -> CboeStockInfoData:
+    def transform_data(data: dict) -> List[CboeStockInfoData]:
         """Transform the data to the standard format"""
 
-        return CboeStockInfoData.parse_obj(data)
+        return [CboeStockInfoData.parse_obj(data)]

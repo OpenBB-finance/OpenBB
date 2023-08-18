@@ -61,7 +61,7 @@ class PolygonCashFlowStatementFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[CashFlowStatementData]:
+    ) -> List[PolygonCashFlowStatementData]:
         FIELDS = [
             "net_cash_flow_from_financing_activities",
             "net_cash_flow_from_investing_activities",
