@@ -385,7 +385,7 @@ class MethodDefinition:
         code = "\n    @property\n"
         code += f'    def {function_name}(self):  # route = "{path}"\n'
         code += f"        from openbb_core.app.static.package import {module_name}\n"
-        code += f"        return {module_name}.{class_name}(command_runner_session=self._command_runner_session)\n"
+        code += f"        return {module_name}.{class_name}(command_runner=self._command_runner)\n"
 
         return code
 
@@ -644,7 +644,7 @@ class MethodDefinition:
             else:
                 code += f"            {name}={name},\n"
         code += "        )\n\n"
-        code += "        o = self._command_runner_session.run(\n"
+        code += "        o = self._command_runner.run(\n"
         code += f"""            "{path}",\n"""
         code += "            **inputs,\n"
         code += "        )\n"

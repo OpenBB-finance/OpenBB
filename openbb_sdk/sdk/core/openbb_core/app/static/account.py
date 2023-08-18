@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import TYPE_CHECKING, Optional
 
-from openbb_core.app.command_runner import CommandRunnerSession
+from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.hub_service import HubService
@@ -21,7 +21,7 @@ class Account:
     def __init__(self, container: "Container"):
         self._container = container
         self._openbb_directory = (
-            container._command_runner_session.command_runner.system_settings.openbb_directory
+            container._command_runner.system_settings.openbb_directory
         )
 
     def _create_hub_service(
@@ -74,9 +74,7 @@ class Account:
         hs = self._create_hub_service(email, password, sdk_token)
         incoming = hs.pull()
         updated = UserService.update_default(incoming)
-        self._container._command_runner_session = CommandRunnerSession(
-            user_settings=updated
-        )
+        self._container._command_runner = CommandRunner(user_settings=updated)
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(self._openbb_directory, ".sdk_hub_session.json")
@@ -86,7 +84,7 @@ class Account:
 
                 json.dump(hs.session.dict(), f, indent=4)
 
-        return self._container._command_runner_session.user_settings
+        return self._container._command_runner.user_settings
 
     def save(self) -> UserSettings:
         """Save user settings.
@@ -96,17 +94,15 @@ class Account:
         UserSettings
             User settings: profile, credentials, preferences
         """
-        hub_session = (
-            self._container._command_runner_session.user_settings.profile.hub_session
-        )
+        hub_session = self._container._command_runner.user_settings.profile.hub_session
         if not hub_session:
             UserService.write_default_user_settings(
-                self._container._command_runner_session.user_settings
+                self._container._command_runner.user_settings
             )
         else:
             hs = HubService(hub_session)
-            hs.push(self._container._command_runner_session.user_settings)
-        return self._container._command_runner_session.user_settings
+            hs.push(self._container._command_runner.user_settings)
+        return self._container._command_runner.user_settings
 
     def refresh(self) -> UserSettings:
         """Refresh user settings.
@@ -116,20 +112,16 @@ class Account:
         UserSettings
             User settings: profile, credentials, preferences
         """
-        hub_session = (
-            self._container._command_runner_session.user_settings.profile.hub_session
-        )
+        hub_session = self._container._command_runner.user_settings.profile.hub_session
         if not hub_session:
-            self._container._command_runner_session = CommandRunnerSession()
+            self._container._command_runner = CommandRunner()
         else:
             hs = HubService(hub_session)
             incoming = hs.pull()
             updated = UserService.update_default(incoming)
-            updated.id = self._container._command_runner_session.user_settings.id
-            self._container._command_runner_session = CommandRunnerSession(
-                user_settings=updated
-            )
-        return self._container._command_runner_session.user_settings
+            updated.id = self._container._command_runner.user_settings.id
+            self._container._command_runner = CommandRunner(user_settings=updated)
+        return self._container._command_runner.user_settings
 
     def logout(self) -> UserSettings:
         """Logout from hub.
@@ -139,9 +131,7 @@ class Account:
         UserSettings
             User settings: profile, credentials, preferences
         """
-        hub_session = (
-            self._container._command_runner_session.user_settings.profile.hub_session
-        )
+        hub_session = self._container._command_runner.user_settings.profile.hub_session
         if not hub_session:
             raise OpenBBError("Not connected to hub.")
 
@@ -152,5 +142,5 @@ class Account:
         if session_file.exists():
             session_file.unlink()
 
-        self._container._command_runner_session = CommandRunnerSession()
-        return self._container._command_runner_session.user_settings
+        self._container._command_runner = CommandRunner()
+        return self._container._command_runner.user_settings

@@ -21,9 +21,7 @@ def filter_call(func):
     @wraps(wrapped=func)
     def inner(*args, **kwargs):
         self = args[0]
-        debug_mode = (
-            self._command_runner_session.command_runner.system_settings.debug_mode
-        )
+        debug_mode = self._command_runner.system_settings.debug_mode
         try:
             return func(*args, **kwargs)
         except ValidationError as e:

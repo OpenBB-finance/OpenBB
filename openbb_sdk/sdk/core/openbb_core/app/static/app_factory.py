@@ -1,7 +1,7 @@
 """App factory."""
 # pylint: disable=W0231:super-init-not-called
 
-from openbb_core.app.command_runner import CommandRunnerSession
+from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.static.account import Account
@@ -39,8 +39,8 @@ def create_app():
             - stocks
         """
 
-        def __init__(self, command_runner_session):
-            self._command_runner_session = command_runner_session
+        def __init__(self, command_runner):
+            self._command_runner = command_runner
             self._account = Account(self)
             self._coverage = Coverage()
 
@@ -50,14 +50,14 @@ def create_app():
 
         @property
         def settings(self) -> UserSettings:
-            return self._command_runner_session.user_settings
+            return self._command_runner.user_settings
 
         @property
         def system(self) -> SystemSettings:
-            return self._command_runner_session.command_runner.system_settings
+            return self._command_runner.command_runner.system_settings
 
         @property
         def coverage(self) -> Coverage:
             return self._coverage
 
-    return App(command_runner_session=CommandRunnerSession())
+    return App(command_runner=CommandRunner())

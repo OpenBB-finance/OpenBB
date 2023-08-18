@@ -388,60 +388,24 @@ class CommandRunner:
 
     def run(
         self,
-        user_settings: UserSettings,
         route: str,
+        user_settings: Optional[UserSettings] = None,
         /,
         *args,
         **kwargs,
     ) -> OBBject:
         """Run a command and return the OBBject as output."""
+        self._user_settings = user_settings or self._user_settings
 
         execution_context = ExecutionContext(
             command_map=self._command_map,
             route=route,
             system_settings=self._system_settings,
-            user_settings=user_settings or self._user_settings,
+            user_settings=self._user_settings,
         )
 
         return StaticCommandRunner.run(
             execution_context,
-            *args,
-            **kwargs,
-        )
-
-
-class CommandRunnerSession:
-    def __init__(
-        self,
-        command_runner: Optional[CommandRunner] = None,
-        user_settings: Optional[UserSettings] = None,
-    ) -> None:
-        self._command_runner = command_runner or CommandRunner()
-        self._user_settings = user_settings or UserService.read_default_user_settings()
-
-    @property
-    def command_runner(self) -> CommandRunner:
-        return self._command_runner
-
-    @command_runner.setter
-    def command_runner(self, command_runner: CommandRunner) -> None:
-        self._command_runner = command_runner
-
-    @property
-    def user_settings(self) -> UserSettings:
-        return self._user_settings
-
-    @user_settings.setter
-    def user_settings(self, user_settings: UserSettings) -> None:
-        self._user_settings = user_settings
-
-    def run(self, route: str, /, *args, **kwargs) -> OBBject:
-        command_runner = self._command_runner
-        user_settings = self._user_settings
-
-        return command_runner.run(
-            user_settings,
-            route,
             *args,
             **kwargs,
         )
