@@ -21,7 +21,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/contracts",
             **inputs,
         )
@@ -39,7 +39,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/government_trading",
             **inputs,
         )
@@ -57,7 +57,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/gtrades",
             **inputs,
         )
@@ -75,7 +75,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/histcont",
             **inputs,
         )
@@ -93,7 +93,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/lastcontracts",
             **inputs,
         )
@@ -111,7 +111,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/lasttrades",
             **inputs,
         )
@@ -129,7 +129,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/lobbying",
             **inputs,
         )
@@ -147,7 +147,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/qtrcontracts",
             **inputs,
         )
@@ -165,7 +165,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/topbuys",
             **inputs,
         )
@@ -183,7 +183,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/toplobbying",
             **inputs,
         )
@@ -201,7 +201,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/gov/topsells",
             **inputs,
         )

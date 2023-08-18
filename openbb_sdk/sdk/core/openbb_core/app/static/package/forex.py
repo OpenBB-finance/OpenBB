@@ -127,7 +127,7 @@ class CLASS_forex(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/forex/load",
             **inputs,
         )
@@ -220,7 +220,7 @@ class CLASS_forex(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/forex/pairs",
             **inputs,
         )

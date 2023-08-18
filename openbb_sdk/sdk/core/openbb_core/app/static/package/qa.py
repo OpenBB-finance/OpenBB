@@ -27,7 +27,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/acf",
             **inputs,
         )
@@ -45,7 +45,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/beta",
             **inputs,
         )
@@ -63,7 +63,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/bw",
             **inputs,
         )
@@ -86,7 +86,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/capm",
             **inputs,
         )
@@ -104,7 +104,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/cdf",
             **inputs,
         )
@@ -122,7 +122,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/cusum",
             **inputs,
         )
@@ -140,7 +140,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/decompose",
             **inputs,
         )
@@ -158,7 +158,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/es",
             **inputs,
         )
@@ -176,7 +176,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/hist",
             **inputs,
         )
@@ -216,7 +216,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/kurtosis",
             **inputs,
         )
@@ -234,7 +234,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/line",
             **inputs,
         )
@@ -277,7 +277,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/normality",
             **inputs,
         )
@@ -321,7 +321,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/om",
             **inputs,
         )
@@ -339,7 +339,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/pick",
             **inputs,
         )
@@ -357,7 +357,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/qqplot",
             **inputs,
         )
@@ -384,7 +384,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/quantile",
             **inputs,
         )
@@ -402,7 +402,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/raw",
             **inputs,
         )
@@ -420,7 +420,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/rolling",
             **inputs,
         )
@@ -464,7 +464,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/sh",
             **inputs,
         )
@@ -504,7 +504,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/skew",
             **inputs,
         )
@@ -554,7 +554,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/so",
             **inputs,
         )
@@ -572,7 +572,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/spread",
             **inputs,
         )
@@ -608,7 +608,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/summary",
             **inputs,
         )
@@ -655,7 +655,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/unitroot",
             **inputs,
         )
@@ -673,7 +673,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/qa/var",
             **inputs,
         )

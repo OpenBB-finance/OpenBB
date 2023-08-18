@@ -21,7 +21,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/ctb",
             **inputs,
         )
@@ -39,7 +39,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/dpotc",
             **inputs,
         )
@@ -57,7 +57,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/ftd",
             **inputs,
         )
@@ -75,7 +75,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/hsi",
             **inputs,
         )
@@ -93,7 +93,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/pos",
             **inputs,
         )
@@ -111,7 +111,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/prom",
             **inputs,
         )
@@ -129,7 +129,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/psi",
             **inputs,
         )
@@ -145,7 +145,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/psi_q",
             **inputs,
         )
@@ -161,7 +161,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/psi_sg",
             **inputs,
         )
@@ -179,7 +179,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/shorted",
             **inputs,
         )
@@ -197,7 +197,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/sidtc",
             **inputs,
         )
@@ -215,7 +215,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dps/spos",
             **inputs,
         )

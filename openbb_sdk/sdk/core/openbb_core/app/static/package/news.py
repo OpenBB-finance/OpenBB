@@ -118,7 +118,7 @@ class CLASS_news(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/news/globalnews",
             **inputs,
         )
@@ -136,7 +136,7 @@ class CLASS_news(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/news/sectornews",
             **inputs,
         )

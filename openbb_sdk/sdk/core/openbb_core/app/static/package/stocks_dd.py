@@ -201,7 +201,7 @@ class CLASS_stocks_dd(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/dd/sec",
             **inputs,
         )

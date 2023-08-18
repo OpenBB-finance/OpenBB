@@ -28,7 +28,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/analysis",
             **inputs,
         )
@@ -246,7 +246,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/balance",
             **inputs,
         )
@@ -397,7 +397,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/balance_growth",
             **inputs,
         )
@@ -484,7 +484,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/cal",
             **inputs,
         )
@@ -674,7 +674,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/cash",
             **inputs,
         )
@@ -807,7 +807,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/cash_growth",
             **inputs,
         )
@@ -893,7 +893,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/comp",
             **inputs,
         )
@@ -974,7 +974,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/comsplit",
             **inputs,
         )
@@ -992,7 +992,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/customer",
             **inputs,
         )
@@ -1010,7 +1010,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/dcfc",
             **inputs,
         )
@@ -1084,7 +1084,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/divs",
             **inputs,
         )
@@ -1102,7 +1102,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/dupont",
             **inputs,
         )
@@ -1187,7 +1187,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/earning",
             **inputs,
         )
@@ -1265,7 +1265,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/emp",
             **inputs,
         )
@@ -1283,7 +1283,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/enterprise",
             **inputs,
         )
@@ -1301,7 +1301,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/epsfc",
             **inputs,
         )
@@ -1419,7 +1419,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/est",
             **inputs,
         )
@@ -1437,7 +1437,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/fama_coe",
             **inputs,
         )
@@ -1455,7 +1455,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/fama_raw",
             **inputs,
         )
@@ -1473,7 +1473,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/fraud",
             **inputs,
         )
@@ -1491,7 +1491,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/growth",
             **inputs,
         )
@@ -1507,7 +1507,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/historical_5",
             **inputs,
         )
@@ -1705,7 +1705,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/income",
             **inputs,
         )
@@ -1837,7 +1837,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/income_growth",
             **inputs,
         )
@@ -1979,7 +1979,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/ins",
             **inputs,
         )
@@ -2125,7 +2125,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/ins_own",
             **inputs,
         )
@@ -2141,7 +2141,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/key",
             **inputs,
         )
@@ -2335,7 +2335,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/metrics",
             **inputs,
         )
@@ -2409,7 +2409,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/mgmt",
             **inputs,
         )
@@ -2427,7 +2427,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/mktcap",
             **inputs,
         )
@@ -2443,7 +2443,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/news",
             **inputs,
         )
@@ -2575,7 +2575,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/overview",
             **inputs,
         )
@@ -2727,7 +2727,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/own",
             **inputs,
         )
@@ -2797,7 +2797,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/pt",
             **inputs,
         )
@@ -2881,7 +2881,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/pta",
             **inputs,
         )
@@ -2899,7 +2899,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/rating",
             **inputs,
         )
@@ -3087,7 +3087,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/ratios",
             **inputs,
         )
@@ -3105,7 +3105,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/revfc",
             **inputs,
         )
@@ -3193,7 +3193,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/revgeo",
             **inputs,
         )
@@ -3271,7 +3271,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/revseg",
             **inputs,
         )
@@ -3289,7 +3289,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/rot",
             **inputs,
         )
@@ -3307,7 +3307,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/score",
             **inputs,
         )
@@ -3323,7 +3323,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/sec",
             **inputs,
         )
@@ -3339,7 +3339,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/shares",
             **inputs,
         )
@@ -3411,7 +3411,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/shrs",
             **inputs,
         )
@@ -3479,7 +3479,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/split",
             **inputs,
         )
@@ -3497,7 +3497,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/supplier",
             **inputs,
         )
@@ -3585,7 +3585,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/fa/transcript",
             **inputs,
         )

@@ -121,7 +121,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/options/chains",
             **inputs,
         )
@@ -139,7 +139,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/options/eodchain",
             **inputs,
         )
@@ -157,7 +157,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/options/hist",
             **inputs,
         )
@@ -175,7 +175,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/options/info",
             **inputs,
         )
@@ -193,7 +193,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/options/pcr",
             **inputs,
         )
@@ -211,7 +211,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/options/unu",
             **inputs,
         )

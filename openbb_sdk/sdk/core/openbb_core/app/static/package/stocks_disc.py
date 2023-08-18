@@ -21,7 +21,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/active",
             **inputs,
         )
@@ -39,7 +39,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/arkord",
             **inputs,
         )
@@ -57,7 +57,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/asc",
             **inputs,
         )
@@ -73,7 +73,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/dividends",
             **inputs,
         )
@@ -91,7 +91,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/filings",
             **inputs,
         )
@@ -109,7 +109,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/fipo",
             **inputs,
         )
@@ -127,7 +127,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/gainers",
             **inputs,
         )
@@ -145,7 +145,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/gtech",
             **inputs,
         )
@@ -163,7 +163,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/hotpenny",
             **inputs,
         )
@@ -179,7 +179,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/ipo",
             **inputs,
         )
@@ -197,7 +197,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/losers",
             **inputs,
         )
@@ -215,7 +215,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/lowfloat",
             **inputs,
         )
@@ -233,7 +233,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/pipo",
             **inputs,
         )
@@ -251,7 +251,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/rtat",
             **inputs,
         )
@@ -269,7 +269,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/trending",
             **inputs,
         )
@@ -287,7 +287,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/ugs",
             **inputs,
         )
@@ -305,7 +305,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/ulc",
             **inputs,
         )
@@ -323,7 +323,7 @@ class CLASS_stocks_disc(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/disc/upcoming",
             **inputs,
         )

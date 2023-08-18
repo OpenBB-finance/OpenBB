@@ -105,7 +105,7 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/fixedincome/treasury",
             **inputs,
         )
@@ -123,7 +123,7 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/fixedincome/ycrv",
             **inputs,
         )

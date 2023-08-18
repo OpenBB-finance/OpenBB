@@ -25,7 +25,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/balance",
             **inputs,
         )
@@ -43,7 +43,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/cashflow",
             **inputs,
         )
@@ -61,7 +61,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/hcorr",
             **inputs,
         )
@@ -79,7 +79,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/hist",
             **inputs,
         )
@@ -97,7 +97,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/income",
             **inputs,
         )
@@ -161,7 +161,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/peers",
             **inputs,
         )
@@ -179,7 +179,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/scorr",
             **inputs,
         )
@@ -197,7 +197,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/screener",
             **inputs,
         )
@@ -215,7 +215,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/sentiment",
             **inputs,
         )
@@ -233,7 +233,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/similar",
             **inputs,
         )
@@ -251,7 +251,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/stocks/ca/volume",
             **inputs,
         )

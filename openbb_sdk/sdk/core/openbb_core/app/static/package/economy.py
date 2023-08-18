@@ -70,7 +70,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/available_indices",
             **inputs,
         )
@@ -95,7 +95,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/balance",
             **inputs,
         )
@@ -120,7 +120,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/bigmac",
             **inputs,
         )
@@ -198,7 +198,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/const",
             **inputs,
         )
@@ -223,7 +223,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/corecpi",
             **inputs,
         )
@@ -248,7 +248,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/country_codes",
             **inputs,
         )
@@ -409,7 +409,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/cpi",
             **inputs,
         )
@@ -434,7 +434,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/cpi_options",
             **inputs,
         )
@@ -459,7 +459,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/currencies",
             **inputs,
         )
@@ -484,7 +484,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/debt",
             **inputs,
         )
@@ -509,7 +509,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/events",
             **inputs,
         )
@@ -534,7 +534,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/fgdp",
             **inputs,
         )
@@ -559,7 +559,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/fred",
             **inputs,
         )
@@ -584,7 +584,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/fred_search",
             **inputs,
         )
@@ -609,7 +609,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/futures",
             **inputs,
         )
@@ -634,7 +634,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/gdp",
             **inputs,
         )
@@ -659,7 +659,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/glbonds",
             **inputs,
         )
@@ -782,7 +782,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/index",
             **inputs,
         )
@@ -807,7 +807,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/indices",
             **inputs,
         )
@@ -832,7 +832,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/macro",
             **inputs,
         )
@@ -857,7 +857,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/macro_countries",
             **inputs,
         )
@@ -882,7 +882,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/macro_parameters",
             **inputs,
         )
@@ -907,7 +907,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/overview",
             **inputs,
         )
@@ -932,7 +932,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/perfmap",
             **inputs,
         )
@@ -957,7 +957,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/performance",
             **inputs,
         )
@@ -982,7 +982,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/revenue",
             **inputs,
         )
@@ -1007,7 +1007,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/rgdp",
             **inputs,
         )
@@ -1067,7 +1067,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/risk",
             **inputs,
         )
@@ -1092,7 +1092,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/rtps",
             **inputs,
         )
@@ -1117,7 +1117,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/search_index",
             **inputs,
         )
@@ -1142,7 +1142,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/spending",
             **inputs,
         )
@@ -1167,7 +1167,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/trust",
             **inputs,
         )
@@ -1192,7 +1192,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/usbonds",
             **inputs,
         )
@@ -1217,7 +1217,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/economy/valuation",
             **inputs,
         )

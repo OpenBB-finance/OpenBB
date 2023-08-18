@@ -77,7 +77,7 @@ class CLASS_futures(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/futures/curve",
             **inputs,
         )
@@ -178,7 +178,7 @@ class CLASS_futures(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/futures/load",
             **inputs,
         )

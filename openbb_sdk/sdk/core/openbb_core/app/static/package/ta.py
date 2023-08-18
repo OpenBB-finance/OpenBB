@@ -65,7 +65,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/ad",
             **inputs,
         )
@@ -123,7 +123,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/adosc",
             **inputs,
         )
@@ -180,7 +180,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/adx",
             **inputs,
         )
@@ -242,7 +242,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/aroon",
             **inputs,
         )
@@ -302,7 +302,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/atr",
             **inputs,
         )
@@ -378,7 +378,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/bbands",
             **inputs,
         )
@@ -427,7 +427,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/cci",
             **inputs,
         )
@@ -478,7 +478,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/cg",
             **inputs,
         )
@@ -529,7 +529,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/clenow",
             **inputs,
         )
@@ -616,7 +616,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/cones",
             **inputs,
         )
@@ -675,7 +675,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/demark",
             **inputs,
         )
@@ -735,7 +735,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/donchian",
             **inputs,
         )
@@ -798,7 +798,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/ema",
             **inputs,
         )
@@ -851,7 +851,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/fib",
             **inputs,
         )
@@ -906,7 +906,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/fisher",
             **inputs,
         )
@@ -964,7 +964,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/hma",
             **inputs,
         )
@@ -1019,7 +1019,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/ichimoku",
             **inputs,
         )
@@ -1082,7 +1082,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/kc",
             **inputs,
         )
@@ -1149,7 +1149,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/macd",
             **inputs,
         )
@@ -1167,7 +1167,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/multi",
             **inputs,
         )
@@ -1222,7 +1222,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/obv",
             **inputs,
         )
@@ -1240,7 +1240,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/recom",
             **inputs,
         )
@@ -1303,7 +1303,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/rsi",
             **inputs,
         )
@@ -1321,7 +1321,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/rsp",
             **inputs,
         )
@@ -1382,7 +1382,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/sma",
             **inputs,
         )
@@ -1442,7 +1442,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/stoch",
             **inputs,
         )
@@ -1460,7 +1460,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/summary",
             **inputs,
         )
@@ -1478,7 +1478,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/tv",
             **inputs,
         )
@@ -1532,7 +1532,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/vwap",
             **inputs,
         )
@@ -1590,7 +1590,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/wma",
             **inputs,
         )
@@ -1651,7 +1651,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        o = self._command_runner.run(
             "/ta/zlma",
             **inputs,
         )
