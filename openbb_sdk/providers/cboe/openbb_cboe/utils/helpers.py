@@ -159,10 +159,10 @@ def get_cboe_index_directory() -> pd.DataFrame:
         return pd.DataFrame()
 
 
-INDEXES = [] #get_cboe_index_directory().index.tolist()
+INDEXES = get_cboe_index_directory().index.tolist()
 SYMBOLS = pd.DataFrame()
 try:
-    SYMBOLS = pd.DataFrame()
+    SYMBOLS = get_cboe_directory()
 except SYMBOLS.empty:
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "cboe_companies.json"
