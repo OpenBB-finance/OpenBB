@@ -11,13 +11,14 @@ from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.logs.logging_manager import LoggingManager
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.journal import Journal
 from openbb_core.app.model.journal_entry import JournalEntry
 from openbb_core.app.model.journal_query import JournalQuery
-from openbb_core.app.model.obbject import Error, OBBject, OpenBBError
+from openbb_core.app.model.obbject import Error, OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
