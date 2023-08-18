@@ -12,7 +12,7 @@
     - [Install extension](#install-extension)
   - [4. Usage](#4-usage)
   - [4.1 Static version](#41-static-version)
-    - [4.1.1. Command output](#411-command-output)
+    - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
     - [4.1.2. Utilities](#412-utilities)
       - [Settings](#settings)
@@ -163,7 +163,7 @@ output = obb.stocks.load(
     )
 ```
 
-### 4.1.1. Command output
+### 4.1.1. OBBject
 
 Each command will always return a  `OBBject`. There you will find:
 
@@ -290,6 +290,9 @@ You can login to your OpenBB Hub account and save your credentials there to acce
 
 ```python
 from openbb import obb
+
+# Login with personal access token
+obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
 
 # Login with email, password or SDK token
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret

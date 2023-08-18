@@ -266,7 +266,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 query="microsoft",
-                limit=1,
                 country="",
                 sector="",
                 industry_group="",

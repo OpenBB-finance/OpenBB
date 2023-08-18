@@ -16,6 +16,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Insider activity over time."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -33,6 +34,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Big latest CEO/CFO purchaces ($25k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -50,6 +52,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Big latest CEO/CFO sales ($100k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -67,6 +70,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Big latest insider purchaces ($25+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -84,6 +88,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Big latest insider sales ($100k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -101,6 +106,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Big latest officer purchaces ($25k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -118,6 +124,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Big latest officer sales ($100k+)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -135,6 +142,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Filter insiders based on preset."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -152,6 +160,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Latest cluster buys."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -169,6 +178,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Last insider trading of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -186,6 +196,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Latest insider purchaces."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -203,6 +214,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Latest insider sales."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -220,6 +232,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Latest insider trading (all filings)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -237,6 +250,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Latest penny stock buys."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -254,6 +268,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Print insider data."""
+
         inputs = filter_inputs(
             chart=chart,
         )
@@ -271,6 +286,7 @@ class CLASS_stocks_ins(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Insider stats of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )

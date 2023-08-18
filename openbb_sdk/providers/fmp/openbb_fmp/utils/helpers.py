@@ -3,35 +3,39 @@
 import json
 from datetime import datetime
 from io import StringIO
-from typing import Any, List, Optional, Type, TypeVar, Union
+from typing import Any, List, Optional, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import QueryParamsType
-from openbb_provider.utils.helpers import (
-    get_querystring,
-)
-from pydantic import BaseModel, NonNegativeInt, PositiveFloat, validator
+from openbb_provider.utils.helpers import get_querystring
+from pydantic import BaseModel, PositiveFloat, validator
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
 
 
 class BasicResponse:
+    """Basic Response class."""
+
     def __init__(self, response: StringIO):
+        """Initialize the BasicResponse class."""
+
         # Find a way to get the status code
         self.status_code = 200
         response.seek(0)
         self.text = response.read()
 
     def json(self) -> dict:
+        """Return the response as a dictionary."""
+
         return json.loads(self.text)
 
 
 def request(url: str) -> BasicResponse:
     """
     Request function for PyScript. Pass in Method and make sure to await!
+
     Parameters:
     -----------
     url: str
@@ -43,7 +47,7 @@ def request(url: str) -> BasicResponse:
         BasicRequest object with status_code and text attributes
     """
     # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url
+    from pyodide.http import open_url  # type: ignore
 
     response = open_url(url)
     return BasicResponse(response)
@@ -51,6 +55,7 @@ def request(url: str) -> BasicResponse:
 
 def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
+
     try:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
@@ -76,10 +81,10 @@ def create_url(
     version: int,
     endpoint: str,
     api_key: Optional[str],
-    query: Optional[QueryParamsType] = None,
+    query: Optional[BaseModel] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
-    """Creates a URL for the FMP API.
+    """Return a URL for the FMP API.
 
     Parameters:
     -----------
@@ -89,7 +94,7 @@ def create_url(
         The endpoint to use.
     api_key: str
         The API key to use.
-    query: Optional[QueryParamsType]
+    query: Optional[BaseModel]
         The dictionary to be turned into a querystring.
     exclude: List[str]
         The keys to be excluded from the querystring.
@@ -107,34 +112,33 @@ def create_url(
 
 
 def get_data_many(
-    url: str, to_schema: Type[T], sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[T]:
+    url: str, sub_dict: Optional[str] = None, **kwargs: Any
+) -> List[dict]:
     """Get data from FMP endpoint and convert to list of schemas.
 
     Parameters:
     -----------
     url: str
         The URL to get the data from.
-    to_schema: T
-        The schema to convert the data to.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
     Returns:
     --------
-    List[T]
-        The list of schemas.
+    List[dict]
+        Dictionary of data.
     """
     data = get_data(url, **kwargs)
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
         raise ValueError("Expected list of dicts, got dict")
-    return [to_schema(**d) for d in data]
+    return data
 
 
-def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
+def get_data_one(url: str, **kwargs: Any) -> dict:
     """Get data from FMP endpoint and convert to schema."""
+
     data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
@@ -145,18 +149,18 @@ def get_data_one(url: str, to_schema: Type[T], **kwargs: Any) -> T:
         except TypeError as e:
             raise ValueError("Expected dict, got list of dicts") from e
 
-    return to_schema(**data)  # type: ignore
+    return data
 
 
 class BaseStockPriceData(Data):
     """Base Stock Price Data."""
 
+    date: datetime
     open: PositiveFloat
     high: PositiveFloat
     low: PositiveFloat
     close: PositiveFloat
-    volume: NonNegativeInt
-    date: datetime
+    volume: float
 
     @validator("date", pre=True)
     def time_validate(cls, v: str) -> datetime:  # pylint: disable=E0213

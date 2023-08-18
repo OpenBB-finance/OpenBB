@@ -1,9 +1,10 @@
-"""yfinance Crypto end of day fetcher."""
+"""yfinance Crypto End of Day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_eod import (
     CryptoEODData,
@@ -13,11 +14,11 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
 from yfinance import Ticker
 
-from openbb_yfinance.utils.types import INTERVALS, PERIODS
+from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceCryptoEODQueryParams(CryptoEODQueryParams):
-    """YFinance Crypto end of day Query.
+    """YFinance Crypto End of Day Query.
 
     Source: https://finance.yahoo.com/crypto/
     """
@@ -26,12 +27,21 @@ class YFinanceCryptoEODQueryParams(CryptoEODQueryParams):
     period: Optional[PERIODS] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("period", "")
     )
+    prepost: bool = Field(
+        default=False, description="Include Pre and Post market data."
+    )
+    adjust: bool = Field(default=True, description="Adjust all the data automatically.")
+    back_adjust: bool = Field(
+        default=False, description="Back-adjusted data to mimic true historical prices."
+    )
 
 
 class YFinanceCryptoEODData(CryptoEODData):
-    """YFinance Crypto end of day Data."""
+    """YFinance Crypto End of Day Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "date": "Date",
             "open": "Open",
@@ -43,24 +53,34 @@ class YFinanceCryptoEODData(CryptoEODData):
 
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return datetime object from string."""
+
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
 class YFinanceCryptoEODFetcher(
     Fetcher[
         YFinanceCryptoEODQueryParams,
-        YFinanceCryptoEODData,
+        List[YFinanceCryptoEODData],
     ]
 ):
+    """Transform the query, extract and transform the data from the yfinance endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCryptoEODQueryParams:
-        now = datetime.now().date()
-        transformed_params = params
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+        """Transform the query. Setting the start and end dates for a 1 year period."""
 
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = now
+        if params.get("period") is None:
+            transformed_params = params
+
+            now = datetime.now().date()
+            if params.get("start_date") is None:
+                transformed_params["start_date"] = now - relativedelta(years=1)
+
+            if params.get("end_date") is None:
+                transformed_params["end_date"] = now
+            return YFinanceCryptoEODQueryParams(**transformed_params)
+
         return YFinanceCryptoEODQueryParams(**params)
 
     @staticmethod
@@ -68,16 +88,17 @@ class YFinanceCryptoEODFetcher(
         query: YFinanceCryptoEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceCryptoEODData]:
-        now = datetime.now().date()
-        query.start_date = query.start_date or (now - timedelta(days=8))
-        query.end_date = query.end_date or (now - timedelta(days=1))
+    ) -> dict:
+        """Return the raw data from the yfinance endpoint."""
 
         if query.period:
             data = Ticker(query.symbol).history(
                 interval=query.interval,
                 period=query.period,
                 actions=False,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
                 raise_errors=True,
             )
         else:
@@ -86,6 +107,9 @@ class YFinanceCryptoEODFetcher(
                 start=query.start_date,
                 end=query.end_date,
                 actions=False,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
                 raise_errors=True,
             )
 
@@ -93,12 +117,12 @@ class YFinanceCryptoEODFetcher(
         data["Date"] = (
             data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
-        data = data.to_dict("records")
-
-        return [YFinanceCryptoEODData.parse_obj(d) for d in data]
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceCryptoEODData],
+        data: dict,
     ) -> List[YFinanceCryptoEODData]:
-        return data
+        """Transform the data to the standard format."""
+
+        return [YFinanceCryptoEODData.parse_obj(d) for d in data]

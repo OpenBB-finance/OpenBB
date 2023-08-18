@@ -1,8 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 from pydantic import validate_arguments
 
@@ -34,77 +33,65 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[typing.List]:
+    ) -> OBBject[List]:
         """Get treasury rates.
-
-
-        openbb
-        ======
 
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[TreasuryRates]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Optional[Literal['fmp']]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
+            error : Optional[Error]
                 Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
 
-
         TreasuryRates
         -------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        month_1 : float
-            The 1 month treasury rate.
-        month_2 : float
-            The 2 month treasury rate.
-        month_3 : float
-            The 3 month treasury rate.
-        month_6 : float
-            The 6 month treasury rate.
-        year_1 : float
-            The 1 year treasury rate.
-        year_2 : float
-            The 2 year treasury rate.
-        year_3 : float
-            The 3 year treasury rate.
-        year_5 : float
-            The 5 year treasury rate.
-        year_7 : float
-            The 7 year treasury rate.
-        year_10 : float
-            The 10 year treasury rate.
-        year_20 : float
-            The 20 year treasury rate.
-        year_30 : float
-            The 30 year treasury rate.
+        month_1 : Optional[float]
+            1 month treasury rate.
+        month_2 : Optional[float]
+            2 month treasury rate.
+        month_3 : Optional[float]
+            3 month treasury rate.
+        month_6 : Optional[float]
+            6 month treasury rate.
+        year_1 : Optional[float]
+            1 year treasury rate.
+        year_2 : Optional[float]
+            2 year treasury rate.
+        year_3 : Optional[float]
+            3 year treasury rate.
+        year_5 : Optional[float]
+            5 year treasury rate.
+        year_7 : Optional[float]
+            7 year treasury rate.
+        year_10 : Optional[float]
+            10 year treasury rate.
+        year_20 : Optional[float]
+            20 year treasury rate.
+        year_30 : Optional[float]
+            30 year treasury rate."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        TreasuryRates
-        -------------
-        All fields are standardized."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -130,6 +117,7 @@ class CLASS_fixedincome(Container):
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Yield curve."""
+
         inputs = filter_inputs(
             chart=chart,
         )

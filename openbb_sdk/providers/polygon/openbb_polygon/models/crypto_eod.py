@@ -1,9 +1,10 @@
 """Polygon crypto end of day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_eod import (
     CryptoEODData,
@@ -23,7 +24,7 @@ class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
 
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="The timespan of the data.")
+    ] = Field(default="day", description="Timespan of the data.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -32,7 +33,7 @@ class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
     multiplier: PositiveInt = Field(
-        default=1, description="The multiplier of the timespan."
+        default=1, description="Multiplier of the timespan."
     )
 
 
@@ -51,7 +52,7 @@ class PolygonCryptoEODData(CryptoEODData):
         }
 
     n: PositiveInt = Field(
-        description="The number of transactions for the symbol in the time period."
+        description="Number of transactions for the symbol in the time period."
     )
 
     @validator("t", pre=True, check_fields=False)
@@ -62,7 +63,7 @@ class PolygonCryptoEODData(CryptoEODData):
 class PolygonCryptoEODFetcher(
     Fetcher[
         PolygonCryptoEODQueryParams,
-        PolygonCryptoEODData,
+        List[PolygonCryptoEODData],
     ]
 ):
     @staticmethod
@@ -70,10 +71,13 @@ class PolygonCryptoEODFetcher(
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+
+        if params.get("symbol"):
+            transformed_params["symbol"] = params["symbol"].replace("-", "")
 
         return PolygonCryptoEODQueryParams(**transformed_params)
 
@@ -82,15 +86,14 @@ class PolygonCryptoEODFetcher(
         query: PolygonCryptoEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonCryptoEODData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"X:{query.symbol}/range/1/{str(query.timespan)}/"
+            f"X:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
+            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
 
         data = get_data(request_url, **kwargs)
@@ -100,9 +103,8 @@ class PolygonCryptoEODFetcher(
         if "results" not in data or len(data["results"]) == 0:
             raise RuntimeError("No results found. Please change your query parameters.")
 
-        data = data["results"]
-        return [PolygonCryptoEODData(**d) for d in data]
+        return data
 
     @staticmethod
-    def transform_data(data: List[PolygonCryptoEODData]) -> List[PolygonCryptoEODData]:
-        return data
+    def transform_data(data: dict) -> List[PolygonCryptoEODData]:
+        return [PolygonCryptoEODData.parse_obj(d) for d in data.get("results", [])]

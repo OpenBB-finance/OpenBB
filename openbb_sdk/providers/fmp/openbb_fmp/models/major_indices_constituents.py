@@ -27,6 +27,8 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
     """FMP Major Indices Constituents data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "sub_sector": "subSector",
             "headquarter": "headQuarter",
@@ -35,6 +37,7 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 
     @validator("dateFirstAdded", pre=True, check_fields=False)
     def date_first_added_validate(cls, v):  # pylint: disable=E0213
+        """Return the date_first_added date as a datetime object for valid cases."""
         try:
             return datetime.strptime(v, "%Y-%m-%d") if v else None
         except Exception:
@@ -43,6 +46,7 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 
     @validator("founded", pre=True, check_fields=False)
     def founded_validate(cls, v):  # pylint: disable=E0213
+        """Return the founded date as a datetime object for valid cases."""
         try:
             return datetime.strptime(v, "%Y-%m-%d") if v else None
         except Exception:
@@ -53,13 +57,17 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
 class FMPMajorIndicesConstituentsFetcher(
     Fetcher[
         FMPMajorIndicesConstituentsQueryParams,
-        FMPMajorIndicesConstituentsData,
+        List[FMPMajorIndicesConstituentsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> FMPMajorIndicesConstituentsQueryParams:
+        """Transform the query params."""
+
         return FMPMajorIndicesConstituentsQueryParams(**params)
 
     @staticmethod
@@ -67,16 +75,18 @@ class FMPMajorIndicesConstituentsFetcher(
         query: FMPMajorIndicesConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPMajorIndicesConstituentsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/{query.index}_constituent/?apikey={api_key}"
 
-        return get_data_many(url, FMPMajorIndicesConstituentsData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPMajorIndicesConstituentsData],
-    ) -> List[FMPMajorIndicesConstituentsData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesConstituentsData]:
+        """Return the raw data from the FMP endpoint."""
+
+        return [FMPMajorIndicesConstituentsData(**d) for d in data]

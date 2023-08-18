@@ -404,7 +404,10 @@ def test_call_list(mocker, test_user):
     controller.call_list(other_args=["--page", "1", "--size", "10"])
 
     mock_list_routines.assert_called_once_with(
-        auth_header="Bearer 123", page=1, size=10
+        auth_header="Bearer 123",
+        page=1,
+        size=10,
+        base_url="https://payments.openbb.co/",
     )
 
 
@@ -446,6 +449,7 @@ def test_call_upload(mocker, test_user):
         routine="do something",
         tags="stocks",
         public=False,
+        base_url="https://payments.openbb.co/",
     )
 
 
@@ -484,6 +488,7 @@ def test_call_download(mocker, test_user):
     mock_download_routine.assert_called_once_with(
         auth_header="Bearer 123",
         uuid="script1",
+        base_url="https://payments.openbb.co/",
     )
     mock_save_routine.assert_called_once_with(
         file_name="script1.openbb", routine=["do something", "personal"]
@@ -555,6 +560,7 @@ def test_call_generate(mocker, monkeypatch, test_user):
 
     mock_generate.assert_called_once_with(
         auth_header="Bearer 123",
+        base_url="https://payments.openbb.co/",
         days=30,
     )
 
