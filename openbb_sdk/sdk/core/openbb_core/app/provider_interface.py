@@ -290,7 +290,7 @@ class ProviderInterface:
                         incoming.default,
                     )
             else:
-                # config fields from providers models
+                # config fields from provider model
                 # reversed to be used in the fastapi endpoint
                 # return schema
                 config_fields.update(
