@@ -40,9 +40,6 @@ class CashFlowStatementData(Data):
     )
     other_non_cash_items: Optional[int] = Field(description="Other non-cash items.")
     deferred_income_tax: Optional[int] = Field(description="Deferred income tax.")
-    free_cash_flow: Optional[int] = Field(
-        description="Net cash provided by operating activities."
-    )
     inventory: Optional[int] = Field(description="Inventory.")
     accounts_payables: Optional[int] = Field(description="Accounts payables.")
     accounts_receivables: Optional[int] = Field(description="Accounts receivables.")

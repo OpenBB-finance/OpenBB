@@ -21,7 +21,7 @@ class BalanceSheetGrowthData(Data, BaseSymbol):
     """Balance Sheet Statement Growth Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="The period the statement is returned for.")
+    period: str = Field(description="Reporting period.")
     growth_cash_and_cash_equivalents: float = Field(
         description="Growth rate of cash and cash equivalents."
     )

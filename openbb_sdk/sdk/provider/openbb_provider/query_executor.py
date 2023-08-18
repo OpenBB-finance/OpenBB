@@ -1,15 +1,13 @@
 """Query executor module."""
 from typing import Any, Dict, Optional, Type
 
-from openbb_provider.abstract.fetcher import Fetcher, GenericDataType
+from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
 
 
 class ProviderError(Exception):
     """Exception raised for errors in the provider."""
-
-    pass
 
 
 class QueryExecutor:
@@ -55,7 +53,7 @@ class QueryExecutor:
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs: Any,
-    ) -> GenericDataType:
+    ) -> Any:
         """Execute query.
 
         Parameters
@@ -72,7 +70,7 @@ class QueryExecutor:
 
         Returns
         -------
-        GenericDataType
+        Any
             Query result.
         """
         provider = self.get_provider(provider_name)

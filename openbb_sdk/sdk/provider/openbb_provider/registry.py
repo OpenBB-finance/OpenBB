@@ -25,9 +25,7 @@ class Registry:
 
 
 class LoadingError(Exception):
-    """Error loading providers."""
-
-    pass
+    """Error loading provider."""
 
 
 class RegistryLoader:

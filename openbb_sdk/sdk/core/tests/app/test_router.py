@@ -3,6 +3,8 @@
 # pylint: disable=unused-argument
 
 
+from typing import List, Optional
+
 import pytest
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -105,7 +107,7 @@ def test_check_return_error(command_validator):
 def test_check_return(command_validator):
     """Test check_return."""
 
-    def valid_function() -> OBBject[int]:
+    def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert command_validator.check_return(valid_function) is None
@@ -114,7 +116,7 @@ def test_check_return(command_validator):
 def test_check(command_validator):
     """Test check."""
 
-    def valid_function() -> OBBject[int]:
+    def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert command_validator.check(valid_function) is None
@@ -135,7 +137,7 @@ def test_command(router):
     """Test command."""
 
     @router.command
-    def valid_function() -> OBBject[int]:
+    def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert valid_function
@@ -193,7 +195,7 @@ def test_complete_signature(signature_inspector):
 def test_complete_signature_error(signature_inspector):
     """Test complete_signature."""
 
-    def valid_function() -> OBBject[int]:
+    def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert (
@@ -204,7 +206,7 @@ def test_complete_signature_error(signature_inspector):
 def test_validate_signature(signature_inspector):
     """Test validate_signature."""
 
-    def sample_function(
+    def sample_function(  # type: ignore
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
@@ -228,7 +230,7 @@ def test_validate_signature(signature_inspector):
 def test_inject_dependency(signature_inspector):
     """Test inject_dependency."""
 
-    def sample_function(
+    def sample_function(  # type: ignore
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,

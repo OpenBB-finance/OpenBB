@@ -1,9 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import Annotated, List, Literal, Optional
 
 import pydantic
-import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -19,12 +18,12 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: typing_extensions.Annotated[
+        page: Annotated[
             pydantic.types.NonNegativeInt,
-            OpenBBCustomParameter(description="The page of the global news."),
+            OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp"], None] = None,
+        provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -32,50 +31,50 @@ class CLASS_news(Container):
         Parameters
         ----------
         page : NonNegativeInt
-            The page of the global news.
+            Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['benzinga', 'fmp'], NoneType]
+        provider : Optional[Literal['benzinga', 'fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         pageSize : int
-            The number of results to return per page. (provider: benzinga)
+            Number of results to return per page. (provider: benzinga)
         displayOutput : Literal['headline', 'summary', 'full', 'all']
-            The type of data to return. (provider: benzinga)
-        date : Union[datetime.datetime, NoneType]
-            The date of the news to retrieve. (provider: benzinga)
-        dateFrom : Union[datetime.datetime, NoneType]
-            The start date of the news to retrieve. (provider: benzinga)
-        dateTo : Union[datetime.datetime, NoneType]
-            The end date of the news to retrieve. (provider: benzinga)
-        updatedSince : Union[int, NoneType]
-            The number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Union[int, NoneType]
-            The number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType]
-            The order in which to sort the news.  (provider: benzinga)
-        isin : Union[str, NoneType]
+            Type of data to return. (provider: benzinga)
+        date : Optional[datetime.datetime]
+            Date of the news to retrieve. (provider: benzinga)
+        dateFrom : Optional[datetime.datetime]
+            Start date of the news to retrieve. (provider: benzinga)
+        dateTo : Optional[datetime.datetime]
+            End date of the news to retrieve. (provider: benzinga)
+        updatedSince : Optional[int]
+            Number of seconds since the news was updated. (provider: benzinga)
+        publishedSince : Optional[int]
+            Number of seconds since the news was published. (provider: benzinga)
+        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+            Order in which to sort the news.  (provider: benzinga)
+        isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Union[str, NoneType]
+        cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        tickers : Union[str, NoneType]
-            The tickers of the news to retrieve. (provider: benzinga)
-        channels : Union[str, NoneType]
-            The channels of the news to retrieve. (provider: benzinga)
-        topics : Union[str, NoneType]
-            The topics of the news to retrieve. (provider: benzinga)
-        authors : Union[str, NoneType]
-            The authors of the news to retrieve. (provider: benzinga)
-        content_types : Union[str, NoneType]
-            The content types of the news to retrieve. (provider: benzinga)
+        tickers : Optional[str]
+            Tickers of the news to retrieve. (provider: benzinga)
+        channels : Optional[str]
+            Channels of the news to retrieve. (provider: benzinga)
+        topics : Optional[str]
+            Topics of the news to retrieve. (provider: benzinga)
+        authors : Optional[str]
+            Authors of the news to retrieve. (provider: benzinga)
+        content_types : Optional[str]
+            Content types of the news to retrieve. (provider: benzinga)
 
         Returns
         -------
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp'], NoneType]
+            provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -87,25 +86,25 @@ class CLASS_news(Container):
         GlobalNews
         ----------
         date : Optional[datetime]
-            The published date of the news.
+            Published date of the news.
         title : Optional[str]
-            The title of the news.
+            Title of the news.
         text : Optional[str]
-            The text/body of the news.
+            Text/body of the news.
         url : Optional[str]
-            The URL of the news.
+            URL of the news.
         images : Optional[List[BenzingaImage]]
-            The images associated with the news. (provider: benzinga)
+            Images associated with the news. (provider: benzinga)
         channels : Optional[List[str]]
-            The channels associated with the news. (provider: benzinga)
+            Channels associated with the news. (provider: benzinga)
         stocks : Optional[List[str]]
-            The stocks associated with the news. (provider: benzinga)
+            Stocks associated with the news. (provider: benzinga)
         tags : Optional[List[str]]
-            The tags associated with the news. (provider: benzinga)
+            Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
-            The teaser of the news. (provider: benzinga)
+            Teaser of the news. (provider: benzinga)
         site : Optional[str]
-            The site of the news. (provider: fmp)"""
+            Site of the news. (provider: fmp)"""
 
         inputs = filter_inputs(
             provider_choices={

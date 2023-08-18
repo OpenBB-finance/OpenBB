@@ -419,9 +419,12 @@ TRANSFORM = {
 SCALES = {
     "Thousands": 1_000,
     "Tens of thousands": 10_000,
+    "Hundreds of thousands": 100_000,
     "Millions": 1_000_000,
+    "Tens of millions": 10_000_000,
     "Hundreds of millions": 100_000_000,
     "Billions": 1_000_000_000,
+    "Tens of billions": 10_000_000_000,
     "Units": 1,
 }
 

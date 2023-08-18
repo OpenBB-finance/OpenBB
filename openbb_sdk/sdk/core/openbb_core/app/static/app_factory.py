@@ -35,6 +35,7 @@ def create_app():
             - economy
             - fixedincome
             - forex
+            - futures
             - news
             - stocks
         """

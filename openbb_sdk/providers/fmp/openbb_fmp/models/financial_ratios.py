@@ -27,6 +27,8 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     """FMP Financial Ratios Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "current_ratio": "currentRatio",
             "quick_ratio": "quickRatio",
@@ -91,8 +93,12 @@ class FMPFinancialRatiosFetcher(
         List[FMPFinancialRatiosData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPFinancialRatiosQueryParams:
+        """Transform the query params."""
+
         return FMPFinancialRatiosQueryParams(**params)
 
     @staticmethod
@@ -100,20 +106,24 @@ class FMPFinancialRatiosFetcher(
         query: FMPFinancialRatiosQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPFinancialRatiosData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
+        query.period = (
+            "annual" if query.period == "annually" else "quarter"  # mypy: ignore
+        )
         base_url = "https://financialmodelingprep.com/api/v3"
 
-        data = []
+        data: List[Dict] = []
 
-        def multiple_symbols(symbol: str, data: List[FMPFinancialRatiosData]) -> None:
+        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
             url = (
                 f"{base_url}/ratios/{symbol}?"
                 f"period={query.period}&limit={query.limit}&apikey={api_key}"
             )
-            return data.extend(get_data_many(url, FMPFinancialRatiosData, **kwargs))
+            return data.extend(get_data_many(url, **kwargs))
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
@@ -121,7 +131,7 @@ class FMPFinancialRatiosFetcher(
         return data
 
     @staticmethod
-    def transform_data(
-        data: List[FMPFinancialRatiosData],
-    ) -> List[FinancialRatiosData]:
-        return [FinancialRatiosData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPFinancialRatiosData]:
+        """Return the transformed data."""
+
+        return [FMPFinancialRatiosData(**d) for d in data]

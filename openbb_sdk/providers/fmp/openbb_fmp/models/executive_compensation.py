@@ -27,6 +27,8 @@ class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
 
     class Config:
+        """Pydantic alias config using fields Dict."""
+
         fields = {
             "filing_date": "filingDate",
             "accepted_date": "acceptedDate",
@@ -38,10 +40,12 @@ class FMPExecutiveCompensationData(ExecutiveCompensationData):
 
     @validator("filingDate", pre=True, check_fields=False)
     def filing_date_validate(cls, v):  # pylint: disable=E0213
+        """Return the filing date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
     @validator("acceptedDate", pre=True, check_fields=False)
     def accepted_date_validate(cls, v):  # pylint: disable=E0213
+        """Return the accepted date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
@@ -51,8 +55,12 @@ class FMPExecutiveCompensationFetcher(
         List[FMPExecutiveCompensationData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPExecutiveCompensationQueryParams:
+        """Transform the query params."""
+
         return FMPExecutiveCompensationQueryParams(**params)
 
     @staticmethod
@@ -60,14 +68,17 @@ class FMPExecutiveCompensationFetcher(
         query: FMPExecutiveCompensationQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPExecutiveCompensationData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "governance/executive_compensation", api_key, query)
-        return get_data_many(url, FMPExecutiveCompensationData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPExecutiveCompensationData],
-    ) -> List[FMPExecutiveCompensationData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPExecutiveCompensationData]:
+        """Return the transformed data."""
+
+        return [FMPExecutiveCompensationData(**d) for d in data]

@@ -124,7 +124,7 @@ class PosthogHandler(logging.Handler):
             log_extra["userId"] = self._settings.user_id
 
         if hasattr(record, "extra"):
-            log_extra = {**log_extra, **record.extra}
+            log_extra = {**log_extra, **record.extra}  # type: ignore
 
         if record.exc_info:
             log_extra["exception"] = {

@@ -1,4 +1,3 @@
-import inspect
 import multiprocessing
 import warnings
 from contextlib import nullcontext
@@ -12,6 +11,7 @@ from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.logs.logging_manager import LoggingManager
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
@@ -136,7 +136,7 @@ class ParametersBuilder:
             arbitrary_types_allowed = True
             extra = Extra.allow
 
-        sig = inspect.signature(func)
+        sig = signature(func)
         fields = {
             n: (
                 p.annotation,

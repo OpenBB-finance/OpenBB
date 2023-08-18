@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Callable, Generic, Optional, Tuple, TypeVar
+from typing import Callable, Optional, Tuple, TypeVar
 
 from importlib_metadata import entry_points
 
@@ -194,7 +194,7 @@ class ChartingManager(metaclass=SingletonMeta):
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
-        obbject_item: Generic[T],
+        obbject_item: T,
         **kwargs,
     ):
         """

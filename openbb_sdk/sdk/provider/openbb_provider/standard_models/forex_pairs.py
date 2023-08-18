@@ -14,4 +14,4 @@ class ForexPairsQueryParams(QueryParams):
 class ForexPairsData(Data):
     """Forex available pairs Data."""
 
-    name: str = Field(description="The name of the currency pair.")
+    name: str = Field(description="Name of the currency pair.")

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
@@ -7,7 +7,7 @@ from openbb_provider.registry_map import MapType, RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 
-TupleFieldType = TypeVar("TupleFieldType", bound=Tuple[str, type, Any])
+TupleFieldType = Tuple[str, type, Any]
 
 
 @dataclass

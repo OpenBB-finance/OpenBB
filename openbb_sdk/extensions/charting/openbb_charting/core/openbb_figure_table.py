@@ -29,6 +29,7 @@ class OpenBBFigureTable(OpenBBFigure):
         if not self._backend.isatty:
             tmp_fig = self.to_table()
             tmp_fig.show()
+            return None
         else:
             # Make a copy of the dataframe to avoid SettingWithCopyWarning
             df = self._tabular_data.copy()
@@ -80,6 +81,8 @@ class OpenBBFigureTable(OpenBBFigure):
                 source=source,  # type: ignore
                 theme=self._charting_settings.table_style,
             )
+
+            return None
 
     def to_table(
         self,
