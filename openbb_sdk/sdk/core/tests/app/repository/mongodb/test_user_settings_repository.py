@@ -9,7 +9,7 @@ from pydantic import BaseModel
 T = TypeVar("T", bound=BaseModel)
 
 
-def test_journal_entry_repository():
+def test_user_settings_repository():
     class TestUserSettingsRepository(UserSettingsRepository):
         def __init__(self, test_arg_1, test_arg_2, mock_client):
             self.test_arg_1 = test_arg_1
