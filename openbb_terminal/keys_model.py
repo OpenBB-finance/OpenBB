@@ -64,7 +64,6 @@ API_DICT: Dict = {
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
     "reddit": "REDDIT",
-    "twitter": "TWITTER",
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
