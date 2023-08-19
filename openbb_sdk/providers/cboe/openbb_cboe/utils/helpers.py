@@ -867,6 +867,7 @@ class Europe:
             Records of closing levels on each trading day.
         """
 
+        symbol = symbol.upper()
         SYMBOLS = Europe.list_indices()["symbol"].to_list()
 
         if symbol not in SYMBOLS:
