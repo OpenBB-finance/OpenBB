@@ -41,13 +41,15 @@ class CboeFuturesCurveFetcher(
         query: CboeFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[CboeFuturesCurveData]:
+    ) -> dict:
+        """Return the raw data from the CBOE endpoint"""
+
         data = get_curve(query.symbol, query.date).reset_index().to_dict("records")
 
-        return [CboeFuturesCurveData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[CboeFuturesCurveData],
+        data: dict,
     ) -> List[CboeFuturesCurveData]:
-        return data
+        return [CboeFuturesCurveData.parse_obj(d) for d in data]
