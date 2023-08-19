@@ -4,7 +4,6 @@ from datetime import date, datetime, timedelta
 from io import BytesIO, StringIO
 from typing import Any, List, Literal, Optional
 
-import numpy as np
 import pandas as pd
 import requests
 import requests_cache
@@ -71,64 +70,6 @@ EUR_INDEX_COLUMN_NAMES = [
 cboe_session = requests_cache.CachedSession(
     "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
 )
-
-
-def get_user_agent() -> str:
-    """Get a not very random user agent."""
-    user_agent_strings = [
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0",
-        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0",
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
-    ]
-
-    return np.random.choice(user_agent_strings)  # nosec
-
-
-def request(
-    url: str, method: str = "GET", timeout: int = 10, **kwargs
-) -> requests.Response:
-    """Abstract helper to make requests from a url with potential headers and params.
-
-    Parameters
-    ----------
-    url : str
-        Url to make the request to
-    method : str, optional
-        HTTP method to use.  Can be "GET" or "POST", by default "GET"
-    timeout : int, optional
-        Timeout in seconds, by default 10
-
-    Returns
-    -------
-    requests.Response
-        Request response object
-
-    Raises
-    ------
-    ValueError
-        If invalid method is passed
-    """
-
-    # If there are headers, check if there is a user agent, if not add one.
-    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    headers = kwargs.pop("headers", {})
-
-    if "User-Agent" not in headers:
-        headers["User-Agent"] = get_user_agent()
-
-    if (func := getattr(requests, method.lower(), None)) is not None:
-        return func(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-
-    raise ValueError("Method must be valid HTTP method")
 
 
 def camel_to_snake(string: str) -> str:
@@ -257,7 +198,7 @@ def get_ticker_info(symbol: str, **kwargs) -> dict[str, Any]:
         else f"https://cdn.cboe.com/api/global/delayed_quotes/quotes/{symbol}.json"
     )
 
-    r = request(url, timeout=10)
+    r = requests.get(url, timeout=10)
 
     if r.status_code not in set([200, 403]):
         raise requests.HTTPError(r.status_code)
@@ -315,7 +256,7 @@ def get_ticker_iv(symbol: str, **kwargs) -> dict[str, float]:
         else f"https://cdn.cboe.com/api/global/delayed_quotes/historical_data/{symbol}.json"
     )
 
-    h_iv = request(quotes_iv_url)
+    h_iv = requests.get(quotes_iv_url, timeout=10)
 
     if h_iv.status_code not in set([200, 403]):
         raise requests.HTTPError(h_iv.status_code)
@@ -359,7 +300,7 @@ def get_chains(symbol: str, **kwargs) -> pd.DataFrame:
         else f"https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"
     )
 
-    r = request(quotes_url)
+    r = requests.get(quotes_url, timeout=10)
     if r.status_code != 200:
         print(f"No options data found for the symbol, {symbol}.")
         return pd.DataFrame()
@@ -483,7 +424,7 @@ def get_us_eod_prices(
         return pd.DataFrame()
 
     url = __generate_historical_prices_url(symbol)
-    r = request(url)
+    r = requests.get(url, timeout=10)
 
     if r.status_code != 200:
         print(f"Error: {r.status_code}")
@@ -633,8 +574,9 @@ def get_european_index_quotes(**kwargs) -> pd.DataFrame:
 
     INDEXES = get_cboe_index_directory()
 
-    r = request(
-        "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
+    r = requests.get(
+        "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json",
+        timeout=10,
     )
 
     if r.status_code != 200:
@@ -696,7 +638,7 @@ def list_european_index_constituents(symbol: str, **kwargs) -> list[str]:
         return []
 
     url = f"https://cdn.cboe.com/api/global/european_indices/definitions/{symbol}.json"
-    r = request(url)
+    r = requests.get(url, timeout=10)
 
     if r.status_code != 200:
         raise requests.HTTPError(r.status_code)
@@ -721,7 +663,7 @@ def get_european_index_intraday(symbol: str, **kwargs) -> pd.DataFrame:
 
     url = f"https://cdn.cboe.com/api/global/european_indices/intraday_chart_data/{symbol}.json"
 
-    r = request(url)
+    r = requests.get(url, timeout=10)
     if r.status_code != 200:
         raise requests.HTTPError(r.status_code)
 
@@ -743,8 +685,9 @@ def list_futures(**kwargs) -> List[dict]:
         Pandas DataFrame with results.
     """
 
-    r = request(
-        "https://cdn.cboe.com/api/global/delayed_quotes/symbol_book/futures-roots.json"
+    r = requests.get(
+        "https://cdn.cboe.com/api/global/delayed_quotes/symbol_book/futures-roots.json",
+        timeout=10,
     )
 
     if r.status_code != 200:
@@ -795,7 +738,7 @@ def get_settlement_prices(
     if final_settlement is True:
         url = "https://www.cboe.com/us/futures/market_statistics/final_settlement_prices/csv/"
 
-    r = request(url)
+    r = requests.get(url, timeout=10)
 
     if r.status_code != 200:
         raise requests.HTTPError(r.status_code)
