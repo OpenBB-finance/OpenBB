@@ -8,6 +8,7 @@ from openbb_provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
+from pydantic import Field
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -29,6 +30,14 @@ class FMPAvailableIndicesData(AvailableIndicesData):
             "stock_exchange": "stockExchange",
             "exchange_short_name": "exchangeShortName",
         }
+
+    stock_exchange: str = Field(
+        description="Stock exchange where the index is listed.", alias="stockExchange"
+    )
+    exchange_short_name: str = Field(
+        description="Short name of the stock exchange where the index is listed.",
+        alias="exchangeShortName",
+    )
 
 
 class FMPAvailableIndicesFetcher(

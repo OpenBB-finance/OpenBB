@@ -67,6 +67,17 @@ def index(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="EuropeanIndicesEOD")
+def european_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get historical closine values for an index."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="AvailableIndices")
 def available_indices(
     cc: CommandContext,

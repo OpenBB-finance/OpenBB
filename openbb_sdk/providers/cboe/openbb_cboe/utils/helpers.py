@@ -26,6 +26,8 @@ US_INDEX_COLUMNS = {
 
 EUR_INDEX_COLUMNS = {
     "name": "name",
+    "isin": "isin",
+    "currency": "currency",
     "current_price": "price",
     "open": "open",
     "high": "high",
@@ -703,10 +705,12 @@ class Europe:
             .round(2)
         )
 
-        INDEXES = get_cboe_index_directory()
+        INDEXES = pd.DataFrame(Europe.list_indices()).set_index("symbol")
 
         for i in data.index:
+            data.loc[i, ("isin")] = INDEXES.at[i, "isin"]
             data.loc[i, ("name")] = INDEXES.at[i, "name"]
+            data.loc[i, ("currency")] = INDEXES.at[i, "currency"]
 
         data = data[list(EUR_INDEX_COLUMNS.keys())]
         data.columns = list(EUR_INDEX_COLUMNS.values())
@@ -714,13 +718,13 @@ class Europe:
         return data.reset_index()
 
     @staticmethod
-    def list_indices(**kwargs) -> pd.DataFrame:
+    def list_indices(**kwargs) -> List[dict[str, str]]:
         """Gets names, currencies, ISINs, regions, and symbols for European indices.
 
         Returns
         -------
-        pd.DataFrame
-            Pandas DataFrame with results.
+        dict[str, str]
+            List of dictionaries with the results.
         """
 
         data = Europe.get_all_index_definitions()
@@ -729,7 +733,7 @@ class Europe:
             .drop(columns=["short_name"])
             .rename(columns={"long_name": "name"})
         )
-        return data
+        return data.to_dict("records")
 
     @staticmethod
     def list_index_constituents(symbol: str, **kwargs) -> list[str]:
@@ -746,14 +750,12 @@ class Europe:
             List of constituents as ticker symbols.
         """
 
-        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+        SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
         symbol = symbol.upper()
 
         if symbol not in SYMBOLS:
             print(
                 f"The symbol, {symbol}, was not found in the CBOE European Index directory.",
-                "Use `get_european_indices_info()` to see the full list of indices.",
-                sep="\n",
             )
             return []
 
@@ -783,13 +785,13 @@ class Europe:
         """
 
         symbol = symbol.upper()
-        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+        SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
 
         if symbol not in SYMBOLS:
             print(
                 "The symbol, "
                 f"{symbol}"
-                ", is not a valid CBOE European index. Use `list_european_indices()` to see the full list of indices."
+                ", is not a valid CBOE European index. Use `available_indices()` to see the full list of indices."
             )
             return pd.DataFrame()
 
@@ -826,7 +828,7 @@ class Europe:
             Pandas DataFrame with results.
         """
 
-        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+        SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
 
         if symbol not in SYMBOLS:
             print(
@@ -853,13 +855,22 @@ class Europe:
         )
 
     @staticmethod
-    def get_index_eod(symbol: str, **kwargs) -> List[dict[str, float]]:
+    def get_index_eod(
+        symbol: str,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
+        **kwargs,
+    ) -> List[dict[str, float]]:
         """Get historical closing levels for a European index.
 
         Parameters
         ----------
         symbol: str
             The symbol of the index.
+        start_date: Optional[date]
+            The start date for the time series.
+        end_date: Optional[date]
+            The end date for the time series.
 
         Returns
         -------
@@ -868,13 +879,14 @@ class Europe:
         """
 
         symbol = symbol.upper()
-        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+        SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
 
         if symbol not in SYMBOLS:
             print(
                 "The symbol, "
                 f"{symbol}"
-                ", was not found in the CBOE European Index directory."
+                ", was not found in the CBOE European Index directory. "
+                "Use `available_indices()` to see the full list of indices."
             )
             return pd.DataFrame()
 
@@ -886,4 +898,17 @@ class Europe:
 
         r_json = r.json()
 
-        return r_json["data"]
+        data = pd.DataFrame.from_records(r_json["data"]).set_index("date")
+
+        data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
+
+        if start_date is not None:
+            end_date = end_date if end_date else datetime.now().date()
+
+            data = data[
+                (data.index >= pd.to_datetime(start_date, format="%Y-%m-%d"))
+                & (data.index <= pd.to_datetime(end_date, format="%Y-%m-%d"))
+            ]
+            data.index = data.index.strftime("%Y-%m-%d")
+
+        return data.reset_index().to_dict("records")
