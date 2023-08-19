@@ -59,9 +59,9 @@ class CboeStockEODFetcher(
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
 
-        return get_us_eod_prices(query.symbol, query.start_date, query.end_date).to_dict(
-            "records"
-        )
+        return get_us_eod_prices(
+            query.symbol, query.start_date, query.end_date
+        ).to_dict("records")
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockEODData]:

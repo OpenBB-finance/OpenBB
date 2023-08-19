@@ -21,13 +21,13 @@ class StockInfoData(Data, BaseSymbol):
     open: Optional[float] = Field(description="Opening price of the stock.")
     high: Optional[float] = Field(description="High price of the current trading day.")
     low: Optional[float] = Field(description="Low price of the current trading day.")
-    close: Optional[float] = Field(description="Closing price of the most recent trading day.")
+    close: Optional[float] = Field(
+        description="Closing price of the most recent trading day."
+    )
     change: Optional[float] = Field(
         description="Change in price over the current trading period."
     )
     change_percent: Optional[float] = Field(
         description="Percent change in price over the current trading period."
     )
-    prev_close: Optional[float] = Field(
-        description="Previous closing price."
-    )
+    prev_close: Optional[float] = Field(description="Previous closing price.")
