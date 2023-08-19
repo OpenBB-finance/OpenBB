@@ -241,7 +241,7 @@ def stock_search(query: str, ticker: bool = False, **kwargs) -> dict:
     return {}
 
 
-def get_ticker_info(symbol: str) -> dict[str, Any]:
+def get_ticker_info(symbol: str, **kwargs) -> dict[str, Any]:
     symbol = symbol.upper()
     SYMBOLS = get_cboe_directory()
     INDEXES = get_cboe_index_directory()
@@ -290,7 +290,7 @@ def get_ticker_info(symbol: str) -> dict[str, Any]:
     return _data.transpose()[0].to_dict()
 
 
-def get_ticker_iv(symbol: str) -> dict[str, float]:
+def get_ticker_iv(symbol: str, **kwargs) -> dict[str, float]:
     """Get annualized high/low historical and implied volatility over 30/60/90 day windows.
 
     Parameters
@@ -444,6 +444,7 @@ def get_us_eod_prices(
     symbol: str,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
+    **kwargs,
 ) -> pd.DataFrame:
     """Get US EOD data from CBOE.
 
@@ -536,7 +537,7 @@ def get_us_eod_prices(
     return data.reset_index()
 
 
-def get_us_info(symbol: str) -> pd.DataFrame:
+def get_us_info(symbol: str, **kwargs) -> pd.DataFrame:
     """Get information and current statistics for a ticker.
 
     Parameters
@@ -602,7 +603,7 @@ def get_us_info(symbol: str) -> pd.DataFrame:
     return info.transpose()[0].to_dict()
 
 
-def get_european_index_definitions() -> dict[Any, Any]:
+def get_european_index_definitions(**kwargs) -> dict[Any, Any]:
     """Get the full list of European index definitions.
 
     Returns
@@ -621,7 +622,7 @@ def get_european_index_definitions() -> dict[Any, Any]:
     return r.json()["data"]
 
 
-def get_european_indices_quotes() -> pd.DataFrame:
+def get_european_indices_quotes(**kwargs) -> pd.DataFrame:
     """Get the complete list of European indices and their current quotes.
 
     Returns
@@ -655,7 +656,7 @@ def get_european_indices_quotes() -> pd.DataFrame:
     return data.reset_index()
 
 
-def get_european_indices_info() -> pd.DataFrame:
+def get_european_indices_info(**kwargs) -> pd.DataFrame:
     """Gets names, currencies, ISINs, regions, and symbols for European indices.
 
     Returns
@@ -669,7 +670,7 @@ def get_european_indices_info() -> pd.DataFrame:
     return data
 
 
-def get_european_index_intraday(symbol: str) -> pd.DataFrame:
+def get_european_index_intraday(symbol: str, **kwargs) -> pd.DataFrame:
     """Get one-minute prices for a European index during the most recent trading day."""
 
     EURO_INDICES = get_european_indices_info()["symbol"].to_list()
