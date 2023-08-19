@@ -1,4 +1,4 @@
-"""CBOE Futures Curve fetcher."""
+"""CBOE Futures Curve Fetcher."""
 
 # IMPORT STANDARD
 from typing import Any, Dict, List, Optional
@@ -21,7 +21,7 @@ class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
 
 
 class CboeFuturesCurveData(FuturesCurveData):
-    """CBOE Futures Term Structure Data."""
+    """CBOE Futures Curve Data."""
 
     symbol: str = Field(description="The trading symbol for the tenor of future.")
 
@@ -42,7 +42,7 @@ class CboeFuturesCurveFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
-        """Return the raw data from the CBOE endpoint"""
+        """Return the raw data from the CBOE endpoint."""
 
         data = get_curve(query.symbol, query.date).reset_index().to_dict("records")
 
