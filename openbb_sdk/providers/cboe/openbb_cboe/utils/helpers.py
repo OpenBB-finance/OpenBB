@@ -622,7 +622,7 @@ def get_european_index_definitions(**kwargs) -> dict[Any, Any]:
     return r.json()["data"]
 
 
-def get_european_indices_quotes(**kwargs) -> pd.DataFrame:
+def get_european_index_quotes(**kwargs) -> pd.DataFrame:
     """Get the complete list of European indices and their current quotes.
 
     Returns
@@ -656,7 +656,7 @@ def get_european_indices_quotes(**kwargs) -> pd.DataFrame:
     return data.reset_index()
 
 
-def get_european_indices_info(**kwargs) -> pd.DataFrame:
+def list_european_indices(**kwargs) -> pd.DataFrame:
     """Gets names, currencies, ISINs, regions, and symbols for European indices.
 
     Returns
@@ -670,12 +670,48 @@ def get_european_indices_info(**kwargs) -> pd.DataFrame:
     return data
 
 
+def list_european_index_constituents(symbol: str, **kwargs) -> list[str]:
+    """List symbols for constituents of  a European index.
+
+    Parameters
+    ----------
+    symbol: str
+        The symbol of the index.
+
+    Returns
+    -------
+    list[str]
+        List of constituents as ticker symbols.
+    """
+
+    SYMBOLS = list_european_indices()["symbol"].to_list()
+    symbol = symbol.upper()
+
+    if symbol not in SYMBOLS:
+        print(
+            f"The symbol, {symbol}, was not found in the CBOE European Index directory.",
+            "Use `get_european_indices_info()` to see the full list of indices.",
+            sep="\n",
+        )
+        return []
+
+    url = f"https://cdn.cboe.com/api/global/european_indices/definitions/{symbol}.json"
+    r = request(url)
+
+    if r.status_code != 200:
+        raise requests.HTTPError(r.status_code)
+
+    r_json = r.json()["constituents"]
+
+    return [r_json[i]["constituent_symbol"] for i in range(0, len(r_json))]
+
+
 def get_european_index_intraday(symbol: str, **kwargs) -> pd.DataFrame:
     """Get one-minute prices for a European index during the most recent trading day."""
 
-    EURO_INDICES = get_european_indices_info()["symbol"].to_list()
+    SYMBOLS = list_european_indices()["symbol"].to_list()
 
-    if symbol not in EURO_INDICES:
+    if symbol not in SYMBOLS:
         print(
             "The symbol, "
             f"{symbol}"
