@@ -10,59 +10,50 @@ import requests_cache
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 
-INDEX_COLUMNS = [
-    "name",
-    "current_price",
-    "open",
-    "high",
-    "low",
-    "close",
-    "prev_day_close",
-    "price_change",
-    "price_change_percent",
-    "last_trade_time",
-    "tick",
-]
+US_INDEX_COLUMNS = {
+    "name": "name",
+    "current_price": "price",
+    "open": "open",
+    "high": "high",
+    "low": "low",
+    "close": "close",
+    "prev_day_close": "prev_close",
+    "price_change": "change",
+    "price_change_percent": "change_percent",
+    "last_trade_time": "last_trade_timestamp",
+    "tick": "tick",
+}
 
-INDEX_COLUMN_NAMES = [
-    "name",
-    "price",
-    "open",
-    "high",
-    "low",
-    "close",
-    "prev_close",
-    "change",
-    "change_percent",
-    "last_trade_timestamp",
-    "tick",
-]
+EUR_INDEX_COLUMNS = {
+    "name": "name",
+    "current_price": "price",
+    "open": "open",
+    "high": "high",
+    "low": "low",
+    "close": "close",
+    "prev_day_close": "prev_close",
+    "price_change": "change",
+    "price_change_percent": "change_percent",
+    "last_trade_time": "last_trade_timestamp",
+}
 
-EUR_INDEX_COLUMNS = [
-    "name",
-    "current_price",
-    "open",
-    "high",
-    "low",
-    "close",
-    "prev_day_close",
-    "price_change",
-    "price_change_percent",
-    "last_trade_time",
-]
-
-EUR_INDEX_COLUMN_NAMES = [
-    "name",
-    "price",
-    "open",
-    "high",
-    "low",
-    "close",
-    "prev_close",
-    "change",
-    "change_percent",
-    "last_trade_timestamp",
-]
+EUR_INDEX_CONSTITUENTS_COLUMNS = {
+    "symbol": "symbol",
+    "current_price": "price",
+    "open": "open",
+    "high": "high",
+    "low": "low",
+    "close": "close",
+    "volume": "volume",
+    "seqno": "seqno",
+    "prev_day_close": "prev_close",
+    "price_change": "change",
+    "price_change_percent": "change_percent",
+    "last_trade_time": "last_trade_timestamp",
+    "exchange_id": "exchange_id",
+    "tick": "tick",
+    "security_type": "type",
+}
 
 
 # This will cache certain requests for 7 days.  Ideally to speed up subsequent queries.
@@ -544,138 +535,6 @@ def get_us_info(symbol: str, **kwargs) -> pd.DataFrame:
     return info.transpose()[0].to_dict()
 
 
-def get_european_index_definitions(**kwargs) -> dict[Any, Any]:
-    """Get the full list of European index definitions.
-
-    Returns
-    -------
-    dict[Any, Any]
-        Dictionary with results.
-    """
-
-    r = cboe_session.get(
-        "https://cdn.cboe.com/api/global/european_indices/definitions/all-definitions.json",
-        timeout=10,
-    )
-
-    if r.status_code != 200:
-        raise requests.HTTPError(r.status_code)
-    return r.json()["data"]
-
-
-def get_european_index_quotes(**kwargs) -> pd.DataFrame:
-    """Get the complete list of European indices and their current quotes.
-
-    Returns
-    -------
-    pd.DataFrame
-        Pandas DataFrame with results.
-    """
-
-    INDEXES = get_cboe_index_directory()
-
-    r = requests.get(
-        "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json",
-        timeout=10,
-    )
-
-    if r.status_code != 200:
-        raise requests.HTTPError(r.status_code)
-
-    data = (
-        pd.DataFrame.from_records(r.json()["data"])
-        .drop(columns=["symbol"])
-        .rename(columns={"index": "symbol"})
-        .set_index("symbol")
-    )
-
-    for i in data.index:
-        data.loc[i, ("name")] = INDEXES.at[i, "name"]
-
-    data = data[EUR_INDEX_COLUMNS]
-    data.columns = EUR_INDEX_COLUMN_NAMES
-
-    return data.reset_index()
-
-
-def list_european_indices(**kwargs) -> pd.DataFrame:
-    """Gets names, currencies, ISINs, regions, and symbols for European indices.
-
-    Returns
-    -------
-    pd.DataFrame
-        Pandas DataFrame with results.
-    """
-
-    data = get_european_index_definitions()
-    data = pd.DataFrame.from_records(pd.DataFrame(data)["index"])
-    return data
-
-
-def list_european_index_constituents(symbol: str, **kwargs) -> list[str]:
-    """List symbols for constituents of  a European index.
-
-    Parameters
-    ----------
-    symbol: str
-        The symbol of the index.
-
-    Returns
-    -------
-    list[str]
-        List of constituents as ticker symbols.
-    """
-
-    SYMBOLS = list_european_indices()["symbol"].to_list()
-    symbol = symbol.upper()
-
-    if symbol not in SYMBOLS:
-        print(
-            f"The symbol, {symbol}, was not found in the CBOE European Index directory.",
-            "Use `get_european_indices_info()` to see the full list of indices.",
-            sep="\n",
-        )
-        return []
-
-    url = f"https://cdn.cboe.com/api/global/european_indices/definitions/{symbol}.json"
-    r = requests.get(url, timeout=10)
-
-    if r.status_code != 200:
-        raise requests.HTTPError(r.status_code)
-
-    r_json = r.json()["constituents"]
-
-    return [r_json[i]["constituent_symbol"] for i in range(0, len(r_json))]
-
-
-def get_european_index_intraday(symbol: str, **kwargs) -> pd.DataFrame:
-    """Get one-minute prices for a European index during the most recent trading day."""
-
-    SYMBOLS = list_european_indices()["symbol"].to_list()
-
-    if symbol not in SYMBOLS:
-        print(
-            "The symbol, "
-            f"{symbol}"
-            ", was not found in the CBOE European Index directory."
-        )
-        return pd.DataFrame()
-
-    url = f"https://cdn.cboe.com/api/global/european_indices/intraday_chart_data/{symbol}.json"
-
-    r = requests.get(url, timeout=10)
-    if r.status_code != 200:
-        raise requests.HTTPError(r.status_code)
-
-    r_json = r.json()["data"]
-
-    data = pd.DataFrame.from_records(pd.DataFrame(r_json)["price"])
-    data["datetime"] = pd.DataFrame(r_json)["datetime"]
-    data["utc_datetime"] = pd.DataFrame(r_json)["utc_datetime"]
-
-    return round(data[["utc_datetime", "datetime", "open", "high", "low", "close"]], 2)
-
-
 def list_futures(**kwargs) -> List[dict]:
     """List of CBOE futures and their underlying symbols.
 
@@ -794,3 +653,236 @@ def get_curve(
     data = data.query("`product` == @symbol")
 
     return data.set_index("expiration")[["symbol", "price"]]
+
+
+class Europe:
+    """Class for European CBOE data."""
+
+    @staticmethod
+    def get_all_index_definitions(**kwargs) -> dict[Any, Any]:
+        """Get the full list of European index definitions.
+
+        Returns
+        -------
+        dict[Any, Any]
+            Dictionary with results.
+        """
+
+        r = cboe_session.get(
+            "https://cdn.cboe.com/api/global/european_indices/definitions/all-definitions.json",
+            timeout=10,
+        )
+
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+        return r.json()["data"]
+
+    @staticmethod
+    def get_all_index_quotes(**kwargs) -> pd.DataFrame:
+        """Get the complete list of European indices and their current quotes.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with results.
+        """
+
+        r = requests.get(
+            "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json",
+            timeout=10,
+        )
+
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+
+        data = (
+            pd.DataFrame.from_records(r.json()["data"])
+            .drop(columns=["symbol"])
+            .rename(columns={"index": "symbol"})
+            .set_index("symbol")
+            .round(2)
+        )
+
+        INDEXES = get_cboe_index_directory()
+
+        for i in data.index:
+            data.loc[i, ("name")] = INDEXES.at[i, "name"]
+
+        data = data[list(EUR_INDEX_COLUMNS.keys())]
+        data.columns = list(EUR_INDEX_COLUMNS.values())
+
+        return data.reset_index()
+
+    @staticmethod
+    def list_indices(**kwargs) -> pd.DataFrame:
+        """Gets names, currencies, ISINs, regions, and symbols for European indices.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with results.
+        """
+
+        data = Europe.get_all_index_definitions()
+        data = (
+            pd.DataFrame.from_records(pd.DataFrame(data)["index"])
+            .drop(columns=["short_name"])
+            .rename(columns={"long_name": "name"})
+        )
+        return data
+
+    @staticmethod
+    def list_index_constituents(symbol: str, **kwargs) -> list[str]:
+        """List symbols for constituents of a European index.
+
+        Parameters
+        ----------
+        symbol: str
+            The symbol of the index.
+
+        Returns
+        -------
+        list[str]
+            List of constituents as ticker symbols.
+        """
+
+        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+        symbol = symbol.upper()
+
+        if symbol not in SYMBOLS:
+            print(
+                f"The symbol, {symbol}, was not found in the CBOE European Index directory.",
+                "Use `get_european_indices_info()` to see the full list of indices.",
+                sep="\n",
+            )
+            return []
+
+        url = f"https://cdn.cboe.com/api/global/european_indices/definitions/{symbol}.json"
+        r = requests.get(url, timeout=10)
+
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+
+        r_json = r.json()["constituents"]
+
+        return [r_json[i]["constituent_symbol"] for i in range(0, len(r_json))]
+
+    @staticmethod
+    def get_index_constituents_quotes(symbol: str, **kwargs) -> pd.DataFrame:
+        """Get the current quotes for constituents of an index.
+
+        Parameters
+        ----------
+        symbol: str
+            The symbol of the index.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with results.
+        """
+
+        symbol = symbol.upper()
+        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+
+        if symbol not in SYMBOLS:
+            print(
+                "The symbol, "
+                f"{symbol}"
+                ", is not a valid CBOE European index. Use `list_european_indices()` to see the full list of indices."
+            )
+            return pd.DataFrame()
+
+        url = f"https://cdn.cboe.com/api/global/european_indices/constituent_quotes/{symbol}.json"
+
+        r = requests.get(url, timeout=10)
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+
+        r_json = r.json()
+
+        data = (
+            pd.DataFrame.from_records(r_json["data"])[
+                list(EUR_INDEX_CONSTITUENTS_COLUMNS.keys())
+            ]
+            .rename(columns=EUR_INDEX_CONSTITUENTS_COLUMNS)
+            .round(2)
+        )
+
+        return data
+
+    @staticmethod
+    def get_index_intraday(symbol: str, **kwargs) -> pd.DataFrame:
+        """Get one-minute prices for a European index during the most recent trading day.
+
+        Parameters
+        ----------
+        symbol: str
+            The symbol of the index.
+
+        Returns
+        -------
+        pd.DataFrame
+            Pandas DataFrame with results.
+        """
+
+        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+
+        if symbol not in SYMBOLS:
+            print(
+                "The symbol, "
+                f"{symbol}"
+                ", was not found in the CBOE European Index directory."
+            )
+            return pd.DataFrame()
+
+        url = f"https://cdn.cboe.com/api/global/european_indices/intraday_chart_data/{symbol}.json"
+
+        r = requests.get(url, timeout=10)
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+
+        r_json = r.json()["data"]
+
+        data = pd.DataFrame.from_records(pd.DataFrame(r_json)["price"])
+        data["datetime"] = pd.DataFrame(r_json)["datetime"]
+        data["utc_datetime"] = pd.DataFrame(r_json)["utc_datetime"]
+
+        return round(
+            data[["utc_datetime", "datetime", "open", "high", "low", "close"]], 2
+        )
+
+    @staticmethod
+    def get_index_eod(symbol: str, **kwargs) -> List[dict[str, float]]:
+        """Get historical closing levels for a European index.
+
+        Parameters
+        ----------
+        symbol: str
+            The symbol of the index.
+
+        Returns
+        -------
+        List[dict[str, float]]
+            Records of closing levels on each trading day.
+        """
+
+        SYMBOLS = Europe.list_indices()["symbol"].to_list()
+
+        if symbol not in SYMBOLS:
+            print(
+                "The symbol, "
+                f"{symbol}"
+                ", was not found in the CBOE European Index directory."
+            )
+            return pd.DataFrame()
+
+        url = f"https://cdn.cboe.com/api/global/european_indices/index_history/{symbol}.json"
+
+        r = requests.get(url, timeout=10)
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+
+        r_json = r.json()
+
+        return r_json["data"]
