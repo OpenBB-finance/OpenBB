@@ -1,10 +1,8 @@
 """CBOE Helpers Module"""
 
-import os
 from datetime import date, datetime, timedelta
 from io import BytesIO, StringIO
-from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Any, List, Literal, Optional
 
 import numpy as np
 import pandas as pd
@@ -12,8 +10,64 @@ import requests
 import requests_cache
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
-# This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
-# Only used on functions run on import
+
+INDEX_COLUMNS = [
+    "name",
+    "current_price",
+    "open",
+    "high",
+    "low",
+    "close",
+    "prev_day_close",
+    "price_change",
+    "price_change_percent",
+    "last_trade_time",
+    "tick",
+]
+
+INDEX_COLUMN_NAMES = [
+    "name",
+    "price",
+    "open",
+    "high",
+    "low",
+    "close",
+    "prev_close",
+    "change",
+    "change_percent",
+    "last_trade_timestamp",
+    "tick",
+]
+
+EUR_INDEX_COLUMNS = [
+    "name",
+    "current_price",
+    "open",
+    "high",
+    "low",
+    "close",
+    "prev_day_close",
+    "price_change",
+    "price_change_percent",
+    "last_trade_time",
+]
+
+EUR_INDEX_COLUMN_NAMES = [
+    "name",
+    "price",
+    "open",
+    "high",
+    "low",
+    "close",
+    "prev_close",
+    "change",
+    "change_percent",
+    "last_trade_timestamp",
+]
+
+
+# This will cache certain requests for 7 days.  Ideally to speed up subsequent queries.
+# Only used on functions with static values like symbol directories.
 cboe_session = requests_cache.CachedSession(
     "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
 )
@@ -76,12 +130,13 @@ def request(
 
     raise ValueError("Method must be valid HTTP method")
 
+
 def camel_to_snake(string: str) -> str:
     """Convert camelCase to snake_case."""
     return "".join(["_" + i.lower() if i.isupper() else i for i in string]).lstrip("_")
 
 
-def get_cboe_directory() -> pd.DataFrame:
+def get_cboe_directory(**kwargs) -> pd.DataFrame:
     """Get the US Listings Directory for the CBOE.
 
     Returns
@@ -89,96 +144,78 @@ def get_cboe_directory() -> pd.DataFrame:
     pd.DataFrame: CBOE_DIRECTORY
         DataFrame of the CBOE listings directory
     """
-    try:
-        CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
-            StringIO(
-                cboe_session.get(
-                    "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv",
-                    timeout=10,
-                ).text
-            )
-        )
-        CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
-            columns={
-                " Stock Symbol": "Symbol",
-                " DPM Name": "DPM Name",
-                " Post/Station": "Post/Station",
-            }
-        ).set_index("Symbol")
-        return CBOE_DIRECTORY
-    except requests.HTTPError:
-        return pd.DataFrame()
+
+    r = cboe_session.get(
+        "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv",
+        timeout=10,
+    )
+
+    if r.status_code != 200:
+        raise requests.HTTPError(r.status_code)
+
+    r_json = StringIO(r.text)
+
+    CBOE_DIRECTORY = pd.read_csv(r_json)
+
+    CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
+        columns={
+            " Stock Symbol": "symbol",
+            " DPM Name": "dpm_name",
+            " Post/Station": "post_station",
+            "Company Name": "name",
+        }
+    ).set_index("symbol")
+
+    return CBOE_DIRECTORY
 
 
-def get_cboe_index_directory() -> pd.DataFrame:
+def get_cboe_index_directory(**kwargs) -> pd.DataFrame:
     """Get the US Listings Directory for the CBOE
 
     Returns
     -------
     pd.DataFrame: CBOE_INDEXES
     """
-    try:
-        r = cboe_session.get(
-            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json",
-            timeout=10,
-        )
 
-        if r.status_code != 200:
-            raise requests.HTTPError
+    r = cboe_session.get(
+        "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json",
+        timeout=10,
+    )
 
-        CBOE_INDEXES = pd.DataFrame(r.json())
+    if r.status_code != 200:
+        raise requests.HTTPError(r.status_code)
 
-        CBOE_INDEXES = CBOE_INDEXES.rename(
-            columns={
-                "calc_end_time": "Close Time",
-                "calc_start_time": "Open Time",
-                "currency": "Currency",
-                "description": "Description",
-                "display": "Display",
-                "featured": "Featured",
-                "featured_order": "Featured Order",
-                "index_symbol": "Ticker",
-                "mkt_data_delay": "Data Delay",
-                "name": "Name",
-                "tick_days": "Tick Days",
-                "tick_frequency": "Frequency",
-                "tick_period": "Period",
-                "time_zone": "Time Zone",
-            },
-        )
+    CBOE_INDEXES = pd.DataFrame(r.json())
 
-        indices_order: List[str] = [
-            "Ticker",
-            "Name",
-            "Description",
-            "Currency",
-            "Tick Days",
-            "Frequency",
-            "Period",
-            "Time Zone",
-        ]
+    CBOE_INDEXES = CBOE_INDEXES.rename(
+        columns={
+            "calc_end_time": "close_time",
+            "calc_start_time": "open_time",
+            "index_symbol": "symbol",
+            "mkt_data_delay": "data_delay",
+        },
+    )
 
-        CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index(
-            "Ticker"
-        )
+    indices_order: List[str] = [
+        "symbol",
+        "name",
+        "description",
+        "currency",
+        "open_time",
+        "close_time",
+        "tick_days",
+        "tick_frequency",
+        "tick_period",
+        "time_zone",
+        "data_delay",
+    ]
 
-        return CBOE_INDEXES
+    CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index("symbol")
 
-    except requests.HTTPError:
-        return pd.DataFrame()
+    return CBOE_INDEXES
 
 
-INDEXES = get_cboe_index_directory().index.tolist()
-SYMBOLS = pd.DataFrame()
-try:
-    SYMBOLS = get_cboe_directory()
-except SYMBOLS.empty:
-    current_dir = os.path.dirname(os.path.realpath(__file__))
-    file = "cboe_companies.json"
-    SYMBOLS = pd.read_json(Path(current_dir, file))
-
-
-def stock_search(query: str, ticker: bool = False) -> dict:
+def stock_search(query: str, ticker: bool = False, **kwargs) -> dict:
     """Search the CBOE company directory by name or ticker.
     Parameters
     -----------
@@ -193,173 +230,67 @@ def stock_search(query: str, ticker: bool = False) -> dict:
         Dictionary of the results.
     """
     data = {}
-    symbols = SYMBOLS.copy() if not SYMBOLS.empty else get_cboe_directory()
-    symbols = symbols.reset_index()
-    target = "Company Name" if not ticker else "Symbol"
+    symbols = get_cboe_directory().reset_index()
+    target = "name" if not ticker else "symbol"
     idx = symbols[target].str.contains(query, case=False)
     result = symbols[idx].to_dict("records")
     if len(result) > 0:
         data.update({"results": result})
         return data
     print(f"No results found for: {query}.  Try another search query.")
-    return pd.DataFrame()
+    return {}
 
 
-def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
-    """Get basic info for the symbol and expiration dates
-
-    Parameters
-    ----------
-    symbol: str
-        The ticker to lookup
-
-    Returns
-    -------
-    Tuple: [pd.DataFrame, pd.Series]
-        ticker_details
-        ticker_expirations
-    """
-
-    stock = "stock"
-    index = "index"
+def get_ticker_info(symbol: str) -> dict[str, Any]:
     symbol = symbol.upper()
-    new_ticker: str = ""
-    ticker_details = pd.DataFrame()
-    ticker_expirations: list = []
-    try:
-        if symbol in TICKER_EXCEPTIONS:
-            new_ticker = "^" + symbol
-        else:
-            if symbol not in INDEXES:
-                new_ticker = symbol
+    SYMBOLS = get_cboe_directory()
+    INDEXES = get_cboe_index_directory()
+    data: dict[str, Any] = {}
 
-            elif symbol in INDEXES:
-                new_ticker = "^" + symbol
+    if symbol not in SYMBOLS.index and symbol not in INDEXES.index:
+        print(f"Data not found for: {symbol}")
+        return data
 
-                # Get the data to return, and if none returns empty Tuple #
+    url = (
+        f"https://cdn.cboe.com/api/global/delayed_quotes/quotes/_{symbol}.json"
+        if symbol in INDEXES.index or symbol in TICKER_EXCEPTIONS
+        else f"https://cdn.cboe.com/api/global/delayed_quotes/quotes/{symbol}.json"
+    )
 
-        symbol_info_url = (
-            "https://www.cboe.com/education/tools/trade-optimizer/symbol-info/?symbol="
-            f"{new_ticker}"
+    r = request(url, timeout=10)
+
+    if r.status_code not in set([200, 403]):
+        raise requests.HTTPError(r.status_code)
+
+    if r.status_code == 403:
+        raise requests.HTTPError(
+            f"Data not found for, {symbol}. Perhaps it is a European symbol?"
         )
 
-        symbol_info = request(symbol_info_url)
-        symbol_info_json = pd.Series(symbol_info.json())
+    data = r.json()["data"]
 
-        if symbol_info_json.success is False:
-            ticker_details = pd.DataFrame()
-            ticker_expirations = []
-            print("No data found for the symbol: " f"{symbol}" "")
-        else:
-            symbol_details = pd.Series(symbol_info_json["details"])
-            symbol_details = pd.DataFrame(symbol_details).transpose()
-            symbol_details = symbol_details.reset_index()
-            ticker_expirations = symbol_info_json["expirations"]
+    if symbol in SYMBOLS.index.to_list():
+        data.update({"name": SYMBOLS.at[symbol, "name"]})
+    if symbol in INDEXES.index.to_list():
+        data.update({"name": INDEXES.at[symbol, "name"]})
 
-            # Cleans columns depending on if the security type is a stock or an index
+    _data = pd.DataFrame.from_dict(data, orient="index").transpose()
 
-            type_ = symbol_details.security_type
+    _data = _data.rename(
+        columns={
+            "current_price": "price",
+            "prev_day_close": "prev_close",
+            "price_change": "change",
+            "price_change_percent": "change_percent",
+            "last_trade_time": "last_trade_timestamp",
+            "security_type": "type",
+        }
+    )
 
-            if stock[0] in type_[0]:
-                stock_details = symbol_details
-                ticker_details = pd.DataFrame(stock_details).rename(
-                    columns={
-                        "current_price": "price",
-                        "bid_size": "bidSize",
-                        "ask_size": "askSize",
-                        "iv30": "ivThirty",
-                        "prev_day_close": "previousClose",
-                        "price_change": "change",
-                        "price_change_percent": "changePercent",
-                        "iv30_change": "ivThirtyChange",
-                        "iv30_percent_change": "ivThirtyChangePercent",
-                        "last_trade_time": "lastTradeTimestamp",
-                        "exchange_id": "exchangeID",
-                        "tick": "tick",
-                        "security_type": "type",
-                    }
-                )
-                details_columns = [
-                    "symbol",
-                    "type",
-                    "tick",
-                    "bid",
-                    "bidSize",
-                    "askSize",
-                    "ask",
-                    "price",
-                    "open",
-                    "high",
-                    "low",
-                    "close",
-                    "volume",
-                    "previousClose",
-                    "change",
-                    "changePercent",
-                    "ivThirty",
-                    "ivThirtyChange",
-                    "ivThirtyChangePercent",
-                    "lastTradeTimestamp",
-                ]
-                ticker_details = (
-                    pd.DataFrame(ticker_details, columns=details_columns)
-                    .set_index(keys="symbol")
-                    .dropna(axis=1)
-                    .transpose()
-                )
-
-            if index[0] in type_[0]:
-                index_details = symbol_details
-                ticker_details = pd.DataFrame(index_details).rename(
-                    columns={
-                        "symbol": "symbol",
-                        "security_type": "type",
-                        "current_price": "price",
-                        "price_change": "change",
-                        "price_change_percent": "changePercent",
-                        "prev_day_close": "previousClose",
-                        "iv30": "ivThirty",
-                        "iv30_change": "ivThirtyChange",
-                        "iv30_change_percent": "ivThirtyChangePercent",
-                        "last_trade_time": "lastTradeTimestamp",
-                    }
-                )
-
-                index_columns = [
-                    "symbol",
-                    "type",
-                    "tick",
-                    "price",
-                    "open",
-                    "high",
-                    "low",
-                    "close",
-                    "previousClose",
-                    "change",
-                    "changePercent",
-                    "ivThirty",
-                    "ivThirtyChange",
-                    "ivThirtyChangePercent",
-                    "lastTradeTimestamp",
-                ]
-
-                ticker_details = (
-                    pd.DataFrame(ticker_details, columns=index_columns)
-                    .set_index(keys="symbol")
-                    .dropna(axis=1)
-                    .transpose()
-                ).rename(columns={f"{new_ticker}": f"{symbol}"})
-
-    except requests.HTTPError:
-        print("There was an error with the request'\n")
-        ticker_details = pd.DataFrame()
-        ticker_expirations = list()
-        return ticker_details, ticker_expirations
-
-    return ticker_details, ticker_expirations
+    return _data.transpose()[0].to_dict()
 
 
-def get_ticker_iv(symbol: str) -> pd.DataFrame:
+def get_ticker_iv(symbol: str) -> dict[str, float]:
     """Get annualized high/low historical and implied volatility over 30/60/90 day windows.
 
     Parameters
@@ -372,78 +303,34 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
     pd.DataFrame: ticker_iv
     """
 
-    # Checks ticker to determine if ticker is an index or an exception that requires modifying the request's URLs
+    symbol = symbol.upper()
 
-    try:
-        if symbol in TICKER_EXCEPTIONS:
-            quotes_iv_url = (
-                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                f"{symbol}"
-                ".json"
-            )
-        else:
-            if symbol not in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
-                    f"{symbol}"
-                    ".json"
-                )
+    INDEXES = get_cboe_index_directory().index.to_list()
 
-            elif symbol in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                    f"{symbol}"
-                    ".json"
-                )
-        h_iv = request(quotes_iv_url)
+    quotes_iv_url = (
+        "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
+        f"{symbol}"
+        ".json"
+        if symbol in TICKER_EXCEPTIONS or symbol in INDEXES
+        else f"https://cdn.cboe.com/api/global/delayed_quotes/historical_data/{symbol}.json"
+    )
 
-        if h_iv.status_code != 200:
-            print("No data found for the symbol: " f"{symbol}" "")
-            return pd.DataFrame()
+    h_iv = request(quotes_iv_url)
 
-        data = h_iv.json()
-        h_data = pd.DataFrame(data)[2:-1]["data"].rename(f"{symbol}")
-        h_data.rename(
-            {
-                "hv30_annual_high": "hvThirtyOneYearHigh",
-                "hv30_annual_low": "hvThirtyOneYearLow",
-                "hv60_annual_high": "hvSixtyOneYearHigh",
-                "hv60_annual_low": "hvSixtyOneYearLow",
-                "hv90_annual_high": "hvNinetyOneYearHigh",
-                "hv90_annual_low": "hvNinetyOneYearLow",
-                "iv30_annual_high": "ivThirtyOneYearHigh",
-                "iv30_annual_low": "ivThirtyOneYearLow",
-                "iv60_annual_high": "ivSixtyOneYearHigh",
-                "iv60_annual_low": "ivSixtyOneYearLow",
-                "iv90_annual_high": "ivNinetyOneYearHigh",
-                "iv90_annual_low": "ivNinetyOneYearLow",
-            },
-            inplace=True,
+    if h_iv.status_code not in set([200, 403]):
+        raise requests.HTTPError(h_iv.status_code)
+
+    if h_iv.status_code == 403:
+        raise requests.HTTPError(
+            f"Data not found for, {symbol}. Perhaps it is a European symbol?"
         )
 
-        iv_order = [
-            "ivThirtyOneYearHigh",
-            "hvThirtyOneYearHigh",
-            "ivThirtyOneYearLow",
-            "hvThirtyOneYearLow",
-            "ivSixtyOneYearHigh",
-            "hvSixtyOneYearHigh",
-            "ivSixtyOneYearLow",
-            "hvSixtyOneYearLow",
-            "ivNinetyOneYearHigh",
-            "hvNinetyOneYearHigh",
-            "ivNinetyOneYearLow",
-            "hvNinetyOneYearLow",
-        ]
+    data = pd.DataFrame(h_iv.json())[2:-1]["data"].rename(f"{symbol}")
 
-        ticker_iv = pd.DataFrame(h_data).transpose()
-    except requests.HTTPError:
-        print("There was an error with the request'\n")
-
-    return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
+    return data.to_dict()
 
 
-def get_chains(symbol: str) -> pd.DataFrame:
+def get_chains(symbol: str, **kwargs) -> pd.DataFrame:
     """Get the complete options chains for a ticker.
 
     Parameters
@@ -457,148 +344,108 @@ def get_chains(symbol: str) -> pd.DataFrame:
         DataFrame with all active options contracts for the underlying symbol.
     """
 
-    # Checks ticker to determine if ticker is an index or an exception that requires modifying the request's URLs.
     symbol = symbol.upper()
-    try:
-        if symbol in TICKER_EXCEPTIONS:
-            quotes_url = (
-                "https://cdn.cboe.com/api/global/delayed_quotes/options/_"
-                f"{symbol}"
-                ".json"
-            )
-        else:
-            if symbol not in INDEXES:
-                quotes_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/options/"
-                    f"{symbol}"
-                    ".json"
-                )
-            if symbol in INDEXES:
-                quotes_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/options/_"
-                    f"{symbol}"
-                    ".json"
-                )
 
-        r = request(quotes_url)
-        if r.status_code != 200:
-            print("No data found for the symbol: " f"{symbol}" "")
-            return pd.DataFrame()
+    INDEXES = get_cboe_index_directory()
+    SYMBOLS = get_cboe_directory()
 
-        r_json = r.json()
-        data = pd.DataFrame(r_json["data"])
-        options = pd.Series(data.options, index=data.index)
-        options_columns = list(options[0])
-        options_data = list(options[:])
-        options_df = pd.DataFrame(options_data, columns=options_columns)
-
-        options_df = options_df.rename(
-            columns={
-                "option": "contractSymbol",
-                "bid_size": "bidSize",
-                "ask_size": "askSize",
-                "iv": "impliedVolatility",
-                "open_interest": "openInterest",
-                "theo": "theoretical",
-                "last_trade_price": "lastTradePrice",
-                "last_trade_time": "lastTradeTimestamp",
-                "percent_change": "changePercent",
-                "prev_day_close": "previousClose",
-            }
-        )
-
-        # Parses the option symbols into columns for expiration, strike, and optionType
-
-        option_df_index = options_df["contractSymbol"].str.extractall(
-            r"^(?P<Ticker>\D*)(?P<expiration>\d*)(?P<optionType>\D*)(?P<strike>\d*)"
-        )
-        option_df_index = option_df_index.reset_index().drop(
-            columns=["match", "level_0"]
-        )
-        option_df_index.optionType = option_df_index.optionType.str.replace(
-            "C", "call"
-        ).str.replace("P", "put")
-        option_df_index.strike = [ele.lstrip("0") for ele in option_df_index.strike]
-        option_df_index.strike = pd.Series(option_df_index.strike).astype(float)
-        option_df_index.strike = option_df_index.strike * (1 / 1000)
-        option_df_index.strike = option_df_index.strike.to_list()
-        option_df_index.expiration = [
-            ele.lstrip("1") for ele in option_df_index.expiration
-        ]
-        option_df_index.expiration = pd.DatetimeIndex(
-            option_df_index.expiration, yearfirst=True
-        ).astype(str)
-        option_df_index = option_df_index.drop(columns=["Ticker"])
-
-        # Joins the parsed symbol into the dataframe.
-
-        quotes = option_df_index.join(options_df)
-
-        now = datetime.now()
-        temp = pd.DatetimeIndex(quotes.expiration)
-        temp_ = (temp - now).days + 1
-        quotes["dte"] = temp_
-
-        quotes["lastTradeTimestamp"] = pd.to_datetime(quotes["lastTradeTimestamp"])
-        quotes = quotes.set_index(
-            keys=["expiration", "strike", "optionType"]
-        ).sort_index()
-        quotes["openInterest"] = quotes["openInterest"].astype("int64")
-        quotes["volume"] = quotes["volume"].astype("int64")
-        quotes["bidSize"] = quotes["bidSize"].astype("int64")
-        quotes["askSize"] = quotes["askSize"].astype("int64")
-        quotes["previousClose"] = round(quotes["previousClose"], 2)
-        quotes["changePercent"] = round(quotes["changePercent"], 2)
-
-    except requests.HTTPError:
-        print("There was an error with the request'\n")
+    if symbol not in SYMBOLS.index:
+        print(f"{symbol} was not found in the CBOE directory.")
         return pd.DataFrame()
+
+    quotes_url = (
+        f"https://cdn.cboe.com/api/global/delayed_quotes/options/_{symbol}.json"
+        if symbol in TICKER_EXCEPTIONS or symbol in INDEXES.index
+        else f"https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"
+    )
+
+    r = request(quotes_url)
+    if r.status_code != 200:
+        print(f"No options data found for the symbol, {symbol}.")
+        return pd.DataFrame()
+
+    r_json = r.json()
+    data = pd.DataFrame(r_json["data"])
+    options = pd.Series(data.options, index=data.index)
+    options_columns = list(options[0])
+    options_data = list(options[:])
+    options_df = pd.DataFrame(options_data, columns=options_columns)
+
+    options_df = options_df.rename(
+        columns={
+            "option": "contract_symbol",
+            "iv": "implied_volatility",
+            "theo": "theoretical",
+            "last_trade_price": "last_trade_price",
+            "last_trade_time": "last_trade_timestamp",
+            "percent_change": "change_percent",
+            "prev_day_close": "prev_close",
+        }
+    )
+
+    # Parses the option symbols into columns for expiration, strike, and option_type
+
+    option_df_index = options_df["contract_symbol"].str.extractall(
+        r"^(?P<Ticker>\D*)(?P<expiration>\d*)(?P<option_type>\D*)(?P<strike>\d*)"
+    )
+    option_df_index = option_df_index.reset_index().drop(columns=["match", "level_0"])
+    option_df_index.option_type = option_df_index.option_type.str.replace(
+        "C", "call"
+    ).str.replace("P", "put")
+    option_df_index.strike = [ele.lstrip("0") for ele in option_df_index.strike]
+    option_df_index.strike = pd.Series(option_df_index.strike).astype(float)
+    option_df_index.strike = option_df_index.strike * (1 / 1000)
+    option_df_index.strike = option_df_index.strike.to_list()
+    option_df_index.expiration = [ele.lstrip("1") for ele in option_df_index.expiration]
+    option_df_index.expiration = pd.DatetimeIndex(
+        option_df_index.expiration, yearfirst=True
+    ).astype(str)
+    option_df_index = option_df_index.drop(columns=["Ticker"])
+
+    # Joins the parsed symbol into the dataframe.
+
+    quotes = option_df_index.join(options_df)
+
+    now = datetime.now()
+    temp = pd.DatetimeIndex(quotes.expiration)
+    temp_ = (temp - now).days + 1
+    quotes["dte"] = temp_
+
+    quotes["last_trade_timestamp"] = pd.to_datetime(quotes["last_trade_timestamp"])
+    quotes = quotes.set_index(keys=["expiration", "strike", "option_type"]).sort_index()
+    quotes["open_interest"] = quotes["open_interest"].astype("int64")
+    quotes["volume"] = quotes["volume"].astype("int64")
+    quotes["bid_size"] = quotes["bid_size"].astype("int64")
+    quotes["ask_size"] = quotes["ask_size"].astype("int64")
+    quotes["prev_close"] = round(quotes["prev_close"], 2)
+    quotes["change_percent"] = round(quotes["change_percent"], 2)
 
     return quotes.reset_index()
 
 
 def __generate_historical_prices_url(
-    symbol, data_type: Optional[str] = "historical"
+    symbol, data_type: Optional[Literal["intraday", "historical"]] = "historical"
 ) -> str:
     """Generate the final URL for historical prices data."""
 
     url: str = ""
+    INDEXES = get_cboe_index_directory().index.to_list()
 
-    if data_type not in ["historical", "intraday"]:
-        print(
-            "Invalid data_type. Must be either 'historical' or 'intraday'. Defaulting to 'historical'."
-        )
-        data_type = "historical"
+    url = (
+        f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/_{symbol}.json"
+        if symbol in TICKER_EXCEPTIONS or symbol in INDEXES
+        else f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/{symbol}.json"
+    )
 
-    if symbol in TICKER_EXCEPTIONS:
-        url = (
-            f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/_"
-            f"{symbol}"
-            ".json"
-        )
-    else:
-        if symbol not in INDEXES:
-            url = (
-                f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/"
-                f"{symbol}"
-                ".json"
-            )
-
-        elif symbol in INDEXES:
-            url = (
-                f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/_"
-                f"{symbol}"
-                ".json"
-            )
     return url
 
 
-def get_eod_prices(
+def get_us_eod_prices(
     symbol: str,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
 ) -> pd.DataFrame:
-    """Get EOD data from CBOE.
+    """Get US EOD data from CBOE.
 
     Parameters
     ----------
@@ -612,19 +459,25 @@ def get_eod_prices(
     Returns
     -------
     pd.DataFrame
-        DataFrame of daily EOD OHLC+V prices.
+        DataFrame of daily OHLC+V prices.
     """
 
+    SYMBOLS = get_cboe_directory()
+    INDEXES = get_cboe_index_directory().index.to_list()
     symbol = symbol.upper()
+
     if symbol == ("NDX", "^NDX"):
         print("NDX time series data is not currently supported by the CBOE provider.")
         return pd.DataFrame()
+
     if "^" in symbol:
         symbol = symbol.replace("^", "")
+
     now = datetime.now()
     start_date = start_date if start_date else now - timedelta(days=50000)
     end_date = end_date if end_date else now
-    if symbol not in SYMBOLS.index:
+
+    if symbol not in SYMBOLS.index and symbol not in INDEXES:
         print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
         return pd.DataFrame()
 
@@ -648,17 +501,17 @@ def get_eod_prices(
         day_minus = today.weekday() - 4
         today = pd.to_datetime(today - timedelta(days=day_minus))
     if today != data.index[-1]:
-        _today, _ = get_ticker_info(symbol)
-        today_df = pd.DataFrame()
-        today_df["open"] = round(_today.loc["open"].astype(float), 2)
-        today_df["high"] = round(_today.loc["high"].astype(float), 2)
-        today_df["low"] = round(_today.loc["low"].astype(float), 2)
-        today_df["close"] = round(_today.loc["close"].astype(float), 2)
+        _today = pd.Series(get_ticker_info(symbol))
+        today_df = pd.Series(dtype="object")
+        today_df["open"] = round(_today["open"], 2)
+        today_df["high"] = round(_today["high"], 2)
+        today_df["low"] = round(_today["low"], 2)
+        today_df["close"] = round(_today["close"], 2)
         if symbol not in INDEXES and symbol not in TICKER_EXCEPTIONS:
             data = data[data["volume"] > 0]
-            today_df["volume"] = _today.loc["volume"]
-        today_df["date"] = today
-        today_df = today_df.reset_index(drop=True).set_index("date")
+            today_df["volume"] = _today["volume"]
+        today_df["date"] = today.date()
+        today_df = pd.DataFrame(today_df).transpose().set_index("date")
 
         data = pd.concat([data, today_df], axis=0)
 
@@ -683,7 +536,7 @@ def get_eod_prices(
     return data.reset_index()
 
 
-def get_info(symbol: str) -> pd.DataFrame:
+def get_us_info(symbol: str) -> pd.DataFrame:
     """Get information and current statistics for a ticker.
 
     Parameters
@@ -697,20 +550,154 @@ def get_info(symbol: str) -> pd.DataFrame:
         Pandas DataFrame with results.
     """
 
-    symbol = symbol.upper()
     info = pd.DataFrame()
+    symbol = symbol.upper()
+    INDEXES = get_cboe_index_directory().index.to_list()
+    SYMBOLS = get_cboe_directory()
 
-    _info = get_ticker_info(symbol)[0]
-    _iv = get_ticker_iv(symbol)
+    if symbol not in SYMBOLS.index and symbol not in INDEXES:
+        print(f"The symbol, {symbol}, was not found in the CBOE directory.")
+        return pd.DataFrame()
+
+    _info = pd.Series(get_ticker_info(symbol))
+    _iv = pd.Series(get_ticker_iv(symbol))
     info = pd.concat([_info, _iv])
-    info.index = [camel_to_snake(c) for c in info.index]
-    info.loc["symbol", symbol] = symbol
-    info.loc["name", symbol] = SYMBOLS[SYMBOLS.index == symbol]["Company Name"][0]
+    info = pd.DataFrame(info).transpose()
+    info = info[
+        [
+            "name",
+            "symbol",
+            "type",
+            "exchange_id",
+            "tick",
+            "price",
+            "change",
+            "change_percent",
+            "open",
+            "high",
+            "low",
+            "close",
+            "prev_close",
+            "volume",
+            "iv30",
+            "iv30_change",
+            "iv30_change_percent",
+            "iv30_annual_high",
+            "iv30_annual_low",
+            "hv30_annual_high",
+            "hv30_annual_low",
+            "iv60_annual_high",
+            "iv60_annual_low",
+            "hv60_annual_high",
+            "hv60_annual_low",
+            "iv90_annual_high",
+            "iv90_annual_low",
+            "hv90_annual_high",
+            "hv90_annual_low",
+            "last_trade_timestamp",
+            "seqno",
+        ]
+    ]
 
-    return info[symbol]
+    return info.transpose()[0].to_dict()
 
 
-def list_futures(**kwargs) -> pd.DataFrame:
+def get_european_index_definitions() -> dict[Any, Any]:
+    """Get the full list of European index definitions.
+
+    Returns
+    -------
+    dict[Any, Any]
+        Dictionary with results.
+    """
+
+    r = cboe_session.get(
+        "https://cdn.cboe.com/api/global/european_indices/definitions/all-definitions.json",
+        timeout=10,
+    )
+
+    if r.status_code != 200:
+        raise requests.HTTPError(r.status_code)
+    return r.json()["data"]
+
+
+def get_european_indices_quotes() -> pd.DataFrame:
+    """Get the complete list of European indices and their current quotes.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with results.
+    """
+
+    INDEXES = get_cboe_index_directory()
+
+    r = request(
+        "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
+    )
+
+    if r.status_code != 200:
+        raise requests.HTTPError(r.status_code)
+
+    data = (
+        pd.DataFrame.from_records(r.json()["data"])
+        .drop(columns=["symbol"])
+        .rename(columns={"index": "symbol"})
+        .set_index("symbol")
+    )
+
+    for i in data.index:
+        data.loc[i, ("name")] = INDEXES.at[i, "name"]
+
+    data = data[EUR_INDEX_COLUMNS]
+    data.columns = EUR_INDEX_COLUMN_NAMES
+
+    return data.reset_index()
+
+
+def get_european_indices_info() -> pd.DataFrame:
+    """Gets names, currencies, ISINs, regions, and symbols for European indices.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with results.
+    """
+
+    data = get_european_index_definitions()
+    data = pd.DataFrame.from_records(pd.DataFrame(data)["index"])
+    return data
+
+
+def get_european_index_intraday(symbol: str) -> pd.DataFrame:
+    """Get one-minute prices for a European index during the most recent trading day."""
+
+    EURO_INDICES = get_european_indices_info()["symbol"].to_list()
+
+    if symbol not in EURO_INDICES:
+        print(
+            "The symbol, "
+            f"{symbol}"
+            ", was not found in the CBOE European Index directory."
+        )
+        return pd.DataFrame()
+
+    url = f"https://cdn.cboe.com/api/global/european_indices/intraday_chart_data/{symbol}.json"
+
+    r = request(url)
+    if r.status_code != 200:
+        raise requests.HTTPError(r.status_code)
+
+    r_json = r.json()["data"]
+
+    data = pd.DataFrame.from_records(pd.DataFrame(r_json)["price"])
+    data["datetime"] = pd.DataFrame(r_json)["datetime"]
+    data["utc_datetime"] = pd.DataFrame(r_json)["utc_datetime"]
+
+    return round(data[["utc_datetime", "datetime", "open", "high", "low", "close"]], 2)
+
+
+def list_futures(**kwargs) -> List[dict]:
     """List of CBOE futures and their underlying symbols.
 
     Returns
@@ -724,11 +711,9 @@ def list_futures(**kwargs) -> pd.DataFrame:
     )
 
     if r.status_code != 200:
-        raise HTTPError(r.status_code)
+        raise requests.HTTPError(r.status_code)
 
-    data = pd.DataFrame(r.json()["data"])
-
-    return data
+    return r.json()["data"]
 
 
 def get_settlement_prices(
@@ -776,7 +761,7 @@ def get_settlement_prices(
     r = request(url)
 
     if r.status_code != 200:
-        raise HTTPError(r.status_code)
+        raise requests.HTTPError(r.status_code)
 
     data = pd.read_csv(BytesIO(r.content), index_col=None, parse_dates=True)
 
@@ -787,6 +772,7 @@ def get_settlement_prices(
         return pd.DataFrame()
 
     data.columns = [camel_to_snake(c.replace(" ", "")) for c in data.columns]
+    data = data.rename(columns={"expiration_date": "expiration"})
 
     if len(data) > 0:
         return data
@@ -823,8 +809,8 @@ def get_curve(
             f"{FUTURES['product'].unique().tolist()}"
         )
         return pd.DataFrame()
+
     data = get_settlement_prices(settlement_date=date)
-    data = data.query("`product` == @symbol").rename(
-        columns={"expiration_date": "expiration"}
-    )
+    data = data.query("`product` == @symbol")
+
     return data.set_index("expiration")[["symbol", "price"]]

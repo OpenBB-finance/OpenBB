@@ -24,19 +24,19 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 class CboeOptionsChainsData(OptionsChainsData):
     """CBOE Options Chains Data."""
 
-    contractSymbol: str = Field(
+    contract_symbol: str = Field(
         description="Contract symbol for the option.",
     )
     dte: int = Field(
         description="Days to expiration for the option.",
     )
-    bidSize: int = Field(
+    bid_size: int = Field(
         description="Bid size for the option.",
     )
-    askSize: int = Field(
+    ask_size: int = Field(
         description="Ask size for the option.",
     )
-    impliedVolatility: float = Field(
+    implied_volatility: float = Field(
         description="Implied volatility of the option.",
     )
     delta: float = Field(
@@ -66,22 +66,22 @@ class CboeOptionsChainsData(OptionsChainsData):
     low: float = Field(
         description="Low price of the option.",
     )
-    lastTradePrice: float = Field(
+    last_trade_price: float = Field(
         description="Last trade price of the option.",
     )
     tick: str = Field(
         description="Whether the last tick was up or down in price.",
     )
-    previousClose: float = Field(
+    prev_close: float = Field(
         description="Previous closing price of the option.",
     )
     change: float = Field(
         description="Change in  price of the option.",
     )
-    changePercent: float = Field(
+    change_percent: float = Field(
         description="Change, in percent, of the option.",
     )
-    lastTradeTimestamp: datetime = Field(
+    last_trade_timestamp: datetime = Field(
         description="Last trade timestamp of the option.",
     )
 
