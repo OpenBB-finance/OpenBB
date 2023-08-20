@@ -1,5 +1,6 @@
 """Available Indices fetcher for CBOE"""
 
+from datetime import time
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -9,7 +10,7 @@ from openbb_provider.standard_models.available_indices import (
 )
 from pydantic import Field
 
-from openbb_cboe.utils.helpers import Europe
+from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 
 
 class CboeAvailableIndicesQueryParams(AvailableIndicesQueryParams):
@@ -18,6 +19,10 @@ class CboeAvailableIndicesQueryParams(AvailableIndicesQueryParams):
     Source: https://www.cboe.com/europe/indices/
     """
 
+    europe: bool = Field(
+        description="Filter for European indices. False for US indices.", default=False
+    )
+
 
 class CboeAvailableIndicesData(AvailableIndicesData):
     """CBOE Available Indices data.
@@ -25,9 +30,47 @@ class CboeAvailableIndicesData(AvailableIndicesData):
     Source: https://www.cboe.com/europe/indices/
     """
 
-    isin: Optional[str] = Field(description="ISIN code for the index.")
+    isin: Optional[str] = Field(
+        description="ISIN code for the index. Valid only for European indices."
+    )
 
-    region: Optional[str] = Field(description="Region for the index.")
+    region: Optional[str] = Field(
+        description="Region for the index. Valid only for European indices"
+    )
+
+    symbol: Optional[str] = Field(description="Symbol for the index.")
+
+    description: Optional[str] = Field(
+        description="Description for the index. Valid only for US indices."
+    )
+
+    data_delay: Optional[int] = Field(
+        description="Data delay for the index. Valid only for US indices."
+    )
+
+    open_time: Optional[time] = Field(
+        description="Opening time for the index. Valid only for US indices."
+    )
+
+    close_time: Optional[time] = Field(
+        description="Closing time for the index. Valid only for US indices."
+    )
+
+    time_zone: Optional[str] = Field(
+        description="Time zone for the index. Valid only for US indices."
+    )
+
+    tick_days: Optional[str] = Field(
+        description="The trading days for the index. Valid only for US indices."
+    )
+
+    tick_frequency: Optional[str] = Field(
+        description="The frequency of the index ticks. Valid only for US indices."
+    )
+
+    tick_period: Optional[str] = Field(
+        description="The period of the index ticks. Valid only for US indices."
+    )
 
 
 class CboeAvailableIndicesFetcher(
@@ -52,7 +95,9 @@ class CboeAvailableIndicesFetcher(
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
 
-        return Europe.list_indices()
+        if query.europe is True:
+            return Europe.list_indices()
+        return get_cboe_index_directory().sort_index().reset_index().to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeAvailableIndicesData]:

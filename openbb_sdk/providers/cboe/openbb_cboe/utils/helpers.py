@@ -146,7 +146,17 @@ def get_cboe_index_directory(**kwargs) -> pd.DataFrame:
 
     CBOE_INDEXES = pd.DataFrame(CBOE_INDEXES, columns=indices_order).set_index("symbol")
 
-    return CBOE_INDEXES
+    idx = (
+        (CBOE_INDEXES.time_zone.str.contains("America/Chicago"))
+        & (CBOE_INDEXES.currency.str.contains("USD"))
+        & (CBOE_INDEXES.description.str.contains("Daily Risk Control") == 0)
+        & (CBOE_INDEXES.name.str.contains("OEX%-SML% INDEX") == 0)
+        & (CBOE_INDEXES.name.str.contains("Defined Risk Volatility Income") == 0)
+        & (CBOE_INDEXES.description.str.contains("is designed to track") == 0)
+        & (CBOE_INDEXES.description.str.contains("is designed to track") == 0)
+    )
+
+    return CBOE_INDEXES[idx]
 
 
 def stock_search(query: str, ticker: bool = False, **kwargs) -> dict:
@@ -197,9 +207,8 @@ def get_ticker_info(symbol: str, **kwargs) -> dict[str, Any]:
         raise requests.HTTPError(r.status_code)
 
     if r.status_code == 403:
-        raise requests.HTTPError(
-            f"Data not found for, {symbol}. Perhaps it is a European symbol?"
-        )
+        print(f"Data was not found for, {symbol}.")
+        return pd.DataFrame()
 
     data = r.json()["data"]
 
@@ -255,9 +264,8 @@ def get_ticker_iv(symbol: str, **kwargs) -> dict[str, float]:
         raise requests.HTTPError(h_iv.status_code)
 
     if h_iv.status_code == 403:
-        raise requests.HTTPError(
-            f"Data not found for, {symbol}. Perhaps it is a European symbol?"
-        )
+        print(f"Data was not found for, {symbol}.")
+        return pd.DataFrame()
 
     data = pd.DataFrame(h_iv.json())[2:-1]["data"].rename(f"{symbol}")
 
