@@ -15,8 +15,8 @@
     - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
     - [4.1.2. Utilities](#412-utilities)
-      - [Settings](#settings)
-      - [System](#system)
+      - [User settings](#user-settings)
+      - [System settings](#system-settings)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
   - [4.2 Dynamic version](#42-dynamic-version)
@@ -230,7 +230,7 @@ date
 
 ### 4.1.2. Utilities
 
-#### Settings
+#### User settings
 
 These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
 
@@ -243,7 +243,7 @@ obb.user.preferences
 obb.user.defaults
 ```
 
-#### System
+#### System settings
 
 Check your system settings. Most of the properties are read-only during runtime.
 
