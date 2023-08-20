@@ -237,10 +237,10 @@ These are your user settings, you can change them anytime and they will be appli
 ```python
 from openbb import obb
 
-obb.settings.profile
-obb.settings.credentials
-obb.settings.preferences
-obb.settings.defaults
+obb.user.profile
+obb.user.credentials
+obb.user.preferences
+obb.user.defaults
 ```
 
 #### System
@@ -298,7 +298,7 @@ obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 
 # Change a credential
-obb.account.settings.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
+obb.user.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
 
 # Save account changes
 obb.account.save()
