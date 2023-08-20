@@ -262,9 +262,9 @@ Obtain the coverage of providers and commands.
 ```python
 >>> obb.coverage.commands
 {
-    '/crypto/load': ['fmp', 'polygon'],
-    '/economy/const': ['fmp'],
-    '/economy/cpi': ['fred'],
+    '.crypto.load': ['fmp', 'polygon'],
+    '.economy.const': ['fmp'],
+    '.economy.cpi': ['fred'],
     ...
 }
 ```
@@ -274,12 +274,12 @@ Obtain the coverage of providers and commands.
 {
     'fmp':
     [
-        '/crypto/load',
-        '/economy/const',
-        '/economy/index',
+        '.crypto.load',
+        '.economy.const',
+        '.economy.index',
         ...
     ],
-    'fred': ['/economy/cpi'],
+    'fred': ['.economy.cpi'],
     ...
 }
 ```
