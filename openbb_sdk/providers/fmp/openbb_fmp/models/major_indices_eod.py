@@ -33,14 +33,14 @@ class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
 class FMPMajorIndicesEODData(MajorIndicesEODData):
     """FMP Major Indices end of day Data."""
 
-    adjClose: Optional[float] = Field(
+    adj_close: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.",
-        alias="adj_close",
+        alias="adjClose",
         default=None,
     )
-    unadjustedVolume: Optional[float] = Field(
+    unadjusted_volume: Optional[float] = Field(
         description="Unadjusted volume of the symbol.",
-        alias="unadjusted_volume",
+        alias="unadjustedVolume",
         default=None,
     )
     change: Optional[float] = Field(
@@ -48,17 +48,17 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         alias="change",
         default=None,
     )
-    changePercent: Optional[float] = Field(
+    change_percent: Optional[float] = Field(
         description=r"Change \% in the price of the symbol.",
-        alias="change_percent",
+        alias="changePercent",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
-    changeOverTime: Optional[float] = Field(
+    change_over_time: Optional[float] = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
-        alias="change_over_time",
+        alias="changeOverTime",
         default=None,
     )
     vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
