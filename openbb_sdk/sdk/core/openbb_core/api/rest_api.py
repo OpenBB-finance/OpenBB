@@ -1,13 +1,12 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from openbb_core.api.dependency.system import get_system_settings
 from openbb_core.api.dependency.user import get_user_service
 from openbb_core.api.router.account import router as router_account
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
-from openbb_core.api.router.settings import router as router_settings
 from openbb_core.api.router.system import router as router_system
+from openbb_core.api.router.user import router as router_user
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
@@ -28,7 +27,7 @@ app = FastAPI(
     },
 )
 app.include_router(router=router_account, prefix="/api/v1")
-app.include_router(router=router_settings, prefix="/api/v1")
+app.include_router(router=router_user, prefix="/api/v1")
 app.include_router(router=router_system, prefix="/api/v1")
 app.include_router(router=router_coverage, prefix="/api/v1")
 app.include_router(router=router_commands, prefix="/api/v1")
@@ -42,8 +41,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def setup_default_user_settings():
-    system_settings = await get_system_settings()
-    user_service = await get_user_service(system_settings=system_settings)
+    user_service = await get_user_service()
     user_settings_repository = user_service.user_settings_repository
     default_user_settings = user_service.default_user_settings
     default_profile_list = [

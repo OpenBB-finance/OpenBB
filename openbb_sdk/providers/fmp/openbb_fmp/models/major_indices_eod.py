@@ -64,7 +64,9 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
     vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
 
     @validator("date", pre=True)
-    def date_validate(cls, v, values: Dict[str, Any]) -> datetime:
+    def date_validate(  # pylint: disable=E0213
+        cls, v, values: Dict[str, Any]
+    ) -> datetime:
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
