@@ -276,7 +276,7 @@ class SignatureInspector:
             ReturnModel = merged_return = provider_interface.return_schema[model]
 
             if get_origin(provider_interface.return_map[model]) == list or is_list:
-                ReturnModel = List[ReturnModel]
+                ReturnModel = List[ReturnModel]  # type: ignore
 
             return_type = OBBject[ReturnModel]  # type: ignore
             return_type.__name__ = f"OBBject[{merged_return.__name__}]"

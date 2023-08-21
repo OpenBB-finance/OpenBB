@@ -17,7 +17,6 @@ from openbb_yfinance.utils.references import MONTHS
 
 def get_futures_data() -> pd.DataFrame:
     """Return the dataframe of the futures csv file"""
-
     return pd.read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
@@ -39,9 +38,9 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
     futures_data = get_futures_data()
     exchange = futures_data[futures_data["Ticker"] == symbol]["Exchange"].values[0]
     today = datetime.today()
-    futures_index = list()
-    futures_curve = list()
-    historical_curve = list()
+    futures_index = []
+    futures_curve = []
+    historical_curve = []
     i = 0
     empty_count = 0
     # Loop through until we find 12 consecutive empty months

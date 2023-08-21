@@ -2,7 +2,7 @@
 import asyncio
 from unittest.mock import Mock
 
-from openbb_core.api.router.settings import patch_user_credentials, read_users_settings
+from openbb_core.api.router.user import patch_user_credentials, read_users_settings
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
 
