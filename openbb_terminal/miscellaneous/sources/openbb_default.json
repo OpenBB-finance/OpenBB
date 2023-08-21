@@ -402,7 +402,6 @@
       "ueat": ["BitQuery"],
       "ttcp": ["BitQuery"],
       "baas": ["BitQuery"],
-      "query": ["Shroom"],
       "address": ["Ethplorer"],
       "top": ["Ethplorer"],
       "balance": ["Ethplorer"],
