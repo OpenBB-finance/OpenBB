@@ -5,10 +5,11 @@ from pydantic import Field
 from pydantic.generics import GenericModel
 
 from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.app.model.abstract.error import Error, OpenBBError
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
+from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.utils import basemodel_to_df
 
@@ -31,13 +32,13 @@ class OBBject(GenericModel, Generic[T], Tagged):
         default=None,
         description="List of warnings.",
     )
-    error: Optional[Error] = Field(
-        default=None,
-        description="Exception caught.",
-    )
     chart: Optional[Chart] = Field(
         default=None,
         description="Chart object.",
+    )
+    metadata: Optional[Metadata] = Field(
+        default=None,
+        description="Metadata info about the command execution.",
     )
 
     def __repr__(self) -> str:

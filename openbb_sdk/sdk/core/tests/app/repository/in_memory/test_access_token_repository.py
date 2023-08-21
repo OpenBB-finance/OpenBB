@@ -8,7 +8,7 @@ from pydantic import BaseModel
 T = TypeVar("T", bound=BaseModel)
 
 
-def test_journal_entry_repository():
+def test_access_token_repository():
     class TestAccessTokenRepository(AccessTokenRepository):
         def __init__(self, test_arg_1, test_arg_2):
             self.test_arg_1 = test_arg_1

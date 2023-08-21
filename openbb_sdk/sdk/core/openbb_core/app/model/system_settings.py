@@ -52,10 +52,6 @@ class SystemSettings(Tagged):
         default=False,
         description="Whether or not to run each command in total isolation.",
     )
-    dbms_uri: Optional[str] = FrozenField(
-        default=None,
-        description="Connection URI like : `mongodb://root:example@localhost:27017/`",
-    )
 
     class Config:
         validate_assignment = True

@@ -18,6 +18,7 @@ class Preferences(BaseModel):
     )
     table_style: Literal["dark", "light"] = "dark"
     request_timeout: PositiveInt = 15
+    metadata: bool = True
 
     class Config:
         validate_assignment = True

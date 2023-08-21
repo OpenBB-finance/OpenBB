@@ -6,11 +6,10 @@ from pydantic import validate_arguments
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_ins(Container):
-    @filter_call
     @validate_arguments
     def act(
         self, chart: bool = False
@@ -21,14 +20,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/act",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def blcp(
         self, chart: bool = False
@@ -39,14 +35,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/blcp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def blcs(
         self, chart: bool = False
@@ -57,14 +50,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/blcs",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def blip(
         self, chart: bool = False
@@ -75,14 +65,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/blip",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def blis(
         self, chart: bool = False
@@ -93,14 +80,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/blis",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def blop(
         self, chart: bool = False
@@ -111,14 +95,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/blop",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def blos(
         self, chart: bool = False
@@ -129,14 +110,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/blos",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def filt(
         self, chart: bool = False
@@ -147,14 +125,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/filt",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lcb(
         self, chart: bool = False
@@ -165,14 +140,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/lcb",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lins(
         self, chart: bool = False
@@ -183,14 +155,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/lins",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lip(
         self, chart: bool = False
@@ -201,14 +170,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/lip",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lis(
         self, chart: bool = False
@@ -219,14 +185,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/lis",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lit(
         self, chart: bool = False
@@ -237,14 +200,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/lit",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lpsb(
         self, chart: bool = False
@@ -255,14 +215,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/lpsb",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def print_insider_data(
         self, chart: bool = False
@@ -273,14 +230,11 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/print_insider_data",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def stats(
         self, chart: bool = False
@@ -291,9 +245,7 @@ class CLASS_stocks_ins(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/ins/stats",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

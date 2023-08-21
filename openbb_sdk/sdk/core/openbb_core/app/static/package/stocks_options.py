@@ -1,7 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -9,20 +10,19 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_options(Container):
-    @filter_call
     @validate_arguments
     def chains(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["cboe"]] = None,
+        provider: Union[Literal["cboe"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -33,7 +33,7 @@ class CLASS_stocks_options(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['cboe']]
+        provider : Union[Literal['cboe'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -43,7 +43,7 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['cboe']]
+            provider : Union[Literal['cboe'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -55,20 +55,20 @@ class CLASS_stocks_options(Container):
         OptionsChains
         -------------
         expiration : Optional[datetime]
-            Expiration date of the contract.
+            The expiration date of the contract.
         strike : Optional[float]
-            Strike price of the contract.
+            The strike price of the contract.
         optionType : Optional[str]
             Call or Put.
         bid : Optional[float]
-            Bid price of the contract.
+            The bid price of the contract.
         ask : Optional[float]
-            Ask price of the contract.
+            The ask price of the contract.
         openInterest : Optional[float]
-            Open interest on the contract.
+            The open interest on the contract.
         volume : Optional[float]
-            Current trading volume on the contract.
-        contract_symbol : Optional[str]
+            The current trading volume on the contract.
+        contractSymbol : Optional[str]
             Contract symbol for the option. (provider: cboe)
         dte : Optional[int]
             Days to expiration for the option. (provider: cboe)
@@ -120,14 +120,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/chains",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def eodchain(
         self, chart: bool = False
@@ -138,14 +135,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/eodchain",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hist(
         self, chart: bool = False
@@ -156,14 +150,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/hist",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def info(
         self, chart: bool = False
@@ -174,14 +165,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/info",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pcr(
         self, chart: bool = False
@@ -192,14 +180,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/pcr",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def unu(
         self, chart: bool = False
@@ -210,9 +195,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/unu",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
