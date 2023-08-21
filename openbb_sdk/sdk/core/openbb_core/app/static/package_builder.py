@@ -23,12 +23,13 @@ from typing import (
 )
 
 import pandas as pd
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.provider_interface import get_provider_interface
-from openbb_core.app.router import RouterLoader
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
+
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.router import RouterLoader
 
 
 class PackageBuilder:

@@ -3,13 +3,14 @@
 import datetime
 from typing import Annotated, List, Literal, Optional, Union
 
+from pydantic import BaseModel, validate_arguments
+
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
-from pydantic import BaseModel, validate_arguments
 
 
 class CLASS_economy(Container):

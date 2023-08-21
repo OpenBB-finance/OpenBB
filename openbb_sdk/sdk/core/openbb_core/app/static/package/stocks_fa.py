@@ -3,15 +3,16 @@
 import datetime
 from typing import Annotated, List, Literal, Optional, Union
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 import pydantic
 import pydantic.main
+from pydantic import BaseModel, validate_arguments
+
+import openbb_core.app.model.command_context
+import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
-from pydantic import BaseModel, validate_arguments
 
 
 class CLASS_stocks_fa(Container):
@@ -210,25 +211,25 @@ class CLASS_stocks_fa(Container):
             None
         link : Optional[str]
             None
-        final_link : Optional[str]
+        finalLink : Optional[str]
             None
-        cash_and_short_term_investments : Optional[int]
+        cashAndShortTermInvestments : Optional[int]
             None
-        goodwill_and_intangible_assets : Optional[int]
+        goodwillAndIntangibleAssets : Optional[int]
             None
-        deferred_revenue_non_current : Optional[int]
+        deferredRevenueNonCurrent : Optional[int]
             None
-        total_investments : Optional[int]
+        totalInvestments : Optional[int]
             None
-        capital_lease_obligations : Optional[int]
+        capitalLeaseObligations : Optional[int]
             None
-        deferred_tax_liabilities_non_current : Optional[int]
+        deferredTaxLiabilitiesNonCurrent : Optional[int]
             None
-        total_non_current_liabilities : Optional[int]
+        totalNonCurrentLiabilities : Optional[int]
             None
-        total_debt : Optional[int]
+        totalDebt : Optional[int]
             None
-        net_debt : Optional[int]
+        netDebt : Optional[int]
             None"""
 
         inputs = filter_inputs(
@@ -1603,7 +1604,7 @@ class CLASS_stocks_fa(Container):
             Date of the income statement.
         symbol : Optional[str]
             Symbol of the company.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key.
         currency : Optional[str]
             Reporting currency.
