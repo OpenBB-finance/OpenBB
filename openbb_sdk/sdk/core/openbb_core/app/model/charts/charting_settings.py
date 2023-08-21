@@ -39,7 +39,7 @@ class ChartingSettings:
             user_settings.profile.hub_session, "email", None
         )
         self.user_uuid: Optional[str] = getattr(
-            user_settings.profile.hub_session, "uuid", None
+            user_settings.profile.hub_session, "user_uuid", None
         )
         self.user_exports_directory = user_settings.preferences.export_directory
         self.user_styles_directory = user_settings.preferences.user_styles_directory

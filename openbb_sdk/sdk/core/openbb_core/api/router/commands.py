@@ -12,6 +12,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
+from openbb_core.app.service.user_service import UserService
 from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
 
@@ -143,13 +144,13 @@ def build_api_wrapper(
         user_settings: UserSettings = UserSettings.parse_obj(
             kwargs.pop(
                 "__authenticated_user_settings",
-                SystemService.read_default_system_settings(),
+                UserService.read_default_user_settings(),
             )
         )
-        execute = partial(command_runner.run_once, user_settings, path)
-        journal_entry = execute(*args, **kwargs)
+        execute = partial(command_runner.run, path, user_settings)
+        output: OBBject = execute(*args, **kwargs)
 
-        return validate_output(journal_entry.output)
+        return validate_output(output)
 
     return wrapper
 

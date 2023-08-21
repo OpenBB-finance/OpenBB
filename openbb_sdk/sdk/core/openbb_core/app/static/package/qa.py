@@ -12,11 +12,10 @@ from pydantic import validate_arguments
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_qa(Container):
-    @filter_call
     @validate_arguments
     def acf(
         self, chart: bool = False
@@ -27,14 +26,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/acf",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def beta(
         self, chart: bool = False
@@ -45,14 +41,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/beta",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def bw(
         self, chart: bool = False
@@ -63,14 +56,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/bw",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def capm(
         self,
@@ -86,14 +76,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/capm",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cdf(
         self, chart: bool = False
@@ -104,14 +91,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/cdf",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cusum(
         self, chart: bool = False
@@ -122,14 +106,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/cusum",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def decompose(
         self, chart: bool = False
@@ -140,14 +121,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/decompose",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def es(
         self, chart: bool = False
@@ -158,14 +136,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/es",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hist(
         self, chart: bool = False
@@ -176,14 +151,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/hist",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def kurtosis(
         self,
@@ -216,14 +188,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/kurtosis",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def line(
         self, chart: bool = False
@@ -234,14 +203,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/line",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def normality(
         self,
@@ -277,14 +243,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/normality",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
@@ -321,14 +284,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/om",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pick(
         self, chart: bool = False
@@ -339,14 +299,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/pick",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def qqplot(
         self, chart: bool = False
@@ -357,14 +314,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/qqplot",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
@@ -384,14 +338,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/quantile",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def raw(
         self, chart: bool = False
@@ -402,14 +353,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/raw",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rolling(
         self, chart: bool = False
@@ -420,14 +368,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/rolling",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def sh(
         self,
@@ -464,14 +409,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/sh",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def skew(
         self,
@@ -504,14 +446,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/skew",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def so(
         self,
@@ -554,14 +493,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/so",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def spread(
         self, chart: bool = False
@@ -572,14 +508,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/spread",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def summary(
         self,
@@ -608,20 +541,17 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/summary",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
         chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
@@ -655,14 +585,11 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/unitroot",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def var(
         self, chart: bool = False
@@ -673,9 +600,7 @@ class CLASS_qa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/qa/var",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

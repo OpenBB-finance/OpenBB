@@ -167,37 +167,3 @@ def test_validate_commit_hash(commit_hash, expected_result):
 
         # Assert
         assert result == expected_result
-
-
-@patch("openbb_core.app.model.system_settings.get_branch", return_value="main")
-@pytest.mark.parametrize(
-    "branch, commit_hash, expected_branch",
-    [
-        # Test case: Empty branch, non-empty commit hash
-        ("", "abcdef1234", "main"),
-        # Test case: Non-empty branch, non-empty commit hash
-        ("feature-branch", "abcdef1234", "feature-branch"),
-        # Test case: Empty branch, empty commit hash
-        ("", "", ""),
-        # Test case: Non-empty branch, empty commit hash
-        ("feature-branch", "", "feature-branch"),
-    ],
-)
-def test_validate_branch(mock_get_branch, branch, commit_hash, expected_branch):
-    # Arrange
-    values = {
-        "logging_branch": branch,
-        "logging_commit_hash": commit_hash,
-    }
-
-    # Act
-    result = SystemSettings.validate_branch(values)
-
-    # Assert
-    assert result["logging_branch"] == expected_branch
-
-    # Ensure that get_branch was called with the correct commit_hash
-    if not branch and commit_hash:
-        mock_get_branch.assert_called_once_with(commit_hash)
-    else:
-        mock_get_branch.assert_not_called()
