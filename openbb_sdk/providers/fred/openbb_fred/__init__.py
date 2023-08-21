@@ -9,6 +9,7 @@ from openbb_fred.models.sofr_rates import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
+from openbb_fred.models.iorb_rates import FREDIORBFetcher
 
 fred_provider = Provider(
     name="fred",
@@ -26,5 +27,6 @@ fred_provider = Provider(
         "AMERIBOR": FREDAMERIBORFetcher,
         "FEDFUNDS": FREDFEDFetcher,
         "PROJECTIONS": FREDPROJECTIONFetcher,
+        "IORB": FREDIORBFetcher,
     },
 )

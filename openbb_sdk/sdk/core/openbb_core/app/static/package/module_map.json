@@ -251,5 +251,6 @@
     "fixedincome_sonia": "/fixedincome/sonia",
     "fixedincome_ameribor": "/fixedincome/ameribor",
     "fixedincome_fed": "/fixedincome/fed",
-    "fixedincome_projections": "/fixedincome/projections"
+    "fixedincome_projections": "/fixedincome/projections",
+    "fixedincome_iorb": "/fixedincome/iorb"
 }

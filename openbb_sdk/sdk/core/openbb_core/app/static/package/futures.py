@@ -1,14 +1,23 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import validate_arguments
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.filters import filter_inputs
+
+import openbb_core.app.model.command_context
+import types
+import typing
 
 
 class CLASS_futures(Container):

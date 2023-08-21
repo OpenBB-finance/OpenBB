@@ -1,14 +1,24 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import BaseModel, validate_arguments
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.filters import filter_inputs
+
+import openbb_core.app.model.command_context
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_fixedincome(Container):
@@ -241,6 +251,81 @@ class CLASS_fixedincome(Container):
 
         return self._command_runner.run(
             "/fixedincome/fed",
+            **inputs,
+        )
+
+    @validate_arguments
+    def iorb(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """
+                 Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its domestic banks
+            to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve
+            System's Board of Governors set the bank rate, also known as the discount rate.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, NoneType, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, NoneType, str]
+            End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IORB]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        IORB
+        ----
+        date : Optional[date]
+            The date of the data.
+        rate : Optional[float]
+            IORB rate."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/fixedincome/iorb",
             **inputs,
         )
 
