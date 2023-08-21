@@ -284,17 +284,17 @@ class CLASS_stocks(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
@@ -544,17 +544,17 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
             Date of the news to retrieve. (provider: benzinga)
-        dateFrom : Optional[datetime.datetime]
+        date_from : Optional[datetime.datetime]
             Start date of the news to retrieve. (provider: benzinga)
-        dateTo : Optional[datetime.datetime]
+        date_to : Optional[datetime.datetime]
             End date of the news to retrieve. (provider: benzinga)
-        updatedSince : Optional[int]
+        updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Optional[int]
+        published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
             None
@@ -826,9 +826,9 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         name : Optional[str]
             Name of the company.
-        dpmName : Optional[str]
+        dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)
-        postStation : Optional[str]
+        post_station : Optional[str]
             Post and station location on the CBOE trading floor. (provider: cboe)"""
 
         inputs = filter_inputs(

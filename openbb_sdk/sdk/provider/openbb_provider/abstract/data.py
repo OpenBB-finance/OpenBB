@@ -1,12 +1,7 @@
 """The OpenBB Standardized Data Model."""
-import re
-
 from pydantic import BaseModel, Extra
 
-
-def to_snake_case(string: str) -> str:
-    s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
-    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
+from openbb_provider.utils.helpers import to_snake_case
 
 
 class Data(BaseModel):

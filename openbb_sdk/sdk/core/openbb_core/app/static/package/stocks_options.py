@@ -68,15 +68,15 @@ class CLASS_stocks_options(Container):
             Open interest on the contract.
         volume : Optional[float]
             Current trading volume on the contract.
-        contractSymbol : Optional[str]
+        contract_symbol : Optional[str]
             Contract symbol for the option. (provider: cboe)
         dte : Optional[int]
             Days to expiration for the option. (provider: cboe)
-        bidSize : Optional[int]
+        bid_size : Optional[int]
             Bid size for the option. (provider: cboe)
-        askSize : Optional[int]
+        ask_size : Optional[int]
             Ask size for the option. (provider: cboe)
-        impliedVolatility : Optional[float]
+        implied_volatility : Optional[float]
             Implied volatility of the option. (provider: cboe)
         delta : Optional[float]
             Delta of the option. (provider: cboe)
@@ -96,17 +96,17 @@ class CLASS_stocks_options(Container):
             High price of the option. (provider: cboe)
         low : Optional[float]
             Low price of the option. (provider: cboe)
-        lastTradePrice : Optional[float]
+        last_trade_price : Optional[float]
             Last trade price of the option. (provider: cboe)
         tick : Optional[str]
             Whether the last tick was up or down in price. (provider: cboe)
-        previousClose : Optional[float]
+        previous_close : Optional[float]
             Previous closing price of the option. (provider: cboe)
         change : Optional[float]
             Change in  price of the option. (provider: cboe)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change, in percent, of the option. (provider: cboe)
-        lastTradeTimestamp : Optional[datetime]
+        last_trade_timestamp : Optional[datetime]
             Last trade timestamp of the option. (provider: cboe)"""
 
         inputs = filter_inputs(

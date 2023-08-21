@@ -207,29 +207,29 @@ class CLASS_stocks_fa(Container):
             None
         total_liabilities_and_total_equity : Optional[int]
             None
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None
-        cashAndShortTermInvestments : Optional[int]
+        cash_and_short_term_investments : Optional[int]
             None
-        goodwillAndIntangibleAssets : Optional[int]
+        goodwill_and_intangible_assets : Optional[int]
             None
-        deferredRevenueNonCurrent : Optional[int]
+        deferred_revenue_non_current : Optional[int]
             None
-        totalInvestments : Optional[int]
+        total_investments : Optional[int]
             None
-        capitalLeaseObligations : Optional[int]
+        capital_lease_obligations : Optional[int]
             None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
+        deferred_tax_liabilities_non_current : Optional[int]
             None
-        totalNonCurrentLiabilities : Optional[int]
+        total_non_current_liabilities : Optional[int]
             None
-        totalDebt : Optional[int]
+        total_debt : Optional[int]
             None
-        netDebt : Optional[int]
+        net_debt : Optional[int]
             None"""
 
         inputs = filter_inputs(
@@ -2867,11 +2867,11 @@ class CLASS_stocks_fa(Container):
             News publisher of the price target.
         news_base_url : Optional[str]
             News base URL of the price target.
-        newGrade : Optional[str]
+        new_grade : Optional[str]
             None
-        previousGrade : Optional[str]
+        previous_grade : Optional[str]
             None
-        gradingCompany : Optional[str]
+        grading_company : Optional[str]
             None"""
 
         inputs = filter_inputs(
