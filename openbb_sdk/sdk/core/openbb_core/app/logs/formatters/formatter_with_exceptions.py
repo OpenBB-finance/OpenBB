@@ -14,9 +14,7 @@ class FormatterWithExceptions(logging.Formatter):
 
     DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
     LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
-    LOGPREFIXFORMAT = (
-        "%(levelname)s|%(appName)s|%(appId)s|%(sessionId)s|%(userId)s|"
-    )
+    LOGPREFIXFORMAT = "%(levelname)s|%(appName)s|%(appId)s|%(sessionId)s|%(userId)s|"
 
     @staticmethod
     def calculate_level_name(record: logging.LogRecord) -> str:

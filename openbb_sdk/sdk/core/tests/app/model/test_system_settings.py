@@ -1,5 +1,4 @@
 import os
-from unittest.mock import patch
 
 import pytest
 from openbb_core.app.model.system_settings import SystemSettings
