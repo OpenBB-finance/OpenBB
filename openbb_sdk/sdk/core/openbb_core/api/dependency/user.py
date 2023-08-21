@@ -5,13 +5,10 @@ from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from openbb_core.api.dependency.system import get_system_settings
 from openbb_core.api.model.access_token import AccessToken
-from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 from passlib.context import CryptContext
-from pymongo import MongoClient
 from typing_extensions import Annotated
 
 SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc"  # nosec # pragma: allowlist secret
@@ -79,19 +76,12 @@ def create_jwt_token(
     return encoded_jwt
 
 
-async def get_user_service(
-    system_settings: Annotated[SystemSettings, Depends(get_system_settings)]
-) -> UserService:
+async def get_user_service() -> UserService:
     """Get user service."""
     global __user_service  # pylint: disable=global-statement
 
     if __user_service is None:
-        dbms_uri = system_settings.dbms_uri
-        if dbms_uri and dbms_uri.startswith("mongodb://"):
-            mongodb_client: MongoClient = MongoClient(dbms_uri)
-            __user_service = UserService(mongodb_client=mongodb_client)
-        else:
-            __user_service = UserService()
+        __user_service = UserService()
 
     return __user_service
 

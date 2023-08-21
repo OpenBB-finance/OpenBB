@@ -54,7 +54,7 @@ class PosthogHandler(logging.Handler):
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict"""
-        log_regex = r"(STARTUP|CMD): (.*)"
+        log_regex = r"(STARTUP|CMD|ERROR): (.*)"
         log_dict: Dict[str, Any] = {}
 
         for log in re.findall(log_regex, log_info):
@@ -128,7 +128,6 @@ class PosthogHandler(logging.Handler):
             log_extra["exception"] = {
                 "type": str(record.exc_info[0]),
                 "value": str(record.exc_info[1]),
-                "traceback": self.format(record),
             }
 
         return log_extra

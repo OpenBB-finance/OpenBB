@@ -1,12 +1,5 @@
 from typing import Optional, Union
 
-from pydantic import BaseModel
-
-
-class Error(BaseModel):
-    message: str
-    error_kind: Optional[str] = None
-
 
 class OpenBBError(Exception):
     """OpenBB Error."""
