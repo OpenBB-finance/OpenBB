@@ -93,25 +93,25 @@ class CLASS_stocks(Container):
         StockInfo
         ---------
         symbol : Optional[str]
-            The ticker symbol.
+            Symbol to get data for.
         name : Optional[str]
-            The name associated with the ticker symbol.
+            Name associated with the ticker symbol.
         price : Optional[float]
-            The last price of the stock.
+            Last price of the stock.
         open : Optional[float]
-            The opening price of the stock.
+            Opening price of the stock.
         high : Optional[float]
-            The high price of the current trading day.
+            High price of the current trading day.
         low : Optional[float]
-            The low price of the current trading day.
+            Low price of the current trading day.
         close : Optional[float]
-            The closing price of the stock.
+            Closing price of the stock.
         change : Optional[float]
-            The change in price over the current trading period.
+            Change in price over the current trading period.
         change_percent : Optional[float]
-            The % change in price over the current trading period.
+            % change in price over the current trading period.
         previous_close : Optional[float]
-            The previous closing price of the stock.
+            Previous closing price of the stock.
         type : Optional[str]
             Type of asset. (provider: cboe)
         tick : Optional[str]
@@ -214,6 +214,10 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+            Number of days to look back. (provider: fmp)
+        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
+            None
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -224,8 +228,6 @@ class CLASS_stocks(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']]
-            None
         period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: yfinance)
         prepost : bool
@@ -234,8 +236,6 @@ class CLASS_stocks(Container):
             Adjust all the data automatically. (provider: yfinance)
         back_adjust : bool
             Back-adjusted data to mimic true historical prices. (provider: yfinance)
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
-            Number of days to look back. (provider: fmp)
 
         Returns
         -------
@@ -267,20 +267,20 @@ class CLASS_stocks(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
+        n : Optional[PositiveInt]
+            Number of transactions for the symbol in the time period. (provider: polygon)
         """
 
         inputs = filter_inputs(
@@ -494,14 +494,12 @@ class CLASS_stocks(Container):
         page: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(
-                description="The page of the stock news to be retrieved."
+                description="Page of the stock news to be retrieved."
             ),
         ] = 0,
         limit: typing_extensions.Annotated[
             Union[pydantic.types.NonNegativeInt, None],
-            OpenBBCustomParameter(
-                description="The number of results to return per page."
-            ),
+            OpenBBCustomParameter(description="Number of results to return per page."),
         ] = 15,
         chart: bool = False,
         provider: Union[Literal["benzinga", "fmp", "polygon"], None] = None,
@@ -514,26 +512,26 @@ class CLASS_stocks(Container):
         symbols : str
             Symbol to get data for.
         page : int
-            The page of the stock news to be retrieved.
+            Page of the stock news to be retrieved.
         limit : Union[pydantic.types.NonNegativeInt, NoneType]
-            The number of results to return per page.
+            Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['benzinga', 'fmp', 'polygon'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Union[datetime.datetime, NoneType]
             Date of the news to retrieve. (provider: benzinga)
-        dateFrom : Union[datetime.datetime, NoneType]
+        date_from : Union[datetime.datetime, NoneType]
             Start date of the news to retrieve. (provider: benzinga)
-        dateTo : Union[datetime.datetime, NoneType]
+        date_to : Union[datetime.datetime, NoneType]
             End date of the news to retrieve. (provider: benzinga)
-        updatedSince : Union[int, NoneType]
+        updated_since : Union[int, NoneType]
             Number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Union[int, NoneType]
+        published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
             None
@@ -587,13 +585,13 @@ class CLASS_stocks(Container):
         StockNews
         ---------
         date : Optional[datetime]
-            The published date of the news.
+            Published date of the news.
         title : Optional[str]
-            The title of the news.
+            Title of the news.
         text : Optional[str]
-            The text/body of the news.
+            Text/body of the news.
         url : Optional[str]
-            The URL of the news.
+            URL of the news.
         images : Optional[List[BenzingaImage]]
             Images associated with the news. (provider: benzinga)
         channels : Optional[List[str]]
@@ -604,6 +602,12 @@ class CLASS_stocks(Container):
             Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
+        symbol : Optional[str]
+            Ticker of the fetched news. (provider: fmp)
+        image : Optional[str]
+            URL to the image of the news source. (provider: fmp)
+        site : Optional[str]
+            Name of the news source. (provider: fmp)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         author : Optional[str]
@@ -617,13 +621,7 @@ class CLASS_stocks(Container):
         publisher : Optional[PolygonPublisher]
             Publisher of the article. (provider: polygon)
         tickers : Optional[List[str]]
-            Tickers covered in the article. (provider: polygon)
-        symbol : Optional[str]
-            Ticker of the fetched news. (provider: fmp)
-        image : Optional[str]
-            URL to the image of the news source. (provider: fmp)
-        site : Optional[str]
-            Name of the news source. (provider: fmp)"""
+            Tickers covered in the article. (provider: polygon)"""
 
         inputs = filter_inputs(
             provider_choices={
@@ -692,47 +690,47 @@ class CLASS_stocks(Container):
         symbol : Optional[str]
             Symbol of the company.
         name : Optional[str]
-            The name of the company.
+            Name of the company.
         price : Optional[float]
-            The current trading price of the stock.
+            Current trading price of the stock.
         changes_percentage : Optional[float]
-            The change percentage of the stock price.
+            Change percentage of the stock price.
         change : Optional[float]
-            The change of the stock price.
+            Change of the stock price.
         day_low : Optional[float]
-            The lowest price of the stock in the current trading day.
+            Lowest price of the stock in the current trading day.
         day_high : Optional[float]
-            The highest price of the stock in the current trading day.
+            Highest price of the stock in the current trading day.
         year_high : Optional[float]
-            The highest price of the stock in the last 52 weeks.
+            Highest price of the stock in the last 52 weeks.
         year_low : Optional[float]
-            The lowest price of the stock in the last 52 weeks.
+            Lowest price of the stock in the last 52 weeks.
         market_cap : Optional[float]
-            The market cap of the company.
+            Market cap of the company.
         price_avg50 : Optional[float]
-            The 50 days average price of the stock.
+            50 days average price of the stock.
         price_avg200 : Optional[float]
-            The 200 days average price of the stock.
+            200 days average price of the stock.
         volume : Optional[int]
-            The volume of the stock in the current trading day.
+            Volume of the stock in the current trading day.
         avg_volume : Optional[int]
-            The average volume of the stock in the last 10 trading days.
+            Average volume of the stock in the last 10 trading days.
         exchange : Optional[str]
-            The exchange the stock is traded on.
+            Exchange the stock is traded on.
         open : Optional[float]
-            The opening price of the stock in the current trading day.
+            Opening price of the stock in the current trading day.
         previous_close : Optional[float]
-            The previous closing price of the stock.
+            Previous closing price of the stock.
         eps : Optional[float]
-            The earnings per share of the stock.
+            Earnings per share of the stock.
         pe : Optional[float]
-            The price earnings ratio of the stock.
+            Price earnings ratio of the stock.
         earnings_announcement : Optional[str]
-            The earnings announcement date of the stock.
+            Earnings announcement date of the stock.
         shares_outstanding : Optional[int]
-            The number of shares outstanding of the stock.
+            Number of shares outstanding of the stock.
         date : Optional[datetime]
-            The timestamp of the stock quote."""
+            Timestamp of the stock quote."""
 
         inputs = filter_inputs(
             provider_choices={
@@ -754,7 +752,7 @@ class CLASS_stocks(Container):
     def search(
         self,
         query: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="The search query.")
+            str, OpenBBCustomParameter(description="Search query.")
         ] = "",
         ticker: typing_extensions.Annotated[
             bool,
@@ -769,7 +767,7 @@ class CLASS_stocks(Container):
         Parameters
         ----------
         query : str
-            The search query.
+            Search query.
         ticker : bool
             Whether to search by ticker symbol.
         chart : bool
@@ -796,12 +794,12 @@ class CLASS_stocks(Container):
         StockSearch
         -----------
         symbol : Optional[str]
-            The ticker symbol of the company.
+            Symbol to get data for.
         name : Optional[str]
-            The name of the company.
-        dpmName : Optional[str]
+            Name of the company.
+        dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)
-        postStation : Optional[str]
+        post_station : Optional[str]
             Post and station location on the CBOE trading floor. (provider: cboe)"""
 
         inputs = filter_inputs(
