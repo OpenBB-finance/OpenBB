@@ -1,12 +1,12 @@
 """FRED ESTR Fetcher."""
 
 
-from typing import Any, Dict, List, Optional, Literal
+from typing import Any, Dict, List, Literal, Optional
+
 from openbb_fred.utils.fred_base import Fred
-from pydantic import Field, validator
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.estr_rates import ESTRData, ESTRQueryParams
-
+from pydantic import Field, validator
 
 ESTR_PARAMETER_TO_ID = {
     "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",

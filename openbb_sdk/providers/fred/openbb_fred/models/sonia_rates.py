@@ -1,12 +1,12 @@
 """FRED SONIA Fetcher."""
 
 
-from typing import Any, Dict, List, Optional, Literal
+from typing import Any, Dict, List, Literal, Optional
+
 from openbb_fred.utils.fred_base import Fred
-from pydantic import Field, validator
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
-
+from pydantic import Field, validator
 
 SONIA_PARAMETER_TO_FRED_ID = {
     "rate": "IUDSOIA",

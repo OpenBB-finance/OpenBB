@@ -1,14 +1,15 @@
 """FRED US Yield Curve."""
 
 
-from typing import Any, Dict, List, Optional
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional
+
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import (
     YIELD_CURVE_NOMINAL_RATES,
     YIELD_CURVE_REAL_RATES,
-    YIELD_CURVE_SERIES_REAL,
     YIELD_CURVE_SERIES_NOMINAL,
+    YIELD_CURVE_SERIES_REAL,
 )
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.us_yield_curve import (
@@ -47,10 +48,7 @@ class FREDYieldCurveFetcher(Fetcher[FREDYieldCurveQueryParams, FREDYieldCurveDat
             fred_series = YIELD_CURVE_SERIES_NOMINAL
             years = YIELD_CURVE_NOMINAL_RATES
 
-        if date:
-            start_date = date - timedelta(days=30)
-        else:
-            start_date = datetime.now() - timedelta(days=30)
+        start_date = date - timedelta(days=30) if date else datetime.now() - timedelta(days=30)
 
         fred = Fred(api_key)
         vals = []

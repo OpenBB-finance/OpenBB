@@ -1,24 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
 import datetime
-import pydantic
-from pydantic import validate_arguments, BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal, Annotated
-import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from typing import Annotated, List, Literal, Optional, Union
 
-import openbb_core.app.model.command_context
-import pydantic.main
-import types
-import typing
+from pydantic import BaseModel, validate_arguments
+
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
+from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 
 
 class CLASS_fixedincome(Container):
@@ -171,6 +161,83 @@ class CLASS_fixedincome(Container):
 
         o = self._command_runner_session.run(
             "/fixedincome/estr",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
+    def fed(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Get United States yield curve.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, NoneType, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, NoneType, str]
+            End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
+            Period of FED rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[FEDFUNDS]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        FEDFUNDS
+        --------
+        date : Optional[date]
+            The date of the data.
+        rate : Optional[float]
+            FED rate."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/fixedincome/fed",
             **inputs,
         ).output
 
