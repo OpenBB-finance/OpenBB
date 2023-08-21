@@ -12,8 +12,7 @@ from inspect import Parameter
 import typing
 from typing import List, Dict, Union, Optional, Literal, Annotated
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
-from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -305,7 +304,7 @@ class CLASS_economy(Container):
             Literal["growth_previous", "growth_same", "index_2015"],
             OpenBBCustomParameter(description="The data units."),
         ] = "growth_same",
-        frequency: Annotated[
+        frequency: typing_extensions.Annotated[
             Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
@@ -330,7 +329,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """CPI.
 
         Parameters
@@ -370,14 +369,9 @@ class CLASS_economy(Container):
 
         CPI
         ---
-        date : Optional[date]
-            The date of the data.
-        realtime_start : Optional[date]
-            Date the data was updated.
-        realtime_end : Optional[date]
-            Date the data was updated.
-        value : Optional[float]
-            Value of the data."""
+        country_unit_freq : Optional[List[CPIData]]
+            CPI data for a country, units, and frequency combination. (provider: fred)
+        """
 
         inputs = filter_inputs(
             provider_choices={
@@ -659,7 +653,7 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Optional[pydantic.types.NonNegativeInt]
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of days to look back. (provider: fmp)
         interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
             None
@@ -673,7 +667,7 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -712,20 +706,21 @@ class CLASS_economy(Container):
             The volume of the symbol.
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)"""
+            Number of transactions for the symbol in the time period. (provider: polygon)
+        """
 
         inputs = filter_inputs(
             provider_choices={

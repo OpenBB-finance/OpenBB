@@ -45,12 +45,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
@@ -73,39 +73,39 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
+        cik : Union[str, NoneType]
             None
-        company_name : Optional[str]
+        company_name : Union[str, NoneType]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[str]
+        company_name_search : Union[str, NoneType]
             Name of the company to search. (provider: polygon)
-        sic : Optional[str]
+        sic : Union[str, NoneType]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[datetime.date]
+        filing_date : Union[datetime.date, NoneType]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Union[datetime.date, NoneType]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Union[datetime.date, NoneType]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Union[datetime.date, NoneType]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Union[datetime.date, NoneType]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Union[datetime.date, NoneType]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Union[datetime.date, NoneType]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Union[datetime.date, NoneType]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Union[datetime.date, NoneType]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Union[datetime.date, NoneType]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[bool]
+        include_sources : Union[bool, NoneType]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], NoneType]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -210,29 +210,29 @@ class CLASS_stocks_fa(Container):
             None
         total_liabilities_and_total_equity : Optional[int]
             None
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None
-        cashAndShortTermInvestments : Optional[int]
+        cash_and_short_term_investments : Optional[int]
             None
-        goodwillAndIntangibleAssets : Optional[int]
+        goodwill_and_intangible_assets : Optional[int]
             None
-        deferredRevenueNonCurrent : Optional[int]
+        deferred_revenue_non_current : Optional[int]
             None
-        totalInvestments : Optional[int]
+        total_investments : Optional[int]
             None
-        capitalLeaseObligations : Optional[int]
+        capital_lease_obligations : Optional[int]
             None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
+        deferred_tax_liabilities_non_current : Optional[int]
             None
-        totalNonCurrentLiabilities : Optional[int]
+        total_non_current_liabilities : Optional[int]
             None
-        totalDebt : Optional[int]
+        total_debt : Optional[int]
             None
-        netDebt : Optional[int]
+        net_debt : Optional[int]
             None"""
 
         inputs = filter_inputs(
@@ -492,12 +492,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
@@ -520,39 +520,39 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
+        cik : Union[str, NoneType]
             Central Index Key (CIK) of the company. (provider: fmp)
-        company_name : Optional[str]
+        company_name : Union[str, NoneType]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[str]
+        company_name_search : Union[str, NoneType]
             Name of the company to search. (provider: polygon)
-        sic : Optional[str]
+        sic : Union[str, NoneType]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[datetime.date]
+        filing_date : Union[datetime.date, NoneType]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Union[datetime.date, NoneType]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Union[datetime.date, NoneType]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Union[datetime.date, NoneType]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Union[datetime.date, NoneType]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Union[datetime.date, NoneType]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Union[datetime.date, NoneType]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Union[datetime.date, NoneType]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Union[datetime.date, NoneType]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Union[datetime.date, NoneType]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[bool]
+        include_sources : Union[bool, NoneType]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], NoneType]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -1273,11 +1273,11 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annual", "quarter"],
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
@@ -1291,7 +1291,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Period of the data to return.
         limit : int
             The number of data entries to return.
@@ -1461,12 +1461,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
@@ -1489,39 +1489,39 @@ class CLASS_stocks_fa(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
+        cik : Union[str, NoneType]
             The CIK of the company if no symbol is provided. (provider: fmp)
-        company_name : Optional[str]
+        company_name : Union[str, NoneType]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[str]
+        company_name_search : Union[str, NoneType]
             Name of the company to search. (provider: polygon)
-        sic : Optional[str]
+        sic : Union[str, NoneType]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[datetime.date]
+        filing_date : Union[datetime.date, NoneType]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Union[datetime.date, NoneType]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Union[datetime.date, NoneType]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Union[datetime.date, NoneType]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Union[datetime.date, NoneType]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Union[datetime.date, NoneType]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Union[datetime.date, NoneType]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Union[datetime.date, NoneType]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Union[datetime.date, NoneType]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Union[datetime.date, NoneType]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[bool]
+        include_sources : Union[bool, NoneType]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], NoneType]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -1660,7 +1660,7 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
@@ -1812,16 +1812,16 @@ class CLASS_stocks_fa(Container):
             ],
             OpenBBCustomParameter(description="Type of the transaction."),
         ] = ["P-Purchase"],
-        reportingCik: Annotated[
-            Optional[int],
+        reportingCik: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="CIK of the reporting owner."),
         ] = None,
-        companyCik: Annotated[
-            Optional[int],
+        companyCik: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="CIK of the company owner."),
         ] = None,
-        page: Annotated[
-            Optional[int],
+        page: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         chart: bool = False,
@@ -1834,13 +1834,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
+        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], NoneType]
             Type of the transaction.
-        reportingCik : Optional[int]
+        reportingCik : Union[int, NoneType]
             CIK of the reporting owner.
-        companyCik : Optional[int]
+        companyCik : Union[int, NoneType]
             CIK of the company owner.
-        page : Optional[int]
+        page : Union[int, NoneType]
             Page number of the data to fetch.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -2078,12 +2078,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            Optional[int],
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         chart: bool = False,
@@ -2501,8 +2501,8 @@ class CLASS_stocks_fa(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        page: Annotated[
-            Optional[int],
+        page: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         chart: bool = False,
@@ -2517,7 +2517,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         date : Optional[datetime.date]
             A specific date to get data for.
-        page : Optional[int]
+        page : Union[int, NoneType]
             Page number of the data to fetch.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -2770,11 +2770,11 @@ class CLASS_stocks_fa(Container):
             News publisher of the price target.
         news_base_url : Optional[str]
             News base URL of the price target.
-        newGrade : Optional[str]
+        new_grade : Optional[str]
             None
-        previousGrade : Optional[str]
+        previous_grade : Optional[str]
             None
-        gradingCompany : Optional[str]
+        grading_company : Optional[str]
             None"""
 
         inputs = filter_inputs(
@@ -2815,12 +2815,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
@@ -3015,11 +3015,11 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annual", "quarter"],
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        structure: Annotated[
+        structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
@@ -3033,7 +3033,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3100,11 +3100,11 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annual", "quarter"],
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        structure: Annotated[
+        structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
@@ -3118,7 +3118,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.

@@ -45,19 +45,19 @@ class CLASS_news(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        pageSize : int
+        page_size : int
             Number of results to return per page. (provider: benzinga)
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
             Date of the news to retrieve. (provider: benzinga)
-        dateFrom : Optional[datetime.datetime]
+        date_from : Union[datetime.datetime, NoneType]
             Start date of the news to retrieve. (provider: benzinga)
-        dateTo : Optional[datetime.datetime]
+        date_to : Union[datetime.datetime, NoneType]
             End date of the news to retrieve. (provider: benzinga)
-        updatedSince : Optional[int]
+        updated_since : Union[int, NoneType]
             Number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Optional[int]
+        published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
             Order in which to sort the news.  (provider: benzinga)

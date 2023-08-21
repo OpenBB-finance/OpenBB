@@ -220,7 +220,7 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        timeseries : Optional[pydantic.types.NonNegativeInt]
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of days to look back. (provider: fmp)
         interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
             None
@@ -234,7 +234,7 @@ class CLASS_stocks(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -273,20 +273,21 @@ class CLASS_stocks(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)"""
+            Number of transactions for the symbol in the time period. (provider: polygon)
+        """
 
         inputs = filter_inputs(
             provider_choices={
@@ -502,8 +503,8 @@ class CLASS_stocks(Container):
                 description="Page of the stock news to be retrieved."
             ),
         ] = 0,
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="Number of results to return per page."),
         ] = 15,
         chart: bool = False,
@@ -518,7 +519,7 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         page : int
             Page of the stock news to be retrieved.
-        limit : Optional[pydantic.types.NonNegativeInt]
+        limit : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -526,17 +527,17 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
             Date of the news to retrieve. (provider: benzinga)
-        dateFrom : Optional[datetime.datetime]
+        date_from : Union[datetime.datetime, NoneType]
             Start date of the news to retrieve. (provider: benzinga)
-        dateTo : Optional[datetime.datetime]
+        date_to : Union[datetime.datetime, NoneType]
             End date of the news to retrieve. (provider: benzinga)
-        updatedSince : Optional[int]
+        updated_since : Union[int, NoneType]
             Number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Optional[int]
+        published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
             None
@@ -756,8 +757,10 @@ class CLASS_stocks(Container):
     @validate_arguments
     def search(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        ticker: Annotated[
+        query: typing_extensions.Annotated[
+            str, OpenBBCustomParameter(description="Search query.")
+        ] = "",
+        ticker: typing_extensions.Annotated[
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
@@ -800,9 +803,9 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         name : Optional[str]
             Name of the company.
-        dpmName : Optional[str]
+        dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)
-        postStation : Optional[str]
+        post_station : Optional[str]
             Post and station location on the CBOE trading floor. (provider: cboe)"""
 
         inputs = filter_inputs(

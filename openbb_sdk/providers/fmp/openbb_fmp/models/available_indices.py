@@ -52,7 +52,6 @@ class FMPAvailableIndicesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -63,5 +62,4 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPAvailableIndicesData]:
         """Return the transformed data."""
-
         return [FMPAvailableIndicesData(**d) for d in data]

@@ -2,6 +2,7 @@
 
 import builtins
 import inspect
+import re
 import shutil
 import subprocess
 from dataclasses import MISSING
@@ -289,6 +290,10 @@ class DocstringGenerator:
         docstring = summary
         docstring += "\n"
         docstring += "\nParameters\n----------\n"
+
+        def _to_snake_case(string: str) -> str:
+            s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
+            return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
