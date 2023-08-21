@@ -164,7 +164,7 @@ class FormatterWithExceptions(logging.Formatter):
             "levelname": level_name,
             "appId": self.settings.app_id,
             "sessionId": self.settings.session_id,
-            "commitHash": self.settings.commit_hash,
+            "commitHash": "unknown-commit",
             "userId": self.settings.user_id,
         }
 

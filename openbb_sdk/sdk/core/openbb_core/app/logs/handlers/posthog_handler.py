@@ -113,11 +113,9 @@ class PosthogHandler(logging.Handler):
             "appName": self._settings.app_name,
             "appId": self._settings.app_id,
             "sessionId": self._settings.session_id,
-            "commitHash": self._settings.commit_hash,
             "platform": self._settings.platform,
             "pythonVersion": self._settings.python_version,
             "terminalVersion": self._settings.terminal_version,
-            "branch": self._settings.branch,
         }
 
         if self._settings.user_id:

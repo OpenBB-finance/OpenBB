@@ -50,7 +50,7 @@ def create_app():
             return self._account
 
         @property
-        def settings(self) -> UserSettings:
+        def user(self) -> UserSettings:
             return self._command_runner.user_settings
 
         @property

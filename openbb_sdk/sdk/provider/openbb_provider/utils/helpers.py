@@ -1,6 +1,6 @@
 """Provider helpers."""
-
 import random
+import re
 from typing import List
 
 import requests
@@ -96,3 +96,8 @@ def make_request(
             **kwargs,
         )
     raise ValueError("Method must be GET or POST")
+
+
+def to_snake_case(string: str) -> str:
+    s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()

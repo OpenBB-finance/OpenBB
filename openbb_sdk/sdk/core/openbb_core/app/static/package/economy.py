@@ -4,7 +4,7 @@ import datetime
 from typing import List, Literal, Union
 
 import typing_extensions
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -52,13 +52,13 @@ class CLASS_economy(Container):
         symbol : Optional[str]
             Symbol to get data for.
         name : Optional[str]
-            The name of the index.
+            Name of the index.
         currency : Optional[str]
-            The currency the index is traded in.
+            Currency the index is traded in.
         stock_exchange : Optional[str]
-            The stock exchange where the index is listed.
+            Stock exchange where the index is listed.
         exchange_short_name : Optional[str]
-            The short name of the stock exchange where the index is listed."""
+            Short name of the stock exchange where the index is listed."""
 
         inputs = filter_inputs(
             provider_choices={
@@ -124,7 +124,7 @@ class CLASS_economy(Container):
         index: typing_extensions.Annotated[
             Literal["nasdaq", "sp500", "dowjones"],
             OpenBBCustomParameter(
-                description="The index for which we want to fetch the constituents."
+                description="Index for which we want to fetch the constituents."
             ),
         ] = "dowjones",
         chart: bool = False,
@@ -136,7 +136,7 @@ class CLASS_economy(Container):
         Parameters
         ----------
         index : Literal['nasdaq', 'sp500', 'dowjones']
-            The index for which we want to fetch the constituents.
+            Index for which we want to fetch the constituents.
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
@@ -163,19 +163,19 @@ class CLASS_economy(Container):
         symbol : Optional[str]
             Symbol to get data for.
         name : Optional[str]
-            The name of the constituent company in the index.
+            Name of the constituent company in the index.
         sector : Optional[str]
-            The sector the constituent company in the index belongs to.
+            Sector the constituent company in the index belongs to.
         sub_sector : Optional[str]
-            The sub-sector the constituent company in the index belongs to.
+            Sub-sector the constituent company in the index belongs to.
         headquarter : Optional[str]
-            The location of the headquarter of the constituent company in the index.
+            Location of the headquarter of the constituent company in the index.
         date_first_added : Union[date, str, NoneType]
-            The date the constituent company was added to the index.
+            Date the constituent company was added to the index.
         cik : Optional[int]
-            The Central Index Key of the constituent company in the index.
+            Central Index Key of the constituent company in the index.
         founded : Union[date, str]
-            The founding year of the constituent company in the index."""
+            Founding year of the constituent company in the index."""
 
         inputs = filter_inputs(
             provider_choices={
@@ -301,7 +301,7 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(description="The data units."),
         ] = "growth_same",
         frequency: typing_extensions.Annotated[
-            Literal["monthly", "quarterly", "annual"],
+            Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
         harmonized: typing_extensions.Annotated[
@@ -325,7 +325,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """CPI.
 
         Parameters
@@ -334,7 +334,7 @@ class CLASS_economy(Container):
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The data units.
-        frequency : Literal['monthly', 'quarterly', 'annual']
+        frequency : Literal['monthly', 'quarter', 'annual']
             The data time frequency.
         harmonized : bool
             Whether you wish to obtain harmonized data.
@@ -365,14 +365,9 @@ class CLASS_economy(Container):
 
         CPI
         ---
-        date : Optional[date]
-            The date of the data.
-        realtime_start : Optional[date]
-            The date the data was updated.
-        realtime_end : Optional[date]
-            The date the data was updated.
-        value : Optional[float]
-            The value of the data."""
+        country_unit_freq : Optional[List[CPIData]]
+            CPI data for a country, units, and frequency combination. (provider: fred)
+        """
 
         inputs = filter_inputs(
             provider_choices={
@@ -654,6 +649,10 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+            Number of days to look back. (provider: fmp)
+        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
+            None
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -664,8 +663,6 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']]
-            None
         period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: yfinance)
         prepost : bool
@@ -674,8 +671,6 @@ class CLASS_economy(Container):
             Adjust all the data automatically. (provider: yfinance)
         back_adjust : bool
             Back-adjusted data to mimic true historical prices. (provider: yfinance)
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
-            Number of days to look back. (provider: fmp)
 
         Returns
         -------
@@ -707,20 +702,20 @@ class CLASS_economy(Container):
             The volume of the symbol.
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
+        n : Optional[PositiveInt]
+            Number of transactions for the symbol in the time period. (provider: polygon)
         """
 
         inputs = filter_inputs(
@@ -978,9 +973,9 @@ class CLASS_economy(Container):
         continent : Optional[str]
             Continent of the country.
         total_equity_risk_premium : Optional[PositiveFloat]
-            The total equity risk premium for the country.
+            Total equity risk premium for the country.
         country_risk_premium : Optional[NonNegativeFloat]
-            The country-specific risk premium."""
+            Country-specific risk premium."""
 
         inputs = filter_inputs(
             provider_choices={

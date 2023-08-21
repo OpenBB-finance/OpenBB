@@ -1,5 +1,4 @@
 import os
-from unittest.mock import patch
 
 import pytest
 from openbb_core.app.model.system_settings import SystemSettings
@@ -146,24 +145,3 @@ def test_validate_logging_handlers(handlers, valid):
     else:
         with pytest.raises(ValueError, match="Invalid logging handler"):
             SystemSettings.validate_logging_handlers(handlers)
-
-
-@pytest.mark.parametrize(
-    "commit_hash, expected_result",
-    [
-        # Test case: Valid commit hash provided
-        ("1234567890", "1234567890"),
-        # Test case: Empty commit hash, mocked get_commit_hash returns "abcdef1234"
-        ("", "abcdef1234"),
-    ],
-)
-def test_validate_commit_hash(commit_hash, expected_result):
-    with patch(
-        "openbb_core.app.model.system_settings.get_commit_hash",
-        return_value="abcdef1234",
-    ):
-        # Act
-        result = SystemSettings.validate_commit_hash(commit_hash)
-
-        # Assert
-        assert result == expected_result
