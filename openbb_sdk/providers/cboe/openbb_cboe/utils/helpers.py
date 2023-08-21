@@ -471,12 +471,12 @@ def get_chains(symbol: str) -> pd.DataFrame:
                     ".json"
                 )
 
-        r = request(quotes_url)
-        if r.status_code != 200:
+        result = request(quotes_url)
+        if result.status_code != 200:
             print("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
-        r_json = r.json()
+        r_json = result.json()
         data = pd.DataFrame(r_json["data"])
         options = pd.Series(data.options, index=data.index)
         options_columns = list(options[0])
@@ -620,14 +620,14 @@ def get_eod_prices(
         return pd.DataFrame()
 
     url = __generate_historical_prices_url(symbol)
-    r = request(url)
+    result = request(url)
 
-    if r.status_code != 200:
-        print(f"Error: {r.status_code}")
+    if result.status_code != 200:
+        print(f"Error: {result.status_code}")
         return pd.DataFrame()
 
     data = (
-        pd.DataFrame(r.json()["data"])[
+        pd.DataFrame(result.json()["data"])[
             ["date", "open", "high", "low", "close", "volume"]
         ]
     ).set_index("date")

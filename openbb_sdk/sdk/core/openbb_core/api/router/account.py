@@ -31,9 +31,9 @@ async def login_for_access_token(
         username=form_data.username,
     )
     if not user_settings and openbb_hub:
-        hs = HubService()
-        hs.connect(email=form_data.username, password=form_data.password)
-        user_settings = hs.pull()
+        hub_service = HubService()
+        hub_service.connect(email=form_data.username, password=form_data.password)
+        user_settings = hub_service.pull()
         if user_settings:
             user_settings.profile.username = form_data.username
             user_settings.profile.password_hash = get_password_hash(form_data.password)
@@ -59,8 +59,8 @@ async def push_user_settings_to_hub(
 ) -> UserSettings:
     """Push user settings to hub."""
     if user_settings.profile.hub_session:
-        hs = HubService(user_settings.profile.hub_session)
-        hs.push(user_settings)
+        hub_service = HubService(user_settings.profile.hub_session)
+        hub_service.push(user_settings)
         return user_settings
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -76,11 +76,11 @@ async def pull_user_settings_from_hub(
 ) -> UserSettings:
     """Pull user settings from hub."""
     if user_settings.profile.hub_session:
-        hs = HubService(user_settings.profile.hub_session)
-        incoming = hs.pull()
+        hub_service = HubService(user_settings.profile.hub_session)
+        incoming = hub_service.pull()
         incoming.id = user_settings.id
-        d = incoming.dict(exclude_none=True)
-        filtered_incoming = UserSettings.parse_obj(d)
+        incoming_dict = incoming.dict(exclude_none=True)
+        filtered_incoming = UserSettings.parse_obj(incoming_dict)
         user_service.user_settings_repository.update(filtered_incoming)
         return incoming
     raise HTTPException(
@@ -96,8 +96,8 @@ async def disconnect_from_hub(
 ) -> bool:
     """Disconnect from hub."""
     if user_settings.profile.hub_session:
-        hs = HubService(user_settings.profile.hub_session)
-        result = hs.disconnect()
+        hub_service = HubService(user_settings.profile.hub_session)
+        result = hub_service.disconnect()
         user_settings.profile.hub_session = None
         return result
     raise HTTPException(
