@@ -202,7 +202,7 @@ class ImportDefinition:
         code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
         code += "\nimport typing_extensions"  # TODO: this should only bring `Annotated`
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
+        code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -589,14 +589,13 @@ class MethodDefinition:
         )  # this modified `od` in place
         func_params = MethodDefinition.build_func_params(formatted_params)
         func_returns = MethodDefinition.build_func_returns(return_type)
-        code = "\n    @filter_call"
 
         extra = (
             "(config=dict(arbitrary_types_allowed=True))"
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code += f"\n    @validate_arguments{extra}"
+        code = f"\n    @validate_arguments{extra}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
@@ -646,12 +645,11 @@ class MethodDefinition:
             else:
                 code += f"            {name}={name},\n"
         code += "        )\n\n"
-        code += "        o = self._command_runner.run(\n"
+        code += "        return self._command_runner.run(\n"
         code += f"""            "{path}",\n"""
         code += "            **inputs,\n"
         code += "        )\n"
         code += "\n"
-        code += "        return filter_output(o)\n"
 
         return code
 
