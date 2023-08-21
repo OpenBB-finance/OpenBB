@@ -68,3 +68,14 @@ def sonia(
 ) -> OBBject[BaseModel]:  # type: ignore
     """Get United States yield curve."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="AMERIBOR")
+def ameribor(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:  # type: ignore
+    """Get United States yield curve."""
+    return OBBject(results=Query(**locals()).execute())

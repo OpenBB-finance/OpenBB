@@ -24,6 +24,83 @@ import typing
 class CLASS_fixedincome(Container):
     @filter_call
     @validate_arguments
+    def ameribor(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Get United States yield curve.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, NoneType, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, NoneType, str]
+            End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
+            Period of AMERIBOR rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[AMERIBOR]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            error : Optional[Error]
+                Caught exceptions.
+            chart : Optional[Chart]
+                Chart object.
+
+        AMERIBOR
+        --------
+        date : Optional[date]
+            The date of the data.
+        rate : Optional[float]
+            AMERIBOR rate."""
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        o = self._command_runner_session.run(
+            "/fixedincome/ameribor",
+            **inputs,
+        ).output
+
+        return filter_output(o)
+
+    @filter_call
+    @validate_arguments
     def estr(
         self,
         start_date: Annotated[
@@ -210,7 +287,7 @@ class CLASS_fixedincome(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        period : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
+        parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
             Period of SONIA rate. (provider: fred)
 
         Returns
