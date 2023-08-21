@@ -3,7 +3,6 @@ from typing import Any, Literal, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 
 _warn = warnings.warn
 
@@ -454,6 +453,9 @@ def clenow_momentum(
     pd.Series:
         Values for best fit line
     """
+
+    from sklearn.linear_model import LinearRegression
+
     if len(values) < window:
         raise ValueError(f"Calculation asks for at least last {window} days of data")
 
