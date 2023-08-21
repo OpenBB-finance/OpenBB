@@ -25,12 +25,12 @@ def create_app():
 
         Basic utility menus:
             - account
-            - settings
+            - user
             - system
             - coverage
 
         Built-in extensions:
-            - charting: utility extension common to all built-in extensions
+            - charting
             - crypto
             - economy
             - fixedincome

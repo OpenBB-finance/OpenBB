@@ -285,10 +285,6 @@ class CryptoDeFi(Category):
         )
         self.newsletters = lib.crypto_defi_substack_model.get_newsletters
         self.newsletters_chart = lib.crypto_defi_substack_view.display_newsletters
-        self.pairs = lib.crypto_defi_graph_model.get_uniswap_pool_recently_added
-        self.pairs_chart = lib.crypto_defi_graph_view.display_recently_added
-        self.pools = lib.crypto_defi_graph_model.get_uni_pools_by_volume
-        self.pools_chart = lib.crypto_defi_graph_view.display_uni_pools
         self.sinfo = lib.crypto_defi_terramoney_fcd_model.get_staking_account_info
         self.sinfo_chart = (
             lib.crypto_defi_terramoney_fcd_view.display_account_staking_info
@@ -301,14 +297,8 @@ class CryptoDeFi(Category):
         self.sreturn_chart = (
             lib.crypto_defi_terramoney_fcd_view.display_staking_returns_history
         )
-        self.stats = lib.crypto_defi_graph_model.get_uniswap_stats
-        self.stats_chart = lib.crypto_defi_graph_view.display_uni_stats
         self.stvl = lib.crypto_defi_llama_model.get_defi_tvl
         self.stvl_chart = lib.crypto_defi_llama_view.display_defi_tvl
-        self.swaps = lib.crypto_defi_graph_model.get_last_uni_swaps
-        self.swaps_chart = lib.crypto_defi_graph_view.display_last_uni_swaps
-        self.tokens = lib.crypto_defi_graph_model.get_uni_tokens
-        self.tokens_chart = lib.crypto_defi_graph_view.display_uni_tokens
         self.validators = lib.crypto_defi_terramoney_fcd_model.get_validators
         self.validators_chart = lib.crypto_defi_terramoney_fcd_view.display_validators
         self.vaults = lib.crypto_defi_coindix_model.get_defi_vaults
