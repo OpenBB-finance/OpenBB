@@ -4,6 +4,7 @@ from openbb_provider.abstract.provider import Provider
 from openbb_fred.models.cpi import FREDCPIFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
 from openbb_fred.models.sofr_rates import FREDSOFRFetcher
+from openbb_fred.models.estr_rates import FREDESTRFetcher
 
 
 fred_provider = Provider(
@@ -17,5 +18,6 @@ fred_provider = Provider(
         "CPI": FREDCPIFetcher,
         "USYieldCurve": FREDYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
+        "ESTR": FREDESTRFetcher,
     },
 )

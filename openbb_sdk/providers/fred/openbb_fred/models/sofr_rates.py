@@ -21,7 +21,7 @@ class FREDSOFRQueryParams(SOFRQueryParams):
     """SOFR query."""
 
     period: Literal["overnight", "30_day", "90_day", "180_day", "index"] = Field(
-        default="overnight", description="Period of SOFR rate"
+        default="overnight", description="Period of SOFR rate."
     )
 
 

@@ -246,5 +246,6 @@
     "fixedincome_treasury": "/fixedincome/treasury",
     "fixedincome": "/fixedincome",
     "fixedincome_ycrv": "/fixedincome/ycrv",
-    "fixedincome_sofr": "/fixedincome/sofr"
+    "fixedincome_sofr": "/fixedincome/sofr",
+    "fixedincome_estr": "/fixedincome/estr"
 }
