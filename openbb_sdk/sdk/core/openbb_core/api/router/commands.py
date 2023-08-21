@@ -8,7 +8,7 @@ from fastapi.routing import APIRoute
 from openbb_core.api.dependency.user import get_user
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
@@ -22,6 +22,7 @@ router = APIRouter(prefix="")
 
 
 def build_new_annotation_map(sig: Signature) -> Dict[str, Any]:
+    """Build new annotation map."""
     annotation_map = {}
     parameter_list = sig.parameters.values()
 
@@ -34,6 +35,7 @@ def build_new_annotation_map(sig: Signature) -> Dict[str, Any]:
 
 
 def build_new_signature(func):
+    """Build new function signature."""
     sig = signature(func)
     parameter_list = sig.parameters.values()
     return_annotation = sig.return_annotation
@@ -76,22 +78,22 @@ def build_new_signature(func):
     )
 
 
-def validate_output(c_out: CommandOutput) -> CommandOutput:
+def validate_output(c_out: OBBject) -> OBBject:
     """
-    Validate CommandOutput object.
-    Checks against the CommandOutput schema and removes fields that contain the
+    Validate OBBject object.
+    Checks against the OBBject schema and removes fields that contain the
     `exclude_from_api` extra `pydantic.Field` kwarg.
-    Note that the modification to the `CommandOutput` object is done in-place.
+    Note that the modification to the `OBBject` object is done in-place.
 
     Parameters
     ----------
-    c_out : CommandOutput
-        CommandOutput object to validate.
+    c_out : OBBject
+        OBBject object to validate.
 
     Returns
     -------
-    CommandOutput
-        Validated CommandOutput object.
+    OBBject
+        Validated OBBject object.
     """
 
     def is_model(type_):
@@ -126,6 +128,7 @@ def build_api_wrapper(
     command_runner: CommandRunner,
     route: APIRoute,
 ) -> Callable:
+    """Build API wrapper for a command."""
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
 
@@ -152,11 +155,11 @@ def build_api_wrapper(
 
 
 def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> None:
+    """Add command map to the API router."""
     plugins_router = RouterLoader.from_extensions()
 
     for route in plugins_router.api_router.routes:
         route.endpoint = build_api_wrapper(command_runner=command_runner, route=route)  # type: ignore # noqa
-
     api_router.include_router(router=plugins_router.api_router)
 
 

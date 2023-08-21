@@ -1,8 +1,10 @@
+"""Package Builder Class."""
+
 import builtins
+import inspect
 import re
 import shutil
 import subprocess
-from collections import OrderedDict
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -13,6 +15,7 @@ from typing import (
     List,
     Literal,
     Optional,
+    OrderedDict,
     Type,
     Union,
     get_args,
@@ -20,20 +23,21 @@ from typing import (
 )
 
 import pandas as pd
-from pydantic.fields import ModelField
-from starlette.routing import BaseRoute
-from typing_extensions import Annotated, _AnnotatedAlias
-
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
+from pydantic.fields import ModelField
+from starlette.routing import BaseRoute
+from typing_extensions import Annotated, _AnnotatedAlias
 
 
 class PackageBuilder:
     """Build the extension package for the SDK."""
 
     @classmethod
-    def build(cls, modules: Optional[List[str]] = None, lint: bool = True) -> None:
+    def build(
+        cls, modules: Optional[Union[str, List[str]]] = None, lint: bool = True
+    ) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
         cls.save_module_map()
@@ -58,7 +62,7 @@ class PackageBuilder:
         )
 
     @classmethod
-    def save_modules(cls, modules: Optional[List[str]] = None):
+    def save_modules(cls, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -105,8 +109,8 @@ class PackageBuilder:
         package_folder.mkdir(exist_ok=True)
 
         print(package_path)
-        with package_path.open("w") as file:
-            file.write(module_code)
+        with package_path.open("w", encoding="utf-8", newline="\n") as file:
+            file.write(module_code.replace("typing.", ""))
 
 
 class ModuleBuilder:
@@ -180,7 +184,7 @@ class ImportDefinition:
         """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "\nfrom openbb_core.app.static.container import Container"
-        code += "\nfrom openbb_core.app.model.command_output import CommandOutput"
+        code += "\nfrom openbb_core.app.model.obbject import OBBject"
         code += (
             "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
         )
@@ -192,9 +196,11 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_arguments"
+        code += "\nfrom pydantic import validate_arguments, BaseModel"
         code += "\nfrom inspect import Parameter"
+        code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
+        code += "\nimport typing_extensions"  # TODO: this should only bring `Annotated`
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_call, filter_inputs, filter_output\n"
 
@@ -223,7 +229,7 @@ class ClassDefinition:
             path=path,
             path_list=path_list,
         )
-        for child_path in child_path_list:
+        for child_path in sorted(child_path_list):
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
                 code += MethodDefinition.build_command_method(
@@ -242,160 +248,133 @@ class ClassDefinition:
 class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
+    provider_interface = get_provider_interface()
+
     @staticmethod
-    def get_command_output_description() -> str:
+    def get_OBBject_description(model_name: str, providers: Optional[str]) -> str:
         """Get the command output description."""
-        command_output_description = (
-            "\nReturns\n"
-            "-------\n"
-            "CommandOutput\n"
-            "    results: List[Data]\n"
+
+        available_providers = providers or "Optional[PROVIDERS]"
+
+        obbject_description = (
+            "OBBject\n"
+            f"    results : List[{model_name}]\n"
             "        Serializable results.\n"
-            "    provider: Optional[PROVIDERS]\n"
+            f"    provider : {available_providers}\n"
             "        Provider name.\n"
-            "    warnings: Optional[List[Warning_]]\n"
+            "    warnings : Optional[List[Warning_]]\n"
             "        List of warnings.\n"
-            "    error: Optional[Error]\n"
+            "    error : Optional[Error]\n"
             "        Caught exceptions.\n"
-            "    chart: Optional[Chart]\n"
+            "    chart : Optional[Chart]\n"
             "        Chart object.\n"
         )
 
-        return command_output_description
-
-    @staticmethod
-    def get_available_providers(query_mapping: dict) -> str:
-        """Return a string of available providers."""
-        available_providers = ", ".join(query_mapping.keys())
-        available_providers = available_providers.replace("openbb, ", "")
-        available_providers = available_providers.replace("openbb", "")
-
-        provider_string = f"provider: Literal[{available_providers}]\n"
-        provider_string += "    The provider to use for the query.\n"
-
-        return provider_string
-
-    @staticmethod
-    def reorder_dictionary(dictionary: dict, key_to_move_first: str) -> dict:
-        """Reorder a dictionary so that a given key is first."""
-        if key_to_move_first in dictionary:
-            ordered_dict = OrderedDict(
-                [(key_to_move_first, dictionary[key_to_move_first])]
-            )
-
-            for key, value in dictionary.items():
-                if key != key_to_move_first:
-                    ordered_dict[key] = value
-
-            return ordered_dict
-        else:
-            return dictionary
+        return obbject_description
 
     @classmethod
-    def extract_field_details(
+    def generate_model_docstring(
         cls,
         model_name: str,
-        provider: str,
-        section_name: str,
-        section_docstring: str,
-        mapping: dict,
+        summary: str,
+        explicit_params: dict,
+        params: dict,
+        returns: dict,
     ) -> str:
-        """Extract the field details from the map and add them to the docstring."""
-        if section_docstring == "":
-            return section_docstring
+        """Create the docstring for model."""
 
-        padding = "    "
+        standard_dict = params["standard"].__dataclass_fields__
+        extra_dict = params["extra"].__dataclass_fields__
 
-        field_mapping = mapping[model_name][provider.lower()][section_name]["fields"]
-        fields = field_mapping.keys()
+        docstring = summary
+        docstring += "\n"
+        docstring += "\nParameters\n----------\n"
 
         def _to_snake_case(string: str) -> str:
             s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
             return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
-        if len(fields) == 0:
-            section_docstring += "All fields are standardized.\n"
-        else:
-            for field in fields:
-                # We need to get the string representation of the field type
-                # because Pydantic uses a custom repr.
-                try:
-                    field_type = field_mapping[field].__repr_args__()[1][1]
-                except AttributeError:
-                    # Fallback to the annotation if the repr fails
-                    field_type = field_mapping[field].annotation
-
-                field_description = field_mapping[field].field_info.description
-
-                section_docstring += f"{_to_snake_case(field)} : {field_type}\n"
-                section_docstring += f"{padding}{field_description}\n"
-
-        if provider == "openbb" and section_name == "QueryParams":
-            section_docstring += cls.get_command_output_description()
-
-        return section_docstring
-
-    @classmethod
-    def generate_provider_docstrings(
-        cls,
-        docstring: str,
-        query_mapping: dict,
-        model_name: str,
-        provider_interface_mapping: dict,
-    ) -> str:
-        """Generate the docstring for the provider."""
-        for provider, model_mapping in query_mapping.items():
-            docstring += f"\n{provider}"
-            docstring += f"\n{'=' * len(provider)}"
-
-            for section_name in model_mapping:
-                section_docstring = ""
-                if section_name == "QueryParams":
-                    section_docstring += "\nParameters\n----------\n"
-                    if provider == "openbb":
-                        section_docstring += (
-                            f"{cls.get_available_providers(query_mapping)}"
-                        )
-                        # TODO: How do we know if the model has a chart parameter?
-                elif section_name == "Data":
-                    underline = "-" * len(model_name)
-                    section_docstring += f"\n{model_name}\n{underline}\n"
+        # Explicit parameters
+        for param_name, param in explicit_params.items():
+            if param_name in standard_dict:
+                # pylint: disable=W0212
+                p_type = param._annotation.__args__[0]
+                type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+                meta = param._annotation.__metadata__
+                description = getattr(meta[0], "description", "") if meta else ""
+            else:
+                # pylint: disable=W0212
+                if param_name == "provider":
+                    # pylint: disable=W0212
+                    type_ = param._annotation
+                    default = param._annotation.__args__[0].__args__[0]
+                    description = f"""The provider to use for the query, by default None.
+    If None, the provider specified in defaults is selected or '{default}' if there is
+    no default."""
+                elif param_name == "chart":
+                    type_ = "bool"
+                    description = "Whether to create a chart or not, by default False."
                 else:
-                    continue
+                    type_ = ""
+                    description = ""
 
-                section_docstring = cls.extract_field_details(
-                    model_name=model_name,
-                    provider=provider,
-                    section_name=section_name,
-                    section_docstring=section_docstring,
-                    mapping=provider_interface_mapping,
-                )
+            docstring += f"{param_name} : {type_}\n"
+            docstring += f"    {description}\n"
 
-                docstring += f"\n{section_docstring}"
+        # Kwargs
+        for param_name, param in extra_dict.items():
+            p_type = param.type
+            type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+            docstring += f"{param_name} : {type_}\n"
+            docstring += f"    {param.default.description}\n"
+
+        # Returns
+        docstring += "\nReturns\n-------\n"
+        provider_param = explicit_params.get("provider", None)
+        available_providers = getattr(provider_param, "_annotation", None)
+        docstring += cls.get_OBBject_description(model_name, available_providers)
+
+        # Schema
+        underline = "-" * len(model_name)
+        docstring += f"\n{model_name}\n{underline}\n"
+
+        for field_name, field in returns.items():
+            try:
+                field_type = field.__repr_args__()[1][1]
+            except AttributeError:
+                # Fallback to the annotation if the repr fails
+                field_type = field.annotation
+
+            docstring += f"{field_name} : {field_type}\n"
+            docstring += f"    {field.field_info.description}\n"
 
         return docstring
 
     @classmethod
-    def generate_command_docstring(
-        cls, func: Callable, model_name: Optional[str] = None
+    def generate(
+        cls,
+        func: Callable,
+        formatted_params: OrderedDict[str, Parameter],
+        model_name: Optional[str] = None,
     ) -> Callable:
-        """Generate the docstring for the command."""
+        """Generate the docstring for the function."""
         if model_name:
-            provider_interface_mapping = get_provider_interface().map
-            query_mapping = provider_interface_mapping.get(model_name, None)
-            if query_mapping:
-                docstring = func.__doc__ or ""
-                docstring += "\n\n"
+            params = cls.provider_interface.params.get(model_name, None)
+            return_schema = cls.provider_interface.return_schema.get(model_name, None)
+            if params and return_schema:
+                explicit_dict = dict(formatted_params)
+                explicit_dict.pop("extra_params", None)
 
-                query_mapping_ordered = cls.reorder_dictionary(query_mapping, "openbb")
-                docstring = cls.generate_provider_docstrings(
-                    docstring=docstring,
-                    query_mapping=query_mapping_ordered,
+                returns = return_schema.__fields__
+
+                func.__doc__ = cls.generate_model_docstring(
                     model_name=model_name,
-                    provider_interface_mapping=provider_interface_mapping,
+                    summary=func.__doc__ or "",
+                    explicit_params=explicit_dict,
+                    params=params,
+                    returns=returns,
                 )
 
-                func.__doc__ = docstring
         return func
 
 
@@ -473,6 +452,7 @@ class MethodDefinition:
         # Be careful, if the type is not coercible by pydantic to the original type, you
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
+            "symbol": List[str],
             "data": pd.DataFrame,
             "start_date": str,
             "end_date": str,
@@ -532,9 +512,8 @@ class MethodDefinition:
     @staticmethod
     def add_field_descriptions(
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
-    ) -> OrderedDict[str, Parameter]:
+    ):
         """Add the field description to the param signature."""
-
         if model_name:
             available_fields = (
                 get_provider_interface()
@@ -561,15 +540,9 @@ class MethodDefinition:
                 od[param] = new_value
 
     @staticmethod
-    def build_func_params(
-        parameter_map: Dict[str, Parameter], model_name: Optional[str] = None
-    ) -> str:
-        od = MethodDefinition.format_params(parameter_map=parameter_map)
-        MethodDefinition.add_field_descriptions(
-            od=od, model_name=model_name
-        )  # this modified `od` in place
-
-        func_params = ", ".join(str(param) for param in od.values())
+    def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
+        """Stringify function params."""
+        func_params = ", ".join(str(param) for param in formatted_params.values())
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
@@ -587,31 +560,38 @@ class MethodDefinition:
         else:
             item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
-                func_returns = f"CommandOutput[{item_type.__name__}]"
+                func_returns = f"OBBject[{item_type.__name__}]"
             # elif get_origin(item_type) == list:
             #     inner_type = get_args(item_type)[0]
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-            #     func_returns = f"CommandOutput[{item_type.__module__}.{item_type.__name__}[{select}]]"
+            #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 inner_type_name = (
                     item_type.__name__
                     if hasattr(item_type, "__name__")
                     else item_type._name
                 )
-                func_returns = (
-                    f"CommandOutput[{item_type.__module__}.{inner_type_name}]"
-                )
+                result_type = f"{item_type.__module__}.{inner_type_name}"
+
+                if "pydantic.main" in result_type:
+                    result_type = "BaseModel"
+
+                func_returns = f"OBBject[{result_type}]"
 
         return func_returns
 
     @staticmethod
     def build_command_method_signature(
         func_name: str,
-        parameter_map: Dict[str, Parameter],
+        formatted_params: OrderedDict[str, Parameter],
         return_type: type,
         model_name: Optional[str] = None,
     ) -> str:
-        func_params = MethodDefinition.build_func_params(parameter_map, model_name)
+        """Build the command method signature."""
+        MethodDefinition.add_field_descriptions(
+            od=formatted_params, model_name=model_name
+        )  # this modified `od` in place
+        func_params = MethodDefinition.build_func_params(formatted_params)
         func_returns = MethodDefinition.build_func_returns(return_type)
         code = "\n    @filter_call"
 
@@ -626,9 +606,17 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def build_command_method_doc(func: Callable):
+    def build_command_method_doc(
+        func: Callable,
+        formatted_params: OrderedDict[str, Parameter],
+        model_name: Optional[str] = None,
+    ):
         """Build the command method docstring."""
-        code = f'        """{func.__doc__}"""\n' if func.__doc__ else ""
+        if model_name:
+            func = DocstringGenerator.generate(
+                func=func, formatted_params=formatted_params, model_name=model_name
+            )
+        code = f'        """{func.__doc__}"""\n\n' if func.__doc__ else ""
 
         return code
 
@@ -654,6 +642,9 @@ class MethodDefinition:
                 value = {k: k for k in fields}
                 code += f"            {name}={{"
                 for k, v in value.items():
+                    if k == "symbol":
+                        code += f'"{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, '
+                        continue
                     code += f'"{k}": {v}, '
                 code += "},\n"
             else:
@@ -678,17 +669,17 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        func = DocstringGenerator.generate_command_docstring(
-            func=func, model_name=model_name
-        )
+        formatted_params = cls.format_params(parameter_map=parameter_map)
 
         code = cls.build_command_method_signature(
             func_name=func_name,
-            parameter_map=parameter_map,
+            formatted_params=formatted_params,
             return_type=sig.return_annotation,
             model_name=model_name,
         )
-        code += cls.build_command_method_doc(func=func)
+        code += cls.build_command_method_doc(
+            func=func, formatted_params=formatted_params, model_name=model_name
+        )
         code += cls.build_command_method_implementation(path=path, func=func)
 
         return code

@@ -22,6 +22,7 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
 
     @validator("year", pre=True, check_fields=False)
     def time_validate(cls, v: int):  # pylint: disable=E0213
+        """Return the year as an integer."""
         current_year = datetime.now().year
         return current_year if v > current_year or v < 1950 else v
 
@@ -31,17 +32,22 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPEarningsCallTranscriptFetcher(
     Fetcher[
         FMPEarningsCallTranscriptQueryParams,
-        FMPEarningsCallTranscriptData,
+        List[FMPEarningsCallTranscriptData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEarningsCallTranscriptQueryParams:
+        """Transform the query params."""
+
         return FMPEarningsCallTranscriptQueryParams(**params)
 
     @staticmethod
@@ -49,7 +55,9 @@ class FMPEarningsCallTranscriptFetcher(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPEarningsCallTranscriptData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -59,10 +67,11 @@ class FMPEarningsCallTranscriptFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPEarningsCallTranscriptData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPEarningsCallTranscriptData],
-    ) -> List[FMPEarningsCallTranscriptData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPEarningsCallTranscriptData]:
+        """Return the transformed data."""
+
+        return [FMPEarningsCallTranscriptData(**d) for d in data]

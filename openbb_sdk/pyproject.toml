@@ -13,6 +13,7 @@ openbb-core = { path = "./sdk/core" }
 openbb-stocks = { path = "./extensions/stocks" }
 openbb-crypto = { path = "./extensions/crypto" }
 openbb-forex = { path = "./extensions/forex" }
+openbb-futures = { path = "./extensions/futures" }
 openbb-news = { path = "./extensions/news" }
 openbb-economy = { path = "./extensions/economy" }
 openbb-fixedincome = { path = "./extensions/fixedincome" }
@@ -21,6 +22,8 @@ openbb-benzinga = { path = "./providers/benzinga" }
 openbb-fmp = { path = "./providers/fmp" }
 openbb-polygon = { path = "./providers/polygon" }
 openbb-fred = { path = "./providers/fred" }
+openbb-yfinance = { path = "./providers/yfinance" }
+openbb-cboe = { path = "./providers/cboe"}
 
 
 [tool.poetry.group.dev.dependencies]

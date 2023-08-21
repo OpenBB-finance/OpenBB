@@ -1,3 +1,4 @@
+"""OpenBB API Account Router."""
 from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from openbb_core.api.dependency.user import (
@@ -23,15 +24,16 @@ async def login_for_access_token(
     user_service: Annotated[UserService, Depends(get_user_service)],
     openbb_hub: bool = Form(True),
 ) -> TokenResponse:
+    """Login for access token."""
     user_settings = authenticate_user(
         password=form_data.password,
         user_service=user_service,
         username=form_data.username,
     )
     if not user_settings and openbb_hub:
-        hs = HubService()
-        hs.connect(email=form_data.username, password=form_data.password)
-        user_settings = hs.pull()
+        hub_service = HubService()
+        hub_service.connect(email=form_data.username, password=form_data.password)
+        user_settings = hub_service.pull()
         if user_settings:
             user_settings.profile.username = form_data.username
             user_settings.profile.password_hash = get_password_hash(form_data.password)
@@ -55,9 +57,10 @@ async def login_for_access_token(
 async def push_user_settings_to_hub(
     user_settings: Annotated[UserSettings, Depends(get_user)]
 ) -> UserSettings:
+    """Push user settings to hub."""
     if user_settings.profile.hub_session:
-        hs = HubService(user_settings.profile.hub_session)
-        hs.push(user_settings)
+        hub_service = HubService(user_settings.profile.hub_session)
+        hub_service.push(user_settings)
         return user_settings
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -71,12 +74,13 @@ async def pull_user_settings_from_hub(
     user_settings: Annotated[UserSettings, Depends(get_user)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
+    """Pull user settings from hub."""
     if user_settings.profile.hub_session:
-        hs = HubService(user_settings.profile.hub_session)
-        incoming = hs.pull()
+        hub_service = HubService(user_settings.profile.hub_session)
+        incoming = hub_service.pull()
         incoming.id = user_settings.id
-        d = incoming.dict(exclude_none=True)
-        filtered_incoming = UserSettings.parse_obj(d)
+        incoming_dict = incoming.dict(exclude_none=True)
+        filtered_incoming = UserSettings.parse_obj(incoming_dict)
         user_service.user_settings_repository.update(filtered_incoming)
         return incoming
     raise HTTPException(
@@ -90,9 +94,10 @@ async def pull_user_settings_from_hub(
 async def disconnect_from_hub(
     user_settings: Annotated[UserSettings, Depends(get_user)],
 ) -> bool:
+    """Disconnect from hub."""
     if user_settings.profile.hub_session:
-        hs = HubService(user_settings.profile.hub_session)
-        result = hs.disconnect()
+        hub_service = HubService(user_settings.profile.hub_session)
+        result = hub_service.disconnect()
         user_settings.profile.hub_session = None
         return result
     raise HTTPException(

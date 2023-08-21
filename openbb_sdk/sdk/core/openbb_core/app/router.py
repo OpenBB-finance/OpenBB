@@ -1,4 +1,3 @@
-import sys
 import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
@@ -11,31 +10,27 @@ from typing import (
     Optional,
     Type,
     get_args,
+    get_origin,
     get_type_hints,
     overload,
 )
 
-import importlib_metadata
 from fastapi import APIRouter, Depends
+from importlib_metadata import entry_points
 from pydantic import BaseModel
 from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
-from typing_extensions import Annotated, _AnnotatedAlias
+from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
     StandardParams,
     get_provider_interface,
 )
-
-if sys.version_info < (3, 10):
-    from typing_extensions import ParamSpec
-else:
-    from typing import ParamSpec
 
 P = ParamSpec("P")
 
@@ -72,7 +67,7 @@ class CommandValidator:
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
-        return type(annotation) is _AnnotatedAlias and hasattr(
+        return isinstance(annotation, _AnnotatedAlias) and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
@@ -125,7 +120,7 @@ class CommandValidator:
         sig = signature(func)
         return_type = sig.return_annotation
 
-        if issubclass(return_type, CommandOutput):
+        if issubclass(return_type, OBBject):
             results_type = get_type_hints(return_type)["results"]
             if isinstance(results_type, type(None)):
                 valid_return_type = False
@@ -144,7 +139,7 @@ class CommandValidator:
                 "Invalid return type in signature:"
                 f"    {func.__name__}(...) -> {sig.return_annotation}:\n"
                 "Allowed return type:"
-                f"    {func.__name__}(...) -> CommandOutput[T] :\n"
+                f"    {func.__name__}(...) -> OBBject[T] :\n"
                 "If you need T = None, use an empty model instead.\n"
             )
 
@@ -163,12 +158,13 @@ class Router:
         self,
         prefix: str = "",
     ) -> None:
-        self._api_router = APIRouter(prefix=prefix)
+        self._api_router = APIRouter(
+            prefix=prefix,
+            responses={404: {"description": "Not found"}},
+        )
 
     @overload
-    def command(
-        self, func: Optional[Callable[P, CommandOutput]]
-    ) -> Callable[P, CommandOutput]:
+    def command(self, func: Optional[Callable[P, OBBject]]) -> Callable[P, OBBject]:
         pass
 
     @overload
@@ -177,7 +173,7 @@ class Router:
 
     def command(
         self,
-        func: Optional[Callable[P, CommandOutput]] = None,
+        func: Optional[Callable[P, OBBject]] = None,
         **kwargs,
     ) -> Optional[Callable]:
         if func is None:
@@ -193,7 +189,13 @@ class Router:
         func = SignatureInspector.complete_signature(func, model)
         if func is not None:
             CommandValidator.check(func=func)
+            create_operation_id = [
+                t.replace("_router", "")
+                for t in func.__module__.split(".")[1:] + [func.__name__]
+            ]
+            cleaned_id = "_".join({c: "" for c in create_operation_id if c}.keys())
 
+            kwargs["operation_id"] = kwargs.get("operation_id", cleaned_id)
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
@@ -217,10 +219,23 @@ class Router:
 class SignatureInspector:
     @classmethod
     def complete_signature(
-        cls, func: Callable[P, CommandOutput], model: str
-    ) -> Optional[Callable[P, CommandOutput]]:
+        cls, func: Callable[P, OBBject], model: str
+    ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
         provider_interface = get_provider_interface()
+        return_type = func.__annotations__["return"]
+        is_list = False
+
+        results_type = get_type_hints(return_type)["results"]
+        if not isinstance(results_type, type(None)):
+            results_type = get_args(results_type)[0]
+
+        is_list = get_origin(results_type) == list
+        inner_type = results_type.__args__[0] if is_list else results_type
+
+        func.__annotations__["return"].__doc__ = "OBBject"
+        func.__annotations__["return"].__name__ = f"OBBject[{inner_type.__name__}]"
+
         if model:
             if model not in provider_interface.models:
                 warnings.warn(
@@ -258,9 +273,17 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            ReturnModel = provider_interface.return_schema[model]
-            func.__annotations__["return"] = CommandOutput[ReturnModel]  # type: ignore
+            ReturnModel = merged_return = provider_interface.return_schema[model]
 
+            if get_origin(provider_interface.return_map[model]) == list or is_list:
+                ReturnModel = List[ReturnModel]  # type: ignore
+
+            return_type = OBBject[ReturnModel]  # type: ignore
+            return_type.__name__ = f"OBBject[{merged_return.__name__}]"
+            return_type.__doc__ = (
+                f"OBBject with results of type '{merged_return.__name__}'."
+            )
+            func.__annotations__["return"] = return_type
         elif (
             "provider_choices" in func.__annotations__
             and func.__annotations__["provider_choices"] == ProviderChoices
@@ -274,7 +297,7 @@ class SignatureInspector:
 
     @staticmethod
     def validate_signature(
-        func: Callable[P, CommandOutput], expected: Dict[str, type]
+        func: Callable[P, OBBject], expected: Dict[str, type]
     ) -> None:
         """Validate function signature before binding to model."""
         for k, v in expected.items():
@@ -290,8 +313,8 @@ class SignatureInspector:
 
     @staticmethod
     def inject_dependency(
-        func: Callable[P, CommandOutput], arg: str, callable_: Any
-    ) -> Callable[P, CommandOutput]:
+        func: Callable[P, OBBject], arg: str, callable_: Any
+    ) -> Callable[P, OBBject]:
         """Annotate function with dependency injection."""
         func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
         return func
@@ -366,9 +389,9 @@ class CommandMap:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
                             rp = (
-                                route.path
+                                route.path  # type: ignore
                                 if sep is None
-                                else route.path.replace("/", sep)
+                                else route.path.replace("/", sep)  # type: ignore
                             )
                             coverage_map[provider].append(rp)
 
@@ -393,8 +416,10 @@ class CommandMap:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
-                        rp = route.path if sep is None else route.path.replace("/", sep)
-                        if route.path not in coverage_map:
+                        rp = (
+                            route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                        )
+                        if route.path not in coverage_map:  # type: ignore
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
         return coverage_map
@@ -404,7 +429,7 @@ class CommandMap:
 
 
 class LoadingError(Exception):
-    pass
+    """Error loading extension."""
 
 
 class RouterLoader:
@@ -412,13 +437,10 @@ class RouterLoader:
     def from_extensions() -> Router:
         router = Router()
 
-        for entry_point in importlib_metadata.entry_points(
-            group="openbb_core_extension"
-        ):
+        for entry_point in entry_points(group="openbb_core_extension"):
             try:
                 router.include_router(
-                    router=entry_point.load(),
-                    prefix=f"/{entry_point.name}",
+                    router=entry_point.load(), prefix=f"/{entry_point.name}"
                 )
             except Exception as e:
                 raise LoadingError(

@@ -25,6 +25,8 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     """FMP Institutional Ownership Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "investors_holding": "investorsHolding",
             "last_investors_holding": "lastInvestorsHolding",
@@ -63,17 +65,22 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
 
     @validator("date", pre=True, check_fields=False)
     def time_validate(cls, v):  # pylint: disable=no-self-argument
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPInstitutionalOwnershipFetcher(
     Fetcher[
         FMPInstitutionalOwnershipQueryParams,
-        FMPInstitutionalOwnershipData,
+        List[FMPInstitutionalOwnershipData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPInstitutionalOwnershipQueryParams:
+        """Transform the query params."""
+
         return FMPInstitutionalOwnershipQueryParams(**params)
 
     @staticmethod
@@ -81,14 +88,17 @@ class FMPInstitutionalOwnershipFetcher(
         query: FMPInstitutionalOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPInstitutionalOwnershipData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "institutional-ownership/symbol-ownership", api_key, query)
-        return get_data_many(url, FMPInstitutionalOwnershipData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPInstitutionalOwnershipData],
-    ) -> List[FMPInstitutionalOwnershipData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPInstitutionalOwnershipData]:
+        """Return the transformed data."""
+
+        return [FMPInstitutionalOwnershipData(**d) for d in data]

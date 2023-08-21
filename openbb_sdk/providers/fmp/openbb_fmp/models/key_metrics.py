@@ -1,7 +1,8 @@
 """Key Metrics fetcher."""
 
 
-from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -9,7 +10,6 @@ from openbb_provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -25,6 +25,8 @@ class FMPKeyMetricsData(KeyMetricsData):
     """FMP Key Metrics Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "revenue_per_share": "revenuePerShare",
             "net_income_per_share": "netIncomePerShare",
@@ -65,6 +67,7 @@ class FMPKeyMetricsData(KeyMetricsData):
             "capex_to_depreciation": "capexToDepreciation",
             "stock_based_compensation_to_revenue": "stockBasedCompensationToRevenue",
             "graham_number": "grahamNumber",
+            "roic": "roic",
             "return_on_tangible_assets": "returnOnTangibleAssets",
             "graham_net_net": "grahamNetNet",
             "working_capital": "workingCapital",
@@ -80,22 +83,23 @@ class FMPKeyMetricsData(KeyMetricsData):
             "receivables_turnover": "receivablesTurnover",
             "payables_turnover": "payablesTurnover",
             "inventory_turnover": "inventoryTurnover",
+            "roe": "roe",
             "capex_per_share": "capexPerShare",
         }
-
-    @validator("date", pre=True, check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=no-self-argument
-        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPKeyMetricsFetcher(
     Fetcher[
         FMPKeyMetricsQueryParams,
-        FMPKeyMetricsData,
+        List[FMPKeyMetricsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
+        """Transform the query params."""
+
         return FMPKeyMetricsQueryParams(**params)
 
     @staticmethod
@@ -103,16 +107,26 @@ class FMPKeyMetricsFetcher(
         query: FMPKeyMetricsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPKeyMetricsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
+        data: List[Dict] = []
 
-        url = create_url(
-            3, f"key-metrics/{query.symbol}", api_key, query, exclude=["symbol"]
-        )
-        return get_data_many(url, FMPKeyMetricsData, **kwargs)
+        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
+            url = create_url(
+                3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
+            )
+            return data.extend(get_data_many(url, **kwargs))
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+
+        return data
 
     @staticmethod
-    def transform_data(data: List[FMPKeyMetricsData]) -> List[FMPKeyMetricsData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPKeyMetricsData]:
+        """Return the transformed data."""
+
+        return [FMPKeyMetricsData(**d) for d in data]

@@ -2,22 +2,23 @@
 
 import inspect
 import os
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Tuple
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
 
-MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
+MapType = dict[str, dict[str, dict[str, dict[str, Any]]]]
 
 
 class RegistryMap:
     """Class to store information about providers in the registry."""
 
     def __init__(self, registry: Optional[Registry] = None) -> None:
+        """Initialize Registry Map."""
         self._registry = registry or RegistryLoader.from_extensions()
         self._required_credentials = self._get_required_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
-        self._map = self._get_map(self._registry)
+        self._map, self._return_map = self._get_map(self._registry)
         self._models = self._get_models(self._map)
 
     @property
@@ -41,6 +42,11 @@ class RegistryMap:
         return self._map
 
     @property
+    def return_map(self) -> MapType:
+        """Get provider registry return map."""
+        return self._return_map
+
+    @property
     def models(self) -> List[str]:
         """Get available models."""
         return self._models
@@ -57,15 +63,17 @@ class RegistryMap:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def _get_map(self, registry: Registry) -> MapType:
+    def _get_map(self, registry: Registry) -> Tuple[MapType, MapType]:
         """Generate map for the provider package."""
         map_: MapType = {}
+        return_map: MapType = {}
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
                 f = fetcher()
                 standard_query, extra_query = self.extract_info(f, "query_params")
                 standard_data, extra_data = self.extract_info(f, "data")
+                return_type = self.extract_return_type(f)
 
                 if model_name not in map_:
                     map_[model_name] = {}
@@ -78,8 +86,9 @@ class RegistryMap:
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
+                return_map[model_name] = return_type
 
-        return map_
+        return map_, return_map
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
@@ -88,7 +97,7 @@ class RegistryMap:
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        super_model = getattr(fetcher, f"provider_{type_}_type")
+        super_model = getattr(fetcher, type_)
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
@@ -118,3 +127,8 @@ class RegistryMap:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info
+
+    @staticmethod
+    def extract_return_type(fetcher: Fetcher):
+        """Extract return info from fetcher."""
+        return getattr(fetcher, "return_type", None)

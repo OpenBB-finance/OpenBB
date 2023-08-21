@@ -438,7 +438,6 @@ class OpenBBSDK:
             `stocksera`: Set Stocksera key.\n
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
-            `twitter`: Set Twitter key\n
             `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """

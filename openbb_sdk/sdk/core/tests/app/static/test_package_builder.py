@@ -3,10 +3,13 @@
 
 from dataclasses import dataclass
 from inspect import _empty
+from types import NoneType
 
+import pandas
 import pytest
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
+    DocstringGenerator,
     ImportDefinition,
     Linters,
     MethodDefinition,
@@ -221,11 +224,20 @@ def test_reorder_params(method_definition):
 def test_build_func_params(method_definition):
     """Test build func params."""
     param_map = {
-        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
-        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param1": Parameter(
+            name="param1", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=NoneType
+        ),
+        "param2": Parameter(
+            "param2", kind=Parameter.POSITIONAL_OR_KEYWORD, annotation=int
+        ),
+        "param3": Parameter(
+            "param3",
+            kind=Parameter.POSITIONAL_OR_KEYWORD,
+            annotation=pandas.core.frame.DataFrame,
+        ),
     }
 
-    expected_output = "param1, param2, chart: bool = False"
+    expected_output = "param1: None, param2: int, param3: pandas.DataFrame"
     output = method_definition.build_func_params(param_map)
 
     assert output == expected_output
@@ -246,13 +258,15 @@ def test_build_func_returns(method_definition, return_type, expected_output):
 
 def test_build_command_method_signature(method_definition):
     """Test build command method signature."""
-    parameter_map = {
+    formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
         "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
     }
     return_type = int
     output = method_definition.build_command_method_signature(
-        func_name="test_func", parameter_map=parameter_map, return_type=return_type
+        func_name="test_func",
+        formatted_params=formatted_params,
+        return_type=return_type,
     )
     assert output
 
@@ -263,7 +277,14 @@ def test_build_command_method_doc(method_definition):
     def some_func():
         """Do some func doc."""
 
-    output = method_definition.build_command_method_doc(func=some_func)
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+
+    output = method_definition.build_command_method_doc(
+        func=some_func, formatted_params=formatted_params
+    )
     assert output
     assert isinstance(output, str)
 
@@ -446,4 +467,71 @@ def test_mypy(linters):
     linters.mypy()
 
 
-# TODO: Implement unit test for the DocstringGenerator class once refactored.
+@pytest.fixture(scope="module")
+def docstring_generator():
+    """Return package builder."""
+    return DocstringGenerator()
+
+
+def test_docstring_generator_init(docstring_generator):
+    """Test docstring generator init."""
+    assert docstring_generator
+
+
+def test_get_OBBject_description(docstring_generator):
+    """Test build docstring."""
+    docstring = docstring_generator.get_OBBject_description(
+        "SomeModel", "some_provider"
+    )
+    assert docstring
+
+
+def test_generate_model_docstring(docstring_generator):
+    """Test generate model docstring."""
+    docstring = ""
+    model_name = "GlobalNews"
+    summary = "This is a summary."
+
+    pi = docstring_generator.provider_interface
+    params = pi.params[model_name]
+    return_schema = pi.return_schema[model_name]
+    returns = return_schema.__fields__
+
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+    explicit_dict = dict(formatted_params)
+
+    docstring = docstring_generator.generate_model_docstring(
+        model_name=model_name,
+        summary=summary,
+        explicit_params=explicit_dict,
+        params=params,
+        returns=returns,
+    )
+
+    assert docstring
+    assert summary in docstring
+    assert "Parameters" in docstring
+    assert "Returns" in docstring
+    assert "GlobalNews" in docstring
+
+
+def test_generate(docstring_generator):
+    """Test generate docstring."""
+
+    def some_func():
+        """Some func docstring."""
+
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+
+    f = docstring_generator.generate(
+        func=some_func, formatted_params=formatted_params, model_name="GlobalNews"
+    )
+    assert f
+    assert "Parameters" in f.__doc__
+    assert "Returns" in f.__doc__

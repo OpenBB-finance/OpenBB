@@ -1,7 +1,7 @@
 """Test the filters.py file."""
 
 import pytest
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
 from pandas import DataFrame
 
@@ -39,6 +39,7 @@ def test_filter_inputs_df():
 
 def test_filter_output():
     """Test filter_output."""
-    command_output = filter_output(CommandOutput())
+    obbject = OBBject()
+    filter_output(obbject)
 
-    assert command_output is not None
+    assert obbject is not None

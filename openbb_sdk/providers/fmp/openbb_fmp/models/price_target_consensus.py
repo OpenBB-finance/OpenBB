@@ -1,7 +1,7 @@
 """FMP Price Target Consensus fetcher."""
 
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.price_target_consensus import (
@@ -9,7 +9,7 @@ from openbb_provider.standard_models.price_target_consensus import (
     PriceTargetConsensusQueryParams,
 )
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_one
 
 
 class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
@@ -23,6 +23,8 @@ class FMPPriceTargetConsensusData(PriceTargetConsensusData):
     """FMP Price Target Consensus Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "target_high": "targetHigh",
             "target_low": "targetLow",
@@ -37,23 +39,32 @@ class FMPPriceTargetConsensusFetcher(
         FMPPriceTargetConsensusData,
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPPriceTargetConsensusQueryParams:
+        """Transform the query params."""
+
         return FMPPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPPriceTargetConsensusQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
-    ) -> List[FMPPriceTargetConsensusData]:
+        **kwargs: Any,
+    ) -> Dict:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
-        return get_data_many(url, FMPPriceTargetConsensusData, **kwargs)
+
+        return get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: List[FMPPriceTargetConsensusData],
-    ) -> List[FMPPriceTargetConsensusData]:
-        return data
+        data: Dict,
+    ) -> FMPPriceTargetConsensusData:
+        """Return the transformed data."""
+
+        return FMPPriceTargetConsensusData(**data)

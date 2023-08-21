@@ -7,13 +7,15 @@ from openbb_provider.registry_map import MapType, RegistryMap
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 
+TupleFieldType = Tuple[str, type, Any]
+
 
 @dataclass
 class DataclassField:
     """Dataclass field."""
 
     name: str
-    type_: Any
+    type_: type
     default: Any
 
 
@@ -136,6 +138,11 @@ class ProviderInterface:
         """List of model names."""
         return self._registry_map.models
 
+    @property
+    def return_map(self) -> Dict[str, Dict[str, Any]]:
+        """Return map."""
+        return self._registry_map.return_map
+
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
         return self._query_executor(self._registry_map.registry)  # type: ignore
@@ -164,7 +171,7 @@ class ProviderInterface:
 
         return DataclassField(
             name=current_name,
-            type_=merged_type,
+            type_=merged_type,  # type: ignore
             default=merged_default,
         )
 
@@ -180,7 +187,14 @@ class ProviderInterface:
         # field.type_ don't work for nested types
         # field.outer_type_ don't work for Optional nested types
         type_ = field.annotation
-        description = field.field_info.description
+        provider_field = (
+            f"(provider: {provider_name})" if provider_name != "openbb" else ""
+        )
+        description = (
+            f"{field.field_info.description} {provider_field}"
+            if provider_name and field.field_info.description
+            else f"{field.field_info.description}"
+        )
 
         if field.required:
             if force_optional:
@@ -208,10 +222,10 @@ class ProviderInterface:
     def _extract_params(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, type, Any]], Dict[str, Tuple[str, type, Any]]]:
+    ) -> Tuple[Dict[str, TupleFieldType], Dict[str, TupleFieldType]]:
         """Extract parameters from map."""
-        standard: Dict[str, Tuple[str, Any, Any]] = {}
-        extra: Dict[str, Tuple[str, Any, Any]] = {}
+        standard: Dict[str, TupleFieldType] = {}
+        extra: Dict[str, TupleFieldType] = {}
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -255,9 +269,9 @@ class ProviderInterface:
     def _extract_data(
         cls,
         providers: Any,
-    ) -> Tuple[Dict[str, Tuple[str, type, Any]], Dict[str, Tuple[str, type, Any]]]:
-        standard: Dict[str, Tuple[str, Any, Any]] = {}
-        extra: Dict[str, Tuple[str, Any, Any]] = {}
+    ) -> Tuple[Dict[str, TupleFieldType], Dict[str, TupleFieldType]]:
+        standard: Dict[str, TupleFieldType] = {}
+        extra: Dict[str, TupleFieldType] = {}
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -314,8 +328,9 @@ class ProviderInterface:
         """
         result: Dict = {}
 
-        # TODO: Consider multiprocessing this loop to speed startup
         for model_name, providers in map_.items():
+            standard: dict
+            extra: dict
             standard, extra = self._extract_params(providers)
 
             result[model_name] = {
@@ -347,7 +362,7 @@ class ProviderInterface:
         result: Dict = {}
 
         for model_name, providers in map_.items():
-            choices = list(providers.keys())
+            choices = sorted(list(providers.keys()))
             if "openbb" in choices:
                 choices.remove("openbb")
 
@@ -380,6 +395,8 @@ class ProviderInterface:
         result: Dict = {}
 
         for model_name, providers in map_.items():
+            standard: dict
+            extra: dict
             standard, extra = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
@@ -423,15 +440,11 @@ class ProviderInterface:
             class Config(BaseConfig):
                 extra = Extra.allow
 
-            ReturnModel = create_model(  # type: ignore
+            result[model_name] = create_model(  # type: ignore
                 model_name,
                 __config__=Config,
                 **fields_dict,  # type: ignore
             )
-
-            # TODO: If we want to support multiple return schemas, we need
-            # to change this `List` to the schema type
-            result[model_name] = List[ReturnModel]  # type: ignore
 
         return result
 

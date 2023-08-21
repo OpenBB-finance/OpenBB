@@ -27,19 +27,19 @@ class DividendCalendarData(Data, BaseSymbol):
     """Dividend Calendar Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    label: str = Field(description="The date in human readable form in the calendar.")
+    label: str = Field(description="Date in human readable form in the calendar.")
     adj_dividend: Optional[NonNegativeFloat] = Field(
-        description="The adjusted dividend on a date in the calendar.",
+        description="Adjusted dividend on a date in the calendar.",
     )
     dividend: Optional[NonNegativeFloat] = Field(
-        description="The dividend amount in the calendar."
+        description="Dividend amount in the calendar."
     )
     record_date: Optional[dateType] = Field(
-        description="The record date of the dividend in the calendar.",
+        description="Record date of the dividend in the calendar.",
     )
     payment_date: Optional[dateType] = Field(
-        description="The payment date of the dividend in the calendar.",
+        description="Payment date of the dividend in the calendar.",
     )
     declaration_date: Optional[dateType] = Field(
-        description="The declaration date of the dividend in the calendar.",
+        description="Declaration date of the dividend in the calendar.",
     )

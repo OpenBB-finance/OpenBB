@@ -19,7 +19,9 @@ GITHUB_PROJECT_URL = (
 
 UNKNOWN_COMMIT_PLACEHOLDER = "unknown-commit"
 UNKNOWN_BRANCH_PLACEHOLDER = "unknown-branch"
-REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent.parent
+REPOSITORY_DIRECTORY = Path(
+    __file__
+).parent.parent.parent.parent.parent.parent.parent.parent
 
 
 def get_commit_hash() -> str:
@@ -40,6 +42,9 @@ def get_commit_hash() -> str:
 
 def get_branch(commit_hash: str, request_timeout: int = 5) -> str:
     """Get Branch Name"""
+
+    if commit_hash == UNKNOWN_COMMIT_PLACEHOLDER:
+        return UNKNOWN_BRANCH_PLACEHOLDER
 
     def get_branch_commit_hash(branch: str) -> str:
         response = requests.get(

@@ -1,12 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from openbb_core.api.dependency.system import get_system_settings
 from openbb_core.api.dependency.user import get_user_service
 from openbb_core.api.router.account import router as router_account
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
-from openbb_core.api.router.settings import router as router_settings
 from openbb_core.api.router.system import router as router_system
+from openbb_core.api.router.user import router as router_user
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 
@@ -26,7 +28,7 @@ app = FastAPI(
     },
 )
 app.include_router(router=router_account, prefix="/api/v1")
-app.include_router(router=router_settings, prefix="/api/v1")
+app.include_router(router=router_user, prefix="/api/v1")
 app.include_router(router=router_system, prefix="/api/v1")
 app.include_router(router=router_coverage, prefix="/api/v1")
 app.include_router(router=router_commands, prefix="/api/v1")
@@ -77,6 +79,30 @@ async def setup_default_user_settings():
                 defaults=default_user_settings.defaults,
             )
             user_settings_repository.create(model=default_user_settings)
+
+
+@app.exception_handler(Exception)
+async def api_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "detail": str(exc),
+            "error_kind": exc.__class__.__name__,
+        },
+    )
+
+
+@app.exception_handler(OpenBBError)
+async def openbb_exception_handler(request: Request, exc: OpenBBError):
+    openbb_error = exc.original
+    status_code = 400 if "No results" in str(openbb_error) else 500
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "detail": str(openbb_error),
+            "error_kind": openbb_error.__class__.__name__,
+        },
+    )
 
 
 if __name__ == "__main__":

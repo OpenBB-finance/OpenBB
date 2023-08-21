@@ -9,9 +9,14 @@ def basemodel_to_df(
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
 
-    data_list = [data] if not isinstance(data, list) else data
+    if isinstance(data, list):
+        df = pd.DataFrame([d.dict() for d in data])
+    else:
+        try:
+            df = pd.DataFrame(data.dict())
+        except ValueError:
+            df = pd.DataFrame(data.dict(), index=["values"])
 
-    df = pd.DataFrame([d.dict() for d in data_list])
     if index and index in df.columns:
         df = df.set_index(index)
         if df.index.name == "date":

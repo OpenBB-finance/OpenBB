@@ -1,5 +1,5 @@
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.command_output import CommandOutput
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -19,6 +19,6 @@ def load(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> CommandOutput[BaseModel]:
-    """Crypto Intraday Price."""
-    return CommandOutput(results=Query(**locals()).execute())
+) -> OBBject[BaseModel]:
+    """Crypto EOD Price."""
+    return OBBject(results=Query(**locals()).execute())

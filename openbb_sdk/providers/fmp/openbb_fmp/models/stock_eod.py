@@ -1,9 +1,9 @@
 """FMP Stocks end of day fetcher."""
 
+from datetime import datetime
+from typing import Any, Dict, List, Literal, Optional
 
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
-
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.helpers import get_querystring
@@ -21,48 +21,62 @@ class FMPStockEODQueryParams(StockEODQueryParams):
     timeseries: Optional[NonNegativeInt] = Field(
         default=None, description="Number of days to look back."
     )
+    interval: Literal[
+        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
+    ] = Field(default="1day", description="Interval of the data to fetch.")
 
 
 class FMPStockEODData(StockEODData):
     """FMP Stock end of day Data."""
 
-    adjClose: float = Field(
+    adjClose: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
     )
-    unadjustedVolume: float = Field(
+    unadjustedVolume: Optional[float] = Field(
         description="Unadjusted volume of the symbol.", alias="unadjusted_volume"
     )
-    change: float = Field(
+    change: Optional[float] = Field(
         description="Change in the price of the symbol from the previous day.",
         alias="change",
     )
-    changePercent: float = Field(
+    changePercent: Optional[float] = Field(
         description=r"Change \% in the price of the symbol.", alias="change_percent"
     )
-
-    label: str = Field(description="Human readable format of the date.")
-    changeOverTime: float = Field(
+    vwap: Optional[float] = Field(
+        description="Volume Weighted Average Price of the symbol."
+    )
+    label: Optional[str] = Field(description="Human readable format of the date.")
+    changeOverTime: Optional[float] = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
         alias="change_over_time",
     )
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d")
+        """Return the date as a datetime object."""
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPStockEODFetcher(
     Fetcher[
         FMPStockEODQueryParams,
-        FMPStockEODData,
+        List[FMPStockEODData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
-        now = datetime.now().date()
+        """Transform the query params."""
+
         transformed_params = params
+
+        now = datetime.now().date()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -74,16 +88,27 @@ class FMPStockEODFetcher(
         query: FMPStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockEODData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
-        url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}/historical-chart/{query.interval}/{query.symbol}?&apikey={api_key}"
 
-        return get_data_many(url, FMPStockEODData, "historical", **kwargs)
+        if query.interval == "1day":
+            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
+            query_str = query_str.replace("start_date", "from").replace(
+                "end_date", "to"
+            )
+            url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
+
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockEODData]) -> List[FMPStockEODData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPStockEODData]:
+        """Return the transformed data."""
+
+        return [FMPStockEODData(**d) for d in data]

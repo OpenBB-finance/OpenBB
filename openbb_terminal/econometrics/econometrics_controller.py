@@ -56,7 +56,6 @@ class EconometricsController(BaseController):
         "type",
         "desc",
         "corr",
-        "season",
         "index",
         "clean",
         "add",
@@ -165,7 +164,7 @@ class EconometricsController(BaseController):
         }
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             choices["load"] = {
                 "--file": {c: {} for c in self.DATA_FILES},
                 "-f": "--file",
@@ -188,9 +187,9 @@ class EconometricsController(BaseController):
                 "granger",
                 "coint",
                 "corr",
-                "season",
                 "lag",
                 "vif",
+                "panel",
             ]:
                 choices[feature] = dict()
 
@@ -216,7 +215,6 @@ class EconometricsController(BaseController):
                 "norm",
                 "root",
                 "coint",
-                "season",
                 "lag",
                 "regressions",
                 "ols",
@@ -279,7 +277,6 @@ class EconometricsController(BaseController):
         mt.add_cmd("type", self.files)
         mt.add_cmd("desc", self.files)
         mt.add_cmd("corr", self.files)
-        mt.add_cmd("season", self.files)
         mt.add_cmd("index", self.files)
         mt.add_cmd("clean", self.files)
         mt.add_cmd("add", self.files)
@@ -751,79 +748,6 @@ class EconometricsController(BaseController):
                 data,
                 ns_parser.export,
             )
-
-    @log_start_end(log=logger)
-    def call_season(self, other_args: List[str]):
-        """Process season command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="season",
-            description="The seasonality for a given column",
-        )
-        parser.add_argument(
-            "-v",
-            "--values",
-            help="Dataset.column values to be displayed in a plot",
-            dest="values",
-            choices={
-                f"{dataset}.{column}": {column: None, dataset: None}
-                for dataset, dataframe in self.datasets.items()
-                for column in dataframe.columns
-            },
-            type=str,
-        )
-        parser.add_argument(
-            "-m",
-            help="A time lag to highlight on the plot",
-            dest="m",
-            type=int,
-            default=None,
-        )
-        parser.add_argument(
-            "--max_lag",
-            help="The maximal lag order to consider",
-            dest="max_lag",
-            type=int,
-            default=24,
-        )
-        parser.add_argument(
-            "-a",
-            "--alpha",
-            help="The confidence interval to display",
-            dest="alpha",
-            type=float,
-            default=0.05,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-
-        if not ns_parser:
-            return
-
-        if not ns_parser.values:
-            console.print("[red]Please enter valid dataset.\n[/red]")
-            return
-
-        try:
-            dataset, col = ns_parser.values.split(".")
-            data = self.datasets[dataset]
-            data.name = dataset
-        except ValueError:
-            console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
-            return
-
-        econometrics_view.display_seasonality(
-            data=data,
-            column=col,
-            export=ns_parser.export,
-            m=ns_parser.m,
-            max_lag=ns_parser.max_lag,
-            alpha=ns_parser.alpha,
-        )
 
     @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
