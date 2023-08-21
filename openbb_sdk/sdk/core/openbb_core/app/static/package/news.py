@@ -20,7 +20,7 @@ class CLASS_news(Container):
         self,
         page: typing_extensions.Annotated[
             pydantic.types.NonNegativeInt,
-            OpenBBCustomParameter(description="The page of the global news."),
+            OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
         chart: bool = False,
         provider: Union[Literal["benzinga", "fmp"], None] = None,
@@ -31,7 +31,7 @@ class CLASS_news(Container):
         Parameters
         ----------
         page : NonNegativeInt
-            The page of the global news.
+            Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['benzinga', 'fmp'], NoneType]
@@ -44,13 +44,13 @@ class CLASS_news(Container):
             Type of data to return. (provider: benzinga)
         date : Union[datetime.datetime, NoneType]
             Date of the news to retrieve. (provider: benzinga)
-        dateFrom : Union[datetime.datetime, NoneType]
+        date_from : Union[datetime.datetime, NoneType]
             Start date of the news to retrieve. (provider: benzinga)
-        dateTo : Union[datetime.datetime, NoneType]
+        date_to : Union[datetime.datetime, NoneType]
             End date of the news to retrieve. (provider: benzinga)
-        updatedSince : Union[int, NoneType]
+        updated_since : Union[int, NoneType]
             Number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Union[int, NoneType]
+        published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType]
             Order in which to sort the news.  (provider: benzinga)
@@ -86,13 +86,13 @@ class CLASS_news(Container):
         GlobalNews
         ----------
         date : Optional[datetime]
-            The published date of the news.
+            Published date of the news.
         title : Optional[str]
-            The title of the news.
+            Title of the news.
         text : Optional[str]
-            The text/body of the news.
+            Text/body of the news.
         url : Optional[str]
-            The URL of the news.
+            URL of the news.
         images : Optional[List[BenzingaImage]]
             Images associated with the news. (provider: benzinga)
         channels : Optional[List[str]]

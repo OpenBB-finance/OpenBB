@@ -55,20 +55,20 @@ class CLASS_stocks_options(Container):
         OptionsChains
         -------------
         expiration : Optional[datetime]
-            The expiration date of the contract.
+            Expiration date of the contract.
         strike : Optional[float]
-            The strike price of the contract.
+            Strike price of the contract.
         optionType : Optional[str]
             Call or Put.
         bid : Optional[float]
-            The bid price of the contract.
+            Bid price of the contract.
         ask : Optional[float]
-            The ask price of the contract.
+            Ask price of the contract.
         openInterest : Optional[float]
-            The open interest on the contract.
+            Open interest on the contract.
         volume : Optional[float]
-            The current trading volume on the contract.
-        contractSymbol : Optional[str]
+            Current trading volume on the contract.
+        contract_symbol : Optional[str]
             Contract symbol for the option. (provider: cboe)
         dte : Optional[int]
             Days to expiration for the option. (provider: cboe)

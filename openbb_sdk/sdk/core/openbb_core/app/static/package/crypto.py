@@ -52,6 +52,8 @@ class CLASS_crypto(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+            Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -72,8 +74,6 @@ class CLASS_crypto(Container):
             Adjust all the data automatically. (provider: yfinance)
         back_adjust : bool
             Back-adjusted data to mimic true historical prices. (provider: yfinance)
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
-            Number of days to look back. (provider: fmp)
 
         Returns
         -------
@@ -105,9 +105,7 @@ class CLASS_crypto(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
@@ -119,6 +117,8 @@ class CLASS_crypto(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
+        n : Optional[PositiveInt]
+            Number of transactions for the symbol in the time period. (provider: polygon)
         """
 
         inputs = filter_inputs(
