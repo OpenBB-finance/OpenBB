@@ -82,7 +82,6 @@ class OnchainController(BaseController):
         "btccp",
         "btcct",
         "btcblockdata",
-        "query",
         "topledger",
     ]
 
@@ -119,7 +118,6 @@ class OnchainController(BaseController):
         mt.add_cmd("ueat")
         mt.add_cmd("ttcp")
         mt.add_cmd("baas")
-        mt.add_cmd("query")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
