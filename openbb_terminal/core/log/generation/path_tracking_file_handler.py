@@ -186,8 +186,8 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
             log_sender.send_path(path=closed_log_path, last=True)
             try:
                 log_sender.join(timeout=3)
-            except Exception:
-                pass  # noqa
+            except Exception:  # noqa: S110
+                pass
 
         super().close()
 

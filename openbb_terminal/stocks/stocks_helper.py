@@ -232,7 +232,7 @@ def search(
     return df.reset_index()
 
 
-def load(  # pylint: disable=too-many-return-statements
+def load(  # pylint: disable=too-many-return-statements # noqa: PLR0911
     symbol: str,
     start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,

@@ -132,7 +132,7 @@ def load_options_chains(
     return load_cboe(symbol, pydantic)
 
 
-def validate_object(
+def validate_object(  # noqa: PLR0911
     options: Options, scope: Optional[str] = "object", days: Optional[int] = None
 ) -> Any:
     """This is an internal helper function for validating the Options data object passed
@@ -178,8 +178,6 @@ def validate_object(
 
     scopes = ["chains", "object", "strategies", "nonZeroPrices"]
 
-    valid: bool = True
-
     if scope == "":
         scope = "chains"
 
@@ -194,24 +192,24 @@ def validate_object(
                 and isinstance(options.expirations, list)
                 and hasattr(options, "last_price")
             ):
-                return valid
+                return True
 
         except AttributeError:
             print(
                 "Error: Invalid data type supplied.  The Options data object is required.  "
                 "Use load_options_chains() first."
             )
-            return not valid
+            return False
 
     if scope == "strategies":
         try:
             if isinstance(options.last_price, float):
-                return valid
+                return True
         except AttributeError:
             print(
                 "`last_price` was not found in the OptionsChainsData object and is required for this operation."
             )
-            return not valid
+            return False
 
     if scope == "chains":
         try:
@@ -295,7 +293,7 @@ def validate_object(
         "Error: No valid data supplied. Check the input to ensure it is not empty or None."
     )
 
-    return not valid
+    return False
 
 
 def get_nearest_expiration(options: Options, expiration: Optional[str] = "") -> str:

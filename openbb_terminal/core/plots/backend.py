@@ -424,7 +424,7 @@ class Backend(PyWry):
                 data: dict = self.recv.get(block=False) or {}
                 if data.get("result", False):
                     return json.loads(data["result"])
-            except Exception:  # pylint: disable=W0703
+            except Exception:  # pylint: disable=W0703 # noqa: S110
                 pass
 
             await asyncio.sleep(1)
@@ -482,14 +482,13 @@ async def download_plotly_js():
         # this is so we don't have to block the main thread
         async with aiohttp.ClientSession(
             connector=aiohttp.TCPConnector(verify_ssl=False)
-        ) as session:
-            async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
-                with open(str(PLOTLYJS_PATH), "wb") as f:
-                    while True:
-                        chunk = await resp.content.read(1024)
-                        if not chunk:
-                            break
-                        f.write(chunk)
+        ) as session, session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
+            with open(str(PLOTLYJS_PATH), "wb") as f:
+                while True:
+                    chunk = await resp.content.read(1024)
+                    if not chunk:
+                        break
+                    f.write(chunk)
 
         # We delete the old version of plotly.js
         for file in (PLOTS_CORE_PATH / "assets").glob("plotly*.js"):

@@ -629,8 +629,8 @@ def show_quick_performance(
                     )
                 ),
             )
-    except Exception:
-        pass  # noqa
+    except Exception:  # noqa: S110
+        pass
 
     exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
