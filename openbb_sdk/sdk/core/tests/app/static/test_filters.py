@@ -1,6 +1,5 @@
 """Test the filters.py file."""
 
-import pytest
 from openbb_core.app.static.filters import filter_inputs
 from pandas import DataFrame
 

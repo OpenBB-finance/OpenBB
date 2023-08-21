@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 from openbb_core.app.logs.logging_manager import LoggingManager
-from pydantic import BaseModel
 from openbb_core.app.model.abstract.error import OpenBBError
+from pydantic import BaseModel
 
 
 class MockLoggingSettings:

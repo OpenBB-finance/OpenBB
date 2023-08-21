@@ -11,7 +11,6 @@ from openbb_core.app.service.hub_service import (
     HubUserSettings,
     OpenBBError,
 )
-import requests
 
 
 @pytest.fixture
