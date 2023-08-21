@@ -247,5 +247,6 @@
     "fixedincome": "/fixedincome",
     "fixedincome_ycrv": "/fixedincome/ycrv",
     "fixedincome_sofr": "/fixedincome/sofr",
-    "fixedincome_estr": "/fixedincome/estr"
+    "fixedincome_estr": "/fixedincome/estr",
+    "fixedincome_sonia": "/fixedincome/sonia"
 }
