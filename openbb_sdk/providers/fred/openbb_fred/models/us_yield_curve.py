@@ -48,7 +48,9 @@ class FREDYieldCurveFetcher(Fetcher[FREDYieldCurveQueryParams, FREDYieldCurveDat
             fred_series = YIELD_CURVE_SERIES_NOMINAL
             years = YIELD_CURVE_NOMINAL_RATES
 
-        start_date = date - timedelta(days=30) if date else datetime.now() - timedelta(days=30)
+        start_date = (
+            date - timedelta(days=30) if date else datetime.now() - timedelta(days=30)
+        )
 
         fred = Fred(api_key)
         vals = []

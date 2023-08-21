@@ -54,7 +54,11 @@ def estr(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:  # type: ignore
-    """Get United States yield curve."""
+    """
+        The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in the euro area.
+    The €STR is published on each TARGET2 business day based on transactions conducted and settled on the previous TARGET2 business
+    day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been executed at arm’s length and thus reflect
+    market rates in an unbiased way."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -65,7 +69,10 @@ def sonia(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:  # type: ignore
-    """Get United States yield curve."""
+    """
+        SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and
+    reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other
+    institutional investors."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -76,7 +83,10 @@ def ameribor(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:  # type: ignore
-    """Get United States yield curve."""
+    """
+        Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term
+    interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange
+    (AFX)."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -87,5 +97,8 @@ def fed(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:  # type: ignore
-    """Get United States yield curve."""
+    """
+        Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to
+    borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's
+    Board of Governors set the bank rate, also known as the discount rate."""
     return OBBject(results=Query(**locals()).execute())
