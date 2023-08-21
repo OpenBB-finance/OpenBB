@@ -4,6 +4,7 @@ from contextlib import nullcontext
 from copy import deepcopy
 from datetime import datetime
 from inspect import Parameter, signature
+from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
@@ -15,7 +16,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.obbject import Error, OBBject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
@@ -204,28 +205,24 @@ class StaticCommandRunner:
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
     ) -> OBBject:
         """Run a command and return the output"""
-        try:
-            context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
-                warnings.catch_warnings(record=True)
-                if not system_settings.debug_mode
-                else nullcontext()
+        context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
+            warnings.catch_warnings(record=True)
+            if not system_settings.debug_mode
+            else nullcontext()
+        )
+
+        with context_manager as warning_list:
+            if system_settings.run_in_isolation:
+                obbject = cls.__run_in_isolation(func=func, kwargs=kwargs)
+            else:
+                obbject = func(**kwargs)
+
+            obbject.provider = getattr(
+                kwargs.get("provider_choices", None), "provider", None
             )
 
-            with context_manager as warning_list:
-                if system_settings.run_in_isolation:
-                    obbject = cls.__run_in_isolation(func=func, kwargs=kwargs)
-                else:
-                    obbject = func(**kwargs)
-
-                obbject.provider = getattr(
-                    kwargs.get("provider_choices", None), "provider", None
-                )
-
-                if warning_list:
-                    obbject.warnings = list(map(cast_warning, warning_list))
-
-        except Exception as e:
-            raise OpenBBError(e) from e
+            if warning_list:
+                obbject.warnings = list(map(cast_warning, warning_list))
 
         return obbject
 
@@ -239,18 +236,13 @@ class StaticCommandRunner:
         **kwargs,
     ) -> None:
         """Create a chart from the command output"""
-        try:
-            obbject.chart = cls.charting_manager.chart(
-                user_settings=user_settings,
-                system_settings=system_settings,
-                route=route,
-                obbject_item=obbject.results,
-                **kwargs,
-            )
-        except Exception as e:
-            obbject.chart = Chart(error=Error(message=str(e)))
-            if system_settings.debug_mode:
-                raise
+        obbject.chart: Chart = cls.charting_manager.chart(
+            user_settings=user_settings,
+            system_settings=system_settings,
+            route=route,
+            obbject_item=obbject.results,
+            **kwargs,
+        )
 
     @classmethod
     def __execute_func(
@@ -286,29 +278,33 @@ class StaticCommandRunner:
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
 
-        obbject = cls.__command(
-            system_settings=system_settings,
-            func=func,
-            kwargs=kwargs,
-        )
+        try:
+            obbject = cls.__command(
+                system_settings=system_settings,
+                func=func,
+                kwargs=kwargs,
+            )
 
-        if chart and obbject.results:
-            cls.__chart(
-                obbject=obbject,
+            if chart and obbject.results:
+                cls.__chart(
+                    obbject=obbject,
+                    user_settings=user_settings,
+                    system_settings=system_settings,
+                    route=route,
+                    **kwargs,
+                )
+
+        except Exception as e:
+            raise OpenBBError(e) from e
+        finally:
+            cls.logging_manager.log(
                 user_settings=user_settings,
                 system_settings=system_settings,
                 route=route,
-                **kwargs,
+                func=func,
+                kwargs=kwargs,
+                exec_info=exc_info(),
             )
-
-        cls.logging_manager.log(
-            user_settings=user_settings,
-            system_settings=system_settings,
-            obbject=obbject,
-            route=route,
-            func=func,
-            kwargs=kwargs,
-        )
 
         return obbject
 

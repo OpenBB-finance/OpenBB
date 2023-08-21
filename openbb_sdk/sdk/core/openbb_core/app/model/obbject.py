@@ -5,7 +5,7 @@ from pydantic import Field
 from pydantic.generics import GenericModel
 
 from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.app.model.abstract.error import Error, OpenBBError
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
@@ -31,10 +31,6 @@ class OBBject(GenericModel, Generic[T], Tagged):
     warnings: Optional[List[Warning_]] = Field(
         default=None,
         description="List of warnings.",
-    )
-    error: Optional[Error] = Field(
-        default=None,
-        description="Exception caught.",
     )
     chart: Optional[Chart] = Field(
         default=None,
