@@ -1,6 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 
+
 from openbb_core.app.static.container import Container
 
 
@@ -46,12 +47,6 @@ class Extensions(Container):
         from openbb_core.app.static.package import news
 
         return news.CLASS_news(command_runner_session=self._command_runner_session)
-
-    @property
-    def qa(self):  # route = "/qa"
-        from openbb_core.app.static.package import qa
-
-        return qa.CLASS_qa(command_runner_session=self._command_runner_session)
 
     @property
     def stocks(self):  # route = "/stocks"
