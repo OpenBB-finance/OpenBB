@@ -32,4 +32,3 @@ class MajorIndicesEODData(Data):
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))

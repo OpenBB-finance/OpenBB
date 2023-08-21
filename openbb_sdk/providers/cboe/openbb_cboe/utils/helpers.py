@@ -153,7 +153,6 @@ def get_cboe_index_directory(**kwargs) -> pd.DataFrame:
         & (CBOE_INDEXES.name.str.contains("OEX%-SML% INDEX") == 0)
         & (CBOE_INDEXES.name.str.contains("Defined Risk Volatility Income") == 0)
         & (CBOE_INDEXES.description.str.contains("is designed to track") == 0)
-        & (CBOE_INDEXES.description.str.contains("is designed to track") == 0)
     )
 
     return CBOE_INDEXES[idx]

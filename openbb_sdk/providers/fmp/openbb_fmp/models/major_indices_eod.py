@@ -9,6 +9,7 @@ from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
 
@@ -60,6 +61,7 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         alias="change_over_time",
         default=None,
     )
+    vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
 
     @validator("date", pre=True)
     def date_validate(cls, v, values: Dict[str, Any]) -> datetime:
@@ -93,6 +95,9 @@ class FMPMajorIndicesEODFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/historical-chart/{query.interval}/%5E{query.symbol}?&apikey={api_key}"
+
+        if "^" in query.symbol:
+            query.symbol = query.symbol.replace("^", "")
 
         if query.interval == "1day":
             query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
