@@ -621,7 +621,7 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
         chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
