@@ -15,7 +15,7 @@ class FormatterWithExceptions(logging.Formatter):
     DATEFORMAT = "%Y-%m-%dT%H:%M:%S%z"
     LOGFORMAT = "%(asctime)s|%(name)s|%(funcName)s|%(lineno)s|%(message)s"
     LOGPREFIXFORMAT = (
-        "%(levelname)s|%(appName)s|%(commitHash)s|%(appId)s|%(sessionId)s|%(userId)s|"
+        "%(levelname)s|%(appName)s|%(appId)s|%(sessionId)s|%(userId)s|"
     )
 
     @staticmethod
@@ -164,7 +164,6 @@ class FormatterWithExceptions(logging.Formatter):
             "levelname": level_name,
             "appId": self.settings.app_id,
             "sessionId": self.settings.session_id,
-            "commitHash": self.settings.commit_hash,
             "userId": self.settings.user_id,
         }
 

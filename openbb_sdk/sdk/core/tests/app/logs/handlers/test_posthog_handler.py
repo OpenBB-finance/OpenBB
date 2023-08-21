@@ -16,11 +16,9 @@ class MockLoggingSettings:
         session_id,
         frequency,
         appid,
-        commit_hash,
         platform,
         python_version,
         terminal_version,
-        branch,
         userid,
     ):
         self.app_name = app_name
@@ -28,11 +26,9 @@ class MockLoggingSettings:
         self.session_id = session_id
         self.frequency = frequency
         self.app_id = appid
-        self.commit_hash = commit_hash
         self.platform = platform
         self.python_version = python_version
         self.terminal_version = terminal_version
-        self.branch = branch
         self.user_id = userid
 
 
@@ -45,11 +41,9 @@ logging_settings.user_logs_directory.absolute.return_value = Path(
 logging_settings.session_id = "session123"
 logging_settings.frequency = "H"
 logging_settings.app_id = "test123"
-logging_settings.commit_hash = "commit123"
 logging_settings.platform = "Windows"
 logging_settings.python_version = "3.9"
 logging_settings.terminal_version = "1.2.3"
-logging_settings.branch = "main"
 logging_settings.user_id = "user123"
 
 
@@ -203,11 +197,9 @@ def test_log_to_dict(handler, log_info, expected_dict):
                 "appName": "TestApp",
                 "appId": "test123",
                 "sessionId": "session123",
-                "commitHash": "commit123",
                 "platform": "Windows",
                 "pythonVersion": "3.9",
                 "terminalVersion": "1.2.3",
-                "branch": "main",
                 "userId": "user123",
             },
         ),

@@ -13,7 +13,6 @@ from openbb_core.app.constants import (
     SYSTEM_SETTINGS_PATH,
     USER_SETTINGS_PATH,
 )
-from openbb_core.app.logs.utils.system_utils import get_commit_hash
 from openbb_core.app.model.abstract.tagged import Tagged
 
 FrozenField = partial(Field, allow_mutation=False)
@@ -108,8 +107,3 @@ class SystemSettings(Tagged):
             if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
                 raise ValueError("Invalid logging handler")
         return v
-
-    @validator("logging_commit_hash", allow_reuse=True, always=True)
-    @classmethod
-    def validate_commit_hash(cls, v):
-        return v or get_commit_hash()
