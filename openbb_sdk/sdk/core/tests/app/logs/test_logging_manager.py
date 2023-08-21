@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 from openbb_core.app.logs.logging_manager import LoggingManager
 from pydantic import BaseModel
+from openbb_core.app.model.abstract.error import OpenBBError
 
 
 class MockLoggingSettings:
@@ -98,36 +99,36 @@ def test_log_startup(logging_manager):
 
 
 @pytest.mark.parametrize(
-    "user_settings, system_settings, obbject, route, func, kwargs",
+    "user_settings, system_settings, route, func, kwargs, exec_info",
     [
         (
             "mock_settings",
             "mock_system",
-            MockOBBject(output="mock_output"),
             "mock_route",
             "mock_func",
             {},
+            None,
         ),
         (
             "mock_settings",
             "mock_system",
-            MockOBBject(error="mock_error"),
             "mock_route",
             "mock_func",
             {},
+            (OpenBBError, OpenBBError("mock_error")),
         ),
         (
             "mock_settings",
             "mock_system",
-            MockOBBject(error="mock_error"),
             "login",
             "mock_func",
             {},
+            None,
         ),
     ],
 )
 def test_log(
-    logging_manager, user_settings, system_settings, obbject, route, func, kwargs
+    logging_manager, user_settings, system_settings, route, func, kwargs, exec_info
 ):
     with patch(
         "openbb_core.app.logs.logging_manager.LoggingSettings",
@@ -140,10 +141,10 @@ def test_log(
                 logging_manager.log(
                     user_settings=user_settings,
                     system_settings=system_settings,
-                    obbject=obbject,
                     route=route,
                     func=func,
                     kwargs=kwargs,
+                    exec_info=exec_info,
                 )
                 assert mock_log_startup.assert_called_once
 
@@ -157,27 +158,31 @@ def test_log(
             logging_manager.log(
                 user_settings=user_settings,
                 system_settings=system_settings,
-                obbject=obbject,
                 route=route,
                 func=mock_callable,
                 kwargs=kwargs,
+                exec_info=exec_info,
             )
 
-            expected_log_data = {
-                "route": route,
-                "input": kwargs,
-                "error": obbject.error,
-            }
+            message_label = "ERROR" if exec_info else "CMD"
+            log_message = json.dumps(
+                {
+                    "route": route,
+                    "input": kwargs,
+                    "error": str(exec_info[1]) if exec_info else None,
+                }
+            )
+            log_message = f"{message_label}: {log_message}"
 
-            if obbject.error:
+            if exec_info:
                 mock_error.assert_called_once_with(
-                    "ERROR: %s",
-                    json.dumps(expected_log_data),
-                    extra={"func_name_override": func},
+                    log_message,
+                    extra={"func_name_override": "mock_func"},
+                    exc_info=exec_info,
                 )
             else:
                 mock_info.assert_called_once_with(
-                    "CMD: %s",
-                    json.dumps(expected_log_data),
-                    extra={"func_name_override": func},
+                    log_message,
+                    extra={"func_name_override": "mock_func"},
+                    exc_info=exec_info,
                 )

@@ -99,6 +99,9 @@ class HubService:
             timeout=cls.TIMEOUT,
         )
 
+        print(response)
+        print(response.status_code)
+
         if response.status_code == 200:
             session = response.json()
             hub_session = HubSession(

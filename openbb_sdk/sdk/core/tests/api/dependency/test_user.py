@@ -4,7 +4,6 @@ from unittest.mock import MagicMock, patch
 
 from openbb_core.api.dependency.user import (
     AccessToken,
-    SystemSettings,
     UserSettings,
     authenticate_user,
     create_access_token,
