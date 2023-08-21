@@ -450,7 +450,7 @@ def load(  # pylint: disable=too-many-return-statements
                 return pd.DataFrame()
 
             r_json = r.json()
-            if "results" not in r_json.keys():
+            if "results" not in r_json:
                 console.print("[red]No results found in polygon reply.[/red]")
                 return pd.DataFrame()
 
@@ -940,7 +940,7 @@ def show_codes_polygon(ticker: str):
         console.print("[red]Error in polygon request[/red]\n")
         return
     r_json = r.json()
-    if "results" not in r_json.keys():
+    if "results" not in r_json:
         console.print("[red]Results not found in polygon request[/red]")
         return
     r_json = r_json["results"]

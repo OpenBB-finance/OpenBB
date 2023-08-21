@@ -17,13 +17,13 @@ from numpy.typing import NDArray
 from scipy.interpolate import interp1d
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.fundamental_analysis import fmp_model
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
     get_kwarg,
     validate_risk_measure,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import fmp_model
 
 logger = logging.getLogger(__name__)
 
@@ -1271,10 +1271,7 @@ def get_max_decorrelation_portfolio(
     if weights is not None:
         weights = weights.round(5)
 
-        if len(weights) > 1:
-            weights = weights.squeeze().to_dict()
-        else:
-            weights = weights.to_dict()
+        weights = weights.squeeze().to_dict() if len(weights) > 1 else weights.to_dict()
 
     return weights, stock_returns
 
@@ -2876,10 +2873,7 @@ def black_litterman(
         delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
         delta = delta.item()
 
-    if equilibrium:
-        PI_eq = delta * (S @ benchmark)
-    else:
-        PI_eq = mu - risk_free_rate
+    PI_eq = delta * (S @ benchmark) if equilibrium else mu - risk_free_rate
 
     flag = False
     if p_views is None or q_views is None:

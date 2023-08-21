@@ -109,7 +109,6 @@ async def plot_indicators(
     rows = fig.subplots_kwargs["rows"]
 
     for ticker in tickers:
-        ticker = ticker
         df_ticker = st.session_state["indicators_dfs"][ticker]
         df_ticker["% Change"] = df_ticker["Close"].apply(
             lambda x: (x - df_ticker["Close"].iloc[0]) / df_ticker["Close"].iloc[0]

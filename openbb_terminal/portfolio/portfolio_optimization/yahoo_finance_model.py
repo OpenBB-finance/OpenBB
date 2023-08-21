@@ -191,7 +191,7 @@ def process_stocks(
 
         # Checking if exist
         if os.path.exists(name):
-            stock_closes_0 = pd.read_pickle(name)
+            stock_closes_0 = pd.read_pickle(name)  # noqa: S301
             list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
         else:
             stock_closes_0 = None
@@ -219,7 +219,7 @@ def process_stocks(
 
             # Creating if exist
             if os.path.exists(name):
-                stock_closes_0 = pd.read_pickle(name)
+                stock_closes_0 = pd.read_pickle(name)  # noqa: S301
                 list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
             else:
                 stock_closes_0 = None
@@ -265,7 +265,7 @@ def process_stocks(
 
             # Checking if temporal file exists
             if os.path.exists(name):
-                stock_closes_0 = pd.read_pickle(name)
+                stock_closes_0 = pd.read_pickle(name)  # noqa: S301
                 list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
             else:
                 stock_closes_0 = None

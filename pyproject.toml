@@ -122,6 +122,7 @@ ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
+ruff = "0.0.285"
 
 
 
@@ -158,7 +159,6 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.256"
 pytest-timeout = "^2.1.0"
 pytest-recorder = "^0.2.1"
 freezegun = "^1.2.2"
@@ -181,10 +181,11 @@ target-version = "py38"
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
 select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM"]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117", "PLC1901", "PLR5501","PLW2901","PLW0603"]
+ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117", "PLC1901", "PLR5501","PLW2901","PLW0603", "E741", "S311", "S602", "S603", "S605", "S607", "S307"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]
+"*init*.py" = ["F401"]
 
 [tool.ruff.flake8-import-conventions.aliases]
 "matplotlib.pyplot" = "plt"

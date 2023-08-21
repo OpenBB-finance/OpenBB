@@ -6,9 +6,9 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import logging
-from typing import Optional
 import math
 import warnings
+from typing import Optional
 
 # IMPORTATION THIRDPARTY
 import matplotlib
@@ -19,9 +19,10 @@ import riskfolio as rp
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
+from openbb_terminal.config_terminal import theme
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
@@ -418,10 +419,7 @@ def display_heat(**kwargs):
         figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
     )
 
-    if len(weights) <= 3:
-        number_of_clusters = len(weights)
-    else:
-        number_of_clusters = None
+    number_of_clusters = len(weights) if len(weights) <= 3 else None
 
     ax = rp.plot_clusters(
         returns=data,

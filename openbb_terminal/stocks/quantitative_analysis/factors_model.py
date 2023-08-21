@@ -25,7 +25,7 @@ def get_fama_raw() -> pd.DataFrame:
     fama : pd.DataFrame
         A data with fama french model information
     """
-    with urlopen(
+    with urlopen(  # noqa: S310
         "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
         # Download Zipfile and create pandas DataFrame

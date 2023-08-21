@@ -242,10 +242,12 @@ class Backend(PyWry):
 
             if get_current_user().preferences.PLOT_OPEN_EXPORT:
                 if sys.platform == "win32":
-                    os.startfile(export_image)  # nosec: B606
+                    os.startfile(export_image)  # noqa: S606  # nosec: B606
                 else:
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
-                    subprocess.check_call([opener, export_image])  # nosec: B603
+                    subprocess.check_call(
+                        [opener, export_image]
+                    )  # nosec: B603 # noqa: S603
 
     def send_table(
         self,
