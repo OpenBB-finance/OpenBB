@@ -295,7 +295,7 @@ def test_format(formatter):
     formatted_log = formatter.format(log_record)
 
     # Assertions
-    expected_log = "INFO|test_app_name|test_app_id|test_session_id|test_user_id|Filtered log message"
+    expected_log = "INFO|test_app_name|unknown-commit|test_app_id|test_session_id|test_user_id|Filtered log message"
 
     print(expected_log)
     print(formatted_log)
