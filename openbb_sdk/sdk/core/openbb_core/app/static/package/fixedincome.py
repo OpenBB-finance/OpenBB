@@ -11,11 +11,10 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_fixedincome(Container):
-    @filter_call
     @validate_arguments
     def treasury(
         self,
@@ -105,14 +104,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/fixedincome/treasury",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ycrv(
         self, chart: bool = False
@@ -123,9 +119,7 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/fixedincome/ycrv",
             **inputs,
         )
-
-        return filter_output(o)

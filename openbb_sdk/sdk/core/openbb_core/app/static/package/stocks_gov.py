@@ -6,11 +6,10 @@ from pydantic import validate_arguments
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_gov(Container):
-    @filter_call
     @validate_arguments
     def contracts(
         self, chart: bool = False
@@ -21,14 +20,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/contracts",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def government_trading(
         self, chart: bool = False
@@ -39,14 +35,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/government_trading",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def gtrades(
         self, chart: bool = False
@@ -57,14 +50,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/gtrades",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def histcont(
         self, chart: bool = False
@@ -75,14 +65,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/histcont",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lastcontracts(
         self, chart: bool = False
@@ -93,14 +80,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/lastcontracts",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lasttrades(
         self, chart: bool = False
@@ -111,14 +95,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/lasttrades",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def lobbying(
         self, chart: bool = False
@@ -129,14 +110,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/lobbying",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def qtrcontracts(
         self, chart: bool = False
@@ -147,14 +125,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/qtrcontracts",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def topbuys(
         self, chart: bool = False
@@ -165,14 +140,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/topbuys",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def toplobbying(
         self, chart: bool = False
@@ -183,14 +155,11 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/toplobbying",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def topsells(
         self, chart: bool = False
@@ -201,9 +170,7 @@ class CLASS_stocks_gov(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/gov/topsells",
             **inputs,
         )
-
-        return filter_output(o)

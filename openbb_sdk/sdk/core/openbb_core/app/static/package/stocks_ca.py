@@ -10,11 +10,10 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_ca(Container):
-    @filter_call
     @validate_arguments
     def balance(
         self, chart: bool = False
@@ -25,14 +24,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/balance",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cashflow(
         self, chart: bool = False
@@ -43,14 +39,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/cashflow",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hcorr(
         self, chart: bool = False
@@ -61,14 +54,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/hcorr",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hist(
         self, chart: bool = False
@@ -79,14 +69,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/hist",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income(
         self, chart: bool = False
@@ -97,14 +84,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/income",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def peers(
         self,
@@ -161,14 +145,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/peers",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def scorr(
         self, chart: bool = False
@@ -179,14 +160,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/scorr",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def screener(
         self, chart: bool = False
@@ -197,14 +175,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/screener",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sentiment(
         self, chart: bool = False
@@ -215,14 +190,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/sentiment",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def similar(
         self, chart: bool = False
@@ -233,14 +205,11 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/similar",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def volume(
         self, chart: bool = False
@@ -251,9 +220,7 @@ class CLASS_stocks_ca(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/ca/volume",
             **inputs,
         )
-
-        return filter_output(o)

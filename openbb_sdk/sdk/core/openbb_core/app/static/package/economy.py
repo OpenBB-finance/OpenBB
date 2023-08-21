@@ -11,11 +11,10 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_economy(Container):
-    @filter_call
     @validate_arguments
     def available_indices(
         self,
@@ -70,14 +69,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/available_indices",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance(
         self,
@@ -95,14 +91,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/balance",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def bigmac(
         self,
@@ -120,14 +113,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/bigmac",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def const(
         self,
@@ -198,14 +188,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/const",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def corecpi(
         self,
@@ -223,14 +210,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/corecpi",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def country_codes(
         self,
@@ -248,14 +232,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/country_codes",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cpi(
         self,
@@ -409,14 +390,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/cpi",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cpi_options(
         self,
@@ -434,14 +412,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/cpi_options",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def currencies(
         self,
@@ -459,14 +434,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/currencies",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def debt(
         self,
@@ -484,14 +456,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/debt",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def events(
         self,
@@ -509,14 +478,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/events",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fgdp(
         self,
@@ -534,14 +500,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/fgdp",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fred(
         self,
@@ -559,14 +522,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/fred",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fred_search(
         self,
@@ -584,14 +544,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/fred_search",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def futures(
         self,
@@ -609,14 +566,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/futures",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def gdp(
         self,
@@ -634,14 +588,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/gdp",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def glbonds(
         self,
@@ -659,14 +610,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/glbonds",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def index(
         self,
@@ -788,14 +736,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/index",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def indices(
         self,
@@ -813,14 +758,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/indices",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def macro(
         self,
@@ -838,14 +780,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/macro",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def macro_countries(
         self,
@@ -863,14 +802,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/macro_countries",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def macro_parameters(
         self,
@@ -888,14 +824,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/macro_parameters",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def overview(
         self,
@@ -913,14 +846,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/overview",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def perfmap(
         self,
@@ -938,14 +868,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/perfmap",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def performance(
         self,
@@ -963,14 +890,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/performance",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revenue(
         self,
@@ -988,14 +912,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/revenue",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rgdp(
         self,
@@ -1013,14 +934,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/rgdp",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def risk(
         self,
@@ -1073,14 +991,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/risk",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rtps(
         self,
@@ -1098,14 +1013,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/rtps",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def search_index(
         self,
@@ -1123,14 +1035,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/search_index",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def spending(
         self,
@@ -1148,14 +1057,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/spending",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def trust(
         self,
@@ -1173,14 +1079,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/trust",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def usbonds(
         self,
@@ -1198,14 +1101,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/usbonds",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def valuation(
         self,
@@ -1223,9 +1123,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/economy/valuation",
             **inputs,
         )
-
-        return filter_output(o)

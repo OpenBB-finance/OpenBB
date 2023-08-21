@@ -12,7 +12,7 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks(Container):
@@ -52,7 +52,6 @@ class CLASS_stocks(Container):
 
         return stocks_gov.CLASS_stocks_gov(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def info(
         self,
@@ -165,12 +164,10 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/info",
             **inputs,
         )
-
-        return filter_output(o)
 
     @property
     def ins(self):  # route = "/stocks/ins"
@@ -178,7 +175,6 @@ class CLASS_stocks(Container):
 
         return stocks_ins.CLASS_stocks_ins(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def load(
         self,
@@ -300,14 +296,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/load",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def multiples(
         self,
@@ -487,14 +480,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/multiples",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def news(
         self,
@@ -648,12 +638,10 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/news",
             **inputs,
         )
-
-        return filter_output(o)
 
     @property
     def options(self):  # route = "/stocks/options"
@@ -661,7 +649,6 @@ class CLASS_stocks(Container):
 
         return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def quote(
         self,
@@ -758,14 +745,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/quote",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def search(
         self,
@@ -832,14 +816,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/search",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def tob(
         self, chart: bool = False
@@ -850,9 +831,7 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/tob",
             **inputs,
         )
-
-        return filter_output(o)

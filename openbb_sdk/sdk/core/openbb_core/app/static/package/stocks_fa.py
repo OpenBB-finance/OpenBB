@@ -13,11 +13,10 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_fa(Container):
-    @filter_call
     @validate_arguments
     def analysis(
         self, chart: bool = False
@@ -28,14 +27,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/analysis",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance(
         self,
@@ -246,14 +242,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/balance",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance_growth(
         self,
@@ -397,14 +390,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/balance_growth",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cal(
         self,
@@ -484,14 +474,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/cal",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cash(
         self,
@@ -674,14 +661,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/cash",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cash_growth(
         self,
@@ -807,14 +791,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/cash_growth",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def comp(
         self,
@@ -893,14 +874,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/comp",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def comsplit(
         self,
@@ -974,14 +952,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/comsplit",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def customer(
         self, chart: bool = False
@@ -992,14 +967,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/customer",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dcfc(
         self, chart: bool = False
@@ -1010,14 +982,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/dcfc",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def divs(
         self,
@@ -1084,14 +1053,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/divs",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dupont(
         self, chart: bool = False
@@ -1102,14 +1068,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/dupont",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def earning(
         self,
@@ -1187,14 +1150,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/earning",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def emp(
         self,
@@ -1265,14 +1225,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/emp",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def enterprise(
         self, chart: bool = False
@@ -1283,14 +1240,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/enterprise",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def epsfc(
         self, chart: bool = False
@@ -1301,14 +1255,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/epsfc",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def est(
         self,
@@ -1419,14 +1370,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/est",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fama_coe(
         self, chart: bool = False
@@ -1437,14 +1385,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/fama_coe",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fama_raw(
         self, chart: bool = False
@@ -1455,14 +1400,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/fama_raw",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fraud(
         self, chart: bool = False
@@ -1473,14 +1415,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/fraud",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def growth(
         self, chart: bool = False
@@ -1491,14 +1430,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/growth",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def historical_5(
         self, chart: bool = False
@@ -1507,14 +1443,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/historical_5",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income(
         self,
@@ -1705,14 +1638,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/income",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income_growth(
         self,
@@ -1837,14 +1767,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/income_growth",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ins(
         self,
@@ -1979,14 +1906,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/ins",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ins_own(
         self,
@@ -2125,14 +2049,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/ins_own",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def key(
         self, chart: bool = False
@@ -2141,14 +2062,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/key",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def metrics(
         self,
@@ -2335,14 +2253,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/metrics",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def mgmt(
         self,
@@ -2409,14 +2324,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/mgmt",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def mktcap(
         self, chart: bool = False
@@ -2427,14 +2339,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/mktcap",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def news(
         self, chart: bool = False
@@ -2443,14 +2352,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/news",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def overview(
         self,
@@ -2575,14 +2481,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/overview",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def own(
         self,
@@ -2727,14 +2630,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/own",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pt(
         self,
@@ -2797,14 +2697,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/pt",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pta(
         self,
@@ -2887,14 +2784,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/pta",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rating(
         self, chart: bool = False
@@ -2905,14 +2799,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/rating",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ratios(
         self,
@@ -3093,14 +2984,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/ratios",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revfc(
         self, chart: bool = False
@@ -3111,14 +2999,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/revfc",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revgeo(
         self,
@@ -3199,14 +3084,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/revgeo",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revseg(
         self,
@@ -3277,14 +3159,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/revseg",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rot(
         self, chart: bool = False
@@ -3295,14 +3174,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/rot",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def score(
         self, chart: bool = False
@@ -3313,14 +3189,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/score",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sec(
         self, chart: bool = False
@@ -3329,14 +3202,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/sec",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shares(
         self, chart: bool = False
@@ -3345,14 +3215,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/shares",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shrs(
         self,
@@ -3417,14 +3284,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/shrs",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def split(
         self,
@@ -3485,14 +3349,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/split",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def supplier(
         self, chart: bool = False
@@ -3503,14 +3364,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/supplier",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def transcript(
         self,
@@ -3591,9 +3449,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/fa/transcript",
             **inputs,
         )
-
-        return filter_output(o)

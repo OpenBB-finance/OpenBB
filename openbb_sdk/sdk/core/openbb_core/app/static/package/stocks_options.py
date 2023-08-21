@@ -10,11 +10,10 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_options(Container):
-    @filter_call
     @validate_arguments
     def chains(
         self,
@@ -121,14 +120,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/options/chains",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def eodchain(
         self, chart: bool = False
@@ -139,14 +135,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/options/eodchain",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hist(
         self, chart: bool = False
@@ -157,14 +150,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/options/hist",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def info(
         self, chart: bool = False
@@ -175,14 +165,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/options/info",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pcr(
         self, chart: bool = False
@@ -193,14 +180,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/options/pcr",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def unu(
         self, chart: bool = False
@@ -211,9 +195,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/stocks/options/unu",
             **inputs,
         )
-
-        return filter_output(o)

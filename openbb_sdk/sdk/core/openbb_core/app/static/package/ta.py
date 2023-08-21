@@ -11,11 +11,10 @@ from pydantic import validate_arguments
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_ta(Container):
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ad(
         self,
@@ -65,14 +64,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/ad",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def adosc(
         self,
@@ -123,14 +119,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/adosc",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def adx(
         self,
@@ -180,14 +173,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/adx",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def aroon(
         self,
@@ -242,14 +232,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/aroon",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def atr(
         self,
@@ -302,14 +289,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/atr",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def bbands(
         self,
@@ -378,14 +362,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/bbands",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def cci(
         self,
@@ -427,14 +408,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/cci",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def cg(
         self,
@@ -478,14 +456,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/cg",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def clenow(
         self,
@@ -529,14 +504,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/clenow",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def cones(
         self,
@@ -616,14 +588,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/cones",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def demark(
         self,
@@ -675,14 +644,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/demark",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def donchian(
         self,
@@ -735,14 +701,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/donchian",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ema(
         self,
@@ -798,14 +761,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/ema",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def fib(
         self,
@@ -850,14 +810,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/fib",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def fisher(
         self,
@@ -905,14 +862,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/fisher",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def hma(
         self,
@@ -963,14 +917,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/hma",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ichimoku(
         self,
@@ -1018,14 +969,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/ichimoku",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def kc(
         self,
@@ -1081,14 +1029,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/kc",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def macd(
         self,
@@ -1148,14 +1093,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/macd",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def multi(
         self, chart: bool = False
@@ -1166,14 +1108,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/multi",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def obv(
         self,
@@ -1221,14 +1160,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/obv",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def recom(
         self, chart: bool = False
@@ -1239,14 +1175,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/recom",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def rsi(
         self,
@@ -1302,14 +1235,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/rsi",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rsp(
         self, chart: bool = False
@@ -1320,14 +1250,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/rsp",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def sma(
         self,
@@ -1381,14 +1308,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/sma",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def stoch(
         self,
@@ -1441,14 +1365,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/stoch",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def summary(
         self, chart: bool = False
@@ -1459,14 +1380,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/summary",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def tv(
         self, chart: bool = False
@@ -1477,14 +1395,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/tv",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def vwap(
         self,
@@ -1531,14 +1446,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/vwap",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def wma(
         self,
@@ -1589,14 +1501,11 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/wma",
             **inputs,
         )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def zlma(
         self,
@@ -1650,9 +1559,7 @@ class CLASS_ta(Container):
             chart=chart,
         )
 
-        o = self._command_runner.run(
+        return self._command_runner.run(
             "/ta/zlma",
             **inputs,
         )
-
-        return filter_output(o)
