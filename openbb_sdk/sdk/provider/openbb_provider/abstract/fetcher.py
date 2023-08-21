@@ -62,8 +62,5 @@ class Fetcher(Generic[Q, R]):
     def _get_data_type(data: Any) -> D:  # type: ignore
         """Get the type of the data."""
         if get_origin(data) == list:
-            # TODO: Find a better way to allow for Any data return type
-            if get_origin(get_args(data)[0]) == dict:
-                return Fetcher._get_data_type(get_args(data)[0].__args__[1])
             data = get_args(data)[0]
         return data
