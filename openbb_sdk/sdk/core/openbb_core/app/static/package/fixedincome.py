@@ -8,11 +8,10 @@ from pydantic import BaseModel, validate_arguments
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_fixedincome(Container):
-    @filter_call
     @validate_arguments
     def ameribor(
         self,
@@ -85,14 +84,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/ameribor",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def estr(
         self,
@@ -166,14 +162,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/estr",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fed(
         self,
@@ -246,14 +239,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/fed",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def projections(
         self, chart: bool = False, provider: Optional[Literal["fred"]] = None, **kwargs
@@ -294,17 +284,17 @@ class CLASS_fixedincome(Container):
             The date of the data.
         range_high : Optional[float]
             High projection of rates.
-        central_tendancy_high : Optional[float]
+        central_tendency_high : Optional[float]
             Central tendency of high projection of rates.
         median : Optional[float]
             Median projection of rates.
         range_midpoint : Optional[float]
             Midpoint projection of rates.
-        central_tendancy_midpoint : Optional[float]
+        central_tendency_midpoint : Optional[float]
             Central tendency of midpoint projection of rates.
         range_low : Optional[float]
             Low projection of rates.
-        central_tendancy_low : Optional[float]
+        central_tendency_low : Optional[float]
             Central tendency of low projection of rates."""
 
         inputs = filter_inputs(
@@ -316,14 +306,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/projections",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sofr(
         self,
@@ -393,14 +380,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/sofr",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sonia(
         self,
@@ -473,14 +457,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/sonia",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def treasury(
         self,
@@ -570,14 +551,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/treasury",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ycrv(
         self,
@@ -643,9 +621,7 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/ycrv",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

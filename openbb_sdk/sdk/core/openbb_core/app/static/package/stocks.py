@@ -11,7 +11,7 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks(Container):
@@ -19,51 +19,38 @@ class CLASS_stocks(Container):
     def ca(self):  # route = "/stocks/ca"
         from openbb_core.app.static.package import stocks_ca
 
-        return stocks_ca.CLASS_stocks_ca(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
 
     @property
     def dd(self):  # route = "/stocks/dd"
         from openbb_core.app.static.package import stocks_dd
 
-        return stocks_dd.CLASS_stocks_dd(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
     def disc(self):  # route = "/stocks/disc"
         from openbb_core.app.static.package import stocks_disc
 
-        return stocks_disc.CLASS_stocks_disc(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_disc.CLASS_stocks_disc(command_runner=self._command_runner)
 
     @property
     def dps(self):  # route = "/stocks/dps"
         from openbb_core.app.static.package import stocks_dps
 
-        return stocks_dps.CLASS_stocks_dps(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_dps.CLASS_stocks_dps(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
         from openbb_core.app.static.package import stocks_fa
 
-        return stocks_fa.CLASS_stocks_fa(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
 
     @property
     def gov(self):  # route = "/stocks/gov"
         from openbb_core.app.static.package import stocks_gov
 
-        return stocks_gov.CLASS_stocks_gov(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_gov.CLASS_stocks_gov(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def info(
         self,
@@ -176,22 +163,17 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/info",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
 
     @property
     def ins(self):  # route = "/stocks/ins"
         from openbb_core.app.static.package import stocks_ins
 
-        return stocks_ins.CLASS_stocks_ins(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_ins.CLASS_stocks_ins(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def load(
         self,
@@ -312,14 +294,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/load",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def multiples(
         self,
@@ -499,14 +478,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/multiples",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def news(
         self,
@@ -658,22 +634,17 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/news",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
 
     @property
     def options(self):  # route = "/stocks/options"
         from openbb_core.app.static.package import stocks_options
 
-        return stocks_options.CLASS_stocks_options(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def quote(
         self,
@@ -770,14 +741,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/quote",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def search(
         self,
@@ -842,14 +810,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/search",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def tob(
         self, chart: bool = False
@@ -860,9 +825,7 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/tob",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

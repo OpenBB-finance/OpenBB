@@ -7,11 +7,10 @@ from pydantic import validate_arguments
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_dd(Container):
-    @filter_call
     @validate_arguments
     def sec(
         self,
@@ -200,9 +199,7 @@ class CLASS_stocks_dd(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dd/sec",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
