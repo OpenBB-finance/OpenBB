@@ -250,5 +250,6 @@
     "fixedincome_estr": "/fixedincome/estr",
     "fixedincome_sonia": "/fixedincome/sonia",
     "fixedincome_ameribor": "/fixedincome/ameribor",
-    "fixedincome_fed": "/fixedincome/fed"
+    "fixedincome_fed": "/fixedincome/fed",
+    "fixedincome_projections": "/fixedincome/projections"
 }

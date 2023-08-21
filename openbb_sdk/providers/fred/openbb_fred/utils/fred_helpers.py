@@ -1,7 +1,7 @@
 import csv
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 YIELD_CURVE_NOMINAL_RATES = [round(1 / 12, 3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
@@ -48,3 +48,29 @@ def get_cpi_options(harmonized: bool = False) -> List[dict]:
     for item in series:
         item.pop("series_id")
     return series
+
+
+def process_projections(data: Dict) -> List[Dict]:
+    """.
+    Process projection data
+    """
+
+    # Get dates first
+    dates = []
+    for key, value in data.items():
+        dates.extend([entry["date"] for entry in value])
+    full_dates = sorted(list(set(dates)))
+
+    # Loop through date and get dictionary of all keys
+    ldata = []
+    for date in full_dates:
+        entry = {"date": date}
+        for key, value in data.items():
+            val = [item["value"] for item in value if item["date"] == date]
+            if val:
+                entry[key] = float(val[0]) if val != "." else float("nan")
+            else:
+                entry[key] = float("nan")
+        ldata.append(entry)
+
+    return ldata
