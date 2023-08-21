@@ -60,9 +60,8 @@ def test_create_jwt_token():
 @patch("openbb_core.api.dependency.user.UserService")
 def test_get_user_service(mock_user_service):
     """Test get_user_service."""
-    mock_system_settings = MagicMock(spec=SystemSettings, dbms_uri=None)
     with patch("openbb_core.api.dependency.user.__user_service", new=None):
-        asyncio.run(get_user_service(mock_system_settings))
+        asyncio.run(get_user_service())
 
     mock_user_service.assert_called_once_with()
 

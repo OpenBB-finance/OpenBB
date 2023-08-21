@@ -43,7 +43,7 @@ app.add_middleware(
 @app.on_event("startup")
 async def setup_default_user_settings():
     system_settings = await get_system_settings()
-    user_service = await get_user_service(system_settings=system_settings)
+    user_service = await get_user_service()
     user_settings_repository = user_service.user_settings_repository
     default_user_settings = user_service.default_user_settings
     default_profile_list = [
