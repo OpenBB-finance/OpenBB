@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 from openbb_provider import helpers
 
-root_url = "https://api.stlouisfed.org/fred"
+ROOT_URL = "https://api.stlouisfed.org/fred"
 
 
 class Fred:
@@ -42,9 +42,10 @@ class Fred:
         Returns
         -------
         data : Series
-            a Series where each index is the observation date and the value is the data for the Fred series
+            a Series where each index is the observation date and the value is the data
+            for the Fred series
         """
-        url = f"{root_url}/series/observations?series_id={series_id}"
+        url = f"{ROOT_URL}/series/observations?series_id={series_id}"
         if start_date:
             url += "&observation_start=" + start_date.strftime("%Y-%m-%d")
         if end_date:

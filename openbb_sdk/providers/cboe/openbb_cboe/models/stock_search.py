@@ -67,11 +67,10 @@ class CboeStockSearchFetcher(
 
         if "results" in data:
             return data["results"]
-        else:
-            raise ValueError("No results found.")
+
+        raise ValueError("No results found.")
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockSearchData]:
         """Transform the data to the standard format"""
-
         return [CboeStockSearchData.parse_obj(d) for d in data]

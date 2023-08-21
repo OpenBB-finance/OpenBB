@@ -1,4 +1,7 @@
+"""OpenBB SDK."""
 # flake8: noqa
+# pylint: disable=import-outside-toplevel
+
 from typing import List, Optional, Union
 
 from openbb_core.app.static.app_factory import create_app as __create_app
@@ -21,8 +24,6 @@ def _rebuild_python_interface(
     lint : bool, optional
         Whether to lint the code, by default True
     """
-    from openbb_core.app.static.package_builder import (
-        PackageBuilder,
-    )  # pylint: disable=import-outside-toplevel
+    from openbb_core.app.static.package_builder import PackageBuilder
 
     PackageBuilder.build(modules=modules, lint=lint)
