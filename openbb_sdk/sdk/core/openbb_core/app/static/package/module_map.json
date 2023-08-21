@@ -245,5 +245,6 @@
     "economy_valuation": "/economy/valuation",
     "fixedincome_treasury": "/fixedincome/treasury",
     "fixedincome": "/fixedincome",
-    "fixedincome_ycrv": "/fixedincome/ycrv"
+    "fixedincome_ycrv": "/fixedincome/ycrv",
+    "fixedincome_sofr": "/fixedincome/sofr"
 }

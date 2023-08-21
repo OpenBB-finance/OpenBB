@@ -3,6 +3,8 @@ from openbb_provider.abstract.provider import Provider
 
 from openbb_fred.models.cpi import FREDCPIFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
+from openbb_fred.models.sofr_rates import FREDSOFRFetcher
+
 
 fred_provider = Provider(
     name="fred",
@@ -11,5 +13,9 @@ fred_provider = Provider(
      Research division of the Federal Reserve Bank of St. Louis that has more than
      816,000 economic time series from various sources.""",
     required_credentials=["api_key"],
-    fetcher_dict={"CPI": FREDCPIFetcher, "USYieldCurve": FREDYieldCurveFetcher},
+    fetcher_dict={
+        "CPI": FREDCPIFetcher,
+        "USYieldCurve": FREDYieldCurveFetcher,
+        "SOFR": FREDSOFRFetcher,
+    },
 )
