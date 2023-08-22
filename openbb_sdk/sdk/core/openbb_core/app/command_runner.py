@@ -1,4 +1,3 @@
-import multiprocessing
 import warnings
 from contextlib import nullcontext
 from copy import deepcopy
@@ -189,16 +188,6 @@ class StaticCommandRunner:
     logging_manager: LoggingManager = LoggingManager()
     charting_manager: ChartingManager = ChartingManager()
 
-    @staticmethod
-    def __run_in_isolation(func, args=None, kwargs=None) -> OBBject:
-        args = args or ()
-        kwargs = kwargs or {}
-
-        with multiprocessing.Pool(processes=1) as pool:
-            result = pool.apply(func=func, args=args, kwds=kwargs)
-
-        return result
-
     @classmethod
     def __command(
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
@@ -211,10 +200,7 @@ class StaticCommandRunner:
         )
 
         with context_manager as warning_list:
-            if system_settings.run_in_isolation:
-                obbject = cls.__run_in_isolation(func=func, kwargs=kwargs)
-            else:
-                obbject = func(**kwargs)
+            obbject = func(**kwargs)
 
             obbject.provider = getattr(
                 kwargs.get("provider_choices", None), "provider", None
