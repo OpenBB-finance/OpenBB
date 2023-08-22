@@ -22,6 +22,14 @@ import typing
 
 
 class CLASS_news(Container):
+    """/news
+    globalnews
+    sectornews
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def globalnews(
         self,
@@ -85,10 +93,10 @@ class CLASS_news(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         GlobalNews
         ----------

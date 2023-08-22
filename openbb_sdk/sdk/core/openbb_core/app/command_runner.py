@@ -1,4 +1,3 @@
-import multiprocessing
 import warnings
 from contextlib import nullcontext
 from copy import deepcopy
@@ -14,7 +13,6 @@ from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
-from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
@@ -190,16 +188,6 @@ class StaticCommandRunner:
     logging_manager: LoggingManager = LoggingManager()
     charting_manager: ChartingManager = ChartingManager()
 
-    @staticmethod
-    def __run_in_isolation(func, args=None, kwargs=None) -> OBBject:
-        args = args or ()
-        kwargs = kwargs or {}
-
-        with multiprocessing.Pool(processes=1) as pool:
-            result = pool.apply(func=func, args=args, kwds=kwargs)
-
-        return result
-
     @classmethod
     def __command(
         cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
@@ -212,10 +200,7 @@ class StaticCommandRunner:
         )
 
         with context_manager as warning_list:
-            if system_settings.run_in_isolation:
-                obbject = cls.__run_in_isolation(func=func, kwargs=kwargs)
-            else:
-                obbject = func(**kwargs)
+            obbject = func(**kwargs)
 
             obbject.provider = getattr(
                 kwargs.get("provider_choices", None), "provider", None
@@ -235,8 +220,8 @@ class StaticCommandRunner:
         route: str,
         **kwargs,
     ) -> None:
-        """Create a chart from the command output"""
-        obbject.chart: Chart = cls.charting_manager.chart(
+        """Create a chart from the command output."""
+        obbject.chart = cls.charting_manager.chart(
             user_settings=user_settings,
             system_settings=system_settings,
             route=route,
@@ -347,7 +332,7 @@ class StaticCommandRunner:
         duration = perf_counter_ns() - start_ns
 
         if execution_context.user_settings.preferences.metadata:
-            obbject.metadata = {
+            obbject.metadata = {  # type: ignore
                 "arguments": kwargs,
                 "duration": duration,
                 "route": route,

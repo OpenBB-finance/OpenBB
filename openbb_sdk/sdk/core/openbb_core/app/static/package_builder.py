@@ -2,7 +2,6 @@
 
 import builtins
 import inspect
-import re
 import shutil
 import subprocess
 from dataclasses import MISSING
@@ -37,7 +36,9 @@ class PackageBuilder:
 
     @classmethod
     def build(
-        cls, modules: Optional[Union[str, List[str]]] = None, lint: bool = True
+        cls,
+        modules: Optional[Union[str, List[str]]] = None,
+        lint: bool = True,
     ) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
@@ -99,7 +100,6 @@ class PackageBuilder:
         print("\nRunning linters...")
         Linters.black()
         Linters.ruff()
-        Linters.mypy()
 
     @staticmethod
     def write_to_package(module_code: str, module_name, extension="py") -> None:
@@ -224,16 +224,23 @@ class ClassDefinition:
         """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
         code = f"\nclass {class_name}(Container):\n"
+
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
-        child_path_list = PathHandler.get_child_path_list(
-            path=path,
-            path_list=path_list,
+        child_path_list = sorted(
+            PathHandler.get_child_path_list(
+                path=path,
+                path_list=path_list,
+            )
         )
-        for child_path in sorted(child_path_list):
+
+        doc = f'    """{path}\n'
+        methods = ""
+        for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
-                code += MethodDefinition.build_command_method(
+                doc += f"{route.name}\n"
+                methods += MethodDefinition.build_command_method(
                     path=route.path,
                     func=route.endpoint,
                     model_name=route.openapi_extra.get("model", None)
@@ -241,7 +248,14 @@ class ClassDefinition:
                     else None,
                 )  # type: ignore
             else:
-                code += MethodDefinition.build_class_loader_method(path=child_path)
+                doc += "/" + child_path.split("/")[-1] + "\n"
+                methods += MethodDefinition.build_class_loader_method(path=child_path)
+        doc += '    """\n'
+
+        code += doc
+        code += "    def __repr__(self) -> str:\n"
+        code += '        return self.__doc__ or ""\n'
+        code += methods
 
         return code
 
@@ -265,10 +279,10 @@ class DocstringGenerator:
             "        Provider name.\n"
             "    warnings : Optional[List[Warning_]]\n"
             "        List of warnings.\n"
-            "    error : Optional[Error]\n"
-            "        Caught exceptions.\n"
             "    chart : Optional[Chart]\n"
             "        Chart object.\n"
+            "    metadata: Optional[Metadata]\n"
+            "        Metadata info about the command execution.\n"
         )
 
         return obbject_description
@@ -290,10 +304,6 @@ class DocstringGenerator:
         docstring = summary
         docstring += "\n"
         docstring += "\nParameters\n----------\n"
-
-        def _to_snake_case(string: str) -> str:
-            s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
-            return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -763,17 +773,19 @@ class Linters:
 
     @staticmethod
     def run(
-        linter: Literal["black", "ruff", "mypy"], flags: Optional[List[str]] = None
+        linter: Literal["black", "ruff"],
+        flags: Optional[List[str]] = None,
     ):
         """Run linter with flags."""
         if shutil.which(linter):
             print(f"\n* {linter}")
             Linters.print_separator("^")
+
             command = [linter, Linters.current_folder]
             if flags:
                 command.extend(flags)
-
             subprocess.run(command, check=False)  # noqa: S603
+
             Linters.print_separator("-")
         else:
             print(f"\n* {linter} not found")
@@ -787,8 +799,3 @@ class Linters:
     def ruff(cls):
         """Run ruff."""
         cls.run(linter="ruff", flags=["--fix"])
-
-    @classmethod
-    def mypy(cls):
-        """Run mypy."""
-        cls.run(linter="mypy", flags=["--ignore-missing-imports"])

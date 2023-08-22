@@ -21,6 +21,13 @@ import typing
 
 
 class CLASS_stocks_dd(Container):
+    """/stocks/dd
+    sec
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def sec(
         self,
@@ -173,10 +180,10 @@ class CLASS_stocks_dd(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         SECFilings
         ----------

@@ -21,6 +21,43 @@ import typing
 
 
 class CLASS_ta(Container):
+    """/ta
+    ad
+    adosc
+    adx
+    aroon
+    atr
+    bbands
+    cci
+    cg
+    clenow
+    cones
+    demark
+    donchian
+    ema
+    fib
+    fisher
+    hma
+    ichimoku
+    kc
+    macd
+    multi
+    obv
+    recom
+    rsi
+    rsp
+    sma
+    stoch
+    summary
+    tv
+    vwap
+    wma
+    zlma
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ad(
         self,

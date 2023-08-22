@@ -22,6 +22,14 @@ import typing
 
 
 class CLASS_fixedincome(Container):
+    """/fixedincome
+    treasury
+    ycrv
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def ameribor(
         self,
@@ -590,10 +598,10 @@ class CLASS_fixedincome(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         TreasuryRates
         -------------

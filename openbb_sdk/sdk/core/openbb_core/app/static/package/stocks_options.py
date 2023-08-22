@@ -22,6 +22,18 @@ import typing
 
 
 class CLASS_stocks_options(Container):
+    """/stocks/options
+    chains
+    eodchain
+    hist
+    info
+    pcr
+    unu
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def chains(
         self,
@@ -55,10 +67,10 @@ class CLASS_stocks_options(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         OptionsChains
         -------------

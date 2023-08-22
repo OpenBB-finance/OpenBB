@@ -22,6 +22,27 @@ import typing
 
 
 class CLASS_stocks(Container):
+    """/stocks
+    /ca
+    /dd
+    /disc
+    /dps
+    /fa
+    /gov
+    info
+    /ins
+    load
+    multiples
+    news
+    /options
+    quote
+    search
+    tob
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @property
     def ca(self):  # route = "/stocks/ca"
         from openbb_core.app.static.package import stocks_ca
@@ -91,10 +112,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockInfo
         ---------
@@ -252,10 +273,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockEOD
         --------
@@ -346,10 +367,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockMultiples
         --------------
@@ -583,10 +604,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockNews
         ---------
@@ -686,10 +707,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockQuote
         ----------
@@ -790,10 +811,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockSearch
         -----------

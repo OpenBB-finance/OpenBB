@@ -22,6 +22,37 @@ import typing
 
 
 class CLASS_qa(Container):
+    """/qa
+    acf
+    beta
+    bw
+    capm
+    cdf
+    cusum
+    decompose
+    es
+    hist
+    kurtosis
+    line
+    normality
+    om
+    pick
+    qqplot
+    quantile
+    raw
+    rolling
+    sh
+    skew
+    so
+    spread
+    summary
+    unitroot
+    var
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def acf(
         self, chart: bool = False

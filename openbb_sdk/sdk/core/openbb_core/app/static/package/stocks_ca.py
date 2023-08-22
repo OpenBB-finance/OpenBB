@@ -22,6 +22,23 @@ import types
 
 
 class CLASS_stocks_ca(Container):
+    """/stocks/ca
+    balance
+    cashflow
+    hcorr
+    hist
+    income
+    peers
+    scorr
+    screener
+    sentiment
+    similar
+    volume
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def balance(
         self, chart: bool = False
@@ -130,10 +147,10 @@ class CLASS_stocks_ca(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockPeers
         ----------

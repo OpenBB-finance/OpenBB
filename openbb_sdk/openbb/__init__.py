@@ -11,7 +11,8 @@ obb = sdk
 
 
 def _rebuild_python_interface(
-    modules: Optional[Union[str, List[str]]] = None, lint: bool = True
+    modules: Optional[Union[str, List[str]]] = None,
+    lint: bool = True,
 ) -> None:
     """Rebuild the Python SDK.
 

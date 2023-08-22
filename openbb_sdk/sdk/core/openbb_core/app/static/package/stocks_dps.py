@@ -19,6 +19,24 @@ import openbb_core.app.model.results.empty
 
 
 class CLASS_stocks_dps(Container):
+    """/stocks/dps
+    ctb
+    dpotc
+    ftd
+    hsi
+    pos
+    prom
+    psi
+    psi_q
+    psi_sg
+    shorted
+    sidtc
+    spos
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def ctb(
         self, chart: bool = False

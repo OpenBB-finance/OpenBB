@@ -21,6 +21,14 @@ import typing
 
 
 class CLASS_futures(Container):
+    """/futures
+    curve
+    load
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def curve(
         self,
@@ -60,10 +68,10 @@ class CLASS_futures(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         FuturesCurve
         ------------
@@ -154,10 +162,10 @@ class CLASS_futures(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         FuturesEOD
         ----------

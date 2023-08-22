@@ -22,6 +22,46 @@ import typing
 
 
 class CLASS_economy(Container):
+    """/economy
+    available_indices
+    balance
+    bigmac
+    const
+    corecpi
+    country_codes
+    cpi
+    cpi_options
+    currencies
+    debt
+    events
+    fgdp
+    fred
+    fred_search
+    futures
+    gdp
+    glbonds
+    index
+    indices
+    macro
+    macro_countries
+    macro_parameters
+    overview
+    perfmap
+    performance
+    revenue
+    rgdp
+    risk
+    rtps
+    search_index
+    spending
+    trust
+    usbonds
+    valuation
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
@@ -46,10 +86,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         AvailableIndices
         ----------------
@@ -157,10 +197,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         MajorIndicesConstituents
         ------------------------
@@ -362,10 +402,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CPI
         ---
@@ -685,10 +725,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         MajorIndicesEOD
         ---------------
@@ -962,10 +1002,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RiskPremium
         -----------

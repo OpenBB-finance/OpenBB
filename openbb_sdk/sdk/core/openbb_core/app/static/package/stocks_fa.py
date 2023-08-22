@@ -23,6 +23,60 @@ import typing
 
 
 class CLASS_stocks_fa(Container):
+    """/stocks/fa
+    analysis
+    balance
+    balance_growth
+    cal
+    cash
+    cash_growth
+    comp
+    comsplit
+    customer
+    dcfc
+    divs
+    dupont
+    earning
+    emp
+    enterprise
+    epsfc
+    est
+    fama_coe
+    fama_raw
+    fraud
+    growth
+    historical_5
+    income
+    income_growth
+    ins
+    ins_own
+    key
+    metrics
+    mgmt
+    mktcap
+    news
+    overview
+    own
+    pt
+    pta
+    rating
+    ratios
+    revfc
+    revgeo
+    revseg
+    rot
+    score
+    sec
+    shares
+    shrs
+    split
+    supplier
+    transcript
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def analysis(
         self, chart: bool = False
@@ -117,10 +171,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         BalanceSheet
         ------------
@@ -292,10 +346,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         BalanceSheetGrowth
         ------------------
@@ -444,10 +498,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         DividendCalendar
         ----------------
@@ -564,10 +618,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CashFlowStatement
         -----------------
@@ -711,10 +765,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CashFlowStatementGrowth
         -----------------------
@@ -835,10 +889,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ExecutiveCompensation
         ---------------------
@@ -928,10 +982,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockSplitCalendar
         ------------------
@@ -1026,10 +1080,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalDividends
         -------------------
@@ -1118,10 +1172,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         EarningsCalendar
         ----------------
@@ -1194,10 +1248,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalEmployees
         -------------------
@@ -1311,10 +1365,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         AnalystEstimates
         ----------------
@@ -1533,10 +1587,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         IncomeStatement
         ---------------
@@ -1694,10 +1748,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         IncomeStatementGrowth
         ---------------------
@@ -1858,10 +1912,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockInsiderTrading
         -------------------
@@ -1960,10 +2014,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         InstitutionalOwnership
         ----------------------
@@ -2117,10 +2171,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         KeyMetrics
         ----------
@@ -2296,10 +2350,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         KeyExecutives
         -------------
@@ -2395,10 +2449,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CompanyOverview
         ---------------
@@ -2536,10 +2590,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockOwnership
         --------------
@@ -2673,10 +2727,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         PriceTargetConsensus
         --------------------
@@ -2742,10 +2796,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         PriceTarget
         -----------
@@ -2854,10 +2908,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         FinancialRatios
         ---------------
@@ -3054,10 +3108,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RevenueGeographic
         -----------------
@@ -3139,10 +3193,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RevenueBusinessLine
         -------------------
@@ -3258,10 +3312,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ShareStatistics
         ---------------
@@ -3327,10 +3381,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalStockSplits
         ---------------------
@@ -3421,10 +3475,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         EarningsCallTranscript
         ----------------------
