@@ -29,7 +29,7 @@ def test_app_system_settings(app_factory):
 
 def test_app_user_settings(app_factory):
     """Test app user settings."""
-    user_settings = app_factory.settings
+    user_settings = app_factory.user
     assert user_settings
     assert isinstance(user_settings, UserSettings)
 
