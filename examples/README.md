@@ -59,3 +59,7 @@ This notebook demonstrates how to fetch and work with options chains data.
 - Calculate and visualize the Net Delta Exposure, in dollars, by strike and expiration.
 - Visualize the term structure of the implied volatility skew.
 - Get tables with multiple single-leg options strategies.
+
+### googleColabInstallation
+
+This notebook demonstrates how to install the OpenBB SDK within Google Colab.
