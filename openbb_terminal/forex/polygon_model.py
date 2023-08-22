@@ -59,7 +59,7 @@ def get_historical(
         console.print(f"[red]{json_response['error']}[/red]\n")
         return pd.DataFrame()
 
-    if "results" not in json_response.keys():
+    if "results" not in json_response:
         console.print("[red]Error in polygon request[/red]\n")
         return pd.DataFrame()
 

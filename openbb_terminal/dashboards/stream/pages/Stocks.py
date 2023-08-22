@@ -188,7 +188,7 @@ def stock_data(
             if not df.empty:
                 df.index = pd.to_datetime(df.index).tz_localize(None)
                 return df
-        except Exception:
+        except Exception:  # noqa: S110
             pass
     return pd.DataFrame()
 
@@ -203,7 +203,7 @@ def volume_data(infos: dict, start: datetime, end: datetime, interval: str) -> d
             df = df[["Volume"]]
             df = df.rename(columns={"Volume": ticker})
             result[ticker] = df
-        except Exception:
+        except Exception:  # noqa: S110
             pass
     return result
 
