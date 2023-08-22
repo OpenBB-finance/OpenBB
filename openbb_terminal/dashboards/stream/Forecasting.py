@@ -163,7 +163,9 @@ class Handler:
                     external_axes=True,
                 )
 
-                with st.spinner("Running model..."), patch.object(OpenBBFigure, "show", mock_show):
+                with st.spinner("Running model..."), patch.object(
+                    OpenBBFigure, "show", mock_show
+                ):
                     fig: OpenBBFigure = getattr(
                         common_vars.openbb.forecast, f"{model}_chart"
                     )(**kwargs)

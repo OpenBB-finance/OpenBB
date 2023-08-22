@@ -93,7 +93,9 @@ def test_get_session_not_exist():
 def test_get_session_exception():
     open_mock = mock_open()
     path = "openbb_terminal.core.session.local_model"
-    with patch(f"{path}.os.path") as path_mock, patch(f"{path}.open", open_mock, create=True):
+    with patch(f"{path}.os.path") as path_mock, patch(
+        f"{path}.open", open_mock, create=True
+    ):
         open_mock.side_effect = Exception
         assert local_model.get_session() == {}
 

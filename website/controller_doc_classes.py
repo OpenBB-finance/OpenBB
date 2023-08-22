@@ -460,7 +460,11 @@ class LoadControllersDoc:
                 if (  # noqa: SIM102
                     name != "TerminalController" and "BaseController" not in name
                 ):  # noqa: SIM102
-                    if isclass(obj) and issubclass(obj, BaseController) and trailmap not in self.controller_docs:
+                    if (
+                        isclass(obj)
+                        and issubclass(obj, BaseController)
+                        and trailmap not in self.controller_docs
+                    ):
                         ctrl = ControllerDoc(obj, trailmap)  # type: ignore
                         if ctrl.has_commands():
                             self.controller_docs[trailmap] = ctrl
