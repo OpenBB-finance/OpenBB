@@ -36,7 +36,6 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockSplitCalendarQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
-
         transformed_params = params
 
         now = date.today()
@@ -55,7 +54,6 @@ class FMPStockSplitCalendarFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query_str = f"from={query.start_date}&to={query.end_date}"
@@ -66,5 +64,4 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockSplitCalendarData]:
         """Return the transformed data."""
-
         return [FMPStockSplitCalendarData(**d) for d in data]

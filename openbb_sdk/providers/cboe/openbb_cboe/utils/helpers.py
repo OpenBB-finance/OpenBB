@@ -2,9 +2,9 @@
 
 import os
 from datetime import date, datetime, timedelta
+from io import StringIO
 from pathlib import Path
 from typing import List, Optional, Tuple
-from io import StringIO
 
 import numpy as np
 import pandas as pd
@@ -67,7 +67,6 @@ def request(
         headers["User-Agent"] = get_user_agent()
 
     if (func := getattr(requests, method.lower(), None)) is not None:
-
         return func(
             url,
             headers=headers,

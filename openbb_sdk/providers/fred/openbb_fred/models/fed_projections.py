@@ -1,16 +1,16 @@
 """FRED PROJECTION Fetcher."""
 
 
-from typing import Any, Dict, List, Literal, Optional
-from openbb_fred.utils.fred_helpers import process_projections
+from typing import Any, Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred
+from openbb_fred.utils.fred_helpers import process_projections
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.fed_projections import (
     PROJECTIONData,
     PROJECTIONQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field
 
 NAME_TO_ID_PROJECTION = {
     "range_high": ["FEDTARRH", "FEDTARRHLR"],

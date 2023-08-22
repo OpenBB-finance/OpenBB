@@ -1,7 +1,7 @@
 """FRED FED Fetcher."""
 
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred
 from openbb_provider.abstract.fetcher import Fetcher

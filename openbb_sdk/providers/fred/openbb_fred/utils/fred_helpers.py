@@ -1,7 +1,7 @@
 import csv
 import os
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
 
 YIELD_CURVE_NOMINAL_RATES = [round(1 / 12, 3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]

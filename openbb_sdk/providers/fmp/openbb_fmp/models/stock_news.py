@@ -49,7 +49,6 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockNewsQueryParams:
         """Transform the query params."""
-
         return FMPStockNewsQueryParams(**params)
 
     @staticmethod
@@ -59,7 +58,6 @@ class FMPStockNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(3, "stock_news", api_key, query)
 
@@ -68,5 +66,4 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockNewsData]:
         """Return the transformed data."""
-
         return [FMPStockNewsData(**d) for d in data]
