@@ -1,7 +1,8 @@
 import json
 import logging
 from enum import Enum
-from typing import Any, Callable, Dict, Optional, Tuple
+from types import TracebackType
+from typing import Any, Callable, Dict, Optional, Tuple, Type, cast
 
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -180,7 +181,9 @@ class LoggingManager(metaclass=SingletonMeta):
         route: str,
         func: Callable,
         kwargs: Dict[str, Any],
-        exec_info: Optional[Tuple] = None,
+        exec_info: Optional[
+            Tuple[Type[BaseException], BaseException, Optional[TracebackType]]
+        ] = None,
     ):
         """
         Log command output and relevant information.
@@ -218,7 +221,9 @@ class LoggingManager(metaclass=SingletonMeta):
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
             # Get execution info
-            openbb_error: Optional[OpenBBError] = exec_info[1] if exec_info else None
+            openbb_error = cast(
+                Optional[OpenBBError], exec_info[1] if exec_info else None
+            )
 
             # Construct message
             message_label = "ERROR" if openbb_error else "CMD"

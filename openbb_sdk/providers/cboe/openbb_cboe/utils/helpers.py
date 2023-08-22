@@ -7,8 +7,14 @@ from typing import Any, List, Literal, Optional
 import pandas as pd
 import requests
 import requests_cache
+import requests_cache
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
+# This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
+# Only used on functions run on import
+cboe_session = requests_cache.CachedSession(
+    "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
+)
 
 US_INDEX_COLUMNS = {
     "name": "name",

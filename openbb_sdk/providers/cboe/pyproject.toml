@@ -10,8 +10,7 @@ packages = [{ include = "openbb_cboe" }]
 python = "^3.8"
 openbb-provider = { path = "../../sdk/provider" }
 requests-cache = "^1.1.0"
-pandas = ">1.5.3"
-requests = "^2.31.0"
+pandas = "^2.0.3"
 
 [build-system]
 requires = ["poetry-core"]

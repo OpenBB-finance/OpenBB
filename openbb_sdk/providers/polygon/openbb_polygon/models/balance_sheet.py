@@ -28,7 +28,7 @@ class PolygonBalanceSheetData(BalanceSheetData):
         }
 
     @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):
+    def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
         if isinstance(v, list):
             return ",".join(v)
         return v

@@ -22,15 +22,6 @@ class FMPSECFilingsQueryParams(SECFilingsQueryParams):
 class FMPSECFilingsData(SECFilingsData):
     """FMP SEC Filings Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "filling_date": "fillingDate",
-            "accepted_date": "acceptedDate",
-            "final_link": "finalLink",
-        }
-
 
 class FMPSECFilingsFetcher(
     Fetcher[
@@ -43,7 +34,6 @@ class FMPSECFilingsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPSECFilingsQueryParams:
         """Transform the query params."""
-
         return FMPSECFilingsQueryParams(**params)
 
     @staticmethod
@@ -53,7 +43,6 @@ class FMPSECFilingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -65,5 +54,4 @@ class FMPSECFilingsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPSECFilingsData]:
         """Return the transformed data."""
-
         return [FMPSECFilingsData(**d) for d in data]

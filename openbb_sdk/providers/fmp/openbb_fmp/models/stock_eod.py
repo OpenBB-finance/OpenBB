@@ -71,7 +71,6 @@ class FMPStockEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
         """Transform the query params."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -90,7 +89,6 @@ class FMPStockEODFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -110,5 +108,4 @@ class FMPStockEODFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockEODData]:
         """Return the transformed data."""
-
         return [FMPStockEODData(**d) for d in data]

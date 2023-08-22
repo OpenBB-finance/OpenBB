@@ -21,16 +21,6 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "adj_dividend": "adjDividend",
-            "record_date": "recordDate",
-            "payment_date": "paymentDate",
-            "declaration_date": "declarationDate",
-        }
-
 
 class FMPHistoricalDividendsFetcher(
     Fetcher[
@@ -43,7 +33,6 @@ class FMPHistoricalDividendsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalDividendsQueryParams:
         """Transform the query params."""
-
         return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
@@ -53,7 +42,6 @@ class FMPHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -64,5 +52,4 @@ class FMPHistoricalDividendsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPHistoricalDividendsData]:
         """Return the transformed data."""
-
         return [FMPHistoricalDividendsData(**d) for d in data]

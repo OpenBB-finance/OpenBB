@@ -51,7 +51,6 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPAvailableIndicesQueryParams:
         """Transform the query params."""
-
         return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod

@@ -46,7 +46,6 @@ class FMPForexPairsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPForexPairsQueryParams:
         """Transform the query params."""
-
         return FMPForexPairsQueryParams(**params)
 
     @staticmethod
@@ -56,7 +55,6 @@ class FMPForexPairsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -67,5 +65,4 @@ class FMPForexPairsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPForexPairsData]:
         """Return the transformed data."""
-
         return [FMPForexPairsData(**d) for d in data]
