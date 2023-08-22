@@ -10,6 +10,28 @@ from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_ins(Container):
+    """/stocks/ins
+    act
+    blcp
+    blcs
+    blip
+    blis
+    blop
+    blos
+    filt
+    lcb
+    lins
+    lip
+    lis
+    lit
+    lpsb
+    print_insider_data
+    stats
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def act(
         self, chart: bool = False

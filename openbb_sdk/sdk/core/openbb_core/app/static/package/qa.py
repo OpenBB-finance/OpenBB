@@ -16,6 +16,37 @@ from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_qa(Container):
+    """/qa
+    acf
+    beta
+    bw
+    capm
+    cdf
+    cusum
+    decompose
+    es
+    hist
+    kurtosis
+    line
+    normality
+    om
+    pick
+    qqplot
+    quantile
+    raw
+    rolling
+    sh
+    skew
+    so
+    spread
+    summary
+    unitroot
+    var
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def acf(
         self, chart: bool = False
@@ -551,7 +582,7 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
         chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:

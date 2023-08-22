@@ -15,11 +15,20 @@ if TYPE_CHECKING:
 
 
 class Account:
+    """/account
+    login
+    logout
+    save
+    refresh"""
+
     def __init__(self, container: "Container"):
         self._container = container
         self._openbb_directory = (
             container._command_runner.system_settings.openbb_directory
         )
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
 
     def _create_hub_service(
         self,

@@ -21,44 +21,43 @@ def create_app():
         ) from e
 
     class App(Extensions):
-        """Here you can access all the basic utility menus and extensions.
+        """OpenBB SDK.
 
-        Basic utility menus:
-            - account
-            - user
-            - system
-            - coverage
+Utility menus:
+    /account
+    /user
+    /system
+    /coverage
 
-        Built-in extensions:
-            - charting
-            - crypto
-            - economy
-            - fixedincome
-            - forex
-            - futures
-            - news
-            - stocks
-        """
+Extensions:"""
 
         def __init__(self, command_runner):
             self._command_runner = command_runner
             self._account = Account(self)
             self._coverage = Coverage()
 
+        def __repr__(self) -> str:
+            # pylint: disable=E1101
+            return (self.__doc__ or "") + (super().__doc__ or "")
+
         @property
         def account(self) -> Account:
+            """Account menu."""
             return self._account
 
         @property
         def user(self) -> UserSettings:
+            """User settings."""
             return self._command_runner.user_settings
 
         @property
         def system(self) -> SystemSettings:
+            """System settings."""
             return self._command_runner.system_settings
 
         @property
         def coverage(self) -> Coverage:
+            """Coverage menu."""
             return self._coverage
 
     return App(command_runner=CommandRunner())
