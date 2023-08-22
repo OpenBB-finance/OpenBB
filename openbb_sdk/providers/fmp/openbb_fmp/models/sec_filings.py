@@ -1,7 +1,6 @@
 """SEC Filings fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -9,7 +8,6 @@ from openbb_provider.standard_models.sec_filings import (
     SECFilingsData,
     SECFilingsQueryParams,
 )
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -25,25 +23,27 @@ class FMPSECFilingsData(SECFilingsData):
     """FMP SEC Filings Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "filling_date": "fillingDate",
             "accepted_date": "acceptedDate",
             "final_link": "finalLink",
         }
 
-    @validator("fillingDate", "acceptedDate", pre=True, check_fields=False)
-    def convert_date(cls, v):  # pylint: disable=no-self-argument
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-
 
 class FMPSECFilingsFetcher(
     Fetcher[
         FMPSECFilingsQueryParams,
-        FMPSECFilingsData,
+        List[FMPSECFilingsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPSECFilingsQueryParams:
+        """Transform the query params."""
+
         return FMPSECFilingsQueryParams(**params)
 
     @staticmethod
@@ -51,15 +51,19 @@ class FMPSECFilingsFetcher(
         query: FMPSECFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPSECFilingsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"sec_filings/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, FMPSECFilingsData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPSECFilingsData]) -> List[FMPSECFilingsData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPSECFilingsData]:
+        """Return the transformed data."""
+
+        return [FMPSECFilingsData(**d) for d in data]

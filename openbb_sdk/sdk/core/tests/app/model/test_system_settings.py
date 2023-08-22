@@ -1,5 +1,4 @@
 import os
-from unittest.mock import patch
 
 import pytest
 from openbb_core.app.model.system_settings import SystemSettings
@@ -146,58 +145,3 @@ def test_validate_logging_handlers(handlers, valid):
     else:
         with pytest.raises(ValueError, match="Invalid logging handler"):
             SystemSettings.validate_logging_handlers(handlers)
-
-
-@pytest.mark.parametrize(
-    "commit_hash, expected_result",
-    [
-        # Test case: Valid commit hash provided
-        ("1234567890", "1234567890"),
-        # Test case: Empty commit hash, mocked get_commit_hash returns "abcdef1234"
-        ("", "abcdef1234"),
-    ],
-)
-def test_validate_commit_hash(commit_hash, expected_result):
-    with patch(
-        "openbb_core.app.model.system_settings.get_commit_hash",
-        return_value="abcdef1234",
-    ):
-        # Act
-        result = SystemSettings.validate_commit_hash(commit_hash)
-
-        # Assert
-        assert result == expected_result
-
-
-@patch("openbb_core.app.model.system_settings.get_branch", return_value="main")
-@pytest.mark.parametrize(
-    "branch, commit_hash, expected_branch",
-    [
-        # Test case: Empty branch, non-empty commit hash
-        ("", "abcdef1234", "main"),
-        # Test case: Non-empty branch, non-empty commit hash
-        ("feature-branch", "abcdef1234", "feature-branch"),
-        # Test case: Empty branch, empty commit hash
-        ("", "", ""),
-        # Test case: Non-empty branch, empty commit hash
-        ("feature-branch", "", "feature-branch"),
-    ],
-)
-def test_validate_branch(mock_get_branch, branch, commit_hash, expected_branch):
-    # Arrange
-    values = {
-        "logging_branch": branch,
-        "logging_commit_hash": commit_hash,
-    }
-
-    # Act
-    result = SystemSettings.validate_branch(values)
-
-    # Assert
-    assert result["logging_branch"] == expected_branch
-
-    # Ensure that get_branch was called with the correct commit_hash
-    if not branch and commit_hash:
-        mock_get_branch.assert_called_once_with(commit_hash)
-    else:
-        mock_get_branch.assert_not_called()

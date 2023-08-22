@@ -12,9 +12,9 @@ on:
     types: [opened, synchronize, edited]
   push:
     branches:
-      - 'feature/*'
-      - 'hotfix/*'
-      - 'release/*'
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
   merge_group:
     types: [checks_requested]
 

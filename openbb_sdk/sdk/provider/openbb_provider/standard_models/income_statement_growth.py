@@ -16,8 +16,8 @@ class IncomeStatementGrowthQueryParams(QueryParams, BaseSymbol):
     """Income Statement Growth Query."""
 
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
-    period: Literal["annually", "quarterly"] = Field(
-        default="annually", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
 
 
@@ -25,7 +25,7 @@ class IncomeStatementGrowthData(Data, BaseSymbol):
     """Income Statement Growth Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="The period the statement is returned for.")
+    period: str = Field(description="Period the statement is returned for.")
     growth_revenue: float = Field(description="Growth rate of total revenue.")
     growth_cost_of_revenue: float = Field(
         description="Growth rate of cost of goods sold."

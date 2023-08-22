@@ -1,9 +1,12 @@
 """Polygon stocks end of day fetcher."""
 
 
-from datetime import datetime, timedelta
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
@@ -20,7 +23,7 @@ class PolygonStockEODQueryParams(StockEODQueryParams):
 
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="The timespan of the data.")
+    ] = Field(default="day", description="Timespan of the data.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -29,7 +32,7 @@ class PolygonStockEODQueryParams(StockEODQueryParams):
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
     multiplier: PositiveInt = Field(
-        default=1, description="The multiplier of the timespan."
+        default=1, description="Multiplier of the timespan."
     )
 
 
@@ -47,8 +50,8 @@ class PolygonStockEODData(StockEODData):
             "vwap": "vw",
         }
 
-    n: PositiveInt = Field(
-        description="The number of transactions for the symbol in the time period."
+    n: Optional[PositiveInt] = Field(
+        description="Number of transactions for the symbol in the time period."
     )
 
     @validator("t", pre=True, check_fields=False)
@@ -59,7 +62,7 @@ class PolygonStockEODData(StockEODData):
 class PolygonStockEODFetcher(
     Fetcher[
         PolygonStockEODQueryParams,
-        PolygonStockEODData,
+        List[PolygonStockEODData],
     ]
 ):
     @staticmethod
@@ -67,7 +70,7 @@ class PolygonStockEODFetcher(
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -78,27 +81,35 @@ class PolygonStockEODFetcher(
         query: PolygonStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonStockEODData]:
+    ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        request_url = (
-            f"https://api.polygon.io/v2/aggs/ticker/"
-            f"{query.symbol}/range/1/{str(query.timespan)}/"
-            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&multiplier={query.multiplier}"
-            f"&apiKey={api_key}"
-        )
+        data: list = []
 
-        data = get_data(request_url, **kwargs)
-        if isinstance(data, list):
-            raise ValueError("Expected a dict, got a list")
+        def multiple_symbols(symbol: str, data: List[PolygonStockEODData]) -> None:
+            request_url = (
+                f"https://api.polygon.io/v2/aggs/ticker/"
+                f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
+                f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
+                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
+            )
+            results = get_data(request_url, **kwargs).get("results", [])
 
-        if "results" not in data or len(data["results"]) == 0:
-            raise RuntimeError("No results found. Please change your query parameters.")
+            if "," in query.symbol:
+                results = [dict(symbol=symbol, **d) for d in results]
 
-        data = data["results"]
-        return [PolygonStockEODData(**d) for d in data]
+            return data.extend([PolygonStockEODData.parse_obj(d) for d in results])
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+
+        data.sort(key=lambda x: x.date)
+        if query.timespan == "day":
+            for d in data:
+                d.date = datetime.replace(d.date, hour=0, minute=0)
+
+        return data
 
     @staticmethod
-    def transform_data(data: List[PolygonStockEODData]) -> List[PolygonStockEODData]:
-        return data
+    def transform_data(data: List[dict]) -> List[PolygonStockEODData]:
+        return [PolygonStockEODData.parse_obj(d) for d in data]

@@ -81,7 +81,7 @@ class PlotlyTA(PltTA):
     >>> fig2.show()
     """
 
-    inchart_colors: Optional[List[str]] = None
+    inchart_colors: List[str] = []
     plugins: List[Type[PltTA]] = []
     df_ta: pd.DataFrame = None
     close_column: Optional[str] = "close"
@@ -404,7 +404,8 @@ class PlotlyTA(PltTA):
                 secondary_y=False,
             )
             fig.update_layout(yaxis=dict(nticks=15))
-            self.inchart_colors = self.theme.get_colors()[1:]
+            if self.theme:
+                self.inchart_colors = self.theme.get_colors()[1:]
 
         fig.set_title(symbol, x=0.5, y=0.98, xanchor="center", yanchor="top")
         return fig

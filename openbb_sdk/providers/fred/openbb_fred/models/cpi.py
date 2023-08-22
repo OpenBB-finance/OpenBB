@@ -5,19 +5,25 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cpi import CPIData, CPIQueryParams
+from pydantic import Field
 
 
 class FREDCPIQueryParams(CPIQueryParams):
     """CPI query."""
 
 
-class FREDCPIData(CPIData):
+class FREDCPIData(Data):
     """CPI data."""
 
+    country_unit_freq: Optional[List[CPIData]] = Field(
+        description="CPI data for a country, units, and frequency combination."
+    )
 
-class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, FREDCPIData]):
+
+class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
     """FRED CPI Fetcher."""
 
     @staticmethod
@@ -27,7 +33,7 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, FREDCPIData]):
     @staticmethod
     def extract_data(
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> List[Dict[str, List[FREDCPIData]]]:
+    ) -> dict:
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         all_options = all_cpi_options(query.harmonized)
@@ -43,13 +49,13 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, FREDCPIData]):
             temp = fred.get_series(
                 item["series_id"], query.start_date, query.end_date, **kwargs
             )
-            clean_temp = [FREDCPIData(**x) for x in temp]
-            series_dict[loc] = clean_temp
+            series_dict[loc] = temp
 
-        return [series_dict]
+        return series_dict
 
     @staticmethod
-    def transform_data(
-        data: List[Dict[str, List[FREDCPIData]]]
-    ) -> List[Dict[str, List[FREDCPIData]]]:
-        return data
+    def transform_data(data: dict) -> List[Dict[str, List[FREDCPIData]]]:
+        for key, value in data.items():
+            data[key] = [FREDCPIData(**x) for x in value]
+
+        return [data]

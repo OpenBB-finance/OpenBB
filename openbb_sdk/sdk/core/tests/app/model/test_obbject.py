@@ -2,26 +2,26 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
-from openbb_core.app.model.command_output import Chart, Obbject, OpenBBError
+from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
+from openbb_provider.abstract.data import Data
 
 
-def test_command_output():
-    co = Obbject()
-    assert isinstance(co, Obbject)
+def test_OBBject():
+    co = OBBject()
+    assert isinstance(co, OBBject)
 
 
 def test_fields():
-    fields = Obbject.__fields__.keys()
+    fields = OBBject.__fields__.keys()
 
     assert "results" in fields
     assert "provider" in fields
     assert "warnings" in fields
-    assert "error" in fields
     assert "chart" in fields
 
 
 def test_to_dataframe_no_results():
-    co = Obbject()
+    co = OBBject()
     with pytest.raises(Exception):
         co.to_dataframe()
 
@@ -43,14 +43,16 @@ def test_to_dataframe_no_results():
             pd.DataFrame({"value": [10, 20]}, index=pd.RangeIndex(start=0, stop=2)),
         ),
         # Test case 3: Empty results
-        ([], pd.DataFrame()),
+        ([], OpenBBError("Results not found.")),
         # Test case 4: Results as None, should raise OpenBBError
         (None, OpenBBError("Results not found.")),
     ],
 )
 def test_to_dataframe(results, expected_df):
     # Arrange
-    co = Obbject(results=results)
+    if results:
+        results = [Data(**d) for d in results]
+    co = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
@@ -82,44 +84,53 @@ def test_to_dataframe(results, expected_df):
             },
         ),
         # Test case 3: Empty results
-        ([], {}),
+        ([], OpenBBError("Results not found.")),
     ],
 )
 def test_to_dict(results, expected):
     # Arrange
-    co = Obbject(results=results)
+    if results:
+        results = [Data(**d) for d in results]
+    co = OBBject(results=results)
 
-    # Act
-    result = co.to_dict()
-    result.pop("index", None)
+    # Act and Assert
+    if isinstance(expected, Exception):
+        with pytest.raises(expected.__class__) as exc_info:
+            co.to_dict()
 
-    # Assert
-    assert result == expected
+        assert str(exc_info.value) == str(expected)
+    else:
+        result = co.to_dict()
+        result.pop("index", None)
+
+        assert result == expected
 
 
-@patch("openbb_core.app.model.command_output.ChartingManager")
-@patch("openbb_core.app.model.command_output.Chart")
-def test_to_plotly_json_with_existing_chart(mock_chart, mock_charting_manager):
+@patch("openbb_core.app.charting_manager.ChartingManager.to_chart")
+@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
+def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
     # Arrange
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     mock_instance.chart = Chart(content={"existing_chart_data": "some_data"})
 
+    # mock the return value of ChartingManager.to_chart()
+    mock_to_chart.return_value = Chart(
+        content={"content": "some_new_content"}, fig={"fig": "some_mock_fig"}
+    )
+
     # Act
-    result = mock_instance.to_plotly_json()
+    result = mock_instance.to_chart()
 
     # Assert
-    assert result == {"existing_chart_data": "some_data"}
+    assert result == {"fig": "some_mock_fig"}
+    assert mock_instance.chart.content == {"content": "some_new_content"}
 
-    # Ensure ChartingManager and Chart constructors were not called
-    mock_charting_manager.assert_not_called()
-    mock_chart.assert_not_called()
+    mock_to_dataframe.assert_called_once()
 
 
-@patch("openbb_core.app.model.command_output.Obbject.to_dataframe")
-@patch("openbb_core.app.model.command_output.ChartingManager")
-@patch("openbb_core.app.model.command_output.Chart")
-def test_to_plotly_json_with_new_chart(
-    mock_chart,
+@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
+@patch("openbb_core.app.model.obbject.ChartingManager")
+def test_to_chart_with_new_chart(
     mock_charting_manager,
     mock_to_dataframe,
 ):
@@ -133,49 +144,53 @@ def test_to_plotly_json_with_new_chart(
         return pd.DataFrame(data)
 
     # Arrange
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     mock_charting_manager_instance = mock_charting_manager.return_value
-    mock_charting_manager_instance.to_plotly_json.return_value = {
-        "new_chart_data": "some_data"
-    }
+    mock_charting_manager_instance.to_chart.return_value = Chart(
+        content={"content": "some_new_content"}, fig={"fig": "some_mock_fig"}
+    )
     mock_to_dataframe.return_value = get_mock_dataframe()
 
     # Act
-    result = mock_instance.to_plotly_json(
-        create_chart=True, chart_option="option_value"
-    )
+    result = mock_instance.to_chart()
 
     # Assert
-    assert result == {"new_chart_data": "some_data"}
+    assert result == {"fig": "some_mock_fig"}
+    assert mock_instance.chart.content == {"content": "some_new_content"}
 
     # Ensure self.to_dataframe() was called
     mock_to_dataframe.assert_called_once()
 
     # Ensure ChartingManager was called with the correct parameters
-    mock_charting_manager_instance.to_plotly_json.assert_called_once()
-
-    # Ensure Chart constructor was called with the correct parameters
-    mock_chart.assert_called_once_with(
-        content={"new_chart_data": "some_data"}, format="plotly"
-    )
+    mock_charting_manager_instance.to_chart.assert_called_once()
 
 
 def test_show_chart_exists():
-    mock_instance = Obbject()
+    mock_instance = OBBject()
     # Arrange
     mock_instance.chart = MagicMock(spec=Chart)
+    mock_instance.chart.fig = MagicMock()
+    mock_instance.chart.fig.show.return_value = MagicMock()
 
     # Act
     mock_instance.show()
 
     # Assert
-    mock_instance.chart.show.assert_called_once()
+    mock_instance.chart.fig.show.assert_called_once()
 
 
-def test_show_chart_not_found():
-    mock_instance = Obbject()
+def test_show_chart_no_chart():
+    mock_instance = OBBject()
+
+    # Act and Assert
+    with pytest.raises(OpenBBError, match="Chart not found."):
+        mock_instance.show()
+
+
+def test_show_chart_no_fig():
+    mock_instance = OBBject()
     # Arrange
-    mock_instance.chart = None
+    mock_instance.chart = Chart()
 
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):

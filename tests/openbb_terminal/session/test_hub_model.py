@@ -46,7 +46,7 @@ def test_create_session_success(email, password):
         assert response.json() == TEST_RESPONSE
 
         mock_post.assert_called_once_with(
-            url=hub_model.BASE_URL + "login",
+            url=hub_model.BackendEnvironment.BASE_URL + "login",
             json={"email": email, "password": password, "remember": True},
             timeout=hub_model.TIMEOUT,
         )
@@ -113,7 +113,7 @@ def test_create_session_from_token_success(mocker, token):
         assert response.json() == TEST_RESPONSE
 
         mock_post.assert_called_once_with(
-            url=hub_model.BASE_URL + "sdk/login",
+            url=hub_model.BackendEnvironment.BASE_URL + "sdk/login",
             json={"token": token},
             timeout=hub_model.TIMEOUT,
         )
@@ -151,7 +151,7 @@ def test_delete_session_success(auth_header, token):
         assert response.status_code == 200
 
         mock_post.assert_called_once_with(
-            url=hub_model.BASE_URL + "logout",
+            url=hub_model.BackendEnvironment.BASE_URL + "logout",
             headers={"Authorization": "Bearer test_token"},
             json={"token": "test_token"},
             timeout=hub_model.TIMEOUT,
@@ -233,7 +233,9 @@ def test_get_session_success():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {"session": "info"}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_401():
@@ -246,7 +248,9 @@ def test_get_session_401():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_403():
@@ -259,7 +263,9 @@ def test_get_session_403():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_failed_to_request():
@@ -268,7 +274,9 @@ def test_get_session_failed_to_request():
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
-        create_session_mock.assert_called_once_with("email", "password")
+        create_session_mock.assert_called_once_with(
+            "email", "password", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token():
@@ -282,7 +290,9 @@ def test_get_session_from_token():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {"session": "info"}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token_401():
@@ -295,7 +305,9 @@ def test_get_session_from_token_401():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token_403():
@@ -308,7 +320,9 @@ def test_get_session_from_token_403():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 def test_get_session_from_token_failed_to_request():
@@ -318,7 +332,9 @@ def test_get_session_from_token_failed_to_request():
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
         assert result == {}
-        create_session_mock.assert_called_once_with("token")
+        create_session_mock.assert_called_once_with(
+            "token", base_url="https://payments.openbb.co/"
+        )
 
 
 @pytest.mark.parametrize("token_type, access_token", [("TokenType", "AccessToken")])
@@ -336,7 +352,7 @@ def test_fetch_user_configs_success(token_type, access_token):
         assert result == mock_response
         requests_get_mock.assert_called_once()
         _, kwargs = requests_get_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {
             "Authorization": f"{token_type.title()} {access_token}"
         }
@@ -352,7 +368,7 @@ def test_fetch_user_configs_failure():
         result = hub_model.fetch_user_configs(session)
         assert isinstance(result, requests.Response)
         get_mock.assert_called_once_with(
-            url=hub_model.BASE_URL + "terminal/user",
+            url=hub_model.BackendEnvironment.BASE_URL + "terminal/user",
             headers={"Authorization": "Bearer abc123"},
             timeout=hub_model.TIMEOUT,
         )
@@ -366,7 +382,7 @@ def test_fetch_user_configs_connection_error():
         result = hub_model.fetch_user_configs(session)
         assert result is None
         get_mock.assert_called_once_with(
-            url=hub_model.BASE_URL + "terminal/user",
+            url=hub_model.BackendEnvironment.BASE_URL + "terminal/user",
             headers={"Authorization": "Bearer abc123"},
             timeout=hub_model.TIMEOUT,
         )
@@ -378,7 +394,7 @@ def test_fetch_user_configs_timeout():
         result = hub_model.fetch_user_configs(session)
         assert result is None
         get_mock.assert_called_once_with(
-            url=hub_model.BASE_URL + "terminal/user",
+            url=hub_model.BackendEnvironment.BASE_URL + "terminal/user",
             headers={"Authorization": "Bearer abc123"},
             timeout=hub_model.TIMEOUT,
         )
@@ -390,7 +406,7 @@ def test_fetch_user_configs_exception():
         result = hub_model.fetch_user_configs(session)
         assert result is None
         get_mock.assert_called_once_with(
-            url=hub_model.BASE_URL + "terminal/user",
+            url=hub_model.BackendEnvironment.BASE_URL + "terminal/user",
             headers={"Authorization": "Bearer abc123"},
             timeout=hub_model.TIMEOUT,
         )
@@ -415,7 +431,7 @@ def test_upload_config_success(key, value, type_, auth_header):
         assert result.status_code == mock_response.status_code
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": f"{auth_header}"}
         assert kwargs["json"] == {"key": f"features_{type_}.{key}", "value": value}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -434,7 +450,7 @@ def test_upload_config_failure():
         assert result.status_code == mock_response.status_code
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -451,7 +467,7 @@ def test_upload_config_connection_error():
         assert result is None
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -468,7 +484,7 @@ def test_upload_config_timeout():
         assert result is None
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -485,7 +501,7 @@ def test_upload_config_exception():
         assert result is None
         requests_patch_mock.assert_called_once()
         _, kwargs = requests_patch_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "terminal/user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"key": "features_settings.key", "value": "value"}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -504,7 +520,7 @@ def test_clear_user_configs_success():
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -523,7 +539,7 @@ def test_clear_user_configs_failure():
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -539,7 +555,7 @@ def test_clear_user_configs_timeout():
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -555,7 +571,7 @@ def test_clear_user_configs_connection_error():
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
@@ -570,7 +586,7 @@ def test_clear_user_configs_exception():
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "user"
+        assert kwargs["url"] == hub_model.BackendEnvironment.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
         assert kwargs["json"] == {"config": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT

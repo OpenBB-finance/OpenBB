@@ -12,11 +12,11 @@
     - [Install extension](#install-extension)
   - [4. Usage](#4-usage)
   - [4.1 Static version](#41-static-version)
-    - [4.1.1. Command output](#411-command-output)
+    - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
     - [4.1.2. Utilities](#412-utilities)
-      - [Settings](#settings)
-      - [System](#system)
+      - [User settings](#user-settings)
+      - [System settings](#system-settings)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
   - [4.2 Dynamic version](#42-dynamic-version)
@@ -70,7 +70,7 @@ router = Router(prefix="/router_name")
 @router.command
 def some_command(
     some_param: some_param_type,
-) -> Obbject[Item]:
+) -> OBBject[Item]:
     pass
 ```
 
@@ -85,9 +85,9 @@ def load(
     provider_choices: ProviderChoices,  # available providers
     standard_params: StandardParams,    # symbol, start_date, etc.
     extra_params: ExtraParams,          # provider specific parameters
-) -> Obbject[BaseModel]:
+) -> OBBject[BaseModel]:
     """Load stock data for a specific ticker."""
-    return Obbject(results=Query(**locals()).execute())
+    return OBBject(results=Query(**locals()).execute())
 ```
 
 ### Entrypoint
@@ -163,9 +163,9 @@ output = obb.stocks.load(
     )
 ```
 
-### 4.1.1. Command output
+### 4.1.1. OBBject
 
-Each command will always return a  `Obbject`. There you will find:
+Each command will always return a  `OBBject`. There you will find:
 
 - `results`: the data returned by the command `None`
 - `provider`: the provider name (only available provider names allowed) used to get the data or `None`
@@ -230,20 +230,20 @@ date
 
 ### 4.1.2. Utilities
 
-#### Settings
+#### User settings
 
 These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
 
 ```python
 from openbb import obb
 
-obb.settings.profile
-obb.settings.credentials
-obb.settings.preferences
-obb.settings.defaults
+obb.user.profile
+obb.user.credentials
+obb.user.preferences
+obb.user.defaults
 ```
 
-#### System
+#### System settings
 
 Check your system settings. Most of the properties are read-only during runtime.
 
@@ -262,9 +262,9 @@ Obtain the coverage of providers and commands.
 ```python
 >>> obb.coverage.commands
 {
-    '/crypto/load': ['fmp', 'polygon'],
-    '/economy/const': ['fmp'],
-    '/economy/cpi': ['fred'],
+    '.crypto.load': ['fmp', 'polygon'],
+    '.economy.const': ['fmp'],
+    '.economy.cpi': ['fred'],
     ...
 }
 ```
@@ -274,12 +274,12 @@ Obtain the coverage of providers and commands.
 {
     'fmp':
     [
-        '/crypto/load',
-        '/economy/const',
-        '/economy/index',
+        '.crypto.load',
+        '.economy.const',
+        '.economy.index',
         ...
     ],
-    'fred': ['/economy/cpi'],
+    'fred': ['.economy.cpi'],
     ...
 }
 ```
@@ -291,11 +291,14 @@ You can login to your OpenBB Hub account and save your credentials there to acce
 ```python
 from openbb import obb
 
+# Login with personal access token
+obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
+
 # Login with email, password or SDK token
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 
 # Change a credential
-obb.account.settings.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
+obb.user.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
 
 # Save account changes
 obb.account.save()
@@ -341,7 +344,7 @@ timestamp: ...          # Execution starting timestamp.
 alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
 
 >>> response.output
-Obbject
+OBBject
 
 id: ...                 # UUID Tag
 results: ...            # Serializable results.

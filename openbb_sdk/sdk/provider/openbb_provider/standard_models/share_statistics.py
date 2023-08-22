@@ -20,12 +20,12 @@ class ShareStatisticsData(Data, BaseSymbol):
 
     date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
     free_float: float = Field(
-        description="The percentage of unrestricted shares of a publicly-traded company."
+        description="Percentage of unrestricted shares of a publicly-traded company."
     )
     float_shares: float = Field(
-        description="The number of shares available for trading by the general public."
+        description="Number of shares available for trading by the general public."
     )
     outstanding_shares: float = Field(
-        description="The total number of shares of a publicly-traded company."
+        description="Total number of shares of a publicly-traded company."
     )
     source: str = Field(description="Source of the received data.")
