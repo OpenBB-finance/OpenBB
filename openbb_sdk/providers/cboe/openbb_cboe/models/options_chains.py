@@ -4,13 +4,14 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import get_chains
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
 from pydantic import Field, validator
+
+from openbb_cboe.utils.helpers import get_chains
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):

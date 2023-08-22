@@ -11,10 +11,11 @@ from openbb_provider.standard_models.futures_eod import (
     FuturesEODQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_yfinance.utils.helpers import get_futures_data
-from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 from pydantic import Field, validator
 from yfinance import Ticker
+
+from openbb_yfinance.utils.helpers import get_futures_data
+from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 
 
 class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):

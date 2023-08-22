@@ -4,7 +4,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODData,
@@ -12,6 +11,8 @@ from openbb_provider.standard_models.major_indices_eod import (
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
+
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):

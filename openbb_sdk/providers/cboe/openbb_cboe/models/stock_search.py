@@ -3,13 +3,14 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import stock_search
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_search import (
     StockSearchData,
     StockSearchQueryParams,
 )
 from pydantic import Field
+
+from openbb_cboe.utils.helpers import stock_search
 
 
 class CboeStockSearchQueryParams(StockSearchQueryParams):

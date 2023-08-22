@@ -11,9 +11,10 @@ from openbb_provider.standard_models.crypto_eod import (
     CryptoEODQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pydantic import Field, validator
 from yfinance import Ticker
+
+from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceCryptoEODQueryParams(CryptoEODQueryParams):

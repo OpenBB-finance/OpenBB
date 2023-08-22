@@ -1,10 +1,12 @@
 """Polygon available pairs fetcher."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_pairs import (
     ForexPairsData,
@@ -12,6 +14,8 @@ from openbb_provider.standard_models.forex_pairs import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
+
+from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonForexPairsQueryParams(ForexPairsQueryParams):

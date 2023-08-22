@@ -5,10 +5,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
+
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPForexEODQueryParams(ForexEODQueryParams):

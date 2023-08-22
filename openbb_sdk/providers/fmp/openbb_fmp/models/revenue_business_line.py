@@ -4,13 +4,14 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
 from pydantic import validator
+
+from openbb_fmp.utils.helpers import create_url, get_data
 
 
 class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):

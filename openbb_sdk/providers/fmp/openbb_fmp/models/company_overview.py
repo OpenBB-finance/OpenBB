@@ -3,12 +3,13 @@
 
 from typing import Any, Dict, Optional
 
-from openbb_fmp.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
 )
+
+from openbb_fmp.utils.helpers import get_data_one
 
 # This part is only provided by FMP and not by the other providers for now.
 

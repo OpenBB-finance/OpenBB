@@ -8,9 +8,10 @@ from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pydantic import Field, validator
 from yfinance import Ticker
+
+from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceForexEODQueryParams(ForexEODQueryParams):

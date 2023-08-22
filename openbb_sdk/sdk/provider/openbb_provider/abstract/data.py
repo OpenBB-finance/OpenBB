@@ -1,6 +1,7 @@
 """The OpenBB Standardized Data Model."""
-from openbb_provider.utils.helpers import to_snake_case
 from pydantic import BaseModel, Extra
+
+from openbb_provider.utils.helpers import to_snake_case
 
 
 class Data(BaseModel):

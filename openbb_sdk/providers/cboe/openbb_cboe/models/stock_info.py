@@ -4,13 +4,14 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import get_info
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_info import (
     StockInfoData,
     StockInfoQueryParams,
 )
 from pydantic import Field
+
+from openbb_cboe.utils.helpers import get_info
 
 
 class CboeStockInfoQueryParams(StockInfoQueryParams):

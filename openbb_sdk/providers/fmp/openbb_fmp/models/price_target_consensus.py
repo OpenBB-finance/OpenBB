@@ -3,12 +3,13 @@
 
 from typing import Any, Dict, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
     PriceTargetConsensusQueryParams,
 )
+
+from openbb_fmp.utils.helpers import create_url, get_data_one
 
 
 class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
