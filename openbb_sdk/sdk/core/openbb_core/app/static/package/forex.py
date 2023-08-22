@@ -1,18 +1,34 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import validate_arguments
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_inputs
+
+import openbb_core.app.model.command_context
+import types
+import typing
 
 
 class CLASS_forex(Container):
-    @filter_call
+    """/forex
+    load
+    pairs
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def load(
         self,
@@ -36,7 +52,7 @@ class CLASS_forex(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Forex Intraday Price.
+        """Forex Intraday Price.
 
         Parameters
         ----------
@@ -82,10 +98,10 @@ class CLASS_forex(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ForexEOD
         --------
@@ -103,17 +119,17 @@ class CLASS_forex(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
@@ -132,14 +148,11 @@ class CLASS_forex(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/forex/load",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pairs(
         self,
@@ -181,10 +194,10 @@ class CLASS_forex(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ForexPairs
         ----------
@@ -194,7 +207,7 @@ class CLASS_forex(Container):
             Symbol of the currency pair. (provider: fmp)
         currency : Optional[str]
             Base currency of the currency pair. (provider: fmp)
-        stockExchange : Optional[str]
+        stock_exchange : Optional[str]
             Stock exchange of the currency pair. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange of the currency pair. (provider: fmp)
@@ -224,9 +237,7 @@ class CLASS_forex(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/forex/pairs",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

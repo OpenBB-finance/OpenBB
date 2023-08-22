@@ -1,69 +1,84 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
 import pydantic
-from pydantic import validate_arguments
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_inputs
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import types
+import typing
 
 
 class CLASS_stocks(Container):
+    """/stocks
+    /ca
+    /dd
+    /disc
+    /dps
+    /fa
+    /gov
+    info
+    /ins
+    load
+    multiples
+    news
+    /options
+    quote
+    search
+    tob
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @property
     def ca(self):  # route = "/stocks/ca"
         from openbb_core.app.static.package import stocks_ca
 
-        return stocks_ca.CLASS_stocks_ca(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
 
     @property
     def dd(self):  # route = "/stocks/dd"
         from openbb_core.app.static.package import stocks_dd
 
-        return stocks_dd.CLASS_stocks_dd(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
     def disc(self):  # route = "/stocks/disc"
         from openbb_core.app.static.package import stocks_disc
 
-        return stocks_disc.CLASS_stocks_disc(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_disc.CLASS_stocks_disc(command_runner=self._command_runner)
 
     @property
     def dps(self):  # route = "/stocks/dps"
         from openbb_core.app.static.package import stocks_dps
 
-        return stocks_dps.CLASS_stocks_dps(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_dps.CLASS_stocks_dps(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
         from openbb_core.app.static.package import stocks_fa
 
-        return stocks_fa.CLASS_stocks_fa(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
 
     @property
     def gov(self):  # route = "/stocks/gov"
         from openbb_core.app.static.package import stocks_gov
 
-        return stocks_gov.CLASS_stocks_gov(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_gov.CLASS_stocks_gov(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def info(
         self,
@@ -97,10 +112,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockInfo
         ---------
@@ -176,22 +191,17 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/info",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
 
     @property
     def ins(self):  # route = "/stocks/ins"
         from openbb_core.app.static.package import stocks_ins
 
-        return stocks_ins.CLASS_stocks_ins(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_ins.CLASS_stocks_ins(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def load(
         self,
@@ -215,7 +225,7 @@ class CLASS_stocks(Container):
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -263,10 +273,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockEOD
         --------
@@ -284,17 +294,17 @@ class CLASS_stocks(Container):
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
@@ -313,14 +323,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/load",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def multiples(
         self,
@@ -360,10 +367,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockMultiples
         --------------
@@ -500,14 +507,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/multiples",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def news(
         self,
@@ -544,17 +548,17 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        displayOutput : Literal['headline', 'summary', 'full', 'all']
+        display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
             Date of the news to retrieve. (provider: benzinga)
-        dateFrom : Optional[datetime.datetime]
+        date_from : Optional[datetime.datetime]
             Start date of the news to retrieve. (provider: benzinga)
-        dateTo : Optional[datetime.datetime]
+        date_to : Optional[datetime.datetime]
             End date of the news to retrieve. (provider: benzinga)
-        updatedSince : Optional[int]
+        updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
-        publishedSince : Optional[int]
+        published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
             None
@@ -600,10 +604,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockNews
         ---------
@@ -659,22 +663,17 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/news",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
 
     @property
     def options(self):  # route = "/stocks/options"
         from openbb_core.app.static.package import stocks_options
 
-        return stocks_options.CLASS_stocks_options(
-            command_runner_session=self._command_runner_session
-        )
+        return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
-    @filter_call
     @validate_arguments
     def quote(
         self,
@@ -708,10 +707,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockQuote
         ----------
@@ -771,14 +770,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/quote",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def search(
         self,
@@ -815,10 +811,10 @@ class CLASS_stocks(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockSearch
         -----------
@@ -826,9 +822,9 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         name : Optional[str]
             Name of the company.
-        dpmName : Optional[str]
+        dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)
-        postStation : Optional[str]
+        post_station : Optional[str]
             Post and station location on the CBOE trading floor. (provider: cboe)"""
 
         inputs = filter_inputs(
@@ -843,14 +839,11 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/search",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def tob(
         self, chart: bool = False
@@ -861,9 +854,7 @@ class CLASS_stocks(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/tob",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

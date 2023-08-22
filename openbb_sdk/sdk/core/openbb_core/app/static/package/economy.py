@@ -1,20 +1,67 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
-from pydantic import BaseModel, validate_arguments
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_inputs
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import types
+import typing
 
 
 class CLASS_economy(Container):
-    @filter_call
+    """/economy
+    available_indices
+    balance
+    bigmac
+    const
+    corecpi
+    country_codes
+    cpi
+    cpi_options
+    currencies
+    debt
+    events
+    fgdp
+    fred
+    fred_search
+    futures
+    gdp
+    glbonds
+    index
+    indices
+    macro
+    macro_countries
+    macro_parameters
+    overview
+    perfmap
+    performance
+    revenue
+    rgdp
+    risk
+    rtps
+    search_index
+    spending
+    trust
+    usbonds
+    valuation
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def available_indices(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
@@ -39,10 +86,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         AvailableIndices
         ----------------
@@ -66,14 +113,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/available_indices",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance(
         self,
@@ -91,14 +135,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/balance",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def bigmac(
         self,
@@ -116,14 +157,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/bigmac",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def const(
         self,
@@ -159,10 +197,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         MajorIndicesConstituents
         ------------------------
@@ -194,14 +232,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/const",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def corecpi(
         self,
@@ -219,14 +254,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/corecpi",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def country_codes(
         self,
@@ -244,14 +276,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/country_codes",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cpi(
         self,
@@ -340,7 +369,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """CPI.
 
         Parameters
@@ -373,21 +402,16 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CPI
         ---
-        date : Optional[date]
-            The date of the data.
-        realtime_start : Optional[date]
-            Date the data was updated.
-        realtime_end : Optional[date]
-            Date the data was updated.
-        value : Optional[float]
-            Value of the data."""
+        country_unit_freq : Optional[List[CPIData]]
+            CPI data for a country, units, and frequency combination. (provider: fred)
+        """
 
         inputs = filter_inputs(
             provider_choices={
@@ -405,14 +429,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/cpi",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cpi_options(
         self,
@@ -430,14 +451,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/cpi_options",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def currencies(
         self,
@@ -455,14 +473,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/currencies",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def debt(
         self,
@@ -480,14 +495,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/debt",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def events(
         self,
@@ -505,14 +517,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/events",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fgdp(
         self,
@@ -530,14 +539,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/fgdp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fred(
         self,
@@ -555,14 +561,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/fred",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fred_search(
         self,
@@ -580,14 +583,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/fred_search",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def futures(
         self,
@@ -605,14 +605,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/futures",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def gdp(
         self,
@@ -630,14 +627,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/gdp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def glbonds(
         self,
@@ -655,14 +649,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/glbonds",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def index(
         self,
@@ -686,7 +677,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Get OHLCV data for an index.
+        """Get OHLCV data for an index.
 
         Parameters
         ----------
@@ -734,10 +725,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         MajorIndicesEOD
         ---------------
@@ -755,17 +746,17 @@ class CLASS_economy(Container):
             The volume of the symbol.
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
-        adjClose : Optional[float]
+        adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjustedVolume : Optional[float]
+        unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        changePercent : Optional[float]
+        change_percent : Optional[float]
             Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        changeOverTime : Optional[float]
+        change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
@@ -784,14 +775,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/index",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def indices(
         self,
@@ -809,14 +797,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/indices",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def macro(
         self,
@@ -834,14 +819,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/macro",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def macro_countries(
         self,
@@ -859,14 +841,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/macro_countries",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def macro_parameters(
         self,
@@ -884,14 +863,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/macro_parameters",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def overview(
         self,
@@ -909,14 +885,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/overview",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def perfmap(
         self,
@@ -934,14 +907,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/perfmap",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def performance(
         self,
@@ -959,14 +929,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/performance",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revenue(
         self,
@@ -984,14 +951,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/revenue",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rgdp(
         self,
@@ -1009,14 +973,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/rgdp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def risk(
         self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
@@ -1041,10 +1002,10 @@ class CLASS_economy(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RiskPremium
         -----------
@@ -1066,14 +1027,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/risk",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rtps(
         self,
@@ -1091,14 +1049,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/rtps",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def search_index(
         self,
@@ -1116,14 +1071,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/search_index",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def spending(
         self,
@@ -1141,14 +1093,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/spending",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def trust(
         self,
@@ -1166,14 +1115,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/trust",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def usbonds(
         self,
@@ -1191,14 +1137,11 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/usbonds",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def valuation(
         self,
@@ -1216,9 +1159,7 @@ class CLASS_economy(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/economy/valuation",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

@@ -1,22 +1,82 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
-
 import pydantic
-import pydantic.main
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_inputs
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+import pydantic.main
+import types
+import typing
 
 
 class CLASS_stocks_fa(Container):
-    @filter_call
+    """/stocks/fa
+    analysis
+    balance
+    balance_growth
+    cal
+    cash
+    cash_growth
+    comp
+    comsplit
+    customer
+    dcfc
+    divs
+    dupont
+    earning
+    emp
+    enterprise
+    epsfc
+    est
+    fama_coe
+    fama_raw
+    fraud
+    growth
+    historical_5
+    income
+    income_growth
+    ins
+    ins_own
+    key
+    metrics
+    mgmt
+    mktcap
+    news
+    overview
+    own
+    pt
+    pta
+    rating
+    ratios
+    revfc
+    revgeo
+    revseg
+    rot
+    score
+    sec
+    shares
+    shrs
+    split
+    supplier
+    transcript
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def analysis(
         self, chart: bool = False
@@ -27,14 +87,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/analysis",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance(
         self,
@@ -114,10 +171,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         BalanceSheet
         ------------
@@ -207,29 +264,29 @@ class CLASS_stocks_fa(Container):
             None
         total_liabilities_and_total_equity : Optional[int]
             None
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None
-        cashAndShortTermInvestments : Optional[int]
+        cash_and_short_term_investments : Optional[int]
             None
-        goodwillAndIntangibleAssets : Optional[int]
+        goodwill_and_intangible_assets : Optional[int]
             None
-        deferredRevenueNonCurrent : Optional[int]
+        deferred_revenue_non_current : Optional[int]
             None
-        totalInvestments : Optional[int]
+        total_investments : Optional[int]
             None
-        capitalLeaseObligations : Optional[int]
+        capital_lease_obligations : Optional[int]
             None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
+        deferred_tax_liabilities_non_current : Optional[int]
             None
-        totalNonCurrentLiabilities : Optional[int]
+        total_non_current_liabilities : Optional[int]
             None
-        totalDebt : Optional[int]
+        total_debt : Optional[int]
             None
-        netDebt : Optional[int]
+        net_debt : Optional[int]
             None"""
 
         inputs = filter_inputs(
@@ -245,14 +302,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/balance",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance_growth(
         self,
@@ -292,10 +346,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         BalanceSheetGrowth
         ------------------
@@ -396,14 +450,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/balance_growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cal(
         self,
@@ -447,10 +498,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         DividendCalendar
         ----------------
@@ -483,14 +534,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/cal",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cash(
         self,
@@ -570,10 +618,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CashFlowStatement
         -----------------
@@ -673,14 +721,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/cash",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cash_growth(
         self,
@@ -720,10 +765,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CashFlowStatementGrowth
         -----------------------
@@ -806,14 +851,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/cash_growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def comp(
         self,
@@ -847,10 +889,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ExecutiveCompensation
         ---------------------
@@ -892,14 +934,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/comp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def comsplit(
         self,
@@ -943,10 +982,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockSplitCalendar
         ------------------
@@ -973,14 +1012,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/comsplit",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def customer(
         self, chart: bool = False
@@ -991,14 +1027,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/customer",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dcfc(
         self, chart: bool = False
@@ -1009,14 +1042,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/dcfc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def divs(
         self,
@@ -1050,10 +1080,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalDividends
         -------------------
@@ -1083,14 +1113,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/divs",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dupont(
         self, chart: bool = False
@@ -1101,14 +1128,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/dupont",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def earning(
         self,
@@ -1148,10 +1172,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         EarningsCalendar
         ----------------
@@ -1186,14 +1210,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/earning",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def emp(
         self,
@@ -1227,10 +1248,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalEmployees
         -------------------
@@ -1264,14 +1285,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/emp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def enterprise(
         self, chart: bool = False
@@ -1282,14 +1300,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/enterprise",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def epsfc(
         self, chart: bool = False
@@ -1300,14 +1315,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/epsfc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def est(
         self,
@@ -1353,10 +1365,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         AnalystEstimates
         ----------------
@@ -1418,14 +1430,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/est",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fama_coe(
         self, chart: bool = False
@@ -1436,14 +1445,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/fama_coe",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fama_raw(
         self, chart: bool = False
@@ -1454,14 +1460,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/fama_raw",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fraud(
         self, chart: bool = False
@@ -1472,14 +1475,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/fraud",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def growth(
         self, chart: bool = False
@@ -1490,14 +1490,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def historical_5(
         self, chart: bool = False
@@ -1506,14 +1503,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/historical_5",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income(
         self,
@@ -1593,10 +1587,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         IncomeStatement
         ---------------
@@ -1604,7 +1598,7 @@ class CLASS_stocks_fa(Container):
             Date of the income statement.
         symbol : Optional[str]
             Symbol of the company.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key.
         currency : Optional[str]
             Reporting currency.
@@ -1704,14 +1698,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/income",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income_growth(
         self,
@@ -1757,10 +1748,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         IncomeStatementGrowth
         ---------------------
@@ -1836,14 +1827,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/income_growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ins(
         self,
@@ -1924,10 +1912,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockInsiderTrading
         -------------------
@@ -1977,14 +1965,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/ins",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ins_own(
         self,
@@ -2029,10 +2014,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         InstitutionalOwnership
         ----------------------
@@ -2123,14 +2108,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/ins_own",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def key(
         self, chart: bool = False
@@ -2139,14 +2121,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/key",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def metrics(
         self,
@@ -2192,10 +2171,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         KeyMetrics
         ----------
@@ -2333,14 +2312,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/metrics",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def mgmt(
         self,
@@ -2374,10 +2350,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         KeyExecutives
         -------------
@@ -2407,14 +2383,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/mgmt",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def mktcap(
         self, chart: bool = False
@@ -2425,14 +2398,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/mktcap",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def news(
         self, chart: bool = False
@@ -2441,14 +2411,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/news",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def overview(
         self,
@@ -2482,10 +2449,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CompanyOverview
         ---------------
@@ -2573,14 +2540,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/overview",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def own(
         self,
@@ -2626,10 +2590,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockOwnership
         --------------
@@ -2725,14 +2689,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/own",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pt(
         self,
@@ -2766,10 +2727,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         PriceTargetConsensus
         --------------------
@@ -2795,14 +2756,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/pt",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pta(
         self,
@@ -2838,10 +2796,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         PriceTarget
         -----------
@@ -2867,11 +2825,11 @@ class CLASS_stocks_fa(Container):
             News publisher of the price target.
         news_base_url : Optional[str]
             News base URL of the price target.
-        newGrade : Optional[str]
+        new_grade : Optional[str]
             None
-        previousGrade : Optional[str]
+        previous_grade : Optional[str]
             None
-        gradingCompany : Optional[str]
+        grading_company : Optional[str]
             None"""
 
         inputs = filter_inputs(
@@ -2885,14 +2843,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/pta",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rating(
         self, chart: bool = False
@@ -2903,14 +2858,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/rating",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ratios(
         self,
@@ -2956,10 +2908,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         FinancialRatios
         ---------------
@@ -3091,14 +3043,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/ratios",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revfc(
         self, chart: bool = False
@@ -3109,14 +3058,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/revfc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revgeo(
         self,
@@ -3162,10 +3108,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RevenueGeographic
         -----------------
@@ -3197,14 +3143,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/revgeo",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revseg(
         self,
@@ -3250,10 +3193,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RevenueBusinessLine
         -------------------
@@ -3275,14 +3218,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/revseg",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rot(
         self, chart: bool = False
@@ -3293,14 +3233,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/rot",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def score(
         self, chart: bool = False
@@ -3311,14 +3248,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/score",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sec(
         self, chart: bool = False
@@ -3327,14 +3261,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/sec",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shares(
         self, chart: bool = False
@@ -3343,14 +3274,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/shares",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shrs(
         self,
@@ -3384,10 +3312,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ShareStatistics
         ---------------
@@ -3415,14 +3343,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/shrs",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def split(
         self,
@@ -3456,10 +3381,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalStockSplits
         ---------------------
@@ -3483,14 +3408,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/split",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def supplier(
         self, chart: bool = False
@@ -3501,14 +3423,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/supplier",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def transcript(
         self,
@@ -3556,10 +3475,10 @@ class CLASS_stocks_fa(Container):
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         EarningsCallTranscript
         ----------------------
@@ -3587,9 +3506,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/transcript",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

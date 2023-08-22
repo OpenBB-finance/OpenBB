@@ -1,9 +1,15 @@
 """The OpenBB Standardized Data Model."""
 from pydantic import BaseModel, Extra
 
+from openbb_provider.utils.helpers import to_snake_case
+
 
 class Data(BaseModel):
     """The OpenBB Standardized Data Model."""
+
+    def dict(self, *args, **kwargs):
+        original_dict = super().dict(*args, **kwargs)
+        return {to_snake_case(k): v for k, v in original_dict.items()}
 
     def __repr__(self):
         """Return a string representation of the object."""

@@ -4,7 +4,7 @@ from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
 from typing_extensions import Annotated
 
-router = APIRouter(prefix="/settings", tags=["Settings"])
+router = APIRouter(prefix="/user", tags=["User"])
 
 
 @router.get("")

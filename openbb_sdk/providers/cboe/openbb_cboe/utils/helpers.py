@@ -4,12 +4,19 @@ import os
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import List, Optional, Tuple
+from io import StringIO
 
 import numpy as np
 import pandas as pd
 import requests
+import requests_cache
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
+# This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
+# Only used on functions run on import
+cboe_session = requests_cache.CachedSession(
+    "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
+)
 
 
 def get_user_agent() -> str:
@@ -38,6 +45,8 @@ def request(
         Url to make the request to
     method : str, optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10
 
     Returns
     -------
@@ -56,21 +65,17 @@ def request(
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
-    if method.upper() == "GET":
-        return requests.get(
+
+    if (func := getattr(requests, method.lower(), None)) is not None:
+
+        return func(
             url,
             headers=headers,
             timeout=timeout,
             **kwargs,
         )
-    if method.upper() == "POST":
-        return requests.post(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    raise ValueError("Method must be GET or POST")
+
+    raise ValueError("Method must be valid HTTP method")
 
 
 def camel_to_snake(string: str) -> str:
@@ -88,7 +93,12 @@ def get_cboe_directory() -> pd.DataFrame:
     """
     try:
         CBOE_DIRECTORY: pd.DataFrame = pd.read_csv(
-            "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
+            StringIO(
+                cboe_session.get(
+                    "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv",
+                    timeout=10,
+                ).text
+            )
         )
         CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
             columns={
@@ -110,8 +120,9 @@ def get_cboe_index_directory() -> pd.DataFrame:
     pd.DataFrame: CBOE_INDEXES
     """
     try:
-        r = request(
-            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
+        r = cboe_session.get(
+            "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json",
+            timeout=10,
         )
 
         if r.status_code != 200:
@@ -471,12 +482,12 @@ def get_chains(symbol: str) -> pd.DataFrame:
                     ".json"
                 )
 
-        r = request(quotes_url)
-        if r.status_code != 200:
+        result = request(quotes_url)
+        if result.status_code != 200:
             print("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
-        r_json = r.json()
+        r_json = result.json()
         data = pd.DataFrame(r_json["data"])
         options = pd.Series(data.options, index=data.index)
         options_columns = list(options[0])
@@ -620,14 +631,14 @@ def get_eod_prices(
         return pd.DataFrame()
 
     url = __generate_historical_prices_url(symbol)
-    r = request(url)
+    result = request(url)
 
-    if r.status_code != 200:
-        print(f"Error: {r.status_code}")
+    if result.status_code != 200:
+        print(f"Error: {result.status_code}")
         return pd.DataFrame()
 
     data = (
-        pd.DataFrame(r.json()["data"])[
+        pd.DataFrame(result.json()["data"])[
             ["date", "open", "high", "low", "close", "volume"]
         ]
     ).set_index("date")

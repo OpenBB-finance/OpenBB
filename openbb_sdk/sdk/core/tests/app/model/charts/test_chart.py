@@ -1,5 +1,5 @@
 import pytest
-from openbb_core.app.model.charts.chart import Chart, ChartFormat, Error
+from openbb_core.app.model.charts.chart import Chart, ChartFormat
 
 
 def test_chart_default_values():
@@ -9,22 +9,19 @@ def test_chart_default_values():
     # Assert
     assert chart.content is None
     assert chart.format == ChartFormat.plotly
-    assert chart.error is None
 
 
 def test_chart_custom_values():
     # Arrange
     content = {"data": [1, 2, 3]}
     chart_format = ChartFormat.plotly
-    error = Error(message="Test Error")
 
     # Act
-    chart = Chart(content=content, format=chart_format, error=error)
+    chart = Chart(content=content, format=chart_format)
 
     # Assert
     assert chart.content == content
     assert chart.format == chart_format
-    assert chart.error == error
 
 
 def test_chart_assignment_validation():

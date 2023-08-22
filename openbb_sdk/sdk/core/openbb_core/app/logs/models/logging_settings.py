@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import List, Optional
-from openbb_core.app.logs.utils.system_utils import get_branch
 
 from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 from openbb_core.app.model.system_settings import SystemSettings
@@ -33,11 +32,6 @@ class LoggingSettings:
             user_id, user_email, user_primary_usage = None, None, None
 
         # System
-        self.commit_hash: Optional[str] = system_settings.logging_commit_hash
-        # TODO: If we can avoid get_branch making a web request we can save up to 1s of import time.
-        self.branch: Optional[str] = (
-            get_branch(self.commit_hash) if self.commit_hash else None
-        )
         self.app_name: str = system_settings.logging_app_name
         self.app_id: str = get_app_id(user_data_directory)
         self.session_id: str = get_session_id()

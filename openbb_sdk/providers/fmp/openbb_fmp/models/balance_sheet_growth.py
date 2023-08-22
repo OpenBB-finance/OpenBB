@@ -86,7 +86,6 @@ class FMPBalanceSheetGrowthFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPBalanceSheetGrowthQueryParams:
         """Transform the query params."""
-
         return FMPBalanceSheetGrowthQueryParams(**params)
 
     @staticmethod
@@ -96,7 +95,6 @@ class FMPBalanceSheetGrowthFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -112,5 +110,4 @@ class FMPBalanceSheetGrowthFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPBalanceSheetGrowthData]:
         """Return the transformed data."""
-
         return [FMPBalanceSheetGrowthData(**d) for d in data]
