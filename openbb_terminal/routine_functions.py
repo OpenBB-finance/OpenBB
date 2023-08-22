@@ -58,7 +58,7 @@ def is_reset(command: str) -> bool:
     return False
 
 
-def match_and_return_openbb_keyword_date(keyword: str) -> str:
+def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
     """Return OpenBB keyword into date
 
     Parameters
