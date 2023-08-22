@@ -71,14 +71,18 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
         str: Date with format YYYY-MM-DD
     """
     now = datetime.now()
-    for regex in [r"^\$(\d+)([A-Z]+)AGO$", r"^\$(\d+)([A-Z]+)FROMNOW$"]:
+    for i, regex in enumerate([r"^\$(\d+)([A-Z]+)AGO$", r"^\$(\d+)([A-Z]+)FROMNOW$"]):
         match = re.match(regex, keyword)
         if match:
             integer_value = int(match.group(1))
             time_unit = match.group(2)
-            if time_unit.upper() in ("DAYS", "MONTHS", "YEARS"):
+            clean_time = time_unit.upper()
+            if "DAYS" in clean_time or "MONTHS" in clean_time or "YEARS" in clean_time:
+                print("HELLO")
                 kwargs = {time_unit.lower(): integer_value}
-                return (now - relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
+                if i == 0:
+                    return (now - relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
+                return (now + relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
 
     match = re.search(r"\$LAST(\w+)", keyword)
     if match:
