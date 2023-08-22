@@ -1,24 +1,18 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from typing import List, Literal, Union
+
 import openbb_provider
+import openbb_qa.qa_models
 import pandas
-import datetime
 import pydantic
-from pydantic import validate_arguments, BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal, Annotated
-import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
-from openbb_core.app.static.filters import filter_inputs
+import pydantic.types
+from pydantic import validate_arguments
 
 import openbb_core.app.model.results.empty
-import openbb_qa.qa_models
-import pydantic.types
-import typing
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_qa(Container):
@@ -588,7 +582,7 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
         chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:

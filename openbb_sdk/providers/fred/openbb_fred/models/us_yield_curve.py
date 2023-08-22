@@ -79,5 +79,4 @@ class FREDYieldCurveFetcher(Fetcher[FREDYieldCurveQueryParams, FREDYieldCurveDat
 
     @staticmethod
     def transform_data(data: list) -> List[Dict[str, List[FREDYieldCurveData]]]:
-
         return [FREDYieldCurveData(**x) for x in data]
