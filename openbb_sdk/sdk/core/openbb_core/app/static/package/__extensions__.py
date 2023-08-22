@@ -13,6 +13,7 @@ class Extensions(Container):
     /forex
     /futures
     /news
+    /qa
     /stocks
     /ta
     """
@@ -55,6 +56,12 @@ class Extensions(Container):
         from openbb_core.app.static.package import news
 
         return news.CLASS_news(command_runner=self._command_runner)
+
+    @property
+    def qa(self):  # route = "/qa"
+        from openbb_core.app.static.package import qa
+
+        return qa.CLASS_qa(command_runner=self._command_runner)
 
     @property
     def stocks(self):  # route = "/stocks"
