@@ -111,9 +111,10 @@ class KeyStatus(str, Enum):
             c = "grey30"
         elif self.name == self.DEFINED_TEST_PASSED.name:
             c = "green"
-        elif self.name == self.DEFINED_TEST_INCONCLUSIVE.name:
-            c = "yellow"
-        elif self.name == self.DEFINED_NOT_TESTED.name:
+        elif self.name in [
+            self.DEFINED_TEST_INCONCLUSIVE.name,
+            self.DEFINED_NOT_TESTED.name,
+        ]:
             c = "yellow"
 
         return f"[{c}]{self.value}[/{c}]"

@@ -181,11 +181,10 @@ def get_screener_data(
                     order=d_general["Order"], ascend=ascend
                 )
 
+        elif limit > 0:
+            df_screen = screen.screener_view(limit=limit, ascend=ascend)
         else:
-            if limit > 0:
-                df_screen = screen.screener_view(limit=limit, ascend=ascend)
-            else:
-                df_screen = screen.screener_view(ascend=ascend)
+            df_screen = screen.screener_view(ascend=ascend)
 
     df_screen.columns = [val.strip("\n") for val in df_screen.columns]
     if "Company" in df_screen.columns:

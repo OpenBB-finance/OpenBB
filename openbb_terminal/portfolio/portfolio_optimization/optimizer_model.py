@@ -141,15 +141,14 @@ def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
     if start_date == "":
         if interval in extra_choices:
             p = extra_choices[interval]
-        else:
-            if interval[-1] == "d":
-                p = "[" + interval[:-1] + " Days]"
-            elif interval[-1] == "w":
-                p = "[" + interval[:-1] + " Weeks]"
-            elif interval[-1] == "o":
-                p = "[" + interval[:-2] + " Months]"
-            elif interval[-1] == "y":
-                p = "[" + interval[:-1] + " Years]"
+        elif interval[-1] == "d":
+            p = "[" + interval[:-1] + " Days]"
+        elif interval[-1] == "w":
+            p = "[" + interval[:-1] + " Weeks]"
+        elif interval[-1] == "o":
+            p = "[" + interval[:-2] + " Months]"
+        elif interval[-1] == "y":
+            p = "[" + interval[:-1] + " Years]"
         if p[1:3] == "1 ":
             p = p.replace("s", "")
     else:

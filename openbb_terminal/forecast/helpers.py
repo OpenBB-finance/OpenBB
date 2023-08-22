@@ -1119,13 +1119,12 @@ def get_prediction(
                 past_covariates=past_covariate_whole,
                 n=n_predict,
             )
+    elif probabilistic:
+        prediction = best_model.predict(
+            series=ticker_series, n=n_predict, num_samples=500
+        )
     else:
-        if probabilistic:
-            prediction = best_model.predict(
-                series=ticker_series, n=n_predict, num_samples=500
-            )
-        else:
-            prediction = best_model.predict(series=ticker_series, n=n_predict)
+        prediction = best_model.predict(series=ticker_series, n=n_predict)
 
     # calculate precision based on metric (rmse, mse, mape)
     if metric == "rmse":

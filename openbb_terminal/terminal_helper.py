@@ -157,29 +157,28 @@ def open_openbb_documentation(
     elif "account" in path:
         path = "/usage?path=/usage/guides/basics"
         command = ""
-    else:
-        if arg_type == "command":  # user passed a command name
-            if command in ["settings", "featflags"]:
-                path = "/usage?path=/usage/guides/customizing-the-terminal"
-                command = ""
-            else:
-                path = f"/commands?path={path}"
-        elif arg_type == "menu":  # user passed a menu name
-            if command in ["ta", "ba", "qa"]:
-                menu = path.split("/")[-2]
-                path = f"/usage?path=/usage/intros/common/{menu}"
-            elif command == "forecast":
-                command = ""
-                path = "/usage?path=/usage/intros/forecast"
-            else:
-                path = f"/usage?path=/usage/intros/{path}"
-        else:  # user didn't pass argument and is in a menu
+    elif arg_type == "command":  # user passed a command name
+        if command in ["settings", "featflags"]:
+            path = "/usage?path=/usage/guides/customizing-the-terminal"
+            command = ""
+        else:
+            path = f"/commands?path={path}"
+    elif arg_type == "menu":  # user passed a menu name
+        if command in ["ta", "ba", "qa"]:
             menu = path.split("/")[-2]
-            path = (
-                f"/usage?path=/usage/intros/common/{menu}"
-                if menu in ["ta", "ba", "qa"]
-                else f"/usage?path=/usage/intros/{path}"
-            )
+            path = f"/usage?path=/usage/intros/common/{menu}"
+        elif command == "forecast":
+            command = ""
+            path = "/usage?path=/usage/intros/forecast"
+        else:
+            path = f"/usage?path=/usage/intros/{path}"
+    else:  # user didn't pass argument and is in a menu
+        menu = path.split("/")[-2]
+        path = (
+            f"/usage?path=/usage/intros/common/{menu}"
+            if menu in ["ta", "ba", "qa"]
+            else f"/usage?path=/usage/intros/{path}"
+        )
 
     if command:
         if command == "keys":

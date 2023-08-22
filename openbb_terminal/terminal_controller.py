@@ -425,20 +425,19 @@ class TerminalController(BaseController):
                         )
 
                 # When there is a single path to the solution
+                elif an_input.lower() == solution.lower():
+                    self.queue = an_input.split("/") + ["home"]
+                    console.print(
+                        f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+                    )
+                    # If we are already counting successes
+                    if self.GUESS_TOTAL_TRIES > 0:
+                        self.GUESS_CORRECTLY += 1
+                        self.GUESS_SUM_SCORE += time_dif
                 else:
-                    if an_input.lower() == solution.lower():
-                        self.queue = an_input.split("/") + ["home"]
-                        console.print(
-                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                        )
-                        # If we are already counting successes
-                        if self.GUESS_TOTAL_TRIES > 0:
-                            self.GUESS_CORRECTLY += 1
-                            self.GUESS_SUM_SCORE += time_dif
-                    else:
-                        console.print(
-                            f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
-                        )
+                    console.print(
+                        f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
+                    )
 
                 # Compute average score and provide a result if it's the last try
                 if self.GUESS_TOTAL_TRIES > 0:
@@ -683,11 +682,10 @@ class TerminalController(BaseController):
                     "https"
                 ) and not ns_parser.url.startswith("http:"):
                     url = "https://" + ns_parser.url
+                elif ns_parser.url.startswith("http://"):
+                    url = ns_parser.url.replace("http://", "https://")
                 else:
-                    if ns_parser.url.startswith("http://"):
-                        url = ns_parser.url.replace("http://", "https://")
-                    else:
-                        url = ns_parser.url
+                    url = ns_parser.url
                 username = url.split("/")[-3]
                 script_name = url.split("/")[-1]
                 file_name = f"{username}_{script_name}.openbb"

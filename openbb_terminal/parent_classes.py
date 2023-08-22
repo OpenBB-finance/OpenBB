@@ -1115,34 +1115,33 @@ class BaseController(metaclass=ABCMeta):
                 )
 
             # If user doesn't specify they want to store routine locally
-            else:
-                # Confirm that the user is logged in
-                if not is_local():
-                    # routine = read_routine(file_name=routine_file)
-                    routine = "\n".join(SESSION_RECORDED[:-1])
+            # Confirm that the user is logged in
+            elif not is_local():
+                # routine = read_routine(file_name=routine_file)
+                routine = "\n".join(SESSION_RECORDED[:-1])
 
-                    if routine is not None:
-                        kwargs = {
-                            "auth_header": current_user.profile.get_auth_header(),
-                            "name": SESSION_RECORDED_NAME,
-                            "description": SESSION_RECORDED_DESCRIPTION,
-                            "routine": routine,
-                            "tags": SESSION_RECORDED_TAGS,
-                            "public": SESSION_RECORDED_PUBLIC,
-                            "base_url": Hub.BackendEnvironment.BASE_URL,
-                        }
-                        response = Hub.upload_routine(**kwargs)  # type: ignore
-                        if response is not None and response.status_code == 409:
-                            i = console.input(
-                                "A routine with the same name already exists, "
-                                "do you want to replace it? (y/n): "
-                            )
-                            console.print("")
-                            if i.lower() in ["y", "yes"]:
-                                kwargs["override"] = True  # type: ignore
-                                response = Hub.upload_routine(**kwargs)  # type: ignore
-                            else:
-                                console.print("[info]Aborted.[/info]")
+                if routine is not None:
+                    kwargs = {
+                        "auth_header": current_user.profile.get_auth_header(),
+                        "name": SESSION_RECORDED_NAME,
+                        "description": SESSION_RECORDED_DESCRIPTION,
+                        "routine": routine,
+                        "tags": SESSION_RECORDED_TAGS,
+                        "public": SESSION_RECORDED_PUBLIC,
+                        "base_url": Hub.BackendEnvironment.BASE_URL,
+                    }
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
+                    if response is not None and response.status_code == 409:
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to replace it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
+                        else:
+                            console.print("[info]Aborted.[/info]")
 
             # Clear session to be recorded again
             RECORD_SESSION = False
@@ -1509,13 +1508,9 @@ class BaseController(metaclass=ABCMeta):
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
-                else:
-                    if (
-                        self.TRY_RELOAD
-                        and get_current_user().preferences.RETRY_WITH_LOAD
-                    ):
-                        console.print(f"\nTrying `load {an_input}`\n")
-                        self.queue.insert(0, "load " + an_input)
+                elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
+                    console.print(f"\nTrying `load {an_input}`\n")
+                    self.queue.insert(0, "load " + an_input)
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -1690,9 +1685,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "EODHD":
-                    self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "eodhd":
+                if ns_parser.source.lower() == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start

@@ -261,39 +261,33 @@ def parse_openbb_script(  # noqa: PLR0911
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "
                                         "for current routine script.[/red]",
-                                        "",
                                     )
 
                             # Only enters here when any other index from 0 is used
-                            else:
-                                if VAR_NAME in ROUTINE_VARS:
-                                    variable = eval(  # noqa: S307
-                                        f'ROUTINE_VARS["{VAR_NAME}"]'
-                                    )
-                                    length_variable = (
-                                        len(variable)
-                                        if isinstance(variable, list)
-                                        else 1
-                                    )
+                            elif VAR_NAME in ROUTINE_VARS:
+                                variable = eval(  # noqa: S307
+                                    f'ROUTINE_VARS["{VAR_NAME}"]'
+                                )
+                                length_variable = (
+                                    len(variable) if isinstance(variable, list) else 1
+                                )
 
-                                    # We use <= because we are using 0 index based lists
-                                    if length_variable <= int(VAR_SLICE):
-                                        return (
-                                            f"[red]Variable {VAR_NAME} only has "
-                                            f"{length_variable} elements and there "
-                                            f"was an attempt to access it with index {VAR_SLICE}.[/red]",
-                                            "",
-                                        )
-                                    templine = templine.replace(
-                                        match[0],
-                                        variable[int(VAR_SLICE)],
-                                    )
-                                else:
+                                # We use <= because we are using 0 index based lists
+                                if length_variable <= int(VAR_SLICE):
                                     return (
-                                        f"[red]Variable {VAR_NAME} not given "
-                                        "for current routine script.[/red]",
+                                        f"[red]Variable {VAR_NAME} only has "
+                                        f"{length_variable} elements and there "
+                                        f"was an attempt to access it with index {VAR_SLICE}.[/red]",
                                         "",
                                     )
+                                templine = templine.replace(
+                                    match[0],
+                                    variable[int(VAR_SLICE)],
+                                )
+                            else:
+                                return (
+                                    f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
+                                )
 
                         # Involves slicing which is a bit more tricky to use eval on
                         elif (
