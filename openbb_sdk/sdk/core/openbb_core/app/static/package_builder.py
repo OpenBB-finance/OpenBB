@@ -280,10 +280,10 @@ class DocstringGenerator:
             "        Provider name.\n"
             "    warnings : Optional[List[Warning_]]\n"
             "        List of warnings.\n"
-            "    error : Optional[Error]\n"
-            "        Caught exceptions.\n"
             "    chart : Optional[Chart]\n"
             "        Chart object.\n"
+            "    metadata: Optional[Metadata]\n"
+            "        Metadata info about the command execution.\n"
         )
 
         return obbject_description
@@ -305,10 +305,6 @@ class DocstringGenerator:
         docstring = summary
         docstring += "\n"
         docstring += "\nParameters\n----------\n"
-
-        def _to_snake_case(string: str) -> str:
-            s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
-            return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
