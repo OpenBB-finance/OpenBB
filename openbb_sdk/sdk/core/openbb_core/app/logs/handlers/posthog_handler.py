@@ -16,8 +16,8 @@ from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from posthog import Posthog
 
 openbb_posthog = Posthog(
-    "phc_kbMqB2PNpBEkfAwQZWzbQJReplLIu8Ya6OfXcAayao9",  # pragma: allowlist secret
-    host="https://eu.posthog.com",
+    "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX",  # pragma: allowlist secret
+    host="https://app.posthog.com",
 )
 
 
