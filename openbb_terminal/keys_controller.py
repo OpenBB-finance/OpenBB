@@ -110,11 +110,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 api_name = self.API_DICT[cmd_name]
 
                 c = status_color_map.get(status_msg, "grey30")
-                status_msg = status_msg or keys_model.KeyStatus.NOT_DEFINED.value
+                clean_status_msg = status_msg or keys_model.KeyStatus.NOT_DEFINED.value
 
                 mt.add_raw(
                     f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-                    f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
+                    f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(clean_status_msg)} [/{c}]\n"
                 )
             self.help_status_text = mt.menu_text
 

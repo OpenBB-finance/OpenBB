@@ -1011,12 +1011,12 @@ class BaseController(metaclass=ABCMeta):
                 )
                 return
 
-            global RECORD_SESSION
-            global RECORD_SESSION_LOCAL_ONLY
-            global SESSION_RECORDED_NAME
-            global SESSION_RECORDED_DESCRIPTION
-            global SESSION_RECORDED_TAGS
-            global SESSION_RECORDED_PUBLIC
+            global RECORD_SESSION  # noqa: PLW0603
+            global RECORD_SESSION_LOCAL_ONLY  # noqa: PLW0603
+            global SESSION_RECORDED_NAME  # noqa: PLW0603
+            global SESSION_RECORDED_DESCRIPTION  # noqa: PLW0603
+            global SESSION_RECORDED_TAGS  # noqa: PLW0603
+            global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
             RECORD_SESSION = True
             RECORD_SESSION_LOCAL_ONLY = ns_parser.local
@@ -1042,8 +1042,8 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_stop(self, _) -> None:
         """Process stop command."""
-        global RECORD_SESSION
-        global SESSION_RECORDED
+        global RECORD_SESSION  # noqa: PLW0603
+        global SESSION_RECORDED  # noqa: PLW0603
 
         if not RECORD_SESSION:
             console.print(
@@ -1377,6 +1377,35 @@ class BaseController(metaclass=ABCMeta):
             )
         return ns_parser
 
+    def handle_command_in_queue(self, current_user, custom_path_menu_above: str):
+        # If the command is quitting the menu we want to return in here
+        if self.queue[0] in ("q", "..", "quit"):
+            self.save_class()
+            # Go back to the root in order to go to the right directory because
+            # there was a jump between indirect menus
+            if custom_path_menu_above:
+                self.queue.insert(1, custom_path_menu_above)
+
+            if len(self.queue) > 1:
+                return self.queue[1:]
+
+            if current_user.preferences.ENABLE_EXIT_AUTO_HELP:
+                return ["help"]
+            return []
+
+        # Consume 1 element from the queue
+        an_input = self.queue[0]
+        self.queue = self.queue[1:]
+
+        # Print location because this was an instruction and we want user to know the action
+        if (
+            an_input
+            and an_input != "home"
+            and an_input != "help"
+            and an_input.split(" ")[0] in self.controller_choices
+        ):
+            console.print(f"{get_flair()} {self.PATH} $ {an_input}")
+
     def menu(self, custom_path_menu_above: str = ""):
         """Enter controller menu."""
 
@@ -1386,34 +1415,7 @@ class BaseController(metaclass=ABCMeta):
         while True:
             # There is a command in the queue
             if self.queue and len(self.queue) > 0:
-                # If the command is quitting the menu we want to return in here
-                if self.queue[0] in ("q", "..", "quit"):
-                    self.save_class()
-                    # Go back to the root in order to go to the right directory because
-                    # there was a jump between indirect menus
-                    if custom_path_menu_above:
-                        self.queue.insert(1, custom_path_menu_above)
-
-                    if len(self.queue) > 1:
-                        return self.queue[1:]
-
-                    if current_user.preferences.ENABLE_EXIT_AUTO_HELP:
-                        return ["help"]
-                    return []
-
-                # Consume 1 element from the queue
-                an_input = self.queue[0]
-                self.queue = self.queue[1:]
-
-                # Print location because this was an instruction and we want user to know the action
-                if (
-                    an_input
-                    and an_input != "home"
-                    and an_input != "help"
-                    and an_input.split(" ")[0] in self.controller_choices
-                ):
-                    console.print(f"{get_flair()} {self.PATH} $ {an_input}")
-
+                self.handle_command_in_queue(current_user, custom_path_menu_above)
             # Get input command from user
             else:
                 # Display help menu when entering on this menu from a level above

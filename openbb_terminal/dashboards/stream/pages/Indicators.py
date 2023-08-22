@@ -234,16 +234,18 @@ class Handler:
         end_n = datetime(end.year, end.month, end.day).date()
 
         for ticker in tickers_l:
-            ticker = ticker.upper().strip()
-            st.session_state["indicators_dfs"][ticker] = st.session_state[
+            clean_ticker = ticker.upper().strip()
+            st.session_state["indicators_dfs"][clean_ticker] = st.session_state[
                 "indicators_dfs"
-            ][ticker].loc[
-                (st.session_state["indicators_dfs"][ticker].index.date >= start_n)
-                & (st.session_state["indicators_dfs"][ticker].index.date <= end_n)
+            ][clean_ticker].loc[
+                (st.session_state["indicators_dfs"][clean_ticker].index.date >= start_n)
+                & (st.session_state["indicators_dfs"][clean_ticker].index.date <= end_n)
             ]
 
         result: pd.DataFrame = st.session_state["indicators_dfs"][main_ticker]
-        with st.spinner("Calculating indicators..."), patch.object(console, "print", special_st):
+        with st.spinner("Calculating indicators..."), patch.object(
+            console, "print", special_st
+        ):
             if result.empty:
                 with logger.container():
                     logger.error("There was an error with the data", icon="🔥")
@@ -305,17 +307,11 @@ class Handler:
                             "52w high": weeks52["High"].values.max(),
                             "52w low": weeks52["Low"].values.min(),
                         },
-                        index=[
-                            last_day.tail(1).index.values[0].strftime("%Y-%m-%d")
-                        ],
+                        index=[last_day.tail(1).index.values[0].strftime("%Y-%m-%d")],
                     )
-                    stats_df["Volume"] = stats_df["Volume"].apply(
-                        lambda x: f"{x:,.0f}"
-                    )
+                    stats_df["Volume"] = stats_df["Volume"].apply(lambda x: f"{x:,.0f}")
                     st.table(
-                        stats_df.transpose().style.format(
-                            precision=2, thousands=","
-                        )
+                        stats_df.transpose().style.format(precision=2, thousands=",")
                     )
 
     async def load_ticker_data(

@@ -186,7 +186,7 @@ class NestedCompleter(Completer):
 
         return cls(options)
 
-    def get_completions(
+    def get_completions(  # noqa: PLR0912
         self, document: Document, complete_event: CompleteEvent
     ) -> Iterable[Completion]:
         # Split document.

@@ -246,7 +246,7 @@ class Backend(PyWry):
                 else:
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
                     subprocess.check_call(
-                        [opener, export_image]
+                        [opener, export_image]  # nosec: B603 # noqa: S603
                     )  # nosec: B603 # noqa: S603
 
     def send_table(

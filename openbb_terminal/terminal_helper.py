@@ -107,7 +107,9 @@ def update_terminal():
 
     poetry_hash = sha256sum("poetry.lock")
 
-    completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
+    completed_process = subprocess.run(  # nosec
+        "git pull", shell=True, check=False  # noqa: S607,S602
+    )
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -121,7 +123,7 @@ def update_terminal():
     )
 
     completed_process = subprocess.run(  # nosec
-        "poetry install", shell=True, check=False
+        "poetry install", shell=True, check=False  # noqa: S607,S602
     )
     if completed_process.returncode != 0:
         return completed_process.returncode
@@ -270,7 +272,7 @@ def is_installer() -> bool:
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-        os.system("")  # nosec
+        os.system("")  # nosec # noqa: S605,S607
         # Hide splashscreen loader of the packaged app
         if is_installer():
             hide_splashscreen()

@@ -122,18 +122,18 @@ class ParametersController(BaseController):
             if self.current_model:
                 max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
-                    v = params_helpers.booltostr(v)
+                    clean_v = params_helpers.booltostr(v)
                     all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
                     if k in all_params:
                         mt.add_raw(
-                            f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+                            f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {clean_v}\n"
                         )
             else:
                 max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
-                    v = params_helpers.booltostr(v)
+                    clean_v = params_helpers.booltostr(v)
                     mt.add_raw(
-                        f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+                        f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {clean_v}\n"
                     )
         console.print(
             text=mt.menu_text, menu="Portfolio - Portfolio Optimization - Parameters"

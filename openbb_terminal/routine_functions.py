@@ -247,11 +247,13 @@ def parse_openbb_script(  # noqa: PLR0911
                             # in python will only take the first '2'
                             if VAR_SLICE == "0":
                                 if VAR_NAME in ROUTINE_VARS:
-                                    values = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+                                    values = eval(  # noqa: S307
+                                        f'ROUTINE_VARS["{VAR_NAME}"]'
+                                    )
                                     if isinstance(values, list):
                                         templine = templine.replace(
                                             match[0],
-                                            eval(f"values[{VAR_SLICE}]"),
+                                            eval(f"values[{VAR_SLICE}]"),  # noqa: S307
                                         )
                                     else:
                                         templine = templine.replace(match[0], values)
@@ -265,7 +267,9 @@ def parse_openbb_script(  # noqa: PLR0911
                             # Only enters here when any other index from 0 is used
                             else:
                                 if VAR_NAME in ROUTINE_VARS:
-                                    variable = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+                                    variable = eval(  # noqa: S307
+                                        f'ROUTINE_VARS["{VAR_NAME}"]'
+                                    )
                                     length_variable = (
                                         len(variable)
                                         if isinstance(variable, list)
@@ -317,7 +321,9 @@ def parse_openbb_script(  # noqa: PLR0911
                             templine = templine.replace(
                                 match[0],
                                 ",".join(
-                                    eval(f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]')
+                                    eval(  # noqa: S307
+                                        f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
+                                    )
                                 ),
                             )
 
@@ -343,7 +349,9 @@ def parse_openbb_script(  # noqa: PLR0911
                                     )
 
                             if VAR_NAME in ROUTINE_VARS:
-                                value = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+                                value = eval(  # noqa: S307
+                                    f'ROUTINE_VARS["{VAR_NAME}"]'
+                                )
 
                                 # If the value is a list, we want to replace it with the whole list
                                 if isinstance(value, list):

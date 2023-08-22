@@ -91,8 +91,8 @@ class SettingsController(BaseController):
 
         self.sort_filter = r"((tz\ -t |tz ).*?("
         for tz in pytz.all_timezones:
-            tz = tz.replace("/", r"\/")
-            self.sort_filter += f"{tz}|"
+            clean_tz = tz.replace("/", r"\/")
+            self.sort_filter += f"{clean_tz}|"
         self.sort_filter += ")*)"
 
         self.PREVIEW = ", ".join(

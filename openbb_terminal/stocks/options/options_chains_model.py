@@ -1530,7 +1530,7 @@ def get_strategies(
 
     for day in days:
         if day == 0:
-            day = -1
+            day = -1  # noqa: PLW2901
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
     days.sort()

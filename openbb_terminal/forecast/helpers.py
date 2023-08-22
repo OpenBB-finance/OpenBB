@@ -782,7 +782,7 @@ def plotly_shap_scatter_plot(
     fig.set_xaxis_title("SHAP value (impact on model output)")
 
     for pos, i in enumerate(feature_order):
-        pos += 2
+        new_pos = pos + 2
         shaps = shap_values[:, i]
         values = None if features is None else features[:, i]
         inds = np.arange(len(shaps))
@@ -838,7 +838,7 @@ def plotly_shap_scatter_plot(
             nan_mask = np.isnan(values)
             fig.add_scattergl(
                 x=shaps[nan_mask],
-                y=pos + ys[nan_mask],
+                y=new_pos + ys[nan_mask],
                 mode="markers",
                 marker=dict(
                     color="#777777",
@@ -860,12 +860,12 @@ def plotly_shap_scatter_plot(
 
             fig.add_scattergl(
                 x=shaps[np.invert(nan_mask)],
-                y=pos + ys[np.invert(nan_mask)],
+                y=new_pos + ys[np.invert(nan_mask)],
                 mode="markers",
                 marker=dict(
                     color=cvals,
                     colorscale="Bluered",
-                    showscale=bool(pos == 2),
+                    showscale=bool(new_pos == 2),
                     colorbar=dict(
                         x=-0.05,
                         thickness=10,
