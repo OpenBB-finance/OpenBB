@@ -29,7 +29,7 @@ class CboeMajorIndicesEODData(MajorIndicesEODData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
 
-        return datetime.strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d").date()
 
 
 class CboeMajorIndicesEODFetcher(
@@ -59,7 +59,7 @@ class CboeMajorIndicesEODFetcher(
         query: CboeMajorIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict[str, float]]:
+    ) -> List[dict]:
         """Return the raw data from the CBOE endpoint"""
 
         return get_us_eod_prices(
@@ -67,7 +67,7 @@ class CboeMajorIndicesEODFetcher(
         ).to_dict("records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[CboeMajorIndicesEODData]:
+    def transform_data(data: List[dict]) -> List[CboeMajorIndicesEODData]:
         """Transform the data to the standard format"""
 
         return [CboeMajorIndicesEODData.parse_obj(d) for d in data]

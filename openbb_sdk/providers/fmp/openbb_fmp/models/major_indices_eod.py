@@ -11,7 +11,7 @@ from openbb_provider.standard_models.major_indices_eod import (
 )
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -62,15 +62,6 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         default=None,
     )
     vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
-
-    @validator("date", pre=True)
-    def date_validate(  # pylint: disable=E0213
-        cls, v, values: Dict[str, Any]
-    ) -> datetime:
-        """Return the date as a datetime object."""
-        if values.get("changeOverTime", None) is not None:
-            return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPMajorIndicesEODFetcher(
