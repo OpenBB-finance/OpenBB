@@ -1,8 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import Annotated, List, Literal, Optional, Union
 
-import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -29,12 +28,12 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def chains(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Union[Literal["cboe"], None] = None,
+        provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -45,7 +44,7 @@ class CLASS_stocks_options(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -55,7 +54,7 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['cboe'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

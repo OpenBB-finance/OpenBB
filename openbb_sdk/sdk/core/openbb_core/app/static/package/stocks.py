@@ -1,10 +1,9 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import Annotated, List, Literal, Optional, Union
 
 import pydantic
-import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -76,12 +75,12 @@ class CLASS_stocks(Container):
     @validate_arguments
     def info(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Union[Literal["cboe"], None] = None,
+        provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get general price and performance metrics of a stock.
@@ -92,7 +91,7 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -102,7 +101,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockInfo]
                 Serializable results.
-            provider : Union[Literal['cboe'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -199,24 +198,24 @@ class CLASS_stocks(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["cboe", "fmp", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         r"""Load stock data for a specific ticker.
@@ -231,11 +230,11 @@ class CLASS_stocks(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['cboe', 'fmp', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+        timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
         interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
             None
@@ -249,7 +248,7 @@ class CLASS_stocks(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -263,7 +262,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockEOD]
                 Serializable results.
-            provider : Union[Literal['cboe', 'fmp', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -325,16 +324,16 @@ class CLASS_stocks(Container):
     @validate_arguments
     def multiples(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get valuation multiples for a stock ticker.
@@ -343,11 +342,11 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        limit : Union[int, NoneType]
+        limit : Optional[int]
             The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -357,7 +356,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockMultiples]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -509,21 +508,21 @@ class CLASS_stocks(Container):
     @validate_arguments
     def news(
         self,
-        symbols: typing_extensions.Annotated[
+        symbols: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        page: typing_extensions.Annotated[
+        page: Annotated[
             int,
             OpenBBCustomParameter(
                 description="Page of the stock news to be retrieved."
             ),
         ] = 0,
-        limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="Number of results to return per page."),
         ] = 15,
         chart: bool = False,
-        provider: Union[Literal["benzinga", "fmp", "polygon"], None] = None,
+        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get news for one or more stock tickers.
@@ -534,59 +533,59 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         page : int
             Page of the stock news to be retrieved.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : Optional[pydantic.types.NonNegativeInt]
             Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['benzinga', 'fmp', 'polygon'], NoneType]
+        provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
-        date : Union[datetime.datetime, NoneType]
+        date : Optional[datetime.datetime]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Union[datetime.datetime, NoneType]
+        date_from : Optional[datetime.datetime]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Union[datetime.datetime, NoneType]
+        date_to : Optional[datetime.datetime]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Union[int, NoneType]
+        updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Union[int, NoneType]
+        published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
             None
-        isin : Union[str, NoneType]
+        isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Union[str, NoneType]
+        cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        channels : Union[str, NoneType]
+        channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Union[str, NoneType]
+        topics : Optional[str]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Union[str, NoneType]
+        authors : Optional[str]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Union[str, NoneType]
+        content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        ticker_lt : Union[str, NoneType]
+        ticker_lt : Optional[str]
             Less than, by default None (provider: polygon)
-        ticker_lte : Union[str, NoneType]
+        ticker_lte : Optional[str]
             Less than or equal, by default None (provider: polygon)
-        ticker_gt : Union[str, NoneType]
+        ticker_gt : Optional[str]
             Greater than, by default None (provider: polygon)
-        ticker_gte : Union[str, NoneType]
+        ticker_gte : Optional[str]
             Greater than or equal, by default None (provider: polygon)
-        published_utc : Union[str, NoneType]
+        published_utc : Optional[str]
             Published date of the query, by default None (provider: polygon)
-        published_utc_lt : Union[str, NoneType]
+        published_utc_lt : Optional[str]
             Less than, by default None (provider: polygon)
-        published_utc_lte : Union[str, NoneType]
+        published_utc_lte : Optional[str]
             Less than or equal, by default None (provider: polygon)
-        published_utc_gt : Union[str, NoneType]
+        published_utc_gt : Optional[str]
             Greater than, by default None (provider: polygon)
-        published_utc_gte : Union[str, NoneType]
+        published_utc_gte : Optional[str]
             Greater than or equal, by default None (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Optional[Literal['asc', 'desc']]
             Sort order of the query, by default None (provider: polygon)
 
         Returns
@@ -594,7 +593,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'polygon'], NoneType]
+            provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -671,12 +670,12 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -687,7 +686,7 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -697,7 +696,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockQuote]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -772,15 +771,13 @@ class CLASS_stocks(Container):
     @validate_arguments
     def search(
         self,
-        query: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="Search query.")
-        ] = "",
-        ticker: typing_extensions.Annotated[
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        ticker: Annotated[
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
         chart: bool = False,
-        provider: Union[Literal["cboe"], None] = None,
+        provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Search for a company or stock ticker.
@@ -793,7 +790,7 @@ class CLASS_stocks(Container):
             Whether to search by ticker symbol.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -803,7 +800,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockSearch]
                 Serializable results.
-            provider : Union[Literal['cboe'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

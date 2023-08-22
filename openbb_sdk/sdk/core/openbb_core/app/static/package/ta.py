@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import openbb_provider
 import pandas
@@ -810,8 +810,8 @@ class CLASS_ta(Container):
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
-        start_date: Union[str, None] = None,
-        end_date: Union[str, None] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
         chart: bool = False,
     ) -> OBBject[List]:
         """Create Fibonacci Retracement Levels.

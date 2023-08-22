@@ -1,8 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import Annotated, List, Literal, Optional, Union
 
-import typing_extensions
 from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
@@ -109,12 +108,12 @@ class CLASS_stocks_ca(Container):
     @validate_arguments
     def peers(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Company peers.
@@ -125,7 +124,7 @@ class CLASS_stocks_ca(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -135,7 +134,7 @@ class CLASS_stocks_ca(Container):
         OBBject
             results : List[StockPeers]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
