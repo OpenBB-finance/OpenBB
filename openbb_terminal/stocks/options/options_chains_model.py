@@ -1463,8 +1463,9 @@ def get_strategies(
     """
 
     def to_clean_list(x):
-        if x is not None:
-            return [x] if not isinstance(x, list) else x
+        if x is None:
+            return None
+        return [x] if not isinstance(x, list) else x
 
     options = deepcopy(options)
 

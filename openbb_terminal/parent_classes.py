@@ -1376,7 +1376,7 @@ class BaseController(metaclass=ABCMeta):
             )
         return ns_parser
 
-    def handle_command_in_queue(self, current_user, custom_path_menu_above: str):
+    def __handle_command_in_queue(self, current_user, custom_path_menu_above: str):
         # If the command is quitting the menu we want to return in here
         if self.queue[0] in ("q", "..", "quit"):
             self.save_class()
@@ -1404,6 +1404,7 @@ class BaseController(metaclass=ABCMeta):
             and an_input.split(" ")[0] in self.controller_choices
         ):
             console.print(f"{get_flair()} {self.PATH} $ {an_input}")
+        return None
 
     def menu(self, custom_path_menu_above: str = ""):
         """Enter controller menu."""
@@ -1414,7 +1415,11 @@ class BaseController(metaclass=ABCMeta):
         while True:
             # There is a command in the queue
             if self.queue and len(self.queue) > 0:
-                self.handle_command_in_queue(current_user, custom_path_menu_above)
+                result = self.__handle_command_in_queue(
+                    current_user, custom_path_menu_above
+                )
+                if result is not None:
+                    return result
             # Get input command from user
             else:
                 # Display help menu when entering on this menu from a level above

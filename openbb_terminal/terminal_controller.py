@@ -14,7 +14,7 @@ import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
@@ -777,9 +777,7 @@ class TerminalController(BaseController):
                     self.queue = self.queue[1:]
 
 
-def handle_export_and_cmds(
-    jobs_cmds: Optional[List[str]],
-) -> Tuple[Optional[str], Optional[List[str]]]:
+def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     # If the path selected does not start from the user root,
     # give relative location from terminal root
     if jobs_cmds is not None and jobs_cmds:
@@ -793,7 +791,7 @@ def handle_export_and_cmds(
             export_path = first_split[1]
         jobs_cmds = ["/".join(commands[1:])]
     if not export_path:
-        return export_path, jobs_cmds
+        return jobs_cmds
     if export_path[0] == "~":
         export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
     elif export_path[0] != "/":
@@ -810,7 +808,7 @@ def handle_export_and_cmds(
         os.makedirs(export_path)
         console.print(f"[green]Folder '{export_path}' successfully created.[/green]")
     set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
-    return export_path, jobs_cmds
+    return jobs_cmds
 
 
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
@@ -824,7 +822,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
-    export_path, jobs_cmds = handle_export_and_cmds(jobs_cmds)
+    jobs_cmds = handle_job_cmds(jobs_cmds)
 
     bootup()
     if not jobs_cmds:

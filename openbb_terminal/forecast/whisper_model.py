@@ -333,7 +333,7 @@ def get_sentiment_score(total_length, positive_score, negative_score):
         negative_percent = negative_score / total_length * 100
         if positive_percent > 70:
             return "POSITIVE", positive_percent
-        elif negative_percent > 70:
+        if negative_percent > 70:
             return "NEGATIVE", negative_percent
         return "NEUTRAL", (positive_percent + negative_percent) / 2
     return "NEUTRAL", 0.0
