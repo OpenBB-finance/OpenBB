@@ -1,17 +1,23 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
-
+from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 import openbb_provider
 import pandas
+import datetime
 import pydantic
-import pydantic.types
-from pydantic import validate_arguments
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal, Annotated
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.filters import filter_inputs
 
 import openbb_core.app.model.results.empty
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_inputs
+import pydantic.types
+import typing
 
 
 class CLASS_ta(Container):
@@ -810,8 +816,8 @@ class CLASS_ta(Container):
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
-        start_date: Union[str, None] = None,
-        end_date: Union[str, None] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
         chart: bool = False,
     ) -> OBBject[List]:
         """Create Fibonacci Retracement Levels.
