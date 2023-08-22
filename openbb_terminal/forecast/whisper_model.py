@@ -165,16 +165,15 @@ def transcribe_and_summarize(
 
     os.makedirs(whisper_cache_dir, exist_ok=True)
 
-    if model_name in ["small", "small.en"]:
-        model_size = "483.6 MB"
-    elif model_name in ["tiny", "tiny.en"]:
-        model_size = "75.6 MB"
-    elif model_name in ["base", "base.en"]:
-        model_size = "145.3 MB"
-    elif model_name in ["medium", "medium.en"]:
-        model_size = "1.53 GB"
-    elif model_name in ["large", "large-v2", "large-v1"]:
-        model_size = "2.87 GB"
+    sizes = {
+        "small": "483.6 MB",
+        "tiny": "75.6 MB",
+        "base": "145.3 MB",
+        "medium": "1.53 GB",
+        "large": "2.87 GB",
+    }
+    clean_key = model_name.replace(".en", "").replace("-v2", "").replace("-v1", "")
+    model_size = sizes[clean_key]
 
     full_model_name = model_name + ".en.pt" if language == "en" else model_name + ".pt"
     if full_model_name not in os.listdir(whisper_cache_dir):

@@ -658,7 +658,7 @@ def check_news_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
+    if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec# noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -727,7 +727,7 @@ def check_biztoc_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_BIZTOC_TOKEN == "REPLACE_ME":  # nosec
+    if current_user.credentials.API_BIZTOC_TOKEN == "REPLACE_ME":  # nosec# noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -800,7 +800,7 @@ def check_tradier_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+    if current_user.credentials.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec# noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -2386,7 +2386,7 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
+    if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":  # noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         token_terminal = TokenTerminal(

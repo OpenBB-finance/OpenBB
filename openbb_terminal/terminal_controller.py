@@ -395,7 +395,7 @@ class TerminalController(BaseController):
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
-                task = random.choice(list(json_doc.keys()))  # nosec
+                task = random.choice(list(json_doc.keys()))  # nosec # noqa: S311
                 solution = json_doc[task]
 
                 start = time.time()
@@ -827,12 +827,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         welcome_message()
 
         if first_time_user():
-            try:
-                # t_controller.call_intro(None)
+            with contextlib.suppress(EOFError):
                 webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
-                # TDDO: Fix the CI
-            except EOFError:
-                pass
+
         t_controller.print_help()
         check_for_updates()
 

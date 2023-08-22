@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=C0302, no-else-return
 
 import argparse
+import contextlib
 import logging
 from typing import List, Optional
 
@@ -311,10 +312,9 @@ class ParametersController(BaseController):
                         "[red]The parameter you are trying to access is unused in this model.[/red]\n"
                     )
 
-                try:
+                with contextlib.suppress(ValueError):
                     value = float(value)
-                except ValueError:
-                    pass
+
 
                 if argument == "historic_period":
                     for option in AVAILABLE_OPTIONS[argument]:

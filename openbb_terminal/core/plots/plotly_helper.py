@@ -1,5 +1,6 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
+import contextlib
 import json
 import sys
 import textwrap
@@ -42,11 +43,9 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 if TYPE_CHECKING:
-    try:
-        # pylint: disable=W0611 # noqa: F401
-        from darts import TimeSeries
-    except ImportError:
-        pass
+    with contextlib.suppress(ImportError):
+        from darts import TimeSeries  # pylint: disable=W0611 # noqa: F401
+
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 

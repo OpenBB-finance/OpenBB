@@ -1,5 +1,6 @@
 # pylint: disable=unused-argument
 import argparse
+import contextlib
 import inspect
 import sys
 from datetime import datetime, timedelta
@@ -370,11 +371,9 @@ class ControllerDoc:
 
                 if len(fullspec.args) > 2:
                     args.update({arg: ["1234"] for arg in fullspec.args[2:]})
-                with patch("openbb_terminal.rich_config.console.print"):
-                    try:
-                        _ = getattr(self.controller, command)(["--help"], **args)
-                    except (SystemExit, AttributeError):
-                        pass
+                with patch("openbb_terminal.rich_config.console.print"), contextlib.suppress(SystemExit, AttributeError):
+                    _ = getattr(self.controller, command)(["--help"], **args)
+
 
         except Exception as e:
             print(e)
