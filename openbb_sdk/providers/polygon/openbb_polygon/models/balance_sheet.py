@@ -1,12 +1,11 @@
 from typing import Any, Dict, List, Optional
 
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.balance_sheet import BalanceSheetData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
-
-from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 
 
 class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):
@@ -28,7 +27,7 @@ class PolygonBalanceSheetData(BalanceSheetData):
         }
 
     @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):
+    def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
         if isinstance(v, list):
             return ",".join(v)
         return v

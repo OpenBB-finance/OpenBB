@@ -11,10 +11,9 @@ from openbb_provider.standard_models.crypto_eod import (
     CryptoEODQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pydantic import Field, validator
 from yfinance import Ticker
-
-from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceCryptoEODQueryParams(CryptoEODQueryParams):
@@ -39,22 +38,9 @@ class YFinanceCryptoEODQueryParams(CryptoEODQueryParams):
 class YFinanceCryptoEODData(CryptoEODData):
     """YFinance Crypto End of Day Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "date": "Date",
-            "open": "Open",
-            "high": "High",
-            "low": "Low",
-            "close": "Close",
-            "volume": "Volume",
-        }
-
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
@@ -69,7 +55,6 @@ class YFinanceCryptoEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCryptoEODQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
-
         if params.get("period") is None:
             transformed_params = params
 
@@ -90,7 +75,6 @@ class YFinanceCryptoEODFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the yfinance endpoint."""
-
         if query.period:
             data = Ticker(query.symbol).history(
                 interval=query.interval,
@@ -124,5 +108,4 @@ class YFinanceCryptoEODFetcher(
         data: dict,
     ) -> List[YFinanceCryptoEODData]:
         """Transform the data to the standard format."""
-
         return [YFinanceCryptoEODData.parse_obj(d) for d in data]

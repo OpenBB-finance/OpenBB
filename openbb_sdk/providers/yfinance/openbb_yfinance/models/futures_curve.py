@@ -8,7 +8,6 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
-
 from openbb_yfinance.utils.helpers import get_futures_curve
 
 
@@ -38,7 +37,6 @@ class YFinanceFuturesCurveFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
         """Transform the query."""
-
         return YFinanceFuturesCurveQueryParams(**params)
 
     @staticmethod
@@ -48,7 +46,6 @@ class YFinanceFuturesCurveFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the yfinance endpoint."""
-
         return get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
     @staticmethod
@@ -56,5 +53,4 @@ class YFinanceFuturesCurveFetcher(
         data: dict,
     ) -> List[YFinanceFuturesCurveData]:
         """Transform the data to the standard format."""
-
         return [YFinanceFuturesCurveData.parse_obj(d) for d in data]

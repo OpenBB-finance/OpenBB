@@ -1,12 +1,10 @@
 """Polygon available pairs fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType, datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_pairs import (
     ForexPairsData,
@@ -14,8 +12,6 @@ from openbb_provider.standard_models.forex_pairs import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
-
-from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonForexPairsQueryParams(ForexPairsQueryParams):
@@ -81,13 +77,11 @@ class PolygonForexPairsData(ForexPairsData):
     @validator("last_updated_utc", pre=True, check_fields=False)
     def last_updated_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed last updated timestamp in UTC."""
-
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
     @validator("delisted_utc", pre=True, check_fields=False)
     def delisted_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed delisted timestamp in UTC."""
-
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -102,7 +96,6 @@ class PolygonForexPairsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
         """Transform the query parameters. Ticker is set if symbol is provided."""
-
         transform_params = params
         transform_params["symbol"] = (
             f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
@@ -116,7 +109,6 @@ class PolygonForexPairsFetcher(
         **kwargs: Any,
     ) -> List[dict]:
         """Extract the data from the Polygon API."""
-
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -160,5 +152,4 @@ class PolygonForexPairsFetcher(
         data: List[dict],
     ) -> List[PolygonForexPairsData]:
         """Transform the data into a list of PolygonForexPairsData."""
-
         return [PolygonForexPairsData(**d) for d in data]
