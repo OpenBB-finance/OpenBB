@@ -278,22 +278,9 @@ def transcribe_and_summarize(
                 negative_score += chunk_sentiment_score * len(chunk)
             total_length += len(chunk)
 
-        # calculate overall sentiment score
-        if total_length > 0:
-            positive_percent = positive_score / total_length * 100
-            negative_percent = negative_score / total_length * 100
-            if positive_percent > 70:
-                overall_sentiment_label = "POSITIVE"
-                overall_sentiment_score = positive_percent
-            elif negative_percent > 70:
-                overall_sentiment_label = "NEGATIVE"
-                overall_sentiment_score = negative_percent
-            else:
-                overall_sentiment_label = "NEUTRAL"
-                overall_sentiment_score = (positive_percent + negative_percent) / 2
-        else:
-            overall_sentiment_label = "NEUTRAL"
-            overall_sentiment_score = 0.0
+        overall_sentiment_label, overall_sentiment_score = get_sentiment_score(
+            total_length, positive_score, negative_score
+        )
 
         # Write summary and get reduction
         summary_text_length = len(summary_text)
@@ -338,3 +325,15 @@ def transcribe_and_summarize(
         summary_path = os.path.join(output_dir, f"{slugify(title)}_summary.txt")
         with open(summary_path, "w") as f:
             f.write(summary_text)
+
+
+def get_sentiment_score(total_length, positive_score, negative_score):
+    if total_length > 0:
+        positive_percent = positive_score / total_length * 100
+        negative_percent = negative_score / total_length * 100
+        if positive_percent > 70:
+            return "POSITIVE", positive_percent
+        elif negative_percent > 70:
+            return "NEGATIVE", negative_percent
+        return "NEUTRAL", (positive_percent + negative_percent) / 2
+    return "NEUTRAL", 0.0

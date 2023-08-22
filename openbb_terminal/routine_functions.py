@@ -141,7 +141,7 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
     return ""
 
 
-def parse_openbb_script(  # noqa: PLR0911
+def parse_openbb_script(  # noqa: PLR0911,PLR0912
     raw_lines: List[str],
     script_inputs: Optional[List[str]] = None,
 ) -> Tuple[str, str]:

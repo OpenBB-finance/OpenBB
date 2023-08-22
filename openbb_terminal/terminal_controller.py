@@ -14,7 +14,7 @@ import time
 import webbrowser
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import certifi
 import pandas as pd
@@ -777,14 +777,11 @@ class TerminalController(BaseController):
                     self.queue = self.queue[1:]
 
 
-# pylint: disable=global-statement
-def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
-    """Terminal Menu."""
-
-    current_user = get_current_user()
-
-    log_terminal(test_mode=test_mode)
-
+def handle_export_and_cmds(
+    jobs_cmds: Optional[List[str]],
+) -> Tuple[Optional[str], Optional[List[str]]]:
+    # If the path selected does not start from the user root,
+    # give relative location from terminal root
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
@@ -795,32 +792,39 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         if len(first_split) > 1:
             export_path = first_split[1]
         jobs_cmds = ["/".join(commands[1:])]
+    if not export_path:
+        return export_path, jobs_cmds
+    if export_path[0] == "~":
+        export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
+    elif export_path[0] != "/":
+        export_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), export_path
+        )
+
+    # Check if the directory exists
+    if os.path.isdir(export_path):
+        console.print(
+            f"Export data to be saved in the selected folder: '{export_path}'"
+        )
+    else:
+        os.makedirs(export_path)
+        console.print(f"[green]Folder '{export_path}' successfully created.[/green]")
+    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+    return export_path, jobs_cmds
+
+
+def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
+    """Terminal Menu."""
+
+    current_user = get_current_user()
+
+    log_terminal(test_mode=test_mode)
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
-    if export_path:
-        # If the path selected does not start from the user root,
-        # give relative location from terminal root
-        if export_path[0] == "~":
-            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
-        elif export_path[0] != "/":
-            export_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), export_path
-            )
-
-        # Check if the directory exists
-        if os.path.isdir(export_path):
-            console.print(
-                f"Export data to be saved in the selected folder: '{export_path}'"
-            )
-        else:
-            os.makedirs(export_path)
-            console.print(
-                f"[green]Folder '{export_path}' successfully created.[/green]"
-            )
-        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+    export_path, jobs_cmds = handle_export_and_cmds()
 
     bootup()
     if not jobs_cmds:
@@ -931,6 +935,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 cutoff=0.7,
             )
             if similar_cmd:
+                an_input = similar_cmd[0]
                 if " " in an_input:
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
@@ -941,8 +946,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                         console.print("\n")
                         continue
                     an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
 
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)

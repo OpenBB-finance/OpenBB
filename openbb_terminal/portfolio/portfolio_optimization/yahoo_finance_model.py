@@ -236,22 +236,12 @@ def process_stocks(
         end_ = date.today()
         if end_.weekday() >= 5:
             end_ = end_ + relativedelta(weekday=FR(-1))
-        if interval.find("d") >= 1:
-            days = int(interval[:-1])
-            start_ = end_ - relativedelta(days=days)
-        elif interval.find("w") >= 1:
-            weeks = int(interval[:-1])
-            start_ = end_ - relativedelta(weeks=weeks)
-        elif interval.find("mo") >= 1:
-            months = int(interval[:-2])
-            start_ = end_ - relativedelta(months=months)
-        elif interval.find("y") >= 1:
-            years = int(interval[:-1])
-            start_ = end_ - relativedelta(years=years)
+        for item in ["d", "w", "mo", "y"]:
+            if interval.find(item) >= 1:
+                n = int(interval[: -len(item)])
+                start_ = end_ - relativedelta(days=n)
+                break
         else:
-            # console.print(
-            #     "Please use an adequate interval."
-            # )
             return None
 
         start_date = start_.strftime("%Y-%m-%d")
