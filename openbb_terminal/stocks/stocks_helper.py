@@ -233,7 +233,13 @@ def search(
 
 
 def get_daily_stock_candidate(
-    source: str, symbol: str, int_string: str, start_date, end_date, monthly, weekly
+    source: str,
+    symbol: str,
+    int_string: str,
+    start_date,
+    end_date,
+    monthly: bool,
+    weekly: bool,
 ) -> pd.DataFrame:
     if source == "AlphaVantage":
         return load_stock_av(symbol, int_string, start_date, end_date)
@@ -338,7 +344,7 @@ def load(
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
-    int_string = "Weekly" if weekly else "Monthly" if monthly else "Daily"
+    int_string = "Monthly" if monthly else "Weekly" if weekly else "Daily"
 
     # Daily
     if int(interval) == 1440:

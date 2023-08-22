@@ -332,7 +332,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         new_headers[:0] = ["Breakdown"]
         df.columns = new_headers
         df.set_index("Breakdown", inplace=True)
-    elif statement == ("financials", "cash-flow"):
+    elif statement in ("financials", "cash-flow"):
         for dates in headers[2:]:
             read = datetime.strptime(dates, "%d/%m/%Y")
             write = read.strftime("%Y-%m-%d")
