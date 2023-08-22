@@ -184,6 +184,40 @@ def stock_search(query: str, ticker: bool = False, **kwargs) -> dict:
     return {}
 
 
+def index_search(
+    query: str, ticker: bool = False, europe: bool = False, **kwargs
+) -> List[dict]:
+    """Search the CBOE index directory by name or ticker.
+    Parameters
+    -----------
+    query: str
+        The search query
+    ticker: bool
+        Whether to search by ticker. Default is False.
+    europe: bool
+        Whether to search for European indices. Default is False.
+
+    Returns
+    -------
+    dict
+        Dictionary of the results.
+    """
+
+    symbols = pd.DataFrame()
+    if europe is True:
+        symbols = pd.DataFrame(Europe.list_indices())
+    if europe is False:
+        symbols = get_cboe_index_directory().reset_index()
+
+    target = "name" if not ticker else "symbol"
+    idx = symbols[target].str.contains(query, case=False)
+    result = symbols[idx]
+    if len(result) > 0:
+        return result.to_dict("records")
+    print(f"No results found for: {query}.  Try another search query.")
+    return []
+
+
 def get_ticker_info(symbol: str, **kwargs) -> dict[str, Any]:
     symbol = symbol.upper()
     SYMBOLS = get_cboe_directory()

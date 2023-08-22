@@ -298,13 +298,15 @@ def rtps(
     return OBBject(results=Empty())
 
 
-@router.command
+@router.command(model="IndexSearch")
 def search_index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
-    """SEARCH_INDEX."""
-    return OBBject(results=Empty())
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search Available Indices."""
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command
