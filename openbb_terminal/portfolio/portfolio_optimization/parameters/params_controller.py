@@ -315,7 +315,6 @@ class ParametersController(BaseController):
                 with contextlib.suppress(ValueError):
                     value = float(value)
 
-
                 if argument == "historic_period":
                     for option in AVAILABLE_OPTIONS[argument]:
                         if option in str(value):

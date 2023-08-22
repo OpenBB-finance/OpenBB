@@ -520,7 +520,6 @@ def get_global_defi_info() -> pd.DataFrame:
         with contextlib.suppress(ValueError, TypeError):
             results[key] = round(float(value), 4)
 
-
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
     df["Metric"] = df["Metric"].apply(

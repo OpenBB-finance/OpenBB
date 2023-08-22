@@ -174,7 +174,6 @@ def get_commands_and_params(
         with contextlib.suppress(AttributeError):
             params[command] = list(module_data[command].keys())
 
-
     if get_commands and get_params:
         return commands, params
     if get_commands and not get_params:
@@ -279,7 +278,6 @@ def get_missing_params(
                 if param != param2 and param2.startswith(param):
                     with contextlib.suppress(ValueError):
                         missing_params[key].remove(param)
-
 
     missing_params = {k: v for k, v in missing_params.items() if v}
 

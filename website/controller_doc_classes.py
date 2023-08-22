@@ -371,9 +371,10 @@ class ControllerDoc:
 
                 if len(fullspec.args) > 2:
                     args.update({arg: ["1234"] for arg in fullspec.args[2:]})
-                with patch("openbb_terminal.rich_config.console.print"), contextlib.suppress(SystemExit, AttributeError):
+                with patch(
+                    "openbb_terminal.rich_config.console.print"
+                ), contextlib.suppress(SystemExit, AttributeError):
                     _ = getattr(self.controller, command)(["--help"], **args)
-
 
         except Exception as e:
             print(e)

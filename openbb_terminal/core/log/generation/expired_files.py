@@ -28,4 +28,3 @@ def remove_file_list(file_list: List[Path]):
     for file in file_list:
         with contextlib.suppress(PermissionError):
             file.unlink(missing_ok=True)
-

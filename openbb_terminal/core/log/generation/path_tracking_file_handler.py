@@ -188,7 +188,6 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
             with contextlib.suppress(Exception):
                 log_sender.join(timeout=3)
 
-
         super().close()
 
         if log_sender.check_sending_conditions(file=closed_log_path):
