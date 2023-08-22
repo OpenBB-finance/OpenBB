@@ -1,8 +1,9 @@
-from typing import Optional
-
-from pydantic import BaseModel
+from typing import Optional, Union
 
 
-class Error(BaseModel):
-    message: str
-    error_kind: Optional[str] = None
+class OpenBBError(Exception):
+    """OpenBB Error."""
+
+    def __init__(self, original: Optional[Union[str, Exception]] = None):
+        self.original = original
+        super().__init__(str(original))

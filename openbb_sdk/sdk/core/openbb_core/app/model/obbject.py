@@ -5,10 +5,11 @@ from pydantic import Field
 from pydantic.generics import GenericModel
 
 from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.app.model.abstract.error import Error
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
+from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.utils import basemodel_to_df
 
@@ -16,11 +17,9 @@ T = TypeVar("T")
 PROVIDERS = get_provider_interface().providers_literal
 
 
-class OpenBBError(Exception):
-    pass
+class OBBject(GenericModel, Generic[T], Tagged):
+    """OpenBB object."""
 
-
-class Obbject(GenericModel, Generic[T], Tagged):
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",
@@ -33,13 +32,13 @@ class Obbject(GenericModel, Generic[T], Tagged):
         default=None,
         description="List of warnings.",
     )
-    error: Optional[Error] = Field(
-        default=None,
-        description="Exception caught.",
-    )
     chart: Optional[Chart] = Field(
         default=None,
         description="Chart object.",
+    )
+    metadata: Optional[Metadata] = Field(
+        default=None,
+        description="Metadata info about the command execution.",
     )
 
     def __repr__(self) -> str:
@@ -64,7 +63,7 @@ class Obbject(GenericModel, Generic[T], Tagged):
         Union[pd.DataFrame, Dict[str, pd.DataFrame]]
             Pandas dataframe or dictionary of dataframes.
         """
-        if self.results is None:
+        if not self.results:
             raise OpenBBError("Results not found.")
 
         try:
@@ -130,6 +129,7 @@ class Obbject(GenericModel, Generic[T], Tagged):
 
     def show(self):
         """Displays chart."""
-        if not self.chart and not self.chart.fig:
+
+        if not self.chart or not self.chart.fig:
             raise OpenBBError("Chart not found.")
         self.chart.fig.show()

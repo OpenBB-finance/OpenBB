@@ -1,24 +1,20 @@
-# IMPORT STANDARD
 import json
 import logging
 from enum import Enum
-from typing import Any, Callable, Dict, Optional, Tuple
+from types import TracebackType
+from typing import Any, Callable, Dict, Optional, Tuple, Type, cast
 
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_core.app.logs.handlers_manager import HandlersManager
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.singleton import SingletonMeta
-from openbb_core.app.model.obbject import Obbject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-
-# IMPORT INTERNAL
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
-
-# IMPORT THIRD-PARTY
 from pydantic.json import pydantic_encoder
 
 
@@ -182,10 +178,12 @@ class LoggingManager(metaclass=SingletonMeta):
         self,
         user_settings: UserSettings,
         system_settings: SystemSettings,
-        obbject: Obbject,
         route: str,
         func: Callable,
         kwargs: Dict[str, Any],
+        exec_info: Optional[
+            Tuple[Type[BaseException], BaseException, Optional[TracebackType]]
+        ] = None,
     ):
         """
         Log command output and relevant information.
@@ -196,8 +194,6 @@ class LoggingManager(metaclass=SingletonMeta):
             User Settings object.
         system_settings : SystemSettings
             System Settings object.
-        obbject : Obbject
-            Obbject object containing command output and error information.
         route : str
             Route for the command.
         func : Callable
@@ -219,22 +215,31 @@ class LoggingManager(metaclass=SingletonMeta):
             logger = logging.getLogger(__name__)
 
             # Remove CommandContext if any
-            if "cc" in kwargs:
-                kwargs.pop("cc")
+            kwargs.pop("cc", None)
 
             # Truncate kwargs if too long
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
-            log_level = logger.error if obbject.error else logger.info
+            # Get execution info
+            openbb_error = cast(
+                Optional[OpenBBError], exec_info[1] if exec_info else None
+            )
+
+            # Construct message
+            message_label = "ERROR" if openbb_error else "CMD"
+            log_message = json.dumps(
+                {
+                    "route": route,
+                    "input": kwargs,
+                    "error": str(openbb_error.original) if openbb_error else None,
+                },
+                default=pydantic_encoder,
+            )
+            log_message = f"{message_label}: {log_message}"
+
+            log_level = logger.error if openbb_error else logger.info
             log_level(
-                "ERROR: %s" if obbject.error else "CMD: %s",
-                json.dumps(
-                    {
-                        "route": route,
-                        "input": kwargs,
-                        "error": obbject.error,
-                    },
-                    default=pydantic_encoder,
-                ),
+                log_message,
                 extra={"func_name_override": func.__name__},
+                exc_info=exec_info,
             )

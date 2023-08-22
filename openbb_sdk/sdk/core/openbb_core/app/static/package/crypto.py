@@ -1,141 +1,139 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-import typing
-from typing import Annotated, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from pydantic import validate_arguments
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import Obbject
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_crypto(Container):
-    @filter_call
+    """/crypto
+    load
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def load(
         self,
-        symbol: typing.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        symbol: typing_extensions.Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["polygon", "fmp"]] = None,
+        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
         **kwargs
-    ) -> Obbject[typing.List]:
-        r"""Crypto Intraday Price.
-
-
-        openbb
-        ======
+    ) -> OBBject[List]:
+        r"""Crypto EOD Price.
 
         Parameters
         ----------
-        provider: Literal[polygon, fmp]
-            The provider to use for the query.
-        symbol : ConstrainedStrValue
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+            Number of days to look back. (provider: fmp)
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            Timespan of the data. (provider: polygon)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. (provider: polygon)
+        limit : PositiveInt
+            The number of data entries to return. (provider: polygon)
+        adjusted : bool
+            Whether the data is adjusted. (provider: polygon)
+        multiplier : PositiveInt
+            Multiplier of the timespan. (provider: polygon)
+        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
+            Data granularity. (provider: yfinance)
+        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+            Period of the data to return. (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        adjust : bool
+            Adjust all the data automatically. (provider: yfinance)
+        back_adjust : bool
+            Back-adjusted data to mimic true historical prices. (provider: yfinance)
 
         Returns
         -------
-        Obbject
-            results: List[Data]
+        OBBject
+            results : List[CryptoEOD]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CryptoEOD
         ---------
-        date : datetime
+        date : Optional[datetime]
             The date of the data.
-        open : PositiveFloat
+        open : Optional[PositiveFloat]
             The open price of the symbol.
-        high : PositiveFloat
+        high : Optional[PositiveFloat]
             The high price of the symbol.
-        low : PositiveFloat
+        low : Optional[PositiveFloat]
             The low price of the symbol.
-        close : PositiveFloat
+        close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : PositiveFloat
+        volume : Optional[PositiveFloat]
             The volume of the symbol.
-        vwap : PositiveFloat
+        vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
+        adj_close : Optional[float]
+            Adjusted Close Price of the symbol. (provider: fmp)
+        unadjusted_volume : Optional[float]
+            Unadjusted volume of the symbol. (provider: fmp)
+        change : Optional[float]
+            Change in the price of the symbol from the previous day. (provider: fmp)
+        change_percent : Optional[float]
+            Change \% in the price of the symbol. (provider: fmp)
+        label : Optional[str]
+            Human readable format of the date. (provider: fmp)
+        change_over_time : Optional[float]
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
+        n : Optional[PositiveInt]
+            Number of transactions for the symbol in the time period. (provider: polygon)
+        """
 
-        polygon
-        =======
-
-        Parameters
-        ----------
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            The timespan of the data.
-        sort : Literal['asc', 'desc']
-            Sort order of the data.
-        limit : PositiveInt
-            The number of data entries to return.
-        adjusted : bool
-            Whether the data is adjusted.
-        multiplier : PositiveInt
-            The multiplier of the timespan.
-
-
-        CryptoEOD
-        ---------
-        n : PositiveInt
-            The number of transactions for the symbol in the time period.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        timeseries : Optional[NonNegativeInt]
-            Number of days to look back.
-
-
-        CryptoEOD
-        ---------
-        adjClose : float
-            Adjusted Close Price of the symbol.
-        unadjustedVolume : float
-            Unadjusted volume of the symbol.
-        change : float
-            Change in the price of the symbol from the previous day.
-        changePercent : float
-            Change \% in the price of the symbol.
-        label : str
-            Human readable format of the date.
-        changeOverTime : float
-            Change \% in the price of the symbol over a period of time."""
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
             standard_params={
-                "symbol": symbol,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },
@@ -143,9 +141,7 @@ class CLASS_crypto(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/crypto/load",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

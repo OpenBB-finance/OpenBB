@@ -29,7 +29,10 @@ logger = logging.getLogger(__name__)
 def valinvest_score(
     symbol: str, years: int, export: str = "", sheet_name: Optional[str] = None
 ):
-    """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
+    """
+    Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
+    The data is gathered from fmp and the scores are calculated using the valinvest library. The repository
+    For this library can be found here: https://github.com/astro30/valinvest
 
     Parameters
     ----------

@@ -1,7 +1,7 @@
 from importlib import import_module
-from typing import Callable, Generic, Optional, Tuple, TypeVar
+from typing import Callable, Optional, Tuple, TypeVar
 
-import importlib_metadata
+from importlib_metadata import entry_points
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.charts.chart import Chart, ChartFormat
@@ -87,8 +87,7 @@ class ChartingManager(metaclass=SingletonMeta):
         bool
             Either charting extension is installed or not.
         """
-        entry_points = importlib_metadata.entry_points(group=plugin)
-        extensions = [ext.name for ext in entry_points]
+        extensions = [ext.name for ext in entry_points(group=plugin)]
 
         return charting_extension in extensions
 
@@ -99,7 +98,7 @@ class ChartingManager(metaclass=SingletonMeta):
         """
         Get the module of the given extension.
         """
-        for entry_point in importlib_metadata.entry_points(group=plugin):
+        for entry_point in entry_points(group=plugin):
             if entry_point.name == extension_name:
                 return import_module(entry_point.module)
 
@@ -195,7 +194,7 @@ class ChartingManager(metaclass=SingletonMeta):
         user_settings: UserSettings,
         system_settings: SystemSettings,
         route: str,
-        obbject_item: Generic[T],
+        obbject_item: T,
         **kwargs,
     ):
         """

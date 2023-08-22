@@ -1,7 +1,7 @@
 # IMPORT STANDARD
 import time
 import uuid
-from pathlib import Path
+from pathlib import Path, PosixPath
 
 # IMPORT THIRD-PARTY
 # IMPORT INTERNAL
@@ -31,7 +31,7 @@ def get_app_id(contextual_user_data_directory: str) -> str:
     return app_id
 
 
-def get_log_dir(contextual_user_data_directory: str) -> Path:
+def get_log_dir(contextual_user_data_directory: str) -> PosixPath:
     """Retrieve application's log directory."""
 
     log_dir = create_log_dir_if_not_exists(contextual_user_data_directory)
@@ -41,7 +41,7 @@ def get_log_dir(contextual_user_data_directory: str) -> Path:
     return uuid_log_dir
 
 
-def create_log_dir_if_not_exists(contextual_user_data_directory: str) -> None:
+def create_log_dir_if_not_exists(contextual_user_data_directory: str) -> Path:
     log_dir = Path(contextual_user_data_directory).joinpath("logs").absolute()
     if not log_dir.is_dir():
         log_dir.mkdir(parents=True, exist_ok=True)
@@ -64,7 +64,7 @@ def get_log_id(log_dir):
     return (log_dir / ".logid").absolute()
 
 
-def create_uuid_dir_if_not_exists(log_dir, logging_id) -> str:
+def create_uuid_dir_if_not_exists(log_dir, logging_id) -> PosixPath:
     uuid_log_dir = (log_dir / logging_id).absolute()
 
     if not uuid_log_dir.is_dir():

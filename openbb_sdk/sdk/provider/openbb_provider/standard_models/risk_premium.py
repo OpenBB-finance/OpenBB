@@ -19,8 +19,8 @@ class RiskPremiumData(Data):
     country: str = Field(description="Market country.")
     continent: Optional[str] = Field(description="Continent of the country.")
     total_equity_risk_premium: PositiveFloat = Field(
-        description="The total equity risk premium for the country."
+        description="Total equity risk premium for the country."
     )
     country_risk_premium: NonNegativeFloat = Field(
-        description="The country-specific risk premium."
+        description="Country-specific risk premium."
     )

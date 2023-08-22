@@ -1,7 +1,6 @@
 """FMP Historical Employees fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -9,7 +8,6 @@ from openbb_provider.standard_models.historical_employees import (
     HistoricalEmployeesData,
     HistoricalEmployeesQueryParams,
 )
-from pydantic import validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -25,6 +23,8 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
     """FMP Historical Employees Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "acceptance_time": "acceptanceTime",
             "period_of_report": "periodOfReport",
@@ -34,42 +34,37 @@ class FMPHistoricalEmployeesData(HistoricalEmployeesData):
             "employee_count": "employeeCount",
         }
 
-    @validator("acceptanceTime", pre=True, check_fields=False)
-    def acceptance_time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-
-    @validator("periodOfReport", pre=True, check_fields=False)
-    def period_of_report_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d")
-
-    @validator("filingDate", pre=True, check_fields=False)
-    def filing_date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d")
-
 
 class FMPHistoricalEmployeesFetcher(
     Fetcher[
         FMPHistoricalEmployeesQueryParams,
-        FMPHistoricalEmployeesData,
+        List[FMPHistoricalEmployeesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalEmployeesQueryParams:
+        """Transform the query params."""
+
         return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FMPHistoricalEmployeesQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
-    ) -> List[FMPHistoricalEmployeesData]:
+        **kwargs: Any,
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "historical/employee_count", api_key, query)
-        return get_data_many(url, FMPHistoricalEmployeesData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPHistoricalEmployeesData],
-    ) -> List[FMPHistoricalEmployeesData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPHistoricalEmployeesData]:
+        """Return the transformed data."""
+
+        return [FMPHistoricalEmployeesData(**d) for d in data]

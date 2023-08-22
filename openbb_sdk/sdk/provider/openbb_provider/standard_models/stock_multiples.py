@@ -111,6 +111,15 @@ class StockMultiplesData(Data):
     dividend_yield_ttm: Optional[float] = Field(
         description="Dividend yield calculated as trailing twelve months."
     )
+    dividend_yield_percentage_ttm: Optional[float] = Field(
+        description="Dividend yield percentage calculated as trailing twelve months."
+    )
+    dividend_to_market_cap_ttm: Optional[float] = Field(
+        description="Dividend to market capitalization ratio calculated as trailing twelve months."
+    )
+    dividend_per_share_ttm: Optional[float] = Field(
+        description="Dividend per share calculated as trailing twelve months."
+    )
     payout_ratio_ttm: Optional[float] = Field(
         description="Payout ratio calculated as trailing twelve months."
     )

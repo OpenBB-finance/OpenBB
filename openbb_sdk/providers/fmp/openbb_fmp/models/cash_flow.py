@@ -23,6 +23,7 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
+        """Validate that either a symbol or CIK is provided."""
         if values.get("symbol") is None and values.get("cik") is None:
             raise ValueError("symbol or cik must be provided")
         return values
@@ -32,6 +33,8 @@ class FMPCashFlowStatementData(CashFlowStatementData):
     """FMP Cash Flow Statement Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "currency": "reportedCurrency",
             "filing_date": "fillingDate",
@@ -52,7 +55,7 @@ class FMPCashFlowStatementData(CashFlowStatementData):
             "purchases_of_investments": "purchasesOfInvestments",
             "sales_maturities_of_investments": "salesMaturitiesOfInvestments",
             "other_investing_activities": "otherInvestingActivites",
-            "net_cash_flow_from_investing_activities": "netCashUsedForInvestingActivites",
+            "net_cash_used_for_investing_activities": "netCashUsedForInvestingActivites",
             "debt_repayment": "debtRepayment",
             "common_stock_issued": "commonStockIssued",
             "common_stock_repurchased": "commonStockRepurchased",
@@ -65,23 +68,29 @@ class FMPCashFlowStatementData(CashFlowStatementData):
             "cash_at_beginning_of_period": "cashAtBeginningOfPeriod",
             "operating_cash_flow": "operatingCashFlow",
             "capital_expenditure": "capitalExpenditure",
-            "net_cash_flow": "freeCashFlow",
+            "free_cash_flow": "freeCashFlow",
         }
 
     # Leftovers below
-    calendarYear: Optional[int]
+    calendar_year: Optional[int] = Field(
+        description="Calendar Year", alias="calendarYear"
+    )
     link: Optional[str]
-    finalLink: Optional[str]
+    final_link: Optional[str] = Field(description="Final Link", alias="finalLink")
 
 
 class FMPCashFlowStatementFetcher(
     Fetcher[
         FMPCashFlowStatementQueryParams,
-        FMPCashFlowStatementData,
+        List[FMPCashFlowStatementData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
+        """Transform the query params."""
+
         return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
@@ -89,18 +98,18 @@ class FMPCashFlowStatementFetcher(
         query: FMPCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPCashFlowStatementData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        query.period = "annual" if query.period == "annually" else "quarter"
 
         url = create_url(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPCashFlowStatementData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPCashFlowStatementData],
-    ) -> List[FMPCashFlowStatementData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPCashFlowStatementData]:
+        """Return the transformed data."""
+
+        return [FMPCashFlowStatementData(**d) for d in data]

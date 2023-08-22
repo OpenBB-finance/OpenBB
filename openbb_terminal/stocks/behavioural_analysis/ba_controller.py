@@ -13,7 +13,6 @@ from openbb_terminal.common.behavioural_analysis import (
     google_view,
     reddit_view,
     stocktwits_view,
-    twitter_view,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -21,7 +20,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_int_range,
     check_non_negative,
     check_positive,
     valid_date,
@@ -47,15 +45,12 @@ class BehaviouralAnalysisController(StockBaseController):
         "load",
         "wsb",
         "popular",
-        "spacc",
         "getdd",
         "redditsent",
         "bullbear",
         "messages",
         "trending",
         "stalker",
-        "infer",
-        "sentiment",
         "mentions",
         "regions",
         "queries",
@@ -97,15 +92,12 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
         mt.add_cmd("popular")
-        mt.add_cmd("spacc")
         mt.add_cmd("getdd")
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
         mt.add_cmd("bullbear", self.ticker)
         mt.add_cmd("messages", self.ticker)
-        mt.add_cmd("infer", self.ticker)
-        mt.add_cmd("sentiment", self.ticker)
         mt.add_cmd("mentions", self.ticker)
         mt.add_cmd("regions", self.ticker)
         mt.add_cmd("interest", self.ticker)
@@ -135,40 +127,6 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             finnhub_view.display_stock_price_headlines_sentiment(
                 symbol=self.ticker, export=ns_parser.export
-            )
-
-    @log_start_end(log=logger)
-    def call_spacc(self, other_args: List[str]):
-        """Process spacc command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spacc",
-            description="""Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="n_limit",
-            type=check_positive,
-            default=10,
-            help="limit of posts with SPACs retrieved",
-        )
-        parser.add_argument(
-            "-p",
-            "--popular",
-            action="store_true",
-            default=False,
-            dest="b_popular",
-            help="popular flag, if true the posts retrieved are based on score rather than time",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_spac_community(
-                limit=ns_parser.n_limit, popular=ns_parser.b_popular
             )
 
     @log_start_end(log=logger)
@@ -701,106 +659,6 @@ class BehaviouralAnalysisController(StockBaseController):
                 google_view.display_rise(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    @log_start_end(log=logger)
-    def call_infer(self, other_args: List[str]):
-        """Process infer command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="infer",
-            description="""
-                Print quick sentiment inference from last tweets that contain the ticker.
-                This model splits the text into character-level tokens and uses vader sentiment analysis.
-                [Source: Twitter]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_int_range(10, 100),
-            default=100,
-            help="limit of latest tweets to infer from.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if self.ticker:
-                twitter_view.display_inference(
-                    symbol=self.ticker,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    @log_start_end(log=logger)
-    def call_sentiment(self, other_args: List[str]):
-        """Process sentiment command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sentiment",
-            description="""
-                Plot in-depth sentiment predicted from tweets from last days
-                that contain pre-defined ticker. [Source: Twitter]
-            """,
-        )
-        # in reality this argument could be 100, but after testing it takes too long
-        # to compute which may not be acceptable
-        # TODO: use https://github.com/twintproject/twint instead of twitter API
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_int_range(10, 62),
-            default=15,
-            help="limit of tweets to extract per hour.",
-        )
-        parser.add_argument(
-            "-d",
-            "--days",
-            action="store",
-            dest="n_days_past",
-            type=check_int_range(1, 6),
-            default=6,
-            help="number of days in the past to extract tweets.",
-        )
-        parser.add_argument(
-            "-c",
-            "--compare",
-            action="store_true",
-            dest="compare",
-            help="show corresponding change in stock price",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if self.ticker:
-                twitter_view.display_sentiment(
-                    symbol=self.ticker,
-                    n_tweets=ns_parser.limit,
-                    n_days_past=ns_parser.n_days_past,
-                    compare=ns_parser.compare,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
