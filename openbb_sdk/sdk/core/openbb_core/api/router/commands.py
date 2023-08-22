@@ -12,6 +12,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
+from openbb_core.app.service.user_service import UserService
 from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
 
@@ -22,6 +23,7 @@ router = APIRouter(prefix="")
 
 
 def build_new_annotation_map(sig: Signature) -> Dict[str, Any]:
+    """Build new annotation map."""
     annotation_map = {}
     parameter_list = sig.parameters.values()
 
@@ -34,6 +36,7 @@ def build_new_annotation_map(sig: Signature) -> Dict[str, Any]:
 
 
 def build_new_signature(func):
+    """Build new function signature."""
     sig = signature(func)
     parameter_list = sig.parameters.values()
     return_annotation = sig.return_annotation
@@ -126,6 +129,7 @@ def build_api_wrapper(
     command_runner: CommandRunner,
     route: APIRoute,
 ) -> Callable:
+    """Build API wrapper for a command."""
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
 
@@ -140,23 +144,23 @@ def build_api_wrapper(
         user_settings: UserSettings = UserSettings.parse_obj(
             kwargs.pop(
                 "__authenticated_user_settings",
-                SystemService.read_default_system_settings(),
+                UserService.read_default_user_settings(),
             )
         )
-        execute = partial(command_runner.run_once, user_settings, path)
-        journal_entry = execute(*args, **kwargs)
+        execute = partial(command_runner.run, path, user_settings)
+        output: OBBject = execute(*args, **kwargs)
 
-        return validate_output(journal_entry.output)
+        return validate_output(output)
 
     return wrapper
 
 
 def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> None:
+    """Add command map to the API router."""
     plugins_router = RouterLoader.from_extensions()
 
     for route in plugins_router.api_router.routes:
         route.endpoint = build_api_wrapper(command_runner=command_runner, route=route)  # type: ignore # noqa
-
     api_router.include_router(router=plugins_router.api_router)
 
 

@@ -2,8 +2,6 @@ from typing import List, Literal
 
 import numpy as np
 import pandas as pd
-import pandas_ta as ta
-import statsmodels.api as sm
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
@@ -15,8 +13,6 @@ from openbb_core.app.utils import (
 )
 from openbb_provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
-from scipy import stats
-from statsmodels.tsa import stattools
 
 from openbb_qa.qa_helpers import get_fama_raw
 from openbb_qa.qa_models import (
@@ -57,6 +53,8 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
         Normality tests summary. See qa_models.NormalityModel for details.
     """
 
+    from scipy import stats
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
@@ -80,6 +78,8 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 @router.command(methods=["POST"])
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Capital Asset Pricing Model."""
+
+    import statsmodels.api as sm
 
     df = basemodel_to_df(data)
 
@@ -177,6 +177,9 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Kurtosis.
     """
+
+    import pandas_ta as ta
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = ta.kurtosis(close=series_target, length=window).dropna()
@@ -249,6 +252,8 @@ def unitroot(
     OBBject[UnitRootModel]
         Unit root tests summary.
     """
+
+    from statsmodels.tsa import stattools
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -404,6 +409,9 @@ def skew(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Dat
     OBBject[List[Data]]
         Skewness.
     """
+
+    import pandas_ta as ta
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = ta.skew(close=series_target, length=window).dropna()
@@ -420,6 +428,8 @@ def quantile(
     quantile_pct: NonNegativeFloat = 0.5,
 ) -> OBBject[List[Data]]:
     """Quantile."""
+
+    import pandas_ta as ta
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)

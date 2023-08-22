@@ -6,11 +6,28 @@ from pydantic import validate_arguments
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_dps(Container):
-    @filter_call
+    """/stocks/dps
+    ctb
+    dpotc
+    ftd
+    hsi
+    pos
+    prom
+    psi
+    psi_q
+    psi_sg
+    shorted
+    sidtc
+    spos
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def ctb(
         self, chart: bool = False
@@ -21,14 +38,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/ctb",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dpotc(
         self, chart: bool = False
@@ -39,14 +53,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/dpotc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ftd(
         self, chart: bool = False
@@ -57,14 +68,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/ftd",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hsi(
         self, chart: bool = False
@@ -75,14 +83,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/hsi",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pos(
         self, chart: bool = False
@@ -93,14 +98,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/pos",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def prom(
         self, chart: bool = False
@@ -111,14 +113,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/prom",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def psi(
         self, chart: bool = False
@@ -129,14 +128,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/psi",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def psi_q(
         self, chart: bool = False
@@ -145,14 +141,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/psi_q",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def psi_sg(
         self, chart: bool = False
@@ -161,14 +154,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/psi_sg",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shorted(
         self, chart: bool = False
@@ -179,14 +169,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/shorted",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sidtc(
         self, chart: bool = False
@@ -197,14 +184,11 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/sidtc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def spos(
         self, chart: bool = False
@@ -215,9 +199,7 @@ class CLASS_stocks_dps(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/dps/spos",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

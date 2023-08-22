@@ -60,7 +60,6 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPAnalystEstimatesQueryParams:
         """Transform the query params."""
-
         return FMPAnalystEstimatesQueryParams(**params)
 
     @staticmethod
@@ -70,7 +69,6 @@ class FMPAnalystEstimatesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "quarter" if query.period == "quarterly" else "annual"
@@ -84,5 +82,4 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPAnalystEstimatesData]:
         """Return the transformed data."""
-
         return [FMPAnalystEstimatesData(**d) for d in data]

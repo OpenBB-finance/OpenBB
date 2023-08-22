@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Literal, Optional, Tuple
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
 
-MapType = dict[str, dict[str, dict[str, dict[str, Any]]]]
+MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
 
 
 class RegistryMap:

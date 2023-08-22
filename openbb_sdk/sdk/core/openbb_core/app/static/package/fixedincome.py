@@ -1,8 +1,9 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -10,28 +11,35 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_fixedincome(Container):
-    @filter_call
+    """/fixedincome
+    treasury
+    ycrv
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def treasury(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs,
     ) -> OBBject[List]:
         """Get treasury rates.
@@ -44,7 +52,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -54,14 +62,14 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[TreasuryRates]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         TreasuryRates
         -------------
@@ -104,14 +112,11 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/treasury",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ycrv(
         self, chart: bool = False
@@ -122,9 +127,7 @@ class CLASS_fixedincome(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/fixedincome/ycrv",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

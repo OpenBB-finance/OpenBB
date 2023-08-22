@@ -17,7 +17,6 @@ def test_fields():
     assert "results" in fields
     assert "provider" in fields
     assert "warnings" in fields
-    assert "error" in fields
     assert "chart" in fields
 
 

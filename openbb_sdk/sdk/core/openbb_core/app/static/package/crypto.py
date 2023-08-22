@@ -1,39 +1,46 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from pydantic import validate_arguments
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_crypto(Container):
-    @filter_call
+    """/crypto
+    load
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def load(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
         **kwargs,
     ) -> OBBject[List]:
         """Crypto EOD Price.
@@ -48,11 +55,11 @@ class CLASS_crypto(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Optional[pydantic.types.NonNegativeInt]
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
@@ -64,9 +71,9 @@ class CLASS_crypto(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
             Data granularity. (provider: yfinance)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -80,14 +87,14 @@ class CLASS_crypto(Container):
         OBBject
             results : List[CryptoEOD]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CryptoEOD
         ---------
@@ -112,12 +119,12 @@ class CLASS_crypto(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[PositiveInt]
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
+        n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """
 
@@ -134,9 +141,7 @@ class CLASS_crypto(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/crypto/load",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )
