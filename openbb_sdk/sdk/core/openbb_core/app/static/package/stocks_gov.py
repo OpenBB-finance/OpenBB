@@ -10,6 +10,23 @@ from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_gov(Container):
+    """/stocks/gov
+    contracts
+    government_trading
+    gtrades
+    histcont
+    lastcontracts
+    lasttrades
+    lobbying
+    qtrcontracts
+    topbuys
+    toplobbying
+    topsells
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def contracts(
         self, chart: bool = False

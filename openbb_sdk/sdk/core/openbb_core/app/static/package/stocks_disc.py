@@ -10,6 +10,30 @@ from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_disc(Container):
+    """/stocks/disc
+    active
+    arkord
+    asc
+    dividends
+    filings
+    fipo
+    gainers
+    gtech
+    hotpenny
+    ipo
+    losers
+    lowfloat
+    pipo
+    rtat
+    trending
+    ugs
+    ulc
+    upcoming
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def active(
         self, chart: bool = False

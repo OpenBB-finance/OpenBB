@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import openbb_provider
 import pandas
@@ -15,6 +15,43 @@ from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_ta(Container):
+    """/ta
+    ad
+    adosc
+    adx
+    aroon
+    atr
+    bbands
+    cci
+    cg
+    clenow
+    cones
+    demark
+    donchian
+    ema
+    fib
+    fisher
+    hma
+    ichimoku
+    kc
+    macd
+    multi
+    obv
+    recom
+    rsi
+    rsp
+    sma
+    stoch
+    summary
+    tv
+    vwap
+    wma
+    zlma
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ad(
         self,
@@ -773,8 +810,8 @@ class CLASS_ta(Container):
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
-        start_date: Union[str, None] = None,
-        end_date: Union[str, None] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
         chart: bool = False,
     ) -> OBBject[List]:
         """Create Fibonacci Retracement Levels.
