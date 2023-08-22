@@ -3,13 +3,12 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.risk_premium import (
     RiskPremiumData,
     RiskPremiumQueryParams,
 )
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
@@ -21,14 +20,6 @@ class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
 
 class FMPRiskPremiumData(RiskPremiumData):
     """FMP Risk Premium data."""
-
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "total_equity_risk_premium": "totalEquityRiskPremium",
-            "country_risk_premium": "countryRiskPremium",
-        }
 
 
 class FMPRiskPremiumFetcher(
@@ -42,7 +33,6 @@ class FMPRiskPremiumFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPRiskPremiumQueryParams:
         """Transform the query params."""
-
         return FMPRiskPremiumQueryParams(**params)
 
     @staticmethod
@@ -52,7 +42,6 @@ class FMPRiskPremiumFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "market_risk_premium", api_key)
@@ -62,5 +51,4 @@ class FMPRiskPremiumFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPRiskPremiumData]:
         """Return the transformed data."""
-
         return [FMPRiskPremiumData(**item) for item in data]

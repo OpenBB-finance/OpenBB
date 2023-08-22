@@ -3,14 +3,13 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
 from pydantic import Field, root_validator
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -37,38 +36,11 @@ class FMPCashFlowStatementData(CashFlowStatementData):
 
         fields = {
             "currency": "reportedCurrency",
-            "filing_date": "fillingDate",
-            "accepted_date": "acceptedDate",
-            "net_income": "netIncome",
-            "depreciation_and_amortization": "depreciationAndAmortization",
-            "stock_based_compensation": "stockBasedCompensation",
-            "other_non_cash_items": "otherNonCashItems",
-            "deferred_income_tax": "deferredIncomeTax",
-            "change_in_working_capital": "changeInWorkingCapital",
-            "accounts_receivables": "accountsReceivables",
-            "inventory": "inventory",
-            "accounts_payables": "accountsPayables",
-            "other_working_capital": "otherWorkingCapital",
             "net_cash_flow_from_operating_activities": "netCashProvidedByOperatingActivities",
-            "investments_in_property_plant_and_equipment": "investmentsInPropertyPlantAndEquipment",
-            "acquisitions_net": "acquisitionsNet",
-            "purchases_of_investments": "purchasesOfInvestments",
-            "sales_maturities_of_investments": "salesMaturitiesOfInvestments",
             "other_investing_activities": "otherInvestingActivites",
             "net_cash_used_for_investing_activities": "netCashUsedForInvestingActivites",
-            "debt_repayment": "debtRepayment",
-            "common_stock_issued": "commonStockIssued",
-            "common_stock_repurchased": "commonStockRepurchased",
-            "dividends_paid": "dividendsPaid",
             "other_financing_activities": "otherFinancingActivites",
             "net_cash_flow_from_financing_activities": "netCashUsedProvidedByFinancingActivities",
-            "effect_of_forex_changes_on_cash": "effectOfForexChangesOnCash",
-            "net_change_in_cash": "netChangeInCash",
-            "cash_at_end_of_period": "cashAtEndOfPeriod",
-            "cash_at_beginning_of_period": "cashAtBeginningOfPeriod",
-            "operating_cash_flow": "operatingCashFlow",
-            "capital_expenditure": "capitalExpenditure",
-            "free_cash_flow": "freeCashFlow",
         }
 
     # Leftovers below
@@ -90,7 +62,6 @@ class FMPCashFlowStatementFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCashFlowStatementQueryParams:
         """Transform the query params."""
-
         return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
@@ -111,5 +82,4 @@ class FMPCashFlowStatementFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPCashFlowStatementData]:
         """Return the transformed data."""
-
         return [FMPCashFlowStatementData(**d) for d in data]

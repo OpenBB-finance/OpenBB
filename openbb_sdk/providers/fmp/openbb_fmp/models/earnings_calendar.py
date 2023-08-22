@@ -4,14 +4,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.earnings_calendar import (
     EarningsCalendarData,
     EarningsCalendarQueryParams,
 )
 from pydantic import validator
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
@@ -23,16 +22,6 @@ class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
 
 class FMPEarningsCalendarData(EarningsCalendarData):
     """FMP Earnings Calendar Data."""
-
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "eps_estimated": "epsEstimated",
-            "revenue_estimated": "revenueEstimated",
-            "updated_from_date": "updatedFromDate",
-            "fiscal_date_ending": "fiscalDateEnding",
-        }
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
@@ -61,7 +50,6 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEarningsCalendarQueryParams:
         """Transform the query params."""
-
         return FMPEarningsCalendarQueryParams(**params)
 
     @staticmethod
@@ -71,7 +59,6 @@ class FMPEarningsCalendarFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -83,5 +70,4 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEarningsCalendarData]:
         """Return the transformed data."""
-
         return [FMPEarningsCalendarData(**d) for d in data]

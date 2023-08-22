@@ -5,11 +5,10 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
 from pydantic import Field, validator
-
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPForexEODQueryParams(ForexEODQueryParams):
@@ -58,7 +57,6 @@ class FMPForexEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPForexEODQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -77,7 +75,6 @@ class FMPForexEODFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -90,5 +87,4 @@ class FMPForexEODFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPForexEODData]:
         """Return the transformed data."""
-
         return [FMPForexEODData(**d) for d in data]

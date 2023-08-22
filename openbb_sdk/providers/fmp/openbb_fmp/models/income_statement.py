@@ -3,14 +3,13 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
 from pydantic import Field, root_validator
-
-from openbb_fmp.utils.helpers import get_data_many
 
 PeriodType = Literal["annual", "quarter"]
 
@@ -43,37 +42,10 @@ class FMPIncomeStatementData(IncomeStatementData):
 
         fields = {
             "currency": "reportedCurrency",
-            "filing_date": "fillingDate",
-            "accepted_date": "acceptedDate",
-            "calendar_year": "calendarYear",
-            "cost_of_revenue": "costOfRevenue",
-            "gross_profit": "grossProfit",
-            "gross_profit_ratio": "grossProfitRatio",
-            "research_and_development_expenses": "researchAndDevelopmentExpenses",
-            "general_and_administrative_expenses": "generalAndAdministrativeExpenses",
-            "selling_and_marketing_expenses": "sellingAndMarketingExpenses",
-            "selling_general_and_administrative_expenses": "sellingGeneralAndAdministrativeExpenses",
-            "other_expenses": "otherExpenses",
-            "operating_expenses": "operatingExpenses",
-            "cost_and_expenses": "costAndExpenses",
-            "interest_income": "interestIncome",
-            "interest_expense": "interestExpense",
-            "depreciation_and_amortization": "depreciationAndAmortization",
-            "ebitda": "ebitda",
             "ebitda_ratio": "ebitdaratio",
-            "operating_income": "operatingIncome",
-            "operating_income_ratio": "operatingIncomeRatio",
-            "total_other_income_expenses_net": "totalOtherIncomeExpensesNet",
-            "income_before_tax": "incomeBeforeTax",
-            "income_before_tax_ratio": "incomeBeforeTaxRatio",
-            "income_tax_expense": "incomeTaxExpense",
-            "net_income": "netIncome",
-            "net_income_ratio": "netIncomeRatio",
-            "eps": "eps",
             "eps_diluted": "epsdiluted",
             "weighted_average_shares_outstanding": "weightedAverageShsOut",
             "weighted_average_shares_outstanding_dil": "weightedAverageShsOutDil",
-            "final_link": "finalLink",
         }
 
 
@@ -88,7 +60,6 @@ class FMPIncomeStatementFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementQueryParams:
         """Transform the query params."""
-
         return FMPIncomeStatementQueryParams(**params)
 
     @staticmethod
@@ -98,7 +69,6 @@ class FMPIncomeStatementFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         symbol = query.symbol or query.cik
@@ -114,5 +84,4 @@ class FMPIncomeStatementFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPIncomeStatementData]:
         """Return the transformed data."""
-
         return [FMPIncomeStatementData(**d) for d in data]

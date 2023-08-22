@@ -3,13 +3,12 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.analyst_estimates import (
     AnalystEstimatesData,
     AnalystEstimatesQueryParams,
 )
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
@@ -21,32 +20,6 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
 
 class FMPAnalystEstimatesData(AnalystEstimatesData):
     """FMP Analyst Estimates Data."""
-
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "estimated_revenue_low": "estimatedRevenueLow",
-            "estimated_revenue_high": "estimatedRevenueHigh",
-            "estimated_revenue_avg": "estimatedRevenueAvg",
-            "estimated_ebitda_low": "estimatedEbitdaLow",
-            "estimated_ebitda_high": "estimatedEbitdaHigh",
-            "estimated_ebitda_avg": "estimatedEbitdaAvg",
-            "estimated_ebit_low": "estimatedEbitLow",
-            "estimated_ebit_high": "estimatedEbitHigh",
-            "estimated_ebit_avg": "estimatedEbitAvg",
-            "estimated_net_income_low": "estimatedNetIncomeLow",
-            "estimated_net_income_high": "estimatedNetIncomeHigh",
-            "estimated_net_income_avg": "estimatedNetIncomeAvg",
-            "estimated_sga_expense_low": "estimatedSgaExpenseLow",
-            "estimated_sga_expense_high": "estimatedSgaExpenseHigh",
-            "estimated_sga_expense_avg": "estimatedSgaExpenseAvg",
-            "estimated_eps_avg": "estimatedEpsAvg",
-            "estimated_eps_high": "estimatedEpsHigh",
-            "estimated_eps_low": "estimatedEpsLow",
-            "number_analyst_estimated_revenue": "numberAnalystEstimatedRevenue",
-            "number_analysts_estimated_eps": "numberAnalystsEstimatedEps",
-        }
 
 
 class FMPAnalystEstimatesFetcher(

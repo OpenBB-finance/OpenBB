@@ -4,14 +4,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_quote import (
     StockQuoteData,
     StockQuoteQueryParams,
 )
 from pydantic import validator
-
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPStockQuoteQueryParams(StockQuoteQueryParams):
@@ -28,18 +27,8 @@ class FMPStockQuoteData(StockQuoteData):
         """Pydantic alias config using fields dict."""
 
         fields = {
-            "changes_percentage": "changesPercentage",
-            "day_low": "dayLow",
-            "day_high": "dayHigh",
-            "year_high": "yearHigh",
-            "year_low": "yearLow",
-            "market_cap": "marketCap",
             "price_avg50": "priceAvg50",
             "price_avg200": "priceAvg200",
-            "avg_volume": "avgVolume",
-            "previous_close": "previousClose",
-            "earnings_announcement": "earningsAnnouncement",
-            "shares_outstanding": "sharesOutstanding",
             "date": "timestamp",
         }
 
@@ -60,7 +49,6 @@ class FMPStockQuoteFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockQuoteQueryParams:
         """Transform the query params."""
-
         return FMPStockQuoteQueryParams(**params)
 
     @staticmethod
@@ -70,7 +58,6 @@ class FMPStockQuoteFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"

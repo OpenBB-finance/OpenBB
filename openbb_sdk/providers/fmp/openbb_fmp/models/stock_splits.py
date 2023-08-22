@@ -5,13 +5,12 @@ from datetime import date
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_splits import (
     StockSplitCalendarData,
     StockSplitCalendarQueryParams,
 )
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPStockSplitCalendarQueryParams(StockSplitCalendarQueryParams):
@@ -36,7 +35,6 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockSplitCalendarQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
-
         transformed_params = params
 
         now = date.today()
@@ -55,7 +53,6 @@ class FMPStockSplitCalendarFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query_str = f"from={query.start_date}&to={query.end_date}"
@@ -66,5 +63,4 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockSplitCalendarData]:
         """Return the transformed data."""
-
         return [FMPStockSplitCalendarData(**d) for d in data]

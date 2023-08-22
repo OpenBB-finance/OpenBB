@@ -3,13 +3,12 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.sec_filings import (
     SECFilingsData,
     SECFilingsQueryParams,
 )
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPSECFilingsQueryParams(SECFilingsQueryParams):
@@ -21,15 +20,6 @@ class FMPSECFilingsQueryParams(SECFilingsQueryParams):
 
 class FMPSECFilingsData(SECFilingsData):
     """FMP SEC Filings Data."""
-
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "filling_date": "fillingDate",
-            "accepted_date": "acceptedDate",
-            "final_link": "finalLink",
-        }
 
 
 class FMPSECFilingsFetcher(
@@ -43,7 +33,6 @@ class FMPSECFilingsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPSECFilingsQueryParams:
         """Transform the query params."""
-
         return FMPSECFilingsQueryParams(**params)
 
     @staticmethod
@@ -53,7 +42,6 @@ class FMPSECFilingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -65,5 +53,4 @@ class FMPSECFilingsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPSECFilingsData]:
         """Return the transformed data."""
-
         return [FMPSECFilingsData(**d) for d in data]

@@ -3,13 +3,12 @@
 
 from typing import Any, Dict, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_peers import (
     StockPeersData,
     StockPeersQueryParams,
 )
-
-from openbb_fmp.utils.helpers import create_url, get_data_one
 
 # FMP SPECIFIC FUNCTIONALITY CURRENTLY
 
@@ -24,11 +23,6 @@ class FMPStockPeersQueryParams(StockPeersQueryParams):
 class FMPStockPeersData(StockPeersData):
     """FMP Stock Peers data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {"peers_list": "peersList"}
-
 
 class FMPStockPeersFetcher(
     Fetcher[
@@ -41,7 +35,6 @@ class FMPStockPeersFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockPeersQueryParams:
         """Transform the query params."""
-
         return FMPStockPeersQueryParams(**params)
 
     @staticmethod
@@ -51,7 +44,6 @@ class FMPStockPeersFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(4, "stock_peers", api_key, query)
 

@@ -4,14 +4,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.key_executives import (
     KeyExecutivesData,
     KeyExecutivesQueryParams,
 )
 from pydantic import validator
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPKeyExecutivesQueryParams(KeyExecutivesQueryParams):
@@ -23,15 +22,6 @@ class FMPKeyExecutivesQueryParams(KeyExecutivesQueryParams):
 
 class FMPKeyExecutivesData(KeyExecutivesData):
     """FMP Key Executives Data."""
-
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "currency_pay": "currencyPay",
-            "year_born": "yearBorn",
-            "title_since": "titleSince",
-        }
 
     @validator("titleSince", pre=True, check_fields=False)
     def time_validate(cls, v):  # pylint: disable=E0213
@@ -50,7 +40,6 @@ class FMPKeyExecutivesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPKeyExecutivesQueryParams:
         """Transform the query params."""
-
         return FMPKeyExecutivesQueryParams(**params)
 
     @staticmethod
@@ -60,7 +49,6 @@ class FMPKeyExecutivesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -71,5 +59,4 @@ class FMPKeyExecutivesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPKeyExecutivesData]:
         """Return the transformed data."""
-
         return [FMPKeyExecutivesData(**d) for d in data]

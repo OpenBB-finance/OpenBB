@@ -4,12 +4,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPStockEODQueryParams(StockEODQueryParams):
@@ -71,7 +70,6 @@ class FMPStockEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
         """Transform the query params."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -90,7 +88,6 @@ class FMPStockEODFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -110,5 +107,4 @@ class FMPStockEODFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockEODData]:
         """Return the transformed data."""
-
         return [FMPStockEODData(**d) for d in data]

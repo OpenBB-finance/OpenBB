@@ -3,14 +3,13 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
     StockNewsQueryParams,
 )
 from pydantic import Field
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPStockNewsQueryParams(StockNewsQueryParams):
@@ -49,7 +48,6 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockNewsQueryParams:
         """Transform the query params."""
-
         return FMPStockNewsQueryParams(**params)
 
     @staticmethod
@@ -59,7 +57,6 @@ class FMPStockNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(3, "stock_news", api_key, query)
 
@@ -68,5 +65,4 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockNewsData]:
         """Return the transformed data."""
-
         return [FMPStockNewsData(**d) for d in data]

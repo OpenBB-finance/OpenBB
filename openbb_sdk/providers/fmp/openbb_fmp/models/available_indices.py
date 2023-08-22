@@ -3,13 +3,12 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
@@ -21,14 +20,6 @@ class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 
 class FMPAvailableIndicesData(AvailableIndicesData):
     """FMP Available Indices Data."""
-
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "stock_exchange": "stockExchange",
-            "exchange_short_name": "exchangeShortName",
-        }
 
 
 class FMPAvailableIndicesFetcher(
@@ -42,7 +33,6 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPAvailableIndicesQueryParams:
         """Transform the query params."""
-
         return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod

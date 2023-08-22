@@ -4,14 +4,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
 )
 from pydantic import validator
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams):
@@ -30,9 +29,7 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
         """Pydantic alias config using fields dict."""
 
         fields = {
-            "sub_sector": "subSector",
             "headquarter": "headQuarter",
-            "date_first_added": "dateFirstAdded",
         }
 
     @validator("dateFirstAdded", pre=True, check_fields=False)
@@ -67,7 +64,6 @@ class FMPMajorIndicesConstituentsFetcher(
         params: Dict[str, Any]
     ) -> FMPMajorIndicesConstituentsQueryParams:
         """Transform the query params."""
-
         return FMPMajorIndicesConstituentsQueryParams(**params)
 
     @staticmethod
@@ -77,7 +73,6 @@ class FMPMajorIndicesConstituentsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -88,5 +83,4 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMajorIndicesConstituentsData]:
         """Return the raw data from the FMP endpoint."""
-
         return [FMPMajorIndicesConstituentsData(**d) for d in data]
