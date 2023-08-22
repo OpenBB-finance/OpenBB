@@ -1376,36 +1376,6 @@ class BaseController(metaclass=ABCMeta):
             )
         return ns_parser
 
-    def __handle_command_in_queue(self, current_user, custom_path_menu_above: str):
-        # If the command is quitting the menu we want to return in here
-        if self.queue[0] in ("q", "..", "quit"):
-            self.save_class()
-            # Go back to the root in order to go to the right directory because
-            # there was a jump between indirect menus
-            if custom_path_menu_above:
-                self.queue.insert(1, custom_path_menu_above)
-
-            if len(self.queue) > 1:
-                return self.queue[1:]
-
-            if current_user.preferences.ENABLE_EXIT_AUTO_HELP:
-                return ["help"]
-            return []
-
-        # Consume 1 element from the queue
-        an_input = self.queue[0]
-        self.queue = self.queue[1:]
-
-        # Print location because this was an instruction and we want user to know the action
-        if (
-            an_input
-            and an_input != "home"
-            and an_input != "help"
-            and an_input.split(" ")[0] in self.controller_choices
-        ):
-            console.print(f"{get_flair()} {self.PATH} $ {an_input}")
-        return None
-
     def menu(self, custom_path_menu_above: str = ""):
         """Enter controller menu."""
 
@@ -1415,11 +1385,33 @@ class BaseController(metaclass=ABCMeta):
         while True:
             # There is a command in the queue
             if self.queue and len(self.queue) > 0:
-                result = self.__handle_command_in_queue(
-                    current_user, custom_path_menu_above
-                )
-                if result is not None:
-                    return result
+                if self.queue[0] in ("q", "..", "quit"):
+                    self.save_class()
+                    # Go back to the root in order to go to the right directory because
+                    # there was a jump between indirect menus
+                    if custom_path_menu_above:
+                        self.queue.insert(1, custom_path_menu_above)
+
+                    if len(self.queue) > 1:
+                        return self.queue[1:]
+
+                    if current_user.preferences.ENABLE_EXIT_AUTO_HELP:
+                        return ["help"]
+                    return []
+
+                # Consume 1 element from the queue
+                an_input = self.queue[0]
+                self.queue = self.queue[1:]
+
+                # Print location because this was an instruction and we want user to know the action
+                if (
+                    an_input
+                    and an_input != "home"
+                    and an_input != "help"
+                    and an_input.split(" ")[0] in self.controller_choices
+                ):
+                    console.print(f"{get_flair()} {self.PATH} $ {an_input}")
+
             # Get input command from user
             else:
                 # Display help menu when entering on this menu from a level above
@@ -1466,8 +1458,7 @@ class BaseController(metaclass=ABCMeta):
 
             try:
                 # Allow user to go back to root
-                if an_input == "/":
-                    an_input = "home"
+                an_input = "home" if an_input == "/" else an_input
 
                 # Process the input command
                 self.queue = self.switch(an_input)
