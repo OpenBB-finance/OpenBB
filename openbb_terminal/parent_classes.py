@@ -1437,9 +1437,7 @@ class BaseController(metaclass=ABCMeta):
                                     f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
-                                    {
-                                        "bottom-toolbar": "#ffffff bg:#333333",
-                                    }
+                                    {"bottom-toolbar": "#ffffff bg:#333333"}
                                 ),
                             )
                         else:
