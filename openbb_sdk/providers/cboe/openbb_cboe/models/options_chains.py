@@ -4,14 +4,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_cboe.utils.helpers import get_chains
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import get_chains
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -88,7 +87,6 @@ class CboeOptionsChainsData(OptionsChainsData):
     @validator("expiration", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
-
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -103,7 +101,6 @@ class CboeOptionsChainsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeOptionsChainsQueryParams:
         """Transform the query"""
-
         return CboeOptionsChainsQueryParams(**params)
 
     @staticmethod
@@ -113,7 +110,6 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
-
         return get_chains(query.symbol).to_dict("records")
 
     @staticmethod
@@ -121,5 +117,4 @@ class CboeOptionsChainsFetcher(
         data: dict,
     ) -> List[CboeOptionsChainsData]:
         """Transform the data to the standard format"""
-
         return [CboeOptionsChainsData.parse_obj(d) for d in data]

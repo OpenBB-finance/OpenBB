@@ -3,14 +3,13 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_cboe.utils.helpers import stock_search
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_search import (
     StockSearchData,
     StockSearchQueryParams,
 )
 from pydantic import Field
-
-from openbb_cboe.utils.helpers import stock_search
 
 
 class CboeStockSearchQueryParams(StockSearchQueryParams):
@@ -28,7 +27,6 @@ class CboeStockSearchData(StockSearchData):
 
         fields = {
             "name": "Company Name",
-            "symbol": "Symbol",
         }
 
     dpmName: Optional[str] = Field(
@@ -47,12 +45,11 @@ class CboeStockSearchFetcher(
         List[CboeStockSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockSearchQueryParams:
-        """Transform the query"""
-
+        """Transform the query."""
         return CboeStockSearchQueryParams(**params)
 
     @staticmethod
@@ -61,8 +58,7 @@ class CboeStockSearchFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
-        """Return the raw data from the CBOE endpoint"""
-
+        """Return the raw data from the CBOE endpoint."""
         data = stock_search(query.query, ticker=query.ticker)
 
         if "results" in data:
@@ -72,5 +68,5 @@ class CboeStockSearchFetcher(
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockSearchData]:
-        """Transform the data to the standard format"""
+        """Transform the data to the standard format."""
         return [CboeStockSearchData.parse_obj(d) for d in data]
