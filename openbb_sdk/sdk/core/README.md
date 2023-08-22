@@ -245,9 +245,7 @@ obb.user.defaults
 
 #### System settings
 
-Check your system settings. Most of the properties are read-only during runtime.
-
-- `debug_mode`: Setting it as `True` will immediately raise all occurring exceptions.
+Check your system settings.
 
 ```python
 from openbb import obb
@@ -317,9 +315,9 @@ You can also use the dynamic version to consume the API endpoints from Python it
 In fact, the static version makes use of this feature to run each command. Take a look at the example below:
 
 ```python
->>> from openbb_core.app.command_runner import CommandRunnerSession
->>> crs = CommandRunnerSession()
->>> response = crs.run(
+>>> from openbb_core.app.command_runner import CommandRunner
+>>> runner = CommandRunner()
+>>> output = runner.run(
              "/stocks/load",
              provider_choices={
                  "provider": "fmp",
@@ -332,26 +330,15 @@ In fact, the static version makes use of this feature to run each command. Take 
              extra_params={},
              chart=True,
          )
->>> response
-JournalEntry
-
-id: ...                 # UUID Tag
-arguments: ...          # Arguments of the command.
-duration ...            # Execution duration in nano second of the command.
-output ...              # Output of the command.
-route: "/stocks/load"   # Route of the command.
-timestamp: ...          # Execution starting timestamp.
-alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
-
->>> response.output
+>>> output
 OBBject
 
 id: ...                 # UUID Tag
 results: ...            # Serializable results.
 provider: ...           # Provider name.
 warnings: ...           # List of warnings.
-error: ...              # Exception caught.
 chart: ...              # Chart object.
+metadata: ...           # Metadata.
 ```
 
 ## 5. REST API
