@@ -68,7 +68,6 @@ class FMPCryptoEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCryptoEODQueryParams:
         """Transform the query params. Start and end dates are set to 1 year interval."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -86,7 +85,6 @@ class FMPCryptoEODFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/"
@@ -99,5 +97,4 @@ class FMPCryptoEODFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPCryptoEODData]:
         """Return the transformed data."""
-
         return [FMPCryptoEODData(**d) for d in data]

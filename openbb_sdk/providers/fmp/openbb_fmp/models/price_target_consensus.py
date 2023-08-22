@@ -22,16 +22,6 @@ class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
 class FMPPriceTargetConsensusData(PriceTargetConsensusData):
     """FMP Price Target Consensus Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "target_high": "targetHigh",
-            "target_low": "targetLow",
-            "target_consensus": "targetConsensus",
-            "target_median": "targetMedian",
-        }
-
 
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
@@ -44,7 +34,6 @@ class FMPPriceTargetConsensusFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPPriceTargetConsensusQueryParams:
         """Transform the query params."""
-
         return FMPPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
@@ -54,7 +43,6 @@ class FMPPriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
@@ -66,5 +54,4 @@ class FMPPriceTargetConsensusFetcher(
         data: Dict,
     ) -> FMPPriceTargetConsensusData:
         """Return the transformed data."""
-
         return FMPPriceTargetConsensusData(**data)

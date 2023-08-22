@@ -47,7 +47,6 @@ class FMPEarningsCallTranscriptFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEarningsCallTranscriptQueryParams:
         """Transform the query params."""
-
         return FMPEarningsCallTranscriptQueryParams(**params)
 
     @staticmethod
@@ -57,7 +56,6 @@ class FMPEarningsCallTranscriptFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -73,5 +71,4 @@ class FMPEarningsCallTranscriptFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEarningsCallTranscriptData]:
         """Return the transformed data."""
-
         return [FMPEarningsCallTranscriptData(**d) for d in data]

@@ -28,16 +28,6 @@ class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
 class FMPDividendCalendarData(DividendCalendarData):
     """FMP Dividend Calendar Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "adj_dividend": "adjDividend",
-            "record_date": "recordDate",
-            "payment_date": "paymentDate",
-            "declaration_date": "declarationDate",
-        }
-
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
@@ -70,7 +60,6 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPDividendCalendarQueryParams:
         """Transform the query params. Start and end dates are set to 1 1 year interval."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -89,7 +78,6 @@ class FMPDividendCalendarFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -102,5 +90,4 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPDividendCalendarData]:
         """Return the transformed data."""
-
         return [FMPDividendCalendarData(**d) for d in data]

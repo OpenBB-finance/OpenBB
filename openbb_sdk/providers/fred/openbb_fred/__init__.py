@@ -4,12 +4,12 @@ from openbb_provider.abstract.provider import Provider
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.cpi import FREDCPIFetcher
 from openbb_fred.models.estr_rates import FREDESTRFetcher
+from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.fed_rates import FREDFEDFetcher
+from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.sofr_rates import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
-from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
-from openbb_fred.models.iorb_rates import FREDIORBFetcher
 
 fred_provider = Provider(
     name="fred",

@@ -24,16 +24,6 @@ class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
 class FMPEarningsCalendarData(EarningsCalendarData):
     """FMP Earnings Calendar Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "eps_estimated": "epsEstimated",
-            "revenue_estimated": "revenueEstimated",
-            "updated_from_date": "updatedFromDate",
-            "fiscal_date_ending": "fiscalDateEnding",
-        }
-
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
@@ -61,7 +51,6 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEarningsCalendarQueryParams:
         """Transform the query params."""
-
         return FMPEarningsCalendarQueryParams(**params)
 
     @staticmethod
@@ -71,7 +60,6 @@ class FMPEarningsCalendarFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -83,5 +71,4 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEarningsCalendarData]:
         """Return the transformed data."""
-
         return [FMPEarningsCalendarData(**d) for d in data]
