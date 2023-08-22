@@ -78,7 +78,6 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
             time_unit = match.group(2)
             clean_time = time_unit.upper()
             if "DAYS" in clean_time or "MONTHS" in clean_time or "YEARS" in clean_time:
-                print("HELLO")
                 kwargs = {time_unit.lower(): integer_value}
                 if i == 0:
                     return (now - relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
