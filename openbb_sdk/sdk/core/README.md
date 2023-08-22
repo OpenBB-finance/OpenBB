@@ -19,6 +19,7 @@
       - [System settings](#system-settings)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
+    - [4.1.4. Command execution](#414-command-execution)
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
@@ -306,6 +307,26 @@ obb.account.refresh()
 
 # Logout
 obb.account.logout()
+```
+
+### 4.1.4. Command execution
+
+How do we execute commands?
+
+OpenBB SDK core is a REST API powered by FastAPI. We use this feature to run commands both in a web server setting and also in the `openbb` python package.
+
+If you are using the `openbb` package, running the command below triggers a "request" to the `CommandRunner` class. The "request" will be similar to the one found in [4.2 Dynamic version](#42-dynamic-version). This will hit the endpoint matching the command and return the result.
+
+```python
+from openbb import obb
+
+obb.stocks.load(
+    symbol="TSLA",
+    start_date="2023-07-01",
+    end_date="2023-07-25",
+    provider="fmp",
+    chart=True
+    )
 ```
 
 ## 4.2 Dynamic version
