@@ -729,33 +729,6 @@ openbb.keys.santiment(key = 'REPLACE_WITH_KEY', persist = True)
 
 </details>
 
-### ShroomDK
-
-> ShroomDK (SDK), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
-
-<details>
-<summary>Instructions</summary>
-
-Go to: https://sdk.flipsidecrypto.xyz/shroomdk
-
-![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)
-
-Click "Mint Your ShroomDK API Key", and sign up for an account.
-
-![ShroomDK](https://user-images.githubusercontent.com/46355364/207850176-f29cc73b-2b55-46e8-bce3-62c9342b6599.png)
-
-Once created, connect a wallet to complete minting the NFT license. The API key will be displayed under the account.
-
-![ShroomDK](https://user-images.githubusercontent.com/46355364/207850380-b59554af-1e65-4616-921d-e02c9ecf1aad.png)
-
-Enter it into the OpenBB SDK with:
-
-```console
-openbb.keys.shroom(key = 'REPLACE_WITH_KEY', persist = True)
-```
-
-</details>
-
 ### Stocksera
 
 > Empowering investors to take advantage of alternative data. We track trending tickers on social media and provide alternative data for easy due-diligence & analysis.
