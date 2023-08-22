@@ -1,10 +1,11 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Union
 
 import pydantic
 import pydantic.main
+import typing_extensions
 from pydantic import BaseModel, validate_arguments
 
 import openbb_core.app.model.command_context
@@ -12,84 +13,166 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_fa(Container):
-    @filter_call
+    """/stocks/fa
+    analysis
+    balance
+    balance_growth
+    cal
+    cash
+    cash_growth
+    comp
+    comsplit
+    customer
+    dcfc
+    divs
+    dupont
+    earning
+    emp
+    enterprise
+    epsfc
+    est
+    fama_coe
+    fama_raw
+    fraud
+    growth
+    historical_5
+    income
+    income_growth
+    ins
+    ins_own
+    key
+    metrics
+    mgmt
+    mktcap
+    news
+    overview
+    own
+    pt
+    pta
+    rating
+    ratios
+    revfc
+    revgeo
+    revseg
+    rot
+    score
+    sec
+    shares
+    shrs
+    split
+    supplier
+    transcript
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def analysis(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Analyse SEC filings with the help of machine learning."""  # noqa: E501
+        """Analyse SEC filings with the help of machine learning."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/analysis",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
-        limit : Optional[NonNegativeInt]
+        period : Literal['annual', 'quarter']
+            Period of the data to return.
+        limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp', 'polygon'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        cik : Union[str, NoneType]
+            None
+        company_name : Union[str, NoneType]
+            Name of the company. (provider: polygon)
+        company_name_search : Union[str, NoneType]
+            Name of the company to search. (provider: polygon)
+        sic : Union[str, NoneType]
+            The Standard Industrial Classification (SIC) of the company. (provider: polygon)
+        filing_date : Union[datetime.date, NoneType]
+            Filing date of the financial statement. (provider: polygon)
+        filing_date_lt : Union[datetime.date, NoneType]
+            Filing date less than the given date. (provider: polygon)
+        filing_date_lte : Union[datetime.date, NoneType]
+            Filing date less than or equal to the given date. (provider: polygon)
+        filing_date_gt : Union[datetime.date, NoneType]
+            Filing date greater than the given date. (provider: polygon)
+        filing_date_gte : Union[datetime.date, NoneType]
+            Filing date greater than or equal to the given date. (provider: polygon)
+        period_of_report_date : Union[datetime.date, NoneType]
+            Period of report date of the financial statement. (provider: polygon)
+        period_of_report_date_lt : Union[datetime.date, NoneType]
+            Period of report date less than the given date. (provider: polygon)
+        period_of_report_date_lte : Union[datetime.date, NoneType]
+            Period of report date less than or equal to the given date. (provider: polygon)
+        period_of_report_date_gt : Union[datetime.date, NoneType]
+            Period of report date greater than the given date. (provider: polygon)
+        period_of_report_date_gte : Union[datetime.date, NoneType]
+            Period of report date greater than or equal to the given date. (provider: polygon)
+        include_sources : Union[bool, NoneType]
+            Whether to include the sources of the financial statement. (provider: polygon)
+        order : Union[Literal['asc', 'desc'], NoneType]
+            Order of the financial statement. (provider: polygon)
+        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+            Sort of the financial statement. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[BalanceSheet]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp', 'polygon'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         BalanceSheet
         ------------
-        date : date
+        date : Optional[date]
             Date of the fetched statement.
         symbol : Optional[str]
             Symbol of the company.
@@ -175,85 +258,31 @@ class CLASS_stocks_fa(Container):
             None
         total_liabilities_and_total_equity : Optional[int]
             None
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            None
-
-
-        BalanceSheet
-        ------------
-        calendarYear : Optional[int]
+        calendar_year : Optional[int]
             None
         link : Optional[str]
             None
-        finalLink : Optional[str]
+        final_link : Optional[str]
             None
-        cashAndShortTermInvestments : Optional[int]
+        cash_and_short_term_investments : Optional[int]
             None
-        goodwillAndIntangibleAssets : Optional[int]
+        goodwill_and_intangible_assets : Optional[int]
             None
-        deferredRevenueNonCurrent : Optional[int]
+        deferred_revenue_non_current : Optional[int]
             None
-        totalInvestments : Optional[int]
+        total_investments : Optional[int]
             None
-        capitalLeaseObligations : Optional[int]
+        capital_lease_obligations : Optional[int]
             None
-        deferredTaxLiabilitiesNonCurrent : Optional[int]
+        deferred_tax_liabilities_non_current : Optional[int]
             None
-        totalNonCurrentLiabilities : Optional[int]
+        total_non_current_liabilities : Optional[int]
             None
-        totalDebt : Optional[int]
+        total_debt : Optional[int]
             None
-        netDebt : Optional[int]
-            None
+        net_debt : Optional[int]
+            None"""
 
-        polygon
-        =======
-
-        Parameters
-        ----------
-        company_name : Optional[str]
-            The name of the company.
-        company_name_search : Optional[str]
-            The name of the company to search.
-        sic : Optional[str]
-            The Standard Industrial Classification (SIC) of the company.
-        filing_date : Optional[date]
-            The filing date of the financial statement.
-        filing_date_lt : Optional[date]
-            The filing date less than the given date.
-        filing_date_lte : Optional[date]
-            The filing date less than or equal to the given date.
-        filing_date_gt : Optional[date]
-            The filing date greater than the given date.
-        filing_date_gte : Optional[date]
-            The filing date greater than or equal to the given date.
-        period_of_report_date : Optional[date]
-            The period of report date of the financial statement.
-        period_of_report_date_lt : Optional[date]
-            The period of report date less than the given date.
-        period_of_report_date_lte : Optional[date]
-            The period of report date less than or equal to the given date.
-        period_of_report_date_gt : Optional[date]
-            The period of report date greater than the given date.
-        period_of_report_date_gte : Optional[date]
-            The period of report date greater than or equal to the given date.
-        include_sources : Optional[bool]
-            Whether to include the sources of the financial statement.
-        order : Optional[Literal['asc', 'desc']]
-            The order of the financial statement.
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
-            The sort of the financial statement.
-
-
-        BalanceSheet
-        ------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -267,157 +296,142 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/balance",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def balance_growth(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : int
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[BalanceSheetGrowth]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         BalanceSheetGrowth
         ------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
-            The period the statement is returned for.
-        growth_cash_and_cash_equivalents : float
+        period : Optional[str]
+            Reporting period.
+        growth_cash_and_cash_equivalents : Optional[float]
             Growth rate of cash and cash equivalents.
-        growth_short_term_investments : float
+        growth_short_term_investments : Optional[float]
             Growth rate of short-term investments.
-        growth_cash_and_short_term_investments : float
+        growth_cash_and_short_term_investments : Optional[float]
             Growth rate of cash and short-term investments.
-        growth_net_receivables : float
+        growth_net_receivables : Optional[float]
             Growth rate of net receivables.
-        growth_inventory : float
+        growth_inventory : Optional[float]
             Growth rate of inventory.
-        growth_other_current_assets : float
+        growth_other_current_assets : Optional[float]
             Growth rate of other current assets.
-        growth_total_current_assets : float
+        growth_total_current_assets : Optional[float]
             Growth rate of total current assets.
-        growth_property_plant_equipment_net : float
+        growth_property_plant_equipment_net : Optional[float]
             Growth rate of net property, plant, and equipment.
-        growth_goodwill : float
+        growth_goodwill : Optional[float]
             Growth rate of goodwill.
-        growth_intangible_assets : float
+        growth_intangible_assets : Optional[float]
             Growth rate of intangible assets.
-        growth_goodwill_and_intangible_assets : float
+        growth_goodwill_and_intangible_assets : Optional[float]
             Growth rate of goodwill and intangible assets.
-        growth_long_term_investments : float
+        growth_long_term_investments : Optional[float]
             Growth rate of long-term investments.
-        growth_tax_assets : float
+        growth_tax_assets : Optional[float]
             Growth rate of tax assets.
-        growth_other_non_current_assets : float
+        growth_other_non_current_assets : Optional[float]
             Growth rate of other non-current assets.
-        growth_total_non_current_assets : float
+        growth_total_non_current_assets : Optional[float]
             Growth rate of total non-current assets.
-        growth_other_assets : float
+        growth_other_assets : Optional[float]
             Growth rate of other assets.
-        growth_total_assets : float
+        growth_total_assets : Optional[float]
             Growth rate of total assets.
-        growth_account_payables : float
+        growth_account_payables : Optional[float]
             Growth rate of accounts payable.
-        growth_short_term_debt : float
+        growth_short_term_debt : Optional[float]
             Growth rate of short-term debt.
-        growth_tax_payables : float
+        growth_tax_payables : Optional[float]
             Growth rate of tax payables.
-        growth_deferred_revenue : float
+        growth_deferred_revenue : Optional[float]
             Growth rate of deferred revenue.
-        growth_other_current_liabilities : float
+        growth_other_current_liabilities : Optional[float]
             Growth rate of other current liabilities.
-        growth_total_current_liabilities : float
+        growth_total_current_liabilities : Optional[float]
             Growth rate of total current liabilities.
-        growth_long_term_debt : float
+        growth_long_term_debt : Optional[float]
             Growth rate of long-term debt.
-        growth_deferred_revenue_non_current : float
+        growth_deferred_revenue_non_current : Optional[float]
             Growth rate of non-current deferred revenue.
-        growth_deferrred_tax_liabilities_non_current : float
+        growth_deferrred_tax_liabilities_non_current : Optional[float]
             Growth rate of non-current deferred tax liabilities.
-        growth_other_non_current_liabilities : float
+        growth_other_non_current_liabilities : Optional[float]
             Growth rate of other non-current liabilities.
-        growth_total_non_current_liabilities : float
+        growth_total_non_current_liabilities : Optional[float]
             Growth rate of total non-current liabilities.
-        growth_other_liabilities : float
+        growth_other_liabilities : Optional[float]
             Growth rate of other liabilities.
-        growth_total_liabilities : float
+        growth_total_liabilities : Optional[float]
             Growth rate of total liabilities.
-        growth_common_stock : float
+        growth_common_stock : Optional[float]
             Growth rate of common stock.
-        growth_retained_earnings : float
+        growth_retained_earnings : Optional[float]
             Growth rate of retained earnings.
-        growth_accumulated_other_comprehensive_income_loss : float
+        growth_accumulated_other_comprehensive_income_loss : Optional[float]
             Growth rate of accumulated other comprehensive income/loss.
-        growth_othertotal_stockholders_equity : float
+        growth_othertotal_stockholders_equity : Optional[float]
             Growth rate of other total stockholders' equity.
-        growth_total_stockholders_equity : float
+        growth_total_stockholders_equity : Optional[float]
             Growth rate of total stockholders' equity.
-        growth_total_liabilities_and_stockholders_equity : float
+        growth_total_liabilities_and_stockholders_equity : Optional[float]
             Growth rate of total liabilities and stockholders' equity.
-        growth_total_investments : float
+        growth_total_investments : Optional[float]
             Growth rate of total investments.
-        growth_total_debt : float
+        growth_total_debt : Optional[float]
             Growth rate of total debt.
-        growth_net_debt : float
-            Growth rate of net debt.
+        growth_net_debt : Optional[float]
+            Growth rate of net debt."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        BalanceSheetGrowth
-        ------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -430,93 +444,78 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/balance_growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cal(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[DividendCalendar]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         DividendCalendar
         ----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        label : str
-            The date in human readable form in the calendar.
+        label : Optional[str]
+            Date in human readable form in the calendar.
         adj_dividend : Optional[NonNegativeFloat]
-            The adjusted dividend on a date in the calendar.
+            Adjusted dividend on a date in the calendar.
         dividend : Optional[NonNegativeFloat]
-            The dividend amount in the calendar.
+            Dividend amount in the calendar.
         record_date : Optional[date]
-            The record date of the dividend in the calendar.
+            Record date of the dividend in the calendar.
         payment_date : Optional[date]
-            The payment date of the dividend in the calendar.
+            Payment date of the dividend in the calendar.
         declaration_date : Optional[date]
-            The declaration date of the dividend in the calendar.
+            Declaration date of the dividend in the calendar."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        DividendCalendar
-        ----------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -529,70 +528,98 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/cal",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cash(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
-        limit : Optional[NonNegativeInt]
+        period : Literal['annual', 'quarter']
+            Period of the data to return.
+        limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp', 'polygon'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        cik : Union[str, NoneType]
+            Central Index Key (CIK) of the company. (provider: fmp)
+        company_name : Union[str, NoneType]
+            Name of the company. (provider: polygon)
+        company_name_search : Union[str, NoneType]
+            Name of the company to search. (provider: polygon)
+        sic : Union[str, NoneType]
+            The Standard Industrial Classification (SIC) of the company. (provider: polygon)
+        filing_date : Union[datetime.date, NoneType]
+            Filing date of the financial statement. (provider: polygon)
+        filing_date_lt : Union[datetime.date, NoneType]
+            Filing date less than the given date. (provider: polygon)
+        filing_date_lte : Union[datetime.date, NoneType]
+            Filing date less than or equal to the given date. (provider: polygon)
+        filing_date_gt : Union[datetime.date, NoneType]
+            Filing date greater than the given date. (provider: polygon)
+        filing_date_gte : Union[datetime.date, NoneType]
+            Filing date greater than or equal to the given date. (provider: polygon)
+        period_of_report_date : Union[datetime.date, NoneType]
+            Period of report date of the financial statement. (provider: polygon)
+        period_of_report_date_lt : Union[datetime.date, NoneType]
+            Period of report date less than the given date. (provider: polygon)
+        period_of_report_date_lte : Union[datetime.date, NoneType]
+            Period of report date less than or equal to the given date. (provider: polygon)
+        period_of_report_date_gt : Union[datetime.date, NoneType]
+            Period of report date greater than the given date. (provider: polygon)
+        period_of_report_date_gte : Union[datetime.date, NoneType]
+            Period of report date greater than or equal to the given date. (provider: polygon)
+        include_sources : Union[bool, NoneType]
+            Whether to include the sources of the financial statement. (provider: polygon)
+        order : Union[Literal['asc', 'desc'], NoneType]
+            Order of the financial statement. (provider: polygon)
+        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+            Sort of the financial statement. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[CashFlowStatement]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp', 'polygon'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CashFlowStatement
         -----------------
-        date : date
+        date : Optional[date]
             Date of the fetched statement.
         symbol : Optional[str]
             Symbol of the company.
@@ -618,8 +645,6 @@ class CLASS_stocks_fa(Container):
             Other non-cash items.
         deferred_income_tax : Optional[int]
             Deferred income tax.
-        free_cash_flow : Optional[int]
-            Net cash flow from operating, investing and financing activities
         inventory : Optional[int]
             Inventory.
         accounts_payables : Optional[int]
@@ -666,69 +691,17 @@ class CLASS_stocks_fa(Container):
             Net increase (decrease) in cash, cash equivalents, and restricted cash
         cash_at_end_of_period : Optional[int]
             Cash, cash equivalents, and restricted cash at end of period
+        free_cash_flow : Optional[int]
+            Net cash flow from operating, investing and financing activities
         operating_cash_flow : Optional[int]
             Net cash flow from operating activities
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            Central Index Key (CIK) of the company.
-
-
-        CashFlowStatement
-        -----------------
         calendar_year : Optional[int]
-            Calendar Year
+            Calendar Year (provider: fmp)
         link : Optional[str]
             None
         final_link : Optional[str]
-            Final Link
+            Final Link (provider: fmp)"""
 
-        polygon
-        =======
-
-        Parameters
-        ----------
-        company_name : Optional[str]
-            The name of the company.
-        company_name_search : Optional[str]
-            The name of the company to search.
-        sic : Optional[str]
-            The Standard Industrial Classification (SIC) of the company.
-        filing_date : Optional[date]
-            The filing date of the financial statement.
-        filing_date_lt : Optional[date]
-            The filing date less than the given date.
-        filing_date_lte : Optional[date]
-            The filing date less than or equal to the given date.
-        filing_date_gt : Optional[date]
-            The filing date greater than the given date.
-        filing_date_gte : Optional[date]
-            The filing date greater than or equal to the given date.
-        period_of_report_date : Optional[date]
-            The period of report date of the financial statement.
-        period_of_report_date_lt : Optional[date]
-            The period of report date less than the given date.
-        period_of_report_date_lte : Optional[date]
-            The period of report date less than or equal to the given date.
-        period_of_report_date_gt : Optional[date]
-            The period of report date greater than the given date.
-        period_of_report_date_gte : Optional[date]
-            The period of report date greater than or equal to the given date.
-        include_sources : Optional[bool]
-            Whether to include the sources of the financial statement.
-        order : Optional[Literal['asc', 'desc']]
-            The order of the financial statement.
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
-            The sort of the financial statement.
-
-
-        CashFlowStatement
-        -----------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -742,139 +715,124 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/cash",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def cash_growth(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement Growth.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : int
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[CashFlowStatementGrowth]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CashFlowStatementGrowth
         -----------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
-            The period the statement is returned for.
-        growth_net_income : float
+        period : Optional[str]
+            Period the statement is returned for.
+        growth_net_income : Optional[float]
             Growth rate of net income.
-        growth_depreciation_and_amortization : float
+        growth_depreciation_and_amortization : Optional[float]
             Growth rate of depreciation and amortization.
-        growth_deferred_income_tax : float
+        growth_deferred_income_tax : Optional[float]
             Growth rate of deferred income tax.
-        growth_stock_based_compensation : float
+        growth_stock_based_compensation : Optional[float]
             Growth rate of stock-based compensation.
-        growth_change_in_working_capital : float
+        growth_change_in_working_capital : Optional[float]
             Growth rate of change in working capital.
-        growth_accounts_receivables : float
+        growth_accounts_receivables : Optional[float]
             Growth rate of accounts receivables.
-        growth_inventory : float
+        growth_inventory : Optional[float]
             Growth rate of inventory.
-        growth_accounts_payables : float
+        growth_accounts_payables : Optional[float]
             Growth rate of accounts payables.
-        growth_other_working_capital : float
+        growth_other_working_capital : Optional[float]
             Growth rate of other working capital.
-        growth_other_non_cash_items : float
+        growth_other_non_cash_items : Optional[float]
             Growth rate of other non-cash items.
-        growth_net_cash_provided_by_operating_activities : float
+        growth_net_cash_provided_by_operating_activities : Optional[float]
             Growth rate of net cash provided by operating activities.
-        growth_investments_in_property_plant_and_equipment : float
+        growth_investments_in_property_plant_and_equipment : Optional[float]
             Growth rate of investments in property, plant, and equipment.
-        growth_acquisitions_net : float
+        growth_acquisitions_net : Optional[float]
             Growth rate of net acquisitions.
-        growth_purchases_of_investments : float
+        growth_purchases_of_investments : Optional[float]
             Growth rate of purchases of investments.
-        growth_sales_maturities_of_investments : float
+        growth_sales_maturities_of_investments : Optional[float]
             Growth rate of sales maturities of investments.
-        growth_other_investing_activities : float
+        growth_other_investing_activities : Optional[float]
             Growth rate of other investing activities.
-        growth_net_cash_used_for_investing_activities : float
+        growth_net_cash_used_for_investing_activities : Optional[float]
             Growth rate of net cash used for investing activities.
-        growth_debt_repayment : float
+        growth_debt_repayment : Optional[float]
             Growth rate of debt repayment.
-        growth_common_stock_issued : float
+        growth_common_stock_issued : Optional[float]
             Growth rate of common stock issued.
-        growth_common_stock_repurchased : float
+        growth_common_stock_repurchased : Optional[float]
             Growth rate of common stock repurchased.
-        growth_dividends_paid : float
+        growth_dividends_paid : Optional[float]
             Growth rate of dividends paid.
-        growth_other_financing_activities : float
+        growth_other_financing_activities : Optional[float]
             Growth rate of other financing activities.
-        growth_net_cash_used_provided_by_financing_activities : float
+        growth_net_cash_used_provided_by_financing_activities : Optional[float]
             Growth rate of net cash used/provided by financing activities.
-        growth_effect_of_forex_changes_on_cash : float
+        growth_effect_of_forex_changes_on_cash : Optional[float]
             Growth rate of the effect of foreign exchange changes on cash.
-        growth_net_change_in_cash : float
+        growth_net_change_in_cash : Optional[float]
             Growth rate of net change in cash.
-        growth_cash_at_end_of_period : float
+        growth_cash_at_end_of_period : Optional[float]
             Growth rate of cash at the end of the period.
-        growth_cash_at_beginning_of_period : float
+        growth_cash_at_beginning_of_period : Optional[float]
             Growth rate of cash at the beginning of the period.
-        growth_operating_cash_flow : float
+        growth_operating_cash_flow : Optional[float]
             Growth rate of operating cash flow.
-        growth_capital_expenditure : float
+        growth_capital_expenditure : Optional[float]
             Growth rate of capital expenditure.
-        growth_free_cash_flow : float
-            Growth rate of free cash flow.
+        growth_free_cash_flow : Optional[float]
+            Growth rate of free cash flow."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        CashFlowStatementGrowth
-        -----------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -887,93 +845,78 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/cash_growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def comp(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Executive Compensation.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[ExecutiveCompensation]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ExecutiveCompensation
         ---------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         cik : Optional[str]
-            The Central Index Key (CIK) of the company.
-        filing_date : date
-            The date of the filing.
-        accepted_date : datetime
-            The date the filing was accepted.
-        name_and_position : str
-            The name and position of the executive.
-        year : int
-            The year of the compensation.
-        salary : PositiveFloat
-            The salary of the executive.
-        bonus : NonNegativeFloat
-            The bonus of the executive.
-        stock_award : NonNegativeFloat
-            The stock award of the executive.
-        incentive_plan_compensation : NonNegativeFloat
-            The incentive plan compensation of the executive.
-        all_other_compensation : NonNegativeFloat
-            The all other compensation of the executive.
-        total : PositiveFloat
-            The total compensation of the executive.
-        url : str
-            The URL of the filing data.
+            Central Index Key (CIK) of the company.
+        filing_date : Optional[date]
+            Date of the filing.
+        accepted_date : Optional[datetime]
+            Date the filing was accepted.
+        name_and_position : Optional[str]
+            Name and position of the executive.
+        year : Optional[int]
+            Year of the compensation.
+        salary : Optional[PositiveFloat]
+            Salary of the executive.
+        bonus : Optional[NonNegativeFloat]
+            Bonus of the executive.
+        stock_award : Optional[NonNegativeFloat]
+            Stock award of the executive.
+        incentive_plan_compensation : Optional[NonNegativeFloat]
+            Incentive plan compensation of the executive.
+        all_other_compensation : Optional[NonNegativeFloat]
+            All other compensation of the executive.
+        total : Optional[PositiveFloat]
+            Total compensation of the executive.
+        url : Optional[str]
+            URL of the filing data."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        ExecutiveCompensation
-        ---------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -985,87 +928,72 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/comp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def comsplit(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Stock Split Calendar.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        start_date : Optional[date]
+        start_date : Union[datetime.date, NoneType, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[date]
+        end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockSplitCalendar]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
-
-        StockSplitCalendar
-        ------------------
-        date : date
-            The date of the stock splits.
-        label : str
-            The label of the stock splits.
-        symbol : str
-            The symbol of the company.
-        numerator : float
-            The numerator of the stock splits.
-        denominator : float
-            The denominator of the stock splits.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockSplitCalendar
         ------------------
-        All fields are standardized."""  # noqa: E501
+        date : Optional[date]
+            Date of the stock splits.
+        label : Optional[str]
+            Label of the stock splits.
+        symbol : Optional[str]
+            Symbol of the company.
+        numerator : Optional[float]
+            Numerator of the stock splits.
+        denominator : Optional[float]
+            Denominator of the stock splits."""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1078,115 +1006,96 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/comsplit",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def customer(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """List of customers of the company."""  # noqa: E501
+        """List of customers of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/customer",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dcfc(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Determine the (historical) discounted cash flow."""  # noqa: E501
+        """Determine the (historical) discounted cash flow."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/dcfc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def divs(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Historical Dividends.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[HistoricalDividends]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalDividends
         -------------------
-        date : date
-            The date of the historical dividends.
-        label : str
-            The label of the historical dividends.
-        adj_dividend : float
-            The adjusted dividend of the historical dividends.
-        dividend : float
-            The dividend of the historical dividends.
+        date : Optional[date]
+            Date of the historical dividends.
+        label : Optional[str]
+            Label of the historical dividends.
+        adj_dividend : Optional[float]
+            Adjusted dividend of the historical dividends.
+        dividend : Optional[float]
+            Dividend of the historical dividends.
         record_date : Optional[date]
-            The record date of the historical dividends.
+            Record date of the historical dividends.
         payment_date : Optional[date]
-            The payment date of the historical dividends.
+            Payment date of the historical dividends.
         declaration_date : Optional[date]
-            The declaration date of the historical dividends.
+            Declaration date of the historical dividends."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        HistoricalDividends
-        -------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1198,108 +1107,91 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/divs",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def dupont(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Detailed breakdown for Return on Equity (RoE)."""  # noqa: E501
+        """Detailed breakdown for Return on Equity (RoE)."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/dupont",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def earning(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
-            Optional[int],
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Earnings Calendar.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        limit : Optional[int]
+        limit : Union[int, NoneType]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[EarningsCalendar]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         EarningsCalendar
         ----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
         eps : Optional[NonNegativeFloat]
-            The EPS of the earnings calendar.
+            EPS of the earnings calendar.
         eps_estimated : Optional[NonNegativeFloat]
-            The estimated EPS of the earnings calendar.
-        time : str
-            The time of the earnings calendar.
+            Estimated EPS of the earnings calendar.
+        time : Optional[str]
+            Time of the earnings calendar.
         revenue : Optional[int]
-            The revenue of the earnings calendar.
+            Revenue of the earnings calendar.
         revenue_estimated : Optional[int]
-            The estimated revenue of the earnings calendar.
+            Estimated revenue of the earnings calendar.
         updated_from_date : Optional[date]
-            The updated from date of the earnings calendar.
-        fiscal_date_ending : date
-            The fiscal date ending of the earnings calendar.
+            Updated from date of the earnings calendar.
+        fiscal_date_ending : Optional[date]
+            Fiscal date ending of the earnings calendar."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        EarningsCalendar
-        ----------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1312,85 +1204,70 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/earning",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def emp(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Number of Employees.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[HistoricalEmployees]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalEmployees
         -------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        cik : int
-            The CIK of the company to retrieve the historical employees of.
-        acceptance_time : datetime
-            The time of acceptance of the company employee.
-        period_of_report : date
-            The date of reporting of the company employee.
-        company_name : str
-            The registered name of the company to retrieve the historical employees of.
-        form_type : str
-            The form type of the company employee.
-        filing_date : date
-            The filing date of the company employee
-        employee_count : int
-            The count of employees of the company.
-        source : str
-            The source URL which retrieves this data for the company.
+        cik : Optional[int]
+            CIK of the company to retrieve the historical employees of.
+        acceptance_time : Optional[datetime]
+            Time of acceptance of the company employee.
+        period_of_report : Optional[date]
+            Date of reporting of the company employee.
+        company_name : Optional[str]
+            Registered name of the company to retrieve the historical employees of.
+        form_type : Optional[str]
+            Form type of the company employee.
+        filing_date : Optional[date]
+            Filing date of the company employee
+        employee_count : Optional[int]
+            Count of employees of the company.
+        source : Optional[str]
+            Source URL which retrieves this data for the company."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        HistoricalEmployees
-        -------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1402,159 +1279,138 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/emp",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def enterprise(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Enterprise value."""  # noqa: E501
+        """Enterprise value."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/enterprise",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def epsfc(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Earnings Estimate by Analysts - EPS."""  # noqa: E501
+        """Earnings Estimate by Analysts - EPS."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/epsfc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def est(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Analyst Estimates.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+        period : Literal['quarter', 'annual']
+            Period of the data to return.
         limit : int
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[AnalystEstimates]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         AnalystEstimates
         ----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             A specific date to get data for.
-        estimated_revenue_low : int
-            The estimated revenue low.
-        estimated_revenue_high : int
-            The estimated revenue high.
-        estimated_revenue_avg : int
-            The estimated revenue average.
-        estimated_ebitda_low : int
-            The estimated EBITDA low.
-        estimated_ebitda_high : int
-            The estimated EBITDA high.
-        estimated_ebitda_avg : int
-            The estimated EBITDA average.
-        estimated_ebit_low : int
-            The estimated EBIT low.
-        estimated_ebit_high : int
-            The estimated EBIT high.
-        estimated_ebit_avg : int
-            The estimated EBIT average.
-        estimated_net_income_low : int
-            The estimated net income low.
-        estimated_net_income_high : int
-            The estimated net income high.
-        estimated_net_income_avg : int
-            The estimated net income average.
-        estimated_sga_expense_low : int
-            The estimated SGA expense low.
-        estimated_sga_expense_high : int
-            The estimated SGA expense high.
-        estimated_sga_expense_avg : int
-            The estimated SGA expense average.
-        estimated_eps_avg : float
-            The estimated EPS average.
-        estimated_eps_high : float
-            The estimated EPS high.
-        estimated_eps_low : float
-            The estimated EPS low.
-        number_analyst_estimated_revenue : int
-            The number of analysts who estimated revenue.
-        number_analysts_estimated_eps : int
-            The number of analysts who estimated EPS.
+        estimated_revenue_low : Optional[int]
+            Estimated revenue low.
+        estimated_revenue_high : Optional[int]
+            Estimated revenue high.
+        estimated_revenue_avg : Optional[int]
+            Estimated revenue average.
+        estimated_ebitda_low : Optional[int]
+            Estimated EBITDA low.
+        estimated_ebitda_high : Optional[int]
+            Estimated EBITDA high.
+        estimated_ebitda_avg : Optional[int]
+            Estimated EBITDA average.
+        estimated_ebit_low : Optional[int]
+            Estimated EBIT low.
+        estimated_ebit_high : Optional[int]
+            Estimated EBIT high.
+        estimated_ebit_avg : Optional[int]
+            Estimated EBIT average.
+        estimated_net_income_low : Optional[int]
+            Estimated net income low.
+        estimated_net_income_high : Optional[int]
+            Estimated net income high.
+        estimated_net_income_avg : Optional[int]
+            Estimated net income average.
+        estimated_sga_expense_low : Optional[int]
+            Estimated SGA expense low.
+        estimated_sga_expense_high : Optional[int]
+            Estimated SGA expense high.
+        estimated_sga_expense_avg : Optional[int]
+            Estimated SGA expense average.
+        estimated_eps_avg : Optional[float]
+            Estimated EPS average.
+        estimated_eps_high : Optional[float]
+            Estimated EPS high.
+        estimated_eps_low : Optional[float]
+            Estimated EPS low.
+        number_analyst_estimated_revenue : Optional[int]
+            Number of analysts who estimated revenue.
+        number_analysts_estimated_eps : Optional[int]
+            Number of analysts who estimated EPS."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        AnalystEstimates
-        ----------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1568,82 +1424,71 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/est",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fama_coe(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Fama French 3 Factor Model - Coefficient of Earnings."""  # noqa: E501
+        """Fama French 3 Factor Model - Coefficient of Earnings."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/fama_coe",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fama_raw(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Fama French 3 Factor Model - Raw Data."""  # noqa: E501
+        """Fama French 3 Factor Model - Raw Data."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/fama_raw",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def fraud(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Key fraud ratios including M-score, Z-score and McKee."""  # noqa: E501
+        """Key fraud ratios including M-score, Z-score and McKee."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/fraud",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def growth(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Growth of financial statement items and ratios."""  # noqa: E501
+        """Growth of financial statement items and ratios."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def historical_5(
         self, chart: bool = False
@@ -1652,74 +1497,102 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/historical_5",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Income Statement.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp, polygon]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
-        limit : Optional[NonNegativeInt]
+        period : Literal['annual', 'quarter']
+            Period of the data to return.
+        limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp', 'polygon'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        cik : Union[str, NoneType]
+            The CIK of the company if no symbol is provided. (provider: fmp)
+        company_name : Union[str, NoneType]
+            Name of the company. (provider: polygon)
+        company_name_search : Union[str, NoneType]
+            Name of the company to search. (provider: polygon)
+        sic : Union[str, NoneType]
+            The Standard Industrial Classification (SIC) of the company. (provider: polygon)
+        filing_date : Union[datetime.date, NoneType]
+            Filing date of the financial statement. (provider: polygon)
+        filing_date_lt : Union[datetime.date, NoneType]
+            Filing date less than the given date. (provider: polygon)
+        filing_date_lte : Union[datetime.date, NoneType]
+            Filing date less than or equal to the given date. (provider: polygon)
+        filing_date_gt : Union[datetime.date, NoneType]
+            Filing date greater than the given date. (provider: polygon)
+        filing_date_gte : Union[datetime.date, NoneType]
+            Filing date greater than or equal to the given date. (provider: polygon)
+        period_of_report_date : Union[datetime.date, NoneType]
+            Period of report date of the financial statement. (provider: polygon)
+        period_of_report_date_lt : Union[datetime.date, NoneType]
+            Period of report date less than the given date. (provider: polygon)
+        period_of_report_date_lte : Union[datetime.date, NoneType]
+            Period of report date less than or equal to the given date. (provider: polygon)
+        period_of_report_date_gt : Union[datetime.date, NoneType]
+            Period of report date greater than the given date. (provider: polygon)
+        period_of_report_date_gte : Union[datetime.date, NoneType]
+            Period of report date greater than or equal to the given date. (provider: polygon)
+        include_sources : Union[bool, NoneType]
+            Whether to include the sources of the financial statement. (provider: polygon)
+        order : Union[Literal['asc', 'desc'], NoneType]
+            Order of the financial statement. (provider: polygon)
+        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+            Sort of the financial statement. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[IncomeStatement]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp', 'polygon'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         IncomeStatement
         ---------------
-        date : date
+        date : Optional[date]
             Date of the income statement.
-        symbol : str
+        symbol : Optional[str]
             Symbol of the company.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key.
         currency : Optional[str]
             Reporting currency.
@@ -1791,61 +1664,6 @@ class CLASS_stocks_fa(Container):
             Link to the income statement.
         final_link : Optional[str]
             Final link to the income statement.
-
-        fmp
-        ===
-
-        Parameters
-        ----------
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided.
-
-
-        IncomeStatement
-        ---------------
-        All fields are standardized.
-
-        polygon
-        =======
-
-        Parameters
-        ----------
-        company_name : Optional[str]
-            The name of the company.
-        company_name_search : Optional[str]
-            The name of the company to search.
-        sic : Optional[str]
-            The Standard Industrial Classification (SIC) of the company.
-        filing_date : Optional[date]
-            The filing date of the financial statement.
-        filing_date_lt : Optional[date]
-            The filing date less than the given date.
-        filing_date_lte : Optional[date]
-            The filing date less than or equal to the given date.
-        filing_date_gt : Optional[date]
-            The filing date greater than the given date.
-        filing_date_gte : Optional[date]
-            The filing date greater than or equal to the given date.
-        period_of_report_date : Optional[date]
-            The period of report date of the financial statement.
-        period_of_report_date_lt : Optional[date]
-            The period of report date less than the given date.
-        period_of_report_date_lte : Optional[date]
-            The period of report date less than or equal to the given date.
-        period_of_report_date_gt : Optional[date]
-            The period of report date greater than the given date.
-        period_of_report_date_gte : Optional[date]
-            The period of report date greater than or equal to the given date.
-        include_sources : Optional[bool]
-            Whether to include the sources of the financial statement.
-        order : Optional[Literal['asc', 'desc']]
-            The order of the financial statement.
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
-            The sort of the financial statement.
-
-
-        IncomeStatement
-        ---------------
         income_loss_from_continuing_operations_after_tax : Optional[float]
             None
         benefits_costs_expenses : Optional[float]
@@ -1859,7 +1677,8 @@ class CLASS_stocks_fa(Container):
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             None
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            None"""  # noqa: E501
+            None"""
+
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -1873,139 +1692,122 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/income",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def income_growth(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Income Statement Growth.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
+        period : Literal['annual', 'quarter']
+            Period of the data to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[IncomeStatementGrowth]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         IncomeStatementGrowth
         ---------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
-            The period the statement is returned for.
-        growth_revenue : float
+        period : Optional[str]
+            Period the statement is returned for.
+        growth_revenue : Optional[float]
             Growth rate of total revenue.
-        growth_cost_of_revenue : float
+        growth_cost_of_revenue : Optional[float]
             Growth rate of cost of goods sold.
-        growth_gross_profit : float
+        growth_gross_profit : Optional[float]
             Growth rate of gross profit.
-        growth_gross_profit_ratio : float
+        growth_gross_profit_ratio : Optional[float]
             Growth rate of gross profit as a percentage of revenue.
-        growth_research_and_development_expenses : float
+        growth_research_and_development_expenses : Optional[float]
             Growth rate of expenses on research and development.
-        growth_general_and_administrative_expenses : float
+        growth_general_and_administrative_expenses : Optional[float]
             Growth rate of general and administrative expenses.
-        growth_selling_and_marketing_expenses : float
+        growth_selling_and_marketing_expenses : Optional[float]
             Growth rate of expenses on selling and marketing activities.
-        growth_other_expenses : float
+        growth_other_expenses : Optional[float]
             Growth rate of other operating expenses.
-        growth_operating_expenses : float
+        growth_operating_expenses : Optional[float]
             Growth rate of total operating expenses.
-        growth_cost_and_expenses : float
+        growth_cost_and_expenses : Optional[float]
             Growth rate of total costs and expenses.
-        growth_interest_expense : float
+        growth_interest_expense : Optional[float]
             Growth rate of interest expenses.
-        growth_depreciation_and_amortization : float
+        growth_depreciation_and_amortization : Optional[float]
             Growth rate of depreciation and amortization expenses.
-        growth_ebitda : float
+        growth_ebitda : Optional[float]
             Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.
-        growth_ebitda_ratio : float
+        growth_ebitda_ratio : Optional[float]
             Growth rate of EBITDA as a percentage of revenue.
-        growth_operating_income : float
+        growth_operating_income : Optional[float]
             Growth rate of operating income.
-        growth_operating_income_ratio : float
+        growth_operating_income_ratio : Optional[float]
             Growth rate of operating income as a percentage of revenue.
-        growth_total_other_income_expenses_net : float
+        growth_total_other_income_expenses_net : Optional[float]
             Growth rate of net total other income and expenses.
-        growth_income_before_tax : float
+        growth_income_before_tax : Optional[float]
             Growth rate of income before taxes.
-        growth_income_before_tax_ratio : float
+        growth_income_before_tax_ratio : Optional[float]
             Growth rate of income before taxes as a percentage of revenue.
-        growth_income_tax_expense : float
+        growth_income_tax_expense : Optional[float]
             Growth rate of income tax expenses.
-        growth_net_income : float
+        growth_net_income : Optional[float]
             Growth rate of net income.
-        growth_net_income_ratio : float
+        growth_net_income_ratio : Optional[float]
             Growth rate of net income as a percentage of revenue.
-        growth_eps : float
+        growth_eps : Optional[float]
             Growth rate of Earnings Per Share (EPS).
-        growth_eps_diluted : float
+        growth_eps_diluted : Optional[float]
             Growth rate of diluted Earnings Per Share (EPS).
-        growth_weighted_average_shs_out : float
+        growth_weighted_average_shs_out : Optional[float]
             Growth rate of weighted average shares outstanding.
-        growth_weighted_average_shs_out_dil : float
-            Growth rate of diluted weighted average shares outstanding.
+        growth_weighted_average_shs_out_dil : Optional[float]
+            Growth rate of diluted weighted average shares outstanding."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        IncomeStatementGrowth
-        ---------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2019,23 +1821,20 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/income_growth",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ins(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        transactionType: Annotated[
-            Optional[
+        transactionType: typing_extensions.Annotated[
+            Union[
                 List[
                     Literal[
                         "A-Award",
@@ -2057,106 +1856,95 @@ class CLASS_stocks_fa(Container):
                         "X-InTheMoney",
                         "Z-Trust",
                     ]
-                ]
+                ],
+                None,
             ],
-            OpenBBCustomParameter(description="The type of the transaction."),
+            OpenBBCustomParameter(description="Type of the transaction."),
         ] = ["P-Purchase"],
-        reportingCik: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The CIK of the reporting owner."),
+        reportingCik: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="CIK of the reporting owner."),
         ] = None,
-        companyCik: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The CIK of the company owner."),
+        companyCik: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="CIK of the company owner."),
         ] = None,
-        page: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The page number of the data to fetch."),
+        page: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Stock Insider Trading.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
-            The type of the transaction.
-        reportingCik : Optional[int]
-            The CIK of the reporting owner.
-        companyCik : Optional[int]
-            The CIK of the company owner.
-        page : Optional[int]
-            The page number of the data to fetch.
+        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], NoneType]
+            Type of the transaction.
+        reportingCik : Union[int, NoneType]
+            CIK of the reporting owner.
+        companyCik : Union[int, NoneType]
+            CIK of the company owner.
+        page : Union[int, NoneType]
+            Page number of the data to fetch.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockInsiderTrading]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockInsiderTrading
         -------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        filing_date : datetime
-            The filing date of the stock insider trading.
-        transaction_date : date
-            The transaction date of the stock insider trading.
-        reporting_cik : int
-            The reporting CIK of the stock insider trading.
-        transaction_type : str
-            The transaction type of the stock insider trading.
-        securities_owned : int
-            The securities owned of the stock insider trading.
-        company_cik : int
-            The company CIK of the stock insider trading.
-        reporting_name : str
-            The reporting name of the stock insider trading.
-        type_of_owner : str
-            The type of owner of the stock insider trading.
-        acquistion_or_disposition : str
-            The acquistion or disposition of the stock insider trading.
-        form_type : str
-            The form type of the stock insider trading.
-        securities_transacted : float
-            The securities transacted of the stock insider trading.
-        price : float
-            The price of the stock insider trading.
-        security_name : str
-            The security name of the stock insider trading.
-        link : str
-            The link of the stock insider trading.
+        filing_date : Optional[datetime]
+            Filing date of the stock insider trading.
+        transaction_date : Optional[date]
+            Transaction date of the stock insider trading.
+        reporting_cik : Optional[int]
+            Reporting CIK of the stock insider trading.
+        transaction_type : Optional[str]
+            Transaction type of the stock insider trading.
+        securities_owned : Optional[int]
+            Securities owned of the stock insider trading.
+        company_cik : Optional[int]
+            Company CIK of the stock insider trading.
+        reporting_name : Optional[str]
+            Reporting name of the stock insider trading.
+        type_of_owner : Optional[str]
+            Type of owner of the stock insider trading.
+        acquistion_or_disposition : Optional[str]
+            Acquistion or disposition of the stock insider trading.
+        form_type : Optional[str]
+            Form type of the stock insider trading.
+        securities_transacted : Optional[float]
+            Securities transacted of the stock insider trading.
+        price : Optional[float]
+            Price of the stock insider trading.
+        security_name : Optional[str]
+            Security name of the stock insider trading.
+        link : Optional[str]
+            Link of the stock insider trading."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockInsiderTrading
-        -------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2172,150 +1960,136 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/ins",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ins_own(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        include_current_quarter: Annotated[
+        include_current_quarter: typing_extensions.Annotated[
             bool, OpenBBCustomParameter(description="Include current quarter data.")
         ] = False,
-        date: Annotated[
-            Optional[datetime.date],
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Institutional Ownership.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         include_current_quarter : bool
             Include current quarter data.
-        date : Optional[date]
+        date : Union[datetime.date, NoneType]
             A specific date to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[InstitutionalOwnership]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         InstitutionalOwnership
         ----------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         cik : Optional[str]
-            The CIK of the company.
-        date : date
+            CIK of the company.
+        date : Optional[date]
             The date of the data.
-        investors_holding : int
-            The number of investors holding the stock.
-        last_investors_holding : int
-            The number of investors holding the stock in the last quarter.
-        investors_holding_change : int
-            The change in the number of investors holding the stock.
+        investors_holding : Optional[int]
+            Number of investors holding the stock.
+        last_investors_holding : Optional[int]
+            Number of investors holding the stock in the last quarter.
+        investors_holding_change : Optional[int]
+            Change in the number of investors holding the stock.
         number_of_13f_shares : Optional[int]
-            The number of 13F shares.
+            Number of 13F shares.
         last_number_of_13f_shares : Optional[int]
-            The number of 13F shares in the last quarter.
+            Number of 13F shares in the last quarter.
         number_of_13f_shares_change : Optional[int]
-            The change in the number of 13F shares.
-        total_invested : float
-            The total amount invested.
-        last_total_invested : float
-            The total amount invested in the last quarter.
-        total_invested_change : float
-            The change in the total amount invested.
-        ownership_percent : float
-            The ownership percent.
-        last_ownership_percent : float
-            The ownership percent in the last quarter.
-        ownership_percent_change : float
-            The change in the ownership percent.
-        new_positions : int
-            The number of new positions.
-        last_new_positions : int
-            The number of new positions in the last quarter.
-        new_positions_change : int
-            he change in the number of new positions.
-        increased_positions : int
-            The number of increased positions.
-        last_increased_positions : int
-            The number of increased positions in the last quarter.
-        increased_positions_change : int
-            The change in the number of increased positions.
-        closed_positions : int
-            The number of closed positions.
-        last_closed_positions : int
-            The number of closed positions in the last quarter.
-        closed_positions_change : int
-            The change in the number of closed positions.
-        reduced_positions : int
-            The number of reduced positions.
-        last_reduced_positions : int
-            The number of reduced positions in the last quarter.
-        reduced_positions_change : int
-            The change in the number of reduced positions.
-        total_calls : int
+            Change in the number of 13F shares.
+        total_invested : Optional[float]
+            Total amount invested.
+        last_total_invested : Optional[float]
+            Total amount invested in the last quarter.
+        total_invested_change : Optional[float]
+            Change in the total amount invested.
+        ownership_percent : Optional[float]
+            Ownership percent.
+        last_ownership_percent : Optional[float]
+            Ownership percent in the last quarter.
+        ownership_percent_change : Optional[float]
+            Change in the ownership percent.
+        new_positions : Optional[int]
+            Number of new positions.
+        last_new_positions : Optional[int]
+            Number of new positions in the last quarter.
+        new_positions_change : Optional[int]
+            Change in the number of new positions.
+        increased_positions : Optional[int]
+            Number of increased positions.
+        last_increased_positions : Optional[int]
+            Number of increased positions in the last quarter.
+        increased_positions_change : Optional[int]
+            Change in the number of increased positions.
+        closed_positions : Optional[int]
+            Number of closed positions.
+        last_closed_positions : Optional[int]
+            Number of closed positions in the last quarter.
+        closed_positions_change : Optional[int]
+            Change in the number of closed positions.
+        reduced_positions : Optional[int]
+            Number of reduced positions.
+        last_reduced_positions : Optional[int]
+            Number of reduced positions in the last quarter.
+        reduced_positions_change : Optional[int]
+            Change in the number of reduced positions.
+        total_calls : Optional[int]
             Total number of call options contracts traded for Apple Inc. on the specified date.
-        last_total_calls : int
+        last_total_calls : Optional[int]
             Total number of call options contracts traded for Apple Inc. on the previous reporting date.
-        total_calls_change : int
+        total_calls_change : Optional[int]
             Change in the total number of call options contracts traded between the current and previous reporting dates.
-        total_puts : int
+        total_puts : Optional[int]
             Total number of put options contracts traded for Apple Inc. on the specified date.
-        last_total_puts : int
+        last_total_puts : Optional[int]
             Total number of put options contracts traded for Apple Inc. on the previous reporting date.
-        total_puts_change : int
+        total_puts_change : Optional[int]
             Change in the total number of put options contracts traded between the current and previous reporting dates.
-        put_call_ratio : float
-            The put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
-        last_put_call_ratio : float
-            The put-call ratio on the previous reporting date.
-        put_call_ratio_change : float
+        put_call_ratio : Optional[float]
+            Put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
+        last_put_call_ratio : Optional[float]
+            Put-call ratio on the previous reporting date.
+        put_call_ratio_change : Optional[float]
             Change in the put-call ratio between the current and previous reporting dates.
+        """
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        InstitutionalOwnership
-        ----------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2329,14 +2103,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/ins_own",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def key(
         self, chart: bool = False
@@ -2345,75 +2116,69 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/key",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def metrics(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[int],
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Key Metrics.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
-        limit : Optional[int]
+        period : Literal['annual', 'quarter']
+            Period of the data to return.
+        limit : Union[int, NoneType]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[KeyMetrics]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         KeyMetrics
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
-            The period of the data.
+        period : Optional[str]
+            Period of the data.
         revenue_per_share : Optional[float]
             Revenue per share
         net_income_per_share : Optional[float]
@@ -2527,19 +2292,8 @@ class CLASS_stocks_fa(Container):
         roe : Optional[float]
             Return on equity
         capex_per_share : Optional[float]
-            Capital expenditures per share
+            Capital expenditures per share"""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        KeyMetrics
-        ----------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2553,81 +2307,66 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/metrics",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def mgmt(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Key Executives.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[KeyExecutives]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         KeyExecutives
         -------------
-        title : str
+        title : Optional[str]
             Designation of the key executive.
-        name : str
+        name : Optional[str]
             Name of the key executive.
         pay : Optional[int]
             Pay of the key executive.
-        currency_pay : str
-            The currency of the pay.
+        currency_pay : Optional[str]
+            Currency of the pay.
         gender : Optional[str]
             Gender of the key executive.
         year_born : Optional[str]
             Birth year of the key executive.
         title_since : Optional[int]
-            Date the tile was held since.
+            Date the tile was held since."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        KeyExecutives
-        -------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2639,31 +2378,26 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/mgmt",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def mktcap(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Obtain the market capitalization or enterprise value."""  # noqa: E501
+        """Obtain the market capitalization or enterprise value."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/mktcap",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def news(
         self, chart: bool = False
@@ -2672,139 +2406,124 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/news",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def overview(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Company Overview.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[CompanyOverview]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         CompanyOverview
         ---------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        price : float
-            The price of the company.
-        beta : float
-            The beta of the company.
-        vol_avg : int
-            The volume average of the company.
-        mkt_cap : int
-            The market capitalization of the company.
-        last_div : float
-            The last dividend of the company.
-        range : str
-            The range of the company.
-        changes : float
-            The changes of the company.
-        company_name : str
-            The company name of the company.
-        currency : str
-            The currency of the company.
+        price : Optional[float]
+            Price of the company.
+        beta : Optional[float]
+            Beta of the company.
+        vol_avg : Optional[int]
+            Volume average of the company.
+        mkt_cap : Optional[int]
+            Market capitalization of the company.
+        last_div : Optional[float]
+            Last dividend of the company.
+        range : Optional[str]
+            Range of the company.
+        changes : Optional[float]
+            Changes of the company.
+        company_name : Optional[str]
+            Company name of the company.
+        currency : Optional[str]
+            Currency of the company.
         cik : Optional[str]
-            The CIK of the company.
+            CIK of the company.
         isin : Optional[str]
-            The ISIN of the company.
+            ISIN of the company.
         cusip : Optional[str]
-            The CUSIP of the company.
-        exchange : str
-            The exchange of the company.
-        exchange_short_name : str
-            The exchange short name of the company.
-        industry : str
-            The industry of the company.
-        website : str
-            The website of the company.
-        description : str
-            The description of the company.
-        ceo : str
-            The CEO of the company.
-        sector : str
-            The sector of the company.
-        country : str
-            The country of the company.
-        full_time_employees : str
-            The full time employees of the company.
-        phone : str
-            The phone of the company.
-        address : str
-            The address of the company.
-        city : str
-            The city of the company.
-        state : str
-            The state of the company.
-        zip : str
-            The zip of the company.
-        dcf_diff : float
-            The discounted cash flow difference of the company.
-        dcf : float
-            The discounted cash flow of the company.
-        image : str
-            The image of the company.
-        ipo_date : date
-            The IPO date of the company.
-        default_image : bool
+            CUSIP of the company.
+        exchange : Optional[str]
+            Exchange of the company.
+        exchange_short_name : Optional[str]
+            Exchange short name of the company.
+        industry : Optional[str]
+            Industry of the company.
+        website : Optional[str]
+            Website of the company.
+        description : Optional[str]
+            Description of the company.
+        ceo : Optional[str]
+            CEO of the company.
+        sector : Optional[str]
+            Sector of the company.
+        country : Optional[str]
+            Country of the company.
+        full_time_employees : Optional[str]
+            Full time employees of the company.
+        phone : Optional[str]
+            Phone of the company.
+        address : Optional[str]
+            Address of the company.
+        city : Optional[str]
+            City of the company.
+        state : Optional[str]
+            State of the company.
+        zip : Optional[str]
+            Zip of the company.
+        dcf_diff : Optional[float]
+            Discounted cash flow difference of the company.
+        dcf : Optional[float]
+            Discounted cash flow of the company.
+        image : Optional[str]
+            Image of the company.
+        ipo_date : Optional[date]
+            IPO date of the company.
+        default_image : Optional[bool]
             If the image is the default image.
-        is_etf : bool
+        is_etf : Optional[bool]
             If the company is an ETF.
-        is_actively_trading : bool
+        is_actively_trading : Optional[bool]
             If the company is actively trading.
-        is_adr : bool
+        is_adr : Optional[bool]
             If the company is an ADR.
-        is_fund : bool
-            If the company is a fund.
+        is_fund : Optional[bool]
+            If the company is a fund."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        CompanyOverview
-        ---------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2816,157 +2535,142 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/overview",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def own(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        date: Annotated[
-            Optional[datetime.date],
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        page: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The page number of the data to fetch."),
+        page: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Stock Ownership.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        date : Optional[date]
+        date : Union[datetime.date, NoneType]
             A specific date to get data for.
-        page : Optional[int]
-            The page number of the data to fetch.
+        page : Union[int, NoneType]
+            Page number of the data to fetch.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[StockOwnership]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         StockOwnership
         --------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        cik : int
-            The cik of the stock ownership.
-        filing_date : date
-            The filing date of the stock ownership.
-        investor_name : str
-            The investor name of the stock ownership.
-        symbol : str
-            The symbol of the stock ownership.
-        security_name : str
-            The security name of the stock ownership.
-        type_of_security : str
-            The type of security of the stock ownership.
-        security_cusip : str
-            The security cusip of the stock ownership.
-        shares_type : str
-            The shares type of the stock ownership.
-        put_call_share : str
-            The put call share of the stock ownership.
-        investment_discretion : str
-            The investment discretion of the stock ownership.
-        industry_title : str
-            The industry title of the stock ownership.
-        weight : float
-            The weight of the stock ownership.
-        last_weight : float
-            The last weight of the stock ownership.
-        change_in_weight : float
-            The change in weight of the stock ownership.
-        change_in_weight_percentage : float
-            The change in weight percentage of the stock ownership.
-        market_value : int
-            The market value of the stock ownership.
-        last_market_value : int
-            The last market value of the stock ownership.
-        change_in_market_value : int
-            The change in market value of the stock ownership.
-        change_in_market_value_percentage : float
-            The change in market value percentage of the stock ownership.
-        shares_number : int
-            The shares number of the stock ownership.
-        last_shares_number : int
-            The last shares number of the stock ownership.
-        change_in_shares_number : float
-            The change in shares number of the stock ownership.
-        change_in_shares_number_percentage : float
-            The change in shares number percentage of the stock ownership.
-        quarter_end_price : float
-            The quarter end price of the stock ownership.
-        avg_price_paid : float
-            The average price paid of the stock ownership.
-        is_new : bool
+        cik : Optional[int]
+            Cik of the stock ownership.
+        filing_date : Optional[date]
+            Filing date of the stock ownership.
+        investor_name : Optional[str]
+            Investor name of the stock ownership.
+        symbol : Optional[str]
+            Symbol of the stock ownership.
+        security_name : Optional[str]
+            Security name of the stock ownership.
+        type_of_security : Optional[str]
+            Type of security of the stock ownership.
+        security_cusip : Optional[str]
+            Security cusip of the stock ownership.
+        shares_type : Optional[str]
+            Shares type of the stock ownership.
+        put_call_share : Optional[str]
+            Put call share of the stock ownership.
+        investment_discretion : Optional[str]
+            Investment discretion of the stock ownership.
+        industry_title : Optional[str]
+            Industry title of the stock ownership.
+        weight : Optional[float]
+            Weight of the stock ownership.
+        last_weight : Optional[float]
+            Last weight of the stock ownership.
+        change_in_weight : Optional[float]
+            Change in weight of the stock ownership.
+        change_in_weight_percentage : Optional[float]
+            Change in weight percentage of the stock ownership.
+        market_value : Optional[int]
+            Market value of the stock ownership.
+        last_market_value : Optional[int]
+            Last market value of the stock ownership.
+        change_in_market_value : Optional[int]
+            Change in market value of the stock ownership.
+        change_in_market_value_percentage : Optional[float]
+            Change in market value percentage of the stock ownership.
+        shares_number : Optional[int]
+            Shares number of the stock ownership.
+        last_shares_number : Optional[int]
+            Last shares number of the stock ownership.
+        change_in_shares_number : Optional[float]
+            Change in shares number of the stock ownership.
+        change_in_shares_number_percentage : Optional[float]
+            Change in shares number percentage of the stock ownership.
+        quarter_end_price : Optional[float]
+            Quarter end price of the stock ownership.
+        avg_price_paid : Optional[float]
+            Average price paid of the stock ownership.
+        is_new : Optional[bool]
             Is the stock ownership new.
-        is_sold_out : bool
+        is_sold_out : Optional[bool]
             Is the stock ownership sold out.
-        ownership : float
+        ownership : Optional[float]
             How much is the ownership.
-        last_ownership : float
-            The last ownership amount.
-        change_in_ownership : float
-            The change in ownership amount.
-        change_in_ownership_percentage : float
-            The change in ownership percentage.
-        holding_period : int
-            The holding period of the stock ownership.
-        first_added : date
-            The first added date of the stock ownership.
-        performance : float
-            The performance of the stock ownership.
-        performance_percentage : float
-            The performance percentage of the stock ownership.
-        last_performance : float
-            The last performance of the stock ownership.
-        change_in_performance : float
-            The change in performance of the stock ownership.
-        is_counted_for_performance : bool
-            Is the stock ownership counted for performance.
+        last_ownership : Optional[float]
+            Last ownership amount.
+        change_in_ownership : Optional[float]
+            Change in ownership amount.
+        change_in_ownership_percentage : Optional[float]
+            Change in ownership percentage.
+        holding_period : Optional[int]
+            Holding period of the stock ownership.
+        first_added : Optional[date]
+            First added date of the stock ownership.
+        performance : Optional[float]
+            Performance of the stock ownership.
+        performance_percentage : Optional[float]
+            Performance percentage of the stock ownership.
+        last_performance : Optional[float]
+            Last performance of the stock ownership.
+        change_in_performance : Optional[float]
+            Change in performance of the stock ownership.
+        is_counted_for_performance : Optional[bool]
+            Is the stock ownership counted for performance."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        StockOwnership
-        --------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -2980,77 +2684,62 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/own",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pt(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Price Target Consensus.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[PriceTargetConsensus]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         PriceTargetConsensus
         --------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        target_high : float
-            The high target of the price target consensus.
-        target_low : float
-            The low target of the price target consensus.
-        target_consensus : float
-            The consensus target of the price target consensus.
-        target_median : float
-            The median target of the price target consensus.
+        target_high : Optional[float]
+            High target of the price target consensus.
+        target_low : Optional[float]
+            Low target of the price target consensus.
+        target_consensus : Optional[float]
+            Consensus target of the price target consensus.
+        target_median : Optional[float]
+            Median target of the price target consensus."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        PriceTargetConsensus
-        --------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3062,90 +2751,82 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/pt",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pta(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Price Target.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        with_grade : bool
+            Include upgrades and downgrades in the response. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[PriceTarget]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         PriceTarget
         -----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        published_date : datetime
-            The published date of the price target.
-        news_url : str
-            The news URL of the price target.
+        published_date : Optional[datetime]
+            Published date of the price target.
+        news_url : Optional[str]
+            News URL of the price target.
         news_title : Optional[str]
-            The news title of the price target.
+            News title of the price target.
         analyst_name : Optional[str]
-            The analyst name of the price target.
-        price_target : float
-            The price target of the price target.
-        adj_price_target : float
-            The adjusted price target of the price target.
-        price_when_posted : float
-            The price when posted of the price target.
-        news_publisher : str
-            The news publisher of the price target.
-        news_base_url : str
-            The news base URL of the price target.
-        analyst_company : str
-            The analyst company of the price target.
+            Analyst name.
+        analyst_company : Optional[str]
+            Analyst company.
+        price_target : Optional[float]
+            Price target.
+        adj_price_target : Optional[float]
+            Adjusted price target.
+        price_when_posted : Optional[float]
+            Price when posted.
+        news_publisher : Optional[str]
+            News publisher of the price target.
+        news_base_url : Optional[str]
+            News base URL of the price target.
+        new_grade : Optional[str]
+            None
+        previous_grade : Optional[str]
+            None
+        grading_company : Optional[str]
+            None"""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        with_grade : bool
-            Include upgrades and downgrades in the response.
-
-
-        PriceTarget
-        -----------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3157,98 +2838,90 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/pta",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rating(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Analyst prices and ratings over time of the company."""  # noqa: E501
+        """Analyst prices and ratings over time of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/rating",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def ratios(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        limit: typing_extensions.Annotated[
+            Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Extensive set of ratios over time.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['annually', 'quarterly']
-            Period of the data to return (quarterly or annually).
-        limit : Optional[NonNegativeInt]
+        period : Literal['annual', 'quarter']
+            Period of the data to return.
+        limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[FinancialRatios]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         FinancialRatios
         ---------------
-        symbol : str
-            The symbol of the company.
-        date : str
-            The date of the financial ratios.
-        period : str
-            The period of the financial ratios.
+        symbol : Optional[str]
+            Symbol of the company.
+        date : Optional[str]
+            Date of the financial ratios.
+        period : Optional[str]
+            Period of the financial ratios.
         current_ratio : Optional[float]
-            The current ratio.
+            Current ratio.
         quick_ratio : Optional[float]
-            The quick ratio.
+            Quick ratio.
         cash_ratio : Optional[float]
-            The cash ratio.
+            Cash ratio.
         days_of_sales_outstanding : Optional[float]
             Days of sales outstanding.
         days_of_inventory_outstanding : Optional[float]
@@ -3350,19 +3023,8 @@ class CLASS_stocks_fa(Container):
         enterprise_value_multiple : Optional[float]
             Enterprise value multiple.
         price_fair_value : Optional[float]
-            Price fair value.
+            Price fair value."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        FinancialRatios
-        ---------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3376,112 +3038,93 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/ratios",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revfc(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Earning Estimate by Analysts - Revenue."""  # noqa: E501
+        """Earning Estimate by Analysts - Revenue."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/revfc",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revgeo(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        structure: Annotated[
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="The structure of the returned data."),
+            OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Revenue Geographic.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+        period : Literal['quarter', 'annual']
+            Period of the data to return.
         structure : Literal['hierarchical', 'flat']
-            The structure of the returned data.
+            Structure of the returned data.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[RevenueGeographic]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RevenueGeographic
         -----------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        geographic_segment : Mapping[str, int]
+        geographic_segment : Optional[Mapping[str, int]]
             Day level data containing the revenue of the geographic segment.
         americas : Optional[int]
-            The revenue from the the American segment.
+            Revenue from the the American segment.
         europe : Optional[int]
-            The revenue from the the European segment.
+            Revenue from the the European segment.
         greater_china : Optional[int]
-            The revenue from the the Greater China segment.
+            Revenue from the the Greater China segment.
         japan : Optional[int]
-            The revenue from the the Japan segment.
+            Revenue from the the Japan segment.
         rest_of_asia_pacific : Optional[int]
-            The revenue from the the Rest of Asia Pacific segment.
+            Revenue from the the Rest of Asia Pacific segment."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        RevenueGeographic
-        -----------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3495,85 +3138,68 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/revgeo",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def revseg(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annually", "quarterly"],
-            OpenBBCustomParameter(
-                description="Period of the data to return (quarterly or annually)."
-            ),
-        ] = "annually",
-        structure: Annotated[
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
+            OpenBBCustomParameter(description="Period of the data to return."),
+        ] = "annual",
+        structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="The structure of the returned data."),
+            OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Revenue Business Line.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['quarterly', 'annually']
-            Period of the data to return (quarterly or annually).
+        period : Literal['quarter', 'annual']
+            Period of the data to return.
         structure : Literal['hierarchical', 'flat']
-            The structure of the returned data.
+            Structure of the returned data.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[RevenueBusinessLine]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         RevenueBusinessLine
         -------------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        business_line : Mapping[str, int]
-            Day level data containing the revenue of the business line.
+        business_line : Optional[Mapping[str, int]]
+            Day level data containing the revenue of the business line."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        RevenueBusinessLine
-        -------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3587,48 +3213,41 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/revseg",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def rot(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Number of analyst ratings over time on a monthly basis."""  # noqa: E501
+        """Number of analyst ratings over time on a monthly basis."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/rot",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def score(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Value investing scores for any time period."""  # noqa: E501
+        """Value investing scores for any time period."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/score",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def sec(
         self, chart: bool = False
@@ -3637,14 +3256,11 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/sec",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shares(
         self, chart: bool = False
@@ -3653,79 +3269,64 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/shares",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def shrs(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Share Statistics.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[ShareStatistics]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         ShareStatistics
         ---------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             A specific date to get data for.
-        free_float : float
-            The percentage of unrestricted shares of a publicly-traded company.
-        float_shares : float
-            The number of shares available for trading by the general public.
-        outstanding_shares : float
-            The total number of shares of a publicly-traded company.
-        source : str
-            Source of the received data.
+        free_float : Optional[float]
+            Percentage of unrestricted shares of a publicly-traded company.
+        float_shares : Optional[float]
+            Number of shares available for trading by the general public.
+        outstanding_shares : Optional[float]
+            Total number of shares of a publicly-traded company.
+        source : Optional[str]
+            Source of the received data."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        ShareStatistics
-        ---------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3737,75 +3338,60 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/shrs",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def split(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Historical Stock Splits.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[HistoricalStockSplits]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         HistoricalStockSplits
         ---------------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        label : str
-            The label of the historical stock splits.
-        numerator : float
-            The numerator of the historical stock splits.
-        denominator : float
-            The denominator of the historical stock splits.
+        label : Optional[str]
+            Label of the historical stock splits.
+        numerator : Optional[float]
+            Numerator of the historical stock splits.
+        denominator : Optional[float]
+            Denominator of the historical stock splits."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        HistoricalStockSplits
-        ---------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3817,110 +3403,91 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/split",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def supplier(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """List of suppliers of the company."""  # noqa: E501
+        """List of suppliers of the company."""
+
         inputs = filter_inputs(
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/supplier",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def transcript(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        year: Annotated[
+        year: typing_extensions.Annotated[
             int,
-            OpenBBCustomParameter(
-                description="The year of the earnings call transcript."
-            ),
+            OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
-        quarter: Annotated[
+        quarter: typing_extensions.Annotated[
             Literal[1, 2, 3, 4],
             OpenBBCustomParameter(
-                description="The quarter of the earnings call transcript."
+                description="Quarter of the earnings call transcript."
             ),
         ] = 1,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Earnings Call Transcript.
 
-
-        openbb
-        ======
-
         Parameters
         ----------
-        provider: Literal[fmp]
-            The provider to use for the query.
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         year : int
-            The year of the earnings call transcript.
+            Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
-            The quarter of the earnings call transcript.
+            Quarter of the earnings call transcript.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Union[Literal['fmp'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
 
         Returns
         -------
         OBBject
-            results: List[Data]
+            results : List[EarningsCallTranscript]
                 Serializable results.
-            provider: Optional[PROVIDERS]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
-            warnings: Optional[List[Warning_]]
+            warnings : Optional[List[Warning_]]
                 List of warnings.
-            error: Optional[Error]
-                Caught exceptions.
-            chart: Optional[Chart]
+            chart : Optional[Chart]
                 Chart object.
-
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         EarningsCallTranscript
         ----------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        quarter : int
-            The quarter of the earnings call transcript.
-        year : int
-            The year of the earnings call transcript.
-        date : datetime
+        quarter : Optional[int]
+            Quarter of the earnings call transcript.
+        year : Optional[int]
+            Year of the earnings call transcript.
+        date : Optional[datetime]
             The date of the data.
-        content : str
-            The content of the earnings call transcript.
+        content : Optional[str]
+            Content of the earnings call transcript."""
 
-        fmp
-        ===
-
-        Parameters
-        ----------
-        All fields are standardized.
-
-
-        EarningsCallTranscript
-        ----------------------
-        All fields are standardized."""  # noqa: E501
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
@@ -3934,9 +3501,7 @@ class CLASS_stocks_fa(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/fa/transcript",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

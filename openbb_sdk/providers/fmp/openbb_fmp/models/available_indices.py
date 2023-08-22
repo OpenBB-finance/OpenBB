@@ -23,6 +23,8 @@ class FMPAvailableIndicesData(AvailableIndicesData):
     """FMP Available Indices Data."""
 
     class Config:
+        """Pydantic alias config using fields Dict."""
+
         fields = {
             "stock_exchange": "stockExchange",
             "exchange_short_name": "exchangeShortName",
@@ -35,8 +37,12 @@ class FMPAvailableIndicesFetcher(
         List[FMPAvailableIndicesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPAvailableIndicesQueryParams:
+        """Transform the query params."""
+
         return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod
@@ -44,15 +50,16 @@ class FMPAvailableIndicesFetcher(
         query: FMPAvailableIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPAvailableIndicesData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-indexes?apikey={api_key}"
-        return get_data_many(url, FMPAvailableIndicesData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPAvailableIndicesData],
-    ) -> List[FMPAvailableIndicesData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPAvailableIndicesData]:
+        """Return the transformed data."""
+        return [FMPAvailableIndicesData(**d) for d in data]

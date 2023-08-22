@@ -15,22 +15,21 @@ class StockNewsQueryParams(QueryParams):
     """Stock news query."""
 
     symbols: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    page: int = Field(
-        default=0, description="The page of the stock news to be retrieved."
-    )
+    page: int = Field(default=0, description="Page of the stock news to be retrieved.")
     limit: Optional[NonNegativeInt] = Field(
-        default=15, description="The number of results to return per page."
+        default=15, description="Number of results to return per page."
     )
 
     @validator("symbols", pre=True)
     def symbols_validate(cls, v: str):  # pylint: disable=E0213
+        """Validate the symbols."""
         return v.upper()
 
 
 class StockNewsData(Data):
     """Stock News data."""
 
-    date: datetime = Field(description="The published date of the news.")
-    title: str = Field(description="The title of the news.")
-    text: Optional[str] = Field(default=None, description="The text/body of the news.")
-    url: str = Field(description="The URL of the news.")
+    date: datetime = Field(description="Published date of the news.")
+    title: str = Field(description="Title of the news.")
+    text: Optional[str] = Field(default=None, description="Text/body of the news.")
+    url: str = Field(description="URL of the news.")

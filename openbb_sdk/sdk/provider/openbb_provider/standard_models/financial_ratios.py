@@ -9,12 +9,14 @@ from openbb_provider.abstract.data import Data
 
 
 class FinancialRatiosData(Data):
-    symbol: str = Field(description="The symbol of the company.")
-    date: str = Field(description="The date of the financial ratios.")
-    period: str = Field(description="The period of the financial ratios.")
-    current_ratio: Optional[float] = Field(description="The current ratio.")
-    quick_ratio: Optional[float] = Field(description="The quick ratio.")
-    cash_ratio: Optional[float] = Field(description="The cash ratio.")
+    """Financial ratios data model."""
+
+    symbol: str = Field(description="Symbol of the company.")
+    date: str = Field(description="Date of the financial ratios.")
+    period: str = Field(description="Period of the financial ratios.")
+    current_ratio: Optional[float] = Field(description="Current ratio.")
+    quick_ratio: Optional[float] = Field(description="Quick ratio.")
+    cash_ratio: Optional[float] = Field(description="Cash ratio.")
     days_of_sales_outstanding: Optional[float] = Field(
         description="Days of sales outstanding."
     )

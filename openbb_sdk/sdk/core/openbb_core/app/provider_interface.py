@@ -1,13 +1,14 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
+from openbb_provider.utils.helpers import to_snake_case
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 
-TupleFieldType = TypeVar("TupleFieldType", bound=Tuple[str, type, Any])
+TupleFieldType = Tuple[str, type, Any]
 
 
 @dataclass
@@ -193,7 +194,7 @@ class ProviderInterface:
         description = (
             f"{field.field_info.description} {provider_field}"
             if provider_name and field.field_info.description
-            else ""
+            else f"{field.field_info.description}"
         )
 
         if field.required:
@@ -240,8 +241,13 @@ class ProviderInterface:
             else:
                 for name, field in model_details["QueryParams"]["fields"].items():
                     if name not in providers["openbb"]["QueryParams"]["fields"]:
+                        s_name = to_snake_case(name)
                         incoming = cls._create_field(
-                            name, field, provider_name, query=True, force_optional=True
+                            s_name,
+                            field,
+                            provider_name,
+                            query=True,
+                            force_optional=True,
                         )
 
                         if incoming.name in extra:
@@ -286,8 +292,9 @@ class ProviderInterface:
             else:
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
+                        s_name = to_snake_case(name)
                         incoming = cls._create_field(
-                            name, field, provider_name, force_optional=True
+                            s_name, field, provider_name, force_optional=True
                         )
 
                         if incoming.name in extra:
@@ -362,7 +369,7 @@ class ProviderInterface:
         result: Dict = {}
 
         for model_name, providers in map_.items():
-            choices = list(providers.keys())
+            choices = sorted(list(providers.keys()))
             if "openbb" in choices:
                 choices.remove("openbb")
 

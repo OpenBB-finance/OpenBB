@@ -10,11 +10,12 @@ from pydantic import BaseModel, Field
 
 
 def get_data(url: str, **kwargs: Any) -> dict:
-    r = helpers.make_request(
+    """Do an API request to Benzinga and return the data."""
+    result = helpers.make_request(
         url, timeout=10, headers={"accept": "application/json"}, **kwargs
     )
-    if r.status_code != 200:
-        data = r.json()
+    if result.status_code != 200:
+        data = result.json()
         if data == ['Access denied for user 0 "anonymous"']:
             raise RuntimeError("API Key is invalid")
         message = data.get("message")
@@ -22,7 +23,7 @@ def get_data(url: str, **kwargs: Any) -> dict:
         value = message or error
         raise RuntimeError(f"Error in Benzinga request -> {value}")
 
-    return r.json()
+    return result.json()
 
 
 class BenzingaImage(BaseModel):
@@ -33,17 +34,13 @@ class BenzingaImage(BaseModel):
 class BenzingaStockNewsData(StockNewsData):
     """Benzinga Global News data."""
 
-    images: List[BenzingaImage] = Field(
-        description="The images associated with the news."
-    )
+    images: List[BenzingaImage] = Field(description="Images associated with the news.")
     channels: Optional[List[str]] = Field(
-        description="The channels associated with the news."
+        description="Channels associated with the news."
     )
-    stocks: Optional[List[str]] = Field(
-        description="The stocks associated with the news."
-    )
-    tags: Optional[List[str]] = Field(description="The tags associated with the news.")
-    teaser: Optional[str] = Field(description="The teaser of the news.")
+    stocks: Optional[List[str]] = Field(description="Stocks associated with the news.")
+    tags: Optional[List[str]] = Field(description="Tags associated with the news.")
+    teaser: Optional[str] = Field(description="Teaser of the news.")
 
     @staticmethod
     def from_dict(d: Dict) -> "BenzingaStockNewsData":

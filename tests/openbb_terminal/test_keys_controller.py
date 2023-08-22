@@ -149,12 +149,6 @@ def test_call_reddit(other):
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234", "-s", "4567", "-t", "890"]])
-def test_call_twitter(other):
-    controller.call_twitter(other)
-
-
-@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-u", "1234", "-p", "4567"]])
 def test_call_rh(other):
     controller.call_rh(other)

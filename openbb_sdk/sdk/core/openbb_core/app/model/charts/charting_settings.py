@@ -16,8 +16,6 @@ class ChartingSettings:
         user_settings = user_settings or UserSettings()
         system_settings = system_settings or SystemSettings()
 
-        has_hub = user_settings.profile.hub_session is not None
-
         user_data_directory = (
             str(Path.home() / "OpenBBUserData")
             if not user_settings.preferences
@@ -37,11 +35,11 @@ class ChartingSettings:
         self.plot_pywry_width: int = user_settings.preferences.plot_pywry_width
         self.plot_pywry_height: int = user_settings.preferences.plot_pywry_height
         self.plot_open_export: bool = user_settings.preferences.plot_open_export
-        self.user_email: Optional[str] = (
-            user_settings.profile.hub_session.email if has_hub else None
+        self.user_email: Optional[str] = getattr(
+            user_settings.profile.hub_session, "email", None
         )
-        self.user_uuid: Optional[str] = (
-            user_settings.profile.hub_session.user_uuid if has_hub else None
+        self.user_uuid: Optional[str] = getattr(
+            user_settings.profile.hub_session, "user_uuid", None
         )
         self.user_exports_directory = user_settings.preferences.export_directory
         self.user_styles_directory = user_settings.preferences.user_styles_directory

@@ -15,10 +15,11 @@
     - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
     - [4.1.2. Utilities](#412-utilities)
-      - [Settings](#settings)
-      - [System](#system)
+      - [User settings](#user-settings)
+      - [System settings](#system-settings)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
+    - [4.1.4. Command execution](#414-command-execution)
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
@@ -165,7 +166,7 @@ output = obb.stocks.load(
 
 ### 4.1.1. OBBject
 
-Each command will always return an `OBBject`. There you will find:
+Each command will always return a  `OBBject`. There you will find:
 
 - `results`: the data returned by the command `None`
 - `provider`: the provider name (only available provider names allowed) used to get the data or `None`
@@ -230,24 +231,22 @@ date
 
 ### 4.1.2. Utilities
 
-#### Settings
+#### User settings
 
 These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
 
 ```python
 from openbb import obb
 
-obb.settings.profile
-obb.settings.credentials
-obb.settings.preferences
-obb.settings.defaults
+obb.user.profile
+obb.user.credentials
+obb.user.preferences
+obb.user.defaults
 ```
 
-#### System
+#### System settings
 
-Check your system settings. Most of the properties are read-only during runtime.
-
-- `debug_mode`: Setting it as `True` will immediately raise all occurring exceptions.
+Check your system settings.
 
 ```python
 from openbb import obb
@@ -262,9 +261,9 @@ Obtain the coverage of providers and commands.
 ```python
 >>> obb.coverage.commands
 {
-    '/crypto/load': ['fmp', 'polygon'],
-    '/economy/const': ['fmp'],
-    '/economy/cpi': ['fred'],
+    '.crypto.load': ['fmp', 'polygon'],
+    '.economy.const': ['fmp'],
+    '.economy.cpi': ['fred'],
     ...
 }
 ```
@@ -274,12 +273,12 @@ Obtain the coverage of providers and commands.
 {
     'fmp':
     [
-        '/crypto/load',
-        '/economy/const',
-        '/economy/index',
+        '.crypto.load',
+        '.economy.const',
+        '.economy.index',
         ...
     ],
-    'fred': ['/economy/cpi'],
+    'fred': ['.economy.cpi'],
     ...
 }
 ```
@@ -291,11 +290,14 @@ You can login to your OpenBB Hub account and save your credentials there to acce
 ```python
 from openbb import obb
 
+# Login with personal access token
+obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
+
 # Login with email, password or SDK token
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 
 # Change a credential
-obb.account.settings.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
+obb.user.credentials.polygon_api_key = "new_key"  # pragma: allowlist secret
 
 # Save account changes
 obb.account.save()
@@ -307,6 +309,26 @@ obb.account.refresh()
 obb.account.logout()
 ```
 
+### 4.1.4. Command execution
+
+How do we execute commands?
+
+OpenBB SDK core is a REST API powered by FastAPI. We use this feature to run commands both in a web server setting and also in the `openbb` python package.
+
+If you are using the `openbb` package, running the command below triggers a "request" to the `CommandRunner` class. The "request" will be similar to the one found in [4.2 Dynamic version](#42-dynamic-version). This will hit the endpoint matching the command and return the result.
+
+```python
+from openbb import obb
+
+obb.stocks.load(
+    symbol="TSLA",
+    start_date="2023-07-01",
+    end_date="2023-07-25",
+    provider="fmp",
+    chart=True
+    )
+```
+
 ## 4.2 Dynamic version
 
 You can also use the dynamic version to consume the API endpoints from Python itself.
@@ -314,9 +336,9 @@ You can also use the dynamic version to consume the API endpoints from Python it
 In fact, the static version makes use of this feature to run each command. Take a look at the example below:
 
 ```python
->>> from openbb_core.app.command_runner import CommandRunnerSession
->>> crs = CommandRunnerSession()
->>> response = crs.run(
+>>> from openbb_core.app.command_runner import CommandRunner
+>>> runner = CommandRunner()
+>>> output = runner.run(
              "/stocks/load",
              provider_choices={
                  "provider": "fmp",
@@ -329,26 +351,15 @@ In fact, the static version makes use of this feature to run each command. Take 
              extra_params={},
              chart=True,
          )
->>> response
-JournalEntry
-
-id: ...                 # UUID Tag
-arguments: ...          # Arguments of the command.
-duration ...            # Execution duration in nano second of the command.
-output ...              # Output of the command.
-route: "/stocks/load"   # Route of the command.
-timestamp: ...          # Execution starting timestamp.
-alias_list: ...         # List of alias to find a JournalEntry easier than with it's `tag`.
-
->>> response.output
+>>> output
 OBBject
 
 id: ...                 # UUID Tag
 results: ...            # Serializable results.
 provider: ...           # Provider name.
 warnings: ...           # List of warnings.
-error: ...              # Exception caught.
 chart: ...              # Chart object.
+metadata: ...           # Metadata.
 ```
 
 ## 5. REST API

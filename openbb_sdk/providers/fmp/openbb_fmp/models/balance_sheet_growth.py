@@ -25,6 +25,8 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     """FMP Balance Sheet Growth Data."""
 
     class Config:
+        """Pydantic alias config using fields Dict."""
+
         fields = {
             "growth_cash_and_cash_equivalents": "growthCashAndCashEquivalents",
             "growth_short_term_investments": "growthShortTermInvestments",
@@ -69,6 +71,7 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -78,8 +81,11 @@ class FMPBalanceSheetGrowthFetcher(
         List[FMPBalanceSheetGrowthData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPBalanceSheetGrowthQueryParams:
+        """Transform the query params."""
         return FMPBalanceSheetGrowthQueryParams(**params)
 
     @staticmethod
@@ -87,7 +93,8 @@ class FMPBalanceSheetGrowthFetcher(
         query: FMPBalanceSheetGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPBalanceSheetGrowthData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -97,10 +104,10 @@ class FMPBalanceSheetGrowthFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPBalanceSheetGrowthData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPBalanceSheetGrowthData],
-    ) -> List[FMPBalanceSheetGrowthData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPBalanceSheetGrowthData]:
+        """Return the transformed data."""
+        return [FMPBalanceSheetGrowthData(**d) for d in data]

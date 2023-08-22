@@ -1,3 +1,4 @@
+"""CPI data and query params."""
 from datetime import date as dateType
 from typing import List, Literal, Optional
 
@@ -61,7 +62,7 @@ CPI_COUNTRIES = Literal[
 
 CPI_UNITS = Literal["growth_previous", "growth_same", "index_2015"]
 
-CPI_FREQUENCY = Literal["monthly", "quarterly", "annual"]
+CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 
 
 class CPIQueryParams(QueryParams):
@@ -92,15 +93,16 @@ class CPIData(Data):
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     realtime_start: dateType = Field(
-        description="The date the data was updated."
+        description="Date the data was updated."
     )  # TODO: What is this?
     realtime_end: dateType = Field(
-        description="The date the data was updated."
+        description="Date the data was updated."
     )  # TODO: What is this?
-    value: float = Field(description="The value of the data.")
+    value: float = Field(description="Value of the data.")
 
     @validator("value", pre=True)
     def value_validate(cls, v: str):  # pylint: disable=E0213
+        """Validate value."""
         if v == ".":
             return 0.0
         return float(v)

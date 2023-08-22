@@ -20,5 +20,5 @@ def load(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Crypto Intraday Price."""
+    """Crypto EOD Price."""
     return OBBject(results=Query(**locals()).execute())

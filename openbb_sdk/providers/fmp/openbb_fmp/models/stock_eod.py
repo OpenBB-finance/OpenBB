@@ -1,8 +1,9 @@
 """FMP Stocks end of day fetcher."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.helpers import get_querystring
@@ -52,6 +53,7 @@ class FMPStockEODData(StockEODData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         try:
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
         except ValueError:
@@ -64,12 +66,17 @@ class FMPStockEODFetcher(
         List[FMPStockEODData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
-        now = datetime.now().date()
+        """Transform the query params."""
+
         transformed_params = params
+
+        now = datetime.now().date()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - timedelta(days=7)
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -81,7 +88,9 @@ class FMPStockEODFetcher(
         query: FMPStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockEODData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -96,8 +105,10 @@ class FMPStockEODFetcher(
             )
             url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPStockEODData, "historical", **kwargs)
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockEODData]) -> List[FMPStockEODData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPStockEODData]:
+        """Return the transformed data."""
+
+        return [FMPStockEODData(**d) for d in data]

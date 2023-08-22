@@ -25,6 +25,8 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     """FMP Income Statement Growth Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "growth_revenue": "growthRevenue",
             "growth_cost_of_revenue": "growthCostOfRevenue",
@@ -56,6 +58,7 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -65,8 +68,12 @@ class FMPIncomeStatementGrowthFetcher(
         List[FMPIncomeStatementGrowthData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementGrowthQueryParams:
+        """Transform the query params."""
+
         return FMPIncomeStatementGrowthQueryParams(**params)
 
     @staticmethod
@@ -74,18 +81,19 @@ class FMPIncomeStatementGrowthFetcher(
         query: FMPIncomeStatementGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPIncomeStatementGrowthData]:
-        api_key = credentials.get("fmp_api_key") if credentials else ""
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"income-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPIncomeStatementGrowthData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPIncomeStatementGrowthData],
-    ) -> List[IncomeStatementGrowthData]:
-        return [IncomeStatementGrowthData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPIncomeStatementGrowthData]:
+        """Return the transformed data."""
+
+        return [FMPIncomeStatementGrowthData(**d) for d in data]

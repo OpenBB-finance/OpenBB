@@ -83,8 +83,7 @@ def fib(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> OBBject[List[Data]]:
-    """
-    Fibonacci Retracement Levels.
+    """Create Fibonacci Retracement Levels.
 
     Parameters
     ----------

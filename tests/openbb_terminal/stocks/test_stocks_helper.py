@@ -57,7 +57,7 @@ def test_search(mocker, use_tab):
         target="openbb_terminal.core.session.current_user.__current_user",
         new=mock_current_user,
     )
-    stocks_helper.search(
+    df = stocks_helper.search(
         query="microsoft",
         country="United_States",
         sector="",
@@ -66,7 +66,9 @@ def test_search(mocker, use_tab):
         exchange="",
         exchange_country="",
         all_exchanges=False,
-        limit=5,
+    )
+    stocks_helper.print_rich_table(
+        df, show_index=False, title="Company Search Results", headers=df.columns
     )
 
 

@@ -22,7 +22,6 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
-import statsmodels.api as sm
 from openbb_charting.core.backend import PLOTLYJS_PATH, get_backend
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.config.openbb_styles import (
@@ -30,7 +29,6 @@ from openbb_charting.core.config.openbb_styles import (
 )
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from plotly.subplots import make_subplots
-from scipy import stats
 
 if TYPE_CHECKING:
     try:  # noqa: SIM105
@@ -307,6 +305,8 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column of the subplot, by default 1
         """
+
+        from scipy import stats
 
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
@@ -1606,6 +1606,8 @@ class OpenBBFigure(go.Figure):
         pacf : bool, optional
             Flag to indicate whether to use partial autocorrelation or not, by default False
         """
+        import statsmodels.api as sm
+
         mode = "markers+lines" if marker else "lines"
         line = kwargs.pop("line", None)
 
