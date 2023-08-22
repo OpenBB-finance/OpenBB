@@ -23,7 +23,7 @@ def create_app():
     class App(Extensions):
         """OpenBB SDK.
 
-Utility menus:
+Utilities:
     /account
     /user
     /system
