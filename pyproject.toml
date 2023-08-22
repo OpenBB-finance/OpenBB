@@ -122,8 +122,6 @@ ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
-ruff = "0.0.285"
-
 
 
 [tool.poetry.extras]
@@ -138,7 +136,6 @@ doc = ["docstring-parser"]
 pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
 pylint = "2.17.0"
-mypy = "^1.1.1"
 mock = "^4.0.3"
 codespell = "^2.2.4"
 pydocstyle = "^6.3.0"
@@ -162,6 +159,8 @@ nbmake = ">0.5.0"
 pytest-timeout = "^2.1.0"
 pytest-recorder = "^0.2.1"
 freezegun = "^1.2.2"
+ruff = "^0.0.285"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
