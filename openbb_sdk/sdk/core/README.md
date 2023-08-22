@@ -144,7 +144,6 @@ Update your system settings by modifying the `.openbb_sdk/system_settings.json` 
 
 ```{json}
 {
-    "run_in_isolation": null,
     "dbms_uri": null
 }
 ```

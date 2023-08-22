@@ -252,8 +252,6 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethplorer_view as crypto_onchain_ethplorer_view,
     whale_alert_model as crypto_onchain_whale_alert_model,
     whale_alert_view as crypto_onchain_whale_alert_view,
-    shroom_model as crypto_onchain_shroom_model,
-    shroom_view as crypto_onchain_shroom_view,
     topledger_model as crypto_onchain_topledger_model,
     topledger_view as crypto_onchain_topledger_view,
 )
