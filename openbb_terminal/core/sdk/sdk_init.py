@@ -1,11 +1,5 @@
-# flake8: noqa pylint: disable=R0402,C0412,unused-import
-
-
+# flake8: pylint: disable=R0402,C0412,unused-import
 # noqa: F401
-
-
-# Session
-
 
 # Alternative
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
@@ -169,8 +163,6 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view as crypto_onchain_ethgasstation_view,
     ethplorer_model as crypto_onchain_ethplorer_model,
     ethplorer_view as crypto_onchain_ethplorer_view,
-    whale_alert_model as crypto_onchain_whale_alert_model,
-    whale_alert_view as crypto_onchain_whale_alert_view,
     topledger_model as crypto_onchain_topledger_model,
     topledger_view as crypto_onchain_topledger_view,
     whale_alert_model as crypto_onchain_whale_alert_model,
