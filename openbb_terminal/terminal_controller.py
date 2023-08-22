@@ -824,7 +824,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
-    export_path, jobs_cmds = handle_export_and_cmds()
+    export_path, jobs_cmds = handle_export_and_cmds(jobs_cmds)
 
     bootup()
     if not jobs_cmds:

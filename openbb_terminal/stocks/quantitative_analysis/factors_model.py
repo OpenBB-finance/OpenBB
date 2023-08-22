@@ -27,8 +27,8 @@ def get_fama_raw() -> pd.DataFrame:
     """
     url = "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     file = "F-F_Research_Data_Factors.CSV"
-    with urlopen(url) as url, ZipFile(  # noqa: S310
-        BytesIO(url.read())
+    with urlopen(url) as data, ZipFile(  # noqa: S310
+        BytesIO(data.read())
     ) as zipfile, zipfile.open(file) as zip_open:
         df = pd.read_csv(
             zip_open,

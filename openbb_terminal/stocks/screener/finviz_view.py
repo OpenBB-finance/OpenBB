@@ -200,7 +200,7 @@ def screener(
         df_original = df_screen.copy()
         df_screen = df_screen.fillna("")
 
-        cols = []
+        cols: List[str] = []
         data_type_cols = {
             "ownership": ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"],
             "overview": ["Market Cap", "Volume"],
@@ -209,7 +209,7 @@ def screener(
             "financial": ["Market Cap", "Volume"],
             "performance": ["Avg Volume", "Volume"],
         }
-        cols = data_type_cols.get(data_type)
+        cols = data_type_cols.get(data_type, [])
 
         if cols:
             df_screen[cols] = df_screen[cols].applymap(

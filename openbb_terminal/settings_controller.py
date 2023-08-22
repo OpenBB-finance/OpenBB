@@ -484,7 +484,7 @@ class SettingsController(BaseController):
     def call_userdata(self, other_args: List[str]):
         """Process userdata command"""
 
-        def save_file(file_path: Path):
+        def save_file(file_path: Union[str, Path]):
             console.print(f"User data to be saved in the default folder: '{file_path}'")
             self.set_and_save_preference("USER_DATA_DIRECTORY", file_path)
 

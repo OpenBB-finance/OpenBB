@@ -78,7 +78,7 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
             time_unit = match.group(2)
             if time_unit.upper() in ("DAYS", "MONTHS", "YEARS"):
                 kwargs = {time_unit.lower(): integer_value}
-                return (now - relativedelta(**kwargs)).strftime("%Y-%m-%d")
+                return (now - relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
 
     match = re.search(r"\$LAST(\w+)", keyword)
     if match:
@@ -261,6 +261,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                     return (
                                         f"[red]Variable {VAR_NAME} not given "
                                         "for current routine script.[/red]",
+                                        "",
                                     )
 
                             # Only enters here when any other index from 0 is used
@@ -287,6 +288,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                             else:
                                 return (
                                     f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
+                                    "",
                                 )
 
                         # Involves slicing which is a bit more tricky to use eval on
