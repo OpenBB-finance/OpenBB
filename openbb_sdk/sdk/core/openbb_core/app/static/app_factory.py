@@ -23,13 +23,13 @@ def create_app():
     class App(Extensions):
         """OpenBB SDK.
 
-        Utility menus:
-            /account
-            /user
-            /system
-            /coverage
+Utility menus:
+    /account
+    /user
+    /system
+    /coverage
 
-        Extensions:"""
+Extensions:""" # Don't change the indentation of this docstring
 
         def __init__(self, command_runner):
             self._command_runner = command_runner
