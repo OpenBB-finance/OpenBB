@@ -237,9 +237,8 @@ def get_close_price(
     elif r.status_code == 401:
         if print_errors:
             console.print("[red]Invalid API Key[/red]\n")
-    else:
-        if print_errors:
-            console.print(r.text)
+    elif print_errors:
+        console.print(r.text)
 
     return df
 

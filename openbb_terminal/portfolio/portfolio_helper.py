@@ -144,18 +144,16 @@ def filter_df_by_period(df: pd.DataFrame, period: str = "all") -> pd.DataFrame:
         return df[df.index.strftime("%Y-%m") >= f"{datetime.now().strftime('%Y')}-10"]
     if period == "ytd":
         return df[df.index.strftime("%Y") == datetime.now().strftime("%Y")]
-    if period == "3m":
-        return df[df.index >= (datetime.now() - relativedelta(months=3))]
-    if period == "6m":
-        return df[df.index >= (datetime.now() - relativedelta(months=6))]
-    if period == "1y":
-        return df[df.index >= (datetime.now() - relativedelta(years=1))]
-    if period == "3y":
-        return df[df.index >= (datetime.now() - relativedelta(years=3))]
-    if period == "5y":
-        return df[df.index >= (datetime.now() - relativedelta(years=5))]
-    if period == "10y":
-        return df[df.index >= (datetime.now() - relativedelta(years=10))]
+    period_dict = {
+        "3m": relativedelta(months=3),
+        "6m": relativedelta(months=6),
+        "1y": relativedelta(years=1),
+        "3y": relativedelta(years=3),
+        "5y": relativedelta(years=5),
+        "10y": relativedelta(years=10),
+    }
+    if period in period_dict:
+        return df[df.index >= (datetime.now() - period_dict[period])]
     return df
 
 

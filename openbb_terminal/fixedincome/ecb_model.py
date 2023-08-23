@@ -115,6 +115,7 @@ def get_ecb_yield_curve(
     Since there is a delay with the data, the most recent date is returned and can be accessed with return_date=True
     >>> ycrv_df, ycrv_date = openbb.fixedincome.ycrv(return_date=True)
     """
+    base_return = pd.DataFrame(), date if return_date else pd.DataFrame()
     if yield_type == "spot_rate":
         yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if any_rating else 'C'}.SV_C_YM.SR_"
     elif yield_type == "instantaneous_forward":
@@ -123,9 +124,7 @@ def get_ecb_yield_curve(
         yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if any_rating else 'C'}.SV_C_YM.PY"
     else:
         console.print("[red]Incorrect input for parameter yield_type[/red]")
-        if return_date:
-            return pd.DataFrame(), date
-        return pd.DataFrame()
+        return base_return
 
     if detailed:
         console.print(
@@ -161,9 +160,7 @@ def get_ecb_yield_curve(
     today = datetime.now().strftime("%Y-%m-%d")
     if date and date >= today:
         console.print("[red]Date cannot be today or in the future[/red]")
-        if return_date:
-            return pd.DataFrame(), date
-        return pd.DataFrame()
+        return base_return
 
     # Add in logic that will get the most recent date.
 
@@ -207,9 +204,7 @@ def get_ecb_yield_curve(
         return pd.DataFrame(), date
 
     if df.empty:
-        if return_date:
-            return pd.DataFrame(), date
-        return pd.DataFrame()
+        return base_return
 
     # Drop rows with NaN -- corresponding to weekends typically
     df = df.dropna()

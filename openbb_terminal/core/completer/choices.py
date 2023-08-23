@@ -157,14 +157,9 @@ def contains_functions_to_patch(command_func: Callable) -> bool:
 
     co_names = command_func.__code__.co_names
 
-    if "parse_simple_args" in co_names:
-        in_command = True
-    elif "parse_known_args_and_warn" in co_names:
-        in_command = True
-    else:
-        in_command = False
-
-    return in_command
+    return bool(
+        "parse_simple_args" in co_names or "parse_known_args_and_warn" in co_names
+    )
 
 
 @contextmanager

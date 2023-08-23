@@ -581,10 +581,10 @@ def display_skew(
         color = -1
         for expiration in expirations:  # type: ignore [union-attr]
             if expiration == "":
-                expiration = options.expirations[1]
+                expiration = options.expirations[1]  # noqa: PLW2901
             if expiration not in options.expirations:
-                expiration = options_chains_model.get_nearest_expiration(
-                    options, expiration
+                expiration = (  # noqa: PLW2901
+                    options_chains_model.get_nearest_expiration(options, expiration)
                 )
             color = color + 1
             skew = options_chains_model.calculate_skew(options, expiration, moneyness)[
@@ -903,7 +903,7 @@ def display_volatility(
         if volume is True:
             iv_df = iv_df[iv_df["volume"] > 0]
         for expiration in expirations:
-            expiration = options_chains_model.get_nearest_expiration(
+            expiration = options_chains_model.get_nearest_expiration(  # noqa: PLW2901
                 options, expiration
             )
             data = iv_df[iv_df["expiration"] == expiration]

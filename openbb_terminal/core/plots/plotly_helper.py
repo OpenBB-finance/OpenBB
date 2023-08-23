@@ -1,5 +1,6 @@
 """Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902,W3301
+import contextlib
 import json
 import sys
 import textwrap
@@ -42,11 +43,9 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
 if TYPE_CHECKING:
-    try:
-        # pylint: disable=W0611 # noqa: F401
-        from darts import TimeSeries
-    except ImportError:
-        pass
+    with contextlib.suppress(ImportError):
+        from darts import TimeSeries  # pylint: disable=W0611 # noqa: F401
+
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
@@ -600,7 +599,9 @@ class OpenBBFigure(go.Figure):
         max_y = 0
         for i0, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
             if not color_i:
-                color_i = theme.up_color if i0 % 2 == 0 else theme.down_color
+                color_i = (  # noqa: PLW2901
+                    theme.up_color if i0 % 2 == 0 else theme.down_color
+                )
 
             res_mean, res_std = np.mean(x_i), np.std(x_i)
             res_min, res_max = min(x_i), max(x_i)
@@ -1054,7 +1055,7 @@ class OpenBBFigure(go.Figure):
                         [trace, trace_.mode, trace_.marker, trace_.line_dash],
                     ):
                         if not arg and default:
-                            arg = default
+                            arg = default  # noqa: PLW2901
 
                     kwargs.update(dict(yaxis=trace_.yaxis))
                     break

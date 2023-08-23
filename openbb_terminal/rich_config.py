@@ -264,11 +264,10 @@ class ConsoleAndPanel:
                     self.__console.print(kwargs["text"])
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
+        elif not get_current_system().TEST_MODE:
+            self.__console.print(*args, **kwargs)
         else:
-            if not get_current_system().TEST_MODE:
-                self.__console.print(*args, **kwargs)
-            else:
-                print(*args, **kwargs)
+            print(*args, **kwargs)
 
     def input(self, *args, **kwargs):
         self.print(*args, **kwargs, end="")

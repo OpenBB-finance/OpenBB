@@ -1,5 +1,6 @@
 # pylint: disable=unused-argument
 import argparse
+import contextlib
 import inspect
 import sys
 from datetime import datetime, timedelta
@@ -370,11 +371,10 @@ class ControllerDoc:
 
                 if len(fullspec.args) > 2:
                     args.update({arg: ["1234"] for arg in fullspec.args[2:]})
-                with patch("openbb_terminal.rich_config.console.print"):
-                    try:
-                        _ = getattr(self.controller, command)(["--help"], **args)
-                    except (SystemExit, AttributeError):
-                        pass
+                with patch(
+                    "openbb_terminal.rich_config.console.print"
+                ), contextlib.suppress(SystemExit, AttributeError):
+                    _ = getattr(self.controller, command)(["--help"], **args)
 
         except Exception as e:
             print(e)
@@ -460,11 +460,14 @@ class LoadControllersDoc:
                 if (  # noqa: SIM102
                     name != "TerminalController" and "BaseController" not in name
                 ):  # noqa: SIM102
-                    if isclass(obj) and issubclass(obj, BaseController):
-                        if trailmap not in self.controller_docs:
-                            ctrl = ControllerDoc(obj, trailmap)  # type: ignore
-                            if ctrl.has_commands():
-                                self.controller_docs[trailmap] = ctrl
+                    if (
+                        isclass(obj)
+                        and issubclass(obj, BaseController)
+                        and trailmap not in self.controller_docs
+                    ):
+                        ctrl = ControllerDoc(obj, trailmap)  # type: ignore
+                        if ctrl.has_commands():
+                            self.controller_docs[trailmap] = ctrl
 
     def _get_modules(self) -> Dict[str, ModuleType]:
         """Gets all controllers modules"""
