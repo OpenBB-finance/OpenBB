@@ -63,3 +63,14 @@ This notebook demonstrates how to fetch and work with options chains data.
 ### googleColabInstallation
 
 This notebook demonstrates how to install the OpenBB SDK within Google Colab.
+
+
+### volumeAtPrice
+
+Volume-at-price is a chart used by technical analysts as a visual guage to where the trading levels are concentrated, relative to price and volume.  In short, it is the sum of volume at different price levels.  This notebook utilizes individual components of the OpenBB SDK and combines them to build a new view.
+
+- Price
+- Volume
+- VWAP
+- SMA
+- OpenBBFigure
