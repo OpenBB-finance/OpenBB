@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Union
+from typing import List, Optional, Union
 
 import numpy
 import pandas as pd
@@ -27,7 +27,7 @@ def get_timegpt_model(
     finetune_steps: int = 0,
     clean_ex_first: bool = True,
     residuals: bool = False,
-    date_features: List[str] = None,
+    date_features: Optional[List[str]] = None,
 ) -> pd.DataFrame:
     """TimeGPT was trained on the largest collection of data in history -
     over 100 billion rows of financial, weather, energy, and web data -
