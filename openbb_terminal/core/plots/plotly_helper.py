@@ -29,9 +29,7 @@ from scipy import stats
 
 from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import (
-    STYLES_DIRECTORY_REPO,
-)
+from openbb_terminal.core.config.paths import STYLES_DIRECTORY_REPO
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
@@ -59,7 +57,7 @@ class TerminalStyle:
     """
 
     STYLES_REPO = STYLES_DIRECTORY_REPO
-    USER_STYLES_DIRECTORY = get_current_user().preferences.USER_STYLES_DIRECTORY
+    USER_STYLES_DIRECTORY: Path = get_current_user().preferences.USER_STYLES_DIRECTORY
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"

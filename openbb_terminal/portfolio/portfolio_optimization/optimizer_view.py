@@ -240,9 +240,9 @@ def portfolio_performance(
         factor_1 = str(int(time_factor[freq])) + ") "
         factor_2 = "√" + factor_1
 
-        print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
-        print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
-        print(f"Sharpe ratio: {sharpe:.4f}")
+        console.print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
+        console.print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
+        console.print(f"Sharpe ratio: {sharpe:.4f}")
 
         if risk_measure != "MV":
             risk = rp.Sharpe_Risk(
@@ -274,7 +274,7 @@ def portfolio_performance(
 
             if risk_measure in drawdowns:
                 sharpe_2 = (mu - risk_free_rate) / risk
-                print(
+                console.print(
                     risk_names[risk_measure.lower()].capitalize()
                     + " : "
                     + f"{100 * risk:.2f}%"
@@ -282,7 +282,7 @@ def portfolio_performance(
             else:
                 risk = risk * time_factor[freq] ** 0.5
                 sharpe_2 = (mu - risk_free_rate) / risk
-                print(
+                console.print(
                     "Annual (by "
                     + factor_2
                     + risk_names[risk_measure.lower()]
@@ -290,7 +290,7 @@ def portfolio_performance(
                     + f"{100 * risk:.2f}%"
                 )
 
-            print(
+            console.print(
                 "Return / "
                 + risk_names[risk_measure.lower()]
                 + f" ratio: {sharpe_2:.4f}"

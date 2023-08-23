@@ -23,7 +23,7 @@ from openbb_terminal.core.session.constants import BackendEnvironment
 try:
     from pywry import PyWry
 except ImportError as e:
-    print(f"\033[91m{e}\033[0m")
+    print(f"\033[91m{e}\033[0m")  # noqa: T201
     # pylint: disable=C0412
     from openbb_terminal.core.plots.no_import import DummyBackend
 
@@ -54,7 +54,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
+PLOTLYJS_PATH: Path = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
 BACKEND = None
 
 
@@ -496,7 +496,7 @@ async def download_plotly_js():
                 file.unlink(missing_ok=True)
 
     except Exception as err:  # pylint: disable=W0703
-        print(f"Error downloading plotly.js: {err}")
+        console.print(f"Error downloading plotly.js: {err}")
 
 
 def plots_backend() -> Backend:
