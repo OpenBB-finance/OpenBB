@@ -375,7 +375,6 @@ def upload_config(
     value: str,
     type_: Literal["settings", "terminal_style"],
     auth_header: str,
-    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Patch user configurations to the server.
@@ -390,8 +389,6 @@ def upload_config(
         The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
-    base_url : str
-        The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
 
@@ -409,7 +406,7 @@ def upload_config(
     try:
         console.print("Sending to OpenBB hub...")
         response = requests.patch(
-            url=base_url + "terminal/user",
+            url=BackendEnvironment.BASE_URL + "terminal/user",
             headers={"Authorization": auth_header},
             json=data,
             timeout=timeout,

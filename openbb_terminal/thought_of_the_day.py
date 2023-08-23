@@ -134,7 +134,9 @@ def get_thought_of_the_day():
 
     console.print("Thought of the day:")
     console.print(
-        totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)])  # nosec
+        totd.quote_to_str(
+            quotes[random.randint(0, len(quotes) - 1)]  # nosec # noqa: S311
+        )
     )
 
     console.print("\n")

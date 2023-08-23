@@ -6,9 +6,9 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import logging
-from typing import Optional
 import math
 import warnings
+from typing import Optional
 
 # IMPORTATION THIRDPARTY
 import matplotlib
@@ -19,9 +19,10 @@ import riskfolio as rp
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
+from openbb_terminal.config_terminal import theme
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
@@ -238,8 +239,8 @@ def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
     ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
     ax.legend(loc="best", scatterpoints=1)
     theme.style_primary_axis(ax)
-    l, b, w, h = ax.get_position().bounds
-    ax.set_position([l, b, w * 0.9, h])
+    L, b, w, h = ax.get_position().bounds
+    ax.set_position([L, b, w * 0.9, h])
     ax1 = ax.get_figure().axes
     ll, bb, ww, hh = ax1[-1].get_position().bounds
     ax1[-1].set_position([ll * 1.02, bb, ww, hh])
@@ -418,10 +419,7 @@ def display_heat(**kwargs):
         figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
     )
 
-    if len(weights) <= 3:
-        number_of_clusters = len(weights)
-    else:
-        number_of_clusters = None
+    number_of_clusters = len(weights) if len(weights) <= 3 else None
 
     ax = rp.plot_clusters(
         returns=data,
@@ -442,38 +440,38 @@ def display_heat(**kwargs):
 
     if category is None:
         # Vertical dendrogram
-        l, b, w, h = ax[4].get_position().bounds
-        l1 = l * 0.5
+        L, b, w, h = ax[4].get_position().bounds
+        l1 = L * 0.5
         w1 = w * 0.2
         b1 = h * 0.05
-        ax[4].set_position([l - l1, b + b1, w * 0.8, h * 0.95])
+        ax[4].set_position([L - l1, b + b1, w * 0.8, h * 0.95])
         # Heatmap
-        l, b, w, h = ax[1].get_position().bounds
-        ax[1].set_position([l - l1 - w1, b + b1, w * 0.8, h * 0.95])
+        L, b, w, h = ax[1].get_position().bounds
+        ax[1].set_position([L - l1 - w1, b + b1, w * 0.8, h * 0.95])
         w2 = w * 0.2
         # colorbar
-        l, b, w, h = ax[2].get_position().bounds
-        ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+        L, b, w, h = ax[2].get_position().bounds
+        ax[2].set_position([L - l1 - w1 - w2, b, w, h])
         # Horizontal dendrogram
-        l, b, w, h = ax[3].get_position().bounds
-        ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
+        L, b, w, h = ax[3].get_position().bounds
+        ax[3].set_position([L - l1 - w1, b, w * 0.8, h])
     else:
         # Vertical dendrogram
-        l, b, w, h = ax[4].get_position().bounds
-        l1 = l * 0.5
+        L, b, w, h = ax[4].get_position().bounds
+        l1 = L * 0.5
         w1 = w * 0.4
         b1 = h * 0.2
-        ax[4].set_position([l - l1, b + b1, w * 0.6, h * 0.8])
+        ax[4].set_position([L - l1, b + b1, w * 0.6, h * 0.8])
         # Heatmap
-        l, b, w, h = ax[1].get_position().bounds
-        ax[1].set_position([l - l1 - w1, b + b1, w * 0.6, h * 0.8])
+        L, b, w, h = ax[1].get_position().bounds
+        ax[1].set_position([L - l1 - w1, b + b1, w * 0.6, h * 0.8])
         w2 = w * 0.05
         # colorbar
-        l, b, w, h = ax[2].get_position().bounds
-        ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+        L, b, w, h = ax[2].get_position().bounds
+        ax[2].set_position([L - l1 - w1 - w2, b, w, h])
         # Horizontal dendrogram
-        l, b, w, h = ax[3].get_position().bounds
-        ax[3].set_position([l - l1 - w1, b, w * 0.6, h])
+        L, b, w, h = ax[3].get_position().bounds
+        ax[3].set_position([L - l1 - w1, b, w * 0.6, h])
 
     title = "Portfolio - " + title + "\n"
     title += ax[3].get_title(loc="left")

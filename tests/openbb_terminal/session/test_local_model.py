@@ -65,11 +65,10 @@ def test_save_session_exception():
 
 def test_get_session():
     open_mock = mock_open(read_data=json.dumps(TEST_SESSION))
-    with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
-        with patch(
-            "openbb_terminal.core.session.local_model.open", open_mock, create=True
-        ):
-            assert local_model.get_session() == TEST_SESSION
+    with patch("openbb_terminal.core.session.local_model.os.path") as path_mock, patch(
+        "openbb_terminal.core.session.local_model.open", open_mock, create=True
+    ):
+        assert local_model.get_session() == TEST_SESSION
 
     path_mock.isfile.assert_called_with(SESSION_FILE_PATH)
     open_mock.assert_called_with(SESSION_FILE_PATH)
@@ -94,10 +93,11 @@ def test_get_session_not_exist():
 def test_get_session_exception():
     open_mock = mock_open()
     path = "openbb_terminal.core.session.local_model"
-    with patch(f"{path}.os.path") as path_mock:
-        with patch(f"{path}.open", open_mock, create=True):
-            open_mock.side_effect = Exception
-            assert local_model.get_session() == {}
+    with patch(f"{path}.os.path") as path_mock, patch(
+        f"{path}.open", open_mock, create=True
+    ):
+        open_mock.side_effect = Exception
+        assert local_model.get_session() == {}
 
     path_mock.isfile.assert_called_with(SESSION_FILE_PATH)
     open_mock.assert_called_with(SESSION_FILE_PATH)
