@@ -14,6 +14,7 @@ import yfinance as yf
 from dateutil.relativedelta import FR, relativedelta
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -341,7 +342,7 @@ def process_returns(
         if s not in stock_returns.iloc[:, selected_stocks]
     ]
     if filtered_out:
-        print(
+        console.print(
             "The following stocks were filtered out, due to too many NaNs: "
             + ", ".join(filtered_out)
         )

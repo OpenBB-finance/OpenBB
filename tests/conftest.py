@@ -355,7 +355,7 @@ def brotli_check():
 
 def disable_rich():
     def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
-        print(df.to_string())
+        print(df.to_string())  # noqa: T201
 
     helper_funcs.print_rich_table = effect
 

@@ -28,4 +28,4 @@ def display_price(symbol: str) -> None:
                 end="\r",
             )
     except KeyboardInterrupt:
-        print(f"\n\nStopped watching {symbol} price and confidence interval\n")
+        console.print(f"\n\nStopped watching {symbol} price and confidence interval\n")

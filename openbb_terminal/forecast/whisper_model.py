@@ -56,7 +56,9 @@ def get_audio(urls):
 
     for url in urls:
         result = ydl.extract_info(url, download=True)
-        print(f"Downloaded video \"{result['title']}\". Generating subtitles...")
+        console.print(
+            f"Downloaded video \"{result['title']}\". Generating subtitles..."
+        )
         paths[result["title"]] = os.path.join(temp_dir, f"{result['id']}.mp3")
 
     return paths
@@ -313,13 +315,13 @@ def transcribe_and_summarize(
             with open(vtt_path, "w", encoding="utf-8") as vtt:
                 write_vtt(result["segments"], file=vtt, line_length=breaklines)
 
-            print("Saved VTT to", os.path.abspath(vtt_path))
+            console.print("Saved VTT to", os.path.abspath(vtt_path))
         else:
             srt_path = os.path.join(output_dir, f"{slugify(title)}.srt")
             with open(srt_path, "w", encoding="utf-8") as srt:
                 write_srt(result["segments"], file=srt, line_length=breaklines)
 
-            print("Saved SRT to", os.path.abspath(srt_path))
+            console.print("Saved SRT to", os.path.abspath(srt_path))
 
         # Save summary to file
         summary_path = os.path.join(output_dir, f"{slugify(title)}_summary.txt")

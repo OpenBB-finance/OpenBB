@@ -1078,7 +1078,7 @@ def get_prediction(
 ):
     _, val = ticker_series.split_before(train_split)
 
-    print(f"Predicting {model_name} for {n_predict} days")
+    console.print(f"Predicting {model_name} for {n_predict} days")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None

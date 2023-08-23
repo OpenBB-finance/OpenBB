@@ -1043,7 +1043,7 @@ def run_scripts(
             terminal(file_cmds, test_mode=True)
         else:
             with suppress_stdout():
-                print(f"To ensure: {output}")
+                console.print(f"To ensure: {output}")
                 if output:
                     timestamp = datetime.now().timestamp()
                     stamp_str = str(timestamp).replace(".", "")
@@ -1094,7 +1094,7 @@ def run_routine(file: str, routines_args=Optional[str]):
     elif default_routine_path.exists():
         run_scripts(path=default_routine_path, routines_args=routines_args)
     else:
-        print(
+        console.print(
             f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
         )
 
