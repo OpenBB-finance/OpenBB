@@ -64,6 +64,10 @@ class AlphaVantageStockEODQueryParams(StockEODQueryParams):
 
     @root_validator(pre=True)
     def adjusted_function_validate(cls, values):  # pylint: disable=E0213
+        """
+        Validate that the function is adjusted if the `adjusted` parameter is set to True.
+        """
+
         function = values["function"]
         adjusted = values.get("adjusted", None)
 
