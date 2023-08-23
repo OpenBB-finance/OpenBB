@@ -22,14 +22,11 @@ class AlphaVantageStockEODQueryParams(StockEODQueryParams):
     function: Literal[
         "TIME_SERIES_INTRADAY",
         "TIME_SERIES_DAILY",
-        "TIME_SERIES_DAILY_ADJUSTED",
         "TIME_SERIES_WEEKLY",
-        "TIME_SERIES_WEEKLY_ADJUSTED",
         "TIME_SERIES_MONTHLY",
-        "TIME_SERIES_MONTHLY_ADJUSTED",
     ] = Field(
         description="The time series of your choice. ",
-        default="TIME_SERIES_DAILY_ADJUSTED",
+        default="TIME_SERIES_DAILY",
     )
     interval: Optional[Literal["1min", "5min", "15min", "30min", "60min"]] = Field(
         description="The interval between two consecutive data points in the time series.",
@@ -64,6 +61,16 @@ class AlphaVantageStockEODQueryParams(StockEODQueryParams):
             "TIME_SERIES_DAILY_ADJUSTED",
         ],
     )
+
+    @root_validator(pre=True)
+    def adjusted_function_validate(cls, values):  # pylint: disable=E0213
+        function = values["function"]
+        adjusted = values.get("adjusted", None)
+
+        if function != "TIME_SERIES_INTRADAY":
+            values["function"] = function if not adjusted else f"{function}_ADJUSTED"
+
+        return values
 
     @root_validator(pre=True)
     def on_functions_validate(cls, values):  # pylint: disable=E0213
@@ -203,4 +210,4 @@ class AlphaVantageStockEODFetcher(
     ) -> List[AlphaVantageStockEODData]:
         """Transform the data to the standard format."""
 
-        return [AlphaVantageStockEODData.parse_obj(d) for d in data]
+        return [AlphaVantageStockEODData.parse_obj(**d) for d in data]
