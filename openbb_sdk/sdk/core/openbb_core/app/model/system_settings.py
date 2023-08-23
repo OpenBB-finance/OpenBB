@@ -44,8 +44,8 @@ class SystemSettings(Tagged):
     log_collect: bool = FrozenField(default=True)
 
     # Others
-    test_mode: bool = False
-    headless: bool = False
+    test_mode: bool = FrozenField(default=False)
+    headless: bool = FrozenField(default=False)
 
     class Config:
         validate_assignment = True

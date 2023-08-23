@@ -336,7 +336,18 @@ To run the app in debug mode you can use the following code or create a .env fil
 
 ```python
 import os
-os.environ["DEBUG_MODE"] = "True"
+os.environ["OPENBB_DEBUG_MODE"] = "True"
+from openbb import sdk
+```
+
+### 4.1.6. Develop mode
+
+To run the app in develop mode you can use the following code or create a .env file inside
+`openbb_sdk/sdk/core/openbb_core/app`.
+
+```python
+import os
+os.environ["OPENBB_DEV_MODE"] = "True"
 from openbb import sdk
 ```
 

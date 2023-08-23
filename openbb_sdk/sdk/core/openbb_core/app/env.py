@@ -17,7 +17,12 @@ class Env(metaclass=SingletonMeta):
 
     @property
     def DEBUG_MODE(self) -> bool:
-        return self.str_to_bool(self._environ.get("DEBUG_MODE", False))
+        return self.str_to_bool(self._environ.get("OPENBB_DEBUG_MODE", False))
+
+    @property
+    def DEV_MODE(self) -> bool:
+        # TODO: Change default to false when ready to deploy
+        return self.str_to_bool(self._environ.get("OPENBB_DEV_MODE", True))
 
     @staticmethod
     def str_to_bool(value) -> bool:

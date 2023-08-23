@@ -1,5 +1,5 @@
 """Test the hub_service.py module."""
-
+# pylint: disable=W0212
 
 from unittest.mock import MagicMock, patch
 
@@ -27,7 +27,9 @@ def test_connect_with_email_password():
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
     ):
         with patch.object(
-            HubService, "get_session_from_email_password", return_value=mock_hub_session
+            HubService,
+            "_get_session_from_email_password",
+            return_value=mock_hub_session,
         ):
             hub_service = HubService()
             result = hub_service.connect(email="test@example.com", password="password")
@@ -43,7 +45,7 @@ def test_connect_with_sdk_token():
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
     ):
         with patch.object(
-            HubService, "get_session_from_sdk_token", return_value=mock_hub_session
+            HubService, "_get_session_from_sdk_token", return_value=mock_hub_session
         ):
             hub_service = HubService()
             result = hub_service.connect(pat="pat")
@@ -78,7 +80,7 @@ def test_get_session_from_email_password():
             },
         ),
     ):
-        result = HubService.get_session_from_email_password("email", "password")
+        result = HubService()._get_session_from_email_password("email", "password")
         assert isinstance(result, HubSession)
 
 
@@ -108,7 +110,7 @@ def test_get_session_from_sdk_token():
             "-JLZnFzyJ6dlHBZnkjQT2tfaaefxnTdAlSmToQwxGykvuatmI7L0wztPQ"
         )
 
-        result = HubService.get_session_from_sdk_token(mock_token)
+        result = HubService()._get_session_from_sdk_token(mock_token)
         assert isinstance(result, HubSession)
 
 
@@ -144,7 +146,7 @@ def test_get_user_settings():
             spec=HubSession, access_token="token", token_type="Bearer"
         )
 
-        user_settings = HubService.get_user_settings(mock_hub_session)
+        user_settings = HubService()._get_user_settings(mock_hub_session)
         assert isinstance(user_settings, HubUserSettings)
 
 
@@ -163,7 +165,8 @@ def test_put_user_settings():
         mock_user_settings = MagicMock(spec=HubUserSettings)
 
         assert (
-            HubService.put_user_settings(mock_hub_session, mock_user_settings) is True
+            HubService()._put_user_settings(mock_hub_session, mock_user_settings)
+            is True
         )
 
 
