@@ -61,7 +61,6 @@ class FMPTreasuryRatesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPTreasuryRatesQueryParams:
         """Transform the query params. Start and end dates are set to a 90 day interval."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -80,7 +79,6 @@ class FMPTreasuryRatesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v4/"
@@ -93,5 +91,4 @@ class FMPTreasuryRatesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPTreasuryRatesData]:
         """Return the transformed data."""
-
         return [FMPTreasuryRatesData(**d) for d in data]

@@ -246,7 +246,7 @@ def parse_openbb_script(
                 foreach_loop_found = True
 
             # Regular expression pattern to match variables starting with $
-            pattern = r"(?<!\$)(\$(\w+)(\[[^]]*\])?)(?![^\[]*\])"
+            pattern = r"(?<!\$)(\$(\w+)(\[[^\]]*\])?)(?=(?:[^\]]*\]*))"
 
             # Find all matches of the pattern in the line
             matches: Optional[List[Match[str]]] = re.findall(pattern, line)

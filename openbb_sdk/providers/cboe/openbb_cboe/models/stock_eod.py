@@ -40,7 +40,6 @@ class CboeStockEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockEODQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
-
         transformed_params = params
 
         now = datetime.now()
@@ -58,7 +57,6 @@ class CboeStockEODFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
-
         return get_eod_prices(query.symbol, query.start_date, query.end_date).to_dict(
             "records"
         )
@@ -66,5 +64,4 @@ class CboeStockEODFetcher(
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockEODData]:
         """Transform the data to the standard format"""
-
         return [CboeStockEODData.parse_obj(d) for d in data]

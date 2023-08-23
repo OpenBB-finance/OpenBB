@@ -37,7 +37,6 @@ class KeysRoot(Category):
         `rh`: Set Robinhood key\n
         `santiment`: Set Santiment key.\n
         `set_keys`: Set API keys in bundle.\n
-        `shroom`: Set Shroom key\n
         `smartstake`: Set Smartstake key.\n
         `stocksera`: Set Stocksera key.\n
         `tokenterminal`: Set Token Terminal key.\n
@@ -78,7 +77,6 @@ class KeysRoot(Category):
         self.rh = lib.keys_model.set_rh_key
         self.santiment = lib.keys_model.set_santiment_key
         self.set_keys = lib.keys_model.set_keys
-        self.shroom = lib.keys_model.set_shroom_key
         self.smartstake = lib.keys_model.set_smartstake_key
         self.stocksera = lib.keys_model.set_stocksera_key
         self.tokenterminal = lib.keys_model.set_tokenterminal_key

@@ -22,14 +22,6 @@ class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 class FMPAvailableIndicesData(AvailableIndicesData):
     """FMP Available Indices Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "stock_exchange": "stockExchange",
-            "exchange_short_name": "exchangeShortName",
-        }
-
 
 class FMPAvailableIndicesFetcher(
     Fetcher[
@@ -42,7 +34,6 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPAvailableIndicesQueryParams:
         """Transform the query params."""
-
         return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod

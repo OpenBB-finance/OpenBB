@@ -21,6 +21,7 @@ def create_app():
         ) from e
 
     class App(Extensions):
+        # fmt: off
         """OpenBB SDK.
 
 Utilities:
@@ -29,7 +30,8 @@ Utilities:
     /system
     /coverage
 
-Extensions:""" # Don't change the indentation of this docstring
+Extensions:"""
+        # fmt: on
 
         def __init__(self, command_runner):
             self._command_runner = command_runner

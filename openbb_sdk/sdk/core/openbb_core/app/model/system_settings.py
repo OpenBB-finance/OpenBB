@@ -47,10 +47,6 @@ class SystemSettings(Tagged):
     test_mode: bool = False
     debug_mode: bool = False
     headless: bool = False
-    run_in_isolation: bool = FrozenField(
-        default=False,
-        description="Whether or not to run each command in total isolation.",
-    )
 
     class Config:
         validate_assignment = True

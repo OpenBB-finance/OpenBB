@@ -82,7 +82,6 @@ class FMPMajorIndicesEODFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesEODQueryParams:
         """Transform the query params."""
-
         return FMPMajorIndicesEODQueryParams(**params)
 
     @staticmethod
@@ -92,7 +91,6 @@ class FMPMajorIndicesEODFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
@@ -110,5 +108,4 @@ class FMPMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMajorIndicesEODData]:
         """Return the transformed data."""
-
         return [FMPMajorIndicesEODData(**d) for d in data]

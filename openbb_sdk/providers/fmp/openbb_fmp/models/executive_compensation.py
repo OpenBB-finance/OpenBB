@@ -26,18 +26,6 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "filing_date": "filingDate",
-            "accepted_date": "acceptedDate",
-            "name_and_position": "nameAndPosition",
-            "stock_award": "stockAward",
-            "incentive_plan_compensation": "incentivePlanCompensation",
-            "all_other_compensation": "allOtherCompensation",
-        }
-
     @validator("filingDate", pre=True, check_fields=False)
     def filing_date_validate(cls, v):  # pylint: disable=E0213
         """Return the filing date as a datetime object."""
@@ -60,7 +48,6 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPExecutiveCompensationQueryParams:
         """Transform the query params."""
-
         return FMPExecutiveCompensationQueryParams(**params)
 
     @staticmethod
@@ -70,7 +57,6 @@ class FMPExecutiveCompensationFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "governance/executive_compensation", api_key, query)
@@ -80,5 +66,4 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-
         return [FMPExecutiveCompensationData(**d) for d in data]
