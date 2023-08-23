@@ -35,7 +35,6 @@ except ImportError as e:
 from svglib.svglib import svg2rlg
 
 from openbb_terminal import config_terminal
-from openbb_terminal.base_helpers import console
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
@@ -55,7 +54,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
+PLOTLYJS_PATH: Path = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
 BACKEND = None
 
 

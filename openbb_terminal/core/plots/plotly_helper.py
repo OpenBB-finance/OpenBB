@@ -59,7 +59,7 @@ class TerminalStyle:
     """
 
     STYLES_REPO = STYLES_DIRECTORY_REPO
-    USER_STYLES_DIRECTORY = get_current_user().preferences.USER_STYLES_DIRECTORY
+    USER_STYLES_DIRECTORY: Path = get_current_user().preferences.USER_STYLES_DIRECTORY
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
