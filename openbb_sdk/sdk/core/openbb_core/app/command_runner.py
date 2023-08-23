@@ -10,6 +10,7 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_manager import ChartingManager
+from openbb_core.app.env import Env
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -189,13 +190,11 @@ class StaticCommandRunner:
     charting_manager: ChartingManager = ChartingManager()
 
     @classmethod
-    def __command(
-        cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
-    ) -> OBBject:
+    def __command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
         """Run a command and return the output"""
         context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
             warnings.catch_warnings(record=True)
-            if not system_settings.debug_mode
+            if not Env().DEBUG_MODE
             else nullcontext()
         )
 
@@ -265,7 +264,6 @@ class StaticCommandRunner:
 
         try:
             obbject = cls.__command(
-                system_settings=system_settings,
                 func=func,
                 kwargs=kwargs,
             )

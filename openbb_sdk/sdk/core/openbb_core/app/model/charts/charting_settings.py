@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
+from openbb_core.app.env import Env
 from openbb_core.app.logs.utils.utils import get_app_id
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -28,7 +29,7 @@ class ChartingSettings:
         self.python_version: str = system_settings.python_version
         self.test_mode = system_settings.test_mode
         self.app_id: str = get_app_id(user_data_directory)
-        self.debug_mode: bool = system_settings.debug_mode
+        self.debug_mode: bool = Env().DEBUG_MODE
         self.headless: bool = system_settings.headless
         # User
         self.plot_enable_pywry: bool = user_settings.preferences.plot_enable_pywry

@@ -19,7 +19,6 @@ mock_system_settings.log_collect = True
 mock_system_settings.version = "mock_version"
 mock_system_settings.python_version = "mock_python_version"
 mock_system_settings.test_mode = True
-mock_system_settings.debug_mode = True
 mock_system_settings.headless = True
 
 
@@ -36,7 +35,6 @@ def test_charting_settings():
     assert charting_settings.python_version == "mock_python_version"
     assert charting_settings.test_mode is True
     assert charting_settings.app_id == "mock_app_id"
-    assert charting_settings.debug_mode is True
     assert charting_settings.headless is True
     assert charting_settings.plot_enable_pywry is True
     assert charting_settings.plot_pywry_width == 100
