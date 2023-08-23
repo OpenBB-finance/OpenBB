@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import contextlib
 from copy import deepcopy
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
@@ -184,10 +185,8 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
         if log_sender.check_sending_conditions(file=closed_log_path):
             log_sender.send_path(path=closed_log_path, last=True)
-            try:
+            with contextlib.suppress(Exception):
                 log_sender.join(timeout=3)
-            except Exception:
-                pass  # noqa
 
         super().close()
 

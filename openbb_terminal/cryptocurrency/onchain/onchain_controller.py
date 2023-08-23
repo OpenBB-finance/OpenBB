@@ -22,7 +22,6 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
-    shroom_view,
     topledger_model,
     topledger_view,
     whale_alert_model,
@@ -83,7 +82,6 @@ class OnchainController(BaseController):
         "btccp",
         "btcct",
         "btcblockdata",
-        "query",
         "topledger",
     ]
 
@@ -120,7 +118,6 @@ class OnchainController(BaseController):
         mt.add_cmd("ueat")
         mt.add_cmd("ttcp")
         mt.add_cmd("baas")
-        mt.add_cmd("query")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
@@ -136,43 +133,6 @@ class OnchainController(BaseController):
         mt.add_cmd("prices", self.address_type == "token")
         mt.add_cmd("tx", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
-
-    @log_start_end(log=logger)
-    def call_query(self, other_args: List[str]):
-        """Process query command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="query",
-            description="""
-                Make any flipsidecrypto query
-                [Source:https://docs.flipsidecrypto.com/]
-            """,
-        )
-
-        parser.add_argument(
-            "-q",
-            "--query",
-            dest="query",
-            type=str,
-            nargs="+",
-            required=not any(["-h" in other_args, "--help" in other_args]),
-            help="Query to make",
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-q")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10
-        )
-
-        if ns_parser:
-            shroom_view.display_query(
-                query=" ".join(ns_parser.query),
-                export=ns_parser.export,
-                limit=ns_parser.limit,
-            )
 
     @log_start_end(log=logger)
     def call_btcct(self, other_args: List[str]):
@@ -1500,7 +1460,7 @@ class OnchainController(BaseController):
                 else:
                     console.print(f"Coin '{ns_parser.coin}' does not exist.")
                     if ns_parser.coin.upper() == "BTC":
-                        token = "WBTC"
+                        token = "WBTC"  # noqa: S105
                     else:
                         similar_cmd = difflib.get_close_matches(
                             ns_parser.coin,
