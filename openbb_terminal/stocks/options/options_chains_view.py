@@ -16,6 +16,7 @@ from scipy.spatial import Delaunay
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import options_chains_model
 from openbb_terminal.stocks.options.op_helpers import Options
 
@@ -87,7 +88,7 @@ def display_surface(
         return None
 
     if options.hasIV is False:
-        return print(
+        return console.print(
             "Options data object does not have Implied Volatility and is required for this function."
         )
 
@@ -104,7 +105,7 @@ def display_surface(
     )
 
     if option_type not in ["otm", "itm", "puts", "calls"]:
-        print("Invalid option type, defaulting to 'otm'.")
+        console.print("Invalid option type, defaulting to 'otm'.")
         option_type = "otm"
 
     if oi:
@@ -546,7 +547,7 @@ def display_skew(
     """
 
     if options.hasIV is False:
-        return print(
+        return console.print(
             "Options data object does not have Implied Volatility and is required for this function."
         )
     options = deepcopy(options)
@@ -591,7 +592,7 @@ def display_skew(
                 ["Expiration", "Strike", "Option Type", "IV", "ATM IV", "Skew"]
             ]
             if skew["IV"].sum() == 0 and len(expirations) == 1:
-                return print("No IV data available for this expiration.")
+                return console.print("No IV data available for this expiration.")
 
             index_name = "Strike" if len(expirations) > 1 else expiration
             call_skew = skew.query("`Option Type` == 'call'").set_index("Strike")
@@ -810,7 +811,7 @@ def display_volatility(
     """
 
     if options.hasIV is False:
-        return print(
+        return console.print(
             "Options data object does not have Implied Volatility and is required for this function."
         )
     options = deepcopy(options)

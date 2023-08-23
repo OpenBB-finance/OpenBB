@@ -973,7 +973,7 @@ def plot_order_book(
 def check_cg_id(symbol: str):
     cg_id = get_coingecko_id(symbol)
     if not cg_id:
-        print(f"\n{symbol} not found on CoinGecko")
+        console.print(f"\n{symbol} not found on CoinGecko")
         return ""
     return symbol
 
