@@ -2,6 +2,8 @@
 # noqa: F401
 
 # Alternative
+import openbb_terminal.alternative.companieshouse.companieshouse_model as alt_companieshouse_companieshouse_model
+import openbb_terminal.alternative.companieshouse.companieshouse_view as alt_companieshouse_companieshouse_view
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
 import openbb_terminal.alternative.hackernews_view as alt_hackernews_view
 import openbb_terminal.alternative.oss.github_model as alt_oss_github_model
@@ -9,8 +11,6 @@ import openbb_terminal.alternative.oss.github_view as alt_oss_github_view
 import openbb_terminal.alternative.oss.runa_model as alt_oss_runa_model
 import openbb_terminal.alternative.oss.runa_view as alt_oss_runa_view
 import openbb_terminal.alternative.realestate.landRegistry_model as alt_realestate_landRegistry_model
-import openbb_terminal.alternative.companieshouse.companieshouse_model as alt_companieshouse_companieshouse_model
-import openbb_terminal.alternative.companieshouse.companieshouse_view as alt_companieshouse_companieshouse_view
 
 # Crypto Helpers
 import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
