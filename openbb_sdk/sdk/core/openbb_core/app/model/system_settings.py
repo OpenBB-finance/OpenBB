@@ -45,7 +45,6 @@ class SystemSettings(Tagged):
 
     # Others
     test_mode: bool = False
-    debug_mode: bool = False
     headless: bool = False
 
     class Config:
