@@ -29,9 +29,7 @@ from scipy import stats
 
 from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import (
-    STYLES_DIRECTORY_REPO,
-)
+from openbb_terminal.core.config.paths import STYLES_DIRECTORY_REPO
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
