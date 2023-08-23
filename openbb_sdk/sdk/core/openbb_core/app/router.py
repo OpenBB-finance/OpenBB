@@ -242,7 +242,8 @@ class SignatureInspector:
                 if Env().DEBUG_MODE:
                     warnings.warn(
                         message=f"\nSkipping api route '/{func.__name__}'.\n"
-                        f"Model '{model}' not found.\n\n",
+                        f"Model '{model}' not found.\n\n"
+                        "Check available models in ProviderInterface().models",
                         category=OpenBBWarning,
                     )
                 return None
