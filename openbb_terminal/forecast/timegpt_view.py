@@ -27,7 +27,7 @@ def display_timegpt_forecast(
     time_col: str = "ds",
     target_col: str = "y",
     forecast_horizon: int = 12,
-    levels: List[float] = [80, 90],
+    levels: Optional[List[float]] = None,
     freq: Union[str, None] = None,
     finetune_steps: int = 0,
     clean_ex_first: bool = True,
@@ -83,6 +83,9 @@ def display_timegpt_forecast(
     pd.DataFrame
         Forecasted values.
     """
+    if levels is None:
+        levels = [80, 95]
+
     if time_col not in data.columns:
         if time_col == "ds":  # means that the user has not set it yet, bc default
             console.print(

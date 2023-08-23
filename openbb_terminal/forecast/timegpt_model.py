@@ -22,7 +22,7 @@ def get_timegpt_model(
     time_col: str = "ds",
     target_col: str = "y",
     forecast_horizon: int = 12,
-    levels: List[float] = [80, 90],
+    levels: Optional[List[float]] = None,
     freq: Union[str, None] = None,
     finetune_steps: int = 0,
     clean_ex_first: bool = True,
@@ -64,6 +64,9 @@ def get_timegpt_model(
     timegpt = TimeGPT(
         token=get_current_user().credentials.API_KEY_NIXTLA,
     )
+
+    if levels is None:
+        levels = [80, 95]
 
     if isinstance(data[time_col].values[0], pd.Timestamp):
         data[time_col] = data[time_col].dt.strftime("%Y-%m-%d")
