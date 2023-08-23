@@ -73,7 +73,7 @@ def log_startup() -> None:
 
 def get_startup():
     return {
-        "PREFERENCES": get_current_user().preferences.to_dict(),
+        "PREFERENCES": get_current_user().preferences.json(),
         "KEYS": get_credentials(),
         "SYSTEM": get_system(),
     }
