@@ -16,6 +16,7 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     print_rich_table,
 )
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -166,7 +167,7 @@ def display_historical_tvl(
                         name=available_protocols[dapp],
                     )
             else:
-                print(f"{dapp} not found\n")
+                console.print(f"{dapp} not found\n")
         if export and export != "":
             export_data(
                 export,

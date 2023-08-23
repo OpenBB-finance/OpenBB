@@ -5,6 +5,7 @@ from typing import Dict
 
 from openbb_terminal.core.models.sources_model import SourcesModel, get_allowed_sources
 from openbb_terminal.core.sources.utils import extend, flatten
+from openbb_terminal.rich_config import console
 
 
 def read_sources(path: Path) -> Dict:
@@ -26,8 +27,8 @@ def read_sources(path: Path) -> Dict:
                 return flatten(json.load(file))
         return {}
     except Exception as e:
-        print(f"\nFailed to read data sources file: {path}\n{e}\n")
-        print("Falling back to OpenBB default sources.")
+        console.print(f"\nFailed to read data sources file: {path}\n{e}\n")
+        console.print("Falling back to OpenBB default sources.")
         return {}
 
 
@@ -45,7 +46,7 @@ def write_sources(sources: Dict, path: Path):
         with open(path, "w") as f:
             json.dump(extend(sources), f, indent=4)
     except Exception as e:
-        print(f"\nFailed to write data sources file: {path}\n{e}\n")
+        console.print(f"\nFailed to write data sources file: {path}\n{e}\n")
 
 
 def merge_sources(incoming: Dict, allowed: Dict):

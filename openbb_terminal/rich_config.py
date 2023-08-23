@@ -263,11 +263,11 @@ class ConsoleAndPanel:
                 else:
                     self.__console.print(kwargs["text"])
             else:
-                print(self.filter_rich_tags(kwargs["text"]))
+                print(self.filter_rich_tags(kwargs["text"]))  # noqa: T201
         elif not get_current_system().TEST_MODE:
             self.__console.print(*args, **kwargs)
         else:
-            print(*args, **kwargs)
+            print(*args, **kwargs)  # noqa: T201
 
     def input(self, *args, **kwargs):
         self.print(*args, **kwargs, end="")

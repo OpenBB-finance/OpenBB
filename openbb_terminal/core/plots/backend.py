@@ -18,12 +18,13 @@ from packaging import version
 from reportlab.graphics import renderPDF
 
 from openbb_terminal.core.session.constants import BackendEnvironment
+from openbb_terminal.rich_config import console
 
 # pylint: disable=C0411,C0412,C0415
 try:
     from pywry import PyWry
 except ImportError as e:
-    print(f"\033[91m{e}\033[0m")
+    console.print(f"\033[91m{e}\033[0m")
     # pylint: disable=C0412
     from openbb_terminal.core.plots.no_import import DummyBackend
 
@@ -496,7 +497,7 @@ async def download_plotly_js():
                 file.unlink(missing_ok=True)
 
     except Exception as err:  # pylint: disable=W0703
-        print(f"Error downloading plotly.js: {err}")
+        console.print(f"Error downloading plotly.js: {err}")
 
 
 def plots_backend() -> Backend:
