@@ -136,7 +136,11 @@ def display_timegpt_forecast(
     # this is done so the confidence levels are displayed correctly
     levels.sort()
     for count, lvl in enumerate(levels):
-        lvl_name = str(lvl) if isinstance(lvl, int) else str(int(lvl) if lvl.is_integer() else lvl)
+        lvl_name = (
+            str(lvl)
+            if isinstance(lvl, int)
+            else str(int(lvl) if lvl.is_integer() else lvl)
+        )
 
         if residuals:
             ylo = list(df[f"TimeGPT-lo-{lvl_name}"].values)[:-forecast_horizon]
