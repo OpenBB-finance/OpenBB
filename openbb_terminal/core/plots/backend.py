@@ -18,13 +18,12 @@ from packaging import version
 from reportlab.graphics import renderPDF
 
 from openbb_terminal.core.session.constants import BackendEnvironment
-from openbb_terminal.rich_config import console
 
 # pylint: disable=C0411,C0412,C0415
 try:
     from pywry import PyWry
 except ImportError as e:
-    console.print(f"\033[91m{e}\033[0m")
+    print(f"\033[91m{e}\033[0m")  # noqa: T201
     # pylint: disable=C0412
     from openbb_terminal.core.plots.no_import import DummyBackend
 
@@ -120,7 +119,7 @@ class Backend(PyWry):
         if self.plotly_html.exists():
             return self.plotly_html
 
-        console.print(
+        print(  # noqa: T201
             "[bold red]plotly.html file not found, check the path:[/]"
             f"[green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
         )
@@ -132,7 +131,7 @@ class Backend(PyWry):
         self.set_window_dimensions()
         if self.table_html.exists():
             return self.table_html
-        console.print(
+        print(  # noqa: T201
             "[bold red]table.html file not found, check the path:[/]"
             f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
         )
@@ -379,13 +378,13 @@ class Backend(PyWry):
                 from pywry import __version__ as pywry_version
             except ImportError:
                 self.max_retries = 0
-                return console.print(message)
+                return print(message)  # noqa: T201
 
             PyWry.__version__ = pywry_version  # pylint: disable=W0201
 
         if version.parse(PyWry.__version__) < version.parse("0.5.12"):
             self.max_retries = 0  # pylint: disable=W0201
-            return console.print(message)
+            return print(message)  # noqa: T201
 
         if version.parse(PyWry.__version__) > version.parse("0.5.12"):
             return super().check_backend()
@@ -415,7 +414,7 @@ class Backend(PyWry):
         dict
             The data returned from pywry backend.
         """
-        console.print(
+        print(  # noqa: T201
             f"[green]{description}[/]\n\n"
             "[yellow]If the window is closed you can continue by pressing Ctrl+C.[/]"
         )
@@ -470,7 +469,7 @@ class Backend(PyWry):
                 self.get_results(messages_dict[endpoint]["message"])
             )
         except KeyboardInterrupt:
-            console.print(f"\n[red]{messages_dict[endpoint]['interrupt']}[/red]")
+            print(f"\n[red]{messages_dict[endpoint]['interrupt']}[/red]")  # noqa: T201
             return None
 
 
@@ -496,7 +495,7 @@ async def download_plotly_js():
                 file.unlink(missing_ok=True)
 
     except Exception as err:  # pylint: disable=W0703
-        console.print(f"Error downloading plotly.js: {err}")
+        print(f"Error downloading plotly.js: {err}")  # noqa: T201
 
 
 def plots_backend() -> Backend:

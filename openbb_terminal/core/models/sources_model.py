@@ -6,7 +6,6 @@ from pydantic.dataclasses import Field, dataclass
 from openbb_terminal.core.config.paths import DATA_SOURCES_DEFAULT_FILE
 from openbb_terminal.core.models.base_model import BaseModel
 from openbb_terminal.core.sources.utils import flatten
-from openbb_terminal.rich_config import console
 
 # pylint: disable=useless-parent-delegation
 
@@ -23,7 +22,7 @@ def read_default_sources() -> Dict:
         with open(DATA_SOURCES_DEFAULT_FILE) as file:
             return flatten(json.load(file))
     except Exception as e:
-        console.print(
+        print(  # noqa: T201
             f"\nFailed to read data sources file: "
             f"{DATA_SOURCES_DEFAULT_FILE}\n{e}\n"
         )
