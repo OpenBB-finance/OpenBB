@@ -20,3 +20,8 @@ class Data(BaseModel):
 
         extra = Extra.allow
         allow_population_by_field_name = True
+
+    def __init__(self, **data):
+        """Initialize the model."""
+        data = {to_snake_case(k): v for k, v in data.items()}
+        super().__init__(**data)

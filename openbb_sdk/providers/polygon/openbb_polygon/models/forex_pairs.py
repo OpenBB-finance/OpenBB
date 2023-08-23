@@ -79,13 +79,11 @@ class PolygonForexPairsData(ForexPairsData):
     @validator("last_updated_utc", pre=True, check_fields=False)
     def last_updated_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed last updated timestamp in UTC."""
-
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
     @validator("delisted_utc", pre=True, check_fields=False)
     def delisted_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed delisted timestamp in UTC."""
-
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -100,7 +98,6 @@ class PolygonForexPairsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
         """Transform the query parameters. Ticker is set if symbol is provided."""
-
         transform_params = params
         transform_params["symbol"] = (
             f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
@@ -114,7 +111,6 @@ class PolygonForexPairsFetcher(
         **kwargs: Any,
     ) -> List[dict]:
         """Extract the data from the Polygon API."""
-
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -158,5 +154,4 @@ class PolygonForexPairsFetcher(
         data: List[dict],
     ) -> List[PolygonForexPairsData]:
         """Transform the data into a list of PolygonForexPairsData."""
-
         return [PolygonForexPairsData(**d) for d in data]

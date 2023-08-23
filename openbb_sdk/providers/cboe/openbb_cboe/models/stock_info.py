@@ -82,12 +82,11 @@ class CboeStockInfoFetcher(
         CboeStockInfoData,
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockInfoQueryParams:
         """Transform the query"""
-
         return CboeStockInfoQueryParams(**params)
 
     @staticmethod
@@ -97,7 +96,6 @@ class CboeStockInfoFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
-
         return get_info(query.symbol).to_dict()
 
     @staticmethod

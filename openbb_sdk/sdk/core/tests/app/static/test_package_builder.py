@@ -461,11 +461,6 @@ def test_black(linters):
     linters.black()
 
 
-def test_mypy(linters):
-    """Test mypy."""
-    linters.mypy()
-
-
 @pytest.fixture(scope="module")
 def docstring_generator():
     """Return package builder."""

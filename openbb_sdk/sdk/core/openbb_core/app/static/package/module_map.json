@@ -40,6 +40,13 @@
     "fixedincome_treasury": "/fixedincome/treasury",
     "fixedincome": "/fixedincome",
     "fixedincome_ycrv": "/fixedincome/ycrv",
+    "fixedincome_sofr": "/fixedincome/sofr",
+    "fixedincome_estr": "/fixedincome/estr",
+    "fixedincome_sonia": "/fixedincome/sonia",
+    "fixedincome_ameribor": "/fixedincome/ameribor",
+    "fixedincome_fed": "/fixedincome/fed",
+    "fixedincome_projections": "/fixedincome/projections",
+    "fixedincome_iorb": "/fixedincome/iorb",
     "forex_pairs": "/forex/pairs",
     "forex": "/forex",
     "forex_load": "/forex/load",
@@ -245,6 +252,5 @@
     "ta_kc": "/ta/kc",
     "ta_cg": "/ta/cg",
     "ta_cones": "/ta/cones",
-    "ta_ema": "/ta/ema",
-    "ta_load": "/ta/load"
+    "ta_ema": "/ta/ema"
 }

@@ -2,7 +2,6 @@
 
 import builtins
 import inspect
-import re
 import shutil
 import subprocess
 from dataclasses import MISSING

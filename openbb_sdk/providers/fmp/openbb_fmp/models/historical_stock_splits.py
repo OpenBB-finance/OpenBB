@@ -41,7 +41,6 @@ class FMPHistoricalStockSplitsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalStockSplitsQueryParams:
         """Transform the query params."""
-
         return FMPHistoricalStockSplitsQueryParams(**params)
 
     @staticmethod
@@ -51,7 +50,6 @@ class FMPHistoricalStockSplitsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -63,5 +61,4 @@ class FMPHistoricalStockSplitsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPHistoricalStockSplitsData]:
         """Return the transformed data."""
-
         return [FMPHistoricalStockSplitsData(**d) for d in data]

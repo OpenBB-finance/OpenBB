@@ -14,8 +14,6 @@ class SystemService:
         "log_collect",
         "test_mode",
         "headless",
-        "debug_mode",
-        "run_in_isolation",
         "dbms_uri",
     }
 

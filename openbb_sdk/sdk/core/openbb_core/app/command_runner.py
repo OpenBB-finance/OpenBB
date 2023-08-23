@@ -1,4 +1,3 @@
-import multiprocessing
 import warnings
 from contextlib import nullcontext
 from copy import deepcopy
@@ -11,6 +10,7 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_manager import ChartingManager
+from openbb_core.app.env import Env
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -189,32 +189,17 @@ class StaticCommandRunner:
     logging_manager: LoggingManager = LoggingManager()
     charting_manager: ChartingManager = ChartingManager()
 
-    @staticmethod
-    def __run_in_isolation(func, args=None, kwargs=None) -> OBBject:
-        args = args or ()
-        kwargs = kwargs or {}
-
-        with multiprocessing.Pool(processes=1) as pool:
-            result = pool.apply(func=func, args=args, kwds=kwargs)
-
-        return result
-
     @classmethod
-    def __command(
-        cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
-    ) -> OBBject:
+    def __command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
         """Run a command and return the output"""
         context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
             warnings.catch_warnings(record=True)
-            if not system_settings.debug_mode
+            if not Env().DEBUG_MODE
             else nullcontext()
         )
 
         with context_manager as warning_list:
-            if system_settings.run_in_isolation:
-                obbject = cls.__run_in_isolation(func=func, kwargs=kwargs)
-            else:
-                obbject = func(**kwargs)
+            obbject = func(**kwargs)
 
             obbject.provider = getattr(
                 kwargs.get("provider_choices", None), "provider", None
@@ -279,7 +264,6 @@ class StaticCommandRunner:
 
         try:
             obbject = cls.__command(
-                system_settings=system_settings,
                 func=func,
                 kwargs=kwargs,
             )
