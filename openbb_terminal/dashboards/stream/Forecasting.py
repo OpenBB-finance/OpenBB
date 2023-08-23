@@ -163,11 +163,12 @@ class Handler:
                     external_axes=True,
                 )
 
-                with st.spinner("Running model..."):
-                    with patch.object(OpenBBFigure, "show", mock_show):
-                        fig: OpenBBFigure = getattr(
-                            common_vars.openbb.forecast, f"{model}_chart"
-                        )(**kwargs)
+                with st.spinner("Running model..."), patch.object(
+                    OpenBBFigure, "show", mock_show
+                ):
+                    fig: OpenBBFigure = getattr(
+                        common_vars.openbb.forecast, f"{model}_chart"
+                    )(**kwargs)
 
                 with plotly_chart:
                     dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")

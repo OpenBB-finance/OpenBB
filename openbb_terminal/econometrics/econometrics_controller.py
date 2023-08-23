@@ -409,10 +409,11 @@ class EconometricsController(BaseController):
             if ns_parser.alias:
                 alias = ns_parser.alias
             else:
-                if "." in ns_parser.file:
-                    alias = ".".join(ns_parser.file.split(".")[:-1])
-                else:
-                    alias = ns_parser.file
+                alias = (
+                    ".".join(ns_parser.file.split(".")[:-1])
+                    if "." in ns_parser.file
+                    else ns_parser.file
+                )
 
             # check if this dataset has been added already
             if alias in self.files:

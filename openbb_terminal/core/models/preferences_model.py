@@ -4,9 +4,7 @@ from typing import Literal, Optional
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.models import BaseModel
 
 # pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation

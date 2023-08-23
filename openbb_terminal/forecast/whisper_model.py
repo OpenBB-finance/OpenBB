@@ -165,16 +165,15 @@ def transcribe_and_summarize(
 
     os.makedirs(whisper_cache_dir, exist_ok=True)
 
-    if model_name in ["small", "small.en"]:
-        model_size = "483.6 MB"
-    elif model_name in ["tiny", "tiny.en"]:
-        model_size = "75.6 MB"
-    elif model_name in ["base", "base.en"]:
-        model_size = "145.3 MB"
-    elif model_name in ["medium", "medium.en"]:
-        model_size = "1.53 GB"
-    elif model_name in ["large", "large-v2", "large-v1"]:
-        model_size = "2.87 GB"
+    sizes = {
+        "small": "483.6 MB",
+        "tiny": "75.6 MB",
+        "base": "145.3 MB",
+        "medium": "1.53 GB",
+        "large": "2.87 GB",
+    }
+    clean_key = model_name.replace(".en", "").replace("-v2", "").replace("-v1", "")
+    model_size = sizes[clean_key]
 
     full_model_name = model_name + ".en.pt" if language == "en" else model_name + ".pt"
     if full_model_name not in os.listdir(whisper_cache_dir):
@@ -279,22 +278,9 @@ def transcribe_and_summarize(
                 negative_score += chunk_sentiment_score * len(chunk)
             total_length += len(chunk)
 
-        # calculate overall sentiment score
-        if total_length > 0:
-            positive_percent = positive_score / total_length * 100
-            negative_percent = negative_score / total_length * 100
-            if positive_percent > 70:
-                overall_sentiment_label = "POSITIVE"
-                overall_sentiment_score = positive_percent
-            elif negative_percent > 70:
-                overall_sentiment_label = "NEGATIVE"
-                overall_sentiment_score = negative_percent
-            else:
-                overall_sentiment_label = "NEUTRAL"
-                overall_sentiment_score = (positive_percent + negative_percent) / 2
-        else:
-            overall_sentiment_label = "NEUTRAL"
-            overall_sentiment_score = 0.0
+        overall_sentiment_label, overall_sentiment_score = get_sentiment_score(
+            total_length, positive_score, negative_score
+        )
 
         # Write summary and get reduction
         summary_text_length = len(summary_text)
@@ -339,3 +325,15 @@ def transcribe_and_summarize(
         summary_path = os.path.join(output_dir, f"{slugify(title)}_summary.txt")
         with open(summary_path, "w") as f:
             f.write(summary_text)
+
+
+def get_sentiment_score(total_length, positive_score, negative_score):
+    if total_length > 0:
+        positive_percent = positive_score / total_length * 100
+        negative_percent = negative_score / total_length * 100
+        if positive_percent > 70:
+            return "POSITIVE", positive_percent
+        if negative_percent > 70:
+            return "NEGATIVE", negative_percent
+        return "NEUTRAL", (positive_percent + negative_percent) / 2
+    return "NEUTRAL", 0.0

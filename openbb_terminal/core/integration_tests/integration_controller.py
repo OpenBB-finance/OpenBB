@@ -472,9 +472,10 @@ def display_failures(fails: Dict[str, Dict[str, Any]]):
             for i, line in enumerate(formatted_tb):
                 if "openbb_terminal" not in line:
                     style = "rgb(128,128,128)"
-                elif i == len(formatted_tb) - 1:
-                    style = "yellow"
-                elif "openbb_terminal" not in formatted_tb[i + 1]:
+                elif (
+                    i == len(formatted_tb) - 1
+                    or "openbb_terminal" not in formatted_tb[i + 1]
+                ):
                     style = "yellow"
 
                 console.print(line, end="", style=style)

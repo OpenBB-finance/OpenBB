@@ -143,14 +143,13 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
     try:
         if symbol in TICKER_EXCEPTIONS:
             new_ticker = "^" + symbol
-        else:
-            if symbol not in INDEXES:
-                new_ticker = symbol
+        elif symbol not in INDEXES:
+            new_ticker = symbol
 
-            elif symbol in INDEXES:
-                new_ticker = "^" + symbol
+        elif symbol in INDEXES:
+            new_ticker = "^" + symbol
 
-                # Gets the data to return, and if none returns empty Tuple #
+            # Gets the data to return, and if none returns empty Tuple #
 
         symbol_info_url = (
             "https://www.cboe.com/education/tools/trade-optimizer/symbol-info/?symbol="
@@ -298,23 +297,19 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
         if symbol in TICKER_EXCEPTIONS:
             quotes_iv_url = (
                 "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                f"{symbol}"
-                ".json"
+                f"{symbol}.json"
             )
-        else:
-            if symbol not in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
-                    f"{symbol}"
-                    ".json"
-                )
+        elif symbol not in INDEXES:
+            quotes_iv_url = (
+                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
+                f"{symbol}.json"
+            )
 
-            elif symbol in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                    f"{symbol}"
-                    ".json"
-                )
+        elif symbol in INDEXES:
+            quotes_iv_url = (
+                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
+                f"{symbol}.json"
+            )
         h_iv = request(quotes_iv_url)
 
         if h_iv.status_code != 200:
