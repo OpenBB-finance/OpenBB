@@ -75,6 +75,7 @@ from openbb_terminal.helper_funcs import (
     check_non_negative,
     check_positive_float_list,
     check_list_values,
+    check_valid_date,
 )
 
 from openbb_terminal.menu import session
@@ -740,6 +741,9 @@ class ForecastController(BaseController):
 
             # if we import a custom dataset, remove the old index "unnamed:_0"
             if "unnamed:_0" in data.columns:
+                # Some loaded datasets have the date as unnamed, which is not helpful
+                if check_valid_date(data["unnamed:_0"].iloc[0]):
+                    data["date"] = data["unnamed:_0"].copy()
                 data = data.drop(columns=["unnamed:_0"])
 
             self.files.append(ticker)

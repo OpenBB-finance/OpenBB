@@ -2295,3 +2295,15 @@ def query_LLM_remote(query_text: str):
         return None, None
 
     return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]
+
+
+def check_valid_date(date_string) -> bool:
+    """ "Helper to see if we can parse the string to a date"""
+    try:
+        # Try to parse the string with strptime()
+        datetime.strptime(
+            date_string, "%Y-%m-%d"
+        )  # Use the format your dates are expected to be in
+        return True  # If it can be parsed, then it is a valid date string
+    except ValueError:  # strptime() throws a ValueError if the string can't be parsed
+        return False

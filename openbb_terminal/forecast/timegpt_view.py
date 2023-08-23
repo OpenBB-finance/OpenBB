@@ -85,14 +85,18 @@ def display_timegpt_forecast(
     """
     if time_col not in data.columns:
         if time_col == "ds":  # means that the user has not set it yet, bc default
-            console.print(f"[red]Set the time column for '{dataset_name}' between: {', '.join(data.columns)}[/red]")
+            console.print(
+                f"[red]Set the time column for '{dataset_name}' between: {', '.join(data.columns)}[/red]"
+            )
         else:
             console.print(f"[red]Time column '{time_col}' not found in data[/red]")
         return None
 
     if target_col not in data.columns:
         if target_col == "y":  # means that the user has not set it yet, bc default
-            console.print(f"[red]Set the target column for '{dataset_name}' between: {', '.join(data.columns)}[/red]")
+            console.print(
+                f"[red]Set the target column for '{dataset_name}' between: {', '.join(data.columns)}[/red]"
+            )
         else:
             console.print(f"[red]Target column '{target_col}' not found in data[/red]")
         return None
@@ -124,7 +128,6 @@ def display_timegpt_forecast(
         xds_reverse.reverse()
         xds += xds_reverse
 
-
     xds_forecast = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
     xds_forecast_reverse = list(pd.to_datetime(df[time_col].values))[-forecast_horizon:]
     xds_forecast_reverse.reverse()
@@ -133,10 +136,7 @@ def display_timegpt_forecast(
     # this is done so the confidence levels are displayed correctly
     levels.sort()
     for count, lvl in enumerate(levels):
-        if isinstance(lvl, int):
-            lvl_name = str(lvl)
-        else:
-            lvl_name = str(int(lvl) if lvl.is_integer() else lvl)
+        lvl_name = str(lvl) if isinstance(lvl, int) else str(int(lvl) if lvl.is_integer() else lvl)
 
         if residuals:
             ylo = list(df[f"TimeGPT-lo-{lvl_name}"].values)[:-forecast_horizon]
@@ -215,7 +215,7 @@ def display_timegpt_forecast(
     if date_features:
         fig2 = OpenBBFigure(xaxis_title="Weights")
 
-        fig2.set_title(f"Date features weight")
+        fig2.set_title("Date features weight")
 
         fig2.add_bar(
             y=datefeatures_df["features"],

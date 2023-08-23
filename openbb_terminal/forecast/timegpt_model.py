@@ -11,7 +11,6 @@ from nixtlats import TimeGPT
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
