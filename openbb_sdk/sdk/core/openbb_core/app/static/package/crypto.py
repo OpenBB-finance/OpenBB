@@ -126,7 +126,7 @@ class CLASS_crypto(Container):
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

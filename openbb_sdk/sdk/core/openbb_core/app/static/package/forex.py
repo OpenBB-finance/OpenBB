@@ -125,7 +125,7 @@ class CLASS_forex(Container):
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -218,7 +218,7 @@ class CLASS_forex(Container):
         last_updated_utc : Optional[datetime]
             The last updated timestamp in UTC. (provider: polygon)
         delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC. (provider: polygon)"""
+            The delisted timestamp in UTC. (provider: polygon)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

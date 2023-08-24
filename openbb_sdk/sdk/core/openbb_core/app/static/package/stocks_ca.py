@@ -35,7 +35,7 @@ class CLASS_stocks_ca(Container):
     def balance(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company balance sheet."""
+        """Company balance sheet."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -50,7 +50,7 @@ class CLASS_stocks_ca(Container):
     def cashflow(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company cashflow."""
+        """Company cashflow."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -65,7 +65,7 @@ class CLASS_stocks_ca(Container):
     def hcorr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company historical correlation."""
+        """Company historical correlation."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -80,7 +80,7 @@ class CLASS_stocks_ca(Container):
     def hist(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company historical prices."""
+        """Company historical prices."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -95,7 +95,7 @@ class CLASS_stocks_ca(Container):
     def income(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company income statement."""
+        """Company income statement."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -149,7 +149,7 @@ class CLASS_stocks_ca(Container):
         symbol : Optional[str]
             Symbol representing the entity requested in the data.
         peers_list : Optional[List[str]]
-            A list of stock peers based on sector, exchange and market cap."""
+            A list of stock peers based on sector, exchange and market cap."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -171,7 +171,7 @@ class CLASS_stocks_ca(Container):
     def scorr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company sector correlation."""
+        """Company sector correlation."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -186,7 +186,7 @@ class CLASS_stocks_ca(Container):
     def screener(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company screener."""
+        """Company screener."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -201,7 +201,7 @@ class CLASS_stocks_ca(Container):
     def sentiment(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company sentiment."""
+        """Company sentiment."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -216,7 +216,7 @@ class CLASS_stocks_ca(Container):
     def similar(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company similar."""
+        """Company similar."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -231,7 +231,7 @@ class CLASS_stocks_ca(Container):
     def volume(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Company volume."""
+        """Company volume."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,

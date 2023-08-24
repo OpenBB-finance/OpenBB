@@ -119,7 +119,7 @@ class CLASS_stocks_options(Container):
         change_percent : Optional[float]
             Change, in percent, of the option. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
-            Last trade timestamp of the option. (provider: cboe)"""
+            Last trade timestamp of the option. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -141,7 +141,7 @@ class CLASS_stocks_options(Container):
     def eodchain(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Gets option chain at a specific date."""
+        """Gets option chain at a specific date."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -156,7 +156,7 @@ class CLASS_stocks_options(Container):
     def hist(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Get historical data for a single option contract."""
+        """Get historical data for a single option contract."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -171,7 +171,7 @@ class CLASS_stocks_options(Container):
     def info(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Display option information (volatility, IV rank, etc.)."""
+        """Display option information (volatility, IV rank, etc.)."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -186,7 +186,7 @@ class CLASS_stocks_options(Container):
     def pcr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Display historical rolling put/call ratio for ticker over a defined window."""
+        """Display historical rolling put/call ratio for ticker over a defined window."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -201,7 +201,7 @@ class CLASS_stocks_options(Container):
     def unu(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Show unusual options activity."""
+        """Show unusual options activity."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,

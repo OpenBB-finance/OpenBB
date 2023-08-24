@@ -112,7 +112,7 @@ class CLASS_news(Container):
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
         site : Optional[str]
-            Site of the news. (provider: fmp)"""
+            Site of the news. (provider: fmp)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -134,7 +134,7 @@ class CLASS_news(Container):
     def sectornews(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Sector news."""
+        """Sector news."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,

@@ -70,7 +70,7 @@ class CLASS_futures(Container):
         expiration : Optional[str]
             Futures expiration month.
         price : Optional[float]
-            The close price of the symbol."""
+            The close price of the symbol."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -172,7 +172,7 @@ class CLASS_futures(Container):
         close : Optional[float]
             The close price of the symbol.
         volume : Optional[float]
-            The volume of the symbol."""
+            The volume of the symbol."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
