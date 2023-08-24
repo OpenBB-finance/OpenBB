@@ -141,6 +141,6 @@ class RegistryMap:
         parent_model = QueryParams if type_ == "query_params" else Data
         if not isclass(model) or not issubclass(model, parent_model):
             raise ValueError(
-                f"'{str(model)}' must be a subclass of 'BaseModel'.\n"
+                f"'{str(model)}' must be a subclass of '{parent_model.__name__}'.\n"
                 f"Try specifying `{type_}_type = <'your_{type_}_type'>` in the fetcher."
             )
