@@ -26,6 +26,7 @@ from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
+from openbb_core.app.env import Env
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import RouterLoader
@@ -764,6 +765,7 @@ class PathHandler:
 class Linters:
     """Run the linters for the SDK."""
 
+    debug_mode = Env().DEBUG_MODE
     current_folder = str(Path(Path(__file__).parent, "package").absolute())
 
     @staticmethod
@@ -771,31 +773,40 @@ class Linters:
         """Print a separator."""
         print(symbol * length)
 
-    @staticmethod
+    @classmethod
     def run(
+        cls,
         linter: Literal["black", "ruff"],
         flags: Optional[List[str]] = None,
     ):
         """Run linter with flags."""
         if shutil.which(linter):
             print(f"\n* {linter}")
-            Linters.print_separator("^")
+            if cls.debug_mode:
+                Linters.print_separator("^")
 
             command = [linter, Linters.current_folder]
             if flags:
                 command.extend(flags)
             subprocess.run(command, check=False)  # noqa: S603
 
-            Linters.print_separator("-")
+            if cls.debug_mode:
+                Linters.print_separator("-")
         else:
             print(f"\n* {linter} not found")
 
     @classmethod
     def black(cls):
         """Run black."""
-        cls.run(linter="black")
+        flags = []
+        if not cls.debug_mode:
+            flags.append("--quiet")
+        cls.run(linter="black", flags=flags)
 
     @classmethod
     def ruff(cls):
         """Run ruff."""
-        cls.run(linter="ruff", flags=["--fix"])
+        flags = ["--fix"]
+        if not cls.debug_mode:
+            flags.append("--silent")
+        cls.run(linter="ruff", flags=flags)
