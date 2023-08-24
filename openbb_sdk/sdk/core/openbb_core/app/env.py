@@ -1,6 +1,6 @@
 import os
-from os import _Environ
 from pathlib import Path
+from typing import Dict
 
 import dotenv
 
@@ -8,16 +8,21 @@ from openbb_core.app.model.abstract.singleton import SingletonMeta
 
 
 class Env(metaclass=SingletonMeta):
-    _environ: _Environ
+    _environ: Dict[str, str]
 
     def __init__(self) -> None:
         current_dir = os.path.dirname(os.path.realpath(__file__))
         dotenv.load_dotenv(Path(current_dir, ".env"))
-        self._environ = os.environ
+        self._environ = os.environ.copy()
 
     @property
     def DEBUG_MODE(self) -> bool:
-        return self.str_to_bool(self._environ.get("DEBUG_MODE", False))
+        return self.str_to_bool(self._environ.get("OPENBB_DEBUG_MODE", False))
+
+    @property
+    def DEV_MODE(self) -> bool:
+        # TODO: Change default to false when ready to deploy
+        return self.str_to_bool(self._environ.get("OPENBB_DEV_MODE", True))
 
     @staticmethod
     def str_to_bool(value) -> bool:

@@ -4,6 +4,7 @@ import builtins
 import inspect
 import shutil
 import subprocess
+import sys
 from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
@@ -26,8 +27,9 @@ from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
+from openbb_core.app.env import Env
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 
 
@@ -98,8 +100,8 @@ class PackageBuilder:
     def run_linters(cls):
         """Run the linters."""
         print("\nRunning linters...")
-        Linters.black()
         Linters.ruff()
+        Linters.black()
 
     @staticmethod
     def write_to_package(module_code: str, module_name, extension="py") -> None:
@@ -200,8 +202,11 @@ class ImportDefinition:
         code += "\nfrom pydantic import validate_arguments, BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
-        code += "\nimport typing_extensions"  # TODO: this should only bring `Annotated`
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        if sys.version_info < (3, 9):
+            code += "\nimport typing_extensions"
+        else:
+            code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
 
@@ -263,7 +268,7 @@ class ClassDefinition:
 class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
-    provider_interface = get_provider_interface()
+    provider_interface = ProviderInterface()
 
     @staticmethod
     def get_OBBject_description(model_name: str, providers: Optional[str]) -> str:
@@ -434,7 +439,7 @@ class MethodDefinition:
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
         """Check if the annotation is an annotated dataclass."""
-        return type(annotation) is _AnnotatedAlias and hasattr(
+        return isinstance(annotation, _AnnotatedAlias) and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 
@@ -527,7 +532,7 @@ class MethodDefinition:
         """Add the field description to the param signature."""
         if model_name:
             available_fields = (
-                get_provider_interface()
+                ProviderInterface()
                 .map[model_name]["openbb"]["QueryParams"]["fields"]
                 .keys()
             )
@@ -537,7 +542,7 @@ class MethodDefinition:
                     continue
 
                 description = (
-                    get_provider_interface()
+                    ProviderInterface()
                     .map[model_name]["openbb"]["QueryParams"]["fields"][param]
                     .field_info.description
                 )
@@ -626,7 +631,7 @@ class MethodDefinition:
             func = DocstringGenerator.generate(
                 func=func, formatted_params=formatted_params, model_name=model_name
             )
-        code = f'        """{func.__doc__}"""\n\n' if func.__doc__ else ""
+        code = f'        """{func.__doc__}"""  # noqa: E501\n\n' if func.__doc__ else ""
 
         return code
 
@@ -764,6 +769,7 @@ class PathHandler:
 class Linters:
     """Run the linters for the SDK."""
 
+    debug_mode = Env().DEBUG_MODE
     current_folder = str(Path(Path(__file__).parent, "package").absolute())
 
     @staticmethod
@@ -771,31 +777,40 @@ class Linters:
         """Print a separator."""
         print(symbol * length)
 
-    @staticmethod
+    @classmethod
     def run(
+        cls,
         linter: Literal["black", "ruff"],
         flags: Optional[List[str]] = None,
     ):
         """Run linter with flags."""
         if shutil.which(linter):
             print(f"\n* {linter}")
-            Linters.print_separator("^")
+            if cls.debug_mode:
+                Linters.print_separator("^")
 
             command = [linter, Linters.current_folder]
             if flags:
                 command.extend(flags)
             subprocess.run(command, check=False)  # noqa: S603
 
-            Linters.print_separator("-")
+            if cls.debug_mode:
+                Linters.print_separator("-")
         else:
             print(f"\n* {linter} not found")
 
     @classmethod
     def black(cls):
         """Run black."""
-        cls.run(linter="black")
+        flags = []
+        if not cls.debug_mode:
+            flags.append("--quiet")
+        cls.run(linter="black", flags=flags)
 
     @classmethod
     def ruff(cls):
         """Run ruff."""
-        cls.run(linter="ruff", flags=["--fix"])
+        flags = ["--fix"]
+        if not cls.debug_mode:
+            flags.append("--silent")
+        cls.run(linter="ruff", flags=flags)

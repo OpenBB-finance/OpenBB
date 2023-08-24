@@ -35,8 +35,12 @@ class FREDPROJECTIONData(PROJECTIONData):
     """PROJECTION data."""
 
 
-class FREDPROJECTIONFetcher(Fetcher[FREDPROJECTIONQueryParams, FREDPROJECTIONData]):
+class FREDPROJECTIONFetcher(
+    Fetcher[FREDPROJECTIONQueryParams, List[Dict[str, List[FREDPROJECTIONData]]]]
+):
     """FRED PROJECTION Fetcher."""
+
+    data_type = FREDPROJECTIONData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDPROJECTIONQueryParams:

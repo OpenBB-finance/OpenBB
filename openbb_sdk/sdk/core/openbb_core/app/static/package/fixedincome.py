@@ -1,10 +1,10 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -31,22 +31,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ameribor(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """
                 Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term
             interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange
@@ -60,7 +60,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -72,7 +72,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[AMERIBOR]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -86,7 +86,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            AMERIBOR rate."""
+            AMERIBOR rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -108,22 +108,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def estr(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """
                 The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in the euro area.
             The €STR is published on each TARGET2 business day based on transactions conducted and settled on the previous TARGET2 business
@@ -138,7 +138,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -150,7 +150,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[ESTR]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -164,7 +164,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            ESTR rate."""
+            ESTR rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -186,22 +186,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def fed(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """
                 Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to
             borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's
@@ -215,7 +215,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -227,7 +227,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[FEDFUNDS]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -241,7 +241,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            FED rate."""
+            FED rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -263,22 +263,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def iorb(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """
                  Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its domestic banks
             to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve
@@ -292,7 +292,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -302,7 +302,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[IORB]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -316,7 +316,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            IORB rate."""
+            IORB rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -337,11 +337,8 @@ class CLASS_fixedincome(Container):
 
     @validate_arguments
     def projections(
-        self,
-        chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        self, chart: bool = False, provider: Optional[Literal["fred"]] = None, **kwargs
+    ) -> OBBject[List]:
         """
                 Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to
             borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's
@@ -351,7 +348,7 @@ class CLASS_fixedincome(Container):
         ----------
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -363,7 +360,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[PROJECTIONS]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -389,7 +386,7 @@ class CLASS_fixedincome(Container):
         range_low : Optional[float]
             Low projection of rates.
         central_tendency_low : Optional[float]
-            Central tendency of low projection of rates."""
+            Central tendency of low projection of rates."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -408,22 +405,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def sofr(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """Get United States yield curve.
 
         Parameters
@@ -434,7 +431,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -446,7 +443,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[SOFR]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -460,7 +457,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            SOFR rate."""
+            SOFR rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -482,22 +479,22 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def sonia(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """
                 SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and
             reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other
@@ -511,7 +508,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -523,7 +520,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[SONIA]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -537,7 +534,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            SONIA rate."""
+            SONIA rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -559,20 +556,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs,
     ) -> OBBject[List]:
         """Get treasury rates.
@@ -585,7 +582,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -595,7 +592,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[TreasuryRates]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -631,7 +628,7 @@ class CLASS_fixedincome(Container):
         year_20 : Optional[float]
             20 year treasury rate.
         year_30 : Optional[float]
-            30 year treasury rate."""
+            30 year treasury rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -653,31 +650,31 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ycrv(
         self,
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(
                 description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
             ),
         ] = None,
-        inflation_adjusted: typing_extensions.Annotated[
-            Union[bool, None],
+        inflation_adjusted: Annotated[
+            Optional[bool],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs,
+    ) -> OBBject[List]:
         """Get United States yield curve.
 
         Parameters
         ----------
-        date : Union[datetime.date, NoneType]
+        date : Optional[datetime.date]
             Date to get Yield Curve data.  Defaults to the most recent FRED entry.
-        inflation_adjusted : Union[bool, NoneType]
+        inflation_adjusted : Optional[bool]
             Get inflation adjusted rates.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -687,7 +684,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[USYieldCurve]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -701,7 +698,7 @@ class CLASS_fixedincome(Container):
         maturity : Optional[float]
             Maturity of the treasury rate in years.
         rate : Optional[float]
-            Associated rate given in decimal form (0.05 is 5%)"""
+            Associated rate given in decimal form (0.05 is 5%)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

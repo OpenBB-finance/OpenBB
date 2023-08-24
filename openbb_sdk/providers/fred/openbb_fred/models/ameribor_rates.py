@@ -62,8 +62,12 @@ class FREDAMERIBORData(AMERIBORData):
             return float("nan")
 
 
-class FREDAMERIBORFetcher(Fetcher[FREDAMERIBORQueryParams, FREDAMERIBORData]):
+class FREDAMERIBORFetcher(
+    Fetcher[FREDAMERIBORQueryParams, List[Dict[str, List[FREDAMERIBORData]]]]
+):
     """FRED AMERIBOR Fetcher."""
+
+    data_type = FREDAMERIBORData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDAMERIBORQueryParams:
@@ -74,7 +78,7 @@ class FREDAMERIBORFetcher(Fetcher[FREDAMERIBORQueryParams, FREDAMERIBORData]):
         query: FREDAMERIBORQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> list:
+    ) -> dict:
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = AMERIBOR_PARAMETER_TO_FRED_ID[query.parameter]
         fred = Fred(key)
@@ -82,6 +86,6 @@ class FREDAMERIBORFetcher(Fetcher[FREDAMERIBORQueryParams, FREDAMERIBORData]):
         return data
 
     @staticmethod
-    def transform_data(data: list) -> List[Dict[str, List[FREDAMERIBORData]]]:
+    def transform_data(data: dict) -> List[Dict[str, List[FREDAMERIBORData]]]:
         keys = ["date", "value"]
         return [FREDAMERIBORData(**{k: x[k] for k in keys}) for x in data]

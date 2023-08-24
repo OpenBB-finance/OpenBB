@@ -20,7 +20,6 @@ class BasicResponse:
 
     def __init__(self, response: StringIO):
         """Initialize the BasicResponse class."""
-
         # Find a way to get the status code
         self.status_code = 200
         response.seek(0)
@@ -28,21 +27,21 @@ class BasicResponse:
 
     def json(self) -> dict:
         """Return the response as a dictionary."""
-
         return json.loads(self.text)
 
 
 def request(url: str) -> BasicResponse:
-    """
-    Request function for PyScript. Pass in Method and make sure to await!
+    """Request function for PyScript.
 
-    Parameters:
-    -----------
+    Pass in Method and make sure to await!
+
+    Parameters
+    ----------
     url: str
         URL to make request to
 
-    Return:
-    -------
+    Return
+    ------
     response: BasicRequest
         BasicRequest object with status_code and text attributes
     """
@@ -55,7 +54,6 @@ def request(url: str) -> BasicResponse:
 
 def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
-
     try:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
@@ -86,8 +84,8 @@ def create_url(
 ) -> str:
     """Return a URL for the FMP API.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     version: int
         The version of the API to use.
     endpoint: str
@@ -99,11 +97,10 @@ def create_url(
     exclude: List[str]
         The keys to be excluded from the querystring.
 
-    Returns:
-    --------
+    Returns
+    -------
     str
         The querystring.
-
     """
     the_dict = {} if not query else query.dict(by_alias=True)
     query_string = get_querystring(the_dict, exclude or [])
@@ -116,15 +113,15 @@ def get_data_many(
 ) -> List[dict]:
     """Get data from FMP endpoint and convert to list of schemas.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         The URL to get the data from.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
-    Returns:
-    --------
+    Returns
+    -------
     List[dict]
         Dictionary of data.
     """
@@ -138,7 +135,6 @@ def get_data_many(
 
 def get_data_one(url: str, **kwargs: Any) -> dict:
     """Get data from FMP endpoint and convert to schema."""
-
     data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
