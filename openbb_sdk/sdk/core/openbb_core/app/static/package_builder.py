@@ -435,7 +435,7 @@ class MethodDefinition:
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
         """Check if the annotation is an annotated dataclass."""
-        return type(annotation) is _AnnotatedAlias and hasattr(
+        return isinstance(annotation, _AnnotatedAlias) and hasattr(
             annotation.__args__[0], "__dataclass_fields__"
         )
 

@@ -3,7 +3,7 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 from typing_extensions import Annotated
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -46,7 +46,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """
                 Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term
             interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange
@@ -123,7 +123,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """
                 The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in the euro area.
             The €STR is published on each TARGET2 business day based on transactions conducted and settled on the previous TARGET2 business
@@ -201,7 +201,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """
                 Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to
             borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's
@@ -278,7 +278,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """
                  Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its domestic banks
             to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve
@@ -338,7 +338,7 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def projections(
         self, chart: bool = False, provider: Optional[Literal["fred"]] = None, **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """
                 Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to
             borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's
@@ -420,7 +420,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Get United States yield curve.
 
         Parameters
@@ -494,7 +494,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """
                 SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and
             reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other
@@ -663,7 +663,7 @@ class CLASS_fixedincome(Container):
         chart: bool = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Get United States yield curve.
 
         Parameters
