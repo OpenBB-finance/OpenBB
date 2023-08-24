@@ -22,6 +22,8 @@ posthog = "^3.0.1"
 python-multipart = "^0.0.6"
 bcrypt = "^4.0.1"
 urllib3 = "<2.0.0"
+black = "^23.7.0"
+ruff = "^0.0.285"
 openbb-provider = { path = "../provider" }
 
 [tool.poetry.group.dev.dependencies]
