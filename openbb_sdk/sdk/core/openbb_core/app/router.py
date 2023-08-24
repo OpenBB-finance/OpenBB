@@ -30,7 +30,7 @@ from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
     StandardParams,
-    get_provider_interface,
+    ProviderInterface,
 )
 
 P = ParamSpec("P")
@@ -223,7 +223,7 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
-        provider_interface = get_provider_interface()
+        provider_interface = ProviderInterface()
         return_type = func.__annotations__["return"]
         is_list = False
 
@@ -375,7 +375,7 @@ class CommandMap:
     ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
-        mapping = get_provider_interface().map
+        mapping = ProviderInterface().map
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:
@@ -405,7 +405,7 @@ class CommandMap:
     ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
-        mapping = get_provider_interface().map
+        mapping = ProviderInterface().map
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:

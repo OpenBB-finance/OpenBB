@@ -18,7 +18,7 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -125,7 +125,7 @@ class ParametersBuilder:
                     )
                     kwargs["provider_choices"] = {"provider": provider}
                 else:
-                    available_providers = get_provider_interface().available_providers
+                    available_providers = ProviderInterface().available_providers
                     kwargs["provider_choices"] = {
                         "provider": available_providers[0]
                         if available_providers
