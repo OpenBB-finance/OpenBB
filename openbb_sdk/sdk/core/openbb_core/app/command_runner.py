@@ -112,7 +112,7 @@ class ParametersBuilder:
         provider_choices = kwargs.get("provider_choices", None)
         if provider_choices and isinstance(provider_choices, dict):
             provider = provider_choices.get("provider", None)
-            if provider is None:
+            if provider is None and route in command_map.command_coverage:
                 route_defaults = user_settings.defaults.routes.get(route, None)
                 random_choice = command_map.command_coverage[route][0]
                 provider = (
@@ -122,6 +122,7 @@ class ParametersBuilder:
                     else route_defaults.get("provider", random_choice)
                 )
                 kwargs["provider_choices"] = {"provider": provider}
+            return kwargs
         return kwargs
 
     @classmethod
