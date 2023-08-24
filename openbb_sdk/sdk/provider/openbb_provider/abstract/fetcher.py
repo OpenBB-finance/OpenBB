@@ -3,11 +3,22 @@
 
 from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
 Q = TypeVar("Q", bound=QueryParams)
-D = TypeVar("D")  # Data
+D = TypeVar("D", bound=Data)
 R = TypeVar("R")  # Return, usually List[D], but can be just D for example
+
+
+class classproperty:
+    """Class property decorator."""
+
+    def __init__(self, f):
+        self.f = f
+
+    def __get__(self, obj, owner):
+        return self.f(owner)
 
 
 class Fetcher(Generic[Q, R]):
@@ -40,20 +51,20 @@ class Fetcher(Generic[Q, R]):
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
         return cls.transform_data(data=data)
 
-    @property
-    def query_params(self) -> Q:
+    @classproperty
+    def query_params_type(self) -> Q:
         """Get the type of query."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[0]  # type: ignore
 
-    @property
+    @classproperty
     def return_type(self) -> R:
         """Get the type of return."""
         # pylint: disable=E1101
         return self.__orig_bases__[0].__args__[1]  # type: ignore
 
-    @property
-    def data(self) -> D:  # type: ignore
+    @classproperty
+    def data_type(self) -> D:  # type: ignore
         """Get the type data."""
         # pylint: disable=E1101
         return self._get_data_type(self.__orig_bases__[0].__args__[1])  # type: ignore

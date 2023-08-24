@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 def test_credentials():
     with patch(
-        target="openbb_core.app.model.credentials.get_provider_interface"
+        target="openbb_core.app.model.credentials.ProviderInterface"
     ) as mock_provider_interface:
         mock_provider_interface.required_credentials = {
             "benzinga_api_key": (typing.Optional[str], None),

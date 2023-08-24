@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import openbb_provider
 import pandas
@@ -92,7 +92,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> ad_data = obb.ta.ad(data=stock_data.results,offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -145,7 +145,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> adosc_data = obb.ta.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -199,7 +199,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> adx_data = obb.ta.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -259,7 +259,7 @@ class CLASS_ta(Container):
            >>> from openbb import obb
            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
            >>> aroon_data = obb.ta.aroon(data=stock_data.results, length=25, scalar=100)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -314,7 +314,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> atr_data = obb.ta.atr(data=stock_data.results)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -386,7 +386,7 @@ class CLASS_ta(Container):
             >>> bbands = obb.ta.bbands(
             >>>     data=stock_data.results, target="close", length=50, std=2, mamode="sma", offset=0
             >>> )
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -435,7 +435,7 @@ class CLASS_ta(Container):
         -------
         OBBject[List[Data]]
             The CCI data.
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -484,7 +484,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> cg_data = obb.ta.cg(data=stock_data.results, length=14)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -531,7 +531,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> clenow_data = obb.ta.clenow(data=stock_data.results,period=90)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -613,7 +613,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> cones_data = obb.ta.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model="STD")
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -669,7 +669,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> demark_data = obb.ta.demark(data=stock_data.results,offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -727,7 +727,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> donchian_data = obb.ta.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -787,7 +787,7 @@ class CLASS_ta(Container):
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> ema_data = obb.ta.ema(data=stock_data.results,target="close",length=50,offset=0)
 
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -810,8 +810,8 @@ class CLASS_ta(Container):
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
-        start_date: Union[str, None] = None,
-        end_date: Union[str, None] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
         chart: bool = False,
     ) -> OBBject[List]:
         """Create Fibonacci Retracement Levels.
@@ -835,7 +835,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> fib_data = obb.ta.fib(data=stock_data.results, period=120)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -889,7 +889,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> fisher_data = obb.ta.fisher(data=stock_data.results, length=14, signal=1)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -943,7 +943,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> hma_data = obb.ta.hma(data=stock_data.results,target="close",length=50,offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -993,7 +993,7 @@ class CLASS_ta(Container):
             Number of periods for the offset, by default 26.
         lookahead : bool, optional
             drops the Chikou Span Column to prevent potential data leak
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1054,7 +1054,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1118,7 +1118,7 @@ class CLASS_ta(Container):
            >>> from openbb import obb
            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
            >>> macd_data = obb.ta.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1139,7 +1139,7 @@ class CLASS_ta(Container):
     def multi(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Plot multiple indicators on the same chart."""
+        """Plot multiple indicators on the same chart."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -1188,7 +1188,7 @@ class CLASS_ta(Container):
            >>> from openbb import obb
            >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
            >>> obv_data = obb.ta.obv(data=stock_data.results, offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1206,7 +1206,7 @@ class CLASS_ta(Container):
     def recom(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Recommendation."""
+        """Recommendation."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -1260,7 +1260,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> rsi_data = obb.ta.rsi(data=stock_data.results, target="close", length=14, scalar=100.0, drift=1)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1281,7 +1281,7 @@ class CLASS_ta(Container):
     def rsp(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Relative Strength Performance."""
+        """Relative Strength Performance."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -1334,7 +1334,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> sma_data = obb.ta.sma(data=stock_data.results,target="close",length=50,offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1391,7 +1391,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> stoch_data = obb.ta.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1411,7 +1411,7 @@ class CLASS_ta(Container):
     def summary(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Summary."""
+        """Summary."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -1426,7 +1426,7 @@ class CLASS_ta(Container):
     def tv(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """TradingView."""
+        """TradingView."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -1473,7 +1473,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> vwap_data = obb.ta.vwap(data=stock_data.results,anchor="D",offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1527,7 +1527,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> wma_data = obb.ta.wma(data=stock_data.results, target="close", length=50, offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -1585,7 +1585,7 @@ class CLASS_ta(Container):
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
         >>> zlma_data = obb.ta.zlma(data=stock_data.results, target="close", length=50, offset=0)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,

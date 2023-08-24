@@ -84,7 +84,7 @@ def test_filter_extra_params_wrong_param(query):
 def mock_registry():
     """Mock registry."""
     with patch(
-        "openbb_core.app.provider_interface.get_provider_interface"
+        "openbb_core.app.provider_interface.ProviderInterface"
     ) as mock_get_provider_interface:
         mock_registry = MagicMock()
         mock_get_provider_interface.return_value.build_registry.return_value = (
