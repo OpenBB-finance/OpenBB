@@ -34,8 +34,12 @@ class FREDIORBData(IORBData):
             return float("nan")
 
 
-class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, FREDIORBData]):
+class FREDIORBFetcher(
+    Fetcher[FREDIORBQueryParams, List[Dict[str, List[FREDIORBData]]]]
+):
     """FRED IORB Fetcher."""
+
+    data_type = FREDIORBData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDIORBQueryParams:
@@ -44,7 +48,7 @@ class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, FREDIORBData]):
     @staticmethod
     def extract_data(
         query: FREDIORBQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> list:
+    ) -> dict:
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = "IORB"
         fred = Fred(key)
@@ -52,6 +56,6 @@ class FREDIORBFetcher(Fetcher[FREDIORBQueryParams, FREDIORBData]):
         return data
 
     @staticmethod
-    def transform_data(data: list) -> List[Dict[str, List[FREDIORBData]]]:
+    def transform_data(data: dict) -> List[Dict[str, List[FREDIORBData]]]:
         keys = ["date", "value"]
         return [FREDIORBData(**{k: x[k] for k in keys}) for x in data]
