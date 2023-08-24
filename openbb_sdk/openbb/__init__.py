@@ -18,11 +18,11 @@ except (ImportError, ModuleNotFoundError):
     obb = sdk = __create_app()
 
 
-def rebuild_extensions(
+def install_extensions(
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
 ) -> None:
-    """Rebuild the Python SDK.
+    """Install extension modules.
 
     Parameters
     ----------
