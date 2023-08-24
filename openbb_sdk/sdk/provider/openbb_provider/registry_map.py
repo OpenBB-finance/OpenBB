@@ -1,8 +1,10 @@
 """Provider registry map."""
 
-import inspect
 import os
+from inspect import getfile, isclass
 from typing import Any, Dict, List, Literal, Optional, Tuple
+
+from pydantic import BaseModel
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import Registry, RegistryLoader
@@ -98,6 +100,8 @@ class RegistryMap:
         """Extract info (fields and docstring) from fetcher query params or data."""
         super_model = getattr(fetcher, f"{type_}_type")
 
+        RegistryMap.validate_model(super_model)
+
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
             model for model in super_model.__mro__ if model.__name__ not in skip_classes
@@ -108,7 +112,7 @@ class RegistryMap:
         found_standard = False
 
         for model in inheritance_list:
-            model_file_dir = os.path.dirname(inspect.getfile(model))
+            model_file_dir = os.path.dirname(getfile(model))
             model_name = os.path.basename(model_file_dir)
 
             if (model_name == "standard_models") or found_standard:
@@ -131,3 +135,11 @@ class RegistryMap:
     def extract_return_type(fetcher: Fetcher):
         """Extract return info from fetcher."""
         return getattr(fetcher, "return_type", None)
+
+    @staticmethod
+    def validate_model(model: Any):
+        if not isclass(model) or not issubclass(model, BaseModel):
+            raise ValueError(
+                f"'{str(model)}' must be a subclass of 'BaseModel'."
+                " Try specifying `query_params_type` or `data_type` in the fetcher."
+            )
