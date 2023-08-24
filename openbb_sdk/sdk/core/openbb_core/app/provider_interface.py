@@ -8,6 +8,8 @@ from openbb_provider.utils.helpers import to_snake_case
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
 from pydantic.fields import ModelField
 
+from openbb_core.app.model.abstract.singleton import SingletonMeta
+
 TupleFieldType = Tuple[str, type, Any]
 
 
@@ -45,7 +47,7 @@ class ProviderChoices:
     provider: Literal  # type: ignore
 
 
-class ProviderInterface:
+class ProviderInterface(metaclass=SingletonMeta):
     """Provider interface class. Provides access to 'openbb_provider' package information.
 
     Properties
@@ -459,11 +461,3 @@ class ProviderInterface:
             fields=[("provider", Literal[tuple(available_providers)])],  # type: ignore
             bases=(ProviderChoices,),
         )
-
-
-__provider_interface = ProviderInterface()
-
-
-def get_provider_interface() -> ProviderInterface:
-    """Get the provider interface, this only needs to be created once."""
-    return __provider_interface

@@ -5,7 +5,6 @@ import pytest
 from openbb_core.app.provider_interface import (
     ProviderChoices,
     ProviderInterface,
-    get_provider_interface,
 )
 
 
@@ -18,11 +17,6 @@ def provider_interface():
 def test_init(provider_interface):
     """Test init."""
     assert provider_interface
-
-
-def test_get_provider_interface():
-    """Test get provider interface."""
-    assert isinstance(get_provider_interface(), ProviderInterface)
 
 
 def test_map(provider_interface):

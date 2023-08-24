@@ -29,7 +29,7 @@ from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.env import Env
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 
 
@@ -268,7 +268,7 @@ class ClassDefinition:
 class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
-    provider_interface = get_provider_interface()
+    provider_interface = ProviderInterface()
 
     @staticmethod
     def get_OBBject_description(model_name: str, providers: Optional[str]) -> str:
@@ -532,7 +532,7 @@ class MethodDefinition:
         """Add the field description to the param signature."""
         if model_name:
             available_fields = (
-                get_provider_interface()
+                ProviderInterface()
                 .map[model_name]["openbb"]["QueryParams"]["fields"]
                 .keys()
             )
@@ -542,7 +542,7 @@ class MethodDefinition:
                     continue
 
                 description = (
-                    get_provider_interface()
+                    ProviderInterface()
                     .map[model_name]["openbb"]["QueryParams"]["fields"][param]
                     .field_info.description
                 )
