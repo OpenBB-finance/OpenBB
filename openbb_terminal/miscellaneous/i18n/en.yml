@@ -951,7 +951,7 @@ en:
   alternative/companieshouse/signifcontrol: retrieve those with significant control over the company
   alternative/companieshouse/filings: retrieve list of documents filed with Companies House (Default 100)
   alternative/companieshouse/filingdocument: download filed document
-  alternative/companieshouse/charges: registered charges against the company.
+  alternative/companieshouse/charges: registered charges against the company
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
