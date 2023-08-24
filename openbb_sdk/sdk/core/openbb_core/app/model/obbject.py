@@ -1,4 +1,4 @@
-from typing import Dict, Generic, List, Optional, TypeVar, Union
+from typing import Dict, Generic, List, Literal, Optional, TypeVar, Union
 
 import pandas as pd
 from pydantic import Field
@@ -14,7 +14,7 @@ from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.utils import basemodel_to_df
 
 T = TypeVar("T")
-PROVIDERS = get_provider_interface().providers_literal
+PROVIDERS = Literal[tuple(get_provider_interface().available_providers)]  # type: ignore
 
 
 class OBBject(GenericModel, Generic[T], Tagged):

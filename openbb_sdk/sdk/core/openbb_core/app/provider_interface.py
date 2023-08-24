@@ -60,8 +60,8 @@ class ProviderInterface:
         Dictionary of params by model.
     return_schema : Dict[str, Type[BaseModel]]
         Dictionary of return data schema by model.
-    providers_literal : type
-        Literal of provider names.
+    providers_literal : List[str]
+        List of available providers.
     provider_choices : ProviderChoices
         Dataclass with literal of provider names.
     models : List[str]
@@ -89,10 +89,8 @@ class ProviderInterface:
         self._data = self._generate_data_dc(self._map)
         self._return_schema = self._generate_return_schema(self._data)
 
-        self._providers_literal = self._get_provider_literal(
-            self._registry_map.available_providers
-        )
-        self._provider_choices = self._get_provider_choices(self._providers_literal)
+        self._available_providers = self._registry_map.available_providers
+        self._provider_choices = self._get_provider_choices(self._available_providers)
 
     @property
     def map(self) -> MapType:
@@ -125,9 +123,9 @@ class ProviderInterface:
         return self._return_schema
 
     @property
-    def providers_literal(self) -> type:
-        """Literal of provider names."""
-        return self._providers_literal
+    def available_providers(self) -> List[str]:
+        """List of available providers."""
+        return self._available_providers
 
     @property
     def provider_choices(self) -> type:
@@ -455,13 +453,10 @@ class ProviderInterface:
 
         return result
 
-    def _get_provider_literal(self, available_providers: List[str]) -> type:
-        return Literal[tuple(available_providers)]  # type: ignore
-
-    def _get_provider_choices(self, providers_literal: type) -> type:
+    def _get_provider_choices(self, available_providers: List[str]) -> type:
         return make_dataclass(
             cls_name="ProviderChoices",
-            fields=[("provider", providers_literal)],
+            fields=[("provider", Literal[tuple(available_providers)])],  # type: ignore
             bases=(ProviderChoices,),
         )
 

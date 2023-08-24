@@ -18,6 +18,7 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.provider_interface import get_provider_interface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -112,17 +113,24 @@ class ParametersBuilder:
         provider_choices = kwargs.get("provider_choices", None)
         if provider_choices and isinstance(provider_choices, dict):
             provider = provider_choices.get("provider", None)
-            if provider is None and route in command_map.command_coverage:
-                route_defaults = user_settings.defaults.routes.get(route, None)
-                random_choice = command_map.command_coverage[route][0]
-                provider = (
-                    random_choice
-                    if route_defaults is None
-                    or route_defaults.get("provider", None) is None
-                    else route_defaults.get("provider", random_choice)
-                )
-                kwargs["provider_choices"] = {"provider": provider}
-            return kwargs
+            if provider is None:
+                if route in command_map.command_coverage:
+                    route_defaults = user_settings.defaults.routes.get(route, None)
+                    random_choice = command_map.command_coverage[route][0]
+                    provider = (
+                        random_choice
+                        if route_defaults is None
+                        or route_defaults.get("provider", None) is None
+                        else route_defaults.get("provider", random_choice)
+                    )
+                    kwargs["provider_choices"] = {"provider": provider}
+                else:
+                    available_providers = get_provider_interface().available_providers
+                    kwargs["provider_choices"] = {
+                        "provider": available_providers[0]
+                        if available_providers
+                        else None
+                    }
         return kwargs
 
     @classmethod

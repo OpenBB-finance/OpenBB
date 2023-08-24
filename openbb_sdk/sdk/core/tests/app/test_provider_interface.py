@@ -63,12 +63,12 @@ def test_data(provider_interface):
     assert "StockEOD" in data
 
 
-def test_providers_literal(provider_interface):
+def test_available_providers(provider_interface):
     """Test providers literal."""
-    providers_literal = provider_interface.providers_literal
-    assert isinstance(type(providers_literal), type)
-    assert len(providers_literal.__args__) > 0
-    assert "openbb" not in providers_literal.__args__
+    available_providers = provider_interface.available_providers
+    assert isinstance(available_providers, list)
+    assert len(available_providers) > 0
+    assert "openbb" not in available_providers
 
 
 def test_provider_choices(provider_interface):
