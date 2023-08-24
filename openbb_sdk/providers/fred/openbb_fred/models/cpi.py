@@ -5,26 +5,22 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cpi import CPIData, CPIQueryParams
-from pydantic import Field
 
 
 class FREDCPIQueryParams(CPIQueryParams):
     """CPI query."""
 
 
-class FREDCPIData(Data):
+class FREDCPIData(CPIData):
     """CPI data."""
 
-    country_unit_freq: Optional[List[CPIData]] = Field(
-        description="CPI data for a country, units, and frequency combination."
-    )
 
-
-class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
+class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[Dict[str, List[FREDCPIData]]]]):
     """FRED CPI Fetcher."""
+
+    data_type = FREDCPIData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDCPIQueryParams:
