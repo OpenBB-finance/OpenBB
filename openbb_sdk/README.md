@@ -133,10 +133,10 @@ When developing a specific extension `cd` into the extension directory and run:
 
 `pip install -U -e .`
 
-While we're still developing, it is required to create the static python interface:
+While we're still developing, it is often required to reinstall extensions:
 
 ```python
-python -c "import openbb; openbb._rebuild_python_interface()"
+python -c "import openbb; openbb.install()"
 ```
 
 Currently you need to do this before the first launch and every time you install or uninstall a new extension.
