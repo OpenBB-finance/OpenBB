@@ -100,7 +100,7 @@ class RegistryMap:
         """Extract info (fields and docstring) from fetcher query params or data."""
         super_model = getattr(fetcher, f"{type_}_type")
 
-        RegistryMap.validate_model(super_model)
+        RegistryMap.validate_model(super_model, type_)
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
@@ -137,9 +137,9 @@ class RegistryMap:
         return getattr(fetcher, "return_type", None)
 
     @staticmethod
-    def validate_model(model: Any):
+    def validate_model(model: Any, type_: Literal["query_params", "data"]):
         if not isclass(model) or not issubclass(model, BaseModel):
             raise ValueError(
                 f"'{str(model)}' must be a subclass of 'BaseModel'."
-                " Try specifying `query_params_type` or `data_type` in the fetcher."
+                f" Try specifying `{type_}_type` in the fetcher."
             )
