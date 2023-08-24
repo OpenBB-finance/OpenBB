@@ -22,7 +22,7 @@ def build(
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
 ) -> None:
-    """Install extension modules.
+    """Build extension modules.
 
     Parameters
     ----------
