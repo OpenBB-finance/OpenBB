@@ -140,8 +140,7 @@ class RegistryMap:
     def validate_model(model: Any, type_: Literal["query_params", "data"]):
         parent_model = QueryParams if type_ == "query_params" else Data
         if not isclass(model) or not issubclass(model, parent_model):
-            model_str = str(model)
-            model_str = model_str.replace("<", "<'").replace(">", "'>")
+            model_str = str(model).replace("<", "<'").replace(">", "'>")
             raise ValueError(
                 f"'{model_str}' must be a subclass of '{parent_model.__name__}'.\n"
                 f"Try specifying `{type_}_type = <'your_{type_}_type'>` in the fetcher."
