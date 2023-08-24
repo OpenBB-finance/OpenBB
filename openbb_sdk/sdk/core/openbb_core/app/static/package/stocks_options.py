@@ -1,7 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Annotated, List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from pydantic import validate_arguments
 
 import openbb_core.app.model.command_context
@@ -9,20 +10,31 @@ import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.filters import filter_call, filter_inputs, filter_output
+from openbb_core.app.static.filters import filter_inputs
 
 
 class CLASS_stocks_options(Container):
-    @filter_call
+    """/stocks/options
+    chains
+    eodchain
+    hist
+    info
+    pcr
+    unu
+    """
+
+    def __repr__(self) -> str:
+        return self.__doc__ or ""
+
     @validate_arguments
     def chains(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["cboe"]] = None,
+        provider: Union[Literal["cboe"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -33,7 +45,7 @@ class CLASS_stocks_options(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['cboe']]
+        provider : Union[Literal['cboe'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -43,71 +55,71 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['cboe']]
+            provider : Union[Literal['cboe'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
-            error : Optional[Error]
-                Caught exceptions.
             chart : Optional[Chart]
                 Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
 
         OptionsChains
         -------------
         expiration : Optional[datetime]
-            The expiration date of the contract.
+            Expiration date of the contract.
         strike : Optional[float]
-            The strike price of the contract.
+            Strike price of the contract.
         optionType : Optional[str]
             Call or Put.
         bid : Optional[float]
-            The bid price of the contract.
+            Bid price of the contract.
         ask : Optional[float]
-            The ask price of the contract.
+            Ask price of the contract.
         openInterest : Optional[float]
-            The open interest on the contract.
+            Open interest on the contract.
         volume : Optional[float]
-            The current trading volume on the contract.
-        contractSymbol : Optional[str]
-            The contract symbol for the option. (provider: cboe)
+            Current trading volume on the contract.
+        contract_symbol : Optional[str]
+            Contract symbol for the option. (provider: cboe)
         dte : Optional[int]
-            The days to expiration for the option. (provider: cboe)
-        bidSize : Optional[int]
-            The bid size for the option. (provider: cboe)
-        askSize : Optional[int]
-            The ask size for the option. (provider: cboe)
-        impliedVolatility : Optional[float]
-            The implied volatility of the option. (provider: cboe)
+            Days to expiration for the option. (provider: cboe)
+        bid_size : Optional[int]
+            Bid size for the option. (provider: cboe)
+        ask_size : Optional[int]
+            Ask size for the option. (provider: cboe)
+        implied_volatility : Optional[float]
+            Implied volatility of the option. (provider: cboe)
         delta : Optional[float]
-            The delta of the option. (provider: cboe)
+            Delta of the option. (provider: cboe)
         gamma : Optional[float]
-            The gamma of the option. (provider: cboe)
+            Gamma of the option. (provider: cboe)
         theta : Optional[float]
-            The theta of the option. (provider: cboe)
+            Theta of the option. (provider: cboe)
         rho : Optional[float]
-            The rho of the option. (provider: cboe)
+            Rho of the option. (provider: cboe)
         vega : Optional[float]
-            The vega of the option. (provider: cboe)
+            Vega of the option. (provider: cboe)
         theoretical : Optional[float]
-            The theoretical value of the option. (provider: cboe)
+            Theoretical value of the option. (provider: cboe)
         open : Optional[float]
-            The opening price of the option. (provider: cboe)
+            Opening price of the option. (provider: cboe)
         high : Optional[float]
-            The high price of the option. (provider: cboe)
+            High price of the option. (provider: cboe)
         low : Optional[float]
-            The low price of the option. (provider: cboe)
-        lastTradePrice : Optional[float]
-            The last trade price of the option. (provider: cboe)
+            Low price of the option. (provider: cboe)
+        last_trade_price : Optional[float]
+            Last trade price of the option. (provider: cboe)
         tick : Optional[str]
             Whether the last tick was up or down in price. (provider: cboe)
-        previousClose : Optional[float]
-            The previous closing price of the option. (provider: cboe)
+        previous_close : Optional[float]
+            Previous closing price of the option. (provider: cboe)
         change : Optional[float]
-            The change in  price of the option. (provider: cboe)
-        changePercent : Optional[float]
-            The change, in percent, of the option. (provider: cboe)
-        lastTradeTimestamp : Optional[datetime]
-            The last trade timestamp of the option. (provider: cboe)"""
+            Change in  price of the option. (provider: cboe)
+        change_percent : Optional[float]
+            Change, in percent, of the option. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp of the option. (provider: cboe)"""
 
         inputs = filter_inputs(
             provider_choices={
@@ -120,14 +132,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/chains",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def eodchain(
         self, chart: bool = False
@@ -138,14 +147,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/eodchain",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def hist(
         self, chart: bool = False
@@ -156,14 +162,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/hist",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def info(
         self, chart: bool = False
@@ -174,14 +177,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/info",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def pcr(
         self, chart: bool = False
@@ -192,14 +192,11 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/pcr",
             **inputs,
-        ).output
+        )
 
-        return filter_output(o)
-
-    @filter_call
     @validate_arguments
     def unu(
         self, chart: bool = False
@@ -210,9 +207,7 @@ class CLASS_stocks_options(Container):
             chart=chart,
         )
 
-        o = self._command_runner_session.run(
+        return self._command_runner.run(
             "/stocks/options/unu",
             **inputs,
-        ).output
-
-        return filter_output(o)
+        )

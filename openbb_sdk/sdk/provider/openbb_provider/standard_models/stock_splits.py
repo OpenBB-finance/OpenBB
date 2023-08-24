@@ -25,8 +25,8 @@ class StockSplitCalendarQueryParams(QueryParams):
 class StockSplitCalendarData(Data):
     """Stock Split Calendar data."""
 
-    date: dateType = Field(description="The date of the stock splits.")
-    label: str = Field(description="The label of the stock splits.")
-    symbol: str = Field(description="The symbol of the company.")
-    numerator: float = Field(description="The numerator of the stock splits.")
-    denominator: float = Field(description="The denominator of the stock splits.")
+    date: dateType = Field(description="Date of the stock splits.")
+    label: str = Field(description="Label of the stock splits.")
+    symbol: str = Field(description="Symbol of the company.")
+    numerator: float = Field(description="Numerator of the stock splits.")
+    denominator: float = Field(description="Denominator of the stock splits.")

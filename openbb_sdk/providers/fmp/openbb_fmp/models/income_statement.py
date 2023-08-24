@@ -29,46 +29,24 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
 
     @root_validator()
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
+        """Validate that either a symbol or CIK is provided."""
         if values.get("symbol") is None and values.get("cik") is None:
             raise ValueError("symbol or cik must be provided")
         return values
 
 
 class FMPIncomeStatementData(IncomeStatementData):
+    """FMP Income Statement Data."""
+
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
             "currency": "reportedCurrency",
-            "filing_date": "fillingDate",
-            "accepted_date": "acceptedDate",
-            "calendar_year": "calendarYear",
-            "cost_of_revenue": "costOfRevenue",
-            "gross_profit": "grossProfit",
-            "gross_profit_ratio": "grossProfitRatio",
-            "research_and_development_expenses": "researchAndDevelopmentExpenses",
-            "general_and_administrative_expenses": "generalAndAdministrativeExpenses",
-            "selling_and_marketing_expenses": "sellingAndMarketingExpenses",
-            "selling_general_and_administrative_expenses": "sellingGeneralAndAdministrativeExpenses",
-            "other_expenses": "otherExpenses",
-            "operating_expenses": "operatingExpenses",
-            "cost_and_expenses": "costAndExpenses",
-            "interest_income": "interestIncome",
-            "interest_expense": "interestExpense",
-            "depreciation_and_amortization": "depreciationAndAmortization",
-            "ebitda": "ebitda",
             "ebitda_ratio": "ebitdaratio",
-            "operating_income": "operatingIncome",
-            "operating_income_ratio": "operatingIncomeRatio",
-            "total_other_income_expenses_net": "totalOtherIncomeExpensesNet",
-            "income_before_tax": "incomeBeforeTax",
-            "income_before_tax_ratio": "incomeBeforeTaxRatio",
-            "income_tax_expense": "incomeTaxExpense",
-            "net_income": "netIncome",
-            "net_income_ratio": "netIncomeRatio",
-            "eps": "eps",
             "eps_diluted": "epsdiluted",
             "weighted_average_shares_outstanding": "weightedAverageShsOut",
             "weighted_average_shares_outstanding_dil": "weightedAverageShsOutDil",
-            "final_link": "finalLink",
         }
 
 
@@ -78,8 +56,11 @@ class FMPIncomeStatementFetcher(
         List[FMPIncomeStatementData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPIncomeStatementQueryParams:
+        """Transform the query params."""
         return FMPIncomeStatementQueryParams(**params)
 
     @staticmethod
@@ -87,10 +68,10 @@ class FMPIncomeStatementFetcher(
         query: FMPIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPIncomeStatementData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
         symbol = query.symbol or query.cik
         base_url = "https://financialmodelingprep.com/api/v3"
 
@@ -99,10 +80,9 @@ class FMPIncomeStatementFetcher(
             f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
 
-        return get_data_many(url, FMPIncomeStatementData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPIncomeStatementData],
-    ) -> List[IncomeStatementData]:
-        return [IncomeStatementData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPIncomeStatementData]:
+        """Return the transformed data."""
+        return [FMPIncomeStatementData(**d) for d in data]

@@ -25,64 +25,11 @@ class FMPKeyMetricsData(KeyMetricsData):
     """FMP Key Metrics Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
-            "revenue_per_share": "revenuePerShare",
-            "net_income_per_share": "netIncomePerShare",
-            "operating_cash_flow_per_share": "operatingCashFlowPerShare",
-            "free_cash_flow_per_share": "freeCashFlowPerShare",
-            "cash_per_share": "cashPerShare",
-            "book_value_per_share": "bookValuePerShare",
-            "tangible_book_value_per_share": "tangibleBookValuePerShare",
-            "shareholders_equity_per_share": "shareholdersEquityPerShare",
-            "interest_debt_per_share": "interestDebtPerShare",
-            "market_cap": "marketCap",
-            "enterprise_value": "enterpriseValue",
-            "pe_ratio": "peRatio",
-            "price_to_sales_ratio": "priceToSalesRatio",
             "pocf_ratio": "pocfratio",
-            "pfcf_ratio": "pfcfRatio",
-            "pb_ratio": "pbRatio",
-            "ptb_ratio": "ptbRatio",
-            "ev_to_sales": "evToSales",
-            "enterprise_value_over_ebitda": "enterpriseValueOverEBITDA",
-            "ev_to_operating_cash_flow": "evToOperatingCashFlow",
-            "ev_to_free_cash_flow": "evToFreeCashFlow",
-            "earnings_yield": "earningsYield",
-            "free_cash_flow_yield": "freeCashFlowYield",
-            "debt_to_equity": "debtToEquity",
-            "debt_to_assets": "debtToAssets",
-            "net_debt_to_ebitda": "netDebtToEBITDA",
-            "current_ratio": "currentRatio",
-            "interest_coverage": "interestCoverage",
-            "income_quality": "incomeQuality",
-            "dividend_yield": "dividendYield",
-            "payout_ratio": "payoutRatio",
-            "sales_general_and_administrative_to_revenue": "salesGeneralAndAdministrativeToRevenue",
             "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
-            "intangibles_to_total_assets": "intangiblesToTotalAssets",
-            "capex_to_operating_cash_flow": "capexToOperatingCashFlow",
-            "capex_to_revenue": "capexToRevenue",
-            "capex_to_depreciation": "capexToDepreciation",
-            "stock_based_compensation_to_revenue": "stockBasedCompensationToRevenue",
-            "graham_number": "grahamNumber",
-            "roic": "roic",
-            "return_on_tangible_assets": "returnOnTangibleAssets",
-            "graham_net_net": "grahamNetNet",
-            "working_capital": "workingCapital",
-            "tangible_asset_value": "tangibleAssetValue",
-            "net_current_asset_value": "netCurrentAssetValue",
-            "invested_capital": "investedCapital",
-            "average_receivables": "averageReceivables",
-            "average_payables": "averagePayables",
-            "average_inventory": "averageInventory",
-            "days_sales_outstanding": "daysSalesOutstanding",
-            "days_payables_outstanding": "daysPayablesOutstanding",
-            "days_of_inventory_on_hand": "daysOfInventoryOnHand",
-            "receivables_turnover": "receivablesTurnover",
-            "payables_turnover": "payablesTurnover",
-            "inventory_turnover": "inventoryTurnover",
-            "roe": "roe",
-            "capex_per_share": "capexPerShare",
         }
 
 
@@ -92,8 +39,11 @@ class FMPKeyMetricsFetcher(
         List[FMPKeyMetricsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
+        """Transform the query params."""
         return FMPKeyMetricsQueryParams(**params)
 
     @staticmethod
@@ -101,18 +51,17 @@ class FMPKeyMetricsFetcher(
         query: FMPKeyMetricsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPKeyMetricsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "annual" if query.period == "annually" else "quarter"
+        data: List[Dict] = []
 
-        data = []
-
-        def multiple_symbols(symbol: str, data: List[FMPKeyMetricsData]) -> None:
+        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
             url = create_url(
                 3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
             )
-            return data.extend(get_data_many(url, FMPKeyMetricsData, **kwargs))
+            return data.extend(get_data_many(url, **kwargs))
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
@@ -120,5 +69,6 @@ class FMPKeyMetricsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[FMPKeyMetricsData]) -> List[KeyMetricsData]:
-        return [KeyMetricsData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPKeyMetricsData]:
+        """Return the transformed data."""
+        return [FMPKeyMetricsData(**d) for d in data]

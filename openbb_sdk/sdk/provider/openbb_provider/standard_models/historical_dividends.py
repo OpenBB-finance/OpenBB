@@ -18,20 +18,20 @@ class HistoricalDividendsQueryParams(QueryParams, BaseSymbol):
 class HistoricalDividendsData(Data):
     """Historical dividends data."""
 
-    date: dateType = Field(description="The date of the historical dividends.")
-    label: str = Field(description="The label of the historical dividends.")
+    date: dateType = Field(description="Date of the historical dividends.")
+    label: str = Field(description="Label of the historical dividends.")
     adj_dividend: float = Field(
-        description="The adjusted dividend of the historical dividends."
+        description="Adjusted dividend of the historical dividends."
     )
-    dividend: float = Field(description="The dividend of the historical dividends.")
+    dividend: float = Field(description="Dividend of the historical dividends.")
     record_date: Optional[dateType] = Field(
-        description="The record date of the historical dividends.", default=None
+        description="Record date of the historical dividends.", default=None
     )
     payment_date: Optional[dateType] = Field(
-        description="The payment date of the historical dividends.", default=None
+        description="Payment date of the historical dividends.", default=None
     )
     declaration_date: Optional[dateType] = Field(
-        description="The declaration date of the historical dividends.", default=None
+        description="Declaration date of the historical dividends.", default=None
     )
 
     @validator("declaration_date", pre=True, check_fields=False)

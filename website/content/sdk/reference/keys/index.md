@@ -27,7 +27,6 @@
 - [rh](/sdk/reference/keys/rh)
 - [santiment](/sdk/reference/keys/santiment)
 - [set_keys](/sdk/reference/keys/set_keys)
-- [shroom](/sdk/reference/keys/shroom)
 - [si](/sdk/reference/keys/si)
 - [smartstake](/sdk/reference/keys/smartstake)
 - [stocksera](/sdk/reference/keys/stocksera)

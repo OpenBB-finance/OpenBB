@@ -1,6 +1,16 @@
-"""cboe provider module."""
+"""CBOE provider module."""
+
+
 from openbb_provider.abstract.provider import Provider
 
+from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
+from openbb_cboe.models.european_index_constituents import (
+    CboeEuropeanIndexConstituentsFetcher,
+)
+from openbb_cboe.models.european_indices_eod import CboeEuropeanIndicesEODFetcher
+from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
+from openbb_cboe.models.index_search import CboeIndexSearchFetcher
+from openbb_cboe.models.major_indices_eod import CboeMajorIndicesEODFetcher
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
 from openbb_cboe.models.stock_eod import CboeStockEODFetcher
 from openbb_cboe.models.stock_info import CboeStockInfoFetcher
@@ -18,5 +28,11 @@ cboe_provider = Provider(
         "OptionsChains": CboeOptionsChainsFetcher,
         "StockEOD": CboeStockEODFetcher,
         "StockInfo": CboeStockInfoFetcher,
+        "FuturesCurve": CboeFuturesCurveFetcher,
+        "AvailableIndices": CboeAvailableIndicesFetcher,
+        "EuropeanIndexConstituents": CboeEuropeanIndexConstituentsFetcher,
+        "EuropeanIndicesEOD": CboeEuropeanIndicesEODFetcher,
+        "MajorIndicesEOD": CboeMajorIndicesEODFetcher,
+        "IndexSearch": CboeIndexSearchFetcher,
     },
 )

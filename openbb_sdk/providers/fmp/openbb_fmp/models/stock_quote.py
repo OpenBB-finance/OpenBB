@@ -25,24 +25,17 @@ class FMPStockQuoteData(StockQuoteData):
     """FMP Stock end of day Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
-            "changes_percentage": "changesPercentage",
-            "day_low": "dayLow",
-            "day_high": "dayHigh",
-            "year_high": "yearHigh",
-            "year_low": "yearLow",
-            "market_cap": "marketCap",
             "price_avg50": "priceAvg50",
             "price_avg200": "priceAvg200",
-            "avg_volume": "avgVolume",
-            "previous_close": "previousClose",
-            "earnings_announcement": "earningsAnnouncement",
-            "shares_outstanding": "sharesOutstanding",
             "date": "timestamp",
         }
 
     @validator("timestamp", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -52,8 +45,11 @@ class FMPStockQuoteFetcher(
         List[FMPStockQuoteData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockQuoteQueryParams:
+        """Transform the query params."""
         return FMPStockQuoteQueryParams(**params)
 
     @staticmethod
@@ -61,16 +57,17 @@ class FMPStockQuoteFetcher(
         query: FMPStockQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockQuoteData]:
-        if credentials:
-            api_key = credentials.get("fmp_api_key")
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
+        api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(), ["symbol"])
         url = f"{base_url}/quote/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPStockQuoteData, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[FMPStockQuoteData]) -> List[StockQuoteData]:
-        return [StockQuoteData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPStockQuoteData]:
+        """Return the transformed data."""
+        return [FMPStockQuoteData(**d) for d in data]

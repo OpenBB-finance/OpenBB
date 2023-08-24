@@ -25,50 +25,15 @@ class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     """FMP Balance Sheet Growth Data."""
 
     class Config:
+        """Pydantic alias config using fields Dict."""
+
         fields = {
-            "growth_cash_and_cash_equivalents": "growthCashAndCashEquivalents",
-            "growth_short_term_investments": "growthShortTermInvestments",
-            "growth_cash_and_short_term_investments": "growthCashAndShortTermInvestments",
-            "growth_net_receivables": "growthNetReceivables",
-            "growth_inventory": "growthInventory",
-            "growth_other_current_assets": "growthOtherCurrentAssets",
-            "growth_total_current_assets": "growthTotalCurrentAssets",
-            "growth_property_plant_equipment_net": "growthPropertyPlantEquipmentNet",
-            "growth_goodwill": "growthGoodwill",
-            "growth_intangible_assets": "growthIntangibleAssets",
-            "growth_goodwill_and_intangible_assets": "growthGoodwillAndIntangibleAssets",
-            "growth_long_term_investments": "growthLongTermInvestments",
-            "growth_tax_assets": "growthTaxAssets",
-            "growth_other_non_current_assets": "growthOtherNonCurrentAssets",
-            "growth_total_non_current_assets": "growthTotalNonCurrentAssets",
-            "growth_other_assets": "growthOtherAssets",
-            "growth_total_assets": "growthTotalAssets",
-            "growth_account_payables": "growthAccountPayables",
-            "growth_short_term_debt": "growthShortTermDebt",
-            "growth_tax_payables": "growthTaxPayables",
-            "growth_deferred_revenue": "growthDeferredRevenue",
-            "growth_other_current_liabilities": "growthOtherCurrentLiabilities",
-            "growth_total_current_liabilities": "growthTotalCurrentLiabilities",
-            "growth_long_term_debt": "growthLongTermDebt",
-            "growth_deferred_revenue_non_current": "growthDeferredRevenueNonCurrent",
-            "growth_deferrred_tax_liabilities_non_current": "growthDeferrredTaxLiabilitiesNonCurrent",
-            "growth_other_non_current_liabilities": "growthOtherNonCurrentLiabilities",
-            "growth_total_non_current_liabilities": "growthTotalNonCurrentLiabilities",
-            "growth_other_liabilities": "growthOtherLiabilities",
-            "growth_total_liabilities": "growthTotalLiabilities",
-            "growth_common_stock": "growthCommonStock",
-            "growth_retained_earnings": "growthRetainedEarnings",
-            "growth_accumulated_other_comprehensive_income_loss": "growthAccumulatedOtherComprehensiveIncomeLoss",
-            "growth_othertotal_stockholders_equity": "growthOthertotalStockholdersEquity",
-            "growth_total_stockholders_equity": "growthTotalStockholdersEquity",
-            "growth_total_liabilities_and_stockholders_equity": "growthTotalLiabilitiesAndStockholdersEquity",
-            "growth_total_investments": "growthTotalInvestments",
-            "growth_total_debt": "growthTotalDebt",
-            "growth_net_debt": "growthNetDebt",
+            "growth_deferred_tax_liabilities_non_current": "growthDeferrredTaxLiabilitiesNonCurrent",
         }
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -78,8 +43,11 @@ class FMPBalanceSheetGrowthFetcher(
         List[FMPBalanceSheetGrowthData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPBalanceSheetGrowthQueryParams:
+        """Transform the query params."""
         return FMPBalanceSheetGrowthQueryParams(**params)
 
     @staticmethod
@@ -87,7 +55,8 @@ class FMPBalanceSheetGrowthFetcher(
         query: FMPBalanceSheetGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPBalanceSheetGrowthData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -97,10 +66,10 @@ class FMPBalanceSheetGrowthFetcher(
             query,
             ["symbol"],
         )
-        return get_data_many(url, FMPBalanceSheetGrowthData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPBalanceSheetGrowthData],
-    ) -> List[FMPBalanceSheetGrowthData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPBalanceSheetGrowthData]:
+        """Return the transformed data."""
+        return [FMPBalanceSheetGrowthData(**d) for d in data]

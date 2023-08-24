@@ -4,6 +4,7 @@
 from datetime import date
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_splits import (
     StockSplitCalendarData,
@@ -30,15 +31,19 @@ class FMPStockSplitCalendarFetcher(
         List[FMPStockSplitCalendarData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockSplitCalendarQueryParams:
-        today = date.today()
+        """Transform the query params. Start and end dates are set to a 1 year interval."""
         transformed_params = params
+
+        now = date.today()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = today
+            transformed_params["start_date"] = now - relativedelta(years=1)
 
         if params.get("end_date") is None:
-            transformed_params["end_date"] = today
+            transformed_params["end_date"] = now
 
         return FMPStockSplitCalendarQueryParams(**transformed_params)
 
@@ -47,15 +52,16 @@ class FMPStockSplitCalendarFetcher(
         query: FMPStockSplitCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPStockSplitCalendarData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query_str = f"from={query.start_date}&to={query.end_date}"
         url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
-        return get_data_many(url, FMPStockSplitCalendarData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPStockSplitCalendarData],
-    ) -> List[FMPStockSplitCalendarData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPStockSplitCalendarData]:
+        """Return the transformed data."""
+        return [FMPStockSplitCalendarData(**d) for d in data]

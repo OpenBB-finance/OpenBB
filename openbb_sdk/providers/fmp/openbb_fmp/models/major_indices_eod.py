@@ -9,8 +9,9 @@ from openbb_provider.standard_models.major_indices_eod import (
     MajorIndicesEODData,
     MajorIndicesEODQueryParams,
 )
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -32,14 +33,14 @@ class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
 class FMPMajorIndicesEODData(MajorIndicesEODData):
     """FMP Major Indices end of day Data."""
 
-    adjClose: Optional[float] = Field(
+    adj_close: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.",
-        alias="adj_close",
+        alias="adjClose",
         default=None,
     )
-    unadjustedVolume: Optional[float] = Field(
+    unadjusted_volume: Optional[float] = Field(
         description="Unadjusted volume of the symbol.",
-        alias="unadjusted_volume",
+        alias="unadjustedVolume",
         default=None,
     )
     change: Optional[float] = Field(
@@ -47,25 +48,20 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         alias="change",
         default=None,
     )
-    changePercent: Optional[float] = Field(
+    change_percent: Optional[float] = Field(
         description=r"Change \% in the price of the symbol.",
-        alias="change_percent",
+        alias="changePercent",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
-    changeOverTime: Optional[float] = Field(
+    change_over_time: Optional[float] = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
-        alias="change_over_time",
+        alias="changeOverTime",
         default=None,
     )
-
-    @validator("date", pre=True)
-    def date_validate(cls, v, values: Dict[str, Any]) -> datetime:
-        if values.get("changeOverTime", None) is not None:
-            return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+    vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
 
 
 class FMPMajorIndicesEODFetcher(
@@ -74,8 +70,11 @@ class FMPMajorIndicesEODFetcher(
         List[FMPMajorIndicesEODData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesEODQueryParams:
+        """Transform the query params."""
         return FMPMajorIndicesEODQueryParams(**params)
 
     @staticmethod
@@ -83,11 +82,15 @@ class FMPMajorIndicesEODFetcher(
         query: FMPMajorIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPMajorIndicesEODData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/historical-chart/{query.interval}/%5E{query.symbol}?&apikey={api_key}"
+
+        if "^" in query.symbol:
+            query.symbol = query.symbol.replace("^", "")
 
         if query.interval == "1day":
             query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
@@ -96,10 +99,9 @@ class FMPMajorIndicesEODFetcher(
             )
             url = f"{base_url}/historical-price-full/index/%5E{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, FMPMajorIndicesEODData, "historical", **kwargs)
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPMajorIndicesEODData],
-    ) -> List[FMPMajorIndicesEODData]:
-        return data
+    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesEODData]:
+        """Return the transformed data."""
+        return [FMPMajorIndicesEODData(**d) for d in data]

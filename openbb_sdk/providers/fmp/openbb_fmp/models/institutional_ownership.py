@@ -25,44 +25,17 @@ class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     """FMP Institutional Ownership Data."""
 
     class Config:
+        """Pydantic alias config using fields dict."""
+
         fields = {
-            "investors_holding": "investorsHolding",
-            "last_investors_holding": "lastInvestorsHolding",
-            "investors_holding_change": "investorsHoldingChange",
             "number_of_13f_shares": "numberOf13Fshares",
             "last_number_of_13f_shares": "lastNumberOf13Fshares",
             "number_of_13f_shares_change": "numberOf13FsharesChange",
-            "total_invested": "totalInvested",
-            "last_total_invested": "lastTotalInvested",
-            "total_invested_change": "totalInvestedChange",
-            "ownership_percent": "ownershipPercent",
-            "last_ownership_percent": "lastOwnershipPercent",
-            "ownership_percent_change": "ownershipPercentChange",
-            "new_positions": "newPositions",
-            "last_new_positions": "lastNewPositions",
-            "new_positions_change": "newPositionsChange",
-            "increased_positions": "increasedPositions",
-            "last_increased_positions": "lastIncreasedPositions",
-            "increased_positions_change": "increasedPositionsChange",
-            "closed_positions": "closedPositions",
-            "last_closed_positions": "lastClosedPositions",
-            "closed_positions_change": "closedPositionsChange",
-            "reduced_positions": "reducedPositions",
-            "last_reduced_positions": "lastReducedPositions",
-            "reduced_positions_change": "reducedPositionsChange",
-            "total_calls": "totalCalls",
-            "last_total_calls": "lastTotalCalls",
-            "total_calls_change": "totalCallsChange",
-            "total_puts": "totalPuts",
-            "last_total_puts": "lastTotalPuts",
-            "total_puts_change": "totalPutsChange",
-            "put_call_ratio": "putCallRatio",
-            "last_put_call_ratio": "lastPutCallRatio",
-            "put_call_ratio_change": "putCallRatioChange",
         }
 
     @validator("date", pre=True, check_fields=False)
     def time_validate(cls, v):  # pylint: disable=no-self-argument
+        """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -72,8 +45,11 @@ class FMPInstitutionalOwnershipFetcher(
         List[FMPInstitutionalOwnershipData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPInstitutionalOwnershipQueryParams:
+        """Transform the query params."""
         return FMPInstitutionalOwnershipQueryParams(**params)
 
     @staticmethod
@@ -81,14 +57,15 @@ class FMPInstitutionalOwnershipFetcher(
         query: FMPInstitutionalOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPInstitutionalOwnershipData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "institutional-ownership/symbol-ownership", api_key, query)
-        return get_data_many(url, FMPInstitutionalOwnershipData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPInstitutionalOwnershipData],
-    ) -> List[InstitutionalOwnershipData]:
-        return [InstitutionalOwnershipData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPInstitutionalOwnershipData]:
+        """Return the transformed data."""
+        return [FMPInstitutionalOwnershipData(**d) for d in data]

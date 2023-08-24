@@ -22,14 +22,6 @@ class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
 class FMPPriceTargetConsensusData(PriceTargetConsensusData):
     """FMP Price Target Consensus Data."""
 
-    class Config:
-        fields = {
-            "target_high": "targetHigh",
-            "target_low": "targetLow",
-            "target_consensus": "targetConsensus",
-            "target_median": "targetMedian",
-        }
-
 
 class FMPPriceTargetConsensusFetcher(
     Fetcher[
@@ -37,8 +29,11 @@ class FMPPriceTargetConsensusFetcher(
         FMPPriceTargetConsensusData,
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPPriceTargetConsensusQueryParams:
+        """Transform the query params."""
         return FMPPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
@@ -46,14 +41,17 @@ class FMPPriceTargetConsensusFetcher(
         query: FMPPriceTargetConsensusQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> FMPPriceTargetConsensusData:
+    ) -> Dict:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "price-target-consensus", api_key, query)
-        return get_data_one(url, FMPPriceTargetConsensusData, **kwargs)
+
+        return get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(
-        data: FMPPriceTargetConsensusData,
-    ) -> PriceTargetConsensusData:
-        return PriceTargetConsensusData.parse_obj(data.dict())
+        data: Dict,
+    ) -> FMPPriceTargetConsensusData:
+        """Return the transformed data."""
+        return FMPPriceTargetConsensusData(**data)

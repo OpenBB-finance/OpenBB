@@ -21,14 +21,6 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends data."""
 
-    class Config:
-        fields = {
-            "adj_dividend": "adjDividend",
-            "record_date": "recordDate",
-            "payment_date": "paymentDate",
-            "declaration_date": "declarationDate",
-        }
-
 
 class FMPHistoricalDividendsFetcher(
     Fetcher[
@@ -36,8 +28,11 @@ class FMPHistoricalDividendsFetcher(
         List[FMPHistoricalDividendsData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalDividendsQueryParams:
+        """Transform the query params."""
         return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
@@ -45,16 +40,16 @@ class FMPHistoricalDividendsFetcher(
         query: FMPHistoricalDividendsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPHistoricalDividendsData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
             3, f"historical-price-full/stock_dividend/{query.symbol}", api_key
         )
-        return get_data_many(url, FMPHistoricalDividendsData, "historical", **kwargs)
+        return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPHistoricalDividendsData],
-    ) -> List[HistoricalDividendsData]:
-        return [HistoricalDividendsData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPHistoricalDividendsData]:
+        """Return the transformed data."""
+        return [FMPHistoricalDividendsData(**d) for d in data]

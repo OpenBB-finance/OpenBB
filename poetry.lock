@@ -2298,13 +2298,13 @@ user_agent = "*"
 
 [[package]]
 name = "finvizfinance"
-version = "0.14.5"
+version = "0.14.6rc2"
 description = "Finviz Finance. Information downloader."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "finvizfinance-0.14.5-py3-none-any.whl", hash = "sha256:1b22bfd7af36f01a08c6032e19f64e810ae3f42bfba681e9a2132226a5a90924"},
-    {file = "finvizfinance-0.14.5.tar.gz", hash = "sha256:c97fe0e69d681d9108113aed943988561665d0d4dbd64ffa0b666a2899c25899"},
+    {file = "finvizfinance-0.14.6rc2-py3-none-any.whl", hash = "sha256:70742b5054e84fbe5a1ffcc7cad97ca9225292e07ce0349dcb78462d5e5e51a0"},
+    {file = "finvizfinance-0.14.6rc2.tar.gz", hash = "sha256:736f3064faac1f8ba6d06fdd7c77f79a3e831c2048fc6442759861fce4c4a6e8"},
 ]
 
 [package.dependencies]
@@ -10495,4 +10495,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.11, !=3.9.7"
-content-hash = "10cccda4c8b51c57241490d53d46268092e6ffe9054c8ef22b7e58477ad3b98c"
+content-hash = "cf28c86b1360b436443a486b5ed8b33101e35d3a6c02f81c7dc85515e520c634"

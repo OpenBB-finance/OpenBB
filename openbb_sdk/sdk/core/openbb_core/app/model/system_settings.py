@@ -13,7 +13,6 @@ from openbb_core.app.constants import (
     SYSTEM_SETTINGS_PATH,
     USER_SETTINGS_PATH,
 )
-from openbb_core.app.logs.utils.system_utils import get_branch, get_commit_hash
 from openbb_core.app.model.abstract.tagged import Tagged
 
 FrozenField = partial(Field, allow_mutation=False)
@@ -36,7 +35,6 @@ class SystemSettings(Tagged):
     # Logging section
     logging_app_name: str = FrozenField(default="gst")
     logging_commit_hash: Optional[str] = FrozenField(default=None)
-    logging_branch: Optional[str] = FrozenField(default=None)
     logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(default="H")
     logging_handlers: List[str] = FrozenField(default_factory=lambda: ["file"])
     logging_rolling_clock: bool = FrozenField(default=False)
@@ -49,14 +47,6 @@ class SystemSettings(Tagged):
     test_mode: bool = False
     debug_mode: bool = False
     headless: bool = False
-    run_in_isolation: bool = FrozenField(
-        default=False,
-        description="Whether or not to run each command in total isolation.",
-    )
-    dbms_uri: Optional[str] = FrozenField(
-        default=None,
-        description="Connection URI like : `mongodb://root:example@localhost:27017/`",
-    )
 
     class Config:
         validate_assignment = True
@@ -72,14 +62,6 @@ class SystemSettings(Tagged):
     def create_empty_json(path: Path) -> None:
         with open(path, mode="w") as file:
             json.dump({}, file)
-
-    # TODO: Allow setting debug mode from environment variable
-    # @root_validator(allow_reuse=True)
-    # @classmethod
-    # def validate_debug_mode(cls, values):
-    #     dm = os.getenv("DEBUG_MODE", "").lower() in ["true", "1"]
-    #     values["debug_mode"] = bool(values["debug_mode"] or dm)
-    #     return values
 
     @root_validator(allow_reuse=True)
     @classmethod
@@ -117,19 +99,3 @@ class SystemSettings(Tagged):
             if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
                 raise ValueError("Invalid logging handler")
         return v
-
-    @validator("logging_commit_hash", allow_reuse=True, always=True)
-    @classmethod
-    def validate_commit_hash(cls, v):
-        return v or get_commit_hash()
-
-    @root_validator(allow_reuse=True)
-    @classmethod
-    def validate_branch(cls, values):
-        branch = values["logging_branch"]
-        commit_hash = values["logging_commit_hash"]
-
-        if not branch and commit_hash:
-            values["logging_branch"] = get_branch(commit_hash)
-
-        return values

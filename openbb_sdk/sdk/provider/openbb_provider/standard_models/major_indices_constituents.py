@@ -16,29 +16,29 @@ class MajorIndicesConstituentsQueryParams(QueryParams):
 
     index: Literal["nasdaq", "sp500", "dowjones"] = Field(
         default="dowjones",
-        description="The index for which we want to fetch the constituents.",
+        description="Index for which we want to fetch the constituents.",
     )
 
 
 class MajorIndicesConstituentsData(Data, BaseSymbol):
     """Major Indices Constituents Data."""
 
-    name: str = Field(description="The name of the constituent company in the index.")
+    name: str = Field(description="Name of the constituent company in the index.")
     sector: str = Field(
-        description="The sector the constituent company in the index belongs to."
+        description="Sector the constituent company in the index belongs to."
     )
     sub_sector: Optional[str] = Field(
-        description="The sub-sector the constituent company in the index belongs to."
+        description="Sub-sector the constituent company in the index belongs to."
     )
     headquarter: Optional[str] = Field(
-        description="The location of the headquarter of the constituent company in the index."
+        description="Location of the headquarter of the constituent company in the index."
     )
     date_first_added: Optional[Union[date, str]] = Field(
-        description="The date the constituent company was added to the index."
+        description="Date the constituent company was added to the index."
     )
     cik: int = Field(
-        description="The Central Index Key of the constituent company in the index."
+        description="Central Index Key of the constituent company in the index."
     )
     founded: Union[date, str] = Field(
-        description="The founding year of the constituent company in the index."
+        description="Founding year of the constituent company in the index."
     )

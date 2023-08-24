@@ -22,30 +22,6 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
 class FMPAnalystEstimatesData(AnalystEstimatesData):
     """FMP Analyst Estimates Data."""
 
-    class Config:
-        fields = {
-            "estimated_revenue_low": "estimatedRevenueLow",
-            "estimated_revenue_high": "estimatedRevenueHigh",
-            "estimated_revenue_avg": "estimatedRevenueAvg",
-            "estimated_ebitda_low": "estimatedEbitdaLow",
-            "estimated_ebitda_high": "estimatedEbitdaHigh",
-            "estimated_ebitda_avg": "estimatedEbitdaAvg",
-            "estimated_ebit_low": "estimatedEbitLow",
-            "estimated_ebit_high": "estimatedEbitHigh",
-            "estimated_ebit_avg": "estimatedEbitAvg",
-            "estimated_net_income_low": "estimatedNetIncomeLow",
-            "estimated_net_income_high": "estimatedNetIncomeHigh",
-            "estimated_net_income_avg": "estimatedNetIncomeAvg",
-            "estimated_sga_expense_low": "estimatedSgaExpenseLow",
-            "estimated_sga_expense_high": "estimatedSgaExpenseHigh",
-            "estimated_sga_expense_avg": "estimatedSgaExpenseAvg",
-            "estimated_eps_avg": "estimatedEpsAvg",
-            "estimated_eps_high": "estimatedEpsHigh",
-            "estimated_eps_low": "estimatedEpsLow",
-            "number_analyst_estimated_revenue": "numberAnalystEstimatedRevenue",
-            "number_analysts_estimated_eps": "numberAnalystsEstimatedEps",
-        }
-
 
 class FMPAnalystEstimatesFetcher(
     Fetcher[
@@ -53,8 +29,11 @@ class FMPAnalystEstimatesFetcher(
         List[FMPAnalystEstimatesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the FMP endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPAnalystEstimatesQueryParams:
+        """Transform the query params."""
         return FMPAnalystEstimatesQueryParams(**params)
 
     @staticmethod
@@ -62,7 +41,8 @@ class FMPAnalystEstimatesFetcher(
         query: FMPAnalystEstimatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[FMPAnalystEstimatesData]:
+    ) -> List[Dict]:
+        """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         query.period = "quarter" if query.period == "quarterly" else "annual"
@@ -70,10 +50,10 @@ class FMPAnalystEstimatesFetcher(
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
-        return get_data_many(url, FMPAnalystEstimatesData, **kwargs)
+
+        return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(
-        data: List[FMPAnalystEstimatesData],
-    ) -> List[AnalystEstimatesData]:
-        return [AnalystEstimatesData.parse_obj(d.dict()) for d in data]
+    def transform_data(data: List[Dict]) -> List[FMPAnalystEstimatesData]:
+        """Return the transformed data."""
+        return [FMPAnalystEstimatesData(**d) for d in data]

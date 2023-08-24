@@ -21,7 +21,7 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
     STYLES_DIRECTORY_REPO,
 )
-from openbb_terminal.core.session.constants import CHARTS_TABLES_URL, COLORS_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -231,7 +231,7 @@ class SettingsController(BaseController):
             " Then, place the downloaded file 'openbb_config.richstyle.json'"
             f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY} or "
             f"{STYLES_DIRECTORY_REPO}. If you have a hub account you can change colors "
-            f"here {COLORS_URL}.",
+            f"here {BackendEnvironment.BASE_URL + 'app/terminal/theme'}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -266,7 +266,7 @@ class SettingsController(BaseController):
             dest="style",
             choices=["dark", "light"],
             help="Choose chart style. If you have a hub account you can change theme "
-            f"here {CHARTS_TABLES_URL}.",
+            f"here {BackendEnvironment.BASE_URL + 'app/terminal/theme/charts-tables'}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -303,7 +303,7 @@ class SettingsController(BaseController):
             dest="style",
             choices=["dark", "light"],
             help="Choose table style. If you have a hub account you can change theme "
-            f"here {CHARTS_TABLES_URL}.",
+            f"here {BackendEnvironment.BASE_URL + 'app/terminal/theme/charts-tables'}.",
             required="-h" not in other_args and "--help" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:

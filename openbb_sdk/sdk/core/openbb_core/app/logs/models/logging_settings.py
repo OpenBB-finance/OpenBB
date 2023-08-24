@@ -32,8 +32,6 @@ class LoggingSettings:
             user_id, user_email, user_primary_usage = None, None, None
 
         # System
-        self.commit_hash: Optional[str] = system_settings.logging_commit_hash
-        self.branch: Optional[str] = system_settings.logging_branch
         self.app_name: str = system_settings.logging_app_name
         self.app_id: str = get_app_id(user_data_directory)
         self.session_id: str = get_session_id()

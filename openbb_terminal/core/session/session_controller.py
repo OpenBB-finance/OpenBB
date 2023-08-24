@@ -5,11 +5,11 @@ from prompt_toolkit import PromptSession
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.constants import (
-    REGISTER_URL,
-    SUPPORT_URL,
+from openbb_terminal.core.session.constants import BackendEnvironment
+from openbb_terminal.core.session.current_system import (
+    get_current_system,
+    set_system_variable,
 )
-from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
@@ -24,8 +24,12 @@ def display_welcome_message(links: bool = True) -> None:
     with open(PACKAGE_DIRECTORY / "core" / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
         if links:
-            console.print(f"Register : [cmds]{REGISTER_URL}[/cmds]")
-            console.print(f"Support  : [cmds]{SUPPORT_URL}[/cmds]")
+            console.print(
+                f"Register : [cmds]{BackendEnvironment.HUB_URL + 'register'}[/cmds]"
+            )
+            console.print(
+                f"Support  : [cmds]{BackendEnvironment.HUB_URL + 'app/terminal/support'}[/cmds]"
+            )
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -135,13 +139,15 @@ def prompt_cli(welcome: bool = True):
 
 
 # pylint: disable=inconsistent-return-statements
-def launch_terminal(debug: bool = False, queue: Optional[List[str]] = None):
+def launch_terminal(
+    debug: bool = False, dev: bool = False, queue: Optional[List[str]] = None
+):
     """Launch terminal"""
     # pylint: disable=import-outside-toplevel
     from openbb_terminal import terminal_controller
 
     if queue:
-        return terminal_controller.main(debug, queue, module="")
+        return terminal_controller.main(debug, dev, queue, module="")
 
     terminal_controller.parse_args_and_run()
 
@@ -170,8 +176,13 @@ def main(
     welcome: bool = True,
     prompt: bool = True,
     queue: Optional[List[str]] = None,
+    dev: bool = False,
 ):
     """Main function"""
+    if dev:
+        set_system_variable("DEV_BACKEND", True)
+        BackendEnvironment.BASE_URL = "https://payments.openbb.dev/"
+        BackendEnvironment.HUB_URL = "https://my.openbb.dev/"
 
     local_session = Local.get_session() if session is None else session
 

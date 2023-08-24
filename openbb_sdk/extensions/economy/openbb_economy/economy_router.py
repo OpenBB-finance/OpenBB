@@ -67,6 +67,28 @@ def index(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="EuropeanIndicesEOD")
+def european_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get historical closine values for an index."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EuropeanIndexConstituents")
+def european_index_constituents(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get historical closine values for an index."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="AvailableIndices")
 def available_indices(
     cc: CommandContext,
@@ -287,13 +309,15 @@ def rtps(
     return OBBject(results=Empty())
 
 
-@router.command
+@router.command(model="IndexSearch")
 def search_index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
-    """SEARCH_INDEX."""
-    return OBBject(results=Empty())
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search Available Indices."""
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command

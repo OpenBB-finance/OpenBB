@@ -1,9 +1,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.balance_sheet import (
-    BalanceSheetData,
-)
+from openbb_provider.standard_models.balance_sheet import BalanceSheetData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
 
@@ -30,7 +28,7 @@ class PolygonBalanceSheetData(BalanceSheetData):
         }
 
     @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):
+    def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -51,10 +49,8 @@ class PolygonBalanceSheetFetcher(
         query: PolygonBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[PolygonBalanceSheetData]:
+    ) -> dict:
         api_key = credentials.get("polygon_api_key") if credentials else ""
-
-        query.period = "annual" if query.period == "annually" else "quarter"
 
         base_url = "https://api.polygon.io/vX/reference/financials"
         query_string = get_querystring(query.dict(by_alias=True), [])
@@ -64,6 +60,12 @@ class PolygonBalanceSheetFetcher(
         if len(data) == 0:
             raise RuntimeError("No balance sheet found")
 
+        return data
+
+    @staticmethod
+    def transform_data(
+        data: dict,
+    ) -> List[PolygonBalanceSheetData]:
         FIELDS = [
             "assets",
             "current_assets",
@@ -86,9 +88,3 @@ class PolygonBalanceSheetFetcher(
 
             to_return.append(PolygonBalanceSheetData(**new))
         return to_return
-
-    @staticmethod
-    def transform_data(
-        data: List[PolygonBalanceSheetData],
-    ) -> List[PolygonBalanceSheetData]:
-        return data
