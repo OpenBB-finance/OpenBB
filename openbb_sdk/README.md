@@ -136,7 +136,7 @@ When developing a specific extension `cd` into the extension directory and run:
 While we're still developing, it is often required to reinstall extensions:
 
 ```python
-python -c "import openbb; openbb.install()"
+python -c "import openbb; openbb.build()"
 ```
 
 You need to do this every time you install or uninstall a new extension or to reinstall all extensions.
