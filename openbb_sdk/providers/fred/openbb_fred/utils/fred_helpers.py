@@ -30,6 +30,7 @@ YIELD_CURVE_SERIES_REAL = {
 
 
 def all_cpi_options(harmonized: bool = False) -> List[dict]:
+    """Get all CPI options."""
     data = []
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -44,6 +45,7 @@ def all_cpi_options(harmonized: bool = False) -> List[dict]:
 
 
 def get_cpi_options(harmonized: bool = False) -> List[dict]:
+    """Get CPI options."""
     series = all_cpi_options(harmonized)
     for item in series:
         item.pop("series_id")
@@ -51,10 +53,7 @@ def get_cpi_options(harmonized: bool = False) -> List[dict]:
 
 
 def process_projections(data: Dict) -> List[Dict]:
-    """.
-    Process projection data
-    """
-
+    """Process projection data."""
     # Get dates first
     dates = []
     for key, value in data.items():
