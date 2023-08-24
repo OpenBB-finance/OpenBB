@@ -14,21 +14,22 @@ try:
 
     obb = sdk = __create_app(Extensions)
 except (ImportError, ModuleNotFoundError):
-    print("Failed to import extensions."
-          " Run `openbb.install()` to install extensions.")
+    print(
+        "Failed to import extensions." " Run `openbb.install()` to install extensions."
+    )
     obb = sdk = __create_app()
 
 
 def install(
-    modules: Optional[Union[str, List[str]]] = None,
+    extensions: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
 ) -> None:
     """Install extension modules.
 
     Parameters
     ----------
-    modules : Optional[List[str]], optional
-        The modules to rebuild, by default None
+    extensions : Optional[List[str]], optional
+        The extensions to install, by default None
         For example: "/news" or ["/news", "/crypto"]
         If None, all modules are rebuilt.
     lint : bool, optional
@@ -45,5 +46,5 @@ def install(
     with Pool(processes=1) as pool:
         pool.apply(
             PackageBuilder(current_dir).build,
-            args=(modules, lint),
+            args=(extensions, lint),
         )
