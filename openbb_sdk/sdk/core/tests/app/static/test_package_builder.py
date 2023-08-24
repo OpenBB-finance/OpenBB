@@ -20,6 +20,7 @@ from openbb_core.app.static.package_builder import (
 from pydantic import Field
 from typing_extensions import Annotated
 
+
 @pytest.fixture(scope="module")
 def tmp_package_dir(tmp_path_factory):
     return tmp_path_factory.mktemp("package")

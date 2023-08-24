@@ -27,9 +27,11 @@ logging_settings.user_logs_directory.absolute.return_value = Path(
 logging_settings.session_id = "test_session_id"
 logging_settings.frequency = "H"
 
+
 @pytest.fixture(scope="module")
 def mocked_path(tmp_path_factory):
     return tmp_path_factory.mktemp("mocked_path") / "mocked_file.log"
+
 
 @pytest.fixture(scope="module")
 def handler(mocked_path):
@@ -47,9 +49,7 @@ def test_build_log_file_path(handler, mocked_path):
     settings.session_id = "abc123"
 
     # patch `pathlib.Path.joinpath` to return a string containing the joined path
-    with patch.object(
-        Path, "joinpath", return_value=mocked_path
-    ) as mock_joinpath:
+    with patch.object(Path, "joinpath", return_value=mocked_path) as mock_joinpath:
         result_path = handler.build_log_file_path(settings)
 
     # Assert the result is correct
