@@ -4,6 +4,9 @@
 from openbb_provider.abstract.provider import Provider
 
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
+from openbb_cboe.models.european_index_constituents import (
+    CboeEuropeanIndexConstituentsFetcher,
+)
 from openbb_cboe.models.european_indices_eod import CboeEuropeanIndicesEODFetcher
 from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
 from openbb_cboe.models.index_search import CboeIndexSearchFetcher
@@ -27,6 +30,7 @@ cboe_provider = Provider(
         "StockInfo": CboeStockInfoFetcher,
         "FuturesCurve": CboeFuturesCurveFetcher,
         "AvailableIndices": CboeAvailableIndicesFetcher,
+        "EuropeanIndexConstituents": CboeEuropeanIndexConstituentsFetcher,
         "EuropeanIndicesEOD": CboeEuropeanIndicesEODFetcher,
         "MajorIndicesEOD": CboeMajorIndicesEODFetcher,
         "IndexSearch": CboeIndexSearchFetcher,

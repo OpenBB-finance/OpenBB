@@ -49,15 +49,13 @@ class CboeEuropeanIndicesEODFetcher(
         query: CboeEuropeanIndicesEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict[dateType, float]]:
+    ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
 
         return Europe.get_index_eod(query.symbol, query.start_date, query.end_date)
 
     @staticmethod
-    def transform_data(
-        data: List[dict[dateType, float]]
-    ) -> List[CboeEuropeanIndicesEODData]:
+    def transform_data(data: List[Dict]) -> List[CboeEuropeanIndicesEODData]:
         """Transform the data to the standard format"""
 
         return [CboeEuropeanIndicesEODData.parse_obj(d) for d in data]

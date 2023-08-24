@@ -857,6 +857,7 @@ class Europe:
             .rename(columns=EUR_INDEX_CONSTITUENTS_COLUMNS)
             .round(2)
         )
+        data["last_trade_timestamp"] = pd.to_datetime(data["last_trade_timestamp"])
 
         return data
 
