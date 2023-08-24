@@ -29,8 +29,8 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
-    StandardParams,
     ProviderInterface,
+    StandardParams,
 )
 
 P = ParamSpec("P")
