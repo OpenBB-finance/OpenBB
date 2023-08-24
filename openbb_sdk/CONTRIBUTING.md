@@ -1,6 +1,19 @@
-# Adding a new data point
+# CONTRIBUTING
 
-## Identify which type of data you want to add
+- [CONTRIBUTING](#contributing)
+  - [Adding a new data point](#adding-a-new-data-point)
+    - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
+    - [Check which is the Model in place](#check-which-is-the-model-in-place)
+    - [Identify if it's an existing provider](#identify-if-its-an-existing-provider)
+    - [Refer to the API documentation and start developing](#refer-to-the-api-documentation-and-start-developing)
+      - [Data characterization](#data-characterization)
+        - [Query parameters](#query-parameters)
+        - [Data output](#data-output)
+      - [Build the Fetcher](#build-the-fetcher)
+    - [Make the new provider visible to the SDK](#make-the-new-provider-visible-to-the-sdk)
+## Adding a new data point
+
+### Identify which type of data you want to add
 
 In this example, we'll be adding OHLC stock data.
 This corresponds to a very well known endpoint, `stocks/load`.
@@ -8,11 +21,11 @@ This corresponds to a very well known endpoint, `stocks/load`.
 Note that, if no endpoint existed yet, we'd need to add it under the right asset type.
 Each asset type is organized under a different extension (stocks, forex, crypto, etc.).
 
-## Check which is the Model in place
+### Check which is the Model in place
 
 Given the fact that there's already an endpoint for OHLC stock data, we can check which is the model in place. In this case, it's `StockEOD`.
 
-## Identify if it's an existing provider
+### Identify if it's an existing provider
 
 If it's a new provider, you'll need to add some boilerplate code.
 You can easily do this by inspecting how the other providers are implemented.
@@ -36,14 +49,14 @@ openbb_sdk
 
 For the example above, and being the case that we'll be adding an extension to the `StockEOD` data model, our `<model_name>.py` file will be called `stock_eod.py`.
 
-## Refer to the API documentation and start developing
+### Refer to the API documentation and start developing
 
-### Data characterization
+#### Data characterization
 
 All data models should have a standard model from which they inherit.
 And then each provider should have its own additional parameters, both for the query and the output.
 
-#### Query parameters
+##### Query parameters
 
 Query parameters are the parameters that are passed to the API endpoint in order to make the request.
 For the `StockEOD` example, this would look like the following:
@@ -62,7 +75,7 @@ class <ProviderName>StockEODQueryParams(StockEODQueryParams):
 
 > Note that, since `StockEODQueryParams` inherits from pydantic's `BaseModel`, so we can leverage validators to perform additional checks on the query parameters.
 
-#### Data output
+##### Data output
 
 The data output is the data that is returned by the API endpoint.
 For the `StockEOD` example, this would look like the following:
@@ -81,7 +94,7 @@ class <ProviderName>StockEODData(StockEODData):
 
 > Note that, since `StockEODData` inherits from pydantic's `BaseModel`, so we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
 
-### Build the Fetcher
+#### Build the Fetcher
 
 The fetcher is the class that will be in charge of making the request to the API endpoint.
 It will receive the query parameters, and it will return the data output while leveraging the data model, both for the query parameters and the data output.
@@ -128,8 +141,7 @@ class <ProviderName>EODFetcher(
 
 > Make sure that you're following the TET pattern when building a fetcher: Transform, Extract, Transform.
 
-
-## Make the new provider visible to the SDK
+### Make the new provider visible to the SDK
 
 In order to make the new provider visible to the SDK, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
 
