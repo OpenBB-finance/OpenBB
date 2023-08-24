@@ -20,11 +20,15 @@ from openbb_core.app.static.package_builder import (
 from pydantic import Field
 from typing_extensions import Annotated
 
+@pytest.fixture(scope="module")
+def tmp_package_dir(tmp_path_factory):
+    return tmp_path_factory.mktemp("package")
+
 
 @pytest.fixture(scope="module")
-def package_builder():
+def package_builder(tmp_package_dir):
     """Return package builder."""
-    return PackageBuilder()
+    return PackageBuilder(tmp_package_dir)
 
 
 def test_package_builder_init(package_builder):
@@ -58,7 +62,7 @@ def test_save_package(package_builder):
 
 def test_run_linters(package_builder):
     """Test run linters."""
-    package_builder.run_linters()
+    package_builder.run_linters(package_builder.directory)
 
 
 @pytest.mark.skip("We avoid writing to the package.")
@@ -431,9 +435,9 @@ def test_build_module_class(path_handler):
 
 
 @pytest.fixture(scope="module")
-def linters():
+def linters(tmp_package_dir):
     """Return linters."""
-    return Linters()
+    return Linters(tmp_package_dir)
 
 
 def test_linters_init(linters):
