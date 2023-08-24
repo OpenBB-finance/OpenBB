@@ -2,8 +2,6 @@
 # flake8: noqa
 # pylint: disable=import-outside-toplevel
 
-import os
-from pathlib import Path
 from typing import List, Optional, Union
 
 from openbb_core.app.static.app_factory import create_app as __create_app
@@ -35,6 +33,8 @@ def install(
     lint : bool, optional
         Whether to lint the code, by default True
     """
+    import os
+    from pathlib import Path
     from openbb_core.app.static.package_builder import PackageBuilder
     from multiprocessing import Pool
 
