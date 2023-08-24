@@ -191,7 +191,7 @@ class CLASS_stocks_dd(Container):
         link : Optional[str]
             Link of the SEC filing.
         final_link : Optional[str]
-            Final link of the SEC filing."""
+            Final link of the SEC filing."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

@@ -86,7 +86,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            AMERIBOR rate."""
+            AMERIBOR rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -164,7 +164,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            ESTR rate."""
+            ESTR rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -241,7 +241,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            FED rate."""
+            FED rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -316,7 +316,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            IORB rate."""
+            IORB rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -386,7 +386,7 @@ class CLASS_fixedincome(Container):
         range_low : Optional[float]
             Low projection of rates.
         central_tendency_low : Optional[float]
-            Central tendency of low projection of rates."""
+            Central tendency of low projection of rates."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -457,7 +457,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            SOFR rate."""
+            SOFR rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -534,7 +534,7 @@ class CLASS_fixedincome(Container):
         date : Optional[date]
             The date of the data.
         rate : Optional[float]
-            SONIA rate."""
+            SONIA rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -628,7 +628,7 @@ class CLASS_fixedincome(Container):
         year_20 : Optional[float]
             20 year treasury rate.
         year_30 : Optional[float]
-            30 year treasury rate."""
+            30 year treasury rate."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -698,7 +698,7 @@ class CLASS_fixedincome(Container):
         maturity : Optional[float]
             Maturity of the treasury rate in years.
         rate : Optional[float]
-            Associated rate given in decimal form (0.05 is 5%)"""
+            Associated rate given in decimal form (0.05 is 5%)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

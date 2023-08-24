@@ -172,7 +172,7 @@ class CLASS_stocks(Container):
         iv_ninety_one_year_high : Optional[float]
             The 90-day high of implied volatility. (provider: cboe)
         hv_ninety_one_year_high : Optional[float]
-            The 90-day high of realized volatility. (provider: cboe)"""
+            The 90-day high of realized volatility. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -302,7 +302,7 @@ class CLASS_stocks(Container):
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        """
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -487,7 +487,7 @@ class CLASS_stocks(Container):
         roe_ttm : Optional[float]
             Return on equity calculated as trailing twelve months.
         capex_per_share_ttm : Optional[float]
-            Capital expenditures per share calculated as trailing twelve months."""
+            Capital expenditures per share calculated as trailing twelve months."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -642,7 +642,7 @@ class CLASS_stocks(Container):
         publisher : Optional[PolygonPublisher]
             Publisher of the article. (provider: polygon)
         tickers : Optional[List[str]]
-            Tickers covered in the article. (provider: polygon)"""
+            Tickers covered in the article. (provider: polygon)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -751,7 +751,7 @@ class CLASS_stocks(Container):
         shares_outstanding : Optional[int]
             Number of shares outstanding of the stock.
         date : Optional[datetime]
-            Timestamp of the stock quote."""
+            Timestamp of the stock quote."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -819,7 +819,7 @@ class CLASS_stocks(Container):
         dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)
         post_station : Optional[str]
-            Post and station location on the CBOE trading floor. (provider: cboe)"""
+            Post and station location on the CBOE trading floor. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -842,7 +842,7 @@ class CLASS_stocks(Container):
     def tob(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """View top of book for loaded ticker (US exchanges only)."""
+        """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,

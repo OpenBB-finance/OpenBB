@@ -631,7 +631,7 @@ class MethodDefinition:
             func = DocstringGenerator.generate(
                 func=func, formatted_params=formatted_params, model_name=model_name
             )
-        code = f'        """{func.__doc__}"""\n\n' if func.__doc__ else ""
+        code = f'        """{func.__doc__}"""  # noqa: E501\n\n' if func.__doc__ else ""
 
         return code
 
