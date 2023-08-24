@@ -62,7 +62,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         Dictionary of params by model.
     return_schema : Dict[str, Type[BaseModel]]
         Dictionary of return data schema by model.
-    providers_literal : List[str]
+    available_providers : List[str]
         List of available providers.
     provider_choices : ProviderChoices
         Dataclass with literal of provider names.
