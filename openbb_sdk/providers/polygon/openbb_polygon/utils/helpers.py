@@ -3,6 +3,7 @@ from openbb_provider import helpers
 
 
 def get_data(url: str, **kwargs) -> dict:
+    """Get data from Polygon endpoint."""
     r = helpers.make_request(url, **kwargs)
     if r.status_code != 200:
         data = r.json()
