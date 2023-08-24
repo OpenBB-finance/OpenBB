@@ -36,22 +36,24 @@ from openbb_core.app.router import RouterLoader
 class PackageBuilder:
     """Build the extension package for the SDK."""
 
-    @classmethod
+    def __init__(self, directory: Optional[Path] = None) -> None:
+        self.directory = directory or Path(__file__).parent
+
     def build(
-        cls,
+        self,
         modules: Optional[Union[str, List[str]]] = None,
         lint: bool = True,
     ) -> None:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
-        cls.save_module_map()
-        cls.save_modules(modules)
-        cls.save_package()
-        if lint:
-            cls.run_linters()
 
-    @classmethod
-    def save_module_map(cls):
+        self.save_module_map()
+        self.save_modules(modules)
+        self.save_package()
+        if lint:
+            self.run_linters(self.directory)
+
+    def save_module_map(self):
         """Save the module map."""
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
@@ -61,12 +63,11 @@ class PackageBuilder:
         module_code = dumps(obj=module_map, indent=4)
         module_name = "module_map"
         print("Writing module map...")
-        cls.write_to_package(
+        self.write_to_package(
             module_code=module_code, module_name=module_name, extension="json"
         )
 
-    @classmethod
-    def save_modules(cls, modules: Optional[Union[str, List[str]]] = None):
+    def save_modules(self, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
         print("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -87,26 +88,25 @@ class PackageBuilder:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
                 print(f"({path})", end=" " * (MAX_LEN - len(path)))
-                cls.write_to_package(module_code=module_code, module_name=module_name)
+                self.write_to_package(module_code=module_code, module_name=module_name)
 
-    @classmethod
-    def save_package(cls):
+    def save_package(self):
         """Save the package."""
         print("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
-        cls.write_to_package(module_code=code, module_name="__init__")
-
-    @classmethod
-    def run_linters(cls):
-        """Run the linters."""
-        print("\nRunning linters...")
-        Linters.ruff()
-        Linters.black()
+        self.write_to_package(module_code=code, module_name="__init__")
 
     @staticmethod
-    def write_to_package(module_code: str, module_name, extension="py") -> None:
+    def run_linters(directory: Path):
+        """Run the linters."""
+        print("\nRunning linters...")
+        linters = Linters(directory)
+        linters.ruff()
+        linters.black()
+
+    def write_to_package(self, module_code: str, module_name, extension="py") -> None:
         """Write the module to the package."""
-        package_folder = Path(__file__).parent / "package"
+        package_folder = self.directory / "package"
         package_path = package_folder / f"{module_name}.{extension}"
 
         package_folder.mkdir(exist_ok=True)
@@ -406,7 +406,7 @@ class MethodDefinition:
 
         code = "\n    @property\n"
         code += f'    def {function_name}(self):  # route = "{path}"\n'
-        code += f"        from openbb_core.app.static.package import {module_name}\n"
+        code += f"        from openbb.package import {module_name}\n"
         code += f"        return {module_name}.{class_name}(command_runner=self._command_runner)\n"
 
         return code
@@ -770,47 +770,46 @@ class Linters:
     """Run the linters for the SDK."""
 
     debug_mode = Env().DEBUG_MODE
-    current_folder = str(Path(Path(__file__).parent, "package").absolute())
+
+    def __init__(self, directory: Path) -> None:
+        self.directory = directory
 
     @staticmethod
     def print_separator(symbol: str, length: int = 160):
         """Print a separator."""
         print(symbol * length)
 
-    @classmethod
     def run(
-        cls,
+        self,
         linter: Literal["black", "ruff"],
         flags: Optional[List[str]] = None,
     ):
         """Run linter with flags."""
         if shutil.which(linter):
             print(f"\n* {linter}")
-            if cls.debug_mode:
+            if self.debug_mode:
                 Linters.print_separator("^")
 
-            command = [linter, Linters.current_folder]
+            command = [linter, self.directory]
             if flags:
                 command.extend(flags)
             subprocess.run(command, check=False)  # noqa: S603
 
-            if cls.debug_mode:
+            if self.debug_mode:
                 Linters.print_separator("-")
         else:
             print(f"\n* {linter} not found")
 
-    @classmethod
-    def black(cls):
+    def black(self):
         """Run black."""
         flags = []
-        if not cls.debug_mode:
+        if not self.debug_mode:
             flags.append("--quiet")
-        cls.run(linter="black", flags=flags)
+        self.run(linter="black", flags=flags)
 
-    @classmethod
-    def ruff(cls):
+    def ruff(self):
         """Run ruff."""
         flags = ["--fix"]
-        if not cls.debug_mode:
+        if not self.debug_mode:
             flags.append("--silent")
-        cls.run(linter="ruff", flags=flags)
+        self.run(linter="ruff", flags=flags)

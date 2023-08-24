@@ -1,205 +1,192 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 
-from pydantic import validate_arguments
-
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
 
 
-class CLASS_stocks_dps(Container):
-    """/stocks/dps
-    ctb
-    dpotc
-    ftd
-    hsi
-    pos
-    prom
-    psi
-    psi_q
-    psi_sg
-    shorted
-    sidtc
-    spos
+class CLASS_stocks_gov(Container):
+    """/stocks/gov
+    contracts
+    government_trading
+    gtrades
+    histcont
+    lastcontracts
+    lasttrades
+    lobbying
+    qtrcontracts
+    topbuys
+    toplobbying
+    topsells
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate_arguments
-    def ctb(
+    def contracts(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Cost to borrow of stocks."""  # noqa: E501
+        """Return government contracts."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/ctb",
+            "/stocks/gov/contracts",
             **inputs,
         )
 
     @validate_arguments
-    def dpotc(
+    def government_trading(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Dark pools (ATS) vs OTC data."""  # noqa: E501
+        """Return government trading."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/dpotc",
+            "/stocks/gov/government_trading",
             **inputs,
         )
 
     @validate_arguments
-    def ftd(
+    def gtrades(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Fails-to-deliver data."""  # noqa: E501
+        """Return government trades."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/ftd",
+            "/stocks/gov/gtrades",
             **inputs,
         )
 
     @validate_arguments
-    def hsi(
+    def histcont(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Show top high short interest stocks of over 20% ratio."""  # noqa: E501
+        """Historical quarterly government contracts."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/hsi",
+            "/stocks/gov/histcont",
             **inputs,
         )
 
     @validate_arguments
-    def pos(
+    def lastcontracts(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Dark pool short position."""  # noqa: E501
+        """Return last government contracts given out."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/pos",
+            "/stocks/gov/lastcontracts",
             **inputs,
         )
 
     @validate_arguments
-    def prom(
+    def lasttrades(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Promising tickers based on dark pool shares regression."""  # noqa: E501
+        """Last trades."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/prom",
+            "/stocks/gov/lasttrades",
             **inputs,
         )
 
     @validate_arguments
-    def psi(
+    def lobbying(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Price vs short interest volume"""  # noqa: E501
+        """Corporate lobbying details."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/psi",
+            "/stocks/gov/lobbying",
             **inputs,
         )
 
     @validate_arguments
-    def psi_q(
+    def qtrcontracts(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Quarterly government contracts analysis."""  # noqa: E501
+
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/psi_q",
+            "/stocks/gov/qtrcontracts",
             **inputs,
         )
 
     @validate_arguments
-    def psi_sg(
+    def topbuys(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Show most purchased stocks."""  # noqa: E501
+
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/psi_sg",
+            "/stocks/gov/topbuys",
             **inputs,
         )
 
     @validate_arguments
-    def shorted(
+    def toplobbying(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Most shorted stocks."""  # noqa: E501
+        """Top corporate lobbying tickers."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/shorted",
+            "/stocks/gov/toplobbying",
             **inputs,
         )
 
     @validate_arguments
-    def sidtc(
+    def topsells(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Short interest and days to cover."""  # noqa: E501
+        """Show most sold stocks."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/dps/sidtc",
-            **inputs,
-        )
-
-    @validate_arguments
-    def spos(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Net short vs position."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/dps/spos",
+            "/stocks/gov/topsells",
             **inputs,
         )

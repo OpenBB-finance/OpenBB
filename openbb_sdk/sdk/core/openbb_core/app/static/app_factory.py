@@ -1,26 +1,22 @@
 """App factory."""
 # pylint: disable=W0231:super-init-not-called
 
+from typing import Optional, Type, TypeVar
+
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.static.account import Account
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.coverage import Coverage
 
+E = TypeVar("E", bound=Type[Container])
 
-def create_app():
+
+def create_app(extensions: Optional[E] = None):
     """Create the app."""
-    try:
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.app.static.package.__extensions__ import Extensions
-    except ImportError as e:
-        raise Exception(
-            "If you are seeing this exception, you should probably be doing: "
-            "from openbb_core.app.static.package_builder import PackageBuilder\n"
-            "PackageBuilder.build()"
-        ) from e
 
-    class App(Extensions):
+    class App(extensions or Container):  # type: ignore
         # fmt: off
         """OpenBB SDK.
 
@@ -40,7 +36,10 @@ Extensions:"""
 
         def __repr__(self) -> str:
             # pylint: disable=E1101
-            return (self.__doc__ or "") + (super().__doc__ or "")
+            ext_doc = (
+                super().__doc__ if extensions else "\n    No extensions installed."
+            )
+            return (self.__doc__ or "") + (ext_doc or "")
 
         @property
         def account(self) -> Account:

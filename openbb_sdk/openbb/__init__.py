@@ -2,15 +2,23 @@
 # flake8: noqa
 # pylint: disable=import-outside-toplevel
 
+import os
+from pathlib import Path
 from typing import List, Optional, Union
 
 from openbb_core.app.static.app_factory import create_app as __create_app
 
-sdk = __create_app()
-obb = sdk
+try:
+    # pylint: disable=import-outside-toplevel
+    from openbb.package.__extensions__ import Extensions
+
+    obb = sdk = __create_app(Extensions)
+except (ImportError, ModuleNotFoundError):
+    print("Failed to import extensions. Try `openbb.rebuild_extensions()`.")
+    obb = sdk = __create_app()
 
 
-def _rebuild_python_interface(
+def rebuild_extensions(
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
 ) -> None:
@@ -27,4 +35,5 @@ def _rebuild_python_interface(
     """
     from openbb_core.app.static.package_builder import PackageBuilder
 
-    PackageBuilder.build(modules=modules, lint=lint)
+    current_dir = Path(os.path.dirname(os.path.realpath(__file__)))
+    PackageBuilder(current_dir).build(modules=modules, lint=lint)

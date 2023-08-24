@@ -2,15 +2,14 @@
 
 from typing import List, Literal, Optional, Union
 
-from pydantic import validate_arguments
-from typing_extensions import Annotated
-
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_options(Container):
