@@ -4,9 +4,9 @@ import os
 from inspect import getfile, isclass
 from typing import Any, Dict, List, Literal, Optional, Tuple
 
-from pydantic import BaseModel
-
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.registry import Registry, RegistryLoader
 
 MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
@@ -138,7 +138,8 @@ class RegistryMap:
 
     @staticmethod
     def validate_model(model: Any, type_: Literal["query_params", "data"]):
-        if not isclass(model) or not issubclass(model, BaseModel):
+        parent_model = QueryParams if type_ == "query_params" else Data
+        if not isclass(model) or not issubclass(model, parent_model):
             raise ValueError(
                 f"'{str(model)}' must be a subclass of 'BaseModel'.\n"
                 f"Try specifying `{type_}_type = <'your_{type_}_type'>` in the fetcher."
