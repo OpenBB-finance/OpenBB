@@ -141,5 +141,5 @@ class RegistryMap:
         if not isclass(model) or not issubclass(model, BaseModel):
             raise ValueError(
                 f"'{str(model)}' must be a subclass of 'BaseModel'.\n"
-                f"Try specifying `{type_}_type = <'your_data_type'>` in the fetcher."
+                f"Try specifying `{type_}_type = <'your_{type_}_type'>` in the fetcher."
             )
