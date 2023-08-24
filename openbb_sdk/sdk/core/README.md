@@ -26,7 +26,6 @@
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
   - [6. Front-end typing](#6-front-end-typing)
-  - [7. Performance](#7-performance)
 
 ## 1. Introduction
 
@@ -419,17 +418,3 @@ openapi-typescript + openapi-fetch
 openapi-generator
 
 - <https://fastapi.tiangolo.com/advanced/generate-clients/>
-
-## 7. Performance
-
-We aim to have a short import time. To measure that we use `tuna`.
-
-- https://pypi.org/project/tuna/
-
-To visualize the import time breakdown by module, run the following commands from `openbb_sdk` directory:
-
-```bash
-pip install tuna
-python -X importtime openbb/__init__.py 2> import.log
-tuna import.log
-```
