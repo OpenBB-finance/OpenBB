@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "0.0.0a"
+version = "0.2.0"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -24,13 +24,10 @@ bcrypt = "^4.0.1"
 urllib3 = "<2.0.0"
 black = "^23.7.0"
 ruff = "0.0.256"
-openbb-provider = {version = "0.0.0a1", source = "TestPyPi"}
+openbb-provider = { path = "../provider" }
 
-
-[[tool.poetry.source]]
-name = "TestPyPi"
-url = "https://test.pypi.org/simple/"
-priority = "explicit"
+[tool.poetry.group.dev.dependencies]
+openbb-provider = { path = "../provider" }
 
 [build-system]
 requires = ["poetry-core"]
