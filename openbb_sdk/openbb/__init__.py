@@ -34,6 +34,15 @@ def rebuild_extensions(
         Whether to lint the code, by default True
     """
     from openbb_core.app.static.package_builder import PackageBuilder
+    from multiprocessing import Pool
 
     current_dir = Path(os.path.dirname(os.path.realpath(__file__)))
-    PackageBuilder(current_dir).build(modules=modules, lint=lint)
+
+    # `build` is run in a separate process to avoid consecutive runs in the same
+    # interpreter to reuse methods already in memory. This was causing docstrings
+    # to have repeated lines.
+    with Pool(processes=1) as pool:
+        pool.apply(
+            PackageBuilder(current_dir).build,
+            args=(modules, lint),
+        )
