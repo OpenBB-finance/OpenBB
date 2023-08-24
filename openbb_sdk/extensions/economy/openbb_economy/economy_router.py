@@ -380,3 +380,14 @@ def sp500_multiples(
     ]
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="COTSearch")
+def cot_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search available CFTC Commitment of Traders Reports."""
+    return OBBject(results=Query(**locals()).execute())
