@@ -100,8 +100,8 @@ class PackageBuilder:
     def run_linters(cls):
         """Run the linters."""
         print("\nRunning linters...")
-        Linters.black()
         Linters.ruff()
+        Linters.black()
 
     @staticmethod
     def write_to_package(module_code: str, module_name, extension="py") -> None:
