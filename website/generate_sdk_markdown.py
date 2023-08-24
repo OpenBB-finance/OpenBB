@@ -155,9 +155,8 @@ def generate_markdown_section(meta: Dict[str, Any]):
             if example["description"] and prev_snippet != "":
                 markdown += f"```\n{example['description']}\n```\n"
                 prev_snippet = snippet.strip()
-            else:
-                if example["description"]:
-                    markdown += f"\n{example['description']}\n\n"
+            elif example["description"]:
+                markdown += f"\n{example['description']}\n\n"
         else:
             if example["description"]:
                 markdown += f"\n{example['description']}\n\n"

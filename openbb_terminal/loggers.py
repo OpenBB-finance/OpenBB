@@ -112,7 +112,7 @@ def get_branch() -> str:
         try:
             if get_branch_commit_hash(branch) == current_commit_hash:
                 return branch
-        except Exception:
+        except Exception:  # noqa: S110
             pass
 
     git_dir = Path(__file__).parent.parent.joinpath(".git")
@@ -121,7 +121,7 @@ def get_branch() -> str:
             repo = git.Repo(path=git_dir)
             branch = repo.active_branch.name
             return branch
-        except Exception:
+        except Exception:  # noqa: S110
             pass
 
     return "unknown-branch"

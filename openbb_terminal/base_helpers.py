@@ -95,8 +95,5 @@ def remove_log_handlers():
 def clear_openbb_env_vars(exceptions: Optional[List[str]] = None):
     """Clear openbb environment variables."""
     for v in os.environ:
-        if v.startswith("OPENBB"):
-            if not exceptions:
-                os.environ.pop(v)
-            elif v not in exceptions:
-                os.environ.pop(v)
+        if v.startswith("OPENBB") and (not exceptions or v not in exceptions):
+            os.environ.pop(v)

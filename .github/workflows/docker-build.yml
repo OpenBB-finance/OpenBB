@@ -5,7 +5,7 @@ on: workflow_dispatch
 jobs:
   publish-image:
     runs-on: ubuntu-latest
-    env: 
+    env:
       OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
       OPENBB_LOGGING_APP_NAME: "gst_docker"
 

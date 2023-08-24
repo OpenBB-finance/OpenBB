@@ -132,7 +132,7 @@ def load_options_chains(
     return load_cboe(symbol, pydantic)
 
 
-def validate_object(
+def validate_object(  # noqa: PLR0911
     options: Options, scope: Optional[str] = "object", days: Optional[int] = None
 ) -> Any:
     """This is an internal helper function for validating the Options data object passed
@@ -178,10 +178,7 @@ def validate_object(
 
     scopes = ["chains", "object", "strategies", "nonZeroPrices"]
 
-    valid: bool = True
-
-    if scope == "":
-        scope = "chains"
+    scope = scope or "chains"
 
     if scope not in scopes:
         print("Invalid choice.  The supported methods are:", scopes)
@@ -194,24 +191,24 @@ def validate_object(
                 and isinstance(options.expirations, list)
                 and hasattr(options, "last_price")
             ):
-                return valid
+                return True
 
         except AttributeError:
             print(
                 "Error: Invalid data type supplied.  The Options data object is required.  "
                 "Use load_options_chains() first."
             )
-            return not valid
+            return False
 
     if scope == "strategies":
         try:
             if isinstance(options.last_price, float):
-                return valid
+                return True
         except AttributeError:
             print(
                 "`last_price` was not found in the OptionsChainsData object and is required for this operation."
             )
-            return not valid
+            return False
 
     if scope == "chains":
         try:
@@ -295,7 +292,7 @@ def validate_object(
         "Error: No valid data supplied. Check the input to ensure it is not empty or None."
     )
 
-    return not valid
+    return False
 
 
 def get_nearest_expiration(options: Options, expiration: Optional[str] = "") -> str:
@@ -1465,6 +1462,11 @@ def get_strategies(
     )
     """
 
+    def to_clean_list(x):
+        if x is None:
+            return None
+        return [x] if not isinstance(x, list) else x
+
     options = deepcopy(options)
 
     if validate_object(options, scope="object") is False:
@@ -1474,14 +1476,14 @@ def get_strategies(
         print("`last_price` was not found in the Options data object.")
         return pd.DataFrame()
 
-    if isinstance(options.chains, dict):
-        options.chains = pd.DataFrame(options.chains)
+    options.chains = (
+        pd.DataFrame(options.chains)
+        if isinstance(options.chains, dict)
+        else options.chains
+    )
 
-    if strangle_moneyness is None:
-        strangle_moneyness = [0.0]
-
-    if days is None:
-        days = options.chains["dte"].unique().tolist()
+    strangle_moneyness = strangle_moneyness or [0.0]
+    days = days or options.chains["dte"].unique().tolist()
 
     # Allows a single input to be passed instead of a list.
     days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
@@ -1497,26 +1499,9 @@ def get_strategies(
         )
         return pd.DataFrame()
 
-    if strangle_moneyness is not None:
-        strangle_moneyness = (
-            [strangle_moneyness]  # type: ignore[list-item]
-            if not isinstance(strangle_moneyness, list)
-            else strangle_moneyness
-        )
-
-    if synthetic_longs is not None:
-        synthetic_longs = (
-            [synthetic_longs]  # type: ignore[list-item]
-            if not isinstance(synthetic_longs, list)
-            else synthetic_longs
-        )
-
-    if synthetic_shorts is not None:
-        synthetic_shorts = (
-            [synthetic_shorts]  # type: ignore[list-item]
-            if not isinstance(synthetic_shorts, list)
-            else synthetic_shorts
-        )
+    strangle_moneyness = to_clean_list(strangle_moneyness)
+    synthetic_longs = to_clean_list(synthetic_longs)
+    synthetic_shorts = to_clean_list(synthetic_shorts)
 
     days_list = []
     strategies = pd.DataFrame()
@@ -1531,8 +1516,7 @@ def get_strategies(
     put_spreads = pd.DataFrame()
 
     for day in days:
-        if day == 0:
-            day = -1
+        day = day or -1  # noqa: PLW2901
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
     days.sort()
@@ -1562,24 +1546,14 @@ def get_strategies(
         for day in days:
             straddle = calculate_straddle(options, day, straddle_strike).transpose()
             if straddle.iloc[0]["Cost"] != 0:
-                straddles = pd.concat(
-                    [
-                        straddles,
-                        straddle,
-                    ]
-                )
+                straddles = pd.concat([straddles, straddle])
 
     if strangle_moneyness and strangle_moneyness[0] != 0:
         for day in days:
             for moneyness in strangle_moneyness:
                 strangle = calculate_strangle(options, day, moneyness).transpose()
                 if strangle.iloc[0]["Cost"] != 0:
-                    strangles_ = pd.concat(
-                        [
-                            strangles_,
-                            strangle,
-                        ]
-                    )
+                    strangles_ = pd.concat([strangles_, strangle])
 
         strangles = pd.concat([strangles, strangles_])
         strangles = strangles.query("`Strike 1` != `Strike 2`").drop_duplicates()
@@ -1592,12 +1566,7 @@ def get_strategies(
                     options, day, strike
                 ).transpose()
                 if _synthetic_long.iloc[0]["Strike 1 Premium"] != 0:
-                    _synthetic_longs = pd.concat(
-                        [
-                            _synthetic_longs,
-                            _synthetic_long,
-                        ]
-                    )
+                    _synthetic_longs = pd.concat([_synthetic_longs, _synthetic_long])
 
         synthetic_longs_df = pd.concat([synthetic_longs_df, _synthetic_longs])
 
@@ -1609,12 +1578,7 @@ def get_strategies(
                     options, day, strike
                 ).transpose()
                 if _synthetic_short.iloc[0]["Strike 1 Premium"] != 0:
-                    _synthetic_shorts = pd.concat(
-                        [
-                            _synthetic_shorts,
-                            _synthetic_short,
-                        ]
-                    )
+                    _synthetic_shorts = pd.concat([_synthetic_shorts, _synthetic_short])
 
         synthetic_shorts_df = pd.concat([synthetic_shorts_df, _synthetic_shorts])
 

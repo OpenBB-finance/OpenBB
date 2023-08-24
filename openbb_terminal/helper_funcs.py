@@ -263,7 +263,7 @@ def return_colored_value(value: str):
 
 
 # pylint: disable=too-many-arguments
-def print_rich_table(
+def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
     show_index: bool = False,
     title: str = "",
@@ -1120,7 +1120,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)  # nosec
+    return random.choice(user_agent_strings)  # nosec # noqa: S311
 
 
 def text_adjustment_init(self):
@@ -1641,7 +1641,7 @@ def get_rf() -> float:
 
 def system_clear():
     """Clear screen."""
-    os.system("cls||clear")  # nosec
+    os.system("cls||clear")  # nosec # noqa: S605,S607
 
 
 def excel_columns() -> List[str]:

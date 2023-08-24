@@ -4,9 +4,7 @@ version = "3.2.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
-packages = [
-    { include = "openbb_terminal" },
-]
+packages = [{ include = "openbb_terminal" }]
 include = ["terminal.py", "openbb_terminal/.env"]
 readme = "website/pypi.md"
 homepage = "https://openbb.co"
@@ -18,7 +16,7 @@ openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8.1,<3.11, !=3.9.7"
-scipy = "1.10.1" #Pinning on July 6 for pip issues
+scipy = "1.10.1"                                                      #Pinning on July 6 for pip issues
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.31.0"
@@ -73,16 +71,16 @@ finnhub-python = "^2.4.10"
 linearmodels = "^4.25"
 ipywidgets = "^8.0.2"
 Jinja2 = "^3.0.3"
-Riskfolio-Lib = {version = "^3.1.1", optional = true}
+Riskfolio-Lib = { version = "^3.1.1", optional = true }
 ccxt = "^4.0.33"
 html5lib = "^1.1"
 feedparser = "^6.0.10"
-pyinstaller = {version = "^4.10", optional = true}
-jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
-jupyterlab-lsp = {version = "^3.10.1", optional = true}
-jedi-language-server = {version = "^0.40.0", optional = true}
+pyinstaller = { version = "^4.10", optional = true }
+jupyterlab-code-formatter = { version = "^1.4.10", optional = true }
+jupyterlab-lsp = { version = "^3.10.1", optional = true }
+jedi-language-server = { version = "^0.40.0", optional = true }
 tokenterminal = "^1.0.1"
-torch = {version = "~1.11.0", optional = true}
+torch = { version = "~1.11.0", optional = true }
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 "ruamel.yaml" = "^0.17.21"
@@ -92,10 +90,10 @@ papermill = "2.4"
 stocksera = "^0.1.21"
 ipython = "8.11.0"
 protobuf = "3.20.1"
-pytorch-lightning = {version = "1.6.5", optional = true}
-u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
-lightgbm = {version = "3.3.5", optional = true}  # locked because this is the latest version available on conda intel mac
-docstring-parser = {version = "^0.15", optional = true}
+pytorch-lightning = { version = "1.6.5", optional = true }
+u8darts = { extras = ["torch"], version = "0.23.0", optional = true }
+lightgbm = { version = "3.3.5", optional = true }                     # locked because this is the latest version available on conda intel mac
+docstring-parser = { version = "^0.15", optional = true }
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
@@ -104,17 +102,17 @@ streamlit = "^1.24.1"
 pywry = "^0.5.13"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
-y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
-psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
+y-py = "!=0.5.5"                                                      # Untraceable third level dependency that requires cargo to be built
+psutil = "!=5.9.4"                                                    # Forecasting menu and IPyKernel dependency broken on MacOs
 intrinio-sdk = "^6.22.2"
 yahooquery = "^2.3.0"
-openai-whisper = {version = "^20230124", optional = true}
-setuptools-rust = {version = "^1.5.2", optional = true}
-transformers = {version = "4.27.1", optional = true}
-yt-dlp = {version = "^2023.2.17", optional = true}
+openai-whisper = { version = "^20230124", optional = true }
+setuptools-rust = { version = "^1.5.2", optional = true }
+transformers = { version = "4.27.1", optional = true }
+yt-dlp = { version = "^2023.2.17", optional = true }
 pydantic = "<2"
 posthog = "^3.0.1"
-reportlab = "<4" #Pinning due to build error on MacOs
+reportlab = "<4"                                                      #Pinning due to build error on MacOs
 arch = "^5.5.0"
 llama-index = "0.7.11"
 langchain = "0.0.237"
@@ -124,12 +122,34 @@ jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
 
 
-
 [tool.poetry.extras]
-forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+forecast = [
+    "torch",
+    "pytorch-lightning",
+    "u8darts",
+    "lightgbm",
+    "openai-whisper",
+    "setuptools-rust",
+    "transformers",
+    "yt-dlp",
+]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
-jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
+all = [
+    "torch",
+    "pytorch-lightning",
+    "u8darts",
+    "Riskfolio-Lib",
+    "lightgbm",
+    "openai-whisper",
+    "setuptools-rust",
+    "transformers",
+    "yt-dlp",
+]
+jupyterlab = [
+    "jupyterlab-code-formatter",
+    "jupyterlab-lsp",
+    "jedi-language-server",
+]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
 
@@ -137,7 +157,6 @@ doc = ["docstring-parser"]
 pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
 pylint = "2.17.0"
-mypy = "^1.1.1"
 mock = "^4.0.3"
 codespell = "^2.2.4"
 pydocstyle = "^6.3.0"
@@ -158,10 +177,11 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.256"
 pytest-timeout = "^2.1.0"
 pytest-recorder = "^0.2.1"
 freezegun = "^1.2.2"
+ruff = "^0.0.285"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
@@ -181,11 +201,12 @@ target-version = "py38"
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
 select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM"]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117", "PLC1901", "PLR5501","PLW2901","PLW0603"]
+ignore = ["PLR2004", "PLR0913", "PLR0915"]
 exclude = ["^openbb_sdk/sdk/core/openbb_core/app/static/package/.*"]
 
 [tool.ruff.per-file-ignores]
 "*tests/*" = ["S101"]
+"*init*.py" = ["F401"]
 
 [tool.ruff.flake8-import-conventions.aliases]
 "matplotlib.pyplot" = "plt"
@@ -198,10 +219,10 @@ combine-as-imports = true
 force-wrap-aliases = true
 
 [tool.ruff.pylint]
-max-args=8
-max-branches=25
-max-returns=9
-max-statements=30
+max-args = 8
+max-branches = 25
+max-returns = 9
+max-statements = 30
 
 [tool.isort]
 profile = "black"
