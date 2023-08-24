@@ -8,6 +8,7 @@ from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
+import sys
 from typing import (
     Callable,
     Dict,
@@ -202,7 +203,10 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
-        code += "\nfrom typing_extensions import Annotated"
+        if sys.version_info < (3, 9):
+            code += "\nimport typing_extensions"
+        else:
+            code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
 
