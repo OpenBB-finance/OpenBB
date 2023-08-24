@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from jose import JWTError
 from jose.exceptions import ExpiredSignatureError
 from jose.jwt import decode, get_unverified_header
+from openbb_core.app.env import Env
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.features_keys import FeaturesKeys
@@ -16,13 +17,23 @@ from requests import get, post, put
 
 
 class HubService:
-    """Manage Hub service class."""
+    """Hub service class."""
 
-    BASE_URL = "https://payments.openbb.dev"
     TIMEOUT = 10
 
-    def __init__(self, session: Optional[HubSession] = None):
+    def __init__(
+        self,
+        session: Optional[HubSession] = None,
+        base_url: Optional[str] = None,
+    ):
+        domain = "dev" if Env().DEV_MODE else "co"
+        self._base_url = base_url or f"https://payments.openbb.{domain}"
         self._session = session
+
+    @property
+    def base_url(self) -> str:
+        """Get base url."""
+        return self._base_url
 
     @property
     def session(self) -> Optional[HubSession]:
@@ -37,17 +48,17 @@ class HubService:
     ) -> HubSession:
         """Connect to Hub."""
         if email and password:
-            self._session = self.get_session_from_email_password(email, password)
+            self._session = self._get_session_from_email_password(email, password)
             return self._session
         if pat:
-            self._session = self.get_session_from_sdk_token(pat)
+            self._session = self._get_session_from_sdk_token(pat)
             return self._session
         raise OpenBBError("Please provide 'email' and 'password' or 'pat'")
 
     def disconnect(self) -> bool:
         """Disconnect from Hub."""
         if self._session:
-            result = self.post_logout(self._session)
+            result = self._post_logout(self._session)
             self._session = None
             return result
         raise OpenBBError(
@@ -59,7 +70,7 @@ class HubService:
         if self._session:
             if user_settings.credentials:
                 hub_user_settings = self.sdk2hub(user_settings.credentials)
-                return self.put_user_settings(self._session, hub_user_settings)
+                return self._put_user_settings(self._session, hub_user_settings)
             return False
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
@@ -68,7 +79,7 @@ class HubService:
     def pull(self) -> UserSettings:
         """Pull user settings from Hub."""
         if self._session:
-            hub_user_settings = self.get_user_settings(self._session)
+            hub_user_settings = self._get_user_settings(self._session)
             if hub_user_settings:
                 profile = Profile(
                     active=True,
@@ -80,8 +91,7 @@ class HubService:
             "No session found. Login or provide a 'HubSession' on initialization."
         )
 
-    @classmethod
-    def get_session_from_email_password(cls, email: str, password: str) -> HubSession:
+    def _get_session_from_email_password(self, email: str, password: str) -> HubSession:
         """Get session from email and password."""
         if not email:
             raise OpenBBError("Email not found.")
@@ -90,13 +100,13 @@ class HubService:
             raise OpenBBError("Password not found.")
 
         response = post(
-            url=cls.BASE_URL + "/login",
+            url=self._base_url + "/login",
             json={
                 "email": email,
                 "password": password,
                 "remember": True,
             },
-            timeout=cls.TIMEOUT,
+            timeout=self.TIMEOUT,
         )
 
         if response.status_code == 200:
@@ -114,36 +124,19 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    @classmethod
-    def check_token_expiration(cls, token: str) -> None:
-        """Check token expiration, raises exception if expired."""
-        try:
-            header_data = get_unverified_header(token)
-            decode(
-                token,
-                key="secret",
-                algorithms=[header_data["alg"]],
-                options={"verify_signature": False, "verify_exp": True},
-            )
-        except ExpiredSignatureError as e:
-            raise OpenBBError("SDK personal access token expired.") from e
-        except JWTError as e:
-            raise OpenBBError("Failed to decode SDK token.") from e
-
-    @classmethod
-    def get_session_from_sdk_token(cls, token: str) -> HubSession:
+    def _get_session_from_sdk_token(self, token: str) -> HubSession:
         """Get session from SDK personal access token."""
         if not token:
             raise OpenBBError("SDK personal access token not found.")
 
-        cls.check_token_expiration(token)
+        self.check_token_expiration(token)
 
         response = post(
-            url=cls.BASE_URL + "/sdk/login",
+            url=self._base_url + "/sdk/login",
             json={
                 "token": token,
             },
-            timeout=cls.TIMEOUT,
+            timeout=self.TIMEOUT,
         )
 
         if response.status_code == 200:
@@ -161,18 +154,17 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    @classmethod
-    def post_logout(cls, session: HubSession) -> bool:
+    def _post_logout(self, session: HubSession) -> bool:
         """Post logout."""
         access_token = session.access_token
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
         response = get(
-            url=cls.BASE_URL + "/logout",
+            url=self._base_url + "/logout",
             headers={"Authorization": authorization},
             json={"token": access_token},
-            timeout=cls.TIMEOUT,
+            timeout=self.TIMEOUT,
         )
 
         if response.status_code == 200:
@@ -183,17 +175,16 @@ class HubService:
         detail = result.get("detail", None)
         raise HTTPException(status_code, detail)
 
-    @classmethod
-    def get_user_settings(cls, session: HubSession) -> HubUserSettings:
+    def _get_user_settings(self, session: HubSession) -> HubUserSettings:
         """Get user settings."""
         access_token = session.access_token
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
         response = get(
-            url=cls.BASE_URL + "/terminal/user",
+            url=self._base_url + "/terminal/user",
             headers={"Authorization": authorization},
-            timeout=cls.TIMEOUT,
+            timeout=self.TIMEOUT,
         )
         if response.status_code == 200:
             user_settings = response.json()
@@ -203,18 +194,19 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    @classmethod
-    def put_user_settings(cls, session: HubSession, settings: HubUserSettings) -> bool:
+    def _put_user_settings(
+        self, session: HubSession, settings: HubUserSettings
+    ) -> bool:
         """Put user settings."""
         access_token = session.access_token
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
         response = put(
-            url=cls.BASE_URL + "/user",
+            url=self._base_url + "/user",
             headers={"Authorization": authorization},
             json=settings.dict(),
-            timeout=cls.TIMEOUT,
+            timeout=self.TIMEOUT,
         )
 
         if response.status_code == 200:
@@ -243,3 +235,19 @@ class HubService:
         )
         hub_user_settings = HubUserSettings(features_keys=features_keys)
         return hub_user_settings
+
+    @staticmethod
+    def check_token_expiration(token: str) -> None:
+        """Check token expiration, raises exception if expired."""
+        try:
+            header_data = get_unverified_header(token)
+            decode(
+                token,
+                key="secret",
+                algorithms=[header_data["alg"]],
+                options={"verify_signature": False, "verify_exp": True},
+            )
+        except ExpiredSignatureError as e:
+            raise OpenBBError("SDK personal access token expired.") from e
+        except JWTError as e:
+            raise OpenBBError("Failed to decode SDK token.") from e
