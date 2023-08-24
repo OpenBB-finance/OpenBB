@@ -1,10 +1,10 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -57,10 +57,7 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def available_indices(
-        self,
-        chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
+        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[List]:
         """AVAILABLE_INDICES.
 
@@ -68,7 +65,7 @@ class CLASS_economy(Container):
         ----------
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -78,7 +75,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -118,8 +115,8 @@ class CLASS_economy(Container):
     def balance(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """BALANCE."""
@@ -140,8 +137,8 @@ class CLASS_economy(Container):
     def bigmac(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """BIGMAC."""
@@ -161,14 +158,14 @@ class CLASS_economy(Container):
     @validate_arguments
     def const(
         self,
-        index: typing_extensions.Annotated[
+        index: Annotated[
             Literal["nasdaq", "sp500", "dowjones"],
             OpenBBCustomParameter(
                 description="Index for which we want to fetch the constituents."
             ),
         ] = "dowjones",
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the constituents of an index.
@@ -179,7 +176,7 @@ class CLASS_economy(Container):
             Index for which we want to fetch the constituents.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -189,7 +186,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[MajorIndicesConstituents]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -237,8 +234,8 @@ class CLASS_economy(Container):
     def corecpi(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """CORECPI."""
@@ -259,8 +256,8 @@ class CLASS_economy(Container):
     def country_codes(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """COUNTRY_CODES."""
@@ -280,7 +277,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def cpi(
         self,
-        countries: typing_extensions.Annotated[
+        countries: Annotated[
             List[
                 Literal[
                     "australia",
@@ -336,34 +333,34 @@ class CLASS_economy(Container):
             ],
             OpenBBCustomParameter(description="The country or countries to get data."),
         ],
-        units: typing_extensions.Annotated[
+        units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
             OpenBBCustomParameter(description="The data units."),
         ] = "growth_same",
-        frequency: typing_extensions.Annotated[
+        frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
-        harmonized: typing_extensions.Annotated[
+        harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
             ),
         ] = False,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """CPI.
@@ -384,7 +381,7 @@ class CLASS_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -394,7 +391,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[CPI]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -434,8 +431,8 @@ class CLASS_economy(Container):
     def cpi_options(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Get the options for v3 cpi(options=True)"""
@@ -456,8 +453,8 @@ class CLASS_economy(Container):
     def currencies(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """CURRENCIES."""
@@ -478,8 +475,8 @@ class CLASS_economy(Container):
     def debt(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """DEBT."""
@@ -500,8 +497,8 @@ class CLASS_economy(Container):
     def events(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """EVENTS."""
@@ -522,8 +519,8 @@ class CLASS_economy(Container):
     def fgdp(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FGDP."""
@@ -544,8 +541,8 @@ class CLASS_economy(Container):
     def fred(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FRED."""
@@ -566,8 +563,8 @@ class CLASS_economy(Container):
     def fred_search(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FRED Search (was fred_notes)."""
@@ -588,8 +585,8 @@ class CLASS_economy(Container):
     def futures(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FUTURES. 2 sources"""
@@ -610,8 +607,8 @@ class CLASS_economy(Container):
     def gdp(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """GDP."""
@@ -632,8 +629,8 @@ class CLASS_economy(Container):
     def glbonds(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """GLBONDS."""
@@ -653,24 +650,24 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         r"""Get OHLCV data for an index.
@@ -685,11 +682,11 @@ class CLASS_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+        timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
         interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
             None
@@ -703,7 +700,7 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -717,7 +714,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[MajorIndicesEOD]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -780,8 +777,8 @@ class CLASS_economy(Container):
     def indices(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """INDICES."""
@@ -802,8 +799,8 @@ class CLASS_economy(Container):
     def macro(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Query EconDB for macro data."""
@@ -824,8 +821,8 @@ class CLASS_economy(Container):
     def macro_countries(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """MACRO_COUNTRIES."""
@@ -846,8 +843,8 @@ class CLASS_economy(Container):
     def macro_parameters(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """MACRO_PARAMETERS."""
@@ -868,8 +865,8 @@ class CLASS_economy(Container):
     def overview(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """OVERVIEW."""
@@ -890,8 +887,8 @@ class CLASS_economy(Container):
     def perfmap(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """PERFMAP."""
@@ -912,8 +909,8 @@ class CLASS_economy(Container):
     def performance(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """PERFORMANCE."""
@@ -934,8 +931,8 @@ class CLASS_economy(Container):
     def revenue(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """REVENUE."""
@@ -956,8 +953,8 @@ class CLASS_economy(Container):
     def rgdp(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """RGDP."""
@@ -976,10 +973,7 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def risk(
-        self,
-        chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
+        self, chart: bool = False, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[List]:
         """Market Risk Premium.
 
@@ -987,7 +981,7 @@ class CLASS_economy(Container):
         ----------
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -997,7 +991,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[RiskPremium]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1035,8 +1029,8 @@ class CLASS_economy(Container):
     def rtps(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """RTPS."""
@@ -1057,8 +1051,8 @@ class CLASS_economy(Container):
     def search_index(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """SEARCH_INDEX."""
@@ -1079,8 +1073,8 @@ class CLASS_economy(Container):
     def spending(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """SPENDING."""
@@ -1101,8 +1095,8 @@ class CLASS_economy(Container):
     def trust(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """TRUST."""
@@ -1123,8 +1117,8 @@ class CLASS_economy(Container):
     def usbonds(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """USBONDS."""
@@ -1145,8 +1139,8 @@ class CLASS_economy(Container):
     def valuation(
         self,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """VALUATION."""

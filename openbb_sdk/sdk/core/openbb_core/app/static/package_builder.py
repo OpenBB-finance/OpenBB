@@ -200,8 +200,8 @@ class ImportDefinition:
         code += "\nfrom pydantic import validate_arguments, BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Annotated"
-        code += "\nimport typing_extensions"  # TODO: this should only bring `Annotated`
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
 
