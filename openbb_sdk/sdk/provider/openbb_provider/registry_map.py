@@ -70,10 +70,9 @@ class RegistryMap:
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
-                f = fetcher()
-                standard_query, extra_query = self.extract_info(f, "query_params")
-                standard_data, extra_data = self.extract_info(f, "data")
-                return_type = self.extract_return_type(f)
+                standard_query, extra_query = self.extract_info(fetcher, "query_params")
+                standard_data, extra_data = self.extract_info(fetcher, "data")
+                return_type = self.extract_return_type(fetcher)
 
                 if model_name not in map_:
                     map_[model_name] = {}
@@ -97,7 +96,7 @@ class RegistryMap:
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        super_model = getattr(fetcher, type_)
+        super_model = getattr(fetcher, f"{type_}_type")
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [

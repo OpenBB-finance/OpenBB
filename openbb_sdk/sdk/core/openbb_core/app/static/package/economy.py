@@ -405,9 +405,14 @@ class CLASS_economy(Container):
 
         CPI
         ---
-        country_unit_freq : Optional[List[CPIData]]
-            CPI data for a country, units, and frequency combination. (provider: fred)
-        """
+        date : Optional[date]
+            The date of the data.
+        realtime_start : Optional[date]
+            Date the data was updated.
+        realtime_end : Optional[date]
+            Date the data was updated.
+        value : Optional[float]
+            Value of the data."""
 
         inputs = filter_inputs(
             provider_choices={
