@@ -139,7 +139,7 @@ While we're still developing, it is often required to reinstall extensions:
 python -c "import openbb; openbb.install()"
 ```
 
-Currently you need to do this before the first launch and every time you install or uninstall a new extension.
+You need to do this every time you install or uninstall a new extension or to reinstall all extensions.
 
 ### Import time
 
