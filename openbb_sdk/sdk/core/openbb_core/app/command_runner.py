@@ -157,9 +157,8 @@ class ParametersBuilder:
 
         return kwargs
 
-    @classmethod
+    @staticmethod
     def validate_kwargs(
-        cls,
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
