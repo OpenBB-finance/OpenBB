@@ -39,6 +39,8 @@ class ExecutionContext:
 
 
 class ParametersBuilder:
+    """Build parameters for a function."""
+
     @staticmethod
     def get_polished_parameter_list(func: Callable) -> List[Parameter]:
         sig = signature(func)
@@ -48,6 +50,7 @@ class ParametersBuilder:
 
     @staticmethod
     def get_polished_func(func: Callable) -> Callable:
+        """Remove __authenticated_user_settings from the function signature and annotations."""
         func = deepcopy(func)
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -89,13 +92,11 @@ class ParametersBuilder:
 
     @staticmethod
     def update_command_context(
-        func: Callable,
         kwargs: Dict[str, Any],
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> Dict[str, Any]:
-        argcount = func.__code__.co_argcount
-        if "cc" in func.__code__.co_varnames[:argcount]:
+        if "cc" in kwargs:
             kwargs["cc"] = CommandContext(
                 user_settings=user_settings,
                 system_settings=system_settings,
@@ -179,7 +180,6 @@ class ParametersBuilder:
             kwargs=kwargs,
         )
         kwargs = cls.update_command_context(
-            func=func,
             kwargs=kwargs,
             system_settings=system_settings,
             user_settings=user_settings,
