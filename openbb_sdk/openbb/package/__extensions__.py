@@ -10,7 +10,6 @@ class Extensions(Container):
     /economy
     /fixedincome
     /forex
-    /futures
     /news
     /qa
     /stocks
@@ -43,12 +42,6 @@ class Extensions(Container):
         from openbb.package import forex
 
         return forex.CLASS_forex(command_runner=self._command_runner)
-
-    @property
-    def futures(self):  # route = "/futures"
-        from openbb.package import futures
-
-        return futures.CLASS_futures(command_runner=self._command_runner)
 
     @property
     def news(self):  # route = "/news"
