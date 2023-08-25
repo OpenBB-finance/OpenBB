@@ -76,6 +76,7 @@ class ChartingManager(metaclass=SingletonMeta):
         """
         Checks if charting extension is installed.
         Given a charting extension name, it checks if it is installed under the given plugin.
+
         Parameters
         ----------
         charting_extension : str
