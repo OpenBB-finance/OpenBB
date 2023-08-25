@@ -47,7 +47,7 @@ class ChartingManager(metaclass=SingletonMeta):
         system_settings: Optional[SystemSettings] = None,
     ) -> None:
         user_settings = user_settings or UserService().read_default_user_settings()
-        self._system_settings = (
+        system_settings = (
             system_settings or SystemService().read_default_system_settings()
         )
 
