@@ -1,10 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Union
+from typing import List, Union
 
-import openbb_core.app.model.results.empty
 import openbb_provider
-import openbb_provider.abstract.data
 import pandas
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
@@ -14,24 +12,24 @@ from pydantic import validate_arguments
 
 class CLASS_econometrics(Container):
     """/econometrics
-    show
+    corr
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def show(
+    def corr(
         self,
-        data: Union[openbb_provider.abstract.data.Data, pandas.DataFrame],
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         chart: bool = False,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+    ) -> OBBject[List]:
         inputs = filter_inputs(
             data=data,
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/econometrics/show",
+            "/econometrics/corr",
             **inputs,
         )

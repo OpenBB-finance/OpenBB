@@ -17,8 +17,13 @@ from pydantic import NonNegativeFloat, PositiveInt
 
 router = Router(prefix="")
 @router.command(methods=["POST"])
-def show(
-        data: Data,
-)-> OBBject[Empty]:
-    print(data)
-    return OBBject(results=Empty())
+def corr(
+        data: List[Data],
+)-> OBBject[List[Data]]:
+    if isinstance(data, list):
+        print("yes")
+        df = basemodel_to_df(data)
+    corr = df.corr()
+    return OBBject(results=df_to_basemodel(corr))
+
+
