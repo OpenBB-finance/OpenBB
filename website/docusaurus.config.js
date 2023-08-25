@@ -81,6 +81,18 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+            lastVersion: 'current',
+            versions: {
+              current: {
+                label: 'v3',
+                path: '',
+              },
+              "v4": {
+                label: 'v4',
+                path: 'v4',
+                banner: 'unreleased'
+              },
+            },
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
@@ -103,6 +115,15 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      navbar: {
+        items: [
+          {
+            type: 'docsVersionDropdown',
+            position: 'left',
+            dropdownActiveClassDisabled: true,
+          },
+        ],
       },
       // TODO - Jose can you make this so we get lighter color on main view - like bot docs
       colorMode: {
