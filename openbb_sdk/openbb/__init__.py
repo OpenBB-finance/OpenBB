@@ -12,9 +12,7 @@ try:
 
     obb = sdk = __create_app(Extensions)
 except (ImportError, ModuleNotFoundError):
-    print(
-        "Failed to import extensions." " Run `openbb.build()` to build extensions code."
-    )
+    print("Failed to import extensions. Run `openbb.build()` to build extensions code.")
     obb = sdk = __create_app()
 
 
