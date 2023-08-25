@@ -23,8 +23,7 @@ Visit https://www.youtube.com/watch?v=UFh_Ku0fdtY to get started in less than 3 
 echo "$BOOTUP_MESSAGE"
 
 # Add some messages we can print out
-messages = ("","","","",
-"Did you know that you can search for stocks from a given country by running stocks/search -c COUNTRY-TO_SEARCH")
+messages = ("","","","","Did you know that you can search for stocks from a given country by running stocks/search -c COUNTRY-TO_SEARCH")
 echo ${messages[$index]}
 
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
