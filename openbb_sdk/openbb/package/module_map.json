@@ -243,6 +243,8 @@
     "economy_trust": "/economy/trust",
     "economy_usbonds": "/economy/usbonds",
     "economy_valuation": "/economy/valuation",
+    "econometrics_show": "/econometrics/show",
+    "econometrics": "/econometrics",
     "fixedincome_treasury": "/fixedincome/treasury",
     "fixedincome": "/fixedincome",
     "fixedincome_ycrv": "/fixedincome/ycrv",
