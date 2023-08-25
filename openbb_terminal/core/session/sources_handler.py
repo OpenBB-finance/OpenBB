@@ -26,8 +26,8 @@ def read_sources(path: Path) -> Dict:
                 return flatten(json.load(file))
         return {}
     except Exception as e:
-        print(f"\nFailed to read data sources file: {path}\n{e}\n")
-        print("Falling back to OpenBB default sources.")
+        print(f"\nFailed to read data sources file: {path}\n{e}\n")  # noqa: T201
+        print("Falling back to OpenBB default sources.")  # noqa: T201
         return {}
 
 
@@ -45,7 +45,7 @@ def write_sources(sources: Dict, path: Path):
         with open(path, "w") as f:
             json.dump(extend(sources), f, indent=4)
     except Exception as e:
-        print(f"\nFailed to write data sources file: {path}\n{e}\n")
+        print(f"\nFailed to write data sources file: {path}\n{e}\n")  # noqa: T201
 
 
 def merge_sources(incoming: Dict, allowed: Dict):

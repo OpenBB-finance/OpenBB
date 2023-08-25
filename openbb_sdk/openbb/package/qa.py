@@ -2,17 +2,16 @@
 
 from typing import List, Literal, Union
 
+import openbb_core.app.model.results.empty
 import openbb_provider
 import openbb_qa.qa_models
 import pandas
 import pydantic
 import pydantic.types
-from pydantic import validate_arguments
-
-import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
 
 
 class CLASS_qa(Container):

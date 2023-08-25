@@ -90,7 +90,7 @@ jobs:
           (github.event_name == 'pull_request' &&
           github.event.pull_request.merged == true &&
           github.event.pull_request.base.ref == 'develop' &&
-          startsWith(github.head_ref, 'docs/')) 
+          startsWith(github.head_ref, 'docs/'))
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
           publish_dir: ./website/build
