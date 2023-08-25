@@ -24,6 +24,8 @@ echo "$BOOTUP_MESSAGE"
 
 # Add some messages we can print out
 messages=("" "" "" "" "Did you know that you can search for stocks from a given country by running stocks/search -c COUNTRY-TO_SEARCH")
+# Pick a random one
+index=$((RANDOM % ${#messages[@]}))
 echo ${messages[$index]}
 
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
