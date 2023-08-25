@@ -466,7 +466,7 @@ def get_chains(symbol: str) -> Options:
     OptionsChains.symbol = symbol.upper()
 
     if OptionsChains.symbol not in list(OptionsChains.SYMBOLS["symbol"]):
-        print(f"{OptionsChains.symbol} is not support by Tradier.")
+        console.print(f"{OptionsChains.symbol} is not support by Tradier.")
         return OptionsChains
 
     OptionsChains.underlying_price = get_underlying_price(OptionsChains.symbol)
@@ -544,7 +544,7 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
 
     if options.last_price is None:
         options.last_price = 0
-        print("No last price for " + options.symbol)
+        console.print("No last price for " + options.symbol)
 
     if not pydantic:
         return options

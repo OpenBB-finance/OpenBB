@@ -27,7 +27,7 @@ def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
     try:
         return model(**dictionary)  # type: ignore
     except ValidationError as error:
-        print(f"Error loading {model_name}:")
+        print(f"Error loading {model_name}:")  # noqa: T201
         for err in error.errors():
             loc = err.get("loc", None)
             var_name = str(loc[0]) if loc else ""
@@ -36,11 +36,13 @@ def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
             fields: dict[str, Any] = model.get_fields()
             if var and var_name in fields:
                 default = fields[var_name].default
-                print(f"    {var_name}: {msg}, using default -> {default}")
+                print(  # noqa: T201
+                    f"    {var_name}: {msg}, using default -> {default}"
+                )
 
         return model(**dictionary)  # type: ignore
     except Exception:
-        print(f"Error loading {model_name}, using defaults.")
+        print(f"Error loading {model_name}, using defaults.")  # noqa: T201
         return model()  # type: ignore
 
 

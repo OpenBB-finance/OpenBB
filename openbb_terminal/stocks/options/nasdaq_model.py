@@ -335,7 +335,7 @@ def get_available_greeks(OptionsChains, expiration: str = "") -> pd.DataFrame:
         expiration = OptionsChains.expirations[0]
 
     if expiration not in OptionsChains.expirations:
-        print(
+        console.print(
             f"{expiration}",
             " is not a valid expiration.  Choose from, ",
             OptionsChains.expirations,
@@ -406,7 +406,7 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
         OptionsChains.symbol not in OptionsChains.SYMBOLS.index
         and OptionsChains.symbol != "NDX"
     ):
-        print(OptionsChains.symbol, "was not found in the Nasdaq directory")
+        console.print(OptionsChains.symbol, "was not found in the Nasdaq directory")
         return OptionsChains
 
     OptionsChains.symbol = symbol
@@ -461,7 +461,7 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
         if expiration == "":
             expiration = OptionsChains.expirations[0]
         if expiration not in OptionsChains.expirations:
-            print(
+            console.print(
                 f"{expiration}",
                 " is not a valid expiration.  Choose from, ",
                 OptionsChains.expirations,
@@ -474,7 +474,7 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
     if not OptionsChains.chains.empty:
         if OptionsChains.last_price is None:
             OptionsChains.last_price = 0
-            print("No last price for " + OptionsChains.symbol)
+            console.print("No last price for " + OptionsChains.symbol)
 
         if not pydantic:
             setattr(OptionsChains, "get_available_greeks", get_greeks)

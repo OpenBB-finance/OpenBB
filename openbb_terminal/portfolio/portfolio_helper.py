@@ -329,7 +329,7 @@ def get_start_date_from_period(period: str) -> date:
         elif 12 >= cm >= 10:
             start_date = date(date.today().year, 10, 1)
         else:
-            print("Error")
+            console.print("Error")
     elif period == "mtd":
         cur_month = date.today().month
         cur_year = date.today().year
