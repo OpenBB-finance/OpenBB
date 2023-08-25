@@ -440,22 +440,25 @@ files = [
 
 [[package]]
 name = "openbb-provider"
-version = "0.2.0"
+version = "0.0.0a1"
 description = ""
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_provider-0.0.0a1-py3-none-any.whl", hash = "sha256:4f4b2b3e101381af83523adc08890daccfafa28ea459461295e0f3f4dd91772a"},
+    {file = "openbb_provider-0.0.0a1.tar.gz", hash = "sha256:91a0ed500c17f5d74338babe4b5f4a68f4b3435a0fa873b72c0c5db1fe350ad5"},
+]
 
 [package.dependencies]
-importlib-metadata = "^6.8.0"
-pydantic = {version = "^1.10", extras = ["dotenv"]}
-requests = "^2.31.0"
+importlib-metadata = ">=6.8.0,<7.0.0"
+pydantic = {version = ">=1.10,<2.0", extras = ["dotenv"]}
+requests = ">=2.31.0,<3.0.0"
 urllib3 = "<2.0.0"
 
 [package.source]
-type = "directory"
-url = "../provider"
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "test-pypi"
 
 [[package]]
 name = "packaging"
@@ -1025,4 +1028,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "500557f51e98fabeb1040e5e9d41e9a9b907aafc999dac1bc23613dfe082008d"
+content-hash = "669337040ea2d01cd7457d4901f7092f37263f78d1d983b7b55762aa6612cec7"
