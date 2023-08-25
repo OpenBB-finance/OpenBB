@@ -122,9 +122,9 @@ def display_plot(
                     )
 
             except ValueError:
-                print(f"Could not convert column: {dataset_col}")
+                console.print(f"Could not convert column: {dataset_col}")
             except TypeError:
-                print(f"Could not convert column: {dataset_col}")
+                console.print(f"Could not convert column: {dataset_col}")
 
         if fig.is_image_export(export):
             export_data(

@@ -11,6 +11,7 @@
   - [API Usage](#api-usage)
   - [Docker](#docker)
   - [Development](#development)
+    - [Import time](#import-time)
 
 ## Pre-requisites
 
@@ -132,10 +133,24 @@ When developing a specific extension `cd` into the extension directory and run:
 
 `pip install -U -e .`
 
-While we're still developing, it is required to create the static python interface:
+While we're still developing, it is often required to reinstall extensions:
 
 ```python
-python -c "import openbb; openbb._rebuild_python_interface()"
+python -c "import openbb; openbb.build()"
 ```
 
-Currently you need to do this before the first launch and every time you install or uninstall a new extension.
+You need to do this every time you install or uninstall a new extension or to reinstall all extensions.
+
+### Import time
+
+We aim to have a short import time. To measure that we use `tuna`.
+
+- https://pypi.org/project/tuna/
+
+To visualize the import time breakdown by module, run the following commands from `openbb_sdk` directory:
+
+```bash
+pip install tuna
+python -X importtime openbb/__init__.py 2> import.log
+tuna import.log
+```

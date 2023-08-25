@@ -1,9 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
-
-import typing_extensions
-from pydantic import validate_arguments
+from typing import List, Literal, Optional, Union
 
 import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
@@ -11,6 +8,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_options(Container):
@@ -29,12 +28,12 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def chains(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Union[Literal["cboe"], None] = None,
+        provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -45,7 +44,7 @@ class CLASS_stocks_options(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -55,7 +54,7 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['cboe'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -119,7 +118,7 @@ class CLASS_stocks_options(Container):
         change_percent : Optional[float]
             Change, in percent, of the option. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
-            Last trade timestamp of the option. (provider: cboe)"""
+            Last trade timestamp of the option. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -141,7 +140,7 @@ class CLASS_stocks_options(Container):
     def eodchain(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Gets option chain at a specific date."""
+        """Gets option chain at a specific date."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -156,7 +155,7 @@ class CLASS_stocks_options(Container):
     def hist(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Get historical data for a single option contract."""
+        """Get historical data for a single option contract."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -171,7 +170,7 @@ class CLASS_stocks_options(Container):
     def info(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Display option information (volatility, IV rank, etc.)."""
+        """Display option information (volatility, IV rank, etc.)."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -186,7 +185,7 @@ class CLASS_stocks_options(Container):
     def pcr(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Display historical rolling put/call ratio for ticker over a defined window."""
+        """Display historical rolling put/call ratio for ticker over a defined window."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
@@ -201,7 +200,7 @@ class CLASS_stocks_options(Container):
     def unu(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Show unusual options activity."""
+        """Show unusual options activity."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,

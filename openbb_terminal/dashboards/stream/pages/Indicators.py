@@ -109,7 +109,6 @@ async def plot_indicators(
     rows = fig.subplots_kwargs["rows"]
 
     for ticker in tickers:
-        ticker = ticker
         df_ticker = st.session_state["indicators_dfs"][ticker]
         df_ticker["% Change"] = df_ticker["Close"].apply(
             lambda x: (x - df_ticker["Close"].iloc[0]) / df_ticker["Close"].iloc[0]
@@ -235,90 +234,85 @@ class Handler:
         end_n = datetime(end.year, end.month, end.day).date()
 
         for ticker in tickers_l:
-            ticker = ticker.upper().strip()
-            st.session_state["indicators_dfs"][ticker] = st.session_state[
+            clean_ticker = ticker.upper().strip()
+            st.session_state["indicators_dfs"][clean_ticker] = st.session_state[
                 "indicators_dfs"
-            ][ticker].loc[
-                (st.session_state["indicators_dfs"][ticker].index.date >= start_n)
-                & (st.session_state["indicators_dfs"][ticker].index.date <= end_n)
+            ][clean_ticker].loc[
+                (st.session_state["indicators_dfs"][clean_ticker].index.date >= start_n)
+                & (st.session_state["indicators_dfs"][clean_ticker].index.date <= end_n)
             ]
 
         result: pd.DataFrame = st.session_state["indicators_dfs"][main_ticker]
-        with st.spinner("Calculating indicators..."):
-            with patch.object(console, "print", special_st):
-                if result.empty:
-                    with logger.container():
-                        logger.error("There was an error with the data", icon="🔥")
-                        await asyncio.sleep(2)
-                    return None
+        with st.spinner("Calculating indicators..."), patch.object(
+            console, "print", special_st
+        ):
+            if result.empty:
+                with logger.container():
+                    logger.error("There was an error with the data", icon="🔥")
+                    await asyncio.sleep(2)
+                return None
 
-                data = pd.DataFrame(result)
-                data.index.name = "date"
+            data = pd.DataFrame(result)
+            data.index.name = "date"
 
-                if ta_helpers.check_columns(data) is None:
-                    return None
+            if ta_helpers.check_columns(data) is None:
+                return None
 
-                fig = await plot_indicators(data, tickers_l, indicators)
+            fig = await plot_indicators(data, tickers_l, indicators)
 
-                with plotly_chart.container():
-                    dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    filename = f"{dt_now}_{main_ticker}_technical_analysis"
-                    fig.show(external=True, bar_width=0.00001)
+            with plotly_chart.container():
+                dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"{dt_now}_{main_ticker}_technical_analysis"
+                fig.show(external=True, bar_width=0.00001)
 
-                    if list(
-                        set(indicators).intersection(
-                            set(TA_CLASS.ma_mode + TA_CLASS.inchart)
-                        )
-                    ):
-                        margin = fig.layout.margin
-                        margin.l += 30
-                        fig.update_layout(margin=margin)
-
-                    st.plotly_chart(
-                        fig,
-                        use_container_width=True,
-                        config=dict(
-                            scrollZoom=True,
-                            displaylogo=False,
-                            toImageButtonOptions=dict(
-                                format="png",
-                                filename=filename,
-                            ),
-                            **common_vars.PLOTLY_CONFIG,
-                        ),
+                if list(
+                    set(indicators).intersection(
+                        set(TA_CLASS.ma_mode + TA_CLASS.inchart)
                     )
-                    components.html(common_vars.PLOTLY_MODEBAR)
+                ):
+                    margin = fig.layout.margin
+                    margin.l += 30
+                    fig.update_layout(margin=margin)
 
-                with table_container:
-                    last_day = data.loc[data.index.date == data.index.date[-1]]
+                st.plotly_chart(
+                    fig,
+                    use_container_width=True,
+                    config=dict(
+                        scrollZoom=True,
+                        displaylogo=False,
+                        toImageButtonOptions=dict(
+                            format="png",
+                            filename=filename,
+                        ),
+                        **common_vars.PLOTLY_CONFIG,
+                    ),
+                )
+                components.html(common_vars.PLOTLY_MODEBAR)
 
-                    if not last_day.empty:
-                        last_day.index = pd.to_datetime(last_day.index).date
-                        weeks52 = data.loc[
-                            data.index.date >= data.index.date[-1] - timedelta(weeks=52)
-                        ]
-                        stats_df = pd.DataFrame(
-                            {
-                                "Open": last_day["Open"].head(1).values[0],
-                                "High": last_day["High"].max(),
-                                "Low": last_day["Low"].min(),
-                                "Close": last_day["Close"].tail(1).values[0],
-                                "Volume": last_day["Volume"].sum(),
-                                "52w high": weeks52["High"].values.max(),
-                                "52w low": weeks52["Low"].values.min(),
-                            },
-                            index=[
-                                last_day.tail(1).index.values[0].strftime("%Y-%m-%d")
-                            ],
-                        )
-                        stats_df["Volume"] = stats_df["Volume"].apply(
-                            lambda x: f"{x:,.0f}"
-                        )
-                        st.table(
-                            stats_df.transpose().style.format(
-                                precision=2, thousands=","
-                            )
-                        )
+            with table_container:
+                last_day = data.loc[data.index.date == data.index.date[-1]]
+
+                if not last_day.empty:
+                    last_day.index = pd.to_datetime(last_day.index).date
+                    weeks52 = data.loc[
+                        data.index.date >= data.index.date[-1] - timedelta(weeks=52)
+                    ]
+                    stats_df = pd.DataFrame(
+                        {
+                            "Open": last_day["Open"].head(1).values[0],
+                            "High": last_day["High"].max(),
+                            "Low": last_day["Low"].min(),
+                            "Close": last_day["Close"].tail(1).values[0],
+                            "Volume": last_day["Volume"].sum(),
+                            "52w high": weeks52["High"].values.max(),
+                            "52w low": weeks52["Low"].values.min(),
+                        },
+                        index=[last_day.tail(1).index.values[0].strftime("%Y-%m-%d")],
+                    )
+                    stats_df["Volume"] = stats_df["Volume"].apply(lambda x: f"{x:,.0f}")
+                    st.table(
+                        stats_df.transpose().style.format(precision=2, thousands=",")
+                    )
 
     async def load_ticker_data(
         self, ticker: str, interval: str, start: date, end: date, source: str

@@ -1,273 +1,300 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 
-from pydantic import validate_arguments
-
 import openbb_core.app.model.results.empty
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
 
 
-class CLASS_stocks_ins(Container):
-    """/stocks/ins
-    act
-    blcp
-    blcs
-    blip
-    blis
-    blop
-    blos
-    filt
-    lcb
-    lins
-    lip
-    lis
-    lit
-    lpsb
-    print_insider_data
-    stats
+class CLASS_stocks_disc(Container):
+    """/stocks/disc
+    active
+    arkord
+    asc
+    dividends
+    filings
+    fipo
+    gainers
+    gtech
+    hotpenny
+    ipo
+    losers
+    lowfloat
+    pipo
+    rtat
+    trending
+    ugs
+    ulc
+    upcoming
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate_arguments
-    def act(
+    def active(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Insider activity over time."""
+        """Most active stocks by intraday trade volumes."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/act",
+            "/stocks/disc/active",
             **inputs,
         )
 
     @validate_arguments
-    def blcp(
+    def arkord(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest CEO/CFO purchaces ($25k+)."""
+        """Order by ARK INvestment Management LLC."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/blcp",
+            "/stocks/disc/arkord",
             **inputs,
         )
 
     @validate_arguments
-    def blcs(
+    def asc(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest CEO/CFO sales ($100k+)."""
+        """Small cap stocks with revenue and earnings growth more than 25%."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/blcs",
+            "/stocks/disc/asc",
             **inputs,
         )
 
     @validate_arguments
-    def blip(
+    def dividends(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest insider purchaces ($25+)."""
-
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/blip",
+            "/stocks/disc/dividends",
             **inputs,
         )
 
     @validate_arguments
-    def blis(
+    def filings(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest insider sales ($100k+)."""
+        """The most-recent form submissions to the SEC."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/blis",
+            "/stocks/disc/filings",
             **inputs,
         )
 
     @validate_arguments
-    def blop(
+    def fipo(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest officer purchaces ($25k+)."""
+        """Future IPOs dates."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/blop",
+            "/stocks/disc/fipo",
             **inputs,
         )
 
     @validate_arguments
-    def blos(
+    def gainers(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Big latest officer sales ($100k+)."""
+        """Show latest top gainers."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/blos",
+            "/stocks/disc/gainers",
             **inputs,
         )
 
     @validate_arguments
-    def filt(
+    def gtech(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Filter insiders based on preset."""
+        """Tech stocks with revenue and earnings growth more than 25%."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/filt",
+            "/stocks/disc/gtech",
             **inputs,
         )
 
     @validate_arguments
-    def lcb(
+    def hotpenny(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest cluster buys."""
+        """Today's hot penny stocks."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/lcb",
+            "/stocks/disc/hotpenny",
             **inputs,
         )
 
     @validate_arguments
-    def lins(
+    def ipo(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Last insider trading of the company."""
-
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/lins",
+            "/stocks/disc/ipo",
             **inputs,
         )
 
     @validate_arguments
-    def lip(
+    def losers(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider purchaces."""
+        """Show latest top losers."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/lip",
+            "/stocks/disc/losers",
             **inputs,
         )
 
     @validate_arguments
-    def lis(
+    def lowfloat(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider sales."""
+        """Low float stocks under 10M shares float."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/lis",
+            "/stocks/disc/lowfloat",
             **inputs,
         )
 
     @validate_arguments
-    def lit(
+    def pipo(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest insider trading (all filings)."""
+        """Past IPOs dates."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/lit",
+            "/stocks/disc/pipo",
             **inputs,
         )
 
     @validate_arguments
-    def lpsb(
+    def rtat(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Latest penny stock buys."""
+        """Top 10 retail traded stocks per day."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/lpsb",
+            "/stocks/disc/rtat",
             **inputs,
         )
 
     @validate_arguments
-    def print_insider_data(
+    def trending(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Print insider data."""
+        """Trending news."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/print_insider_data",
+            "/stocks/disc/trending",
             **inputs,
         )
 
     @validate_arguments
-    def stats(
+    def ugs(
         self, chart: bool = False
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Insider stats of the company."""
+        """Undervalued stocks with revenue and earnings growth above 25%."""  # noqa: E501
 
         inputs = filter_inputs(
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/stocks/ins/stats",
+            "/stocks/disc/ugs",
+            **inputs,
+        )
+
+    @validate_arguments
+    def ulc(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Potentially undervalued large cap stocks."""  # noqa: E501
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/stocks/disc/ulc",
+            **inputs,
+        )
+
+    @validate_arguments
+    def upcoming(
+        self, chart: bool = False
+    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
+        """Upcoming earnings release dates."""  # noqa: E501
+
+        inputs = filter_inputs(
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/stocks/disc/upcoming",
             **inputs,
         )

@@ -8,6 +8,7 @@ from prompt_toolkit.eventloop.inputhook import set_eventloop_with_inputhook
 from prompt_toolkit.history import FileHistory
 
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +60,7 @@ try:
 # pylint: disable=unused-variable
 except Exception as e:  # noqa: F841
     logger.exception("%s", type(e).__name__)
-    print(
+    console.print(
         "WARNING: Prompt toolkit is turned on but did not initialize successfully."
         " Falling back to input()..."
     )

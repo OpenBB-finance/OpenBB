@@ -46,6 +46,7 @@ from openbb_terminal.core.session.current_system import (
     set_system_variable,
 )
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 logging_verbosity = get_current_system().LOGGING_VERBOSITY
@@ -61,8 +62,8 @@ def get_app_id() -> str:
         app_id = get_log_dir().stem
     except OSError as e:
         if e.errno == 30:
-            print("Please move the application into a writable location.")
-            print(
+            console.print("Please move the application into a writable location.")
+            console.print(
                 "Note for macOS users: copy `OpenBB Terminal` folder outside the DMG."
             )
         else:
@@ -112,7 +113,7 @@ def get_branch() -> str:
         try:
             if get_branch_commit_hash(branch) == current_commit_hash:
                 return branch
-        except Exception:
+        except Exception:  # noqa: S110
             pass
 
     git_dir = Path(__file__).parent.parent.joinpath(".git")
@@ -121,7 +122,7 @@ def get_branch() -> str:
             repo = git.Repo(path=git_dir)
             branch = repo.active_branch.name
             return branch
-        except Exception:
+        except Exception:  # noqa: S110
             pass
 
     return "unknown-branch"

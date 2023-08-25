@@ -26,8 +26,12 @@ class FREDYieldCurveData(USYieldCurveData):
     """Fred Yield Curve data."""
 
 
-class FREDYieldCurveFetcher(Fetcher[FREDYieldCurveQueryParams, FREDYieldCurveData]):
+class FREDYieldCurveFetcher(
+    Fetcher[FREDYieldCurveQueryParams, List[Dict[str, List[FREDYieldCurveData]]]]
+):
     """FRED Yield Curve Fetcher."""
+
+    data_type = FREDYieldCurveData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDYieldCurveQueryParams:

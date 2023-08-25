@@ -94,7 +94,7 @@ def pywry_login(welcome: bool = True):
 
     if isinstance(response, dict) and response:
         console.print("\n[info]Logging in... Please wait.[/info]\n")
-        response["token_type"] = "bearer"
+        response["token_type"] = "bearer"  # noqa: S105
 
         for r_key, new_key in zip(
             ["status", "accessToken", "primaryUsage"],

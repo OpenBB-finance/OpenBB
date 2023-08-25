@@ -1,10 +1,12 @@
 """Provider registry map."""
 
-import inspect
 import os
+from inspect import getfile, isclass
 from typing import Any, Dict, List, Literal, Optional, Tuple
 
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.registry import Registry, RegistryLoader
 
 MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
@@ -70,10 +72,9 @@ class RegistryMap:
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
-                f = fetcher()
-                standard_query, extra_query = self.extract_info(f, "query_params")
-                standard_data, extra_data = self.extract_info(f, "data")
-                return_type = self.extract_return_type(f)
+                standard_query, extra_query = self.extract_info(fetcher, "query_params")
+                standard_data, extra_data = self.extract_info(fetcher, "data")
+                return_type = self.extract_return_type(fetcher)
 
                 if model_name not in map_:
                     map_[model_name] = {}
@@ -97,7 +98,9 @@ class RegistryMap:
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        super_model = getattr(fetcher, type_)
+        super_model = getattr(fetcher, f"{type_}_type")
+
+        RegistryMap.validate_model(super_model, type_)
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
         inheritance_list = [
@@ -109,7 +112,7 @@ class RegistryMap:
         found_standard = False
 
         for model in inheritance_list:
-            model_file_dir = os.path.dirname(inspect.getfile(model))
+            model_file_dir = os.path.dirname(getfile(model))
             model_name = os.path.basename(model_file_dir)
 
             if (model_name == "standard_models") or found_standard:
@@ -132,3 +135,14 @@ class RegistryMap:
     def extract_return_type(fetcher: Fetcher):
         """Extract return info from fetcher."""
         return getattr(fetcher, "return_type", None)
+
+    @staticmethod
+    def validate_model(model: Any, type_: Literal["query_params", "data"]):
+        parent_model = QueryParams if type_ == "query_params" else Data
+        if not isclass(model) or not issubclass(model, parent_model):
+            model_str = str(model).replace("<", "<'").replace(">", "'>")
+            raise ValueError(
+                f"'{model_str}' must be a subclass of '{parent_model.__name__}'.\n"
+                "If you are returning a nested type, try specifying"
+                f" `{type_}_type = <'your_{type_}_type'>` in the fetcher."
+            )

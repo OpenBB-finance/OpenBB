@@ -43,8 +43,12 @@ class FREDSOFRData(SOFRData):
             return float("nan")
 
 
-class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, FREDSOFRData]):
+class FREDSOFRFetcher(
+    Fetcher[FREDSOFRQueryParams, List[Dict[str, List[FREDSOFRData]]]]
+):
     """FRED SOFR Fetcher."""
+
+    data_type = FREDSOFRData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDSOFRQueryParams:
@@ -53,7 +57,7 @@ class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, FREDSOFRData]):
     @staticmethod
     def extract_data(
         query: FREDSOFRQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> list:
+    ) -> dict:
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = SOFR_PARAMETER_TO_FRED_ID[query.period]
         fred = Fred(key)
@@ -61,6 +65,6 @@ class FREDSOFRFetcher(Fetcher[FREDSOFRQueryParams, FREDSOFRData]):
         return data
 
     @staticmethod
-    def transform_data(data: list) -> List[Dict[str, List[FREDSOFRData]]]:
+    def transform_data(data: dict) -> List[Dict[str, List[FREDSOFRData]]]:
         keys = ["date", "value"]
         return [FREDSOFRData(**{k: x[k] for k in keys}) for x in data]

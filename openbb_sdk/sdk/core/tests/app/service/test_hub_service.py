@@ -25,17 +25,16 @@ def test_connect_with_email_password():
     mock_hub_session = MagicMock(spec=HubSession)
     with patch(
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
+    ), patch.object(
+        HubService,
+        "_get_session_from_email_password",
+        return_value=mock_hub_session,
     ):
-        with patch.object(
-            HubService,
-            "_get_session_from_email_password",
-            return_value=mock_hub_session,
-        ):
-            hub_service = HubService()
-            result = hub_service.connect(email="test@example.com", password="password")
+        hub_service = HubService()
+        result = hub_service.connect(email="test@example.com", password="password")
 
-            assert result == mock_hub_session
-            assert hub_service.session == mock_hub_session
+        assert result == mock_hub_session
+        assert hub_service.session == mock_hub_session
 
 
 def test_connect_with_sdk_token():
@@ -43,15 +42,14 @@ def test_connect_with_sdk_token():
     mock_hub_session = MagicMock(spec=HubSession)
     with patch(
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
+    ), patch.object(
+        HubService, "_get_session_from_sdk_token", return_value=mock_hub_session
     ):
-        with patch.object(
-            HubService, "_get_session_from_sdk_token", return_value=mock_hub_session
-        ):
-            hub_service = HubService()
-            result = hub_service.connect(pat="pat")
+        hub_service = HubService()
+        result = hub_service.connect(pat="pat")
 
-            assert result == mock_hub_session
-            assert hub_service.session == mock_hub_session
+        assert result == mock_hub_session
+        assert hub_service.session == mock_hub_session
 
 
 def test_connect_without_credentials():
