@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-fred"
-version = "0.1.1"
+version = "0.0.0a0"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,12 @@ packages = [{ include = "openbb_fred" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = { path = "../../sdk/provider" }
+openbb-provider = {version = "0.0.0a1", source = "test-pypi"}
+
+[[tool.poetry.source]]
+name = "test-pypi"
+url = "https://test.pypi.org/simple/"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
