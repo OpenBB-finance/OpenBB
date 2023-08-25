@@ -329,7 +329,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                                 )
                             else:
                                 return (
-                                    f"[red]The input is not correctly defined in order to be able to run foreach loop with {match[0]}.[/red]",
+                                    f"[red]The foreach loop cannot run with input: {match[0]}.[/red]",
                                     "",
                                 )
 

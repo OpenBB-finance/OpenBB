@@ -5004,13 +5004,13 @@ pandas = ">=1.1"
 
 [[package]]
 name = "nixtlats"
-version = "0.1.9"
+version = "0.1.11"
 description = "Nixtla SDK"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "nixtlats-0.1.9-py3-none-any.whl", hash = "sha256:e74a24d19db6e96450da6c2299b59a3d2b2d86769b399279761c7b796d80a10a"},
-    {file = "nixtlats-0.1.9.tar.gz", hash = "sha256:7c7ef1e0f74ebc33a8541d381c23663a73d483a4821ebdc74ffafa5d1cf91294"},
+    {file = "nixtlats-0.1.11-py3-none-any.whl", hash = "sha256:f2ddda8e23aa58e7f771892186176b687d2302e445ff762dcf699d1cea06b75d"},
+    {file = "nixtlats-0.1.11.tar.gz", hash = "sha256:778c340fddf02f3b6a11bd69ccd797a83fab1c67177b85f11bc61ceb6c41f1c3"},
 ]
 
 [package.dependencies]
@@ -10558,4 +10558,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.11, !=3.9.7"
-content-hash = "314f243f7ee421064d98724dc97cf090f570694941e570afb4fa5bdcdae5cac1"
+content-hash = "1852494c8df358b3c3631c50ee1d081b113b9b2f6c2c728f1570e8ecae8a3fea"
