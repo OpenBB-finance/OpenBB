@@ -14,6 +14,7 @@ openbb-fred = {version = "0.0.0a0", source = "test-pypi"}
 openbb-polygon = {version = "0.0.0a0", source = "test-pypi"}
 
 openbb-core = {version = "0.0.0a1", source = "test-pypi"}
+openbb-charting = {version = "0.0.0a0", source = "test-pypi"}
 openbb-crypto = {version = "0.0.0a0", source = "test-pypi"}
 openbb-economy = {version = "0.0.0a0", source = "test-pypi"}
 openbb-fixedincome = {version = "0.0.0a0", source = "test-pypi"}
