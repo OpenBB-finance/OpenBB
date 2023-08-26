@@ -316,7 +316,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["quandl"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get  CFTC Commitment of Traders Reports.  Data is updated every Friday.
+        """Get  CFTC Commitment of Traders Reports.  Data is released every Friday.
 
         Parameters
         ----------
@@ -415,7 +415,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["quandl"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Search available CFTC Commitment of Traders Reports.
+        """Search within a curated list of CFTC Commitment of Traders Reports.
 
         Parameters
         ----------
@@ -1792,21 +1792,6 @@ class CLASS_economy(Container):
         **kwargs
     ) -> OBBject[BaseModel]:
         """Get historical values, multiples, and ratios for the S&P 500.
-
-            Choices for `series_name` are: [
-                'Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Ratio by Year', 'PE Ratio by Month',
-                'Dividend by Year', 'Dividend by Month', 'Dividend Growth by Quarter', 'Dividend Growth by Year',
-                'Dividend Yield by Year', 'Dividend Yield by Month', 'Earnings by Year', 'Earnings by Month',
-                'Earnings Growth by Year', 'Earnings Growth by Quarter', 'Real Earnings Growth by Year',
-                'Real Earnings Growth by Quarter', 'Earnings Yield by Year', 'Earnings Yield by Month',
-                'Real Price by Year', 'Real Price by Month', 'Inflation Adjusted Price by Year',
-                'Inflation Adjusted Price by Month', 'Sales by Year', 'Sales by Quarter', 'Sales Growth by Year',
-                'Sales Growth by Quarter', 'Real Sales by Year', 'Real Sales by Quarter', 'Real Sales Growth by Year',
-                'Real Sales Growth by Quarter', 'Price to Sales Ratio by Year', 'Price to Sales Ratio by Quarter',
-                'Price to Book Value Ratio by Year', 'Price to Book Value Ratio by Quarter',
-                'Book Value per Share by Year', 'Book Value per Share by Quarter'
-            ]
-
 
         Parameters
         ----------
