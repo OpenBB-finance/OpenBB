@@ -1310,7 +1310,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.status_dict["companieshouse"] = keys_model.set_companieshouse_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            
+
     @log_start_end(log=logger)
     def call_nixtla(self, other_args: List[str]):
         """Process nixtla command"""
