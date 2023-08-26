@@ -12,9 +12,6 @@ class CotSearchQueryParams(QueryParams):
     """Commitment of Traders Reports Search Query Params"""
 
     query: str = Field(description="Search query.", default="")
-    ticker: bool = Field(
-        description="Whether to search by ticker symbol.", default=False
-    )
 
 
 class CotSearchData(Data):

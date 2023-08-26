@@ -1,15 +1,15 @@
 """CFTC Commitment of Traders Reports Search fetcher."""
 
-
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cot_search import (
     CotSearchData,
     CotSearchQueryParams,
 )
 
-from openbb_quandl.utils.helpers import search_cot
+from openbb_quandl.utils.series_ids import CFTC
 
 
 class QuandlCotSearchQueryParams(CotSearchQueryParams):
@@ -20,7 +20,7 @@ class QuandlCotSearchQueryParams(CotSearchQueryParams):
 
 
 class QuandlCotSearchData(CotSearchData):
-    """CBOE Company Search Data."""
+    """Quandl CFTC Commitment of Traders Reports Search data."""
 
 
 class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, List[QuandlCotSearchData]]):
@@ -35,11 +35,24 @@ class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, List[QuandlCotSearchD
         query: QuandlCotSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> dict:
-        return search_cot(query.query)
+    ) -> List[Dict]:
+        """Search a curated list of CFTC Commitment of Traders Reports."""
+        query_string = query.query  # noqa
+        available_cot = pd.DataFrame(CFTC).transpose()
+        available_cot.columns = available_cot.columns.str.lower()
+        return (
+            available_cot.query(
+                "name.str.contains(@query_string, case=False)"
+                "| category.str.contains(@query_string, case=False)"
+                "| subcategory.str.contains(@query_string, case=False)"
+                "| symbol.str.contains(@query_string, case=False)"
+            )
+            .reset_index(drop=True)
+            .to_dict("records")
+        )
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: List[Dict],
     ) -> List[QuandlCotSearchData]:
         return [QuandlCotSearchData.parse_obj(d) for d in data]

@@ -69,13 +69,13 @@ class CLASS_stocks_options(Container):
             Expiration date of the contract.
         strike : Optional[float]
             Strike price of the contract.
-        optionType : Optional[str]
+        option_type : Optional[str]
             Call or Put.
         bid : Optional[float]
             Bid price of the contract.
         ask : Optional[float]
             Ask price of the contract.
-        openInterest : Optional[float]
+        open_interest : Optional[float]
             Open interest on the contract.
         volume : Optional[float]
             Current trading volume on the contract.
@@ -111,7 +111,7 @@ class CLASS_stocks_options(Container):
             Last trade price of the option. (provider: cboe)
         tick : Optional[str]
             Whether the last tick was up or down in price. (provider: cboe)
-        previous_close : Optional[float]
+        prev_close : Optional[float]
             Previous closing price of the option. (provider: cboe)
         change : Optional[float]
             Change in  price of the option. (provider: cboe)

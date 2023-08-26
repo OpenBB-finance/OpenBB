@@ -242,7 +242,7 @@ CFTC = {
         "Specs": "https://www.cmegroup.com/markets/equities/russell/e-mini-russell-1000-value-index.contractSpecs.html",
     },
     "1170E1": {
-        "Name": "VIX Futures (E)",
+        "Name": "VIX Futures (CBOE)",
         "Category": "Index",
         "Subcategory": "VIX",
         "Units": "VIX Index X $1000",
