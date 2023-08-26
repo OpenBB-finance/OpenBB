@@ -72,6 +72,10 @@ from openbb_terminal.helper_funcs import (
     log_and_raise,
     valid_date,
     parse_and_split_input,
+    check_non_negative,
+    check_positive_float_list,
+    check_list_values,
+    check_valid_date,
 )
 
 from openbb_terminal.menu import session
@@ -103,6 +107,7 @@ from openbb_terminal.forecast import (
     theta_view,
     trans_view,
     whisper_model,
+    timegpt_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -166,6 +171,7 @@ class ForecastController(BaseController):
         "nhits",
         "anom",
         "whisper",
+        "timegpt",
     ]
     pandas_plot_choices = [
         "line",
@@ -268,6 +274,7 @@ class ForecastController(BaseController):
         Overrides the parent class function to handle YouTube video URL conventions.
         See `BaseController.parse_input()` for details.
         """
+
         # Filtering out YouTube video parameters like "v=" and removing the domain name
         youtube_filter = r"(youtube\.com/watch\?v=)"
 
@@ -304,6 +311,7 @@ class ForecastController(BaseController):
 
     def print_help(self):
         """Print help"""
+        self.update_runtime_choices()
         current_user = get_current_user()
         mt = MenuText("forecast/")
         mt.add_param("_disclaimer_", self.disclaimer)
@@ -364,6 +372,7 @@ class ForecastController(BaseController):
         mt.add_cmd("anom", self.files)
         mt.add_raw("\n")
         mt.add_info("_misc_")
+        mt.add_cmd("timegpt", self.files)
         mt.add_cmd("whisper", WHISPER_AVAILABLE)
 
         console.print(text=mt.menu_text, menu="Forecast")
@@ -709,7 +718,7 @@ class ForecastController(BaseController):
         """Loads news dataframes into memory"""
 
         # check if data has minimum number of rows
-        if len(data) < self.MINIMUM_DATA_LENGTH:
+        if ticker and len(data) < self.MINIMUM_DATA_LENGTH:
             console.print(
                 f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} data points. [/red]"
             )
@@ -732,6 +741,9 @@ class ForecastController(BaseController):
 
             # if we import a custom dataset, remove the old index "unnamed:_0"
             if "unnamed:_0" in data.columns:
+                # Some loaded datasets have the date as unnamed, which is not helpful
+                if check_valid_date(data["unnamed:_0"].iloc[0]):
+                    data["date"] = data["unnamed:_0"].copy()
                 data = data.drop(columns=["unnamed:_0"])
 
             self.files.append(ticker)
@@ -3440,4 +3452,120 @@ class ForecastController(BaseController):
                 language=ns_parser.language,
                 breaklines=ns_parser.breaklines,
                 output_dir=ns_parser.save,
+            )
+
+    # TimeGPT Model
+    @log_start_end(log=logger)
+    def call_timegpt(self, other_args: List[str]):
+        """Process expo command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="timegpt",
+            description="""
+                TODO: Update me
+            """,
+        )
+        parser.add_argument(
+            "--horizon",
+            action="store",
+            dest="horizon",
+            type=check_positive,
+            default=12,
+            help="Forecasting horizon",
+        )
+        parser.add_argument(
+            "--freq",
+            action="store",
+            dest="freq",
+            choices=["H", "D", "W", "M", "MS", "B"],
+            default=None,
+            help="Frequency of the data.",
+        )
+        parser.add_argument(
+            "--finetune",
+            action="store",
+            dest="finetune",
+            type=check_non_negative,
+            default=0,
+            help="Number of steps used to finetune TimeGPT in the new data.",
+        )
+        parser.add_argument(
+            "--ci",
+            action="store",
+            dest="confidence",
+            type=check_positive_float_list,
+            default=[80, 90],
+            help="Number of steps used to finetune TimeGPT in the new data.",
+        )
+        parser.add_argument(
+            "--cleanex",
+            action="store_false",
+            help="Clean exogenous signal before making forecasts using TimeGPT.",
+            dest="cleanex",
+            default=True,
+        )
+        parser.add_argument(
+            "--timecol",
+            action="store",
+            dest="timecol",
+            default="ds",
+            type=str,
+            help="Dataframe column that represents datetime",
+        )
+        parser.add_argument(
+            "--targetcol",
+            action="store",
+            dest="targetcol",
+            default="y",
+            type=str,
+            help="Dataframe column that represents the target to forecast for",
+        )
+        parser.add_argument(
+            "--sheet-name",
+            help="The name of the sheet to export to when type is XLSX.",
+            dest="sheet_name",
+            type=str,
+            default="",
+        )
+        parser.add_argument(
+            "--datefeatures",
+            help="Specifies which date attributes have highest weight according to model.",
+            dest="date_features",
+            type=check_list_values(["auto", "year", "month", "week", "day", "weekday"]),
+            default=[],
+        )
+        parser = self.add_standard_args(
+            parser,
+            target_dataset=True,
+            target_column=True,
+            start=True,
+            end=True,
+            residuals=True,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+        if ns_parser:
+            timegpt_view.display_timegpt_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                time_col=ns_parser.timecol,
+                target_col=ns_parser.targetcol,
+                forecast_horizon=ns_parser.horizon,
+                freq=ns_parser.freq,
+                levels=ns_parser.confidence,
+                finetune_steps=ns_parser.finetune,
+                clean_ex_first=ns_parser.cleanex,
+                export=ns_parser.export,
+                sheet_name=ns_parser.sheet_name,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                residuals=ns_parser.residuals,
+                date_features=ns_parser.date_features,
             )

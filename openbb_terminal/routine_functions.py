@@ -317,14 +317,21 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                             )
                             slicing_tuple += ")"
 
-                            templine = templine.replace(
-                                match[0],
-                                ",".join(
-                                    eval(  # noqa: S307
-                                        f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
-                                    )
-                                ),
+                            vars_to_loop = eval(  # noqa: S307
+                                f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
                             )
+
+                            # Check whether the slicing was successful or not
+                            if vars_to_loop:
+                                templine = templine.replace(
+                                    match[0],
+                                    ",".join(vars_to_loop),
+                                )
+                            else:
+                                return (
+                                    f"[red]The foreach loop cannot run with input: {match[0]}.[/red]",
+                                    "",
+                                )
 
                         # Just replace value without slicing or list
                         else:
