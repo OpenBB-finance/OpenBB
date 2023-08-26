@@ -16,8 +16,8 @@ echo "                                  |___/       "
 BOOTUP_MESSAGE="
 The boot up process might take a while. Please be patient...
 
-Have you checked out Community Routines yet?  You can access them through the OpenBB Hub.
-Visit https://www.youtube.com/watch?v=UFh_Ku0fdtY to get started in less than 3 minutes!
+Have you checked out Community Routines yet?  You can access them through the OpenBB Hub!
+Get started in less than 3 minutes: https://www.youtube.com/watch?v=UFh_Ku0fdtY
 
 "
 echo "$BOOTUP_MESSAGE"
