@@ -290,7 +290,7 @@ def load_stock_polygon(
         return pd.DataFrame()
 
     r_json = r.json()
-    if "results" not in r_json.keys():
+    if "results" not in r_json:
         console.print("[red]No results found in polygon reply.[/red]")
         return pd.DataFrame()
 

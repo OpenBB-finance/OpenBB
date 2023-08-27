@@ -32,7 +32,6 @@ def display_sentiment_stats(
         Format to export data
     """
     d_stats = finnhub_model.get_sentiment_stats(ticker)
-    print(d_stats)
 
     if d_stats.empty:
         return

@@ -35,14 +35,7 @@ def get_retail_tickers() -> pd.DataFrame:
     if r.status_code == 200:
         df = pd.DataFrame(r.json()["datatable"]["data"])
         df.columns = ["Date", "Ticker", "Activity", "Sentiment"]
-    # Wrong API Key
-    elif r.status_code == 400:
-        console.print(r.text)
-    # Premium Feature
-    elif r.status_code == 403:
-        console.print(r.text)
-    # Catching other exception
-    elif r.status_code != 200:
+    else:
         console.print(r.text)
 
     return df
@@ -89,14 +82,7 @@ def get_dividend_cal(date: Optional[str] = None) -> pd.DataFrame:
         if r.status_code == 200:
             df = pd.DataFrame(r.json()["data"]["calendar"]["rows"])
 
-        # Wrong API Key
-        elif r.status_code == 400:
-            console.print(r.text)
-        # Premium Feature
-        elif r.status_code == 403:
-            console.print(r.text)
-        # Catching other exception
-        elif r.status_code != 200:
+        else:
             console.print(r.text)
 
     except requests.exceptions.ReadTimeout:

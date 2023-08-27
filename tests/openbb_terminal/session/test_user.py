@@ -35,8 +35,8 @@ def fixture_test_user():
 
 def test_load_user_info(test_user):
     """Test load user info."""
-    assert test_user.profile.token == "test_token"
-    assert test_user.profile.token_type == "bearer"
+    assert test_user.profile.token == "test_token"  # noqa: S105
+    assert test_user.profile.token_type == "bearer"  # noqa: S105
     assert test_user.profile.uuid == "test_uuid"
     assert test_user.profile.email == "test@email.com"
     assert test_user.profile.remember is False

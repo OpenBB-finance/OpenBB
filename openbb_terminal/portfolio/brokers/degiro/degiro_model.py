@@ -48,11 +48,8 @@ class DegiroModel:
             Credentials: credentials object with default settings
         """
         current_user = get_current_user()
-        totp_secret_key = (
-            None
-            if current_user.credentials.DG_TOTP_SECRET == "REPLACE_ME"
-            else current_user.credentials.DG_TOTP_SECRET
-        )
+        topt_key = current_user.credentials.DG_TOTP_SECRET
+        totp_secret_key = None if topt_key == "REPLACE_ME" else topt_key
 
         return Credentials(
             int_account=None,

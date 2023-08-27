@@ -372,9 +372,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     controller = gov_controller.GovController(ticker="MOCK_TICKER")
     getattr(controller, tested_func)(other_args=other_args)
 
-    if isinstance(called_with, dict):
-        mock.assert_called_once_with(**called_with)
-    elif isinstance(called_with, list):
+    if isinstance(called_with, (dict, list)):
         mock.assert_called_once_with(**called_with)
     else:
         mock.assert_called_once()
