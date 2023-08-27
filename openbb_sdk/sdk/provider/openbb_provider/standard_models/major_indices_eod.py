@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, PositiveFloat
+from pydantic import Field, NonNegativeInt, PositiveFloat
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -34,4 +34,4 @@ class MajorIndicesEODData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: NonNegativeInt = Field(description=DATA_DESCRIPTIONS.get("volume", ""))

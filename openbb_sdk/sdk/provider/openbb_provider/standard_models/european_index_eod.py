@@ -1,7 +1,10 @@
 """European Indices End of Day data model."""
 
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
 
 from pydantic import Field
@@ -12,7 +15,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class EuropeanIndicesEODQueryParams(QueryParams, BaseSymbol):
+class EuropeanIndexEODQueryParams(QueryParams, BaseSymbol):
     """European Indices end of day Query."""
 
     start_date: Optional[dateType] = Field(
@@ -23,8 +26,8 @@ class EuropeanIndicesEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class EuropeanIndicesEODData(Data):
+class EuropeanIndexEODData(Data):
     """European Indices end of day price data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))

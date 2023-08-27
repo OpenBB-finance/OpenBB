@@ -33,11 +33,11 @@ class CLASS_economy(Container):
     fgdp
     fred
     fred_search
-    futures
     gdp
     glbonds
     index
-    indices
+    index_search
+    index_snapshots
     macro
     macro_countries
     macro_parameters
@@ -48,7 +48,6 @@ class CLASS_economy(Container):
     rgdp
     risk
     rtps
-    search_index
     sp500_multiples
     spending
     trust
@@ -66,7 +65,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["cboe", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """AVAILABLE_INDICES.
+        """Lists of available indices from a provider.
 
         Parameters
         ----------
@@ -316,7 +315,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["quandl"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get  CFTC Commitment of Traders Reports.  Data is released every Friday.
+        """CFTC Commitment of Traders Reports.  Data is released every Friday.
 
         Parameters
         ----------
@@ -778,7 +777,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get historical closine values for an index.
+        """Get historical close values for select European indices.
 
         Parameters
         ----------
@@ -794,11 +793,13 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        interval : Optional[Literal['1d', '1m']]
+            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe)
 
         Returns
         -------
         OBBject
-            results : List[EuropeanIndicesEOD]
+            results : List[EuropeanIndexEOD]
                 Serializable results.
             provider : Optional[Literal['cboe']]
                 Provider name.
@@ -809,12 +810,20 @@ class CLASS_economy(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        EuropeanIndicesEOD
-        ------------------
-        date : Optional[date]
+        EuropeanIndexEOD
+        ----------------
+        date : Union[date, datetime]
             The date of the data.
         close : Optional[float]
-            The close price of the symbol."""  # noqa: E501
+            The close price of the symbol.
+        open : Optional[float]
+            Opening price for the interval. Only valid when interval is 1m. (provider: cboe)
+        high : Optional[float]
+            High price for the interval. Only valid when interval is 1m. (provider: cboe)
+        low : Optional[float]
+            Low price for the interval. Only valid when interval is 1m. (provider: cboe)
+        utc_datetime : Optional[datetime]
+            UTC datetime. Only valid when interval is 1m. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -839,20 +848,18 @@ class CLASS_economy(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol of the constituent company in the index."
-            ),
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get historical closine values for an index.
+        """Get  current levels for constituents of select European indices.
 
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol of the constituent company in the index.
+            Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
@@ -904,7 +911,7 @@ class CLASS_economy(Container):
             The Exchange ID number. (provider: cboe)
         seqno : Optional[int]
             Sequence number of the last trade on the tape. (provider: cboe)
-        type : Optional[str]
+        asset_type : Optional[str]
             Type of asset. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
@@ -1048,37 +1055,6 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
-    def futures(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga",
-                "cboe",
-                "fmp",
-                "fred",
-                "intrinio",
-                "polygon",
-                "quandl",
-                "yfinance",
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FUTURES. 2 sources"""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/futures",
-            **inputs,
-        )
-
-    @validate_arguments
     def gdp(
         self,
         chart: bool = False,
@@ -1163,7 +1139,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get OHLCV data for an index.
+        """Get historical  levels for an index.
 
         Parameters
         ----------
@@ -1179,10 +1155,10 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            None
         timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
-        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
-            None
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -1228,8 +1204,14 @@ class CLASS_economy(Container):
             The low price of the symbol.
         close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : Optional[float]
+        volume : Optional[NonNegativeInt]
             The volume of the symbol.
+        calls_volume : Optional[float]
+            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        puts_volume : Optional[float]
+            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        total_options_volume : Optional[float]
+            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]
@@ -1267,33 +1249,176 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
-    def indices(
+    def index_search(
         self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        ticker: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
         chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga",
-                "cboe",
-                "fmp",
-                "fred",
-                "intrinio",
-                "polygon",
-                "quandl",
-                "yfinance",
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """INDICES."""  # noqa: E501
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Search Available Indices.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        ticker : bool
+            Whether to search by ticker symbol.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        europe : bool
+            Filter for European indices. False for US indices. (provider: cboe)
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSearch]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSearch
+        -----------
+        symbol : Optional[str]
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        region : Optional[str]
+            Region for the index. Valid only for European indices (provider: cboe)
+        description : Optional[str]
+            Description for the index. (provider: cboe)
+        data_delay : Optional[int]
+            Data delay for the index. Valid only for US indices. (provider: cboe)
+        currency : Optional[str]
+            Currency for the index. (provider: cboe)
+        time_zone : Optional[str]
+            Time zone for the index. Valid only for US indices. (provider: cboe)
+        open_time : Optional[time]
+            Opening time for the index. Valid only for US indices. (provider: cboe)
+        close_time : Optional[time]
+            Closing time for the index. Valid only for US indices. (provider: cboe)
+        tick_days : Optional[str]
+            The trading days for the index. Valid only for US indices. (provider: cboe)
+        tick_frequency : Optional[str]
+            Tick frequency for the index. Valid only for US indices. (provider: cboe)
+        tick_period : Optional[str]
+            Tick period for the index. Valid only for US indices. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
+            standard_params={
+                "query": query,
+                "ticker": ticker,
+            },
+            extra_params=kwargs,
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/economy/indices",
+            "/economy/index_search",
+            **inputs,
+        )
+
+    @validate_arguments
+    def index_snapshots(
+        self,
+        region: Annotated[
+            Optional[Literal["US", "EU"]],
+            OpenBBCustomParameter(
+                description="The region to return. Currently supports US and EU."
+            ),
+        ] = "US",
+        chart: bool = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get quotes for all available indices from a provider.
+
+        Parameters
+        ----------
+        region : Optional[Literal['US', 'EU']]
+            The region to return. Currently supports US and EU.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSnapshots]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSnapshots
+        --------------
+        symbol : Optional[str]
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        currency : Optional[str]
+            Currency of the index.
+        price : Optional[float]
+            Current price of the index.
+        open : Optional[float]
+            Opening price of the index.
+        high : Optional[float]
+            Highest price of the index.
+        low : Optional[float]
+            Lowest price of the index.
+        close : Optional[float]
+            Closing price of the index.
+        prev_close : Optional[float]
+            Previous closing price of the index.
+        change : Optional[float]
+            Change of the index.
+        change_percent : Optional[float]
+            Change percent of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the index. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "region": region,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_snapshots",
             **inputs,
         )
 
@@ -1627,95 +1752,6 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/rtps",
-            **inputs,
-        )
-
-    @validate_arguments
-    def search_index(
-        self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        ticker: Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ] = False,
-        chart: bool = False,
-        provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[List]:
-        """Search Available Indices.
-
-        Parameters
-        ----------
-        query : str
-            Search query.
-        ticker : bool
-            Whether to search by ticker symbol.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['cboe']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
-            no default.
-        europe : bool
-            Filter for European indices. False for US indices. (provider: cboe)
-
-        Returns
-        -------
-        OBBject
-            results : List[IndexSearch]
-                Serializable results.
-            provider : Optional[Literal['cboe']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
-
-        IndexSearch
-        -----------
-        symbol : Optional[str]
-            Symbol of the index.
-        name : Optional[str]
-            Name of the index.
-        isin : Optional[str]
-            ISIN code for the index. Valid only for European indices. (provider: cboe)
-        region : Optional[str]
-            Region for the index. Valid only for European indices (provider: cboe)
-        description : Optional[str]
-            Description for the index. (provider: cboe)
-        data_delay : Optional[int]
-            Data delay for the index. Valid only for US indices. (provider: cboe)
-        currency : Optional[str]
-            Currency for the index. (provider: cboe)
-        time_zone : Optional[str]
-            Time zone for the index. Valid only for US indices. (provider: cboe)
-        open_time : Optional[time]
-            Opening time for the index. Valid only for US indices. (provider: cboe)
-        close_time : Optional[time]
-            Closing time for the index. Valid only for US indices. (provider: cboe)
-        tick_days : Optional[str]
-            The trading days for the index. Valid only for US indices. (provider: cboe)
-        tick_frequency : Optional[str]
-            Tick frequency for the index. Valid only for US indices. (provider: cboe)
-        tick_period : Optional[str]
-            Tick period for the index. Valid only for US indices. (provider: cboe)"""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-                "ticker": ticker,
-            },
-            extra_params=kwargs,
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/search_index",
             **inputs,
         )
 

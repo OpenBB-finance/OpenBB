@@ -3,6 +3,7 @@
 from datetime import time
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.index_search import (
     IndexSearchData,
@@ -10,11 +11,11 @@ from openbb_provider.standard_models.index_search import (
 )
 from pydantic import Field
 
-from openbb_cboe.utils.helpers import index_search
+from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 
 
 class CboeIndexSearchQueryParams(IndexSearchQueryParams):
-    """CBOE Index Search query.
+    """CBOE Index Search query.  Search the CBOE company directory by name or ticker.
 
     Source: https://www.cboe.com/
     """
@@ -77,12 +78,20 @@ class CboeIndexSearchFetcher(
         query: CboeIndexSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
 
-        data = index_search(query.query, ticker=query.ticker, europe=query.europe)
+        symbols = pd.DataFrame()
+        if query.europe is True:
+            symbols = pd.DataFrame(Europe.list_indices())
+        if query.europe is False:
+            symbols = get_cboe_index_directory().reset_index()
 
-        return data
+        target = "name" if not query.ticker else "symbol"
+        idx = symbols[target].str.contains(query.query, case=False)
+        result = symbols[idx]
+
+        return result.to_dict("records")
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeIndexSearchData]:

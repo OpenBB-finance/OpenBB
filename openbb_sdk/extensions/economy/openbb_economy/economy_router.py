@@ -63,18 +63,18 @@ def index(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get OHLCV data for an index."""
+    """Get historical  levels for an index."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EuropeanIndicesEOD")
+@router.command(model="EuropeanIndexEOD")
 def european_index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get historical closine values for an index."""
+    """Get historical close values for select European indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -85,7 +85,7 @@ def european_index_constituents(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get historical closine values for an index."""
+    """Get  current levels for constituents of select European indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -96,7 +96,7 @@ def available_indices(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """AVAILABLE_INDICES."""
+    """Lists of available indices from a provider."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -220,15 +220,6 @@ def fred_search(
 
 
 @router.command
-def futures(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
-    """FUTURES. 2 sources"""
-    return OBBject(results=Empty())
-
-
-@router.command
 def gdp(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -243,15 +234,6 @@ def glbonds(
     provider_choices: ProviderChoices,
 ) -> OBBject[Empty]:
     """GLBONDS."""
-    return OBBject(results=Empty())
-
-
-@router.command
-def indices(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-) -> OBBject[Empty]:
-    """INDICES."""
     return OBBject(results=Empty())
 
 
@@ -310,7 +292,7 @@ def rtps(
 
 
 @router.command(model="IndexSearch")
-def search_index(
+def index_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -385,5 +367,16 @@ def cot(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get  CFTC Commitment of Traders Reports.  Data is released every Friday."""
+    """CFTC Commitment of Traders Reports.  Data is released every Friday."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="IndexSnapshots")
+def index_snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get quotes for all available indices from a provider."""
     return OBBject(results=Query(**locals()).execute())

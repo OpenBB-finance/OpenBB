@@ -3,6 +3,7 @@
 # IMPORT STANDARD
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.futures_curve import (
     FuturesCurveData,
@@ -10,7 +11,7 @@ from openbb_provider.standard_models.futures_curve import (
 )
 from pydantic import Field
 
-from openbb_cboe.utils.helpers import get_curve
+from openbb_cboe.utils.helpers import get_settlement_prices
 
 
 class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -44,9 +45,23 @@ class CboeFuturesCurveFetcher(
     ) -> dict:
         """Return the raw data from the CBOE endpoint."""
 
-        data = get_curve(query.symbol, query.date).reset_index().to_dict("records")
+        query.symbol = query.symbol.upper()
+        FUTURES = get_settlement_prices(settlement_date=query.date)
+        if len(FUTURES) == 0:
+            return pd.DataFrame()
 
-        return data
+        if query.symbol not in FUTURES["product"].unique().tolist():
+            raise RuntimeError(
+                "The symbol, "
+                f"{query.symbol}"
+                ", is not valid.  Chose from: "
+                f"{FUTURES['product'].unique().tolist()}"
+            )
+
+        data = get_settlement_prices(settlement_date=query.date)
+        data = data[data["product"] == query.symbol]
+
+        return data[["expiration", "symbol", "price"]].to_dict("records")
 
     @staticmethod
     def transform_data(

@@ -4,6 +4,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_info import (
     StockInfoData,
@@ -11,7 +12,12 @@ from openbb_provider.standard_models.stock_info import (
 )
 from pydantic import Field
 
-from openbb_cboe.utils.helpers import get_us_info
+from openbb_cboe.utils.helpers import (
+    get_cboe_directory,
+    get_cboe_index_directory,
+    get_ticker_info,
+    get_ticker_iv,
+)
 
 
 class CboeStockInfoQueryParams(StockInfoQueryParams):
@@ -75,7 +81,6 @@ class CboeStockInfoData(StockInfoData):
     hv90_annual_high: Optional[float] = Field(
         description="The 90-day high of realized volatility."
     )
-    segno: Optional[str] = Field(description="The tape sequence number of the trade.")
 
 
 class CboeStockInfoFetcher(
@@ -99,7 +104,25 @@ class CboeStockInfoFetcher(
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
 
-        return get_us_info(query.symbol)
+        query.symbol = query.symbol.upper()
+        INDEXES = get_cboe_index_directory().index.to_list()
+        SYMBOLS = get_cboe_directory()
+
+        if query.symbol not in SYMBOLS.index and query.symbol not in INDEXES:
+            raise RuntimeError(
+                f"The symbol, {query.symbol}, was not found in the CBOE directory."
+            )
+
+        _info = pd.Series(get_ticker_info(query.symbol))
+        _iv = pd.Series(get_ticker_iv(query.symbol))
+        data = (
+            pd.DataFrame(pd.concat([_info, _iv]))
+            .transpose()
+            .drop(columns="seqno")
+            .iloc[0]
+        )
+
+        return data.to_dict()
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockInfoData]:

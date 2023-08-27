@@ -3,14 +3,16 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.european_index_constituents import (
     EuropeanIndexConstituentsData,
     EuropeanIndexConstituentsQueryParams,
 )
+from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
 
-from openbb_cboe.utils.helpers import Europe
+from openbb_cboe.utils.helpers import EUR_INDEX_CONSTITUENTS_COLUMNS, Europe
 
 
 class CboeEuropeanIndexConstituentsQueryParams(EuropeanIndexConstituentsQueryParams):
@@ -43,7 +45,7 @@ class CboeEuropeanIndexConstituentsData(EuropeanIndexConstituentsData):
     seqno: Optional[int] = Field(
         description="Sequence number of the last trade on the tape."
     )
-    type: Optional[str] = Field(description="Type of asset.")
+    asset_type: Optional[str] = Field(description="Type of asset.", alias="type")
 
     @validator("last_trade_timestamp", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -76,7 +78,33 @@ class CboeEuropeanIndexConstituentsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
 
-        return Europe.get_index_constituents_quotes(query.symbol).to_dict("records")
+        SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
+        query.symbol = query.symbol.upper()
+
+        if query.symbol not in SYMBOLS:
+            raise RuntimeError(
+                f"The symbol, {query.symbol},"
+                "was not found in the CBOE European Index directory. "
+                "Use `available_indices(europe=True)` to see the full list of indices."
+            )
+        url = f"https://cdn.cboe.com/api/global/european_indices/constituent_quotes/{query.symbol}.json"
+
+        r = make_request(url)
+        if r.status_code != 200:
+            raise RuntimeError(r.status_code)
+
+        r_json = r.json()
+
+        data = (
+            pd.DataFrame.from_records(r_json["data"])[
+                list(EUR_INDEX_CONSTITUENTS_COLUMNS.keys())
+            ]
+            .rename(columns=EUR_INDEX_CONSTITUENTS_COLUMNS)
+            .round(2)
+        )
+        data["last_trade_timestamp"] = pd.to_datetime(data["last_trade_timestamp"])
+
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexConstituentsData]:
