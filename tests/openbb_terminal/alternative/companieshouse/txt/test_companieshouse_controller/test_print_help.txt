@@ -7,3 +7,4 @@ Current Company:
     filings            retrieve list of documents filed with Companies House (Default 100)
     filingdocument     download filed document
     charges            registered charges against the company
+
