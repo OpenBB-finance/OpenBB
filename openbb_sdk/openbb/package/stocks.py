@@ -7,10 +7,12 @@ import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 import pydantic
 import pydantic.main
+import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import BaseModel, validate_arguments
 from pydantic import BaseModel, validate_arguments
 from typing_extensions import Annotated
 
@@ -223,7 +225,7 @@ class CLASS_stocks(Container):
         ] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Load stock data for a specific ticker.
+        r"""Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -753,7 +755,7 @@ class CLASS_stocks(Container):
         StockQuote
         ----------
         symbol : Optional[str]
-            Symbol of the company.
+            Symbol to get data for.
         name : Optional[str]
             Name of the company.
         price : Optional[float]
@@ -761,7 +763,7 @@ class CLASS_stocks(Container):
         changes_percentage : Optional[float]
             Change percentage of the stock price.
         change : Optional[float]
-            Change of the stock price.
+            Change in the stock price.
         day_low : Optional[float]
             Lowest price of the stock in the current trading day.
         day_high : Optional[float]
