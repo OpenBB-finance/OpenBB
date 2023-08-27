@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-fmp"
-version = "0.0.0a0"
+version = "0.0.0a1"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_fmp" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = {version = "0.0.0a1", source = "test-pypi"}
+openbb-provider = {version = "^0.0.0a1", source = "test-pypi"}
 
 [[tool.poetry.source]]
 name = "test-pypi"
