@@ -12,7 +12,7 @@ from openbb_provider.standard_models.global_news import (
 from pydantic import Field, validator
 
 from openbb_provider.utils.helpers import get_querystring
-from openbb_intrinio.utils.helpers import get_data_many
+from openbb_intrinio.utils.helpers import get_data_one
 
 
 class IntrinioGlobalNewsQueryParams(GlobalNewsQueryParams):
@@ -21,21 +21,13 @@ class IntrinioGlobalNewsQueryParams(GlobalNewsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_all_company_news_v2
     """
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "page": "next_page",
-            "limit": "page_size",
-        }
-
-    next_page: Optional[str] = Field(
-        description="Token to get the next page of data from a previous API call."
+    next_page: str = Field(
+        default=None,
+        description="Token to get the next page of data from a previous API call.",
     )
-    page_size: Optional[int] = Field(
+    limit: Optional[int] = Field(
         default=10, description="The number of data entries to return."
     )
-    # TODO: Add support for all_pages
     all_pages: Optional[bool] = Field(
         default=False,
         description="Returns all pages of data from the API call at once.",
@@ -89,10 +81,34 @@ class IntrinioGlobalNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.dict(by_alias=True), ["all_pages"])
+        query_str = get_querystring(query.dict(by_alias=True), ["all_pages", "page"])
+        query_str = query_str.replace("limit", "page_size")
         url = f"{base_url}/companies/news?{query_str}&api_key={api_key}"
 
-        return get_data_many(url, "news", **kwargs)
+        data = get_data_one(url, **kwargs)
+
+        if query.all_pages:
+            all_data = data["news"]
+            next_page = data["next_page"]
+
+            while next_page:
+                query_str = get_querystring(
+                    query.dict(by_alias=True), ["page", "next_page", "all_pages"]
+                )
+                query_str = query_str.replace("limit", "page_size")
+                url = (
+                    f"{base_url}/companies/news?{query_str}&next_page={next_page}"
+                    f"&api_key={api_key}"
+                )
+
+                data = get_data_one(url, **kwargs)
+                all_data.extend(data.get("news", []))
+
+                next_page = data.get("next_page", None)
+
+            return all_data["news"]
+
+        return data.get("news", [])
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioGlobalNewsData]:

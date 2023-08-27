@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
 
-from openbb_intrinio.utils.helpers import get_data_many
+from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
 
 
@@ -40,16 +40,21 @@ class IntrinioStockEODQueryParams(StockEODQueryParams):
         default="60m", description=QUERY_DESCRIPTIONS.get("frequency", "")
     )
     limit: Optional[NonNegativeInt] = Field(
-        default=300, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=300,
+        description=f"{QUERY_DESCRIPTIONS.get('limit', '')}. Max value allowed is 300.",
     )
     next_page: Optional[str] = Field(
         description="Token to get the next page of data from a previous API call."
     )
-    # TODO: Add support for all_pages
     all_pages: Optional[bool] = Field(
         default=False,
         description="Returns all pages of data from the API call at once.",
     )
+
+    @validator("limit", pre=True)
+    def limit_check(cls, v):  # pylint: disable=E0213
+        """Set the limit bound to 300."""
+        return min(v, 300)
 
 
 class IntrinioStockEODData(StockEODData):
@@ -132,9 +137,36 @@ class IntrinioStockEODFetcher(
 
         base_url = "https://api-v2.intrinio.com"
         query_str = get_querystring(query.dict(by_alias=True), ["symbol", "all_pages"])
-        url = f"{base_url}/securities/{query.symbol}/prices/intervals?{query_str}&api_key={api_key}"
+        query_str = query_str.replace("limit", "page_size")
+        url = (
+            f"{base_url}/securities/{query.symbol}/prices/intervals"
+            f"?{query_str}&api_key={api_key}"
+        )
 
-        return get_data_many(url, "intervals", **kwargs)
+        data = get_data_one(url, **kwargs)
+
+        if query.all_pages:
+            all_data = data["intervals"]
+            next_page = data["next_page"]
+
+            while next_page:
+                query_str = get_querystring(
+                    query.dict(by_alias=True), ["symbol", "next_page", "all_pages"]
+                )
+                query_str = query_str.replace("limit", "page_size")
+                url = (
+                    f"{base_url}/securities/{query.symbol}/prices/intervals"
+                    f"?{query_str}&next_page={next_page}&api_key={api_key}"
+                )
+
+                data = get_data_one(url, **kwargs)
+                all_data.extend(data.get("intervals", []))
+
+                next_page = data.get("next_page", None)
+
+            return all_data
+
+        return data.get("intervals", [])
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioStockEODData]:
