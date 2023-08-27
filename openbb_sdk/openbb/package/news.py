@@ -30,7 +30,7 @@ class CLASS_news(Container):
             OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -41,12 +41,12 @@ class CLASS_news(Container):
             Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['benzinga', 'fmp']]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        page_size : int
-            Number of results to return per page. (provider: benzinga)
+        page_size : Optional[int]
+            None
         display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
@@ -75,13 +75,17 @@ class CLASS_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        next_page : Optional[str]
+            Token to get the next page of data from a previous API call. (provider: intrinio)
+        all_pages : Optional[bool]
+            Returns all pages of data from the API call at once. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -111,7 +115,11 @@ class CLASS_news(Container):
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
         site : Optional[str]
-            Site of the news. (provider: fmp)"""  # noqa: E501
+            Site of the news. (provider: fmp)
+        id : Optional[str]
+            Intrinio ID for the news article. (provider: intrinio)
+        company : Optional[Mapping[str, Any]]
+            Company details related to the news article. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

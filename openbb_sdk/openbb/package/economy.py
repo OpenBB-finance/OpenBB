@@ -115,7 +115,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """BALANCE."""  # noqa: E501
@@ -137,7 +139,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """BIGMAC."""  # noqa: E501
@@ -234,7 +238,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """CORECPI."""  # noqa: E501
@@ -256,7 +262,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """COUNTRY_CODES."""  # noqa: E501
@@ -436,7 +444,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Get the options for v3 cpi(options=True)"""  # noqa: E501
@@ -458,7 +468,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """CURRENCIES."""  # noqa: E501
@@ -480,7 +492,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """DEBT."""  # noqa: E501
@@ -502,7 +516,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """EVENTS."""  # noqa: E501
@@ -524,7 +540,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FGDP."""  # noqa: E501
@@ -546,7 +564,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FRED."""  # noqa: E501
@@ -568,7 +588,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FRED Search (was fred_notes)."""  # noqa: E501
@@ -590,7 +612,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """FUTURES. 2 sources"""  # noqa: E501
@@ -612,7 +636,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """GDP."""  # noqa: E501
@@ -634,7 +660,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """GLBONDS."""  # noqa: E501
@@ -674,7 +702,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get OHLCV data for an index.
+        r"""Get OHLCV data for an index.
 
         Parameters
         ----------
@@ -750,11 +778,11 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -782,7 +810,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """INDICES."""  # noqa: E501
@@ -804,7 +834,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Query EconDB for macro data."""  # noqa: E501
@@ -826,7 +858,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """MACRO_COUNTRIES."""  # noqa: E501
@@ -848,7 +882,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """MACRO_PARAMETERS."""  # noqa: E501
@@ -870,7 +906,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """OVERVIEW."""  # noqa: E501
@@ -892,7 +930,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """PERFMAP."""  # noqa: E501
@@ -914,7 +954,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """PERFORMANCE."""  # noqa: E501
@@ -936,7 +978,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """REVENUE."""  # noqa: E501
@@ -958,7 +1002,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """RGDP."""  # noqa: E501
@@ -1034,7 +1080,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """RTPS."""  # noqa: E501
@@ -1056,7 +1104,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """SEARCH_INDEX."""  # noqa: E501
@@ -1078,7 +1128,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """SPENDING."""  # noqa: E501
@@ -1100,7 +1152,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """TRUST."""  # noqa: E501
@@ -1122,7 +1176,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """USBONDS."""  # noqa: E501
@@ -1144,7 +1200,9 @@ class CLASS_economy(Container):
         self,
         chart: bool = False,
         provider: Optional[
-            Literal["benzinga", "cboe", "fmp", "fred", "polygon", "yfinance"]
+            Literal[
+                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
+            ]
         ] = None,
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """VALUATION."""  # noqa: E501
