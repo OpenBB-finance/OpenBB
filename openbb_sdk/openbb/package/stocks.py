@@ -707,7 +707,7 @@ class CLASS_stocks(Container):
         StockQuote
         ----------
         symbol : Optional[str]
-            Symbol of the company.
+            Symbol to get data for.
         name : Optional[str]
             Name of the company.
         price : Optional[float]
@@ -715,7 +715,7 @@ class CLASS_stocks(Container):
         changes_percentage : Optional[float]
             Change percentage of the stock price.
         change : Optional[float]
-            Change of the stock price.
+            Change in the stock price.
         day_low : Optional[float]
             Lowest price of the stock in the current trading day.
         day_high : Optional[float]
