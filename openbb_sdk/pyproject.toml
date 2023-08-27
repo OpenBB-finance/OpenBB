@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-sdk"
-version = "4.0.0rc6"
+version = "4.0.0rc7"
 description = ""
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
