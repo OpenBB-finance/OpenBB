@@ -18,6 +18,7 @@
   - [The charting extension](#the-charting-extension)
     - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
     - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
+  - [Environment and dependencies](#environment-and-dependencies)
 
 ## Get started contributing with a template
 
@@ -302,3 +303,66 @@ Refer to the [`to_chart` implementation](openbb_sdk/extensions/charting/openbb_c
 
 > Note that, this method will only work to some limited extent with data that is not standardized.
 > Also, it is designed only to handle time series data.
+
+## Environment and dependencies
+
+In order to contribute to the SDK there are some project setup one should do in order to ensure a smooth development experience.
+
+This setup is not mandatory, so if you have experience with Python development, you can do it your own way.
+
+<details>
+<summary>Need help seting up Miniconda or Git?</summary>
+
+Sometimes installing Miniconda or Git can be a bit tricky, so we've prepared a set of instructions to help you get started.
+
+Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installation/pypi) for more information.
+</details>
+
+1. Clone the repository:
+
+    ```bash
+    git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
+    ```
+
+2. Create and activate a virtual environment:
+
+    > Supported python versions: python = ">=3.8,<3.12"
+
+    ```bash
+    conda create -n "obb-sdk" python=3.9.13
+    conda activate obb-sdk
+    ```
+
+3. Manage your environment with [Poetry](https://python-poetry.org/):
+
+    ```bash
+    pip install poetry
+    ```
+
+4. Install the `openbb-core`:
+
+    ```bash
+    cd OpenBBTerminal/openbb_sdk/sdk/core/
+    poetry install
+    ```
+
+5. Install dependencies:
+
+    ```bash
+    cd OpenBBTerminal/openbb_sdk/extensions/stocks/ # or any other extension
+    poetry install
+    ```
+
+> When installing the dependencies this way, using poetry, we ensure that dependencies are being installed in editable mode, which is the most straightforward way to develop on top of the SDK.
+
+<details>
+<summary>Install all dependencies in editable mode at once</summary>
+
+For development purposes, one can install every available extension by running a custom shell script:
+
+Navigate to `/OpenBBTerminal/openbb_sdk`
+
+Run `sh install_all.sh`
+</details>
+
+> In order to install any other custom extension or provider, you'd follow the exact same steps as above.
