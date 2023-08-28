@@ -26,7 +26,7 @@ class CLASS_news(Container):
     def globalnews(
         self,
         page: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
         chart: bool = False,
@@ -37,7 +37,7 @@ class CLASS_news(Container):
 
         Parameters
         ----------
-        page : Optional[pydantic.types.NonNegativeInt]
+        page : NonNegativeInt
             Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -75,6 +75,8 @@ class CLASS_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        next_page : str
+            Token to get the next page of data from a previous API call. (provider: intrinio)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
         all_pages : Optional[bool]
