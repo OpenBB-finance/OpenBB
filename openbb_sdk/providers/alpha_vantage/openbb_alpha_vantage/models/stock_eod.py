@@ -13,7 +13,7 @@ from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeFloat, PositiveFloat, root_validator, validator
 
 
-class AlphaVantageStockEODQueryParams(StockEODQueryParams):
+class AVStockEODQueryParams(StockEODQueryParams):
     """Alpha Vantage Stock End of Day Query.
 
     Source: https://www.alphavantage.co/documentation/
@@ -159,7 +159,7 @@ class AlphaVantageStockEODQueryParams(StockEODQueryParams):
         return v
 
 
-class AlphaVantageStockEODData(StockEODData):
+class AVStockEODData(StockEODData):
     """Alpha Vantage Stock End of Day Data."""
 
     class Config:
@@ -178,16 +178,16 @@ class AlphaVantageStockEODData(StockEODData):
     )
 
 
-class AlphaVantageStockEODFetcher(
+class AVStockEODFetcher(
     Fetcher[
-        AlphaVantageStockEODQueryParams,
-        List[AlphaVantageStockEODData],
+        AVStockEODQueryParams,
+        List[AVStockEODData],
     ]
 ):
     """Transform the query, extract and transform the data from the Alpha Vantage endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> AlphaVantageStockEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> AVStockEODQueryParams:
         """Transform the query."""
 
         transformed_params = params
@@ -199,11 +199,11 @@ class AlphaVantageStockEODFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return AlphaVantageStockEODQueryParams(**transformed_params)
+        return AVStockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: AlphaVantageStockEODQueryParams,
+        query: AVStockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -228,7 +228,7 @@ class AlphaVantageStockEODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[AlphaVantageStockEODData]:
+    ) -> List[AVStockEODData]:
         """Transform the data to the standard format."""
 
-        return [AlphaVantageStockEODData.parse_obj(**d) for d in data]
+        return [AVStockEODData.parse_obj(**d) for d in data]
