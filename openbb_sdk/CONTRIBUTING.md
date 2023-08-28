@@ -1,12 +1,16 @@
-# CONTRIBUTING
+# CONTRIBUTING - THIS IS A WORK IN PROGRESS
 
-- [CONTRIBUTING](#contributing)
+- [CONTRIBUTING - THIS IS A WORK IN PROGRESS](#contributing---this-is-a-work-in-progress)
   - [Get started contributing with a template](#get-started-contributing-with-a-template)
     - [Cookiecuter, a closer look](#cookiecuter-a-closer-look)
       - [Get your data](#get-your-data)
       - [SDK commands: query and output your data](#sdk-commands-query-and-output-your-data)
   - [Adding a new data point](#adding-a-new-data-point)
     - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
+    - [What is the Standardization framework?](#what-is-the-standardization-framework)
+      - [Standardization gotchas](#standardization-gotchas)
+      - [Standard QueryParams Example](#standard-queryparams-example)
+      - [Standard Data Example](#standard-data-example)
     - [Check if the standard model exists](#check-if-the-standard-model-exists)
     - [Refer to the API documentation and start developing](#refer-to-the-api-documentation-and-start-developing)
       - [Data characterization](#data-characterization)
@@ -124,6 +128,68 @@ This corresponds to a very well known endpoint, `stocks/load`.
 
 Note that, if no endpoint existed yet, we'd need to add it under the right asset type.
 Each asset type is organized under a different extension (stocks, forex, crypto, etc.).
+
+### What is the Standardization framework?
+
+The standardization framework is a set of tools that enable the user to easily query and output data in a standardized way.
+
+Each data model should inherit from a standard model that is already defined in the SDK. This will unlock a set of perks that are only available to standardized data, namely:
+
+- Can query and output data in a standardized way.
+- Can expect extensions such as the charting extension to work out-of-the-box.
+- Can expect transparently defined schemas for the data that is returned by the API.
+- Can expect consistent data types and validation.
+- Will work seamlessly with other providers that implement the same standard model.
+
+The standard models are defined under the `./sdk/core/provider/openbb_provider/standard_models/` directory.
+
+They implement the QueryParams and Data models, which are the models that are used to query and output data, respectively.
+
+They are really just pydantic models, so you can leverage all the pydantic features such as validators.
+
+#### Standardization gotchas
+
+The standardization framework is a very powerful tool, but it has some gotchas that you should be aware of:
+
+- We standardize fields that are shared between two or more providers. If there is a third provider that doesn't share the same fields, we will declare it as an Optional field.
+- When mapping the column names from a provider-specific model to the standard model, the CamelCase to snake_case conversion is done automatically. If the column names are not the same, you'll need to manually map them. (e.g. `o` -> `open`)
+- The standard models are created and maintained by the OpenBB team. If you want to add a new field to a standard model, you'll need to open a PR to the SDK.
+
+#### Standard QueryParams Example
+
+```python
+class StockEODQueryParams(QueryParams, BaseSymbol):
+    """Stock end of day Query."""
+
+    start_date: Optional[date] = Field(
+        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
+    )
+    end_date: Optional[date] = Field(
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
+    )
+```
+
+What is interesting about the above standard model is that it inherits from two classes. The QueryParams is an abstract class that just tells us that we are dealing with query parameters. The BaseSymbol is a helper class that contains the `symbol` field and an
+upper case validator. It is used so that we don't have to repeat the same code over and over again.
+
+The SDK dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
+
+#### Standard Data Example
+
+```python
+class StockEODData(Data):
+    """Stock end of day price Data."""
+
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+```
+
+The above example is a standard data model. It inherits from the Data class, which is an abstract class that tells us that we are dealing with data aka the output. Here, we can see a `vwap` field that is optional. This is because not all providers have this field while it is shared between two or more providers.
 
 ### Check if the standard model exists
 
