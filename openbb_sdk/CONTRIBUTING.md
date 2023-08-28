@@ -102,6 +102,9 @@ Let's break it down:
 
 ## Adding a new data point
 
+In the above section, we've seen how to get started with a template.
+In this section, we'll be adding a new data point to the SDK, considering we want to add a new provider to an existing data model.
+
 ### Identify which type of data you want to add
 
 In this example, we'll be adding OHLC stock data.
