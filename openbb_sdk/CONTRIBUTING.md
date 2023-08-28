@@ -16,6 +16,9 @@
         - [Data output](#data-output)
       - [Build the Fetcher](#build-the-fetcher)
     - [Make the new provider visible to the SDK](#make-the-new-provider-visible-to-the-sdk)
+  - [The charting extension](#the-charting-extension)
+    - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
+    - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
 
 ## Get started contributing with a template
 
@@ -268,3 +271,46 @@ from openbb_<provider_name>.models.stock_eod import <ProviderName>StockEODFetche
 ```
 
 After running `pip install .` on `openbb_sdk/providers/<provider_name>` your provider should be ready for usage, both from a Python interface or the API.
+
+
+## The charting extension
+
+The following section assumes that you're using the `openbb_charting` charting extension, although the same principles apply to any other extension.
+
+### Add a visualization to an existing SDK command
+
+One should start be ensuring that the already implemented endpoint is available in the [charting router](openbb_sdk/extensions/charting/openbb_charting/charting_router.py).
+To do so, you can run `python openbb_sdk/extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
+
+Afterwards, you'll need to add the visualization to the [charting router](openbb_sdk/extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
+
+- `stocks/load` -> `stocks_load`
+- `ta/ema` -> `ta_ema`
+
+When you spot the charting function on the charting router file, you can add the visualization to it.
+The implementation should leverage the already existing classes and methods to do so, namely:
+
+- `OpenBBFigure`
+- `OpenBBFigureTable`
+- `PlotlyTA`
+
+Note that the return of each charting function should respect the already defined return types: `Tuple[OpenBBFigure, Dict[str, Any]]`.
+
+The returned tuple contains a `OpenBBFigure` that is a interactive plotly figure that can be used in a Python interpreter, and a `Dict[str, Any]` that contains the raw data that can be leveraged on the API.
+
+After you're done implementing the charting function, you can simply use either the Python interface or the API to get the chart. To do so, you'll only need to set the already available `chart` argument to `True`.
+
+Refer to the [charting extension documentation](openbb_sdk/extensions/charting/README.md) for more information on usage.
+### Using the `to_chart` OBBject method
+
+The `OBBject` is the custom OpenBB object that is returned by the SDK commands.
+It implements a set of `to_<something>` functions that enable the user to easily transform the data into a different format.
+
+The `to_chart` function should be taken as an advanced feature, as it requires the user to have a good understanding of the charting extension and the `OpenBBFigure` class.
+
+The user can use any number of `**kwargs` that will be passed to the `PlotlyTA` class in order to build custom visualizations with custom indicators and similar.
+
+Refer to the [`to_chart` implementation](openbb_sdk/extensions/charting/openbb_charting/core/to_chart.py) for further details.
+
+> Note that, this method will only work to some limited extend with data that is not standardized.
+> Also, it is designed only to handle time series data.
