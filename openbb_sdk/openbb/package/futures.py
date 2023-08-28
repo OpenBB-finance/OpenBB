@@ -3,22 +3,90 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from pydantic import validate_arguments
-from typing_extensions import Annotated
-
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
-class CLASS_crypto(Container):
-    """/crypto
+class CLASS_futures(Container):
+    """/futures
+    curve
     load
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @validate_arguments
+    def curve(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(description="Historical date to search curve for."),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[Literal["yfinance"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Futures EOD Price.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        date : Optional[datetime.date]
+            Historical date to search curve for.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['yfinance']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[FuturesCurve]
+                Serializable results.
+            provider : Optional[Literal['yfinance']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        FuturesCurve
+        ------------
+        expiration : Optional[str]
+            Futures expiration month.
+        price : Optional[float]
+            The close price of the symbol."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "date": date,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/futures/curve",
+            **inputs,
+        )
 
     @validate_arguments
     def load(
@@ -39,11 +107,15 @@ class CLASS_crypto(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+        expiration: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
+        ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Crypto EOD Price.
+        """Futures EOD Price.
 
         Parameters
         ----------
@@ -53,24 +125,14 @@ class CLASS_crypto(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+        expiration : Optional[str]
+            Future expiry date with format YYYY-MM
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'yfinance' if there is
             no default.
-        timeseries : Optional[pydantic.types.NonNegativeInt]
-            Number of days to look back. (provider: fmp)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
-        sort : Literal['asc', 'desc']
-            Sort order of the data. (provider: polygon)
-        limit : PositiveInt
-            The number of data entries to return. (provider: polygon)
-        adjusted : bool
-            Whether the data is adjusted. (provider: polygon)
-        multiplier : PositiveInt
-            Multiplier of the timespan. (provider: polygon)
         interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             Data granularity. (provider: yfinance)
         period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
@@ -85,9 +147,9 @@ class CLASS_crypto(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoEOD]
+            results : List[FuturesEOD]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            provider : Optional[Literal['yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -96,37 +158,20 @@ class CLASS_crypto(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        CryptoEOD
-        ---------
+        FuturesEOD
+        ----------
         date : Optional[datetime]
             The date of the data.
-        open : Optional[PositiveFloat]
+        open : Optional[float]
             The open price of the symbol.
-        high : Optional[PositiveFloat]
+        high : Optional[float]
             The high price of the symbol.
-        low : Optional[PositiveFloat]
+        low : Optional[float]
             The low price of the symbol.
-        close : Optional[PositiveFloat]
+        close : Optional[float]
             The close price of the symbol.
-        volume : Optional[PositiveFloat]
-            The volume of the symbol.
-        vwap : Optional[PositiveFloat]
-            Volume Weighted Average Price of the symbol.
-        adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
-        unadjusted_volume : Optional[float]
-            Unadjusted volume of the symbol. (provider: fmp)
-        change : Optional[float]
-            Change in the price of the symbol from the previous day. (provider: fmp)
-        change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
-        label : Optional[str]
-            Human readable format of the date. (provider: fmp)
-        change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
-        """  # noqa: E501
+        volume : Optional[float]
+            The volume of the symbol."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -136,12 +181,13 @@ class CLASS_crypto(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
+                "expiration": expiration,
             },
             extra_params=kwargs,
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/crypto/load",
+            "/futures/load",
             **inputs,
         )

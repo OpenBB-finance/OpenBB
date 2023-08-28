@@ -1,3 +1,6 @@
+"""Test the path_tracking_file_handler.py file."""
+# pylint: disable=redefined-outer-name
+
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -25,14 +28,19 @@ logging_settings.session_id = "test_session_id"
 logging_settings.frequency = "H"
 
 
-@pytest.fixture
-def handler():
+@pytest.fixture(scope="module")
+def mocked_path(tmp_path_factory):
+    return tmp_path_factory.mktemp("mocked_path") / "mocked_file.log"
+
+
+@pytest.fixture(scope="module")
+def handler(mocked_path):
     # patch `pathlib.Path.joinpath` to return a string containing the joined path
-    with patch.object(Path, "joinpath", return_value=Path("mocked_path")):
+    with patch.object(Path, "joinpath", return_value=mocked_path):
         return PathTrackingFileHandler(logging_settings)
 
 
-def test_build_log_file_path(handler):
+def test_build_log_file_path(handler, mocked_path):
     # Define a sample LoggingSettings object with mock attributes
     settings = MagicMock(spec=MockLoggingSettings)
     settings.app_name = "my_app"
@@ -41,13 +49,11 @@ def test_build_log_file_path(handler):
     settings.session_id = "abc123"
 
     # patch `pathlib.Path.joinpath` to return a string containing the joined path
-    with patch.object(
-        Path, "joinpath", return_value=Path("mocked_path")
-    ) as mock_joinpath:
+    with patch.object(Path, "joinpath", return_value=mocked_path) as mock_joinpath:
         result_path = handler.build_log_file_path(settings)
 
     # Assert the result is correct
-    assert result_path == Path("mocked_path")
+    assert result_path == mocked_path
 
     mock_joinpath.assert_called_once_with("my_app_abc123")
 
