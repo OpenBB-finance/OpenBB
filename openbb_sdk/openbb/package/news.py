@@ -31,7 +31,6 @@ class CLASS_news(Container):
         ] = 0,
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -117,11 +116,6 @@ class CLASS_news(Container):
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
         site : Optional[str]
-            Site of the news. (provider: fmp)
-        id : Optional[str]
-            Intrinio ID for the news article. (provider: intrinio)
-        company : Optional[Mapping[str, Any]]
-            Company details related to the news article. (provider: intrinio)"""  # noqa: E501
             Site of the news. (provider: fmp)
         id : Optional[str]
             Intrinio ID for the news article. (provider: intrinio)
