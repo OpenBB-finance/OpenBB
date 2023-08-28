@@ -19,7 +19,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
     Source: https://www.alphavantage.co/documentation/
     """
 
-    function: Literal[
+    _function: Literal[
         "TIME_SERIES_INTRADAY",
         "TIME_SERIES_DAILY",
         "TIME_SERIES_WEEKLY",
@@ -27,7 +27,6 @@ class AVStockEODQueryParams(StockEODQueryParams):
     ] = Field(
         description="The time series of your choice. ",
         default="TIME_SERIES_DAILY",
-        exclude=True,
     )
     period: Literal["intraday", "daily", "weekly", "monthly"] = Field(
         default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
@@ -76,7 +75,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
             "weekly": "TIME_SERIES_WEEKLY",
             "monthly": "TIME_SERIES_MONTHLY",
         }
-        values["function"] = functions_based_on_period[values["period"]]
+        values["_function"] = functions_based_on_period[values["period"]]
         return values
 
     @root_validator(pre=True)
@@ -85,11 +84,11 @@ class AVStockEODQueryParams(StockEODQueryParams):
         Validate that the function is adjusted if the `adjusted` parameter is set to True.
         """
 
-        function = values["function"]
+        function = values["_function"]
         adjusted = values.get("adjusted", None)
 
         if function != "TIME_SERIES_INTRADAY":
-            values["function"] = function if not adjusted else f"{function}_ADJUSTED"
+            values["_function"] = function if not adjusted else f"{function}_ADJUSTED"
 
         return values
 
@@ -126,7 +125,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
         """
 
         fields = cls.__fields__
-        function = values["function"]
+        function = values["_function"]
 
         for field in fields:
             if (
