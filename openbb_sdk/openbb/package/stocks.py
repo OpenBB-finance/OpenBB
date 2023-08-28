@@ -7,12 +7,10 @@ import openbb_core.app.model.command_context
 import openbb_core.app.model.results.empty
 import pydantic
 import pydantic.main
-import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
 from pydantic import BaseModel, validate_arguments
 from typing_extensions import Annotated
 
@@ -225,7 +223,7 @@ class CLASS_stocks(Container):
         ] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
