@@ -1,6 +1,7 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
+import requests
 import argparse
 import logging
 import os
@@ -16,6 +17,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports import reports_model
 from openbb_terminal.rich_config import MenuText, console
 
+from openbb_terminal.helper_funcs import parse_and_split_input
 # from openbb_terminal.terminal_helper import is_packaged_application
 
 logger = logging.getLogger(__name__)
@@ -34,6 +36,7 @@ class ReportController(BaseController):
         "portfolio",
         "run",
         "load",
+        "exe",
     ]
     PATH = "/reports/"
 
@@ -78,6 +81,16 @@ class ReportController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
+    def parse_input(self, an_input: str) -> List:
+        """Overwrite the BaseController parse_input for `askobb` and 'exe'
+
+        This will allow us to search for something like "P/E" ratio
+        """
+        raw_url = r"(exe (--url |-u )?(https?://)?raw\.githubusercontent\.(com)/.*)"
+        github_url = r"(exe (--url |-u )?(https?://)?github\.(com)/.*)"
+        custom_filters = [raw_url, github_url]
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
+
     def print_help(self):
         """Print help."""
 
@@ -88,7 +101,6 @@ class ReportController(BaseController):
         self.update_choices()
 
         mt = MenuText("reports/")
-        mt.add_info("_reports_")
         mt.add_raw("\n")
         mt.add_info("_OpenBB_reports_")
         MAX_LEN_NAME = max(len(name) for name in self.REPORTS) + 2
@@ -110,7 +122,8 @@ class ReportController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_Custom_reports_")
         mt.add_cmd("run")
-        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
+        mt.add_cmd("exe")
+        console.print(text=mt.menu_text, menu="Reports")
 
     @log_start_end(log=logger)
     def call_etf(self, other_args: List[str]):
@@ -264,3 +277,97 @@ class ReportController(BaseController):
                     console.print(
                         f"[red]Notebook '{ns_parser.file}' not found![/red]\n"
                     )
+
+    def call_exe(self, other_args: List[str]):
+        """Process exe command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="exe",
+            description="Run a notebook from a url that contains the ipynb contents",
+        )
+        parser.add_argument(
+            "-u",
+            "--url",
+            dest="url",
+            required="-h" not in other_args,
+            help="The url of the file to be loaded",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameters",
+            nargs="+",
+            dest="parameters",
+            help="Report parameters with format 'name:value'.",
+        )
+
+        # If first argument is a url, insert the -u flag
+        if other_args[0].startswith("http"):
+            other_args.insert(0, "--url")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            # Validate parameter inputs
+            parameters_dict = {}
+            if ns_parser.parameters:
+                for p in ns_parser.parameters:
+                    if ":" in p:
+                        item = p.split(":")
+                        if item[1]:
+                            parameters_dict[item[0]] = item[1]
+                        else:
+                            console.print(
+                                f"[red]Bad format '{p}': empty value.[/red]\nExecuting with defaults.\n"
+                            )
+                    else:
+                        console.print(
+                            f"[red]Bad format '{p}': use format 'name:value'.[/red]\nExecuting with defaults.\n"
+                        )
+
+            if "raw.githubusercontent" in ns_parser.url:
+                url = ns_parser.url
+            else:
+                url = ns_parser.url.replace("github.com", "raw.githubusercontent.com").replace("/blob", "")
+
+            if url:
+                try:
+                    # Send an HTTP GET request to fetch the raw notebook
+                    response = requests.get(url)
+
+                    if response.status_code == 200:
+
+                        temporary_folder = os.path.join(
+                            get_current_user().preferences.USER_REPORTS_DIRECTORY,
+                            "temporary"
+                        )
+
+                        # Does the temp folder exist? if not create it
+                        if not os.path.exists(temporary_folder):
+                            os.makedirs(temporary_folder)
+
+                        # Local file path where you want to save the notebook
+                        local_file_path = os.path.join(
+                            temporary_folder,
+                            url.split(".com/")[1].replace("/", "_") # .replace(".ipynb", "")
+                        )
+
+                        # Save the template notebook locally
+                        with open(local_file_path, "wb") as notebook_file:
+                            notebook_file.write(response.content)
+
+                        # To confirm that the notebook is saved locally
+                        if os.path.exists(local_file_path):
+                            reports_model.render_report(
+                                input_path=local_file_path, args_dict=parameters_dict
+                            )
+                        else:
+                            console.print(
+                                f"[red]Notebook '{url}' not found![/red]\n"
+                            )
+
+                    else:
+                        console.print(f"Failed to fetch notebook from {url}. Status code: {response.status_code}")
+
+                except Exception as e:
+                    console.print(f"An error occurred: {str(e)}")
