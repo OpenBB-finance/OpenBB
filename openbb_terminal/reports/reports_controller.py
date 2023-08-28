@@ -1,7 +1,6 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
-import requests
 import argparse
 import logging
 import os
@@ -9,15 +8,16 @@ import os
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List, Optional
 
+import requests
+
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports import reports_model
 from openbb_terminal.rich_config import MenuText, console
-
-from openbb_terminal.helper_funcs import parse_and_split_input
 
 # from openbb_terminal.terminal_helper import is_packaged_application
 
@@ -336,7 +336,7 @@ class ReportController(BaseController):
             if url:
                 try:
                     # Send an HTTP GET request to fetch the raw notebook
-                    response = requests.get(url)
+                    response = requests.get(url, timeout=20)
 
                     if response.status_code == 200:
                         temporary_folder = os.path.join(
