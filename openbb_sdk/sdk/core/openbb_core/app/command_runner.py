@@ -94,12 +94,14 @@ class ParametersBuilder:
 
     @staticmethod
     def update_command_context(
+        func: Callable,
         kwargs: Dict[str, Any],
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> Dict[str, Any]:
         """Update the command context with the available user and system settings."""
-        if "cc" in kwargs:
+        argcount = func.__code__.co_argcount
+        if "cc" in func.__code__.co_varnames[:argcount]:
             kwargs["cc"] = CommandContext(
                 user_settings=user_settings,
                 system_settings=system_settings,
@@ -202,6 +204,7 @@ class ParametersBuilder:
             kwargs=kwargs,
         )
         kwargs = cls.update_command_context(
+            func=func,
             kwargs=kwargs,
             system_settings=system_settings,
             user_settings=user_settings,
