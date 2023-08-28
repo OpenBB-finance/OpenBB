@@ -22,14 +22,15 @@ from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
+from openbb_core.app.env import Env
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
+    ProviderInterface,
     StandardParams,
-    get_provider_interface,
 )
 
 P = ParamSpec("P")
@@ -222,7 +223,7 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
-        provider_interface = get_provider_interface()
+        provider_interface = ProviderInterface()
         return_type = func.__annotations__["return"]
         is_list = False
 
@@ -238,12 +239,13 @@ class SignatureInspector:
 
         if model:
             if model not in provider_interface.models:
-                warnings.warn(
-                    message=f"\nSkipping api route '/{func.__name__}'.\n"
-                    f"Model '{model}' not found.\n\n"
-                    "Check available models in ProviderInterface().models",
-                    category=OpenBBWarning,
-                )
+                if Env().DEBUG_MODE:
+                    warnings.warn(
+                        message=f"\nSkipping api route '/{func.__name__}'.\n"
+                        f"Model '{model}' not found.\n\n"
+                        "Check available models in ProviderInterface().models",
+                        category=OpenBBWarning,
+                    )
                 return None
 
             cls.validate_signature(
@@ -373,7 +375,7 @@ class CommandMap:
     ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
-        mapping = get_provider_interface().map
+        mapping = ProviderInterface().map
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:
@@ -403,7 +405,7 @@ class CommandMap:
     ) -> Dict[str, List[str]]:
         api_router = router.api_router
 
-        mapping = get_provider_interface().map
+        mapping = ProviderInterface().map
 
         coverage_map: Dict[Any, Any] = {}
         for route in api_router.routes:

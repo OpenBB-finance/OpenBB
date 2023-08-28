@@ -10,7 +10,6 @@ import pytest
 from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.discovery import disc_controller
 
-
 # pylint: disable=E1101,W0603,E1111
 
 

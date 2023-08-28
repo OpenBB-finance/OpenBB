@@ -1,20 +1,29 @@
 """OpenBB SDK."""
 # flake8: noqa
-# pylint: disable=import-outside-toplevel
 
 from typing import List, Optional, Union
 
-from openbb_core.app.static.app_factory import create_app as __create_app
+from openbb_core.app.static.app_factory import (
+    create_app as __create_app,
+    BaseApp as __BaseApp,
+)
 
-sdk = __create_app()
-obb = sdk
+try:
+    # pylint: disable=import-outside-toplevel
+    from openbb.package.__extensions__ import Extensions as __Extensions
+
+    obb: Union[__BaseApp, __Extensions] = __create_app(__Extensions)
+    sdk = obb
+except (ImportError, ModuleNotFoundError):
+    print("Failed to import extensions. Run `openbb.build()` to build extensions code.")
+    obb = sdk = __create_app()
 
 
-def _rebuild_python_interface(
+def build(
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
 ) -> None:
-    """Rebuild the Python SDK.
+    """Build extension modules.
 
     Parameters
     ----------
@@ -25,6 +34,19 @@ def _rebuild_python_interface(
     lint : bool, optional
         Whether to lint the code, by default True
     """
+    # pylint: disable=import-outside-toplevel
+    import os
+    from pathlib import Path
+    from multiprocessing import Pool
     from openbb_core.app.static.package_builder import PackageBuilder
 
-    PackageBuilder.build(modules=modules, lint=lint)
+    current_dir = Path(os.path.dirname(os.path.realpath(__file__)))
+
+    # `build` is running in a separate process. This avoids consecutive calls to this
+    # function in the same interpreter to reuse objects already in memory. Not doing
+    # this was causing docstrings to have repeated sections, for example.
+    with Pool(processes=1) as pool:
+        pool.apply(
+            PackageBuilder(current_dir).build,
+            args=(modules, lint),
+        )

@@ -17,13 +17,13 @@ from numpy.typing import NDArray
 from scipy.interpolate import interp1d
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.fundamental_analysis import fmp_model
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
     get_kwarg,
     validate_risk_measure,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import fmp_model
 
 logger = logging.getLogger(__name__)
 
@@ -141,15 +141,14 @@ def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
     if start_date == "":
         if interval in extra_choices:
             p = extra_choices[interval]
-        else:
-            if interval[-1] == "d":
-                p = "[" + interval[:-1] + " Days]"
-            elif interval[-1] == "w":
-                p = "[" + interval[:-1] + " Weeks]"
-            elif interval[-1] == "o":
-                p = "[" + interval[:-2] + " Months]"
-            elif interval[-1] == "y":
-                p = "[" + interval[:-1] + " Years]"
+        elif interval[-1] == "d":
+            p = "[" + interval[:-1] + " Days]"
+        elif interval[-1] == "w":
+            p = "[" + interval[:-1] + " Weeks]"
+        elif interval[-1] == "o":
+            p = "[" + interval[:-2] + " Months]"
+        elif interval[-1] == "y":
+            p = "[" + interval[:-1] + " Years]"
         if p[1:3] == "1 ":
             p = p.replace("s", "")
     else:
@@ -1271,10 +1270,7 @@ def get_max_decorrelation_portfolio(
     if weights is not None:
         weights = weights.round(5)
 
-        if len(weights) > 1:
-            weights = weights.squeeze().to_dict()
-        else:
-            weights = weights.to_dict()
+        weights = weights.squeeze().to_dict() if len(weights) > 1 else weights.to_dict()
 
     return weights, stock_returns
 
@@ -2876,10 +2872,7 @@ def black_litterman(
         delta = (a - risk_free_rate) / (benchmark.T @ S @ benchmark)
         delta = delta.item()
 
-    if equilibrium:
-        PI_eq = delta * (S @ benchmark)
-    else:
-        PI_eq = mu - risk_free_rate
+    PI_eq = delta * (S @ benchmark) if equilibrium else mu - risk_free_rate
 
     flag = False
     if p_views is None or q_views is None:

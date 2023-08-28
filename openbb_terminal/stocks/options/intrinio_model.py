@@ -425,7 +425,7 @@ def get_ticker_info(symbol: str) -> pd.Series:
     try:
         info = intrinio.SecurityApi().get_security_by_id(symbol).to_dict()
     except Exception:
-        print("Security not found")
+        console.print("Security not found")
         return {}
 
     info = pd.Series(info).rename(
@@ -536,7 +536,7 @@ def get_eod_chains(symbol: str, date: str) -> Options:
     symbol = symbol.upper()
     OptionsChains.SYMBOLS = get_all_ticker_symbols()
     if symbol not in OptionsChains.SYMBOLS:
-        print(f"{symbol}", "is not supported by Intrinio.")
+        console.print(f"{symbol}", "is not supported by Intrinio.")
         return OptionsChains
     OptionsChains.symbol = symbol
     if symbol not in TICKER_EXCEPTIONS:
@@ -567,7 +567,7 @@ def get_eod_chains(symbol: str, date: str) -> Options:
         OptionsChains.last_price = underlying["adjClose"]
         # If the ticker is an index, it will not return underlying data.
     else:
-        print("Warning: Index options do not currently return underlying data.")
+        console.print("Warning: Index options do not currently return underlying data.")
         OptionsChains.underlying_name = OptionsChains.symbol
         OptionsChains.underlying_price = pd.Series(dtype=object)
         OptionsChains.last_price = 0
@@ -663,7 +663,7 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> Options:
     OptionsChains.SYMBOLS = get_all_ticker_symbols()
 
     if symbol not in OptionsChains.SYMBOLS:
-        print(f"{symbol}", "is not supported by Intrinio.")
+        console.print(f"{symbol}", "is not supported by Intrinio.")
         return OptionsChains
     OptionsChains.symbol = symbol
 
@@ -700,7 +700,7 @@ def load_options(symbol: str, date: str = "", pydantic=False) -> Options:
 
         # If the ticker is an index, it will not return underlying data.
     else:
-        print("Warning: Index options do not currently return underlying data.")
+        console.print("Warning: Index options do not currently return underlying data.")
         OptionsChains.underlying_name = OptionsChains.symbol
         OptionsChains.underlying_price = pd.Series(dtype=object)
         OptionsChains.last_price = 0

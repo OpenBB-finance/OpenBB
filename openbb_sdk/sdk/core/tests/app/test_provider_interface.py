@@ -5,7 +5,6 @@ import pytest
 from openbb_core.app.provider_interface import (
     ProviderChoices,
     ProviderInterface,
-    get_provider_interface,
 )
 
 
@@ -18,11 +17,6 @@ def provider_interface():
 def test_init(provider_interface):
     """Test init."""
     assert provider_interface
-
-
-def test_get_provider_interface():
-    """Test get provider interface."""
-    assert isinstance(get_provider_interface(), ProviderInterface)
 
 
 def test_map(provider_interface):
@@ -63,12 +57,12 @@ def test_data(provider_interface):
     assert "StockEOD" in data
 
 
-def test_providers_literal(provider_interface):
+def test_available_providers(provider_interface):
     """Test providers literal."""
-    providers_literal = provider_interface.providers_literal
-    assert isinstance(type(providers_literal), type)
-    assert len(providers_literal.__args__) > 0
-    assert "openbb" not in providers_literal.__args__
+    available_providers = provider_interface.available_providers
+    assert isinstance(available_providers, list)
+    assert len(available_providers) > 0
+    assert "openbb" not in available_providers
 
 
 def test_provider_choices(provider_interface):

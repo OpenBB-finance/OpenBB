@@ -20,6 +20,8 @@
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
+    - [4.1.5. Debug mode](#415-debug-mode)
+    - [4.1.6. Develop mode](#416-develop-mode)
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
@@ -326,6 +328,28 @@ obb.stocks.load(
     provider="fmp",
     chart=True
     )
+```
+
+### 4.1.5. Debug mode
+
+To run the app in debug mode you can use the following code or create a .env file inside
+`openbb_sdk/sdk/core/openbb_core/app`.
+
+```python
+import os
+os.environ["OPENBB_DEBUG_MODE"] = "True"
+from openbb import sdk
+```
+
+### 4.1.6. Develop mode
+
+To run the app in develop mode you can use the following code or create a .env file inside
+`openbb_sdk/sdk/core/openbb_core/app`.
+
+```python
+import os
+os.environ["OPENBB_DEV_MODE"] = "True"
+from openbb import sdk
 ```
 
 ## 4.2 Dynamic version

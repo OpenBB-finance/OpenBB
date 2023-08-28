@@ -9,6 +9,7 @@ import pandas_market_calendars as mcal
 from pandas.tseries.holiday import next_workday
 
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import Options, PydanticOptions
 
 __docformat__ = "numpy"
@@ -86,7 +87,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     response = request(URL)
 
     if response.status_code != 200:
-        print("No price data found for the underlying security, " f"{symbol}")
+        console.print("No price data found for the underlying security, " f"{symbol}")
         return data
 
     data = response.json()["ticker"]
@@ -188,7 +189,7 @@ def get_chains(symbol: str = "") -> Options:
     OptionsChains.source = "TMX"
 
     if symbol == "":
-        print("Please enter a symbol.")
+        console.print("Please enter a symbol.")
         return OptionsChains
 
     symbol = symbol.upper()
@@ -200,7 +201,7 @@ def get_chains(symbol: str = "") -> Options:
         symbol = list(SYMBOLS.query("`Underlying Symbol` == @symbol").index.values)[0]
 
     if symbol not in OptionsChains.SYMBOLS.index and not OptionsChains.SYMBOLS.empty:
-        print(
+        console.print(
             "The symbol, " f"{symbol}" ", is not a valid TMX listing.",
             sep=None,
         )
@@ -344,14 +345,14 @@ def get_eodchains(symbol: str = "", date: str = "") -> Options:
     BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
 
     if symbol == "":
-        print("Please enter a symbol.")
+        console.print("Please enter a symbol.")
         return OptionsChains
 
     if ".TO" in symbol:
         symbol = symbol.replace(".TO", "")
 
     if symbol not in OptionsChains.SYMBOLS.index:
-        print(
+        console.print(
             "The symbol, " f"{symbol}" ", was not found in the TMX listings.",
             sep=None,
         )
@@ -363,7 +364,7 @@ def get_eodchains(symbol: str = "", date: str = "") -> Options:
         EOD_URL = BASE_URL + f"{OptionsChains.symbol}" "&dnld=1#quotes"
     if date != "":
         if pd.to_datetime(date) < pd.to_datetime("2009-01-01"):
-            print("Historical options data begins on 2009-01-02.")
+            console.print("Historical options data begins on 2009-01-02.")
         date = check_weekday(date)
         if date in holidays:
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -381,7 +382,7 @@ def get_eodchains(symbol: str = "", date: str = "") -> Options:
         )
     data = pd.read_csv(EOD_URL)
     if data.empty:
-        print(
+        console.print(
             "No data found.  Check the date to ensure the ticker was listed before that date."
         )
         return OptionsChains

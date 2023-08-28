@@ -53,8 +53,12 @@ class FREDESTRData(ESTRData):
             return float("nan")
 
 
-class FREDESTRFetcher(Fetcher[FREDESTRQueryParams, FREDESTRData]):
+class FREDESTRFetcher(
+    Fetcher[FREDESTRQueryParams, List[Dict[str, List[FREDESTRData]]]]
+):
     """FRED ESTR Fetcher."""
+
+    data_type = FREDESTRData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDESTRQueryParams:
@@ -63,7 +67,7 @@ class FREDESTRFetcher(Fetcher[FREDESTRQueryParams, FREDESTRData]):
     @staticmethod
     def extract_data(
         query: FREDESTRQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> list:
+    ) -> dict:
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = ESTR_PARAMETER_TO_ID[query.parameter]
         fred = Fred(key)
@@ -71,6 +75,6 @@ class FREDESTRFetcher(Fetcher[FREDESTRQueryParams, FREDESTRData]):
         return data
 
     @staticmethod
-    def transform_data(data: list) -> List[Dict[str, List[FREDESTRData]]]:
+    def transform_data(data: dict) -> List[Dict[str, List[FREDESTRData]]]:
         keys = ["date", "value"]
         return [FREDESTRData(**{k: x[k] for k in keys}) for x in data]

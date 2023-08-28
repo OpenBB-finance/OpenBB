@@ -10,6 +10,7 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_manager import ChartingManager
+from openbb_core.app.env import Env
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -17,6 +18,7 @@ from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -37,8 +39,11 @@ class ExecutionContext:
 
 
 class ParametersBuilder:
+    """Build parameters for a function."""
+
     @staticmethod
     def get_polished_parameter_list(func: Callable) -> List[Parameter]:
+        """Get the signature parameters values as a list."""
         sig = signature(func)
         parameter_list = list(sig.parameters.values())
 
@@ -46,6 +51,7 @@ class ParametersBuilder:
 
     @staticmethod
     def get_polished_func(func: Callable) -> Callable:
+        """Remove __authenticated_user_settings from the function signature and annotations."""
         func = deepcopy(func)
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -68,6 +74,7 @@ class ParametersBuilder:
         args: Tuple[Any],
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
+        """Merge args and kwargs into a single dict."""
         args = deepcopy(args)
         kwargs = deepcopy(kwargs)
         parameter_list = cls.get_polished_parameter_list(func=func)
@@ -87,13 +94,12 @@ class ParametersBuilder:
 
     @staticmethod
     def update_command_context(
-        func: Callable,
         kwargs: Dict[str, Any],
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> Dict[str, Any]:
-        argcount = func.__code__.co_argcount
-        if "cc" in func.__code__.co_varnames[:argcount]:
+        """Update the command context with the available user and system settings."""
+        if "cc" in kwargs:
             kwargs["cc"] = CommandContext(
                 user_settings=user_settings,
                 system_settings=system_settings,
@@ -103,29 +109,56 @@ class ParametersBuilder:
 
     @staticmethod
     def update_provider_choices(
-        command_map: CommandMap,
+        command_coverage: Dict[str, List[str]],
         route: str,
         kwargs: Dict[str, Any],
-        user_settings: UserSettings,
+        route_default: Optional[str],
     ) -> Dict[str, Any]:
-        provider_choices = kwargs.get("provider_choices", None)
-        if provider_choices and isinstance(provider_choices, dict):
-            provider = provider_choices.get("provider", None)
-            if provider is None:
-                route_defaults = user_settings.defaults.routes.get(route, None)
-                random_choice = command_map.command_coverage[route][0]
-                provider = (
-                    random_choice
-                    if route_defaults is None
-                    or route_defaults.get("provider", None) is None
-                    else route_defaults.get("provider", random_choice)
+        """Update the provider choices with the available providers and set default provider."""
+
+        def _has_provider(kwargs: Dict[str, Any]) -> bool:
+            """Check if the kwargs already have a provider."""
+            if (
+                provider_choices := kwargs.get("provider_choices", None)
+            ) and isinstance(provider_choices, dict):
+                return provider_choices.get("provider", None) is not None
+            return False
+
+        def _get_first_provider() -> Optional[str]:
+            """Get the first available provider."""
+            available_providers = ProviderInterface().available_providers
+            return available_providers[0] if available_providers else None
+
+        def _get_default_provider(
+            command_coverage: Dict[str, List[str]],
+            route_default: Optional[str],
+        ) -> Optional[str]:
+            """Get the default provider for the given route. Either pick it from the user defaults or from the command coverage."""
+            cmd_cov_given_route = command_coverage.get(route, None)
+            command_cov_provider = (
+                cmd_cov_given_route[0] if cmd_cov_given_route else None
+            )
+
+            if route_default:
+                return route_default.get("provider", None) or command_cov_provider
+
+            return command_cov_provider
+
+        if not _has_provider(kwargs):
+            provider = (
+                _get_default_provider(
+                    command_coverage,
+                    route_default,
                 )
-                kwargs["provider_choices"] = {"provider": provider}
+                if route in command_coverage
+                else _get_first_provider()
+            )
+            kwargs["provider_choices"] = {"provider": provider}
+
         return kwargs
 
-    @classmethod
+    @staticmethod
     def validate_kwargs(
-        cls,
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
@@ -169,16 +202,15 @@ class ParametersBuilder:
             kwargs=kwargs,
         )
         kwargs = cls.update_command_context(
-            func=func,
             kwargs=kwargs,
             system_settings=system_settings,
             user_settings=user_settings,
         )
         kwargs = cls.update_provider_choices(
-            command_map=command_map,
+            command_coverage=command_map.command_coverage,
             route=route,
             kwargs=kwargs,
-            user_settings=user_settings,
+            route_default=user_settings.defaults.routes.get(route, None),
         )
         kwargs = cls.validate_kwargs(func=func, kwargs=kwargs)
         return kwargs
@@ -189,13 +221,11 @@ class StaticCommandRunner:
     charting_manager: ChartingManager = ChartingManager()
 
     @classmethod
-    def __command(
-        cls, system_settings: SystemSettings, func: Callable, kwargs: Dict[str, Any]
-    ) -> OBBject:
+    def __command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
         """Run a command and return the output"""
         context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
             warnings.catch_warnings(record=True)
-            if not system_settings.debug_mode
+            if not Env().DEBUG_MODE
             else nullcontext()
         )
 
@@ -265,7 +295,6 @@ class StaticCommandRunner:
 
         try:
             obbject = cls.__command(
-                system_settings=system_settings,
                 func=func,
                 kwargs=kwargs,
             )
