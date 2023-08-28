@@ -122,7 +122,7 @@ google-auth-oauthlib==1.0.0 ; python_full_version >= "3.8.1" and python_full_ver
 google-auth==2.22.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 graphlib-backport==1.0.3 ; python_full_version >= "3.8.1" and python_version < "3.9"
 graphviz==0.20.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
-greenlet==2.0.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (platform_machine == "win32" or platform_machine == "WIN32" or platform_machine == "AMD64" or platform_machine == "amd64" or platform_machine == "x86_64" or platform_machine == "ppc64le" or platform_machine == "aarch64")
+greenlet==2.0.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (platform_machine == "aarch64" or platform_machine == "ppc64le" or platform_machine == "x86_64" or platform_machine == "amd64" or platform_machine == "AMD64" or platform_machine == "win32" or platform_machine == "WIN32")
 grpcio==1.56.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 h11==0.14.0 ; python_full_version >= "3.8.1" and python_version < "3.11" and python_full_version != "3.9.7"
 hijri-converter==2.3.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
@@ -315,7 +315,7 @@ pytz==2023.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7"
 pywin32-ctypes==0.2.2 ; python_full_version >= "3.8.1" and python_version < "3.11" and python_full_version != "3.9.7" and sys_platform == "win32"
 pywin32==306 ; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 pywinpty==2.0.11 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and os_name == "nt"
-pywry==0.5.13 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
+pywry==0.5.14 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 pyyaml==6.0.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 pyzmq==25.1.0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 qdldl==0.1.7.post0 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
