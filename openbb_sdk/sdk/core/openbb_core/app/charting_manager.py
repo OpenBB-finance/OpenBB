@@ -47,7 +47,7 @@ class ChartingManager(metaclass=SingletonMeta):
         system_settings: Optional[SystemSettings] = None,
     ) -> None:
         user_settings = user_settings or UserService().read_default_user_settings()
-        self._system_settings = (
+        system_settings = (
             system_settings or SystemService().read_default_system_settings()
         )
 
@@ -76,6 +76,7 @@ class ChartingManager(metaclass=SingletonMeta):
         """
         Checks if charting extension is installed.
         Given a charting extension name, it checks if it is installed under the given plugin.
+
         Parameters
         ----------
         charting_extension : str
