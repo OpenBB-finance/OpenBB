@@ -8,7 +8,7 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeFloat, PositiveFloat, root_validator, validator
 
@@ -27,6 +27,10 @@ class AlphaVantageStockEODQueryParams(StockEODQueryParams):
     ] = Field(
         description="The time series of your choice. ",
         default="TIME_SERIES_DAILY",
+        exclude=True,
+    )
+    period: Literal["intraday", "daily", "weekly", "monthly"] = Field(
+        default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     interval: Optional[Literal["1min", "5min", "15min", "30min", "60min"]] = Field(
         description="The interval between two consecutive data points in the time series.",
@@ -54,13 +58,26 @@ class AlphaVantageStockEODQueryParams(StockEODQueryParams):
         "time series; full returns trailing 30 days of the most recent intraday data "
         "if the month parameter (see above) is not specified, or the full intraday "
         "data for a specific month in history if the month parameter is specified.",
-        default="compact",
+        default="full",
         available_on_functions=[
             "TIME_SERIES_INTRADAY",
             "TIME_SERIES_DAILY",
             "TIME_SERIES_DAILY_ADJUSTED",
         ],
     )
+
+    @root_validator(pre=True)
+    def setup_function(cls, values):  # pylint: disable=E0213
+        """Set the function based on the period."""
+
+        functions_based_on_period = {
+            "intraday": "TIME_SERIES_INTRADAY",
+            "daily": "TIME_SERIES_DAILY",
+            "weekly": "TIME_SERIES_WEEKLY",
+            "monthly": "TIME_SERIES_MONTHLY",
+        }
+        values["function"] = functions_based_on_period[values["period"]]
+        return values
 
     @root_validator(pre=True)
     def adjusted_function_validate(cls, values):  # pylint: disable=E0213
