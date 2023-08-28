@@ -720,7 +720,7 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -731,17 +731,19 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']
+            Source of the data. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[StockQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -752,50 +754,90 @@ class CLASS_stocks(Container):
 
         StockQuote
         ----------
-        symbol : Optional[str]
-            Symbol to get data for.
-        name : Optional[str]
-            Name of the company.
-        price : Optional[float]
-            Current trading price of the stock.
-        changes_percentage : Optional[float]
-            Change percentage of the stock price.
-        change : Optional[float]
-            Change in the stock price.
         day_low : Optional[float]
             Lowest price of the stock in the current trading day.
         day_high : Optional[float]
             Highest price of the stock in the current trading day.
-        year_high : Optional[float]
-            Highest price of the stock in the last 52 weeks.
-        year_low : Optional[float]
-            Lowest price of the stock in the last 52 weeks.
-        market_cap : Optional[float]
-            Market cap of the company.
-        price_avg50 : Optional[float]
-            50 days average price of the stock.
-        price_avg200 : Optional[float]
-            200 days average price of the stock.
-        volume : Optional[int]
-            Volume of the stock in the current trading day.
-        avg_volume : Optional[int]
-            Average volume of the stock in the last 10 trading days.
-        exchange : Optional[str]
-            Exchange the stock is traded on.
-        open : Optional[float]
-            Opening price of the stock in the current trading day.
-        previous_close : Optional[float]
-            Previous closing price of the stock.
-        eps : Optional[float]
-            Earnings per share of the stock.
-        pe : Optional[float]
-            Price earnings ratio of the stock.
-        earnings_announcement : Optional[str]
-            Earnings announcement date of the stock.
-        shares_outstanding : Optional[int]
-            Number of shares outstanding of the stock.
         date : Optional[datetime]
-            Timestamp of the stock quote."""  # noqa: E501
+            Timestamp of the stock quote.
+        symbol : Optional[str]
+            Symbol of the company. (provider: fmp)
+        name : Optional[str]
+            Name of the company. (provider: fmp)
+        price : Optional[float]
+            Current trading price of the stock. (provider: fmp)
+        changes_percentage : Optional[float]
+            Change percentage of the stock price. (provider: fmp)
+        change : Optional[float]
+            Change in the stock price. (provider: fmp)
+        year_high : Optional[float]
+            Highest price of the stock in the last 52 weeks. (provider: fmp)
+        year_low : Optional[float]
+            Lowest price of the stock in the last 52 weeks. (provider: fmp)
+        market_cap : Optional[float]
+            Market cap of the company. (provider: fmp)
+        price_avg50 : Optional[float]
+            50 days average price of the stock. (provider: fmp)
+        price_avg200 : Optional[float]
+            200 days average price of the stock. (provider: fmp)
+        volume : Optional[int]
+            Volume of the stock in the current trading day. (provider: fmp)
+        avg_volume : Optional[int]
+            Average volume of the stock in the last 10 trading days. (provider: fmp)
+        exchange : Optional[str]
+            Exchange the stock is traded on. (provider: fmp)
+        open : Optional[float]
+            Opening price of the stock in the current trading day. (provider: fmp)
+        previous_close : Optional[float]
+            Previous closing price of the stock. (provider: fmp)
+        eps : Optional[float]
+            Earnings per share of the stock. (provider: fmp)
+        pe : Optional[float]
+            Price earnings ratio of the stock. (provider: fmp)
+        earnings_announcement : Optional[str]
+            Earnings announcement date of the stock. (provider: fmp)
+        shares_outstanding : Optional[int]
+            Number of shares outstanding of the stock. (provider: fmp)
+        last_price : Optional[float]
+            Price of the last trade. (provider: intrinio)
+        last_time : Optional[datetime]
+            Date and Time when the last trade occurred. (provider: intrinio)
+        last_size : Optional[int]
+            Size of the last trade. (provider: intrinio)
+        bid_price : Optional[float]
+            Price of the top bid order. (provider: intrinio)
+        bid_size : Optional[int]
+            Size of the top bid order. (provider: intrinio)
+        ask_price : Optional[float]
+            Price of the top ask order. (provider: intrinio)
+        ask_size : Optional[int]
+            Size of the top ask order. (provider: intrinio)
+        open_price : Optional[float]
+            Open price for the trading day. (provider: intrinio)
+        close_price : Optional[float]
+            Closing price for the trading day (IEX source only). (provider: intrinio)
+        high_price : Optional[float]
+            High Price for the trading day. (provider: intrinio)
+        low_price : Optional[float]
+            Low Price for the trading day. (provider: intrinio)
+        exchange_volume : Optional[int]
+            Number of shares exchanged during the trading day on the exchange. (provider: intrinio)
+        market_volume : Optional[int]
+            Number of shares exchanged during the trading day for the whole market. (provider: intrinio)
+        updated_on : Optional[datetime]
+            Date and Time when the data was last updated. (provider: intrinio)
+        source : Optional[str]
+            Source of the data. (provider: intrinio)
+        listing_venue : Optional[str]
+            Listing venue where the trade took place (SIP source only). (provider: intrinio)
+        sales_conditions : Optional[str]
+            Indicates any sales condition modifiers associated with the trade. (provider: intrinio)
+        quote_conditions : Optional[str]
+            Indicates any quote condition modifiers associated with the trade. (provider: intrinio)
+        market_center_code : Optional[str]
+            Market center character code. (provider: intrinio)
+        is_darkpool : Optional[bool]
+            Whether or not the current trade is from a darkpool. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
