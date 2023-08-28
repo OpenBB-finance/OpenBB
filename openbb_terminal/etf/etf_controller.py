@@ -491,12 +491,12 @@ class ETFController(BaseController):
 
                     for num in mov_list:
                         try:
-                            num = int(num)
+                            clean_num = int(num)
 
-                            if num <= 1:
+                            if clean_num <= 1:
                                 raise ValueError
 
-                            mov_avgs.append(num)
+                            mov_avgs.append(clean_num)
                         except ValueError:
                             console.print(
                                 f"[red]{num} is not a valid moving average, must be an integer "

@@ -5,8 +5,8 @@ from typing import Dict, List
 
 YIELD_CURVE_NOMINAL_RATES = [round(1 / 12, 3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
-YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
-YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
+YIELD_CURVE_REAL_RATES = [5.0, 7, 10, 20, 30]
+YIELD_CURVE_PAR_RATES = [2.0, 5, 10, 30]
 YIELD_CURVE_SERIES_NOMINAL = {
     "1Month": "DGS1MO",
     "3Month": "DGS3MO",
@@ -30,6 +30,7 @@ YIELD_CURVE_SERIES_REAL = {
 
 
 def all_cpi_options(harmonized: bool = False) -> List[dict]:
+    """Get all CPI options."""
     data = []
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -44,6 +45,7 @@ def all_cpi_options(harmonized: bool = False) -> List[dict]:
 
 
 def get_cpi_options(harmonized: bool = False) -> List[dict]:
+    """Get CPI options."""
     series = all_cpi_options(harmonized)
     for item in series:
         item.pop("series_id")
@@ -51,10 +53,7 @@ def get_cpi_options(harmonized: bool = False) -> List[dict]:
 
 
 def process_projections(data: Dict) -> List[Dict]:
-    """.
-    Process projection data
-    """
-
+    """Process projection data."""
     # Get dates first
     dates = []
     for key, value in data.items():

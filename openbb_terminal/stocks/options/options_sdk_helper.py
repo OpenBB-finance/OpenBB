@@ -450,7 +450,7 @@ class OptionsChains(Options):  # pylint: disable=too-few-public-methods
         if query is not None:
             if isinstance(query, pd.DataFrame):
                 return options_chains_model.calculate_stats(query, by)
-            print("Query must be passed a Pandas DataFrame with chains data.")
+            console.print("Query must be passed a Pandas DataFrame with chains data.")
 
         return options_chains_model.calculate_stats(self, by)
 

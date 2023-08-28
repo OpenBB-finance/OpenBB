@@ -21,10 +21,10 @@ from dateutil.relativedelta import FR, relativedelta
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
+from openbb_terminal.config_terminal import theme
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
 from openbb_terminal.portfolio.portfolio_optimization import (
@@ -135,15 +135,14 @@ def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
     if start_date == "":
         if interval in extra_choices:
             p = extra_choices[interval]
-        else:
-            if interval[-1] == "d":
-                p = "[" + interval[:-1] + " Days]"
-            elif interval[-1] == "w":
-                p = "[" + interval[:-1] + " Weeks]"
-            elif interval[-1] == "o":
-                p = "[" + interval[:-2] + " Months]"
-            elif interval[-1] == "y":
-                p = "[" + interval[:-1] + " Years]"
+        elif interval[-1] == "d":
+            p = "[" + interval[:-1] + " Days]"
+        elif interval[-1] == "w":
+            p = "[" + interval[:-1] + " Weeks]"
+        elif interval[-1] == "o":
+            p = "[" + interval[:-2] + " Months]"
+        elif interval[-1] == "y":
+            p = "[" + interval[:-1] + " Years]"
         if p[1:3] == "1 ":
             p = p.replace("s", "")
     else:
@@ -241,9 +240,9 @@ def portfolio_performance(
         factor_1 = str(int(time_factor[freq])) + ") "
         factor_2 = "√" + factor_1
 
-        print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
-        print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
-        print(f"Sharpe ratio: {sharpe:.4f}")
+        console.print("\nAnnual (by " + factor_1 + f"expected return: {100 * mu:.2f}%")
+        console.print("Annual (by " + factor_2 + f"volatility: {100 * sigma:.2f}%")
+        console.print(f"Sharpe ratio: {sharpe:.4f}")
 
         if risk_measure != "MV":
             risk = rp.Sharpe_Risk(
@@ -275,7 +274,7 @@ def portfolio_performance(
 
             if risk_measure in drawdowns:
                 sharpe_2 = (mu - risk_free_rate) / risk
-                print(
+                console.print(
                     risk_names[risk_measure.lower()].capitalize()
                     + " : "
                     + f"{100 * risk:.2f}%"
@@ -283,7 +282,7 @@ def portfolio_performance(
             else:
                 risk = risk * time_factor[freq] ** 0.5
                 sharpe_2 = (mu - risk_free_rate) / risk
-                print(
+                console.print(
                     "Annual (by "
                     + factor_2
                     + risk_names[risk_measure.lower()]
@@ -291,7 +290,7 @@ def portfolio_performance(
                     + f"{100 * risk:.2f}%"
                 )
 
-            print(
+            console.print(
                 "Return / "
                 + risk_names[risk_measure.lower()]
                 + f" ratio: {sharpe_2:.4f}"
@@ -2269,8 +2268,8 @@ def display_ef(
         ax.set_title(f"Efficient Frontier simulating {n_portfolios} portfolios")
         ax.legend(loc="best", scatterpoints=1)
         theme.style_primary_axis(ax)
-        l, b, w, h = ax.get_position().bounds
-        ax.set_position([l, b, w * 0.9, h])
+        L, b, w, h = ax.get_position().bounds
+        ax.set_position([L, b, w * 0.9, h])
         ax1 = ax.get_figure().axes
         ll, bb, ww, hh = ax1[-1].get_position().bounds
         ax1[-1].set_position([ll * 1.02, bb, ww, hh])
@@ -3975,10 +3974,7 @@ def additional_plots(
             figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
         )
 
-        if len(weights) <= 3:
-            number_of_clusters = len(weights)
-        else:
-            number_of_clusters = None
+        number_of_clusters = len(weights) if len(weights) <= 3 else None
 
         ax = rp.plot_clusters(
             returns=data,
@@ -3999,38 +3995,38 @@ def additional_plots(
 
         if category_dict is None:
             # Vertical dendrogram
-            l, b, w, h = ax[4].get_position().bounds
-            l1 = l * 0.5
+            L, b, w, h = ax[4].get_position().bounds
+            l1 = L * 0.5
             w1 = w * 0.2
             b1 = h * 0.05
-            ax[4].set_position([l - l1, b + b1, w * 0.8, h * 0.95])
+            ax[4].set_position([L - l1, b + b1, w * 0.8, h * 0.95])
             # Heatmap
-            l, b, w, h = ax[1].get_position().bounds
-            ax[1].set_position([l - l1 - w1, b + b1, w * 0.8, h * 0.95])
+            L, b, w, h = ax[1].get_position().bounds
+            ax[1].set_position([L - l1 - w1, b + b1, w * 0.8, h * 0.95])
             w2 = w * 0.2
             # colorbar
-            l, b, w, h = ax[2].get_position().bounds
-            ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+            L, b, w, h = ax[2].get_position().bounds
+            ax[2].set_position([L - l1 - w1 - w2, b, w, h])
             # Horizontal dendrogram
-            l, b, w, h = ax[3].get_position().bounds
-            ax[3].set_position([l - l1 - w1, b, w * 0.8, h])
+            L, b, w, h = ax[3].get_position().bounds
+            ax[3].set_position([L - l1 - w1, b, w * 0.8, h])
         else:
             # Vertical dendrogram
-            l, b, w, h = ax[4].get_position().bounds
-            l1 = l * 0.5
+            L, b, w, h = ax[4].get_position().bounds
+            l1 = L * 0.5
             w1 = w * 0.4
             b1 = h * 0.2
-            ax[4].set_position([l - l1, b + b1, w * 0.6, h * 0.8])
+            ax[4].set_position([L - l1, b + b1, w * 0.6, h * 0.8])
             # Heatmap
-            l, b, w, h = ax[1].get_position().bounds
-            ax[1].set_position([l - l1 - w1, b + b1, w * 0.6, h * 0.8])
+            L, b, w, h = ax[1].get_position().bounds
+            ax[1].set_position([L - l1 - w1, b + b1, w * 0.6, h * 0.8])
             w2 = w * 0.05
             # colorbar
-            l, b, w, h = ax[2].get_position().bounds
-            ax[2].set_position([l - l1 - w1 - w2, b, w, h])
+            L, b, w, h = ax[2].get_position().bounds
+            ax[2].set_position([L - l1 - w1 - w2, b, w, h])
             # Horizontal dendrogram
-            l, b, w, h = ax[3].get_position().bounds
-            ax[3].set_position([l - l1 - w1, b, w * 0.6, h])
+            L, b, w, h = ax[3].get_position().bounds
+            ax[3].set_position([L - l1 - w1, b, w * 0.6, h])
 
         title = "Portfolio - " + title_opt + "\n"
         title += ax[3].get_title(loc="left")

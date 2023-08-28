@@ -8,7 +8,7 @@ from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
 
-randint = random.randint(0, 999999999)
+randint = random.randint(0, 999999999)  # noqa: S311
 
 
 def return_list(**_):

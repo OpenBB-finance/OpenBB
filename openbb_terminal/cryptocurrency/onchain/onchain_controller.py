@@ -1460,7 +1460,7 @@ class OnchainController(BaseController):
                 else:
                     console.print(f"Coin '{ns_parser.coin}' does not exist.")
                     if ns_parser.coin.upper() == "BTC":
-                        token = "WBTC"
+                        token = "WBTC"  # noqa: S105
                     else:
                         similar_cmd = difflib.get_close_matches(
                             ns_parser.coin,

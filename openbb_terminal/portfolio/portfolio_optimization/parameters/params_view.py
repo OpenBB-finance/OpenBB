@@ -57,12 +57,16 @@ def load_file(path: str = "") -> Tuple[dict, str]:
                 + params_statics.MODEL_PARAMS[current_model]
             )
             if k in all_params:
-                v = booltostr(v)
-                help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+                clean_v = booltostr(v)
+                help_text += (
+                    f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {clean_v}\n"
+                )
     else:
         for k, v in converted_parameters.items():
-            v = booltostr(v)
-            help_text += f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
+            clean_v = booltostr(v)
+            help_text += (
+                f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {clean_v}\n"
+            )
 
     console.print(help_text)
 

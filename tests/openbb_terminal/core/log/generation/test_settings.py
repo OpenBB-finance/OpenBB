@@ -8,7 +8,7 @@ from openbb_terminal.core.log.generation.settings import (
 
 def test_aws_settings():
     aws_access_key_id = "MOCK_AWS_ACCESS_KEY_ID"
-    aws_secret_access_key = "MOCK_AWS_SECRET_ACCESS_KEY"
+    aws_secret_access_key = "MOCK_AWS_SECRET_ACCESS_KEY"  # noqa: S105
 
     aws_settings = AWSSettings(
         aws_access_key_id=aws_access_key_id,
@@ -90,7 +90,7 @@ def test_settings(tmp_path):
     )
 
     aws_access_key_id = "MOCK_AWS_ACCESS_KEY_ID"
-    aws_secret_access_key = "MOCK_AWS_SECRET_ACCESS_KEY"
+    aws_secret_access_key = "MOCK_AWS_SECRET_ACCESS_KEY"  # noqa: S105
     aws_settings = AWSSettings(
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,

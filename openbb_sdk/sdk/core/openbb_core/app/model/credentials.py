@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, Tuple
 
 from pydantic import create_model
 
-from openbb_core.app.provider_interface import get_provider_interface
+from openbb_core.app.provider_interface import ProviderInterface
 
 # Here we create the BaseModel from the provider required credentials.
 # This means that if a new provider extension is installed, the required
@@ -28,7 +28,7 @@ def format_map(
 Credentials = create_model(  # type: ignore
     "Credentials",
     __config__=Config,
-    **format_map(get_provider_interface().required_credentials),
+    **format_map(ProviderInterface().required_credentials),
 )
 
 

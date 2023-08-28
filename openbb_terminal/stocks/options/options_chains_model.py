@@ -14,6 +14,7 @@ import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.cboe_model import load_options as load_cboe
 from openbb_terminal.stocks.options.intrinio_model import load_options as load_intrinio
 from openbb_terminal.stocks.options.nasdaq_model import load_options as load_nasdaq
@@ -111,7 +112,7 @@ def load_options_chains(
     """
 
     if source not in SOURCES:
-        print("Invalid choice. Choose from: ", list(SOURCES), sep=None)
+        console.print("Invalid choice. Choose from: ", list(SOURCES), sep=None)
         return Options()
 
     if source == "Nasdaq":
@@ -132,7 +133,7 @@ def load_options_chains(
     return load_cboe(symbol, pydantic)
 
 
-def validate_object(
+def validate_object(  # noqa: PLR0911
     options: Options, scope: Optional[str] = "object", days: Optional[int] = None
 ) -> Any:
     """This is an internal helper function for validating the Options data object passed
@@ -178,13 +179,10 @@ def validate_object(
 
     scopes = ["chains", "object", "strategies", "nonZeroPrices"]
 
-    valid: bool = True
-
-    if scope == "":
-        scope = "chains"
+    scope = scope or "chains"
 
     if scope not in scopes:
-        print("Invalid choice.  The supported methods are:", scopes)
+        console.print("Invalid choice.  The supported methods are:", scopes)
         return pd.DataFrame()
 
     if scope == "object":
@@ -194,24 +192,24 @@ def validate_object(
                 and isinstance(options.expirations, list)
                 and hasattr(options, "last_price")
             ):
-                return valid
+                return True
 
         except AttributeError:
-            print(
+            console.print(
                 "Error: Invalid data type supplied.  The Options data object is required.  "
                 "Use load_options_chains() first."
             )
-            return not valid
+            return False
 
     if scope == "strategies":
         try:
             if isinstance(options.last_price, float):
-                return valid
+                return True
         except AttributeError:
-            print(
+            console.print(
                 "`last_price` was not found in the OptionsChainsData object and is required for this operation."
             )
-            return not valid
+            return False
 
     if scope == "chains":
         try:
@@ -229,20 +227,20 @@ def validate_object(
                 )
 
                 if options is None or chains.empty:
-                    print(
+                    console.print(
                         "No options chains data found in the supplied object.  Use load_options_chains()."
                     )
                     return pd.DataFrame()
 
             if "openInterest" not in chains.columns:
-                print("Expected column, openInterest, not found.")
+                console.print("Expected column, openInterest, not found.")
                 return pd.DataFrame()
 
             if "volume" not in chains.columns:
-                print("Expected column, volume, not found.")
+                console.print("Expected column, volume, not found.")
                 return pd.DataFrame()
         except AttributeError:
-            print("Error: Invalid data type supplied.")
+            console.print("Error: Invalid data type supplied.")
             return pd.DataFrame()
 
         return chains
@@ -291,11 +289,11 @@ def validate_object(
 
         return options
 
-    print(
+    console.print(
         "Error: No valid data supplied. Check the input to ensure it is not empty or None."
     )
 
-    return not valid
+    return False
 
 
 def get_nearest_expiration(options: Options, expiration: Optional[str] = "") -> str:
@@ -382,7 +380,7 @@ def get_nearest_call_strike(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -451,7 +449,7 @@ def get_nearest_put_strike(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -514,7 +512,7 @@ def get_nearest_otm_strike(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -527,7 +525,9 @@ def get_nearest_otm_strike(
         moneyness = moneyness / 100
 
     if moneyness > 100 or moneyness < 0:
-        print("Error: Moneyness must be expressed as a percentage between 0 and 100")
+        console.print(
+            "Error: Moneyness must be expressed as a percentage between 0 and 100"
+        )
         return {}
 
     upper = options.last_price * (1 + moneyness)
@@ -589,7 +589,7 @@ def calculate_straddle(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -724,7 +724,7 @@ def calculate_strangle(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -735,7 +735,7 @@ def calculate_strangle(
     options = validate_object(options, "nonZeroPrices", dte_estimate)
 
     if moneyness > 100 or moneyness < 0:
-        print("Error: Moneyness must be between 0 and 100.")
+        console.print("Error: Moneyness must be between 0 and 100.")
         return pd.DataFrame()
 
     strikes = get_nearest_otm_strike(options, moneyness)
@@ -858,7 +858,7 @@ def calculate_vertical_call_spread(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -1003,7 +1003,7 @@ def calculate_vertical_put_spread(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -1136,7 +1136,7 @@ def calculate_synthetic_long(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -1235,7 +1235,7 @@ def calculate_synthetic_short(
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the OptionsChain data object.")
+        console.print("`last_price` was not found in the OptionsChain data object.")
         return pd.DataFrame()
 
     if isinstance(options.chains, dict):
@@ -1324,7 +1324,9 @@ def calculate_stats(options: Options, by: Optional[str] = "expiration") -> pd.Da
     """
 
     if by not in ["expiration", "strike"]:
-        print("Invalid choice.  The supported methods are: [expiration, strike]")
+        console.print(
+            "Invalid choice.  The supported methods are: [expiration, strike]"
+        )
         return pd.DataFrame()
 
     chains = deepcopy(options)
@@ -1465,58 +1467,46 @@ def get_strategies(
     )
     """
 
+    def to_clean_list(x):
+        if x is None:
+            return None
+        return [x] if not isinstance(x, list) else x
+
     options = deepcopy(options)
 
     if validate_object(options, scope="object") is False:
         return pd.DataFrame()
 
     if validate_object(options, scope="strategies") is False:
-        print("`last_price` was not found in the Options data object.")
+        console.print("`last_price` was not found in the Options data object.")
         return pd.DataFrame()
 
-    if isinstance(options.chains, dict):
-        options.chains = pd.DataFrame(options.chains)
+    options.chains = (
+        pd.DataFrame(options.chains)
+        if isinstance(options.chains, dict)
+        else options.chains
+    )
 
-    if strangle_moneyness is None:
-        strangle_moneyness = [0.0]
-
-    if days is None:
-        days = options.chains["dte"].unique().tolist()
+    strangle_moneyness = strangle_moneyness or [0.0]
+    days = days or options.chains["dte"].unique().tolist()
 
     # Allows a single input to be passed instead of a list.
     days = [days] if isinstance(days, int) else days  # type: ignore[list-item]
 
     if not isinstance(vertical_calls, (list, float)) and vertical_calls is not None:
-        print(
+        console.print(
             "Two strike prices are required. Enter the sold price first, then the bought price."
         )
         return pd.DataFrame()
     if not isinstance(vertical_puts, (list, float)) and vertical_puts is not None:
-        print(
+        console.print(
             "Two strike prices are required. Enter the sold price first, then the bought price."
         )
         return pd.DataFrame()
 
-    if strangle_moneyness is not None:
-        strangle_moneyness = (
-            [strangle_moneyness]  # type: ignore[list-item]
-            if not isinstance(strangle_moneyness, list)
-            else strangle_moneyness
-        )
-
-    if synthetic_longs is not None:
-        synthetic_longs = (
-            [synthetic_longs]  # type: ignore[list-item]
-            if not isinstance(synthetic_longs, list)
-            else synthetic_longs
-        )
-
-    if synthetic_shorts is not None:
-        synthetic_shorts = (
-            [synthetic_shorts]  # type: ignore[list-item]
-            if not isinstance(synthetic_shorts, list)
-            else synthetic_shorts
-        )
+    strangle_moneyness = to_clean_list(strangle_moneyness)
+    synthetic_longs = to_clean_list(synthetic_longs)
+    synthetic_shorts = to_clean_list(synthetic_shorts)
 
     days_list = []
     strategies = pd.DataFrame()
@@ -1531,8 +1521,7 @@ def get_strategies(
     put_spreads = pd.DataFrame()
 
     for day in days:
-        if day == 0:
-            day = -1
+        day = day or -1  # noqa: PLW2901
         days_list.append(get_nearest_dte(options, day))
     days = list(set(days_list))
     days.sort()
@@ -1562,24 +1551,14 @@ def get_strategies(
         for day in days:
             straddle = calculate_straddle(options, day, straddle_strike).transpose()
             if straddle.iloc[0]["Cost"] != 0:
-                straddles = pd.concat(
-                    [
-                        straddles,
-                        straddle,
-                    ]
-                )
+                straddles = pd.concat([straddles, straddle])
 
     if strangle_moneyness and strangle_moneyness[0] != 0:
         for day in days:
             for moneyness in strangle_moneyness:
                 strangle = calculate_strangle(options, day, moneyness).transpose()
                 if strangle.iloc[0]["Cost"] != 0:
-                    strangles_ = pd.concat(
-                        [
-                            strangles_,
-                            strangle,
-                        ]
-                    )
+                    strangles_ = pd.concat([strangles_, strangle])
 
         strangles = pd.concat([strangles, strangles_])
         strangles = strangles.query("`Strike 1` != `Strike 2`").drop_duplicates()
@@ -1592,12 +1571,7 @@ def get_strategies(
                     options, day, strike
                 ).transpose()
                 if _synthetic_long.iloc[0]["Strike 1 Premium"] != 0:
-                    _synthetic_longs = pd.concat(
-                        [
-                            _synthetic_longs,
-                            _synthetic_long,
-                        ]
-                    )
+                    _synthetic_longs = pd.concat([_synthetic_longs, _synthetic_long])
 
         synthetic_longs_df = pd.concat([synthetic_longs_df, _synthetic_longs])
 
@@ -1609,12 +1583,7 @@ def get_strategies(
                     options, day, strike
                 ).transpose()
                 if _synthetic_short.iloc[0]["Strike 1 Premium"] != 0:
-                    _synthetic_shorts = pd.concat(
-                        [
-                            _synthetic_shorts,
-                            _synthetic_short,
-                        ]
-                    )
+                    _synthetic_shorts = pd.concat([_synthetic_shorts, _synthetic_short])
 
         synthetic_shorts_df = pd.concat([synthetic_shorts_df, _synthetic_shorts])
 
@@ -1689,7 +1658,7 @@ def calculate_skew(
         return pd.DataFrame()
 
     if options.hasIV is False:
-        print(
+        console.print(
             "Options data object does not have Implied Volatility and is required for this function."
         )
         return pd.DataFrame()
