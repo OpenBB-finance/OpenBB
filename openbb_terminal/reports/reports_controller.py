@@ -18,6 +18,7 @@ from openbb_terminal.reports import reports_model
 from openbb_terminal.rich_config import MenuText, console
 
 from openbb_terminal.helper_funcs import parse_and_split_input
+
 # from openbb_terminal.terminal_helper import is_packaged_application
 
 logger = logging.getLogger(__name__)
@@ -328,7 +329,9 @@ class ReportController(BaseController):
             if "raw.githubusercontent" in ns_parser.url:
                 url = ns_parser.url
             else:
-                url = ns_parser.url.replace("github.com", "raw.githubusercontent.com").replace("/blob", "")
+                url = ns_parser.url.replace(
+                    "github.com", "raw.githubusercontent.com"
+                ).replace("/blob", "")
 
             if url:
                 try:
@@ -336,10 +339,9 @@ class ReportController(BaseController):
                     response = requests.get(url)
 
                     if response.status_code == 200:
-
                         temporary_folder = os.path.join(
                             get_current_user().preferences.USER_REPORTS_DIRECTORY,
-                            "temporary"
+                            "temporary",
                         )
 
                         # Does the temp folder exist? if not create it
@@ -349,7 +351,9 @@ class ReportController(BaseController):
                         # Local file path where you want to save the notebook
                         local_file_path = os.path.join(
                             temporary_folder,
-                            url.split(".com/")[1].replace("/", "_") # .replace(".ipynb", "")
+                            url.split(".com/")[1].replace(
+                                "/", "_"
+                            ),  # .replace(".ipynb", "")
                         )
 
                         # Save the template notebook locally
@@ -362,12 +366,12 @@ class ReportController(BaseController):
                                 input_path=local_file_path, args_dict=parameters_dict
                             )
                         else:
-                            console.print(
-                                f"[red]Notebook '{url}' not found![/red]\n"
-                            )
+                            console.print(f"[red]Notebook '{url}' not found![/red]\n")
 
                     else:
-                        console.print(f"Failed to fetch notebook from {url}. Status code: {response.status_code}")
+                        console.print(
+                            f"Failed to fetch notebook from {url}. Status code: {response.status_code}"
+                        )
 
                 except Exception as e:
                     console.print(f"An error occurred: {str(e)}")
