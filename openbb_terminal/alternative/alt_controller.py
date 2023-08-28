@@ -22,7 +22,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["hn"]
-    CHOICES_MENUS = ["covid", "oss", "realestate"]
+    CHOICES_MENUS = ["covid", "oss", "realestate", "companieshouse"]
     PATH = "/alternative/"
     CHOICES_GENERATION = True
 
@@ -41,6 +41,7 @@ class AlternativeDataController(BaseController):
         mt.add_menu("covid")
         mt.add_menu("oss")
         mt.add_menu("realestate")
+        mt.add_menu("companieshouse")
         mt.add_raw("\n")
         mt.add_cmd("hn")
         console.print(text=mt.menu_text, menu="Alternative")
@@ -94,3 +95,12 @@ class AlternativeDataController(BaseController):
         )
 
         self.queue = self.load_class(RealEstateController, self.queue)
+
+    @log_start_end(log=logger)
+    def call_companieshouse(self, _):
+        """Process companieshouse command."""
+        from openbb_terminal.alternative.companieshouse.companieshouse_controller import (
+            CompaniesHouseController,
+        )
+
+        self.queue = self.load_class(CompaniesHouseController, self.queue)
