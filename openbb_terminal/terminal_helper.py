@@ -107,7 +107,9 @@ def update_terminal():
 
     poetry_hash = sha256sum("poetry.lock")
 
-    completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
+    completed_process = subprocess.run(  # nosec
+        "git pull", shell=True, check=False  # noqa: S607,S602
+    )
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -121,7 +123,7 @@ def update_terminal():
     )
 
     completed_process = subprocess.run(  # nosec
-        "poetry install", shell=True, check=False
+        "poetry install", shell=True, check=False  # noqa: S607,S602
     )
     if completed_process.returncode != 0:
         return completed_process.returncode
@@ -155,29 +157,28 @@ def open_openbb_documentation(
     elif "account" in path:
         path = "/usage?path=/usage/guides/basics"
         command = ""
-    else:
-        if arg_type == "command":  # user passed a command name
-            if command in ["settings", "featflags"]:
-                path = "/usage?path=/usage/guides/customizing-the-terminal"
-                command = ""
-            else:
-                path = f"/commands?path={path}"
-        elif arg_type == "menu":  # user passed a menu name
-            if command in ["ta", "ba", "qa"]:
-                menu = path.split("/")[-2]
-                path = f"/usage?path=/usage/intros/common/{menu}"
-            elif command == "forecast":
-                command = ""
-                path = "/usage?path=/usage/intros/forecast"
-            else:
-                path = f"/usage?path=/usage/intros/{path}"
-        else:  # user didn't pass argument and is in a menu
+    elif arg_type == "command":  # user passed a command name
+        if command in ["settings", "featflags"]:
+            path = "/usage?path=/usage/guides/customizing-the-terminal"
+            command = ""
+        else:
+            path = f"/commands?path={path}"
+    elif arg_type == "menu":  # user passed a menu name
+        if command in ["ta", "ba", "qa"]:
             menu = path.split("/")[-2]
-            path = (
-                f"/usage?path=/usage/intros/common/{menu}"
-                if menu in ["ta", "ba", "qa"]
-                else f"/usage?path=/usage/intros/{path}"
-            )
+            path = f"/usage?path=/usage/intros/common/{menu}"
+        elif command == "forecast":
+            command = ""
+            path = "/usage?path=/usage/intros/forecast"
+        else:
+            path = f"/usage?path=/usage/intros/{path}"
+    else:  # user didn't pass argument and is in a menu
+        menu = path.split("/")[-2]
+        path = (
+            f"/usage?path=/usage/intros/common/{menu}"
+            if menu in ["ta", "ba", "qa"]
+            else f"/usage?path=/usage/intros/{path}"
+        )
 
     if command:
         if command == "keys":
@@ -270,7 +271,7 @@ def is_installer() -> bool:
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-        os.system("")  # nosec
+        os.system("")  # nosec # noqa: S605,S607
         # Hide splashscreen loader of the packaged app
         if is_installer():
             hide_splashscreen()

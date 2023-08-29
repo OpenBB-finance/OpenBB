@@ -65,11 +65,10 @@ def get_liquidations(symbol: str) -> pd.DataFrame:
                 df = df.set_index("date")
             else:
                 console.print(f"No data found for {symbol}.\n")
+        elif "secret invalid" in res_json["msg"]:
+            console.print("[red]Invalid API Key[/red]\n")
         else:
-            if "secret invalid" in res_json["msg"]:
-                console.print("[red]Invalid API Key[/red]\n")
-            else:
-                console.print(res_json["msg"])
+            console.print(res_json["msg"])
 
     elif response.status_code == 429:
         console.print("[red]Exceeded number of calls per minute[/red]\n")
@@ -128,11 +127,10 @@ def get_funding_rate(symbol: str) -> pd.DataFrame:
                 df = df.set_index("date")
             else:
                 console.print(f"No data found for {symbol}.\n")
+        elif "secret invalid" in res_json["msg"]:
+            console.print("[red]Invalid API Key[/red]\n")
         else:
-            if "secret invalid" in res_json["msg"]:
-                console.print("[red]Invalid API Key[/red]\n")
-            else:
-                console.print(res_json["msg"])
+            console.print(res_json["msg"])
 
     elif response.status_code == 429:
         console.print("[red]Exceeded number of calls per minute[/red]\n")
@@ -195,11 +193,10 @@ def get_open_interest_per_exchange(symbol: str, interval: int = 0) -> pd.DataFra
                 df = df.set_index("date")
             else:
                 console.print(f"No data found for {symbol}.\n")
+        elif "secret invalid" in res_json["msg"]:
+            console.print("[red]Invalid API Key[/red]\n")
         else:
-            if "secret invalid" in res_json["msg"]:
-                console.print("[red]Invalid API Key[/red]\n")
-            else:
-                console.print(res_json["msg"])
+            console.print(res_json["msg"])
 
     elif response.status_code == 429:
         console.print("[red]Exceeded number of calls per minute[/red]\n")

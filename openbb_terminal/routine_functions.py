@@ -58,7 +58,7 @@ def is_reset(command: str) -> bool:
     return False
 
 
-def match_and_return_openbb_keyword_date(keyword: str) -> str:
+def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
     """Return OpenBB keyword into date
 
     Parameters
@@ -70,44 +70,30 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
     ----------
         str: Date with format YYYY-MM-DD
     """
-    match = re.match(r"^\$(\d+)([A-Z]+)AGO$", keyword)
     now = datetime.now()
-    if match:
-        integer_value = int(match.group(1))
-        time_unit = match.group(2)
-        if time_unit == "DAYS":
-            return (now - timedelta(days=integer_value)).strftime("%Y-%m-%d")
-        if time_unit == "MONTHS":
-            return (now - relativedelta(months=integer_value)).strftime("%Y-%m-%d")
-        if time_unit == "YEARS":
-            return (now - relativedelta(years=integer_value)).strftime("%Y-%m-%d")
-
-    match = re.match(r"^\$(\d+)([A-Z]+)FROMNOW$", keyword)
-    if match:
-        integer_value = int(match.group(1))
-        time_unit = match.group(2)
-        if time_unit == "DAYS":
-            return (now + timedelta(days=integer_value)).strftime("%Y-%m-%d")
-        if time_unit == "MONTHS":
-            return (now + relativedelta(months=integer_value)).strftime("%Y-%m-%d")
-        if time_unit == "YEARS":
-            return (now + relativedelta(years=integer_value)).strftime("%Y-%m-%d")
+    for i, regex in enumerate([r"^\$(\d+)([A-Z]+)AGO$", r"^\$(\d+)([A-Z]+)FROMNOW$"]):
+        match = re.match(regex, keyword)
+        if match:
+            integer_value = int(match.group(1))
+            time_unit = match.group(2)
+            clean_time = time_unit.upper()
+            if "DAYS" in clean_time or "MONTHS" in clean_time or "YEARS" in clean_time:
+                kwargs = {time_unit.lower(): integer_value}
+                if i == 0:
+                    return (now - relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
+                return (now + relativedelta(**kwargs)).strftime("%Y-%m-%d")  # type: ignore
 
     match = re.search(r"\$LAST(\w+)", keyword)
     if match:
         time_unit = match.group(1)
         # Check if it corresponds to a month
         if time_unit in list(MONTHS_VALUE.keys()):
+            the_year = now.year
             # Calculate the year and month for last month date
-            if now.month > MONTHS_VALUE[time_unit]:
+            if now.month <= MONTHS_VALUE[time_unit]:
                 # If the current month is greater than the last date month, it means it is this year
-                return datetime(now.year, MONTHS_VALUE[time_unit], 1).strftime(
-                    "%Y-%m-%d"
-                )
-
-            return datetime(now.year - 1, MONTHS_VALUE[time_unit], 1).strftime(
-                "%Y-%m-%d"
-            )
+                the_year = now.year - 1
+            return datetime(the_year, MONTHS_VALUE[time_unit], 1).strftime("%Y-%m-%d")
 
         # Check if it corresponds to a week day
         if time_unit in list(WEEKDAY_VALUE.keys()):
@@ -158,7 +144,7 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:
     return ""
 
 
-def parse_openbb_script(
+def parse_openbb_script(  # noqa: PLR0911,PLR0912
     raw_lines: List[str],
     script_inputs: Optional[List[str]] = None,
 ) -> Tuple[str, str]:
@@ -246,7 +232,7 @@ def parse_openbb_script(
                 foreach_loop_found = True
 
             # Regular expression pattern to match variables starting with $
-            pattern = r"(?<!\$)(\$(\w+)(\[[^]]*\])?)(?![^\[]*\])"
+            pattern = r"(?<!\$)(\$(\w+)(\[[^\]]*\])?)(?=(?:[^\]]*\]*))"
 
             # Find all matches of the pattern in the line
             matches: Optional[List[Match[str]]] = re.findall(pattern, line)
@@ -264,11 +250,13 @@ def parse_openbb_script(
                             # in python will only take the first '2'
                             if VAR_SLICE == "0":
                                 if VAR_NAME in ROUTINE_VARS:
-                                    values = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+                                    values = eval(  # noqa: S307
+                                        f'ROUTINE_VARS["{VAR_NAME}"]'
+                                    )
                                     if isinstance(values, list):
                                         templine = templine.replace(
                                             match[0],
-                                            eval(f"values[{VAR_SLICE}]"),
+                                            eval(f"values[{VAR_SLICE}]"),  # noqa: S307
                                         )
                                     else:
                                         templine = templine.replace(match[0], values)
@@ -280,33 +268,31 @@ def parse_openbb_script(
                                     )
 
                             # Only enters here when any other index from 0 is used
-                            else:
-                                if VAR_NAME in ROUTINE_VARS:
-                                    variable = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
-                                    length_variable = (
-                                        len(variable)
-                                        if isinstance(variable, list)
-                                        else 1
-                                    )
+                            elif VAR_NAME in ROUTINE_VARS:
+                                variable = eval(  # noqa: S307
+                                    f'ROUTINE_VARS["{VAR_NAME}"]'
+                                )
+                                length_variable = (
+                                    len(variable) if isinstance(variable, list) else 1
+                                )
 
-                                    # We use <= because we are using 0 index based lists
-                                    if length_variable <= int(VAR_SLICE):
-                                        return (
-                                            f"[red]Variable {VAR_NAME} only has "
-                                            f"{length_variable} elements and there "
-                                            f"was an attempt to access it with index {VAR_SLICE}.[/red]",
-                                            "",
-                                        )
-                                    templine = templine.replace(
-                                        match[0],
-                                        variable[int(VAR_SLICE)],
-                                    )
-                                else:
+                                # We use <= because we are using 0 index based lists
+                                if length_variable <= int(VAR_SLICE):
                                     return (
-                                        f"[red]Variable {VAR_NAME} not given "
-                                        "for current routine script.[/red]",
+                                        f"[red]Variable {VAR_NAME} only has "
+                                        f"{length_variable} elements and there "
+                                        f"was an attempt to access it with index {VAR_SLICE}.[/red]",
                                         "",
                                     )
+                                templine = templine.replace(
+                                    match[0],
+                                    variable[int(VAR_SLICE)],
+                                )
+                            else:
+                                return (
+                                    f"[red]Variable {VAR_NAME} not given for current routine script.[/red]",
+                                    "",
+                                )
 
                         # Involves slicing which is a bit more tricky to use eval on
                         elif (
@@ -331,12 +317,21 @@ def parse_openbb_script(
                             )
                             slicing_tuple += ")"
 
-                            templine = templine.replace(
-                                match[0],
-                                ",".join(
-                                    eval(f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]')
-                                ),
+                            vars_to_loop = eval(  # noqa: S307
+                                f'ROUTINE_VARS["{VAR_NAME}"][{slicing_tuple}]'
                             )
+
+                            # Check whether the slicing was successful or not
+                            if vars_to_loop:
+                                templine = templine.replace(
+                                    match[0],
+                                    ",".join(vars_to_loop),
+                                )
+                            else:
+                                return (
+                                    f"[red]The foreach loop cannot run with input: {match[0]}.[/red]",
+                                    "",
+                                )
 
                         # Just replace value without slicing or list
                         else:
@@ -360,7 +355,9 @@ def parse_openbb_script(
                                     )
 
                             if VAR_NAME in ROUTINE_VARS:
-                                value = eval(f'ROUTINE_VARS["{VAR_NAME}"]')
+                                value = eval(  # noqa: S307
+                                    f'ROUTINE_VARS["{VAR_NAME}"]'
+                                )
 
                                 # If the value is a list, we want to replace it with the whole list
                                 if isinstance(value, list):

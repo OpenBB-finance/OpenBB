@@ -353,7 +353,7 @@ def display_usd_liquidity(
 
     overlay = overlay.upper()
     if overlay not in fred_model.EQUITY_INDICES:
-        print(
+        console.print(
             "Invalid choice. Display available choices by adding the parameter, `show = True`."
         )
         return None

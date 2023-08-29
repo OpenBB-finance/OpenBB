@@ -395,7 +395,7 @@ class TerminalController(BaseController):
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
-                task = random.choice(list(json_doc.keys()))  # nosec
+                task = random.choice(list(json_doc.keys()))  # nosec # noqa: S311
                 solution = json_doc[task]
 
                 start = time.time()
@@ -425,20 +425,19 @@ class TerminalController(BaseController):
                         )
 
                 # When there is a single path to the solution
+                elif an_input.lower() == solution.lower():
+                    self.queue = an_input.split("/") + ["home"]
+                    console.print(
+                        f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+                    )
+                    # If we are already counting successes
+                    if self.GUESS_TOTAL_TRIES > 0:
+                        self.GUESS_CORRECTLY += 1
+                        self.GUESS_SUM_SCORE += time_dif
                 else:
-                    if an_input.lower() == solution.lower():
-                        self.queue = an_input.split("/") + ["home"]
-                        console.print(
-                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                        )
-                        # If we are already counting successes
-                        if self.GUESS_TOTAL_TRIES > 0:
-                            self.GUESS_CORRECTLY += 1
-                            self.GUESS_SUM_SCORE += time_dif
-                    else:
-                        console.print(
-                            f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
-                        )
+                    console.print(
+                        f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
+                    )
 
                 # Compute average score and provide a result if it's the last try
                 if self.GUESS_TOTAL_TRIES > 0:
@@ -632,6 +631,7 @@ class TerminalController(BaseController):
         )
         parser.add_argument(
             "--file",
+            "-f",
             help="The path or .openbb file to run.",
             dest="file",
             required="-h" not in other_args
@@ -682,11 +682,10 @@ class TerminalController(BaseController):
                     "https"
                 ) and not ns_parser.url.startswith("http:"):
                     url = "https://" + ns_parser.url
+                elif ns_parser.url.startswith("http://"):
+                    url = ns_parser.url.replace("http://", "https://")
                 else:
-                    if ns_parser.url.startswith("http://"):
-                        url = ns_parser.url.replace("http://", "https://")
-                    else:
-                        url = ns_parser.url
+                    url = ns_parser.url
                 username = url.split("/")[-3]
                 script_name = url.split("/")[-1]
                 file_name = f"{username}_{script_name}.openbb"
@@ -778,7 +777,40 @@ class TerminalController(BaseController):
                     self.queue = self.queue[1:]
 
 
-# pylint: disable=global-statement
+def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
+    # If the path selected does not start from the user root,
+    # give relative location from terminal root
+    if jobs_cmds is not None and jobs_cmds:
+        logger.info("INPUT: %s", "/".join(jobs_cmds))
+
+    export_path = ""
+    if jobs_cmds and "export" in jobs_cmds[0]:
+        commands = jobs_cmds[0].split("/")
+        first_split = commands[0].split(" ")
+        if len(first_split) > 1:
+            export_path = first_split[1]
+        jobs_cmds = ["/".join(commands[1:])]
+    if not export_path:
+        return jobs_cmds
+    if export_path[0] == "~":
+        export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
+    elif export_path[0] != "/":
+        export_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), export_path
+        )
+
+    # Check if the directory exists
+    if os.path.isdir(export_path):
+        console.print(
+            f"Export data to be saved in the selected folder: '{export_path}'"
+        )
+    else:
+        os.makedirs(export_path)
+        console.print(f"[green]Folder '{export_path}' successfully created.[/green]")
+    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+    return jobs_cmds
+
+
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
 
@@ -786,51 +818,20 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
     log_terminal(test_mode=test_mode)
 
-    if jobs_cmds is not None and jobs_cmds:
-        logger.info("INPUT: %s", "/".join(jobs_cmds))
-
-    export_path = ""
-    if jobs_cmds and "export" in jobs_cmds[0]:
-        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
-        jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
-
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
-    if export_path:
-        # If the path selected does not start from the user root,
-        # give relative location from terminal root
-        if export_path[0] == "~":
-            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
-        elif export_path[0] != "/":
-            export_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), export_path
-            )
-
-        # Check if the directory exists
-        if os.path.isdir(export_path):
-            console.print(
-                f"Export data to be saved in the selected folder: '{export_path}'"
-            )
-        else:
-            os.makedirs(export_path)
-            console.print(
-                f"[green]Folder '{export_path}' successfully created.[/green]"
-            )
-        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+    jobs_cmds = handle_job_cmds(jobs_cmds)
 
     bootup()
     if not jobs_cmds:
         welcome_message()
 
         if first_time_user():
-            try:
-                # t_controller.call_intro(None)
+            with contextlib.suppress(EOFError):
                 webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
-                # TDDO: Fix the CI
-            except EOFError:
-                pass
+
         t_controller.print_help()
         check_for_updates()
 
@@ -932,6 +933,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 cutoff=0.7,
             )
             if similar_cmd:
+                an_input = similar_cmd[0]
                 if " " in an_input:
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
@@ -942,8 +944,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                         console.print("\n")
                         continue
                     an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
 
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
@@ -1043,7 +1043,7 @@ def run_scripts(
             terminal(file_cmds, test_mode=True)
         else:
             with suppress_stdout():
-                print(f"To ensure: {output}")
+                console.print(f"To ensure: {output}")
                 if output:
                     timestamp = datetime.now().timestamp()
                     stamp_str = str(timestamp).replace(".", "")
@@ -1094,7 +1094,7 @@ def run_routine(file: str, routines_args=Optional[str]):
     elif default_routine_path.exists():
         run_scripts(path=default_routine_path, routines_args=routines_args)
     else:
-        print(
+        console.print(
             f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
         )
 

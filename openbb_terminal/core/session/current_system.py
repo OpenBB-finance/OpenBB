@@ -16,7 +16,7 @@ def get_current_system() -> SystemModel:
 
 def set_current_system(system: SystemModel):
     """Set current system."""
-    global __system  # pylint: disable=global-statement
+    global __system  # pylint: disable=global-statement# noqa: PLW0603
     __system = system
 
 

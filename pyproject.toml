@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.2.1"
+version = "3.2.2"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -25,7 +25,7 @@ requests = "^2.31.0"
 alpha-vantage = "^2.3.1"
 finviz = "^1.4.6"
 bs4 = "^0.0.1"
-yfinance = "^0.2.25"
+yfinance = "^0.2.28"
 pmaw = "^3.0.0"
 praw = "^7.1.4"
 Quandl = "^3.6.0"
@@ -101,7 +101,7 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 streamlit = "^1.24.1"
-pywry = "^0.5.13"
+pywry = "^0.5.14"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
@@ -116,13 +116,14 @@ pydantic = "<2"
 posthog = "^3.0.1"
 reportlab = "<4" #Pinning due to build error on MacOs
 arch = "^5.5.0"
-llama-index = "0.7.11"
-langchain = "0.0.237"
+llama-index = "^0.8.8"
+langchain = "0.0.266" # Pinned for llama index
 ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
-
+nixtlats = "^0.1.11" # Pinning for stability
+nltk = "^3.8.1" # Is a dependence for llama index
 
 
 [tool.poetry.extras]
@@ -137,7 +138,6 @@ doc = ["docstring-parser"]
 pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
 pylint = "2.17.0"
-mypy = "^1.1.1"
 mock = "^4.0.3"
 codespell = "^2.2.4"
 pydocstyle = "^6.3.0"
@@ -158,10 +158,11 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.256"
 pytest-timeout = "^2.1.0"
 pytest-recorder = "^0.2.1"
 freezegun = "^1.2.2"
+ruff = "^0.0.285"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
@@ -179,12 +180,14 @@ target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
 # D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM"]
+select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117", "PLC1901", "PLR5501","PLW2901","PLW0603"]
+ignore = ["PLR2004", "PLR0913", "PLR0915"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]
+"*init*.py" = ["F401"]
+"website/*" = ["T201"]
 
 [tool.ruff.flake8-import-conventions.aliases]
 "matplotlib.pyplot" = "plt"

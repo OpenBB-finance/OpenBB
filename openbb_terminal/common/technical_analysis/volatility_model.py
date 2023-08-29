@@ -10,6 +10,7 @@ import pandas_ta as ta
 
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -216,11 +217,11 @@ def standard_deviation(
     """
 
     if window < 2:
-        print("Error: Window must be at least 2, defaulting to 30.")
+        console.print("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overridden by trading_periods.")
+        console.print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -273,11 +274,11 @@ def parkinson(
     """
 
     if window < 1:
-        print("Error: Window must be at least 1, defaulting to 30.")
+        console.print("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overridden by trading_periods.")
+        console.print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -334,11 +335,11 @@ def garman_klass(
     """
 
     if window < 1:
-        print("Error: Window must be at least 1, defaulting to 30.")
+        console.print("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overridden by trading_periods.")
+        console.print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -395,11 +396,11 @@ def hodges_tompkins(
     """
 
     if window < 2:
-        print("Error: Window must be at least 2, defaulting to 30.")
+        console.print("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overridden by trading_periods.")
+        console.print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -460,11 +461,11 @@ def rogers_satchell(
     """
 
     if window < 1:
-        print("Error: Window must be at least 1, defaulting to 30.")
+        console.print("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overridden by trading_periods.")
+        console.print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -521,11 +522,11 @@ def yang_zhang(
     """
 
     if window < 2:
-        print("Error: Window must be at least 2, defaulting to 30.")
+        console.print("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overridden by trading_periods.")
+        console.print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -624,7 +625,7 @@ def cones(
         lower_q, upper_q = upper_q, lower_q
 
     if (lower_q >= 1) or (upper_q >= 1):
-        print("Error: lower_q and upper_q must be between 0 and 1")
+        console.print("Error: lower_q and upper_q must be between 0 and 1")
         cones_df = pd.DataFrame()
         return cones_df
 
@@ -644,7 +645,9 @@ def cones(
         for window in windows:
             # Looping to build a dataframe with realized volatility over each window.
             if model not in VOLATILITY_MODELS:
-                print("Model not available. Available models: ", VOLATILITY_MODELS)
+                console.print(
+                    "Model not available. Available models: ", VOLATILITY_MODELS
+                )
             elif model == "STD":
                 estimator = standard_deviation(
                     window=window, data=data, is_crypto=is_crypto

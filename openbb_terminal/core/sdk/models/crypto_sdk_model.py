@@ -229,24 +229,14 @@ class CryptoDeFi(Category):
         `luna_supply_chart`: Plots and prints table showing Luna circulating supply stats\n
         `newsletters`: Scrape all substack newsletters from url list.\n
         `newsletters_chart`: Prints table showing DeFi related substack newsletters.\n
-        `pairs`: Get lastly added trade-able pairs on Uniswap with parameters like:\n
-        `pairs_chart`: Prints table showing Lastly added pairs on Uniswap DEX.\n
-        `pools`: Get uniswap pools by volume. [Source: https://thegraph.com/en/]\n
-        `pools_chart`: Prints table showing uniswap pools by volume.\n
         `sinfo`: Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]\n
         `sinfo_chart`: Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]\n
         `sratio`: Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]\n
         `sratio_chart`: Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]\n
         `sreturn`: Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]\n
         `sreturn_chart`: Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]\n
-        `stats`: Get base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]\n
-        `stats_chart`: Prints table showing base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]\n
         `stvl`: Returns historical values of the total sum of TVLs from all listed protocols.\n
         `stvl_chart`: Plots historical values of the total sum of TVLs from all listed protocols.\n
-        `swaps`: Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]\n
-        `swaps_chart`: Prints table showing last swaps done on Uniswap\n
-        `tokens`: Get list of tokens trade-able on Uniswap DEX. [Source: https://thegraph.com/en/]\n
-        `tokens_chart`: Prints table showing tokens trade-able on Uniswap DEX.\n
         `validators`: Get information about terra validators [Source: https://fcd.terra.dev/swagger]\n
         `validators_chart`: Prints table showing information about terra validators [Source: https://fcd.terra.dev/swagger]\n
         `vaults`: Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to\n
@@ -285,10 +275,6 @@ class CryptoDeFi(Category):
         )
         self.newsletters = lib.crypto_defi_substack_model.get_newsletters
         self.newsletters_chart = lib.crypto_defi_substack_view.display_newsletters
-        self.pairs = lib.crypto_defi_graph_model.get_uniswap_pool_recently_added
-        self.pairs_chart = lib.crypto_defi_graph_view.display_recently_added
-        self.pools = lib.crypto_defi_graph_model.get_uni_pools_by_volume
-        self.pools_chart = lib.crypto_defi_graph_view.display_uni_pools
         self.sinfo = lib.crypto_defi_terramoney_fcd_model.get_staking_account_info
         self.sinfo_chart = (
             lib.crypto_defi_terramoney_fcd_view.display_account_staking_info
@@ -301,14 +287,8 @@ class CryptoDeFi(Category):
         self.sreturn_chart = (
             lib.crypto_defi_terramoney_fcd_view.display_staking_returns_history
         )
-        self.stats = lib.crypto_defi_graph_model.get_uniswap_stats
-        self.stats_chart = lib.crypto_defi_graph_view.display_uni_stats
         self.stvl = lib.crypto_defi_llama_model.get_defi_tvl
         self.stvl_chart = lib.crypto_defi_llama_view.display_defi_tvl
-        self.swaps = lib.crypto_defi_graph_model.get_last_uni_swaps
-        self.swaps_chart = lib.crypto_defi_graph_view.display_last_uni_swaps
-        self.tokens = lib.crypto_defi_graph_model.get_uni_tokens
-        self.tokens_chart = lib.crypto_defi_graph_view.display_uni_tokens
         self.validators = lib.crypto_defi_terramoney_fcd_model.get_validators
         self.validators_chart = lib.crypto_defi_terramoney_fcd_view.display_validators
         self.vaults = lib.crypto_defi_coindix_model.get_defi_vaults
@@ -455,8 +435,6 @@ class CryptoOnChain(Category):
         `lt_chart`: Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month\n
         `prices`: Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]\n
         `prices_chart`: Display token historical prices with volume and market cap, and average price.\n
-        `query`: Get query data\n
-        `query_chart`: Display query results from shroom\n
         `query_graph`: Helper methods for querying graphql api. [Source: https://bitquery.io/]\n
         `th`: Get info about token historical transactions. [Source: Ethplorer]\n
         `th_chart`: Display info about token history. [Source: Ethplorer]\n
@@ -527,8 +505,6 @@ class CryptoOnChain(Category):
         self.prices_chart = (
             lib.crypto_onchain_ethplorer_view.display_token_historical_prices
         )
-        self.query = lib.crypto_onchain_shroom_model.get_query_data
-        self.query_chart = lib.crypto_onchain_shroom_view.display_query
         self.query_graph = lib.crypto_onchain_bitquery_model.query_graph
         self.th = lib.crypto_onchain_ethplorer_model.get_token_history
         self.th_chart = lib.crypto_onchain_ethplorer_view.display_token_history

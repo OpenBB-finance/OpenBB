@@ -249,13 +249,6 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
-        # An exception is made for forecasting because it is built to handle multiple loaded
-        # tickers.
-        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
-            old_class = controllers[class_ins.PATH]
-            old_class.queue = self.queue
-            old_class.load(*args[:-1], **kwargs)
-            return old_class.menu()
         if (
             class_ins.PATH in controllers
             and arguments == 1
@@ -1011,12 +1004,12 @@ class BaseController(metaclass=ABCMeta):
                 )
                 return
 
-            global RECORD_SESSION
-            global RECORD_SESSION_LOCAL_ONLY
-            global SESSION_RECORDED_NAME
-            global SESSION_RECORDED_DESCRIPTION
-            global SESSION_RECORDED_TAGS
-            global SESSION_RECORDED_PUBLIC
+            global RECORD_SESSION  # noqa: PLW0603
+            global RECORD_SESSION_LOCAL_ONLY  # noqa: PLW0603
+            global SESSION_RECORDED_NAME  # noqa: PLW0603
+            global SESSION_RECORDED_DESCRIPTION  # noqa: PLW0603
+            global SESSION_RECORDED_TAGS  # noqa: PLW0603
+            global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
             RECORD_SESSION = True
             RECORD_SESSION_LOCAL_ONLY = ns_parser.local
@@ -1042,8 +1035,8 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_stop(self, _) -> None:
         """Process stop command."""
-        global RECORD_SESSION
-        global SESSION_RECORDED
+        global RECORD_SESSION  # noqa: PLW0603
+        global SESSION_RECORDED  # noqa: PLW0603
 
         if not RECORD_SESSION:
             console.print(
@@ -1115,34 +1108,33 @@ class BaseController(metaclass=ABCMeta):
                 )
 
             # If user doesn't specify they want to store routine locally
-            else:
-                # Confirm that the user is logged in
-                if not is_local():
-                    # routine = read_routine(file_name=routine_file)
-                    routine = "\n".join(SESSION_RECORDED[:-1])
+            # Confirm that the user is logged in
+            elif not is_local():
+                # routine = read_routine(file_name=routine_file)
+                routine = "\n".join(SESSION_RECORDED[:-1])
 
-                    if routine is not None:
-                        kwargs = {
-                            "auth_header": current_user.profile.get_auth_header(),
-                            "name": SESSION_RECORDED_NAME,
-                            "description": SESSION_RECORDED_DESCRIPTION,
-                            "routine": routine,
-                            "tags": SESSION_RECORDED_TAGS,
-                            "public": SESSION_RECORDED_PUBLIC,
-                            "base_url": Hub.BackendEnvironment.BASE_URL,
-                        }
-                        response = Hub.upload_routine(**kwargs)  # type: ignore
-                        if response is not None and response.status_code == 409:
-                            i = console.input(
-                                "A routine with the same name already exists, "
-                                "do you want to replace it? (y/n): "
-                            )
-                            console.print("")
-                            if i.lower() in ["y", "yes"]:
-                                kwargs["override"] = True  # type: ignore
-                                response = Hub.upload_routine(**kwargs)  # type: ignore
-                            else:
-                                console.print("[info]Aborted.[/info]")
+                if routine is not None:
+                    kwargs = {
+                        "auth_header": current_user.profile.get_auth_header(),
+                        "name": SESSION_RECORDED_NAME,
+                        "description": SESSION_RECORDED_DESCRIPTION,
+                        "routine": routine,
+                        "tags": SESSION_RECORDED_TAGS,
+                        "public": SESSION_RECORDED_PUBLIC,
+                        "base_url": Hub.BackendEnvironment.BASE_URL,
+                    }
+                    response = Hub.upload_routine(**kwargs)  # type: ignore
+                    if response is not None and response.status_code == 409:
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to replace it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            kwargs["override"] = True  # type: ignore
+                            response = Hub.upload_routine(**kwargs)  # type: ignore
+                        else:
+                            console.print("[info]Aborted.[/info]")
 
             # Clear session to be recorded again
             RECORD_SESSION = False
@@ -1386,7 +1378,6 @@ class BaseController(metaclass=ABCMeta):
         while True:
             # There is a command in the queue
             if self.queue and len(self.queue) > 0:
-                # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
                     self.save_class()
                     # Go back to the root in order to go to the right directory because
@@ -1439,9 +1430,7 @@ class BaseController(metaclass=ABCMeta):
                                     f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
-                                    {
-                                        "bottom-toolbar": "#ffffff bg:#333333",
-                                    }
+                                    {"bottom-toolbar": "#ffffff bg:#333333"}
                                 ),
                             )
                         else:
@@ -1460,8 +1449,7 @@ class BaseController(metaclass=ABCMeta):
 
             try:
                 # Allow user to go back to root
-                if an_input == "/":
-                    an_input = "home"
+                an_input = "home" if an_input == "/" else an_input
 
                 # Process the input command
                 self.queue = self.switch(an_input)
@@ -1507,13 +1495,9 @@ class BaseController(metaclass=ABCMeta):
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
-                else:
-                    if (
-                        self.TRY_RELOAD
-                        and get_current_user().preferences.RETRY_WITH_LOAD
-                    ):
-                        console.print(f"\nTrying `load {an_input}`\n")
-                        self.queue.insert(0, "load " + an_input)
+                elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
+                    console.print(f"\nTrying `load {an_input}`\n")
+                    self.queue.insert(0, "load " + an_input)
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -1688,9 +1672,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "EODHD":
-                    self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "eodhd":
+                if ns_parser.source.lower() == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
