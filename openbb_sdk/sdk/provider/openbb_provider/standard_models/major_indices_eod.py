@@ -34,4 +34,6 @@ class MajorIndicesEODData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: NonNegativeInt = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: Optional[NonNegativeInt] = Field(
+        description=DATA_DESCRIPTIONS.get("volume", "")
+    )
