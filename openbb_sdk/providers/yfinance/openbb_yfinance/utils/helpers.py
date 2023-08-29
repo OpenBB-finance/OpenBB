@@ -16,7 +16,7 @@ from openbb_yfinance.utils.references import MONTHS
 
 
 def get_futures_data() -> pd.DataFrame:
-    """Return the dataframe of the futures csv file"""
+    """Return the dataframe of the futures csv file."""
     return pd.read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
@@ -36,7 +36,11 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
         DataFrame with futures curve
     """
     futures_data = get_futures_data()
-    exchange = futures_data[futures_data["Ticker"] == symbol]["Exchange"].values[0]
+    try:
+        exchange = futures_data[futures_data["Ticker"] == symbol]["Exchange"].values[0]
+    except IndexError:
+        return pd.DataFrame({"Last Price": [], "expiration": []})
+
     today = datetime.today()
     futures_index = []
     futures_curve = []

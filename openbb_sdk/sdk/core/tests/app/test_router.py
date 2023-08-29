@@ -256,7 +256,7 @@ def test_get_description_no_doc(signature_inspector):
     def some_function():
         pass
 
-    assert signature_inspector.get_description(some_function) == ""
+    assert not signature_inspector.get_description(some_function)
 
 
 @pytest.fixture(scope="module")
