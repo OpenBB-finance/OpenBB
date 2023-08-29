@@ -1,6 +1,5 @@
 """yfinance Futures End of Day fetcher."""
-
-
+import warnings
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -45,13 +44,23 @@ class YFinanceFuturesCurveFetcher(
         query: YFinanceFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[dict]:
         """Return the raw data from the yfinance endpoint."""
-        return get_futures_curve(query.symbol, query.date).to_dict(orient="records")
+        data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
+        if len(data) == 0:
+            warnings.warn(f"Symbol {query.symbol} not found in yfinance")
+
+        return data
 
     @staticmethod
     def transform_data(
         data: dict,
     ) -> List[YFinanceFuturesCurveData]:
         """Transform the data to the standard format."""
-        return [YFinanceFuturesCurveData.parse_obj(d) for d in data]
+        return [
+            YFinanceFuturesCurveData(
+                expiration=curve["expiration"],
+                price=curve["Last Price"],
+            )
+            for curve in data
+        ]
