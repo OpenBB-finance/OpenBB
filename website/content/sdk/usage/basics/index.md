@@ -28,7 +28,7 @@ The `obb` virtual environment has both `python` and `ipython` as methods for sta
 If this doesn't work, there may be an obvious reason why.
 
 - The installation was not completed.
-- The terminal being used is different than the one which was used for installation.  For example, Miniconda was installed using `CMD.exe` or `Anaconda Prompt`, but the current terminal is PowerShell.
+- The terminal being used is different from the one which was used for installation.  For example, Miniconda was installed using `CMD.exe` or `Anaconda Prompt`, but the current terminal is PowerShell.
 
 Open the same terminal used for installation and activate the `obb` environment, then enter:
 
@@ -134,19 +134,19 @@ from openbb_terminal.sdk import openbb
 
 ## Navigation
 
-The layout of the OpenBB SDK is similar to the menus in the OpenBB Terminal, with each one represented as a module.  Instead of a `/` in the path, it is `.`.  For example, `openbb.stocks.gov` is the Government sub-module of `stocks`.
+The layout of the OpenBB SDK is similar to the menus in the OpenBB Terminal, with each one represented as a module.  Instead of a `/` in the path, it is `.`.  For example, `openbb.stocks.gov` is the Government submodule of `stocks`.
 
 ![Navigation](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ad3617fe-b84c-4bbd-9139-2563702849ba)
 
 The attributes for each module - and docstrings for a function - can also be printed directly to the screen, insert a question mark at the end of the string.
 
-```python
+```jupyterpython
 openbb.stocks.gov.contracts?
 ```
 
 **Note**: For a regular `python` session, the syntax is: `help(openbb.stocks.gov.contracts)`
 
-```python
+```
 Signature:      openbb.stocks.gov.contracts(symbol: str, past_transaction_days: int = 10) -> pandas.core.frame.DataFrame
 Call signature: openbb.stocks.gov.contracts(*args: Any, **kwargs: Any) -> Any
 Type:           get_contracts
@@ -190,11 +190,11 @@ API keys can be imported to the session by logging in to an [OpenBB Hub account]
 
 Copy the generated token and enter as the value for the `token` parameter, ignoring the email and password fields.  By default, the credentials will be forgotten when the SDK session is terminated.
 
-```python
+```jupyterpython
 openbb.login?
 ```
 
-```python
+```
 Signature:
 openbb.login(
     email: str = '',
@@ -226,7 +226,7 @@ silent : bool
 Examples
 --------
 >>> from openbb_terminal.sdk import openbb
->>> openbb.login(email="your_email", password="your_password")
+>>> openbb.login(email="<your email>", password="<your password>")
 File:      ~/GitHub/OpenBBTerminal/openbb_terminal/core/session/sdk_session.py
 Type:      function
 ```
@@ -258,7 +258,7 @@ The majority of parameters accept a string as the input.  The docstrings will de
   - `openbb.stocks.quote(["SPY", "QQQ", "IWM", "AAPL", "MSFT", "TSLA", "GOOG", "META", "AMZN"])`
 - Dates are entered as a string, and follow the format: "YYYY-MM-DD".
   - `openbb.stocks.load("SPY", start_date="1994-01-01")`
-- When the expected input of a parameter is an integer or float value, they are enertered without quotes.
+- When the expected input of a parameter is an integer or float value, they are entered without quotes.
   - `limit = 10`
 - Boolean arguments are always capitalized.
   - True
@@ -315,22 +315,22 @@ max_returns
 
 |      | Date                |   Returns |
 |:-----|:--------------------|----------:|
-| GSIT | 2023-05-12 00:00:00 | 2.10366   |
-| WISA | 2023-03-27 00:00:00 | 0.894737  |
-| LMFA | 2023-05-15 00:00:00 | 0.399731  |
+| GSIT | 2023-05-12 00:00:00 |   2.10366 |
+| WISA | 2023-03-27 00:00:00 |  0.894737 |
+| LMFA | 2023-05-15 00:00:00 |  0.399731 |
 | OKE  | 2023-05-05 00:00:00 | 0.0300176 |
-| GETR | 2023-05-12 00:00:00 | 0.450151  |
-| MMP  | 2023-05-15 00:00:00 | 0.12994   |
-| ORMP | 2023-05-15 00:00:00 | 0.106007  |
-| MGOL | 2023-03-28 00:00:00 | 0.322957  |
-| TIVC | 2023-01-12 00:00:00 | 0.19      |
-| REAL | 2023-05-08 00:00:00 | 0.191304  |
+| GETR | 2023-05-12 00:00:00 |  0.450151 |
+| MMP  | 2023-05-15 00:00:00 |   0.12994 |
+| ORMP | 2023-05-15 00:00:00 |  0.106007 |
+| MGOL | 2023-03-28 00:00:00 |  0.322957 |
+| TIVC | 2023-01-12 00:00:00 |      0.19 |
+| REAL | 2023-05-08 00:00:00 |  0.191304 |
 
 ### OpenBB Figure Objects
 
-Functions returning a chart will have a boolean argument labeled, `external_axes`.  When this is set as `True`, and the function's output is assigned to a variable, a Plotly figure object is returned,  which can be manipulated accordingly.  Copy the block below to see all of the parameters that can be set.
+Functions returning a chart will have a boolean argument labeled, `external_axes`.  When this is set as `True`, and the function's output is assigned to a variable, a Plotly figure object is returned,  which can be manipulated accordingly.  Copy the block below to see all the parameters that can be set.
 
-```python
+```jupyterpython
 data = openbb.stocks.candle("SPY", external_axes = True)
 data?
 ```
