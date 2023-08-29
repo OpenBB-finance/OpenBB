@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt
+from pydantic import Field, NonNegativeInt, validator
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -46,6 +46,14 @@ class FMPStockEODData(StockEODData):
     changeOverTime: Optional[float] = Field(
         description="Percent change in the price of the symbol over a period of time."
     )
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            return datetime.strptime(v, "%Y-%m-%d").date()
 
 
 class FMPStockEODFetcher(
