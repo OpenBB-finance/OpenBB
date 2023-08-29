@@ -24,6 +24,7 @@ openbb-polygon = { path = "./providers/polygon" }
 openbb-fred = { path = "./providers/fred" }
 openbb-yfinance = { path = "./providers/yfinance" }
 openbb-cboe = { path = "./providers/cboe"}
+openbb-alpha-vantage = { path = "./providers/alpha-vantage" }
 
 
 [tool.poetry.group.dev.dependencies]
