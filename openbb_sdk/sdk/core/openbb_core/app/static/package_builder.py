@@ -495,18 +495,17 @@ class MethodDefinition:
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 for field_name, field in fields.items():
-                    name = field_name
                     type_ = MethodDefinition.get_type(field)
                     default = MethodDefinition.get_default(field)
 
-                    new_type = TYPE_EXPANSION.get(name, ...)
+                    new_type = TYPE_EXPANSION.get(field_name, ...)
                     updated_type = type_ if new_type is ... else Union[type_, new_type]
 
-                    formatted[name] = Parameter(
-                        name=name,
+                    formatted[field_name] = Parameter(
+                        name=field_name,
                         kind=Parameter.POSITIONAL_OR_KEYWORD,
                         annotation=updated_type,
-                        default=DEFAULT_REPLACEMENT.get(name, default),
+                        default=DEFAULT_REPLACEMENT.get(field_name, default),
                     )
             else:
                 new_type = TYPE_EXPANSION.get(name, ...)
@@ -754,14 +753,14 @@ class PathHandler:
     @classmethod
     def build_module_name(cls, path: str) -> str:
         """Build the module name."""
-        if path == "":
+        if not path:
             return "__extensions__"
         return cls.clean_path(path=path)
 
     @classmethod
     def build_module_class(cls, path: str) -> str:
         """Build the module class."""
-        if path == "":
+        if not path:
             return "Extensions"
         return f"CLASS_{cls.clean_path(path=path)}"
 
