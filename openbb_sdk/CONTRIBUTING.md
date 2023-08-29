@@ -19,6 +19,9 @@
         - [Data output](#data-output)
       - [Build the Fetcher](#build-the-fetcher)
     - [Make the new provider visible to the SDK](#make-the-new-provider-visible-to-the-sdk)
+  - [Using other extension as a dependency](#using-other-extension-as-a-dependency)
+    - [Using our internal extension](#using-our-internal-extension)
+    - [Adding an external extension](#adding-an-external-extension)
   - [The charting extension](#the-charting-extension)
     - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
     - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
@@ -112,7 +115,7 @@ Let's break it down:
 - `standard_params: StandardParams`: standardized parameters that are common to all providers that implement the `Example` fetcher.
 - `extra_params: ExtraParams`: this is a parameter that will be passed to the command and that will contain the provider specific arguments - take into consideration that a single SDK command can consume any amount of provider you wish.
 
-You only need to change the `model` parameter to the name of the name of the fetcher_dict key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
+You only need to change the `model` parameter to the name of the name of the fetcher dictionary key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
 
 ## Adding a new data point
 
@@ -261,23 +264,23 @@ For the `StockEOD` example, this would look like the following:
 
 ```python
 
-class <ProviderName>EODFetcher(
+class <ProviderName>StockEODFetcher(
     Fetcher[
-        <ProviderName>EODQueryParams,
-        List[<ProviderName>EODData],
+        <ProviderName>StockEODQueryParams,
+        List[<ProviderName>StockEODData],
     ]
 ):
     """Transform the query, extract and transform the data."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> <ProviderName>EODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> <ProviderName>StockEODQueryParams:
         """Transform the query parameters."""
 
-        return <ProviderName>EODQueryParams(**transformed_params)
+        return <ProviderName>StockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: <ProviderName>EODQueryParams,
+        query: <ProviderName>StockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -290,10 +293,10 @@ class <ProviderName>EODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[<ProviderName>EODData]:
+    ) -> List[<ProviderName>StockEODData]:
         """Transform the data to the standard format."""
 
-        return [<ProviderName>EODData.parse_obj(**d) for d in data]
+        return [<ProviderName>StockEODData.parse_obj(**d) for d in data]
 
 ```
 
@@ -305,14 +308,14 @@ In order to make the new provider visible to the SDK, you'll need to add it to t
 
 ```python
 
-"""Alpha Vantage Provider module."""
+"""<Provider Name> Provider module."""
 from openbb_provider.abstract.provider import Provider
 
 from openbb_<provider_name>.models.stock_eod import <ProviderName>StockEODFetcher
 
 <provider_name>_provider = Provider(
     name="<provider_name>",
-    website="https://www.<providerName>.co/documentation/",
+    website="<URL to the provider website>",
     description="Provider description goes here",
     required_credentials=["api_key"],
     fetcher_dict={
@@ -322,11 +325,62 @@ from openbb_<provider_name>.models.stock_eod import <ProviderName>StockEODFetche
 
 ```
 
+If the provider does not require any credentials, you can simply set it as `None`. On the other hand if it requires more than 2 items to authenticate, you can simply add a list of all the required items to the `required_credentials` list.
+
 After running `pip install .` on `openbb_sdk/providers/<provider_name>` your provider should be ready for usage, both from a Python interface or the API.
+
+## Using other extension as a dependency
+
+We can use internal and external extensions with the custom extension and bundle it as a dependency.
+
+### Using our internal extension
+
+We will use the `openbb-qa` extension by utilizing its `summary` endpoint.
+
+To create a `period_summary_example` endpoint we need to add the following to the `router.py` file:
+
+```python
+from typing import List
+from openbb_provider.abstract.data import Data
+from openbb_core.app.utils import basemodel_to_df, df_to_basemodel
+from openbb_qa.qa_router import summary
+
+
+@router.command(methods=["POST"])
+def period_summary_example(
+    data: List[Data],
+    target: str,
+    start_date: str,
+    end_date: str,
+) -> OBBject[dict]:
+    """Example Data."""
+
+    df = basemodel_to_df(data)
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    df = df.reset_index(drop=True)
+    target_data = df_to_basemodel(df)
+    results = summary(target_data, target=target)
+
+    return OBBject(results=results.results)
+```
+
+Here we are using two vital utility functions - `basemodel_to_df` and `df_to_basemodel`. The function `basemodel_to_df` converts the data to a pandas dataframe and `df_to_basemodel` converts the dataframe back to the `Data` model.
+
+### Adding an external extension
+
+To add the `openbb-charting` charting extension as a dependency, you'll need to add it to the `pyproject.toml` file:
+
+<!-- TODO: Change the version to match the stable release -->
+```toml
+[tool.poetry.dependencies]
+openbb-charting = "^0.0.0a1"
+```
+
+Then execute the command `poetry install` in the root of your extension to install the new dependency.
 
 ## The charting extension
 
-The following section assumes that you're using the `openbb_charting` charting extension, although the same principles apply to any other extension.
+The following section assumes that you're using the `openbb-charting` extension, although the same principles apply to any other extension.
 
 ### Add a visualization to an existing SDK command
 
