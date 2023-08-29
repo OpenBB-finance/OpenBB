@@ -338,7 +338,14 @@ def bbands(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     bbands_df = pd.DataFrame(
-        df_target.ta.bbands(length=length, std=std, mamode=mamode, offset=offset)
+        df_target.ta.bbands(
+            length=length,
+            std=std,
+            mamode=mamode,
+            offset=offset,
+            close=target,
+            prefix=target,
+        )
     )
 
     results = df_to_basemodel(df_target.join(bbands_df, how="left"), index=True)
@@ -398,7 +405,14 @@ def zlma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    zlma_df = pd.DataFrame(df_target.ta.zlma(length=length, offset=offset)).dropna()
+    zlma_df = pd.DataFrame(
+        df_target.ta.zlma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        )
+    ).dropna()
 
     results = df_to_basemodel(df_target.join(zlma_df, how="left"), index=True)
 
@@ -498,7 +512,14 @@ def sma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    sma_df = pd.DataFrame(df_target.ta.sma(length=length, offset=offset).dropna())
+    sma_df = pd.DataFrame(
+        df_target.ta.sma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(sma_df, how="left"), index=True)
 
@@ -547,7 +568,13 @@ def demark(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     demark_df = pd.DataFrame(
-        df_target.ta.td_seq(offset=offset, show_all=show_all, asint=asint).dropna()
+        df_target.ta.td_seq(
+            offset=offset,
+            show_all=show_all,
+            asint=asint,
+            close=target,
+            prefix=target,
+        ).dropna()
     )
 
     results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
@@ -657,7 +684,13 @@ def macd(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     macd_df = pd.DataFrame(
-        df_target.ta.macd(fast=fast, slow=slow, signal=signal).dropna()
+        df_target.ta.macd(
+            fast=fast,
+            slow=slow,
+            signal=signal,
+            close=target,
+            prefix=target,
+        ).dropna()
     )
 
     results = df_to_basemodel(df_target.join(macd_df, how="left"), index=True)
@@ -705,7 +738,14 @@ def hma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    hma_df = pd.DataFrame(df_target.ta.hma(length=length, offset=offset).dropna())
+    hma_df = pd.DataFrame(
+        df_target.ta.hma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(hma_df, how="left"), index=True)
 
@@ -1001,7 +1041,14 @@ def wma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    wma_df = pd.DataFrame(df_target.ta.wma(length=length, offset=offset).dropna())
+    wma_df = pd.DataFrame(
+        df_target.ta.wma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(wma_df, how="left"), index=True)
 
@@ -1093,7 +1140,13 @@ def rsi(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     rsi_df = pd.DataFrame(
-        df_target.ta.rsi(length=length, scalar=scalar, drift=drift).dropna()
+        df_target.ta.rsi(
+            length=length,
+            scalar=scalar,
+            drift=drift,
+            close=target,
+            prefix=target,
+        ).dropna()
     )
 
     results = df_to_basemodel(df_target.join(rsi_df, how="left"), index=True)
@@ -1401,7 +1454,11 @@ def ema(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    ema_df = pd.DataFrame(df_target.ta.ema(length=length, offset=offset).dropna())
+    ema_df = pd.DataFrame(
+        df_target.ta.ema(
+            length=length, offset=offset, close=target, prefix=target
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(ema_df, how="left"), index=True)
 
