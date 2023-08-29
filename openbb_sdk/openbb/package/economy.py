@@ -146,6 +146,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -177,6 +178,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -283,6 +285,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -478,6 +481,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -667,6 +671,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -698,6 +703,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -729,6 +735,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -936,6 +943,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -967,6 +975,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -998,6 +1007,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1029,6 +1039,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1060,6 +1071,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1091,6 +1103,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1428,6 +1441,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1459,6 +1473,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1490,6 +1505,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1521,6 +1537,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1552,6 +1569,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1583,6 +1601,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1614,6 +1633,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1645,6 +1665,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1730,6 +1751,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1895,6 +1917,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1926,6 +1949,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1957,6 +1981,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",
@@ -1988,6 +2013,7 @@ class CLASS_economy(Container):
         chart: bool = False,
         provider: Optional[
             Literal[
+                "alpha_vantage",
                 "benzinga",
                 "cboe",
                 "fmp",

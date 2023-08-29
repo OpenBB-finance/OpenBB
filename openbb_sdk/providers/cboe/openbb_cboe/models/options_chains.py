@@ -30,35 +30,11 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 class CboeOptionsChainsData(OptionsChainsData):
     """CBOE Options Chains Data."""
 
-    contract_symbol: str = Field(
-        description="Contract symbol for the option.",
-    )
-    dte: int = Field(
-        description="Days to expiration for the option.",
-    )
     bid_size: int = Field(
         description="Bid size for the option.",
     )
     ask_size: int = Field(
         description="Ask size for the option.",
-    )
-    implied_volatility: float = Field(
-        description="Implied volatility of the option.",
-    )
-    delta: float = Field(
-        description="Delta of the option.",
-    )
-    gamma: float = Field(
-        description="Gamma of the option.",
-    )
-    theta: float = Field(
-        description="Theta of the option.",
-    )
-    rho: float = Field(
-        description="Rho of the option.",
-    )
-    vega: float = Field(
-        description="Vega of the option.",
     )
     theoretical: float = Field(
         description="Theoretical value of the option.",
@@ -87,8 +63,29 @@ class CboeOptionsChainsData(OptionsChainsData):
     change_percent: float = Field(
         description="Change, in percent, of the option.",
     )
+    implied_volatility: float = Field(
+        description="Implied volatility of the option.",
+    )
+    delta: float = Field(
+        description="Delta of the option.",
+    )
+    gamma: float = Field(
+        description="Gamma of the option.",
+    )
+    vega: float = Field(
+        description="Vega of the option.",
+    )
+    theta: float = Field(
+        description="Theta of the option.",
+    )
+    rho: float = Field(
+        description="Rho of the option.",
+    )
     last_trade_timestamp: datetime = Field(
         description="Last trade timestamp of the option.",
+    )
+    dte: int = Field(
+        description="Days to expiration for the option.",
     )
 
     @validator("expiration", pre=True, check_fields=False)

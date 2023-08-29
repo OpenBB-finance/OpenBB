@@ -3,10 +3,11 @@
 
 from openbb_provider.abstract.provider import Provider
 
-from openbb_intrinio.models.stock_eod import IntrinioStockEODFetcher
-from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
+from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
+from openbb_intrinio.models.stock_eod import IntrinioStockEODFetcher
+from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
 intrinio_provider = Provider(
@@ -21,5 +22,6 @@ intrinio_provider = Provider(
         "StockNews": IntrinioStockNewsFetcher,
         "GlobalNews": IntrinioGlobalNewsFetcher,
         "StockQuote": IntrinioStockQuoteFetcher,
+        "OptionsChains": IntrinioOptionsChainsFetcher,
     },
 )
