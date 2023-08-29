@@ -24,6 +24,9 @@ class AVStockEODQueryParams(StockEODQueryParams):
         "TIME_SERIES_DAILY",
         "TIME_SERIES_WEEKLY",
         "TIME_SERIES_MONTHLY",
+        "TIME_SERIES_DAILY_ADJUSTED",
+        "TIME_SERIES_WEEKLY_ADJUSTED",
+        "TIME_SERIES_MONTHLY_ADJUSTED",
     ] = Field(
         description="The time series of your choice. ",
         default="TIME_SERIES_DAILY",
@@ -65,7 +68,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
         ],
     )
 
-    @root_validator(pre=True)
+    @root_validator
     def setup_function(cls, values):  # pylint: disable=E0213
         """Set the function based on the period."""
 
@@ -78,7 +81,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
         values["_function"] = functions_based_on_period[values["period"]]
         return values
 
-    @root_validator(pre=True)
+    @root_validator
     def adjusted_function_validate(cls, values):  # pylint: disable=E0213
         """
         Validate that the function is adjusted if the `adjusted` parameter is set to True.
@@ -92,7 +95,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
 
         return values
 
-    @root_validator(pre=True)
+    @root_validator
     def on_functions_validate(cls, values):  # pylint: disable=E0213
         """
         Validate that the functions used on custom extra Field attributes
@@ -101,7 +104,12 @@ class AVStockEODQueryParams(StockEODQueryParams):
         custom_attributes = ["available_on_functions", "required_on_functions"]
 
         fields = cls.__fields__
-        available_functions = get_args(getattr(fields["function"], "type_"))
+        available_functions = get_args(cls.__annotations__["_function"])
+
+        if values["_function"] not in available_functions:
+            raise ValueError(
+                f"Function {values['_function']} must be on of the following: {available_functions}"
+            )
 
         def validate_functions(functions: List[str]):
             for f in functions:
@@ -210,7 +218,10 @@ class AVStockEODFetcher(
 
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
 
-        query_str = get_querystring(query.dict(), ["start_date", "end_date"])
+        query_dict = query.dict()
+        query_dict["function"] = query_dict.pop("_function")
+
+        query_str = get_querystring(query_dict, ["start_date", "end_date"])
 
         url = f"https://www.alphavantage.co/query?{query_str}&datatype=csv&apikey={api_key}"
 
@@ -230,4 +241,4 @@ class AVStockEODFetcher(
     ) -> List[AVStockEODData]:
         """Transform the data to the standard format."""
 
-        return [AVStockEODData.parse_obj(**d) for d in data]
+        return [AVStockEODData.parse_obj(d) for d in data]
