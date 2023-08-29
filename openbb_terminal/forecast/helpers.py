@@ -782,7 +782,7 @@ def plotly_shap_scatter_plot(
     fig.set_xaxis_title("SHAP value (impact on model output)")
 
     for pos, i in enumerate(feature_order):
-        pos += 2
+        new_pos = pos + 2
         shaps = shap_values[:, i]
         values = None if features is None else features[:, i]
         inds = np.arange(len(shaps))
@@ -838,7 +838,7 @@ def plotly_shap_scatter_plot(
             nan_mask = np.isnan(values)
             fig.add_scattergl(
                 x=shaps[nan_mask],
-                y=pos + ys[nan_mask],
+                y=new_pos + ys[nan_mask],
                 mode="markers",
                 marker=dict(
                     color="#777777",
@@ -860,12 +860,12 @@ def plotly_shap_scatter_plot(
 
             fig.add_scattergl(
                 x=shaps[np.invert(nan_mask)],
-                y=pos + ys[np.invert(nan_mask)],
+                y=new_pos + ys[np.invert(nan_mask)],
                 mode="markers",
                 marker=dict(
                     color=cvals,
                     colorscale="Bluered",
-                    showscale=bool(pos == 2),
+                    showscale=bool(new_pos == 2),
                     colorbar=dict(
                         x=-0.05,
                         thickness=10,
@@ -1078,7 +1078,7 @@ def get_prediction(
 ):
     _, val = ticker_series.split_before(train_split)
 
-    print(f"Predicting {model_name} for {n_predict} days")
+    console.print(f"Predicting {model_name} for {n_predict} days")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None
@@ -1119,13 +1119,12 @@ def get_prediction(
                 past_covariates=past_covariate_whole,
                 n=n_predict,
             )
+    elif probabilistic:
+        prediction = best_model.predict(
+            series=ticker_series, n=n_predict, num_samples=500
+        )
     else:
-        if probabilistic:
-            prediction = best_model.predict(
-                series=ticker_series, n=n_predict, num_samples=500
-            )
-        else:
-            prediction = best_model.predict(series=ticker_series, n=n_predict)
+        prediction = best_model.predict(series=ticker_series, n=n_predict)
 
     # calculate precision based on metric (rmse, mse, mape)
     if metric == "rmse":
@@ -1254,9 +1253,15 @@ def filter_dates(
         console.print("[red]The start date must be before the end date.[/red]\n")
         return data
     if end_date:
-        data = data[data["date"] <= end_date]
+        if isinstance(data["date"].values[0], str):
+            data = data[pd.to_datetime(data["date"]) <= end_date]
+        else:
+            data = data[data["date"] <= end_date]
     if start_date:
-        data = data[data["date"] >= start_date]
+        if isinstance(data["date"].values[0], str):
+            data = data[pd.to_datetime(data["date"]) >= start_date]
+        else:
+            data = data[data["date"] >= start_date]
     return data
 
 
@@ -1341,6 +1346,9 @@ def check_data(
             f"[red]Column {target_column} is not in the dataframe."
             " Change the 'target_column' parameter.[/red]\n"
         )
+        return False
+    if data.empty:
+        console.print("[red]The data provided is empty.[/red]\n")
         return False
     if past_covariates is not None:
         covariates = past_covariates.split(",")

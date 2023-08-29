@@ -29,8 +29,8 @@ from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
+from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.core.session.routines_handler import read_routine
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -85,6 +85,7 @@ SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 # TODO: We should try to avoid these global variables
 RECORD_SESSION = False
+RECORD_SESSION_LOCAL_ONLY = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
 SESSION_RECORDED_DESCRIPTION = ""
@@ -111,7 +112,6 @@ class BaseController(metaclass=ABCMeta):
         "reset",
         "support",
         "wiki",
-        "record",
         "stop",
         "screenshot",
         "askobb",
@@ -249,13 +249,6 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
-        # An exception is made for forecasting because it is built to handle multiple loaded
-        # tickers.
-        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
-            old_class = controllers[class_ins.PATH]
-            old_class.queue = self.queue
-            old_class.load(*args[:-1], **kwargs)
-            return old_class.menu()
         if (
             class_ins.PATH in controllers
             and arguments == 1
@@ -892,8 +885,9 @@ class BaseController(metaclass=ABCMeta):
             action="store",
             dest="name",
             type=str,
-            default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
-            help="Routine file name to be saved.",
+            default="",
+            help="Routine title name to be saved - only use characters, digits and whitespaces.",
+            nargs="+",
         )
         parser.add_argument(
             "-d",
@@ -901,15 +895,30 @@ class BaseController(metaclass=ABCMeta):
             type=str,
             dest="description",
             help="The description of the routine",
+            default=f"Routine recorded at {datetime.now().strftime('%H:%M')} from the OpenBB Terminal",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--tag1",
+            type=str,
+            dest="tag1",
+            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
         parser.add_argument(
-            "-t",
-            "--tags",
+            "--tag2",
             type=str,
-            dest="tags",
-            help="The tags of the routine",
+            dest="tag2",
+            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
+            default="",
+            nargs="+",
+        )
+        parser.add_argument(
+            "--tag3",
+            type=str,
+            dest="tag3",
+            help=f"The tag associated with the routine. Select from: {', '.join(SCRIPT_TAGS)}",
             default="",
             nargs="+",
         )
@@ -921,79 +930,198 @@ class BaseController(metaclass=ABCMeta):
             help="Whether the routine should be public or not",
             default=False,
         )
+        parser.add_argument(
+            "-l",
+            "--local",
+            dest="local",
+            action="store_true",
+            help="Only save the routine locally - this is necessary if you are running terminal in guest mode.",
+            default=False,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
+
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            global RECORD_SESSION
-            global SESSION_RECORDED_NAME
-            global SESSION_RECORDED_DESCRIPTION
-            global SESSION_RECORDED_TAGS
-            global SESSION_RECORDED_PUBLIC
+            if not ns_parser.name:
+                console.print(
+                    "[red]Set a routine title by using the '-n' flag. E.g. 'record -n Morning routine'[/red]"
+                )
+                return
 
-            SESSION_RECORDED_NAME = (
-                ns_parser.name
-                if ".openbb" in ns_parser.name
-                else ns_parser.name + ".openbb"
+            tag1 = (
+                " ".join(ns_parser.tag1)
+                if isinstance(ns_parser.tag1, list)
+                else ns_parser.tag1
             )
+            if tag1 and tag1 not in SCRIPT_TAGS:
+                console.print(
+                    f"[red]The parameter 'tag1' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                )
+                return
 
-            SESSION_RECORDED_DESCRIPTION = " ".join(ns_parser.description)
-            SESSION_RECORDED_TAGS = " ".join(ns_parser.tags) if ns_parser.tags else ""
+            tag2 = (
+                " ".join(ns_parser.tag2)
+                if isinstance(ns_parser.tag2, list)
+                else ns_parser.tag2
+            )
+            if tag2 and tag2 not in SCRIPT_TAGS:
+                console.print(
+                    f"[red]The parameter 'tag2' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                )
+                return
+
+            tag3 = (
+                " ".join(ns_parser.tag3)
+                if isinstance(ns_parser.tag3, list)
+                else ns_parser.tag3
+            )
+            if tag3 and tag3 not in SCRIPT_TAGS:
+                console.print(
+                    f"[red]The parameter 'tag3' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
+                )
+                return
+
+            if is_local() and not ns_parser.local:
+                console.print(
+                    "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
+                )
+                console.print(
+                    "\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]"
+                )
+                console.print(
+                    "\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]"
+                )
+                return
+
+            # Check if title has a valid format
+            title = " ".join(ns_parser.name) if ns_parser.name else ""
+            pattern = re.compile(r"^[a-zA-Z0-9\s]+$")
+            if not pattern.match(title):
+                console.print(
+                    f"[red]Title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/]"
+                )
+                return
+
+            global RECORD_SESSION  # noqa: PLW0603
+            global RECORD_SESSION_LOCAL_ONLY  # noqa: PLW0603
+            global SESSION_RECORDED_NAME  # noqa: PLW0603
+            global SESSION_RECORDED_DESCRIPTION  # noqa: PLW0603
+            global SESSION_RECORDED_TAGS  # noqa: PLW0603
+            global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
+
+            RECORD_SESSION = True
+            RECORD_SESSION_LOCAL_ONLY = ns_parser.local
+            SESSION_RECORDED_NAME = title
+            SESSION_RECORDED_DESCRIPTION = (
+                " ".join(ns_parser.description)
+                if isinstance(ns_parser.description, list)
+                else ns_parser.description
+            )
+            SESSION_RECORDED_TAGS = tag1 if tag1 else ""
+            SESSION_RECORDED_TAGS += "," + tag2 if tag2 else ""
+            SESSION_RECORDED_TAGS += "," + tag3 if tag3 else ""
+
             SESSION_RECORDED_PUBLIC = ns_parser.public
 
             console.print(
-                "[green]The session is successfully being recorded."
-                + " Remember to 'stop' before exiting terminal!\n[/green]"
+                f"[green]The routine '{title}' is successfully being recorded.[/green]"
             )
-            RECORD_SESSION = True
+            console.print(
+                "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
+            )
 
     @log_start_end(log=logger)
     def call_stop(self, _) -> None:
         """Process stop command."""
-        global RECORD_SESSION
-        global SESSION_RECORDED
+        global RECORD_SESSION  # noqa: PLW0603
+        global SESSION_RECORDED  # noqa: PLW0603
 
         if not RECORD_SESSION:
             console.print(
-                "[red]There is no session being recorded. Start one using 'record'[/red]\n"
+                "[red]There is no session being recorded. Start one using the command 'record'[/red]\n"
             )
-        elif not SESSION_RECORDED:
+        elif len(SESSION_RECORDED) < 5:
             console.print(
-                "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
+                "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
             )
         else:
             current_user = get_current_user()
-            routine_file = os.path.join(
-                current_user.preferences.USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME
-            )
 
-            if os.path.isfile(routine_file):
-                routine_file = os.path.join(
-                    current_user.preferences.USER_ROUTINES_DIRECTORY,
-                    datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
+            # Check if the user just wants to store routine locally
+            # This works regardless of whether they are logged in or not
+            if RECORD_SESSION_LOCAL_ONLY:
+                # Whitespaces are replaced by underscores and an .openbb extension is added
+                title_for_local_storage = (
+                    SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
                 )
 
-            # Writing to file
-            with open(routine_file, "w") as file1:
-                # Writing data to a file
-                file1.writelines([c + "\n\n" for c in SESSION_RECORDED[:-1]])
+                routine_file = os.path.join(
+                    current_user.preferences.USER_ROUTINES_DIRECTORY,
+                    title_for_local_storage,
+                )
 
-            console.print(
-                f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
-            )
+                # If file already exists, add a timestamp to the name
+                if os.path.isfile(routine_file):
+                    i = console.input(
+                        "A local routine with the same name already exists, "
+                        "do you want to override it? (y/n): "
+                    )
+                    console.print("")
+                    while i.lower() not in ["y", "yes", "n", "no"]:
+                        i = console.input("Select 'y' or 'n' to proceed: ")
+                        console.print("")
 
-            if not is_local():
-                routine = read_routine(file_name=routine_file)
+                    if i.lower() in ["n", "no"]:
+                        new_name = (
+                            datetime.now().strftime("%Y%m%d_%H%M%S_")
+                            + title_for_local_storage
+                        )
+                        routine_file = os.path.join(
+                            current_user.preferences.USER_ROUTINES_DIRECTORY,
+                            new_name,
+                        )
+                        console.print(
+                            f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
+                        )
+
+                # Writing to file
+                with open(routine_file, "w") as file1:
+                    lines = ["# OpenBB Terminal - Routine", "\n"]
+                    username = get_current_user().profile.username
+                    lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
+                    lines += [
+                        f"# Title: {SESSION_RECORDED_NAME}",
+                        "\n",
+                        f"# Tags: {SESSION_RECORDED_TAGS}",
+                        "\n\n",
+                        f"# Description: {SESSION_RECORDED_DESCRIPTION}",
+                        "\n\n",
+                    ]
+                    lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
+                    # Writing data to a file
+                    file1.writelines(lines)
+
+                console.print(
+                    f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+                )
+
+            # If user doesn't specify they want to store routine locally
+            # Confirm that the user is logged in
+            elif not is_local():
+                # routine = read_routine(file_name=routine_file)
+                routine = "\n".join(SESSION_RECORDED[:-1])
+
                 if routine is not None:
-                    name = SESSION_RECORDED_NAME.split(sep=".openbb", maxsplit=-1)[0]
                     kwargs = {
                         "auth_header": current_user.profile.get_auth_header(),
-                        "name": name,
+                        "name": SESSION_RECORDED_NAME,
                         "description": SESSION_RECORDED_DESCRIPTION,
                         "routine": routine,
                         "tags": SESSION_RECORDED_TAGS,
                         "public": SESSION_RECORDED_PUBLIC,
+                        "base_url": Hub.BackendEnvironment.BASE_URL,
                     }
                     response = Hub.upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
@@ -1250,7 +1378,6 @@ class BaseController(metaclass=ABCMeta):
         while True:
             # There is a command in the queue
             if self.queue and len(self.queue) > 0:
-                # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
                     self.save_class()
                     # Go back to the root in order to go to the right directory because
@@ -1303,9 +1430,7 @@ class BaseController(metaclass=ABCMeta):
                                     f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
-                                    {
-                                        "bottom-toolbar": "#ffffff bg:#333333",
-                                    }
+                                    {"bottom-toolbar": "#ffffff bg:#333333"}
                                 ),
                             )
                         else:
@@ -1324,8 +1449,7 @@ class BaseController(metaclass=ABCMeta):
 
             try:
                 # Allow user to go back to root
-                if an_input == "/":
-                    an_input = "home"
+                an_input = "home" if an_input == "/" else an_input
 
                 # Process the input command
                 self.queue = self.switch(an_input)
@@ -1371,13 +1495,9 @@ class BaseController(metaclass=ABCMeta):
                         logger.warning("Replacing by %s", an_input)
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
-                else:
-                    if (
-                        self.TRY_RELOAD
-                        and get_current_user().preferences.RETRY_WITH_LOAD
-                    ):
-                        console.print(f"\nTrying `load {an_input}`\n")
-                        self.queue.insert(0, "load " + an_input)
+                elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
+                    console.print(f"\nTrying `load {an_input}`\n")
+                    self.queue.insert(0, "load " + an_input)
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
@@ -1552,9 +1672,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "EODHD":
-                    self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "eodhd":
+                if ns_parser.source.lower() == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start

@@ -23,7 +23,7 @@ from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -107,7 +107,9 @@ def update_terminal():
 
     poetry_hash = sha256sum("poetry.lock")
 
-    completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
+    completed_process = subprocess.run(  # nosec
+        "git pull", shell=True, check=False  # noqa: S607,S602
+    )
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -121,7 +123,7 @@ def update_terminal():
     )
 
     completed_process = subprocess.run(  # nosec
-        "poetry install", shell=True, check=False
+        "poetry install", shell=True, check=False  # noqa: S607,S602
     )
     if completed_process.returncode != 0:
         return completed_process.returncode
@@ -155,29 +157,28 @@ def open_openbb_documentation(
     elif "account" in path:
         path = "/usage?path=/usage/guides/basics"
         command = ""
-    else:
-        if arg_type == "command":  # user passed a command name
-            if command in ["settings", "featflags"]:
-                path = "/usage?path=/usage/guides/customizing-the-terminal"
-                command = ""
-            else:
-                path = f"/commands?path={path}"
-        elif arg_type == "menu":  # user passed a menu name
-            if command in ["ta", "ba", "qa"]:
-                menu = path.split("/")[-2]
-                path = f"/usage?path=/usage/intros/common/{menu}"
-            elif command == "forecast":
-                command = ""
-                path = "/usage?path=/usage/intros/forecast"
-            else:
-                path = f"/usage?path=/usage/intros/{path}"
-        else:  # user didn't pass argument and is in a menu
+    elif arg_type == "command":  # user passed a command name
+        if command in ["settings", "featflags"]:
+            path = "/usage?path=/usage/guides/customizing-the-terminal"
+            command = ""
+        else:
+            path = f"/commands?path={path}"
+    elif arg_type == "menu":  # user passed a menu name
+        if command in ["ta", "ba", "qa"]:
             menu = path.split("/")[-2]
-            path = (
-                f"/usage?path=/usage/intros/common/{menu}"
-                if menu in ["ta", "ba", "qa"]
-                else f"/usage?path=/usage/intros/{path}"
-            )
+            path = f"/usage?path=/usage/intros/common/{menu}"
+        elif command == "forecast":
+            command = ""
+            path = "/usage?path=/usage/intros/forecast"
+        else:
+            path = f"/usage?path=/usage/intros/{path}"
+    else:  # user didn't pass argument and is in a menu
+        menu = path.split("/")[-2]
+        path = (
+            f"/usage?path=/usage/intros/common/{menu}"
+            if menu in ["ta", "ba", "qa"]
+            else f"/usage?path=/usage/intros/{path}"
+        )
 
     if command:
         if command == "keys":
@@ -257,7 +258,8 @@ def print_guest_block_msg():
         console.print(
             "[info]You are currently logged as a guest.[/info]\n"
             "[info]Login to use this feature.[/info]\n\n"
-            f"[info]If you don't have an account, you can create one here: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+            "[info]If you don't have an account, you can create one here: [/info]"
+            f"[cmds]{BackendEnvironment.HUB_URL + 'register'}\n[/cmds]"
         )
 
 
@@ -269,7 +271,7 @@ def is_installer() -> bool:
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-        os.system("")  # nosec
+        os.system("")  # nosec # noqa: S605,S607
         # Hide splashscreen loader of the packaged app
         if is_installer():
             hide_splashscreen()
@@ -369,6 +371,7 @@ def reset(queue: Optional[List[str]] = None):
     plots_backend().close(reset=True)
     load_env_files()
     debug = get_current_system().DEBUG_MODE
+    dev = get_current_system().DEV_BACKEND
 
     try:
         # save the current user
@@ -399,7 +402,7 @@ def reset(queue: Optional[List[str]] = None):
         if is_local():
             from openbb_terminal.terminal_controller import main
 
-            main(debug, queue_list, module="")  # type: ignore
+            main(debug, dev, queue_list, module="")  # type: ignore
         else:
             from openbb_terminal.core.session import session_controller
 

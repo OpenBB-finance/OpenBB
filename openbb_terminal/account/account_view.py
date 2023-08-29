@@ -57,8 +57,7 @@ def display_personal_routines(df: pd.DataFrame, page: int, pages: int):
                 show_index=True,
                 index_name="#",
             )
-    except Exception as exc:
-        print(exc)
+    except Exception:
         console.print("Failed to display personal routines.")
 
 
@@ -72,7 +71,6 @@ def display_default_routines(df: pd.DataFrame):
     """
     try:
         df = df.rename(columns={"date_updated": "updated_date"})
-        print(df)
         df = clean_df(df)
         print_rich_table(
             df=df,

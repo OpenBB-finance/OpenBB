@@ -428,7 +428,7 @@ def get_usd_liquidity(overlay: str = "", show: bool = False) -> pd.DataFrame:
     if overlay != "":
         overlay = overlay.upper()
         if overlay not in EQUITY_INDICES:
-            print(
+            console.print(
                 "Invalid choice for the overlay."
                 "Use `get_usd_liquidity(show = True)` to see display the list of choices."
             )

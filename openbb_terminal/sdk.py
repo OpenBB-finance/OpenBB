@@ -433,12 +433,10 @@ class OpenBBSDK:
             `rh`: Set Robinhood key\n
             `santiment`: Set Santiment key.\n
             `set_keys`: Set API keys in bundle.\n
-            `shroom`: Set Shroom key\n
             `smartstake`: Set Smartstake key.\n
             `stocksera`: Set Stocksera key.\n
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
-            `twitter`: Set Twitter key\n
             `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """

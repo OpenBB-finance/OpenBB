@@ -30,7 +30,7 @@ import InstallerButton from "@site/src/components/General/InstallerButton";
 
 This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.0/Windows.OpenBB.Terminal.v3.2.0.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.1/Windows.OpenBB.Terminal.v3.2.1.exe" label="Windows Installer" />
 
 <details><summary>Minimum Requirements</summary>
 

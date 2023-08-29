@@ -66,24 +66,6 @@
       "markdown": "Go to: https://polygon.io\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png)\n\nClick on, \"Get your Free API Key\".\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825952-ca5540ec-6ed2-4cef-a0ed-bb50b813932c.png)\n\nAfter signing up, the API Key is found at the bottom of the account dashboard page.\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png)"
     },
     {
-      "name": "API_TWITTER_KEY",
-      "source": "Twitter key",
-      "link": "https://developer.twitter.com",
-      "markdown": "![Twitter API](https://pbs.twimg.com/media/FooIJF3agAIU8SN?format=png&name=medium)"
-    },
-    {
-      "name": "API_TWITTER_SECRET_KEY",
-      "source": "Twitter secret",
-      "link": "https://developer.twitter.com",
-      "markdown": "![Twitter API](https://pbs.twimg.com/media/FooIJF3agAIU8SN?format=png&name=medium)"
-    },
-    {
-      "name": "API_TWITTER_BEARER_TOKEN",
-      "source": "Twitter token",
-      "link": "https://developer.twitter.com",
-      "markdown": "![Twitter API](https://pbs.twimg.com/media/FooIJF3agAIU8SN?format=png&name=medium)"
-    },
-    {
       "name": "API_FRED_KEY",
       "source": "FRED",
       "link": "https://fred.stlouisfed.org/docs/api/api_key.html",
@@ -274,5 +256,11 @@
       "source": "BizToc",
       "link": "https://biztoc.com",
       "markdown": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\n![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key.\n\n![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)"
+    },
+    {
+      "name": "API_KEY_NIXTLA",
+      "source": "Nixtla",
+      "link": "https://docs.nixtla.io/docs/getting-started",
+      "markdown": "Follow instructions in https://docs.nixtla.io/docs/getting-started"
     }
 ]

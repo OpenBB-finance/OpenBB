@@ -17,10 +17,10 @@ import openai
 import pandas as pd
 import praw
 import quandl
-import requests
 import stocksera
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI
+from nixtlats import TimeGPT
 from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
@@ -64,7 +64,6 @@ API_DICT: Dict = {
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
     "reddit": "REDDIT",
-    "twitter": "TWITTER",
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
@@ -82,10 +81,10 @@ API_DICT: Dict = {
     "eodhd": "EODHD",
     "santiment": "SANTIMENT",
     "tokenterminal": "TOKEN_TERMINAL",
-    "shroom": "SHROOM",
     "stocksera": "STOCKSERA",
     "dappradar": "DAPPRADAR",
     "openai": "OPENAI",
+    "nixtla": "NIXTLA",
 }
 
 # sorting api key section by name
@@ -112,9 +111,10 @@ class KeyStatus(str, Enum):
             c = "grey30"
         elif self.name == self.DEFINED_TEST_PASSED.name:
             c = "green"
-        elif self.name == self.DEFINED_TEST_INCONCLUSIVE.name:
-            c = "yellow"
-        elif self.name == self.DEFINED_NOT_TESTED.name:
+        elif self.name in [
+            self.DEFINED_TEST_INCONCLUSIVE.name,
+            self.DEFINED_NOT_TESTED.name,
+        ]:
             c = "yellow"
 
         return f"[{c}]{self.value}[/{c}]"
@@ -660,7 +660,7 @@ def check_news_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
+    if current_user.credentials.API_NEWS_TOKEN == "REPLACE_ME":  # nosec# noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -729,7 +729,7 @@ def check_biztoc_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_BIZTOC_TOKEN == "REPLACE_ME":  # nosec
+    if current_user.credentials.API_BIZTOC_TOKEN == "REPLACE_ME":  # nosec# noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -802,7 +802,7 @@ def check_tradier_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+    if current_user.credentials.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec# noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
@@ -1153,100 +1153,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
         else:
             logger.warning("Bitquery key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_twitter_key(
-    key: str,
-    secret: str,
-    access_token: str,
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Twitter key
-
-    Parameters
-    ----------
-    key: str
-        API key
-    secret: str
-        API secret
-    access_token: str
-        API token
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.twitter(
-            key="example_key",
-            secret="example_secret",
-            access_token="example_access_token"
-        )
-    """
-    handle_credential("API_TWITTER_KEY", key, persist)
-    handle_credential("API_TWITTER_SECRET_KEY", secret, persist)
-    handle_credential("API_TWITTER_BEARER_TOKEN", access_token, persist)
-
-    return check_twitter_key(show_output)
-
-
-def check_twitter_key(show_output: bool = False) -> str:
-    """Check Twitter key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-    if current_user.credentials.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
-        status = KeyStatus.NOT_DEFINED
-    else:
-        params = {
-            "query": "(\\$AAPL) (lang:en)",
-            "max_results": "10",
-            "tweet.fields": "created_at,lang",
-        }
-        r = request(
-            "https://api.twitter.com/2/tweets/search/recent",
-            params=params,  # type: ignore
-            headers={
-                "authorization": "Bearer "
-                + current_user.credentials.API_TWITTER_BEARER_TOKEN
-            },
-        )
-        if r.status_code == 200:
-            status = KeyStatus.DEFINED_TEST_PASSED
-        elif r.status_code in [401, 403]:
-            logger.warning("Twitter key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-        else:
-            logger.warning("Twitter key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
         console.print(status.colorize())
@@ -2433,81 +2339,6 @@ def check_santiment_key(show_output: bool = False) -> str:
     return str(status)
 
 
-def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set Shroom key
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.shroom(key="example_key")
-    """
-
-    handle_credential("API_SHROOM_KEY", key, persist)
-    return check_shroom_key(show_output)
-
-
-def check_shroom_key(show_output: bool = False) -> str:
-    """Check Shroom key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    if current_user.credentials.API_SHROOM_KEY == "REPLACE_ME":
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            response = request(
-                "https://node-api.flipsidecrypto.com/queries",
-                method="POST",
-                headers={"x-api-key": current_user.credentials.API_SHROOM_KEY},
-            )
-            if response.status_code == 400:
-                # this is expected because shroom returns 400 when query is not passed
-                status = KeyStatus.DEFINED_TEST_PASSED
-            elif response.status_code == 401:
-                logger.warning("Shroom key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-            else:
-                logger.warning("Shroom key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except requests.exceptions.RequestException:
-            logger.warning("Shroom key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
 def set_tokenterminal_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
@@ -2557,7 +2388,7 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
+    if current_user.credentials.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":  # noqa: S105
         status = KeyStatus.NOT_DEFINED
     else:
         token_terminal = TokenTerminal(
@@ -2995,6 +2826,74 @@ def check_openai_key(show_output: bool = False) -> str:
             # Handle other API errors
             logger.warning("OpenAI key defined, test inclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
+    return str(status)
+
+
+def set_nixtla_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Nixtla API key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.nixtla(key="example_key")
+    """
+
+    handle_credential("API_KEY_NIXTLA", key, persist)
+    return check_nixtla_key(show_output)
+
+
+def check_nixtla_key(show_output: bool = False) -> str:
+    """Check Nixtla key
+
+    Parameters
+    ----------
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+    """
+
+    if show_output:
+        console.print("Checking status...")
+
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_KEY_NIXTLA
+        == "REPLACE_ME"  # pragma: allowlist secret
+    ):  # pragma: allowlist secret
+        status = KeyStatus.NOT_DEFINED
+    else:
+        timegpt = TimeGPT(
+            token=get_current_user().credentials.API_KEY_NIXTLA,
+        )
+        status = (
+            KeyStatus.DEFINED_TEST_PASSED
+            if timegpt.validate_token()
+            else KeyStatus.DEFINED_TEST_FAILED
+        )
 
     if show_output:
         console.print(status.colorize())

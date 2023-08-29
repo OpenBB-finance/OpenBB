@@ -200,38 +200,18 @@ def screener(
         df_original = df_screen.copy()
         df_screen = df_screen.fillna("")
 
-        if data_type == "ownership":
-            cols = ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"]
-            df_screen[cols] = df_screen[cols].applymap(
-                lambda x: lambda_long_number_format(x, 1)
-            )
-        elif data_type == "overview":
-            cols = ["Market Cap", "Volume"]
-            df_screen[cols] = df_screen[cols].applymap(
-                lambda x: lambda_long_number_format(x, 1)
-            )
-        elif data_type == "technical":
-            cols = ["Volume"]
-            df_screen[cols] = df_screen[cols].applymap(
-                lambda x: lambda_long_number_format(x, 1)
-            )
-        elif data_type == "valuation":
-            cols = ["Market Cap", "Volume"]
-            df_screen[cols] = df_screen[cols].applymap(
-                lambda x: lambda_long_number_format(x, 1)
-            )
-        elif data_type == "financial":
-            cols = ["Market Cap", "Volume"]
-            df_screen[cols] = df_screen[cols].applymap(
-                lambda x: lambda_long_number_format(x, 1)
-            )
-        elif data_type == "performance":
-            cols = ["Avg Volume", "Volume"]
-            df_screen[cols] = df_screen[cols].applymap(
-                lambda x: lambda_long_number_format(x, 1)
-            )
-        elif data_type == "technical":
-            cols = ["Volume"]
+        cols: List[str] = []
+        data_type_cols = {
+            "ownership": ["Market Cap", "Outstanding", "Float", "Avg Volume", "Volume"],
+            "overview": ["Market Cap", "Volume"],
+            "technical": ["Volume"],
+            "valuation": ["Market Cap", "Volume"],
+            "financial": ["Market Cap", "Volume"],
+            "performance": ["Avg Volume", "Volume"],
+        }
+        cols = data_type_cols.get(data_type, [])
+
+        if cols:
             df_screen[cols] = df_screen[cols].applymap(
                 lambda x: lambda_long_number_format(x, 1)
             )
