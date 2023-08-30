@@ -6,7 +6,7 @@ from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import Optional
+from typing import Any, Literal, Optional
 
 import pandas as pd
 import yfinance as yf
@@ -74,3 +74,98 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
             {"Last Price": historical_curve, "expiration": futures_index}
         )
     return pd.DataFrame({"Last Price": futures_curve, "expiration": futures_index})
+
+
+def yf_download(
+    symbol: str,
+    start_date: Optional[str | dateType] = None,
+    end_date: Optional[str | dateType] = None,
+    interval: str = "1d",
+    period: str = "max",
+    prepost: bool = False,
+    actions: bool = False,
+    auto_adjust: bool = False,
+    back_adjust: bool = False,
+    progress: bool = False,
+    ignore_tz: bool = True,
+    keepna: bool = False,
+    repair: bool = False,
+    rounding: bool = False,
+    group_by: Literal["symbol", "column"] = "column",
+    **kwargs: Any,
+) -> pd.DataFrame:
+    """Base level yFinance OHLC helper function for returning any ticker and interval available."""
+
+    symbol = symbol.upper()
+    _start_date = start_date
+
+    if interval in ["60m", "1h"]:
+        period = "2y" if period in ["5y", "10y", "max"] else period
+        _start_date = None
+
+    if interval in ["2m", "5m", "15m", "30m", "90m"]:
+        _start_date = (datetime.now().date() - relativedelta(days=59)).strftime(
+            "%Y-%m-%d"
+        )
+
+    if interval == "1m":
+        period = "5d"
+        _start_date = None
+
+    data = yf.download(
+        tickers=symbol,
+        start=_start_date,
+        end=None,
+        interval=interval,
+        period=period,
+        prepost=prepost,
+        auto_adjust=auto_adjust,
+        back_adjust=back_adjust,
+        actions=actions,
+        progress=progress,
+        ignore_tz=ignore_tz,
+        keepna=keepna,
+        repair=repair,
+        rounding=rounding,
+        group_by=group_by,
+    )
+    if not data.empty:
+        data = data.reset_index()
+        data = data.rename(columns={"Date": "date", "Datetime": "date"})
+        data["date"] = pd.to_datetime(data["date"])
+        data = data[data["Open"] > 0]
+
+        if start_date is not None:
+            data = data[data["date"] >= pd.to_datetime(start_date)]
+            if end_date is not None and pd.to_datetime(end_date) > pd.to_datetime(
+                start_date
+            ):
+                data = data[
+                    data["date"] <= (pd.to_datetime(end_date) + relativedelta(days=1))
+                ]
+
+        if period not in [
+            "max",
+            "1d",
+            "5d",
+            "1wk",
+            "1mo",
+            "3mo",
+            "6mo",
+            "1y",
+            "2y",
+            "5y",
+            "10y",
+        ]:
+            data["date"] = (
+                data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d %H:%M:%S")
+            )
+        if interval not in ["1m", "2m", "5m", "15m", "30m", "90m", "60m", "1h"]:
+            data["date"] = data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d")
+
+        if actions is False:
+            data = data.drop(columns=["Adj Close"])
+
+        data.columns = data.columns.str.lower().to_list()
+
+    return data

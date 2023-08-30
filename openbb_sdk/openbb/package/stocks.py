@@ -298,7 +298,7 @@ class CLASS_stocks(Container):
 
         StockEOD
         --------
-        date : Union[date, datetime]
+        date : Union[datetime, date]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -329,20 +329,20 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Percent change in the price of the symbol. (provider: fmp)
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Percent change in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]
             The data time frequency. (provider: intrinio)
         average : Optional[float]
             Average trade price of an individual stock during the interval. (provider: intrinio)
-        n : Optional[PositiveInt]
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 

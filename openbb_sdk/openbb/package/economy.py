@@ -62,7 +62,7 @@ class CLASS_economy(Container):
     def available_indices(
         self,
         chart: bool = False,
-        provider: Optional[Literal["cboe", "fmp"]] = None,
+        provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Lists of available indices from a provider.
@@ -71,7 +71,7 @@ class CLASS_economy(Container):
         ----------
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['cboe', 'fmp']]
+        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -83,7 +83,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'fmp']]
+            provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -124,7 +124,8 @@ class CLASS_economy(Container):
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange where the index is listed. (provider: fmp)
-        """  # noqa: E501
+        code : Optional[str]
+            ID code for keying the index in the OpenBB Terminal. (provider: yfinance)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1182,14 +1183,12 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
-        back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+        rounding : bool
+            Round values to two decimal places. (provider: yfinance)
 
         Returns
         -------
@@ -1232,16 +1231,13 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Percent change in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Percent change in the price of the symbol over a period of time. (provider: fmp)
         vwap : Optional[float]
-            Volume Weighted Average Price of the symbol. (provider: fmp)
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
-        """  # noqa: E501
+            Volume Weighted Average Price of the symbol. (provider: fmp)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

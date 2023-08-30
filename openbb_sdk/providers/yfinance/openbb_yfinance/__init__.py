@@ -3,16 +3,17 @@
 
 from openbb_provider.abstract.provider import Provider
 
+from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
+from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
+from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.crypto_eod import YFinanceCryptoEODFetcher
 from openbb_yfinance.models.forex_eod import YFinanceForexEODFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_eod import YFinanceFuturesEODFetcher
+from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.major_indices_eod import YFinanceMajorIndicesEODFetcher
 from openbb_yfinance.models.stock_eod import YFinanceStockEODFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
-from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
-from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
-from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -32,5 +33,6 @@ yfinance_provider = Provider(
         "BalanceSheet": YFinanceBalanceSheetFetcher,
         "CashFlowStatement": YFinanceCashFlowStatementFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
+        "AvailableIndices": YFinanceAvailableIndicesFetcher,
     },
 )
