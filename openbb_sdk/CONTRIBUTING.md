@@ -1,12 +1,16 @@
-# CONTRIBUTING
+# CONTRIBUTING - THIS IS A WORK IN PROGRESS
 
-- [CONTRIBUTING](#contributing)
+- [CONTRIBUTING - THIS IS A WORK IN PROGRESS](#contributing---this-is-a-work-in-progress)
   - [Get started contributing with a template](#get-started-contributing-with-a-template)
     - [Cookiecuter, a closer look](#cookiecuter-a-closer-look)
       - [Get your data](#get-your-data)
       - [SDK commands: query and output your data](#sdk-commands-query-and-output-your-data)
   - [Adding a new data point](#adding-a-new-data-point)
     - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
+    - [What is the Standardization framework?](#what-is-the-standardization-framework)
+      - [Standardization gotchas](#standardization-gotchas)
+      - [Standard QueryParams Example](#standard-queryparams-example)
+      - [Standard Data Example](#standard-data-example)
     - [Check if the standard model exists](#check-if-the-standard-model-exists)
     - [Refer to the API documentation and start developing](#refer-to-the-api-documentation-and-start-developing)
       - [Data characterization](#data-characterization)
@@ -15,6 +19,9 @@
         - [Data output](#data-output)
       - [Build the Fetcher](#build-the-fetcher)
     - [Make the new provider visible to the SDK](#make-the-new-provider-visible-to-the-sdk)
+  - [Using other extension as a dependency](#using-other-extension-as-a-dependency)
+    - [Using our internal extension](#using-our-internal-extension)
+    - [Adding an external extension](#adding-an-external-extension)
   - [The charting extension](#the-charting-extension)
     - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
     - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
@@ -108,7 +115,7 @@ Let's break it down:
 - `standard_params: StandardParams`: standardized parameters that are common to all providers that implement the `Example` fetcher.
 - `extra_params: ExtraParams`: this is a parameter that will be passed to the command and that will contain the provider specific arguments - take into consideration that a single SDK command can consume any amount of provider you wish.
 
-You only need to change the `model` parameter to the name of the name of the fetcher_dict key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
+You only need to change the `model` parameter to the name of the name of the fetcher dictionary key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
 
 ## Adding a new data point
 
@@ -124,6 +131,68 @@ This corresponds to a very well known endpoint, `stocks/load`.
 
 Note that, if no endpoint existed yet, we'd need to add it under the right asset type.
 Each asset type is organized under a different extension (stocks, forex, crypto, etc.).
+
+### What is the Standardization framework?
+
+The standardization framework is a set of tools that enable the user to easily query and output data in a standardized way.
+
+Each data model should inherit from a standard model that is already defined in the SDK. This will unlock a set of perks that are only available to standardized data, namely:
+
+- Can query and output data in a standardized way.
+- Can expect extensions such as the charting extension to work out-of-the-box.
+- Can expect transparently defined schemas for the data that is returned by the API.
+- Can expect consistent data types and validation.
+- Will work seamlessly with other providers that implement the same standard model.
+
+The standard models are defined under the `./sdk/core/provider/openbb_provider/standard_models/` directory.
+
+They implement the QueryParams and Data models, which are the models that are used to query and output data, respectively.
+
+They are really just pydantic models, so you can leverage all the pydantic features such as validators.
+
+#### Standardization gotchas
+
+The standardization framework is a very powerful tool, but it has some gotchas that you should be aware of:
+
+- We standardize fields that are shared between two or more providers. If there is a third provider that doesn't share the same fields, we will declare it as an Optional field.
+- When mapping the column names from a provider-specific model to the standard model, the CamelCase to snake_case conversion is done automatically. If the column names are not the same, you'll need to manually map them. (e.g. `o` -> `open`)
+- The standard models are created and maintained by the OpenBB team. If you want to add a new field to a standard model, you'll need to open a PR to the SDK.
+
+#### Standard QueryParams Example
+
+```python
+class StockEODQueryParams(QueryParams, BaseSymbol):
+    """Stock end of day Query."""
+
+    start_date: Optional[date] = Field(
+        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
+    )
+    end_date: Optional[date] = Field(
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
+    )
+```
+
+What is interesting about the above standard model is that it inherits from two classes. The QueryParams is an abstract class that just tells us that we are dealing with query parameters. The BaseSymbol is a helper class that contains the `symbol` field and an
+upper case validator. It is used so that we don't have to repeat the same code over and over again.
+
+The SDK dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
+
+#### Standard Data Example
+
+```python
+class StockEODData(Data):
+    """Stock end of day price Data."""
+
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+```
+
+The above example is a standard data model. It inherits from the Data class, which is an abstract class that tells us that we are dealing with data aka the output. Here, we can see a `vwap` field that is optional. This is because not all providers have this field while it is shared between two or more providers.
 
 ### Check if the standard model exists
 
@@ -195,23 +264,23 @@ For the `StockEOD` example, this would look like the following:
 
 ```python
 
-class <ProviderName>EODFetcher(
+class <ProviderName>StockEODFetcher(
     Fetcher[
-        <ProviderName>EODQueryParams,
-        List[<ProviderName>EODData],
+        <ProviderName>StockEODQueryParams,
+        List[<ProviderName>StockEODData],
     ]
 ):
     """Transform the query, extract and transform the data."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> <ProviderName>EODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> <ProviderName>StockEODQueryParams:
         """Transform the query parameters."""
 
-        return <ProviderName>EODQueryParams(**transformed_params)
+        return <ProviderName>StockEODQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: <ProviderName>EODQueryParams,
+        query: <ProviderName>StockEODQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -224,10 +293,10 @@ class <ProviderName>EODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[<ProviderName>EODData]:
+    ) -> List[<ProviderName>StockEODData]:
         """Transform the data to the standard format."""
 
-        return [<ProviderName>EODData.parse_obj(**d) for d in data]
+        return [<ProviderName>StockEODData.parse_obj(**d) for d in data]
 
 ```
 
@@ -239,14 +308,14 @@ In order to make the new provider visible to the SDK, you'll need to add it to t
 
 ```python
 
-"""Alpha Vantage Provider module."""
+"""<Provider Name> Provider module."""
 from openbb_provider.abstract.provider import Provider
 
 from openbb_<provider_name>.models.stock_eod import <ProviderName>StockEODFetcher
 
 <provider_name>_provider = Provider(
     name="<provider_name>",
-    website="https://www.<providerName>.co/documentation/",
+    website="<URL to the provider website>",
     description="Provider description goes here",
     required_credentials=["api_key"],
     fetcher_dict={
@@ -256,11 +325,62 @@ from openbb_<provider_name>.models.stock_eod import <ProviderName>StockEODFetche
 
 ```
 
+If the provider does not require any credentials, you can simply set it as `None`. On the other hand if it requires more than 2 items to authenticate, you can simply add a list of all the required items to the `required_credentials` list.
+
 After running `pip install .` on `openbb_sdk/providers/<provider_name>` your provider should be ready for usage, both from a Python interface or the API.
+
+## Using other extension as a dependency
+
+We can use internal and external extensions with the custom extension and bundle it as a dependency.
+
+### Using our internal extension
+
+We will use the `openbb-qa` extension by utilizing its `summary` endpoint.
+
+To create a `period_summary_example` endpoint we need to add the following to the `router.py` file:
+
+```python
+from typing import List
+from openbb_provider.abstract.data import Data
+from openbb_core.app.utils import basemodel_to_df, df_to_basemodel
+from openbb_qa.qa_router import summary
+
+
+@router.command(methods=["POST"])
+def period_summary_example(
+    data: List[Data],
+    target: str,
+    start_date: str,
+    end_date: str,
+) -> OBBject[dict]:
+    """Example Data."""
+
+    df = basemodel_to_df(data)
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    df = df.reset_index(drop=True)
+    target_data = df_to_basemodel(df)
+    results = summary(target_data, target=target)
+
+    return OBBject(results=results.results)
+```
+
+Here we are using two vital utility functions - `basemodel_to_df` and `df_to_basemodel`. The function `basemodel_to_df` converts the data to a pandas dataframe and `df_to_basemodel` converts the dataframe back to the `Data` model.
+
+### Adding an external extension
+
+To add the `openbb-charting` charting extension as a dependency, you'll need to add it to the `pyproject.toml` file:
+
+<!-- TODO: Change the version to match the stable release -->
+```toml
+[tool.poetry.dependencies]
+openbb-charting = "^0.0.0a1"
+```
+
+Then execute the command `poetry install` in the root of your extension to install the new dependency.
 
 ## The charting extension
 
-The following section assumes that you're using the `openbb_charting` charting extension, although the same principles apply to any other extension.
+The following section assumes that you're using the `openbb-charting` extension, although the same principles apply to any other extension.
 
 ### Add a visualization to an existing SDK command
 
