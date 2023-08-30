@@ -33,4 +33,9 @@ def corr(data: List[Data]) -> OBBject[List[Data]]:
         Correlation matrix.
     """
     df = basemodel_to_df(data)
-    return OBBject(results=df.corr())
+    corr = df.corr()
+    ret = []
+    for k,v in corr.items():
+        v["comp_to"] = k
+        ret.append(Data(**v))
+    return OBBject(results=ret)
