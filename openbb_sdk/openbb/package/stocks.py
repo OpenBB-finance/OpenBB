@@ -38,37 +38,37 @@ class CLASS_stocks(Container):
 
     @property
     def ca(self):  # route = "/stocks/ca"
-        from openbb.package import stocks_ca
+        from . import stocks_ca
 
         return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
 
     @property
     def dd(self):  # route = "/stocks/dd"
-        from openbb.package import stocks_dd
+        from . import stocks_dd
 
         return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
     def disc(self):  # route = "/stocks/disc"
-        from openbb.package import stocks_disc
+        from . import stocks_disc
 
         return stocks_disc.CLASS_stocks_disc(command_runner=self._command_runner)
 
     @property
     def dps(self):  # route = "/stocks/dps"
-        from openbb.package import stocks_dps
+        from . import stocks_dps
 
         return stocks_dps.CLASS_stocks_dps(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
-        from openbb.package import stocks_fa
+        from . import stocks_fa
 
         return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
 
     @property
     def gov(self):  # route = "/stocks/gov"
-        from openbb.package import stocks_gov
+        from . import stocks_gov
 
         return stocks_gov.CLASS_stocks_gov(command_runner=self._command_runner)
 
@@ -191,7 +191,7 @@ class CLASS_stocks(Container):
 
     @property
     def ins(self):  # route = "/stocks/ins"
-        from openbb.package import stocks_ins
+        from . import stocks_ins
 
         return stocks_ins.CLASS_stocks_ins(command_runner=self._command_runner)
 
@@ -218,7 +218,7 @@ class CLASS_stocks(Container):
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -294,11 +294,11 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -663,7 +663,7 @@ class CLASS_stocks(Container):
 
     @property
     def options(self):  # route = "/stocks/options"
-        from openbb.package import stocks_options
+        from . import stocks_options
 
         return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
