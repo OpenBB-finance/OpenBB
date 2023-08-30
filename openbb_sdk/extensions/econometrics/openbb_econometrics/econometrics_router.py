@@ -16,14 +16,21 @@ from pydantic import NonNegativeFloat, PositiveInt
 
 
 router = Router(prefix="")
+
+
 @router.command(methods=["POST"])
-def corr(
-        data: List[Data],
-)-> OBBject[List[Data]]:
-    print(data)
+def corr(data: List[Data]) -> OBBject[List[Data]]:
+    """Get the corrlelation matrix of an input dataset.
+
+    Parameters
+    ----------
+    data : List[Data]
+        Input dataset.
+
+    Returns
+    -------
+    OBBject[List[Data]]
+        Correlation matrix.
+    """
     df = basemodel_to_df(data)
-    print(df)
-    corr = df.corr()
-    return OBBject(results=corr)
-
-
+    return OBBject(results=df.corr())

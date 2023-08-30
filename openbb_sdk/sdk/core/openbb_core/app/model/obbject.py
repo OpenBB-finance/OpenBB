@@ -97,7 +97,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe().reset_index()  # type: ignore
+        df = self.to_dataframe().reset_index(drop=True)  # type: ignore
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()

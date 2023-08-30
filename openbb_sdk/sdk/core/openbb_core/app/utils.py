@@ -30,7 +30,7 @@ def df_to_basemodel(
 ) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
     if index:
-        df = df.reset_index()
+        df = df.reset_index(drop=True)
     if isinstance(df, pd.Series):
         df = df.to_frame()
     return [Data(**d) for d in df.to_dict(orient="records")]
