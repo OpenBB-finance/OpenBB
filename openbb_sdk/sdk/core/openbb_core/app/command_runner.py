@@ -94,12 +94,14 @@ class ParametersBuilder:
 
     @staticmethod
     def update_command_context(
+        func: Callable,
         kwargs: Dict[str, Any],
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> Dict[str, Any]:
         """Update the command context with the available user and system settings."""
-        if "cc" in kwargs:
+        argcount = func.__code__.co_argcount
+        if "cc" in func.__code__.co_varnames[:argcount]:
             kwargs["cc"] = CommandContext(
                 user_settings=user_settings,
                 system_settings=system_settings,
@@ -109,12 +111,18 @@ class ParametersBuilder:
 
     @staticmethod
     def update_provider_choices(
+        func: Callable,
         command_coverage: Dict[str, List[str]],
         route: str,
         kwargs: Dict[str, Any],
         route_default: Optional[str],
     ) -> Dict[str, Any]:
         """Update the provider choices with the available providers and set default provider."""
+
+        def _needs_provider(func: Callable) -> bool:
+            """Check if the function needs a provider."""
+            parameters = signature(func).parameters.keys()
+            return "provider_choices" in parameters
 
         def _has_provider(kwargs: Dict[str, Any]) -> bool:
             """Check if the kwargs already have a provider."""
@@ -144,7 +152,7 @@ class ParametersBuilder:
 
             return command_cov_provider
 
-        if not _has_provider(kwargs):
+        if not _has_provider(kwargs) and _needs_provider(func):
             provider = (
                 _get_default_provider(
                     command_coverage,
@@ -202,11 +210,13 @@ class ParametersBuilder:
             kwargs=kwargs,
         )
         kwargs = cls.update_command_context(
+            func=func,
             kwargs=kwargs,
             system_settings=system_settings,
             user_settings=user_settings,
         )
         kwargs = cls.update_provider_choices(
+            func=func,
             command_coverage=command_map.command_coverage,
             route=route,
             kwargs=kwargs,

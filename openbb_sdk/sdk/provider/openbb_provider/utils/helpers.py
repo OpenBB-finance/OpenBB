@@ -99,5 +99,11 @@ def make_request(
 
 
 def to_snake_case(string: str) -> str:
+    """Convert a string to snake case."""
     s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", string)
-    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
+    return (
+        re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1)
+        .lower()
+        .replace(" ", "_")
+        .replace("__", "_")
+    )
