@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "0.0.0a5"
+version = "0.0.0a6"
 description = "OpenBB package with core functionality for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
