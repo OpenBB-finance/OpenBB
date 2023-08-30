@@ -14,7 +14,6 @@ class SystemService:
         "log_collect",
         "test_mode",
         "headless",
-        "dbms_uri",
     }
 
     @classmethod
