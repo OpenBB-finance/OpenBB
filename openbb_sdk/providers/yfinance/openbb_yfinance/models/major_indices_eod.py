@@ -90,6 +90,7 @@ class YFinanceMajorIndicesEODFetcher(
             rounding=query.rounding,
             **kwargs,
         )
+        data.date = data.date.astype(str)
         return data.to_dict("records")
 
     @staticmethod
