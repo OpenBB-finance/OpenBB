@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-news"
-version = "0.0.0a1"
+version = "0.0.0a2"
 description = "News extension for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
