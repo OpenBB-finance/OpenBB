@@ -440,13 +440,13 @@ files = [
 
 [[package]]
 name = "openbb-provider"
-version = "0.0.0a1"
-description = ""
+version = "0.0.0a2"
+description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_provider-0.0.0a1-py3-none-any.whl", hash = "sha256:4f4b2b3e101381af83523adc08890daccfafa28ea459461295e0f3f4dd91772a"},
-    {file = "openbb_provider-0.0.0a1.tar.gz", hash = "sha256:91a0ed500c17f5d74338babe4b5f4a68f4b3435a0fa873b72c0c5db1fe350ad5"},
+    {file = "openbb_provider-0.0.0a2-py3-none-any.whl", hash = "sha256:41317195dc365bb5a084a200cc203208729b5a524ddbe45c9ce67be0461470b1"},
+    {file = "openbb_provider-0.0.0a2.tar.gz", hash = "sha256:9811fcfd5d2d6d35cd6f4f28fa848202b49f7f15a127a93b12f74782c98c5459"},
 ]
 
 [package.dependencies]
@@ -1028,4 +1028,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "7f78847540de705be4d04417e97f255584c078c8c482a93794dea65a1ccf4a77"
+content-hash = "d1facd167435b7dc6be282ab253778539e0d2a9d8c300c6a11c1fe6eb2d4d41f"

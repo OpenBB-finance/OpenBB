@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-core"
-version = "0.0.0a3"
-description = ""
+version = "0.0.0a5"
+description = "OpenBB package with core functionality for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_core" }]
@@ -24,7 +24,7 @@ bcrypt = "^4.0.1"
 urllib3 = "<2.0.0"
 black = "^23.7.0"
 ruff = "0.0.256"
-openbb-provider = {version = "^0.0.0a1", source = "test-pypi"}
+openbb-provider = {version = "^0.0.0a2", source = "test-pypi"}
 
 [[tool.poetry.source]]
 name = "test-pypi"
