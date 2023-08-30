@@ -61,6 +61,8 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Union[pd.DataFrame, Dict[str, pd.DataFrame]]
             Pandas dataframe or dictionary of dataframes.
         """
+        if isinstance(self.results, pd.DataFrame):
+            return self.results
         if not self.results:
             raise OpenBBError("Results not found.")
 

@@ -20,10 +20,10 @@ router = Router(prefix="")
 def corr(
         data: List[Data],
 )-> OBBject[List[Data]]:
-    if isinstance(data, list):
-        print("yes")
-        df = basemodel_to_df(data)
+    print(data)
+    df = basemodel_to_df(data)
+    print(df)
     corr = df.corr()
-    return OBBject(results=df_to_basemodel(corr))
+    return OBBject(results=corr)
 
 

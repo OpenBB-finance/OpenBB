@@ -29,7 +29,7 @@ class Extensions(Container):
 
     @property
     def econometrics(self):  # route = "/econometrics"
-        from openbb.package import econometrics
+        from . import econometrics
 
         return econometrics.CLASS_econometrics(command_runner=self._command_runner)
 
