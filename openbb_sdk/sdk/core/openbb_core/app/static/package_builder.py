@@ -406,7 +406,7 @@ class MethodDefinition:
 
         code = "\n    @property\n"
         code += f'    def {function_name}(self):  # route = "{path}"\n'
-        code += f"        from openbb.package import {module_name}\n"
+        code += f"        from . import {module_name}\n"
         code += f"        return {module_name}.{class_name}(command_runner=self._command_runner)\n"
 
         return code
