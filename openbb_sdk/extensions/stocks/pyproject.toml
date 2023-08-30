@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-stocks"
-version = "0.0.0a1"
+version = "0.0.0a2"
 description = "Stocks extension for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_stocks" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = {version = "^0.0.0a3", source = "test-pypi"}
+openbb-core = {version = "^0.0.0a5", source = "test-pypi"}
 
 [[tool.poetry.source]]
 name = "test-pypi"

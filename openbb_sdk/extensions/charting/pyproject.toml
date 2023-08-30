@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-charting"
-version = "0.0.0a1"
+version = "0.0.0a2"
 description = "Charting extension for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -18,7 +18,7 @@ aiohttp = "^3.8.4"
 nbformat = "^5.9.0"
 pandas = ">1.5.3"
 pandas-ta = "^0.3.14b0"
-openbb-core = {version = "^0.0.0a3", source = "test-pypi"}
+openbb-core = {version = "^0.0.0a5", source = "test-pypi"}
 
 [[tool.poetry.source]]
 name = "test-pypi"

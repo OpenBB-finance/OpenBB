@@ -440,13 +440,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.0.0a3"
-description = ""
+version = "0.0.0a5"
+description = "OpenBB package with core functionality for OpenBB SDK"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_core-0.0.0a3-py3-none-any.whl", hash = "sha256:ebdc0ac80586c94587dd610342523434ab2c5eaa939e26c25171af5c51aaf6ae"},
-    {file = "openbb_core-0.0.0a3.tar.gz", hash = "sha256:310480ba49ff34ace8d7cad88b65d64e510827fb67134c7b39e7f674f90b5386"},
+    {file = "openbb_core-0.0.0a5-py3-none-any.whl", hash = "sha256:aab7b4ef698c64b36015d0fcbc76476e6f5e1cd378450f67c284ecafd2e3cc6a"},
+    {file = "openbb_core-0.0.0a5.tar.gz", hash = "sha256:718bcc5275e42a0784c573c87a958edd9d39f9ba2205c4e3ad7d0007a97f467d"},
 ]
 
 [package.dependencies]
@@ -455,7 +455,7 @@ black = ">=23.7.0,<24.0.0"
 fastapi = ">=0.100.1,<0.101.0"
 html5lib = ">=1.1,<2.0"
 importlib_metadata = ">=6.8.0,<7.0.0"
-openbb-provider = ">=0.0.0a1,<0.0.1"
+openbb-provider = ">=0.0.0a2,<0.0.1"
 pandas = ">1.5.3"
 passlib = ">=1.7.4,<2.0.0"
 posthog = ">=3.0.1,<4.0.0"
@@ -475,8 +475,8 @@ reference = "test-pypi"
 
 [[package]]
 name = "openbb-provider"
-version = "0.0.0a1"
-description = ""
+version = "0.0.0a2"
+description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = "*"
 files = []
@@ -1034,4 +1034,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "9fd9c331eeb7169f2470f4992b3f3396c83c9984ff5195dee61d03dd0f2cabe0"
+content-hash = "875504c0a08279d6fdbd825da25d65982c3c81db21b94f3c48566fa5a5d67aee"
