@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-qa"
-version = "0.0.0a2"
+version = "0.0.0a3"
 description = "Quantitative Analysis extension for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -11,7 +11,7 @@ python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
 scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 pandas-ta = "^0.3.14b0"
-openbb-core = {version = "^0.0.0a5", source = "test-pypi"}
+openbb-core = {version = "^0.0.0a7", source = "test-pypi"}
 
 [[tool.poetry.source]]
 name = "test-pypi"
