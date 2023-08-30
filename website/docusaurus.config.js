@@ -81,18 +81,18 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-            lastVersion: 'current',
-            versions: {
-              current: {
-                label: 'v3',
-                path: '',
-              },
-              "v4": {
-                label: 'v4',
-                path: 'v4',
-                banner: 'unreleased'
-              },
+          lastVersion: "current",
+          versions: {
+            current: {
+              label: "v3",
+              path: "",
             },
+            v4: {
+              label: "v4",
+              path: "v4",
+              banner: "unreleased",
+            },
+          },
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
@@ -119,8 +119,8 @@ const config = {
       navbar: {
         items: [
           {
-            type: 'docsVersionDropdown',
-            position: 'left',
+            type: "docsVersionDropdown",
+            position: "left",
             dropdownActiveClassDisabled: true,
           },
         ],
