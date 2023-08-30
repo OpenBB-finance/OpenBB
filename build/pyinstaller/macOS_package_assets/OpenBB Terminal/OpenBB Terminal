@@ -23,7 +23,14 @@ Get started in less than 3 minutes: https://www.youtube.com/watch?v=UFh_Ku0fdtY
 echo "$BOOTUP_MESSAGE"
 
 # Add some messages we can print out
-messages=("" "" "" "" "Did you know that you can search for stocks from a given country by running stocks/search --exchangecountry COUNTRY")
+messages=("" "" "" "" \
+"Did you know that you can search for stocks from a given country by running stocks/search --exchangecountry COUNTRY" \
+"" "" "" \
+"You can jump between menus by starting your command with a backslash.  To go from funds to stocks/fa, you can run /stocks/fa" \
+"" "" "" \
+"Every command has a help flag.  To access this use the -h flag after your command.")
+
+
 # Pick a random one
 index=$((RANDOM % ${#messages[@]}))
 echo ${messages[$index]}

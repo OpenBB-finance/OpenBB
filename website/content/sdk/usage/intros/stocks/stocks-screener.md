@@ -147,7 +147,7 @@ Price/Free Cash Flow = Low (<15)
 Beta = Under 1
 ```
 
-Copy the block above to a new text file in any editor, and save the file to the [OpenBBUserData](https://docs.openbb.co/sdk/usage/guides/data) folder, naming it something like, `sdk_guide_preset.ini`.  **This preset has also been included with the installation**.  Declaring the path to the preset file, when located in the OpenBBUserData folder, is not required. The kernel must be restarted when a file is renamed or created; however, changes to the preset itself will be reflected immediately and without restarting.
+Copy the block above to a new text file in any editor, and save the file to the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder, naming it something like, `sdk_guide_preset.ini`.  **This preset has also been included with the installation**.  Declaring the path to the preset file, when located in the OpenBBUserData folder, is not required. The kernel must be restarted when a file is renamed or created; however, changes to the preset itself will be reflected immediately and without restarting.
 
 It is a good idea to test choices made before making it too complicated. Start with a handful of filters and modify, or add, them one-at-a-time. Let's pass what we have so far through the screener with `performance` selected as the `data_type`.
 
