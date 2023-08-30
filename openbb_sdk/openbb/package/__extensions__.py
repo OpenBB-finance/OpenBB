@@ -21,48 +21,48 @@ class Extensions(Container):
 
     @property
     def crypto(self):  # route = "/crypto"
-        from openbb.package import crypto
+        from . import crypto
 
         return crypto.CLASS_crypto(command_runner=self._command_runner)
 
     @property
     def economy(self):  # route = "/economy"
-        from openbb.package import economy
+        from . import economy
 
         return economy.CLASS_economy(command_runner=self._command_runner)
 
     @property
     def fixedincome(self):  # route = "/fixedincome"
-        from openbb.package import fixedincome
+        from . import fixedincome
 
         return fixedincome.CLASS_fixedincome(command_runner=self._command_runner)
 
     @property
     def forex(self):  # route = "/forex"
-        from openbb.package import forex
+        from . import forex
 
         return forex.CLASS_forex(command_runner=self._command_runner)
 
     @property
     def news(self):  # route = "/news"
-        from openbb.package import news
+        from . import news
 
         return news.CLASS_news(command_runner=self._command_runner)
 
     @property
     def qa(self):  # route = "/qa"
-        from openbb.package import qa
+        from . import qa
 
         return qa.CLASS_qa(command_runner=self._command_runner)
 
     @property
     def stocks(self):  # route = "/stocks"
-        from openbb.package import stocks
+        from . import stocks
 
         return stocks.CLASS_stocks(command_runner=self._command_runner)
 
     @property
     def ta(self):  # route = "/ta"
-        from openbb.package import ta
+        from . import ta
 
         return ta.CLASS_ta(command_runner=self._command_runner)

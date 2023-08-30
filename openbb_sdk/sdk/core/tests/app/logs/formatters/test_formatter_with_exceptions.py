@@ -297,9 +297,6 @@ def test_format(formatter):
     # Assertions
     expected_log = "INFO|test_app_name|unknown-commit|test_app_id|test_session_id|test_user_id|Filtered log message"
 
-    print(expected_log)
-    print(formatted_log)
-
     assert formatted_log == expected_log
 
     # Check if the mock methods were called

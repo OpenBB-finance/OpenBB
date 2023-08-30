@@ -475,14 +475,13 @@ async def download_plotly_js():
         # this is so we don't have to block the main thread
         async with aiohttp.ClientSession(
             connector=aiohttp.TCPConnector(verify_ssl=False)
-        ) as session:
-            async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
-                with open(str(PLOTLYJS_PATH), "wb") as f:
-                    while True:
-                        chunk = await resp.content.read(1024)
-                        if not chunk:
-                            break
-                        f.write(chunk)
+        ) as session, session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
+            with open(str(PLOTLYJS_PATH), "wb") as f:
+                while True:
+                    chunk = await resp.content.read(1024)
+                    if not chunk:
+                        break
+                    f.write(chunk)
 
         # We delete the old version of plotly.js
         for file in (PLOTS_CORE_PATH / "assets").glob("plotly*.js"):
