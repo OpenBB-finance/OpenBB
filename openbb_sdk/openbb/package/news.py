@@ -2,8 +2,6 @@
 
 from typing import List, Literal, Optional
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 import pydantic
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -16,7 +14,6 @@ from typing_extensions import Annotated
 class CLASS_news(Container):
     """/news
     globalnews
-    sectornews
     """
 
     def __repr__(self) -> str:
@@ -126,20 +123,5 @@ class CLASS_news(Container):
 
         return self._command_runner.run(
             "/news/globalnews",
-            **inputs,
-        )
-
-    @validate_arguments
-    def sectornews(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Sector news."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/news/sectornews",
             **inputs,
         )

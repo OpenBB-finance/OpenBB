@@ -22,7 +22,7 @@ from reportlab.graphics import renderPDF
 try:
     from pywry import PyWry
 except ImportError as e:
-    print(f"\033[91m{e}\033[0m")
+    print(f"\033[91m{e}\033[0m")  # noqa: T201
     # pylint: disable=C0412
     from .dummy_backend import DummyBackend
 
@@ -241,10 +241,12 @@ class Backend(PyWry):
 
             if self.charting_settings.plot_open_export:
                 if sys.platform == "win32":
-                    os.startfile(export_image)  # nosec: B606
+                    os.startfile(export_image)  # nosec: B606 # noqa: S606
                 else:
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
-                    subprocess.check_call([opener, export_image])  # nosec: B603
+                    subprocess.check_call(
+                        [opener, export_image]  # nosec: B603 # noqa: S603
+                    )
 
     def send_table(
         self,
@@ -475,14 +477,13 @@ async def download_plotly_js():
         # this is so we don't have to block the main thread
         async with aiohttp.ClientSession(
             connector=aiohttp.TCPConnector(verify_ssl=False)
-        ) as session:
-            async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
-                with open(str(PLOTLYJS_PATH), "wb") as f:
-                    while True:
-                        chunk = await resp.content.read(1024)
-                        if not chunk:
-                            break
-                        f.write(chunk)
+        ) as session, session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
+            with open(str(PLOTLYJS_PATH), "wb") as f:
+                while True:
+                    chunk = await resp.content.read(1024)
+                    if not chunk:
+                        break
+                    f.write(chunk)
 
         # We delete the old version of plotly.js
         for file in (PLOTS_CORE_PATH / "assets").glob("plotly*.js"):
@@ -490,7 +491,7 @@ async def download_plotly_js():
                 file.unlink(missing_ok=True)
 
     except Exception as err:  # pylint: disable=W0703
-        print(f"Error downloading plotly.js: {err}")
+        warnings.warn(f"Error downloading plotly.js: {err}")
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present

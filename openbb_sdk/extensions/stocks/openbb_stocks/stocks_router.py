@@ -4,7 +4,6 @@
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,25 +15,27 @@ from pydantic import BaseModel
 
 from openbb_stocks.ca.ca_router import router as ca_router
 from openbb_stocks.dd.dd_router import router as dd_router
-from openbb_stocks.disc.disc_router import router as disc_router
-from openbb_stocks.dps.dps_router import router as dps_router
 from openbb_stocks.fa.fa_router import router as fa_router
-from openbb_stocks.gov.gov_router import router as gov_router
-from openbb_stocks.ins.ins_router import router as ins_router
 from openbb_stocks.options.options_router import router as options_router
+
+# TODO: Uncomment once they have some commands.
+# from openbb_stocks.gov.gov_router import router as gov_router
+# from openbb_stocks.ins.ins_router import router as ins_router
+# from openbb_stocks.dps.dps_router import router as dps_router
+
 
 router = Router(prefix="")
 router.include_router(fa_router)
 router.include_router(ca_router)
 router.include_router(dd_router)
-router.include_router(dps_router)
-router.include_router(disc_router)
-router.include_router(gov_router)
-router.include_router(ins_router)
 router.include_router(options_router)
 
+# router.include_router(dps_router)
+# router.include_router(gov_router)
+# router.include_router(ins_router)
 
-@router.command(model="StockEOD")
+
+@router.command(model="StockEOD", include_in_schema=False)
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -65,12 +66,6 @@ def multiples(
 ) -> OBBject[BaseModel]:
     """Get valuation multiples for a stock ticker."""
     return OBBject(results=Query(**locals()).execute())
-
-
-@router.command
-def tob() -> OBBject[Empty]:
-    """View top of book for loaded ticker (US exchanges only)."""
-    return OBBject(results=Empty())
 
 
 @router.command(model="StockSearch")
