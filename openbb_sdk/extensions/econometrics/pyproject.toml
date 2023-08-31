@@ -13,7 +13,7 @@ scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 arch = "^5.5.0"
 linearmodels = "^4.25"
-pandas = "^2.0.0"
+pandas = ">=1.5.3"
 
 [build-system]
 requires = ["poetry-core"]

@@ -246,6 +246,8 @@
     "econometrics_corr": "/econometrics/corr",
     "econometrics": "/econometrics",
     "econometrics_ols": "/econometrics/ols",
+    "econometrics_ols_summary": "/econometrics/ols_summary",
+    "econometrics_dwat": "/econometrics/dwat",
     "fixedincome_treasury": "/fixedincome/treasury",
     "fixedincome": "/fixedincome",
     "fixedincome_ycrv": "/fixedincome/ycrv",
