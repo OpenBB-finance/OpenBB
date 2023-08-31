@@ -164,6 +164,6 @@ def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> Non
     api_router.include_router(router=plugins_router.api_router)
 
 
-system_settings = SystemService.read_default_system_settings()
+system_settings = SystemService().system_settings
 command_runner_instance = CommandRunner(system_settings=system_settings)
 add_command_map(command_runner=command_runner_instance, api_router=router)
