@@ -22,7 +22,6 @@ from openbb_core.app.repository.in_memory.user_settings_repository import (
 class UserService:
     """User service."""
 
-    REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
 
