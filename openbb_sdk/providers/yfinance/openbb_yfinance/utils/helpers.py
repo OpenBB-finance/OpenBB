@@ -73,7 +73,6 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
         return pd.DataFrame({"date": [], "Last Price": []})
 
     if historical_curve:
-        print(historical_curve)
         return pd.DataFrame(
             {"Last Price": historical_curve, "expiration": futures_index}
         )

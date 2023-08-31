@@ -54,7 +54,7 @@ class PluginMeta(type):
 
                 is_static_method = isinstance(value, staticmethod)
                 if is_static_method:
-                    value = value.__func__
+                    value = value.__func__  # noqa: PLW2901
                 if isinstance(value, Indicator):
                     if is_static_method:
                         raise TypeError(
