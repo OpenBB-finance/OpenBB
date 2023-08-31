@@ -20,13 +20,13 @@ def get_ext_map(package: Path) -> dict:
     return ext_map
 
 
-def package_diff(directory: Path = CURRENT_DIR) -> Tuple[Set[str], Set[str]]:
+def package_diff(package: Path) -> Tuple[Set[str], Set[str]]:
     """Check differences between written and installed extensions.
 
     Parameters
     ----------
-    directory: Path
-        The path to the directory where "package" folder was created
+    package: Path
+        The path to the package
 
     Returns
     -------
@@ -35,7 +35,7 @@ def package_diff(directory: Path = CURRENT_DIR) -> Tuple[Set[str], Set[str]]:
         Second element: set of extensions in the package that are not installed.
     """
 
-    ext_map = get_ext_map(Path(directory, "package"))
+    ext_map = get_ext_map(package)
 
     add: Set[str] = set()
     remove: Set[str] = set()
@@ -84,7 +84,7 @@ def build(
 
 def check_and_build():
     """Check and build"""
-    add, remove = package_diff()
+    add, remove = package_diff(Path(CURRENT_DIR, "package"))
     if add:
         a = ", ".join(add)
         print(f"Extensions to add: {a}")
