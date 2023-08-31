@@ -23,6 +23,7 @@
     "forex_pairs": "/forex/pairs",
     "futures": "/futures",
     "futures_curve": "/futures/curve",
+    "futures_load": "/futures/load",
     "news": "/news",
     "news_globalnews": "/news/globalnews",
     "qa": "/qa",
