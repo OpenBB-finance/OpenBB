@@ -2,7 +2,6 @@
 
 from typing import List, Literal, Union
 
-import openbb_core.app.model.results.empty
 import openbb_provider
 import openbb_qa.qa_models
 import pandas
@@ -16,80 +15,20 @@ from pydantic import validate_arguments
 
 class CLASS_qa(Container):
     """/qa
-    acf
-    beta
-    bw
     capm
-    cdf
-    cusum
-    decompose
-    es
-    hist
     kurtosis
-    line
     normality
     om
-    pick
-    qqplot
     quantile
-    raw
-    rolling
     sh
     skew
     so
-    spread
     summary
     unitroot
-    var
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
-
-    @validate_arguments
-    def acf(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Autocorrelation Function."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/acf",
-            **inputs,
-        )
-
-    @validate_arguments
-    def beta(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Beta."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/beta",
-            **inputs,
-        )
-
-    @validate_arguments
-    def bw(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Bandwidth."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/bw",
-            **inputs,
-        )
 
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def capm(
@@ -108,81 +47,6 @@ class CLASS_qa(Container):
 
         return self._command_runner.run(
             "/qa/capm",
-            **inputs,
-        )
-
-    @validate_arguments
-    def cdf(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Distribution Function."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/cdf",
-            **inputs,
-        )
-
-    @validate_arguments
-    def cusum(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Cumulative Sum."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/cusum",
-            **inputs,
-        )
-
-    @validate_arguments
-    def decompose(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Decompose."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/decompose",
-            **inputs,
-        )
-
-    @validate_arguments
-    def es(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Expected Shortfall."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/es",
-            **inputs,
-        )
-
-    @validate_arguments
-    def hist(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Histogram."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/hist",
             **inputs,
         )
 
@@ -220,21 +84,6 @@ class CLASS_qa(Container):
 
         return self._command_runner.run(
             "/qa/kurtosis",
-            **inputs,
-        )
-
-    @validate_arguments
-    def line(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Line."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/line",
             **inputs,
         )
 
@@ -319,36 +168,6 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments
-    def pick(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Pick."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/pick",
-            **inputs,
-        )
-
-    @validate_arguments
-    def qqplot(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """QQ Plot."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/qqplot",
-            **inputs,
-        )
-
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
@@ -370,36 +189,6 @@ class CLASS_qa(Container):
 
         return self._command_runner.run(
             "/qa/quantile",
-            **inputs,
-        )
-
-    @validate_arguments
-    def raw(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Raw."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/raw",
-            **inputs,
-        )
-
-    @validate_arguments
-    def rolling(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Rolling."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/rolling",
             **inputs,
         )
 
@@ -528,21 +317,6 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments
-    def spread(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Spread."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/spread",
-            **inputs,
-        )
-
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def summary(
         self,
@@ -617,20 +391,5 @@ class CLASS_qa(Container):
 
         return self._command_runner.run(
             "/qa/unitroot",
-            **inputs,
-        )
-
-    @validate_arguments
-    def var(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Value at Risk."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/qa/var",
             **inputs,
         )
