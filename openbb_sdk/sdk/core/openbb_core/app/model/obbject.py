@@ -4,7 +4,7 @@ import pandas as pd
 from pydantic import Field
 from pydantic.generics import GenericModel
 
-from openbb_core.app.charting_manager import ChartingManager
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
@@ -119,15 +119,19 @@ class OBBject(GenericModel, Generic[T], Tagged):
         chart.fig
             The chart figure.
         """
-        cm = ChartingManager()
+
+        cs = ChartingService()
         kwargs["data"] = self.to_dataframe()
 
-        self.chart = cm.to_chart(**kwargs)
+        self.chart = cs.to_chart(**kwargs)
         return self.chart.fig
 
     def show(self):
         """Displays chart."""
 
         if not self.chart or not self.chart.fig:
-            raise OpenBBError("Chart not found.")
+            raise OpenBBError(
+                "Chart not found. "
+                "Please compute the chart first by using the `chart=True` argument."
+            )
         self.chart.fig.show()
