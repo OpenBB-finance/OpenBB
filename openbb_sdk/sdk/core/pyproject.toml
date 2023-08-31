@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "0.0.0a7"
+version = "0.0.0a8"
 description = "OpenBB package with core functionality for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -10,7 +10,7 @@ packages = [{ include = "openbb_core" }]
 python = "^3.8"
 uvicorn = "^0.20.0"
 importlib_metadata = "^6.8.0"
-pandas = "~1.5.3"
+pandas = ">=1.5.3"
 websockets = "^10.4"
 requests = "^2.28.2"
 html5lib = "^1.1"
