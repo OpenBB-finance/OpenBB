@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-sdk"
-version = "4.0.0rc9"
+version = "4.0.0rc10"
 description = "OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = {version = "^0.0.0a7", source = "test-pypi"}
+openbb-core = {version = "0.0.0a8", source = "test-pypi"}
 openbb-benzinga = {version = "^0.0.0a3", source = "test-pypi"}
 openbb-fmp = {version = "^0.0.0a3", source = "test-pypi"}
 openbb-fred = {version = "^0.0.0a3", source = "test-pypi"}
@@ -18,10 +18,7 @@ openbb-economy = {version = "^0.0.0a3", source = "test-pypi"}
 openbb-fixedincome = {version = "^0.0.0a3", source = "test-pypi"}
 openbb-forex = {version = "^0.0.0a3", source = "test-pypi"}
 openbb-news = {version = "^0.0.0a3", source = "test-pypi"}
-openbb-qa = {version = "^0.0.0a3", source = "test-pypi"}
 openbb-stocks = {version = "^0.0.0a3", source = "test-pypi"}
-openbb-ta = {version = "^0.0.0a3", source = "test-pypi"}
-
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.2"
