@@ -12,7 +12,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class ForexEODQueryParams(QueryParams, BaseSymbol):
+class ForexHistoricalQueryParams(QueryParams, BaseSymbol):
     """Forex end of day Query."""
 
     start_date: Optional[date] = Field(
@@ -25,7 +25,7 @@ class ForexEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class ForexEODData(Data):
+class ForexHistoricalData(Data):
     """Forex end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

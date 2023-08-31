@@ -5,9 +5,9 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_eod import (
-    MajorIndicesEODData,
-    MajorIndicesEODQueryParams,
+from openbb_provider.standard_models.major_indices_historical import (
+    MajorIndicesHistoricalData,
+    MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
@@ -15,7 +15,7 @@ from pydantic import Field, NonNegativeInt, validator
 from openbb_fmp.utils.helpers import get_data_many
 
 
-class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
+class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     """FMP Major Indices end of day Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/historical-index-price-api/
@@ -29,7 +29,7 @@ class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
     ] = Field(default="1day", description="Interval of the data to fetch.")
 
 
-class FMPMajorIndicesEODData(MajorIndicesEODData):
+class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     """FMP Major Indices end of day Data."""
 
     adj_close: Optional[float] = Field(
@@ -65,22 +65,22 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-class FMPMajorIndicesEODFetcher(
+class FMPMajorIndicesHistoricalFetcher(
     Fetcher[
-        FMPMajorIndicesEODQueryParams,
-        List[FMPMajorIndicesEODData],
+        FMPMajorIndicesHistoricalQueryParams,
+        List[FMPMajorIndicesHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesHistoricalQueryParams:
         """Transform the query params."""
-        return FMPMajorIndicesEODQueryParams(**params)
+        return FMPMajorIndicesHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesEODQueryParams,
+        query: FMPMajorIndicesHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -103,6 +103,6 @@ class FMPMajorIndicesEODFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesHistoricalData]:
         """Return the transformed data."""
-        return [FMPMajorIndicesEODData(**d) for d in data]
+        return [FMPMajorIndicesHistoricalData(**d) for d in data]

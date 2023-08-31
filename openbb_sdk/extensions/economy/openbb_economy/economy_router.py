@@ -40,7 +40,7 @@ def cpi(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="MajorIndicesEOD")
+@router.command(model="MajorIndicesHistorical")
 def index(
     cc: CommandContext,
     provider_choices: ProviderChoices,

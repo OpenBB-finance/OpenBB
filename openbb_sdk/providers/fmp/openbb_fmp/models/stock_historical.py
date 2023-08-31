@@ -5,14 +5,17 @@ from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
+from openbb_provider.standard_models.stock_historical import (
+    StockHistoricalData,
+    StockHistoricalQueryParams,
+)
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
 
 from openbb_fmp.utils.helpers import get_data_many
 
 
-class FMPStockEODQueryParams(StockEODQueryParams):
+class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
     """FMP Stock end of day Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
@@ -26,7 +29,7 @@ class FMPStockEODQueryParams(StockEODQueryParams):
     ] = Field(default="1day", description="Interval of the data to fetch.")
 
 
-class FMPStockEODData(StockEODData):
+class FMPStockHistoricalData(StockHistoricalData):
     """FMP Stock end of day Data."""
 
     adjClose: Optional[float] = Field(description="Adjusted Close Price of the symbol.")
@@ -56,16 +59,16 @@ class FMPStockEODData(StockEODData):
             return datetime.strptime(v, "%Y-%m-%d")
 
 
-class FMPStockEODFetcher(
+class FMPStockHistoricalFetcher(
     Fetcher[
-        FMPStockEODQueryParams,
-        List[FMPStockEODData],
+        FMPStockHistoricalQueryParams,
+        List[FMPStockHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPStockHistoricalQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -76,11 +79,11 @@ class FMPStockEODFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPStockEODQueryParams(**transformed_params)
+        return FMPStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockEODQueryParams,
+        query: FMPStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -103,6 +106,6 @@ class FMPStockEODFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPStockEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPStockHistoricalData]:
         """Return the transformed data."""
-        return [FMPStockEODData(**d) for d in data]
+        return [FMPStockHistoricalData(**d) for d in data]

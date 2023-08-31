@@ -12,7 +12,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class FuturesEODQueryParams(QueryParams, BaseSymbol):
+class FuturesHistoricalQueryParams(QueryParams, BaseSymbol):
     """Futures end of day Query."""
 
     start_date: Optional[date] = Field(
@@ -29,7 +29,7 @@ class FuturesEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class FuturesEODData(Data):
+class FuturesHistoricalData(Data):
     """Futures end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

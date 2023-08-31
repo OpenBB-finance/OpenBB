@@ -186,7 +186,7 @@ class CLASS_stocks(Container):
         ] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -242,7 +242,7 @@ class CLASS_stocks(Container):
         Returns
         -------
         OBBject
-            results : List[StockEOD]
+            results : List[StockHistorical]
                 Serializable results.
             provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -253,8 +253,8 @@ class CLASS_stocks(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        StockEOD
-        --------
+        StockHistorical
+        ---------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
@@ -276,11 +276,15 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
+<<<<<<< HEAD
             Change \% in the price of the symbol over a period of time. (provider: fmp)
+=======
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+>>>>>>> 5bc4b6c2e4 (Rename EOD to Historical in code and files (#5395))
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]

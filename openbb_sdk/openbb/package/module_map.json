@@ -135,5 +135,25 @@
     "ta_cg": "/ta/cg",
     "ta_clenow": "/ta/clenow",
     "ta_cones": "/ta/cones",
+<<<<<<< HEAD
     "ta_ema": "/ta/ema"
 }
+=======
+    "ta_demark": "/ta/demark",
+    "ta_donchian": "/ta/donchian",
+    "ta_ema": "/ta/ema",
+    "ta_fib": "/ta/fib",
+    "ta_fisher": "/ta/fisher",
+    "ta_hma": "/ta/hma",
+    "ta_ichimoku": "/ta/ichimoku",
+    "ta_kc": "/ta/kc",
+    "ta_macd": "/ta/macd",
+    "ta_obv": "/ta/obv",
+    "ta_rsi": "/ta/rsi",
+    "ta_sma": "/ta/sma",
+    "ta_stoch": "/ta/stoch",
+    "ta_vwap": "/ta/vwap",
+    "ta_wma": "/ta/wma",
+    "ta_zlma": "/ta/zlma"
+}
+>>>>>>> 5bc4b6c2e4 (Rename EOD to Historical in code and files (#5395))

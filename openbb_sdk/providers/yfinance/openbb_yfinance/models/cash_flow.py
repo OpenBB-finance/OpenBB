@@ -10,7 +10,6 @@ from openbb_provider.standard_models.cash_flows import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-
 from pydantic import validator
 from yfinance import Ticker
 
