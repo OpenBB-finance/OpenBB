@@ -3,18 +3,18 @@
 
 from openbb_provider.abstract.provider import Provider
 
+from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
+from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
 from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
+from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.major_indices_historical import (
     YFinanceMajorIndicesHistoricalFetcher,
 )
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
-from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
-from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
-from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
