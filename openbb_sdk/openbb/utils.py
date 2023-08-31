@@ -5,7 +5,7 @@ from typing import List, Optional, Set, Tuple, Union
 
 from importlib_metadata import entry_points
 
-CURRENT_DIR = Path(os.getcwd())
+CURRENT_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 
 
 def get_ext_map(package: Path) -> dict:
