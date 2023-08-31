@@ -25,6 +25,20 @@ class UserService:
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
 
+    def __init__(
+        self,
+        access_token_repository: Optional[AbstractAccessTokenRepository] = None,
+        user_settings_repository: Optional[AbstractUserSettingsRepository] = None,
+        default_user_settings: Optional[UserSettings] = None,
+    ):
+        self._token_repository = self.build_token_repository(access_token_repository)
+        self._user_settings_repository = self.build_user_settings_repository(
+            user_settings_repository
+        )
+        self._default_user_settings = (
+            default_user_settings or self.read_default_user_settings()
+        )
+
     @staticmethod
     def build_token_repository(
         access_token_repository: Optional[AbstractAccessTokenRepository] = None,
@@ -98,20 +112,6 @@ class UserService:
         for d in list_of_dicts:
             result = reduce(recursive_merge, (result, d))
         return result
-
-    def __init__(
-        self,
-        access_token_repository: Optional[AbstractAccessTokenRepository] = None,
-        user_settings_repository: Optional[AbstractUserSettingsRepository] = None,
-        default_user_settings: Optional[UserSettings] = None,
-    ):
-        self._token_repository = self.build_token_repository(access_token_repository)
-        self._user_settings_repository = self.build_user_settings_repository(
-            user_settings_repository
-        )
-        self._default_user_settings = (
-            default_user_settings or self.read_default_user_settings()
-        )
 
     @property
     def default_user_settings(self) -> UserSettings:
