@@ -3,12 +3,14 @@
 
 from openbb_provider.abstract.provider import Provider
 
-from openbb_yfinance.models.crypto_eod import YFinanceCryptoHistoricalFetcher
-from openbb_yfinance.models.forex_eod import YFinanceForexHistoricalFetcher
+from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
+from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
-from openbb_yfinance.models.futures_eod import YFinanceFuturesHistoricalFetcher
-from openbb_yfinance.models.major_indices_eod import YFinanceMajorIndicesHistoricalFetcher
-from openbb_yfinance.models.stock_eod import YFinanceStockHistoricalFetcher
+from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
+from openbb_yfinance.models.major_indices_historical import (
+    YFinanceMajorIndicesHistoricalFetcher,
+)
+from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -18,12 +20,11 @@ yfinance_provider = Provider(
     financial markets and assets.""",
     required_credentials=None,
     fetcher_dict={
-        "CryptoEOD": YFinanceCryptoEODFetcher,
-        "ForexEOD": YFinanceForexEODFetcher,
-        "MajorIndicesEOD": YFinanceMajorIndicesEODFetcher,
-        "StockEOD": YFinanceStockEODFetcher,
-        "FutureHistoricalD": YFinanceFuturHistoricalODFetcher,
-        "FuturHistoricalurve": YFinanceFHistoricalresCurveFetcher,
-    },HistoricalHistorical
-)HistoricalHistorical
-HistoricalHistorical
+        "CryptoHistorical": YFinanceCryptoHistoricalFetcher,
+        "ForexHistorical": YFinanceForexHistoricalFetcher,
+        "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
+        "StockHistorical": YFinanceStockHistoricalFetcher,
+        "FutureHistorical": YFinanceFuturesHistoricalFetcher,
+        "FuturesCurve": YFinanceFuturesCurveFetcher,
+    },
+)

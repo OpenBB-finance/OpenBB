@@ -3,12 +3,14 @@ from openbb_provider.abstract.provider import Provider
 
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
-from openbb_polygon.models.crypto_eod import PolygonCryptoHistoricalFetcher
-from openbb_polygon.models.forex_eod import PolygonForexHistoricalFetcher
+from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
+from openbb_polygon.models.forex_historical import PolygonForexHistoricalFetcher
 from openbb_polygon.models.forex_pairs import PolygonForexPairsFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
-from openbb_polygon.models.major_indices_eod import PolygonMajorIndicesHistoricalFetcher
-from openbb_polygon.models.stock_eod import PolygonStockHistoricalFetcher
+from openbb_polygon.models.major_indices_historical import (
+    PolygonMajorIndicesHistoricalFetcher,
+)
+from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
 polygon_provider = Provider(

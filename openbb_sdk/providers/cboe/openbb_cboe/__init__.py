@@ -4,7 +4,7 @@
 from openbb_provider.abstract.provider import Provider
 
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
-from openbb_cboe.models.stock_eod import CboeStockHistoricalFetcher
+from openbb_cboe.models.stock_historical import CboeStockHistoricalFetcher
 from openbb_cboe.models.stock_info import CboeStockInfoFetcher
 from openbb_cboe.models.stock_search import CboeStockSearchFetcher
 

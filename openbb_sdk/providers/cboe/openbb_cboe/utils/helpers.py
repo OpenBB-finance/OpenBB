@@ -592,7 +592,7 @@ def __generate_historical_prices_url(
     return url
 
 
-def get_eod_prices(
+def get_historical_prices(
     symbol: str,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,

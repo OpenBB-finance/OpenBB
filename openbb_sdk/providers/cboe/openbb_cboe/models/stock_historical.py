@@ -12,7 +12,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from pydantic import validator
 
-from openbb_cboe.utils.helpers import get_eod_prices
+from openbb_cboe.utils.helpers import get_historical_prices
 
 
 class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -60,9 +60,9 @@ class CboeStockHistoricalFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
-        return get_eod_prices(query.symbol, query.start_date, query.end_date).to_dict(
-            "records"
-        )
+        return get_historical_prices(
+            query.symbol, query.start_date, query.end_date
+        ).to_dict("records")
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockHistoricalData]:
