@@ -27,7 +27,7 @@ yfinance_provider = Provider(
         "ForexHistorical": YFinanceForexHistoricalFetcher,
         "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
         "StockHistorical": YFinanceStockHistoricalFetcher,
-        "FutureHistorical": YFinanceFuturesHistoricalFetcher,
+        "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
         "StockNews": YFinanceStockNewsFetcher,
         "BalanceSheet": YFinanceBalanceSheetFetcher,
