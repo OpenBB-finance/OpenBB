@@ -82,8 +82,8 @@ def build(
         )
 
 
-def check_and_build():
-    """Check and build"""
+def auto_build():
+    """Automatic build"""
     add, remove = package_diff(Path(CURRENT_DIR, "package"))
     if add:
         a = ", ".join(add)
