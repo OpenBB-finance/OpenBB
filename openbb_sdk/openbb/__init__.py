@@ -18,5 +18,5 @@ try:
     obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)
     sdk = obb
 except (ImportError, ModuleNotFoundError):
-    print("Failed to import extensions. Run `openbb.build()` to build extensions code.")
+    print("Failed to import extensions.")
     obb = sdk = _create_app()
