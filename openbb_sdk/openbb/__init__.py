@@ -22,6 +22,7 @@ except (ImportError, ModuleNotFoundError):
 def build(
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
+    verbose: bool = False,
 ) -> None:
     """Build extension modules.
 
@@ -33,6 +34,8 @@ def build(
         If None, all modules are rebuilt.
     lint : bool, optional
         Whether to lint the code, by default True
+    verbose : bool, optional
+        Enable/disable verbose mode
     """
     # pylint: disable=import-outside-toplevel
     import os
@@ -45,8 +48,9 @@ def build(
     # `build` is running in a separate process. This avoids consecutive calls to this
     # function in the same interpreter to reuse objects already in memory. Not doing
     # this was causing docstrings to have repeated sections, for example.
-    with Pool(processes=1) as pool:
-        pool.apply(
-            PackageBuilder(current_dir).build,
-            args=(modules, lint),
-        )
+    PackageBuilder(current_dir, lint, verbose).build(modules)
+    # with Pool(processes=1) as pool:
+    #     pool.apply(
+    #         PackageBuilder(current_dir, lint, verbose).build,
+    #         args=(modules,),
+    #     )
