@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
@@ -17,7 +18,6 @@ from openbb_core.app.repository.in_memory.access_token_repository import (
 from openbb_core.app.repository.in_memory.user_settings_repository import (
     UserSettingsRepository as InMemoryUserSettingsRepository,
 )
-from openbb_core.app.model.abstract.singleton import SingletonMeta
 
 
 class UserService(metaclass=SingletonMeta):
