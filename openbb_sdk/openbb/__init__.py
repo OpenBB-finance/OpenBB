@@ -4,19 +4,19 @@
 from typing import List, Optional, Union
 
 from openbb_core.app.static.app_factory import (
-    create_app as __create_app,
-    BaseApp as __BaseApp,
+    create_app as _create_app,
+    BaseApp as _BaseApp,
 )
 
 try:
     # pylint: disable=import-outside-toplevel
-    from openbb.package.__extensions__ import Extensions as __Extensions
+    from openbb.package.__extensions__ import Extensions as _Extensions
 
-    obb: Union[__BaseApp, __Extensions] = __create_app(__Extensions)
+    obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)
     sdk = obb
 except (ImportError, ModuleNotFoundError):
     print("Failed to import extensions. Run `openbb.build()` to build extensions code.")
-    obb = sdk = __create_app()
+    obb = sdk = _create_app()
 
 
 def build(

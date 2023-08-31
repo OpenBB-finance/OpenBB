@@ -3,8 +3,6 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 import pydantic
 import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -19,19 +17,14 @@ class CLASS_stocks(Container):
     """/stocks
     /ca
     /dd
-    /disc
-    /dps
     /fa
-    /gov
     info
-    /ins
     load
     multiples
     news
     /options
     quote
     search
-    tob
     """
 
     def __repr__(self) -> str:
@@ -39,39 +32,21 @@ class CLASS_stocks(Container):
 
     @property
     def ca(self):  # route = "/stocks/ca"
-        from openbb.package import stocks_ca
+        from . import stocks_ca
 
         return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
 
     @property
     def dd(self):  # route = "/stocks/dd"
-        from openbb.package import stocks_dd
+        from . import stocks_dd
 
         return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
-    def disc(self):  # route = "/stocks/disc"
-        from openbb.package import stocks_disc
-
-        return stocks_disc.CLASS_stocks_disc(command_runner=self._command_runner)
-
-    @property
-    def dps(self):  # route = "/stocks/dps"
-        from openbb.package import stocks_dps
-
-        return stocks_dps.CLASS_stocks_dps(command_runner=self._command_runner)
-
-    @property
     def fa(self):  # route = "/stocks/fa"
-        from openbb.package import stocks_fa
+        from . import stocks_fa
 
         return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
-
-    @property
-    def gov(self):  # route = "/stocks/gov"
-        from openbb.package import stocks_gov
-
-        return stocks_gov.CLASS_stocks_gov(command_runner=self._command_runner)
 
     @validate_arguments
     def info(
@@ -189,12 +164,6 @@ class CLASS_stocks(Container):
             "/stocks/info",
             **inputs,
         )
-
-    @property
-    def ins(self):  # route = "/stocks/ins"
-        from openbb.package import stocks_ins
-
-        return stocks_ins.CLASS_stocks_ins(command_runner=self._command_runner)
 
     @validate_arguments
     def load(
@@ -316,12 +285,6 @@ class CLASS_stocks(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change \% in the price of the symbol over a period of time. (provider: fmp)
-        close_time : Optional[datetime]
-            The timestamp that represents the end of the interval span. (provider: intrinio)
-        interval : Optional[str]
-            The data time frequency. (provider: intrinio)
-        average : Optional[float]
-            Average trade price of an individual stock during the interval. (provider: intrinio)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -700,7 +663,7 @@ class CLASS_stocks(Container):
 
     @property
     def options(self):  # route = "/stocks/options"
-        from openbb.package import stocks_options
+        from . import stocks_options
 
         return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
@@ -913,20 +876,5 @@ class CLASS_stocks(Container):
 
         return self._command_runner.run(
             "/stocks/search",
-            **inputs,
-        )
-
-    @validate_arguments
-    def tob(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/tob",
             **inputs,
         )

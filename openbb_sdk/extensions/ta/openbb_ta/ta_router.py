@@ -2,7 +2,6 @@ from typing import List, Literal, Optional
 
 import pandas as pd
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -274,15 +273,6 @@ def adosc(
 
 
 @router.command(methods=["POST"])
-def tv() -> OBBject[Empty]:
-    """TradingView."""
-
-    # TODO : probably out of scope for now
-
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def bbands(
     data: List[Data],
     target: str = "close",
@@ -338,21 +328,19 @@ def bbands(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     bbands_df = pd.DataFrame(
-        df_target.ta.bbands(length=length, std=std, mamode=mamode, offset=offset)
+        df_target.ta.bbands(
+            length=length,
+            std=std,
+            mamode=mamode,
+            offset=offset,
+            close=target,
+            prefix=target,
+        )
     )
 
     results = df_to_basemodel(df_target.join(bbands_df, how="left"), index=True)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def multi() -> OBBject[Empty]:
-    """Plot multiple indicators on the same chart."""
-
-    # TODO : probably out of scope for now
-
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -398,7 +386,14 @@ def zlma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    zlma_df = pd.DataFrame(df_target.ta.zlma(length=length, offset=offset)).dropna()
+    zlma_df = pd.DataFrame(
+        df_target.ta.zlma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        )
+    ).dropna()
 
     results = df_to_basemodel(df_target.join(zlma_df, how="left"), index=True)
 
@@ -498,7 +493,14 @@ def sma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    sma_df = pd.DataFrame(df_target.ta.sma(length=length, offset=offset).dropna())
+    sma_df = pd.DataFrame(
+        df_target.ta.sma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(sma_df, how="left"), index=True)
 
@@ -547,7 +549,13 @@ def demark(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     demark_df = pd.DataFrame(
-        df_target.ta.td_seq(offset=offset, show_all=show_all, asint=asint).dropna()
+        df_target.ta.td_seq(
+            offset=offset,
+            show_all=show_all,
+            asint=asint,
+            close=target,
+            prefix=target,
+        ).dropna()
     )
 
     results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
@@ -601,16 +609,6 @@ def vwap(
 
 
 @router.command(methods=["POST"])
-def recom() -> OBBject[Empty]:
-    """Recommendation."""
-
-    # TODO : this command does only a call to a Tradingview's endpoint
-    #        thus, it should probably be implement on a provider level
-
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def macd(
     data: List[Data],
     target: str = "close",
@@ -657,7 +655,13 @@ def macd(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     macd_df = pd.DataFrame(
-        df_target.ta.macd(fast=fast, slow=slow, signal=signal).dropna()
+        df_target.ta.macd(
+            fast=fast,
+            slow=slow,
+            signal=signal,
+            close=target,
+            prefix=target,
+        ).dropna()
     )
 
     results = df_to_basemodel(df_target.join(macd_df, how="left"), index=True)
@@ -705,7 +709,14 @@ def hma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    hma_df = pd.DataFrame(df_target.ta.hma(length=length, offset=offset).dropna())
+    hma_df = pd.DataFrame(
+        df_target.ta.hma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(hma_df, how="left"), index=True)
 
@@ -1001,7 +1012,14 @@ def wma(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    wma_df = pd.DataFrame(df_target.ta.wma(length=length, offset=offset).dropna())
+    wma_df = pd.DataFrame(
+        df_target.ta.wma(
+            length=length,
+            offset=offset,
+            close=target,
+            prefix=target,
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(wma_df, how="left"), index=True)
 
@@ -1093,22 +1111,18 @@ def rsi(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     rsi_df = pd.DataFrame(
-        df_target.ta.rsi(length=length, scalar=scalar, drift=drift).dropna()
+        df_target.ta.rsi(
+            length=length,
+            scalar=scalar,
+            drift=drift,
+            close=target,
+            prefix=target,
+        ).dropna()
     )
 
     results = df_to_basemodel(df_target.join(rsi_df, how="left"), index=True)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def summary() -> OBBject[Empty]:
-    """Summary."""
-
-    # TODO : this command does only a call to a finbrain's endpoint
-    #        thus, it should probably be implement on a provider level
-
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1165,15 +1179,6 @@ def stoch(
     results = df_to_basemodel(df_target.join(stoch_df, how="left"), index=True)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def rsp() -> OBBject[Empty]:
-    """Relative Strength Performance."""
-
-    # TODO : https://github.com/OpenBB-finance/OpenBBTerminal/issues/5167
-
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1401,7 +1406,11 @@ def ema(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    ema_df = pd.DataFrame(df_target.ta.ema(length=length, offset=offset).dropna())
+    ema_df = pd.DataFrame(
+        df_target.ta.ema(
+            length=length, offset=offset, close=target, prefix=target
+        ).dropna()
+    )
 
     results = df_to_basemodel(df_target.join(ema_df, how="left"), index=True)
 
