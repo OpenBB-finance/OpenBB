@@ -35,7 +35,7 @@ router.include_router(options_router)
 # router.include_router(ins_router)
 
 
-@router.command(model="StockHistorical", include_in_schema=False)
+@router.command(model="StockEOD", include_in_schema=False)
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
