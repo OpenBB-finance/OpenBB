@@ -12,7 +12,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class MajorIndicesEODQueryParams(QueryParams, BaseSymbol):
+class MajorIndicesHistoricalQueryParams(QueryParams, BaseSymbol):
     """Major Indices end of day Query."""
 
     start_date: Optional[date] = Field(
@@ -23,7 +23,7 @@ class MajorIndicesEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class MajorIndicesEODData(Data):
+class MajorIndicesHistoricalData(Data):
     """Major Indices end of day price data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

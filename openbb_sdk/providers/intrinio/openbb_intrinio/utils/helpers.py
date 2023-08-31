@@ -6,7 +6,6 @@ from typing import Any, List, Optional, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
-from openbb_provider.utils.helpers import get_querystring
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 

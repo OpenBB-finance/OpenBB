@@ -12,7 +12,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockEODQueryParams(QueryParams, BaseSymbol):
+class StockHistoricalQueryParams(QueryParams, BaseSymbol):
     """Stock end of day Query."""
 
     start_date: Optional[date] = Field(
@@ -23,7 +23,7 @@ class StockEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class StockEODData(Data):
+class StockHistoricalData(Data):
     """Stock end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

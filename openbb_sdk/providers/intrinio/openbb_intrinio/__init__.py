@@ -3,10 +3,10 @@
 
 from openbb_provider.abstract.provider import Provider
 
-from openbb_intrinio.models.stock_eod import IntrinioStockEODFetcher
-from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
+from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetcher
+from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
 intrinio_provider = Provider(
@@ -16,7 +16,7 @@ intrinio_provider = Provider(
     historical financial market data to businesses and developers through an API.""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "StockEOD": IntrinioStockEODFetcher,
+        "StockHistorical": IntrinioStockHistoricalFetcher,
         "ForexPairs": IntrinioForexPairsFetcher,
         "StockNews": IntrinioStockNewsFetcher,
         "GlobalNews": IntrinioGlobalNewsFetcher,

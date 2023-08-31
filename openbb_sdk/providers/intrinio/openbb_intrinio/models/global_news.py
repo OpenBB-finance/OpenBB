@@ -9,9 +9,9 @@ from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
     GlobalNewsQueryParams,
 )
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, validator
 
-from openbb_provider.utils.helpers import get_querystring
 from openbb_intrinio.utils.helpers import get_data_one
 
 

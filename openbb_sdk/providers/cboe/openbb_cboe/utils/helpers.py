@@ -592,12 +592,12 @@ def __generate_historical_prices_url(
     return url
 
 
-def get_eod_prices(
+def get_historical_prices(
     symbol: str,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
 ) -> pd.DataFrame:
-    """Get EOD data from CBOE.
+    """Get Historical data from CBOE.
 
     Parameters
     ----------
@@ -611,7 +611,7 @@ def get_eod_prices(
     Returns
     -------
     pd.DataFrame
-        DataFrame of daily EOD OHLC+V prices.
+        DataFrame of daily Historical OHLC+V prices.
     """
 
     symbol = symbol.upper()
