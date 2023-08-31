@@ -25,7 +25,7 @@ def pairs(
 
 
 # pylint: disable=unused-argument
-@router.command(model="ForexEOD")
+@router.command(model="ForexHistorical")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
