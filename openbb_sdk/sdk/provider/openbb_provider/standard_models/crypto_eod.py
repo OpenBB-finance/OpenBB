@@ -12,7 +12,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class CryptoEODQueryParams(QueryParams, BaseSymbol):
+class CryptoHistoricalQueryParams(QueryParams, BaseSymbol):
     """Crypto end of day Query."""
 
     start_date: Optional[date] = Field(
@@ -25,7 +25,7 @@ class CryptoEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class CryptoEODData(Data):
+class CryptoHistoricalData(Data):
     """Crypto end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
