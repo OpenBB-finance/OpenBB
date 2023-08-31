@@ -33,7 +33,7 @@
     "crypto": "/crypto",
     "news_globalnews": "/news/globalnews",
     "news": "/news",
-    "news_sectornews": "/news/sectornews",
+    "news_search": "/news/search",
     "futures_load": "/futures/load",
     "futures": "/futures",
     "futures_curve": "/futures/curve",

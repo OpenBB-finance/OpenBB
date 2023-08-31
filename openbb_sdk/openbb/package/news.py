@@ -2,8 +2,6 @@
 
 from typing import List, Literal, Optional
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 import pydantic
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -16,7 +14,7 @@ from typing_extensions import Annotated
 class CLASS_news(Container):
     """/news
     globalnews
-    sectornews
+    search
     """
 
     def __repr__(self) -> str:
@@ -130,16 +128,75 @@ class CLASS_news(Container):
         )
 
     @validate_arguments
-    def sectornews(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Sector news."""  # noqa: E501
+    def search(
+        self,
+        term: Annotated[str, OpenBBCustomParameter(description="Search query.")],
+        chart: bool = False,
+        provider: Optional[Literal["biztoc"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Search news by keyword or query string.
+
+        Parameters
+        ----------
+        term : str
+            Search query.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['biztoc']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'biztoc' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[NewsSearch]
+                Serializable results.
+            provider : Optional[Literal['biztoc']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        NewsSearch
+        ----------
+        date : Optional[datetime]
+            Name of the company.
+        title : Optional[str]
+            Headline of the news.
+        text : Optional[str]
+            Text/body of the news.
+        url : Optional[str]
+            URL of the article.
+        image : Optional[Any]
+            Preview image.
+        score : Optional[float]
+            Article score. (provider: biztoc)
+        domain : Optional[str]
+            Domain base url for the source article. (provider: biztoc)
+        tags : Optional[List[str]]
+            Tags for the source article. (provider: biztoc)
+        img : Optional[Mapping[str, str]]
+            None
+        id : Optional[str]
+            Biztoc article ID. (provider: biztoc)"""  # noqa: E501
 
         inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "term": term,
+            },
+            extra_params=kwargs,
             chart=chart,
         )
 
         return self._command_runner.run(
-            "/news/sectornews",
+            "/news/search",
             **inputs,
         )
