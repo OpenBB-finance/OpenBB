@@ -187,7 +187,7 @@ class CLASS_stocks(Container):
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -263,11 +263,11 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
