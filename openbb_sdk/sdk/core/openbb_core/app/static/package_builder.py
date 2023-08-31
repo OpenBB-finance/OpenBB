@@ -21,6 +21,7 @@ from typing import (
     get_args,
     get_type_hints,
 )
+from importlib_metadata import entry_points
 
 import pandas as pd
 from pydantic.fields import ModelField
@@ -49,11 +50,21 @@ class PackageBuilder:
         """Build the extensions for the SDK."""
         print("\nBuilding extensions package...\n")
 
+        self.save_extension_map()
         self.save_module_map()
         self.save_modules(modules)
         self.save_package()
         if lint:
             self.run_linters(self.directory)
+
+    def save_extension_map(self):
+        """Save the extension map"""
+        groups = ("openbb_core_extension", "openbb_provider_extension")
+        ext_map = {g: sorted(list(entry_points(group=g).names)) for g in groups}
+        ext_code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
+        ext_name = "extension_map"
+        print("Writing extension map...")
+        self.write_to_package(code=ext_code, name=ext_name, extension="json")
 
     def save_module_map(self):
         """Save the module map."""
@@ -65,9 +76,7 @@ class PackageBuilder:
         module_code = dumps(obj=dict(sorted(module_map.items())), indent=4)
         module_name = "module_map"
         print("Writing module map...")
-        self.write_to_package(
-            module_code=module_code, module_name=module_name, extension="json"
-        )
+        self.write_to_package(code=module_code, name=module_name, extension="json")
 
     def save_modules(self, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
@@ -90,13 +99,13 @@ class PackageBuilder:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
                 print(f"({path})", end=" " * (MAX_LEN - len(path)))
-                self.write_to_package(module_code=module_code, module_name=module_name)
+                self.write_to_package(code=module_code, name=module_name)
 
     def save_package(self):
         """Save the package."""
         print("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
-        self.write_to_package(module_code=code, module_name="__init__")
+        self.write_to_package(code=code, name="__init__")
 
     @staticmethod
     def run_linters(directory: Path):
@@ -106,16 +115,16 @@ class PackageBuilder:
         linters.ruff()
         linters.black()
 
-    def write_to_package(self, module_code: str, module_name, extension="py") -> None:
+    def write_to_package(self, code: str, name: str, extension="py") -> None:
         """Write the module to the package."""
         package_folder = self.directory / "package"
-        package_path = package_folder / f"{module_name}.{extension}"
+        package_path = package_folder / f"{name}.{extension}"
 
         package_folder.mkdir(exist_ok=True)
 
         print(package_path)
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
-            file.write(module_code.replace("typing.", ""))
+            file.write(code.replace("typing.", ""))
 
 
 class ModuleBuilder:
