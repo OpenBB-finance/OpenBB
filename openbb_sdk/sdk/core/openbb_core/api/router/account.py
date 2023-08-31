@@ -50,7 +50,7 @@ async def login_for_access_token(
         sub=user_settings.id,
     )
     jwt_token = create_jwt_token(access_token=access_token)
-    return TokenResponse(access_token=jwt_token, token_type="bearer")
+    return TokenResponse(access_token=jwt_token, token_type="bearer")  # noqa: S106
 
 
 @router.put("/push")
