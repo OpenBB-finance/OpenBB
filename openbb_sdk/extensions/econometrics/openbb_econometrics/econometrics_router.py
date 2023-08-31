@@ -13,6 +13,7 @@ from openbb_core.app.utils import (
 )
 from openbb_provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
+import statsmodels.api as sm
 
 
 router = Router(prefix="")
@@ -35,7 +36,36 @@ def corr(data: List[Data]) -> OBBject[List[Data]]:
     df = basemodel_to_df(data)
     corr = df.corr()
     ret = []
-    for k,v in corr.items():
+    for k, v in corr.items():
         v["comp_to"] = k
         ret.append(Data(**v))
     return OBBject(results=ret)
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def ols(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """Perform OLS regression.  This returns the model and results objects from statsmodels.
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the results being model and results objects.
+    """
+    X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
+    y = get_target_column(basemodel_to_df(data), y_column)
+    model = sm.OLS(y, X)
+    results = model.fit()
+    return OBBject(results={"model": model, "results": results})

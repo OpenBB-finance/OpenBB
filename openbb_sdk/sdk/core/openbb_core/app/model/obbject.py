@@ -46,6 +46,23 @@ class OBBject(GenericModel, Generic[T], Tagged):
             f"{k}: {v}" for k, v in self.dict().items()
         )
 
+    def to_df(
+        self, concat: bool = True
+    ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
+        """Converts results field to pandas dataframe.  Alias for to_dataframe.
+
+        Parameters
+        ----------
+        concat : bool, optional
+            If True, it concatenates the dataframes, by default True.
+
+        Returns
+        -------
+        Union[pd.DataFrame, Dict[str, pd.DataFrame]]
+            Pandas dataframe or dictionary of dataframes.
+        """
+        return self.to_dataframe(concat=concat)
+
     def to_dataframe(
         self, concat: bool = True
     ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
