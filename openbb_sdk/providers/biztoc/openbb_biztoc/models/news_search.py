@@ -39,7 +39,7 @@ class BiztocNewsSearchFetcher(
         List[BiztocNewsSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints."""
+    """Transform the query, extract and transform the data from the Biztoc endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> BiztocNewsSearchQueryParams:
