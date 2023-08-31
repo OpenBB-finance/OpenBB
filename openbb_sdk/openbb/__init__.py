@@ -1,12 +1,15 @@
 """OpenBB SDK."""
 # flake8: noqa
 
-from typing import List, Optional, Union
-
+from .utils import check_package_diff as _check_package_diff, build
+from typing import Union
 from openbb_core.app.static.app_factory import (
     create_app as _create_app,
     BaseApp as _BaseApp,
 )
+
+if _check_package_diff():
+    build()
 
 try:
     # pylint: disable=import-outside-toplevel
@@ -17,39 +20,3 @@ try:
 except (ImportError, ModuleNotFoundError):
     print("Failed to import extensions. Run `openbb.build()` to build extensions code.")
     obb = sdk = _create_app()
-
-
-def build(
-    modules: Optional[Union[str, List[str]]] = None,
-    lint: bool = True,
-    verbose: bool = False,
-) -> None:
-    """Build extension modules.
-
-    Parameters
-    ----------
-    modules : Optional[List[str]], optional
-        The modules to rebuild, by default None
-        For example: "/news" or ["/news", "/crypto"]
-        If None, all modules are rebuilt.
-    lint : bool, optional
-        Whether to lint the code, by default True
-    verbose : bool, optional
-        Enable/disable verbose mode
-    """
-    # pylint: disable=import-outside-toplevel
-    import os
-    from pathlib import Path
-    from multiprocessing import Pool
-    from openbb_core.app.static.package_builder import PackageBuilder
-
-    current_dir = Path(os.path.dirname(os.path.realpath(__file__)))
-
-    # `build` is running in a separate process. This avoids consecutive calls to this
-    # function in the same interpreter to reuse objects already in memory. Not doing
-    # this was causing docstrings to have repeated sections, for example.
-    with Pool(processes=1) as pool:
-        pool.apply(
-            PackageBuilder(current_dir, lint, verbose).build,
-            args=(modules,),
-        )
