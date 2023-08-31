@@ -21,7 +21,7 @@ def get_ext_map(package: Path) -> dict:
 
 
 def package_diff(package: Path) -> Tuple[Set[str], Set[str]]:
-    """Check differences between written and installed extensions.
+    """Check differences between built and installed extensions.
 
     Parameters
     ----------
@@ -41,10 +41,10 @@ def package_diff(package: Path) -> Tuple[Set[str], Set[str]]:
     remove: Set[str] = set()
     groups = ("openbb_core_extension", "openbb_provider_extension")
     for g in groups:
-        written = set(ext_map.get(g, {}))
+        built = set(ext_map.get(g, {}))
         installed = entry_points(group=g).names
-        add = add.union(installed - written)
-        remove = remove.union(written - installed)
+        add = add.union(installed - built)
+        remove = remove.union(built - installed)
 
     return add, remove
 
