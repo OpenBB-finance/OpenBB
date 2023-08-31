@@ -48,9 +48,8 @@ def build(
     # `build` is running in a separate process. This avoids consecutive calls to this
     # function in the same interpreter to reuse objects already in memory. Not doing
     # this was causing docstrings to have repeated sections, for example.
-    PackageBuilder(current_dir, lint, verbose).build(modules)
-    # with Pool(processes=1) as pool:
-    #     pool.apply(
-    #         PackageBuilder(current_dir, lint, verbose).build,
-    #         args=(modules,),
-    #     )
+    with Pool(processes=1) as pool:
+        pool.apply(
+            PackageBuilder(current_dir, lint, verbose).build,
+            args=(modules,),
+        )
