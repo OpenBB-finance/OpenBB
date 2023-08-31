@@ -18,7 +18,7 @@ class NewsSearchQueryParams(QueryParams):
 class NewsSearchData(Data):
     """News Search Data."""
 
-    date: datetime = Field(description="Name of the company.")
+    date: datetime = Field(description="Published date and time of the news.")
     title: str = Field(description="Headline of the news.")
     text: Optional[str] = Field(description="Text/body of the news.")
     url: str = Field(description="URL of the article.")

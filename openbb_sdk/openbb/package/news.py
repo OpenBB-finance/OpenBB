@@ -165,7 +165,7 @@ class CLASS_news(Container):
         NewsSearch
         ----------
         date : Optional[datetime]
-            Name of the company.
+            Published date and time of the news.
         title : Optional[str]
             Headline of the news.
         text : Optional[str]
@@ -179,11 +179,7 @@ class CLASS_news(Container):
         domain : Optional[str]
             Domain base url for the source article. (provider: biztoc)
         tags : Optional[List[str]]
-            Tags for the source article. (provider: biztoc)
-        img : Optional[Mapping[str, str]]
-            None
-        id : Optional[str]
-            Biztoc article ID. (provider: biztoc)"""  # noqa: E501
+            Tags for the source article. (provider: biztoc)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
