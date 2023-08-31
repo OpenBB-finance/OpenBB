@@ -19,6 +19,7 @@ class CLASS_econometrics(Container):
     coint
     corr
     dwat
+    granger
     ols
     ols_summary
     """
@@ -163,6 +164,46 @@ class CLASS_econometrics(Container):
 
         return self._command_runner.run(
             "/econometrics/dwat",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def granger(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_column: str,
+        lag: pydantic.types.PositiveInt = 3,
+        chart: bool = False,
+    ) -> OBBject[openbb_provider.abstract.data.Data]:
+        """Perform Granger causality test to determine if X "causes" y.
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_column: str
+            Columns to use as exogenous variables.
+        lag: PositiveInt
+            Number of lags to use in the test.
+        Returns
+        -------
+        OBBject[Data]
+            OBBject with the results being the score from the test.
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_column=x_column,
+            lag=lag,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/granger",
             **inputs,
         )
 

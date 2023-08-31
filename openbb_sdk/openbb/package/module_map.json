@@ -7,6 +7,7 @@
     "econometrics_coint": "/econometrics/coint",
     "econometrics_corr": "/econometrics/corr",
     "econometrics_dwat": "/econometrics/dwat",
+    "econometrics_granger": "/econometrics/granger",
     "econometrics_ols": "/econometrics/ols",
     "econometrics_ols_summary": "/econometrics/ols_summary",
     "economy": "/economy",

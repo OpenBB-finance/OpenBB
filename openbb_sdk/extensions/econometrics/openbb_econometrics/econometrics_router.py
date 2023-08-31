@@ -1,6 +1,7 @@
 from itertools import combinations
 from typing import Dict, List
 
+import pandas as pd
 import statsmodels.api as sm
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
@@ -13,6 +14,7 @@ from openbb_provider.abstract.data import Data
 from pydantic import PositiveInt
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
 from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
@@ -204,3 +206,51 @@ def coint(
         )
 
     return OBBject(results=result)
+
+
+@router.command(methods=["POST"])
+def granger(
+    data: List[Data],
+    y_column: str,
+    x_column: str,
+    lag: PositiveInt = 3,
+) -> OBBject[Data]:
+    """Perform Granger causality test to determine if X "causes" y.
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_column: str
+        Columns to use as exogenous variables.
+    lag: PositiveInt
+        Number of lags to use in the test.
+    Returns
+    -------
+    OBBject[Data]
+        OBBject with the results being the score from the test.
+    """
+    X = get_target_column(basemodel_to_df(data), x_column)
+    y = get_target_column(basemodel_to_df(data), y_column)
+
+    granger = grangercausalitytests(pd.concat([y, X], axis=1), [lag], verbose=False)
+
+    for test in granger[lag][0]:
+        # As ssr_chi2test and lrtest have one less value in the tuple, we fill
+        # this value with a '-' to allow the conversion to a DataFrame
+        if len(granger[lag][0][test]) != 4:
+            pars = granger[lag][0][test]
+            granger[lag][0][test] = (pars[0], pars[1], "-", pars[2])
+
+    df = pd.DataFrame(granger[lag][0], index=["F-test", "P-value", "Count", "Lags"]).T
+
+    return OBBject(
+        results=[
+            Data(**d)
+            for d in df.reset_index()
+            .rename(columns={"index": "test"})
+            .to_dict(orient="records")
+        ]
+    )
