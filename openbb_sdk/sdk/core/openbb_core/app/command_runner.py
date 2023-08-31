@@ -141,7 +141,8 @@ class ParametersBuilder:
             command_coverage: Dict[str, List[str]],
             route_default: Optional[str],
         ) -> Optional[str]:
-            """Get the default provider for the given route. Either pick it from the user defaults or from the command coverage."""
+            """Get the default provider for the given route.
+            Either pick it from the user defaults or from the command coverage."""
             cmd_cov_given_route = command_coverage.get(route, None)
             command_cov_provider = (
                 cmd_cov_given_route[0] if cmd_cov_given_route else None
