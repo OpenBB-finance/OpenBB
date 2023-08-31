@@ -7,6 +7,8 @@ from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import BaseModel
 
+# ruff: noqa: S106
+
 
 class MockLoggingSettings:
     def __init__(self, system_settings, user_settings):

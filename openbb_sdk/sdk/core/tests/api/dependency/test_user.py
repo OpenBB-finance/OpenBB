@@ -14,6 +14,8 @@ from openbb_core.api.dependency.user import (
     verify_password,
 )
 
+# ruff: noqa: S105 S106
+
 
 def test_password_functions():
     """Test password functions."""

@@ -9,14 +9,14 @@ import pandas as pd
 
 # ruff: ignore=S310
 def get_fama_raw(start_date: str, end_date: str) -> pd.DataFrame:
-    """Gets base Fama French data to calculate risk
+    """Get base Fama French data to calculate risk.
 
     Returns
     -------
     pd.DataFrame
         A data with fama french model information
     """
-    with urlopen(  # nosec  # noqa: S310
+    with urlopen(  # nosec  # noqa: S310 SIM117
         "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
         # Download Zipfile and create pandas DataFrame

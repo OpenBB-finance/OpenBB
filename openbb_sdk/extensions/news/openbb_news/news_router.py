@@ -3,7 +3,6 @@
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -25,9 +24,3 @@ def globalnews(
 ) -> OBBject[BaseModel]:
     """Global News."""
     return OBBject(results=Query(**locals()).execute())
-
-
-@router.command
-def sectornews() -> OBBject[Empty]:  # type: ignore
-    """Sector news."""
-    return OBBject(results=Empty())

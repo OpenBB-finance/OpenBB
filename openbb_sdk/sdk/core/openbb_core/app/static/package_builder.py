@@ -32,6 +32,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 
+# ruff: noqa: T201
+
 
 class PackageBuilder:
     """Build the extension package for the SDK."""
@@ -60,7 +62,7 @@ class PackageBuilder:
         module_map = {
             PathHandler.build_module_name(path=path): path for path in path_list
         }
-        module_code = dumps(obj=module_map, indent=4)
+        module_code = dumps(obj=dict(sorted(module_map.items())), indent=4)
         module_name = "module_map"
         print("Writing module map...")
         self.write_to_package(
@@ -318,21 +320,19 @@ class DocstringGenerator:
                 type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
                 meta = param._annotation.__metadata__
                 description = getattr(meta[0], "description", "") if meta else ""
-            else:
+            elif param_name == "provider":
                 # pylint: disable=W0212
-                if param_name == "provider":
-                    # pylint: disable=W0212
-                    type_ = param._annotation
-                    default = param._annotation.__args__[0].__args__[0]
-                    description = f"""The provider to use for the query, by default None.
+                type_ = param._annotation
+                default = param._annotation.__args__[0].__args__[0]
+                description = f"""The provider to use for the query, by default None.
     If None, the provider specified in defaults is selected or '{default}' if there is
     no default."""
-                elif param_name == "chart":
-                    type_ = "bool"
-                    description = "Whether to create a chart or not, by default False."
-                else:
-                    type_ = ""
-                    description = ""
+            elif param_name == "chart":
+                type_ = "bool"
+                description = "Whether to create a chart or not, by default False."
+            else:
+                type_ = ""
+                description = ""
 
             docstring += f"{param_name} : {type_}\n"
             docstring += f"    {description}\n"
@@ -406,7 +406,7 @@ class MethodDefinition:
 
         code = "\n    @property\n"
         code += f'    def {function_name}(self):  # route = "{path}"\n'
-        code += f"        from openbb.package import {module_name}\n"
+        code += f"        from . import {module_name}\n"
         code += f"        return {module_name}.{class_name}(command_runner=self._command_runner)\n"
 
         return code
