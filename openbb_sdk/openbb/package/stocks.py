@@ -4,11 +4,12 @@ import datetime
 from typing import List, Literal, Optional, Union
 
 import pydantic
+import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 from typing_extensions import Annotated
 
 
@@ -184,7 +185,9 @@ class CLASS_stocks(Container):
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[
+            Literal["cboe", "fmp", "intrinio", "polygon", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -199,7 +202,7 @@ class CLASS_stocks(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -207,12 +210,26 @@ class CLASS_stocks(Container):
             Number of days to look back. (provider: fmp)
         interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
             None
+        timezone : Optional[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu']]
+            Returns trading times in this timezone. (provider: intrinio)
+        source : Optional[Literal['realtime', 'delayed', 'nasdaq_basic']]
+            The source of the data. (provider: intrinio)
+        start_time : Optional[datetime.time]
+            Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'. (provider: intrinio)
+        end_time : Optional[datetime.time]
+            Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
+        interval_size : Optional[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]
+            The data time frequency. (provider: intrinio)
+        limit : Union[pydantic.types.NonNegativeInt, NoneType, pydantic.types.PositiveInt]
+            None
+        next_page : Optional[str]
+            Token to get the next page of data from a previous API call. (provider: intrinio)
+        all_pages : Optional[bool]
+            Returns all pages of data from the API call at once. (provider: intrinio)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        limit : PositiveInt
-            The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
@@ -231,7 +248,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockHistorical]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
+            provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -491,9 +508,11 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Number of results to return per page."),
         ] = 15,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp", "polygon"]] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
+        ] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Get news for one or more stock tickers.
 
         Parameters
@@ -506,7 +525,7 @@ class CLASS_stocks(Container):
             Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -536,6 +555,10 @@ class CLASS_stocks(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        next_page : Optional[str]
+            Token to get the next page of data from a previous API call. (provider: intrinio)
+        all_pages : Optional[bool]
+            Returns all pages of data from the API call at once. (provider: intrinio)
         ticker_lt : Optional[str]
             Less than, by default None (provider: polygon)
         ticker_lte : Optional[str]
@@ -562,7 +585,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'polygon']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -597,20 +620,28 @@ class CLASS_stocks(Container):
             URL to the image of the news source. (provider: fmp)
         site : Optional[str]
             Name of the news source. (provider: fmp)
+        id : Optional[str]
+            Intrinio ID for the news article. (provider: intrinio)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         author : Optional[str]
             Author of the article. (provider: polygon)
-        id : Optional[str]
-            Article ID. (provider: polygon)
         image_url : Optional[str]
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
-        publisher : Optional[PolygonPublisher]
+        publisher : Union[PolygonPublisher, NoneType, str]
             Publisher of the article. (provider: polygon)
         tickers : Optional[List[str]]
-            Tickers covered in the article. (provider: polygon)"""  # noqa: E501
+            Tickers covered in the article. (provider: polygon)
+        uuid : Optional[str]
+            Unique identifier for the news article (provider: yfinance)
+        type : Optional[str]
+            Type of the news article (provider: yfinance)
+        thumbnail : Optional[Mapping[str, Any]]
+            Thumbnail related data to the ticker news article. (provider: yfinance)
+        related_tickers : Optional[str]
+            Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -644,7 +675,7 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -655,17 +686,19 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']
+            Source of the data. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[StockQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -676,50 +709,90 @@ class CLASS_stocks(Container):
 
         StockQuote
         ----------
-        symbol : Optional[str]
-            Symbol of the company.
-        name : Optional[str]
-            Name of the company.
-        price : Optional[float]
-            Current trading price of the stock.
-        changes_percentage : Optional[float]
-            Change percentage of the stock price.
-        change : Optional[float]
-            Change of the stock price.
         day_low : Optional[float]
             Lowest price of the stock in the current trading day.
         day_high : Optional[float]
             Highest price of the stock in the current trading day.
-        year_high : Optional[float]
-            Highest price of the stock in the last 52 weeks.
-        year_low : Optional[float]
-            Lowest price of the stock in the last 52 weeks.
-        market_cap : Optional[float]
-            Market cap of the company.
-        price_avg50 : Optional[float]
-            50 days average price of the stock.
-        price_avg200 : Optional[float]
-            200 days average price of the stock.
-        volume : Optional[int]
-            Volume of the stock in the current trading day.
-        avg_volume : Optional[int]
-            Average volume of the stock in the last 10 trading days.
-        exchange : Optional[str]
-            Exchange the stock is traded on.
-        open : Optional[float]
-            Opening price of the stock in the current trading day.
-        previous_close : Optional[float]
-            Previous closing price of the stock.
-        eps : Optional[float]
-            Earnings per share of the stock.
-        pe : Optional[float]
-            Price earnings ratio of the stock.
-        earnings_announcement : Optional[str]
-            Earnings announcement date of the stock.
-        shares_outstanding : Optional[int]
-            Number of shares outstanding of the stock.
         date : Optional[datetime]
-            Timestamp of the stock quote."""  # noqa: E501
+            Timestamp of the stock quote.
+        symbol : Optional[str]
+            Symbol of the company. (provider: fmp)
+        name : Optional[str]
+            Name of the company. (provider: fmp)
+        price : Optional[float]
+            Current trading price of the stock. (provider: fmp)
+        changes_percentage : Optional[float]
+            Change percentage of the stock price. (provider: fmp)
+        change : Optional[float]
+            Change in the stock price. (provider: fmp)
+        year_high : Optional[float]
+            Highest price of the stock in the last 52 weeks. (provider: fmp)
+        year_low : Optional[float]
+            Lowest price of the stock in the last 52 weeks. (provider: fmp)
+        market_cap : Optional[float]
+            Market cap of the company. (provider: fmp)
+        price_avg50 : Optional[float]
+            50 days average price of the stock. (provider: fmp)
+        price_avg200 : Optional[float]
+            200 days average price of the stock. (provider: fmp)
+        volume : Optional[int]
+            Volume of the stock in the current trading day. (provider: fmp)
+        avg_volume : Optional[int]
+            Average volume of the stock in the last 10 trading days. (provider: fmp)
+        exchange : Optional[str]
+            Exchange the stock is traded on. (provider: fmp)
+        open : Optional[float]
+            Opening price of the stock in the current trading day. (provider: fmp)
+        previous_close : Optional[float]
+            Previous closing price of the stock. (provider: fmp)
+        eps : Optional[float]
+            Earnings per share of the stock. (provider: fmp)
+        pe : Optional[float]
+            Price earnings ratio of the stock. (provider: fmp)
+        earnings_announcement : Optional[str]
+            Earnings announcement date of the stock. (provider: fmp)
+        shares_outstanding : Optional[int]
+            Number of shares outstanding of the stock. (provider: fmp)
+        last_price : Optional[float]
+            Price of the last trade. (provider: intrinio)
+        last_time : Optional[datetime]
+            Date and Time when the last trade occurred. (provider: intrinio)
+        last_size : Optional[int]
+            Size of the last trade. (provider: intrinio)
+        bid_price : Optional[float]
+            Price of the top bid order. (provider: intrinio)
+        bid_size : Optional[int]
+            Size of the top bid order. (provider: intrinio)
+        ask_price : Optional[float]
+            Price of the top ask order. (provider: intrinio)
+        ask_size : Optional[int]
+            Size of the top ask order. (provider: intrinio)
+        open_price : Optional[float]
+            Open price for the trading day. (provider: intrinio)
+        close_price : Optional[float]
+            Closing price for the trading day (IEX source only). (provider: intrinio)
+        high_price : Optional[float]
+            High Price for the trading day. (provider: intrinio)
+        low_price : Optional[float]
+            Low Price for the trading day. (provider: intrinio)
+        exchange_volume : Optional[int]
+            Number of shares exchanged during the trading day on the exchange. (provider: intrinio)
+        market_volume : Optional[int]
+            Number of shares exchanged during the trading day for the whole market. (provider: intrinio)
+        updated_on : Optional[datetime]
+            Date and Time when the data was last updated. (provider: intrinio)
+        source : Optional[str]
+            Source of the data. (provider: intrinio)
+        listing_venue : Optional[str]
+            Listing venue where the trade took place (SIP source only). (provider: intrinio)
+        sales_conditions : Optional[str]
+            Indicates any sales condition modifiers associated with the trade. (provider: intrinio)
+        quote_conditions : Optional[str]
+            Indicates any quote condition modifiers associated with the trade. (provider: intrinio)
+        market_center_code : Optional[str]
+            Market center character code. (provider: intrinio)
+        is_darkpool : Optional[bool]
+            Whether or not the current trade is from a darkpool. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
