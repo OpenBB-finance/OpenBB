@@ -1,3 +1,4 @@
+"""Tests for the OBBject class."""
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
@@ -7,20 +8,23 @@ from openbb_provider.abstract.data import Data
 
 
 def test_OBBject():
+    """Smoke test."""
     co = OBBject()
-    assert isinstance(co, OBBject)
+    assert isinstance(co, OBBject)  # noqa: S101
 
 
 def test_fields():
+    """Smoke test."""
     fields = OBBject.__fields__.keys()
 
-    assert "results" in fields
-    assert "provider" in fields
-    assert "warnings" in fields
-    assert "chart" in fields
+    assert "results" in fields  # noqa: S101
+    assert "provider" in fields  # noqa: S101
+    assert "warnings" in fields  # noqa: S101
+    assert "chart" in fields  # noqa: S101
 
 
 def test_to_dataframe_no_results():
+    """Test helper."""
     co = OBBject()
     with pytest.raises(Exception):
         co.to_dataframe()
@@ -33,8 +37,10 @@ def test_to_dataframe_no_results():
         (
             [{"date": "2023-07-30", "value": 10}, {"date": "2023-07-31", "value": 20}],
             pd.DataFrame(
-                {"value": [10, 20]},
-                index=pd.to_datetime(["2023-07-30", "2023-07-31"]),
+                [
+                    {"date": "2023-07-30", "value": 10},
+                    {"date": "2023-07-31", "value": 20},
+                ],
             ),
         ),
         # Test case 2: Normal results without "date" column
@@ -42,27 +48,94 @@ def test_to_dataframe_no_results():
             [{"value": 10}, {"value": 20}],
             pd.DataFrame({"value": [10, 20]}, index=pd.RangeIndex(start=0, stop=2)),
         ),
-        # Test case 3: Empty results
+        # Test case 3: List of Data
+        (
+            [
+                Data(x=0, y=2),
+                Data(x=1, y=3),
+                Data(x=2, y=0),
+                Data(x=3, y=1),
+                Data(x=4, y=6),
+            ],
+            pd.DataFrame({"x": [0, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]}),
+        ),
+        # Test case 4: List of dict
+        (
+            [
+                {"x": 1, "y": 2},
+                {"x": 1, "y": 3},
+                {"x": 2, "y": 0},
+                {"x": 3, "y": 1},
+                {"x": 4, "y": 6},
+            ],
+            pd.DataFrame({"x": [1, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]}),
+        ),
+        # Test case 5: List of Lists
+        (
+            [[0, 1], [1, 3], [2, 0], [3, 1], [4, 6]],
+            pd.DataFrame([[0, 1], [1, 3], [2, 0], [3, 1], [4, 6]]),
+        ),
+        # Test case 6: List of Tuples
+        (
+            [(3, 2), (1, 3), (2, 0), (3, 1), (4, 6)],
+            pd.DataFrame([(3, 2), (1, 3), (2, 0), (3, 1), (4, 6)]),
+        ),
+        # Test case 7: List of Strings
+        (
+            ["YOLO2", "YOLO3", "YOLO0", "YOLO1", "YOLO6"],
+            pd.DataFrame(["YOLO2", "YOLO3", "YOLO0", "YOLO1", "YOLO6"]),
+        ),
+        # Test case 7: List of Numbers
+        (
+            [1, 0.42, 12321298, 129387129387192837, 0.000000123],
+            pd.DataFrame([1, 0.42, 12321298, 129387129387192837, 0.000000123]),
+        ),
+        # Test case 7: Dict of Dicts
+        (
+            {
+                "0": {"x": 0, "y": 2},
+                "1": {"x": 1, "y": 3},
+                "2": {"x": 2, "y": 0},
+                "3": {"x": 3, "y": 1},
+                "4": {"x": 4, "y": 6},
+            },
+            pd.DataFrame(
+                {
+                    "0": {"x": 0, "y": 2},
+                    "1": {"x": 1, "y": 3},
+                    "2": {"x": 2, "y": 0},
+                    "3": {"x": 3, "y": 1},
+                    "4": {"x": 4, "y": 6},
+                },
+            ),
+        ),
+        # Test case 8: Dict of Lists
+        (
+            {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
+            pd.DataFrame(
+                {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]}
+            ),
+        ),
+        # Test case 9: Empty results
         ([], OpenBBError("Results not found.")),
-        # Test case 4: Results as None, should raise OpenBBError
+        # Test case 10: Results as None, should raise OpenBBError
         (None, OpenBBError("Results not found.")),
     ],
 )
 def test_to_dataframe(results, expected_df):
+    """Test helper."""
     # Arrange
-    if results:
-        results = [Data(**d) for d in results]
     co = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
         result = co.to_dataframe()
-        assert result.equals(expected_df)
+        assert result.equals(expected_df)  # noqa: S101
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
             co.to_dataframe()
 
-        assert str(exc_info.value) == str(expected_df)
+        assert str(exc_info.value) == str(expected_df)  # noqa: S101
 
 
 @pytest.mark.parametrize(
@@ -88,6 +161,7 @@ def test_to_dataframe(results, expected_df):
     ],
 )
 def test_to_dict(results, expected):
+    """Test helper."""
     # Arrange
     if results:
         results = [Data(**d) for d in results]
@@ -98,17 +172,18 @@ def test_to_dict(results, expected):
         with pytest.raises(expected.__class__) as exc_info:
             co.to_dict()
 
-        assert str(exc_info.value) == str(expected)
+        assert str(exc_info.value) == str(expected)  # noqa: S101
     else:
         result = co.to_dict()
         result.pop("index", None)
 
-        assert result == expected
+        assert result == expected  # noqa: S101
 
 
 @patch("openbb_core.app.charting_manager.ChartingManager.to_chart")
 @patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
 def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
+    """Test helper."""
     # Arrange
     mock_instance = OBBject()
     mock_instance.chart = Chart(content={"existing_chart_data": "some_data"})
@@ -122,8 +197,8 @@ def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
     result = mock_instance.to_chart()
 
     # Assert
-    assert result == {"fig": "some_mock_fig"}
-    assert mock_instance.chart.content == {"content": "some_new_content"}
+    assert result == {"fig": "some_mock_fig"}  # noqa: S101
+    assert mock_instance.chart.content == {"content": "some_new_content"}  # noqa: S101
 
     mock_to_dataframe.assert_called_once()
 
@@ -134,6 +209,8 @@ def test_to_chart_with_new_chart(
     mock_charting_manager,
     mock_to_dataframe,
 ):
+    """Test helper."""
+
     def get_mock_dataframe():
         data = {
             "col1": [1, 2, 3],
@@ -155,8 +232,8 @@ def test_to_chart_with_new_chart(
     result = mock_instance.to_chart()
 
     # Assert
-    assert result == {"fig": "some_mock_fig"}
-    assert mock_instance.chart.content == {"content": "some_new_content"}
+    assert result == {"fig": "some_mock_fig"}  # noqa: S101
+    assert mock_instance.chart.content == {"content": "some_new_content"}  # noqa: S101
 
     # Ensure self.to_dataframe() was called
     mock_to_dataframe.assert_called_once()
@@ -166,6 +243,7 @@ def test_to_chart_with_new_chart(
 
 
 def test_show_chart_exists():
+    """Test helper."""
     mock_instance = OBBject()
     # Arrange
     mock_instance.chart = MagicMock(spec=Chart)
@@ -180,6 +258,7 @@ def test_show_chart_exists():
 
 
 def test_show_chart_no_chart():
+    """Test helper."""
     mock_instance = OBBject()
 
     # Act and Assert
@@ -188,6 +267,7 @@ def test_show_chart_no_chart():
 
 
 def test_show_chart_no_fig():
+    """Test helper."""
     mock_instance = OBBject()
     # Arrange
     mock_instance.chart = Chart()
