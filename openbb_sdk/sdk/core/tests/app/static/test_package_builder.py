@@ -63,7 +63,7 @@ def test_save_package(package_builder):
 
 def test_run_linters(package_builder):
     """Test run linters."""
-    package_builder.run_linters(package_builder.directory)
+    package_builder.run_linters()
 
 
 @pytest.mark.skip("We avoid writing to the package.")
