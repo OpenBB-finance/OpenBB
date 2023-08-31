@@ -28,9 +28,9 @@ def check_package_diff(directory: Path = CURRENT_DIR) -> Set[str]:
     diff: Set[str] = set()
     groups = ("openbb_core_extension", "openbb_provider_extension")
     for g in groups:
-        ext_group = set(ext_map.get(g, {}))
+        written = set(ext_map.get(g, {}))
         installed = entry_points(group=g).names
-        diff = diff.union(ext_group ^ installed)
+        diff = diff.union(written ^ installed)
 
     return diff
 
@@ -54,15 +54,15 @@ def build(
         Enable/disable verbose mode
     """
     # pylint: disable=import-outside-toplevel
-    from multiprocessing import Pool
 
     from openbb_core.app.static.package_builder import PackageBuilder
 
     # `build` is running in a separate process. This avoids consecutive calls to this
     # function in the same interpreter to reuse objects already in memory. Not doing
     # this was causing docstrings to have repeated sections, for example.
-    with Pool(processes=1) as pool:
-        pool.apply(
-            PackageBuilder(CURRENT_DIR, lint, verbose).build,
-            args=(modules,),
-        )
+    PackageBuilder(CURRENT_DIR, lint, verbose).build(modules)
+    # with Pool(processes=1) as pool:
+    #     pool.apply(
+    #         PackageBuilder(CURRENT_DIR, lint, verbose).build,
+    #         args=(modules,),
+    #     )
