@@ -17,9 +17,10 @@ from openbb_core.app.repository.in_memory.access_token_repository import (
 from openbb_core.app.repository.in_memory.user_settings_repository import (
     UserSettingsRepository as InMemoryUserSettingsRepository,
 )
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 
 
-class UserService:
+class UserService(metaclass=SingletonMeta):
     """User service."""
 
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
