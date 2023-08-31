@@ -3,10 +3,10 @@
 
 from openbb_provider.abstract.provider import Provider
 
-from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetcher
-from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
+from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetcher
+from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
 intrinio_provider = Provider(

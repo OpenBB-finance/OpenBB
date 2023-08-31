@@ -8,7 +8,6 @@ from openbb_provider.standard_models.stock_quote import (
     StockQuoteData,
     StockQuoteQueryParams,
 )
-
 from pydantic import Field, validator
 
 from openbb_intrinio.utils.helpers import get_data_one
