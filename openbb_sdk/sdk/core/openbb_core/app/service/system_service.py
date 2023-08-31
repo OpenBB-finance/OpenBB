@@ -1,4 +1,5 @@
 import json
+import hashlib
 from pathlib import Path
 from typing import Optional
 
@@ -15,7 +16,12 @@ class SystemService(metaclass=SingletonMeta):
         "log_collect",
         "test_mode",
         "headless",
+        "logging_sub_app",
     }
+
+    PRO_VALIDATION_HASH = (
+        "a35f9683d36f45fa6fac4f62d98c24974a3332e16ddf2832fcf8b119126b83db"
+    )
 
     def __init__(
         self,
@@ -24,6 +30,16 @@ class SystemService(metaclass=SingletonMeta):
         self._system_settings = self._read_default_system_settings(
             path=self.SYSTEM_SETTINGS_PATH, **kwargs
         )
+
+    @classmethod
+    def _compare_hash(cls, input_value, existing_hash: Optional[str] = None):
+        existing_hash = existing_hash or cls.PRO_VALIDATION_HASH
+
+        hash_object = hashlib.sha256()
+        hash_object.update(input_value.encode("utf-8"))
+        hashed_input = hash_object.hexdigest()
+
+        return hashed_input == existing_hash
 
     @classmethod
     def _read_default_system_settings(
@@ -37,10 +53,18 @@ class SystemService(metaclass=SingletonMeta):
                 system_settings_json = file.read()
 
             system_settings_dict = json.loads(system_settings_json)
+
             S = system_settings_dict.copy()
             for field in S:
                 if field not in cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET:
                     del system_settings_dict[field]
+                else:
+                    if field == "logging_sub_app":
+                        if cls._compare_hash(system_settings_dict[field]):
+                            system_settings_dict[field] = "pro"
+                            kwargs.pop(field, None)
+                        else:
+                            del system_settings_dict[field]
 
             system_settings_dict.update(kwargs)
             system_settings = SystemSettings.parse_obj(system_settings_dict)

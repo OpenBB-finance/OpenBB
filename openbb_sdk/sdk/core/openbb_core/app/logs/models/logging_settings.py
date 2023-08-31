@@ -33,6 +33,7 @@ class LoggingSettings:
 
         # System
         self.app_name: str = system_settings.logging_app_name
+        self.sub_app_name: str = system_settings.logging_sub_app
         self.app_id: str = get_app_id(user_data_directory)
         self.session_id: str = get_session_id()
         self.frequency: str = system_settings.logging_frequency
