@@ -1,3 +1,4 @@
+from itertools import combinations
 from typing import Dict, List
 
 import statsmodels.api as sm
@@ -12,6 +13,8 @@ from openbb_provider.abstract.data import Data
 from pydantic import PositiveInt
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
+
+from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
 router = Router(prefix="")
 
@@ -155,3 +158,49 @@ def bgot(
     return OBBject(
         results=Data(lm_stat=lm_stat, p_value=p_value, f_stat=f_stat, fp_value=fp_value)
     )
+
+
+@router.command(methods=["POST"])
+def coint(
+    data: List[Data],
+    columns: List[str],
+) -> OBBject[Data]:
+    """Show co-integration between two timeseries using the two step Engle-Granger test.
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    columns: List[str]
+        Data columns to check cointegration
+    maxlag: PositiveInt
+        Number of lags to use in the test.
+    Returns
+    -------
+    OBBject[Data]
+        OBBject with the results being the score from the test.
+    """
+    pairs = list(combinations(columns, 2))
+    dataset = get_target_columns(basemodel_to_df(data), columns)
+    result = []
+    for x, y in pairs:
+        (
+            c,
+            gamma,
+            alpha,
+            z,
+            adfstat,
+            pvalue,
+        ) = get_engle_granger_two_step_cointegration_test(dataset[x], dataset[y])
+        result.append(
+            Data(
+                pair=f"{x}/{y}",
+                c=c,
+                gamma=gamma,
+                alpha=alpha,
+                adfstat=adfstat,
+                pvalue=pvalue,
+            )
+        )
+
+    return OBBject(results=result)
