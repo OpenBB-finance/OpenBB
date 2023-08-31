@@ -1,5 +1,5 @@
 from itertools import combinations
-from typing import Dict, List
+from typing import Dict, List, Literal
 
 import pandas as pd
 import statsmodels.api as sm
@@ -14,7 +14,7 @@ from openbb_provider.abstract.data import Data
 from pydantic import PositiveInt
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
-from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests
 
 from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
@@ -253,4 +253,39 @@ def granger(
             .rename(columns={"index": "test"})
             .to_dict(orient="records")
         ]
+    )
+
+
+@router.command(methods=["POST"])
+def unitroot(
+    data: List[Data],
+    column: str,
+    regression: Literal["c", "ct", "ctt"] = "c",
+) -> OBBject[Data]:
+    """Perform Augmented Dickey-Fuller unit root test.
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    column: str
+        Data columns to check unit root
+    regression: str
+        Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
+        constant, trend, and trend-squared.
+    Returns
+    -------
+    OBBject[Data]
+        OBBject with the results being the score from the test.
+    """
+    dataset = get_target_column(basemodel_to_df(data), column)
+    adfstat, pvalue, usedlag, nobs, _, icbest = adfuller(dataset, regression=regression)
+    return OBBject(
+        results=Data(
+            adfstat=adfstat,
+            pvalue=pvalue,
+            usedlag=usedlag,
+            nobs=nobs,
+            icbest=icbest,
+        )
     )

@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Dict, List, Union
+from typing import Dict, List, Literal, Union
 
 import openbb_provider
 import openbb_provider.abstract.data
@@ -22,6 +22,7 @@ class CLASS_econometrics(Container):
     granger
     ols
     ols_summary
+    unitroot
     """
 
     def __repr__(self) -> str:
@@ -278,5 +279,41 @@ class CLASS_econometrics(Container):
 
         return self._command_runner.run(
             "/econometrics/ols_summary",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def unitroot(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        column: str,
+        regression: Literal["c", "ct", "ctt"] = "c",
+        chart: bool = False,
+    ) -> OBBject[openbb_provider.abstract.data.Data]:
+        """Perform Augmented Dickey-Fuller unit root test.
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        column: str
+            Data columns to check unit root
+        regression: str
+            Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for constant, trend, and trend-squared.
+        Returns
+        -------
+        OBBject[Data]
+            OBBject with the results being the score from the test.
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            column=column,
+            regression=regression,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/unitroot",
             **inputs,
         )
