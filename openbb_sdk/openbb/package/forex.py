@@ -43,7 +43,7 @@ class CLASS_forex(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Forex Intraday Price.
+        """Forex Intraday Price.
 
         Parameters
         ----------
@@ -83,7 +83,7 @@ class CLASS_forex(Container):
         Returns
         -------
         OBBject
-            results : List[ForexEOD]
+            results : List[ForexHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
@@ -94,8 +94,8 @@ class CLASS_forex(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        ForexEOD
-        --------
+        ForexHistorical
+        ---------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
@@ -117,11 +117,11 @@ class CLASS_forex(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
