@@ -13,12 +13,10 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.service.system_service import SystemService
-from openbb_core.app.service.user_service import UserService
 from pydantic.json import pydantic_encoder
 
 
-class LoggingManager(metaclass=SingletonMeta):
+class LoggingService(metaclass=SingletonMeta):
     """
     Logging Manager class responsible for managing logging settings and handling logs.
 
@@ -56,8 +54,8 @@ class LoggingManager(metaclass=SingletonMeta):
 
     def __init__(
         self,
-        system_settings: Optional[SystemSettings] = None,
-        user_settings: Optional[UserSettings] = None,
+        system_settings: SystemSettings,
+        user_settings: UserSettings,
     ) -> None:
         """
         Logging Manager Constructor
@@ -65,17 +63,13 @@ class LoggingManager(metaclass=SingletonMeta):
 
         Parameters
         ----------
-        system_settings : Optional[SystemSettings], optional
+        system_settings : SystemSettings
             System Settings, by default None
-        user_settings : Optional[UserSettings], optional
+        user_settings : UserSettings
             User Settings, by default None
         """
-        self._user_settings = (
-            user_settings or UserService().read_default_user_settings()
-        )
-        self._system_settings = (
-            system_settings or SystemService().read_default_system_settings()
-        )
+        self._user_settings = user_settings
+        self._system_settings = system_settings
         self._logging_settings = LoggingSettings(
             user_settings=self._user_settings,
             system_settings=self._system_settings,
