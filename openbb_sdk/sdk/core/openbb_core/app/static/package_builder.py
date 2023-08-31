@@ -62,7 +62,7 @@ class PackageBuilder:
         module_map = {
             PathHandler.build_module_name(path=path): path for path in path_list
         }
-        module_code = dumps(obj=module_map, indent=4)
+        module_code = dumps(obj=dict(sorted(module_map.items())), indent=4)
         module_name = "module_map"
         print("Writing module map...")
         self.write_to_package(
