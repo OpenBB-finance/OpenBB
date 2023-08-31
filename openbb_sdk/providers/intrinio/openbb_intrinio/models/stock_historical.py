@@ -6,8 +6,8 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
-    StockEODData,
-    StockEODQueryParams,
+    StockHistoricalData,
+    StockHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
@@ -18,7 +18,7 @@ from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
 
 
-class IntrinioStockEODQueryParams(StockEODQueryParams):
+class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     """Intrinio Stock end of day Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
@@ -60,7 +60,7 @@ class IntrinioStockEODQueryParams(StockEODQueryParams):
         return min(v, 300)
 
 
-class IntrinioStockEODData(StockEODData):
+class IntrinioStockHistoricalData(StockHistoricalData):
     """Intrinio Stock end of day Data."""
 
     class Config:
@@ -99,16 +99,16 @@ class IntrinioStockEODData(StockEODData):
         )
 
 
-class IntrinioStockEODFetcher(
+class IntrinioStockHistoricalFetcher(
     Fetcher[
-        IntrinioStockEODQueryParams,
-        List[IntrinioStockEODData],
+        IntrinioStockHistoricalQueryParams,
+        List[IntrinioStockHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioStockEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioStockHistoricalQueryParams:
         """Transform the query params."""
 
         transformed_params = params
@@ -126,11 +126,11 @@ class IntrinioStockEODFetcher(
         if params.get("end_time") is None:
             transformed_params["end_time"] = time(23, 59, 59)
 
-        return IntrinioStockEODQueryParams(**transformed_params)
+        return IntrinioStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioStockEODQueryParams,
+        query: IntrinioStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -172,7 +172,7 @@ class IntrinioStockEODFetcher(
         return data.get("intervals", [])
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioStockEODData]:
+    def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
 
-        return [IntrinioStockEODData(**d) for d in data]
+        return [IntrinioStockHistoricalData(**d) for d in data]
