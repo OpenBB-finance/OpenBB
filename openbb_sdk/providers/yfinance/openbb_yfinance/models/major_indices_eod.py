@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_eod import (
+from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalData,
     MajorIndicesHistoricalQueryParams,
 )

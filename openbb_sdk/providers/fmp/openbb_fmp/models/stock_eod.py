@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_eod import (
+from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
     StockHistoricalQueryParams,
 )
