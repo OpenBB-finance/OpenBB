@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_eod import (
-    CryptoEODData,
-    CryptoEODQueryParams,
+    CryptoHistoricalData,
+    CryptoHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
@@ -16,7 +16,7 @@ from pydantic import Field, NonNegativeInt, validator
 from openbb_fmp.utils.helpers import get_data_many
 
 
-class FMPCryptoEODQueryParams(CryptoEODQueryParams):
+class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     # noqa: E501
     """FMP Crypto end of day Query.
 
@@ -29,7 +29,7 @@ class FMPCryptoEODQueryParams(CryptoEODQueryParams):
     )
 
 
-class FMPCryptoEODData(CryptoEODData):
+class FMPCryptoHistoricalData(CryptoHistoricalData):
     """FMP Crypto end of day Data."""
 
     adjClose: float = Field(
@@ -57,16 +57,16 @@ class FMPCryptoEODData(CryptoEODData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-class FMPCryptoEODFetcher(
+class FMPCryptoHistoricalFetcher(
     Fetcher[
-        FMPCryptoEODQueryParams,
-        List[FMPCryptoEODData],
+        FMPCryptoHistoricalQueryParams,
+        List[FMPCryptoHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCryptoEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCryptoHistoricalQueryParams:
         """Transform the query params. Start and end dates are set to 1 year interval."""
         transformed_params = params
 
@@ -76,11 +76,11 @@ class FMPCryptoEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return FMPCryptoEODQueryParams(**transformed_params)
+        return FMPCryptoHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPCryptoEODQueryParams,
+        query: FMPCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -95,6 +95,6 @@ class FMPCryptoEODFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPCryptoEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPCryptoHistoricalData]:
         """Return the transformed data."""
-        return [FMPCryptoEODData(**d) for d in data]
+        return [FMPCryptoHistoricalData(**d) for d in data]

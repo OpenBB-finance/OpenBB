@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.futures_eod import (
-    FuturesEODData,
-    FuturesEODQueryParams,
+    FuturesHistoricalData,
+    FuturesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
@@ -18,7 +18,7 @@ from openbb_yfinance.utils.helpers import get_futures_data
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 
 
-class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
+class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
     """YFinance Futures End of Day Query.
 
     Source: https://finance.yahoo.com/crypto/
@@ -37,7 +37,7 @@ class YFinanceFuturesEODQueryParams(FuturesEODQueryParams):
     )
 
 
-class YFinanceFuturesEODData(FuturesEODData):
+class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     """YFinance Futures End of Day Data."""
 
     @validator("Date", pre=True, check_fields=False)
@@ -46,16 +46,16 @@ class YFinanceFuturesEODData(FuturesEODData):
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
-class YFinanceFuturesEODFetcher(
+class YFinanceFuturesHistoricalFetcher(
     Fetcher[
-        YFinanceFuturesEODQueryParams,
-        List[YFinanceFuturesEODData],
+        YFinanceFuturesHistoricalQueryParams,
+        List[YFinanceFuturesHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceFuturesEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> YFinanceFuturesHistoricalQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
         if params.get("period") is None:
             transformed_params = params
@@ -66,13 +66,13 @@ class YFinanceFuturesEODFetcher(
 
             if params.get("end_date") is None:
                 transformed_params["end_date"] = now
-            return YFinanceFuturesEODQueryParams(**transformed_params)
+            return YFinanceFuturesHistoricalQueryParams(**transformed_params)
 
-        return YFinanceFuturesEODQueryParams(**params)
+        return YFinanceFuturesHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: YFinanceFuturesEODQueryParams,
+        query: YFinanceFuturesHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -120,6 +120,6 @@ class YFinanceFuturesEODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[YFinanceFuturesEODData]:
+    ) -> List[YFinanceFuturesHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceFuturesEODData.parse_obj(d) for d in data]
+        return [YFinanceFuturesHistoricalData.parse_obj(d) for d in data]

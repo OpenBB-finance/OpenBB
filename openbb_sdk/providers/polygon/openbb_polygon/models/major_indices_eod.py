@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_eod import (
-    MajorIndicesEODData,
-    MajorIndicesEODQueryParams,
+    MajorIndicesHistoricalData,
+    MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
@@ -16,7 +16,7 @@ from pydantic import Field, PositiveInt, validator
 from openbb_polygon.utils.helpers import get_data
 
 
-class PolygonMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
+class PolygonMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     """Polygon major indices end of day Query.
 
     Source: https://polygon.io/docs/indices/getting-started
@@ -37,7 +37,7 @@ class PolygonMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
     )
 
 
-class PolygonMajorIndicesEODData(MajorIndicesEODData):
+class PolygonMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     """Polygon major indices end of day Data."""
 
     class Config:
@@ -60,14 +60,16 @@ class PolygonMajorIndicesEODData(MajorIndicesEODData):
         return datetime.fromtimestamp(v / 1000)
 
 
-class PolygonMajorIndicesEODFetcher(
+class PolygonMajorIndicesHistoricalFetcher(
     Fetcher[
-        PolygonMajorIndicesEODQueryParams,
-        List[PolygonMajorIndicesEODData],
+        PolygonMajorIndicesHistoricalQueryParams,
+        List[PolygonMajorIndicesHistoricalData],
     ]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonMajorIndicesEODQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> PolygonMajorIndicesHistoricalQueryParams:
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -75,11 +77,11 @@ class PolygonMajorIndicesEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return PolygonMajorIndicesEODQueryParams(**transformed_params)
+        return PolygonMajorIndicesHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonMajorIndicesEODQueryParams,
+        query: PolygonMajorIndicesHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -104,7 +106,8 @@ class PolygonMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[PolygonMajorIndicesEODData]:
+    ) -> List[PolygonMajorIndicesHistoricalData]:
         return [
-            PolygonMajorIndicesEODData.parse_obj(d) for d in data.get("results", [])
+            PolygonMajorIndicesHistoricalData.parse_obj(d)
+            for d in data.get("results", [])
         ]

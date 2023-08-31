@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_eod import (
-    CryptoEODData,
-    CryptoEODQueryParams,
+    CryptoHistoricalData,
+    CryptoHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
@@ -16,7 +16,7 @@ from pydantic import Field, PositiveInt, validator
 from openbb_polygon.utils.helpers import get_data
 
 
-class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
+class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     """Polygon crypto end of day Query.
 
     Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
@@ -37,7 +37,7 @@ class PolygonCryptoEODQueryParams(CryptoEODQueryParams):
     )
 
 
-class PolygonCryptoEODData(CryptoEODData):
+class PolygonCryptoHistoricalData(CryptoHistoricalData):
     """Polygon crypto end of day Data."""
 
     class Config:
@@ -60,14 +60,14 @@ class PolygonCryptoEODData(CryptoEODData):
         return datetime.fromtimestamp(v / 1000)
 
 
-class PolygonCryptoEODFetcher(
+class PolygonCryptoHistoricalFetcher(
     Fetcher[
-        PolygonCryptoEODQueryParams,
-        List[PolygonCryptoEODData],
+        PolygonCryptoHistoricalQueryParams,
+        List[PolygonCryptoHistoricalData],
     ]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonCryptoEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonCryptoHistoricalQueryParams:
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -79,11 +79,11 @@ class PolygonCryptoEODFetcher(
         if params.get("symbol"):
             transformed_params["symbol"] = params["symbol"].replace("-", "")
 
-        return PolygonCryptoEODQueryParams(**transformed_params)
+        return PolygonCryptoHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonCryptoEODQueryParams,
+        query: PolygonCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -106,5 +106,7 @@ class PolygonCryptoEODFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[PolygonCryptoEODData]:
-        return [PolygonCryptoEODData.parse_obj(d) for d in data.get("results", [])]
+    def transform_data(data: dict) -> List[PolygonCryptoHistoricalData]:
+        return [
+            PolygonCryptoHistoricalData.parse_obj(d) for d in data.get("results", [])
+        ]

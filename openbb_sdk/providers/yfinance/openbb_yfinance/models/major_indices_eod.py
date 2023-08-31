@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_eod import (
-    MajorIndicesEODData,
-    MajorIndicesEODQueryParams,
+    MajorIndicesHistoricalData,
+    MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, validator
@@ -17,7 +17,7 @@ from yfinance import Ticker
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
-class YFinanceMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
+class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     """YFinance Major Indices End of Day Query.
 
     Source: https://finance.yahoo.com/world-indices
@@ -36,7 +36,7 @@ class YFinanceMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
     )
 
 
-class YFinanceMajorIndicesEODData(MajorIndicesEODData):
+class YFinanceMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     """YFinance Major Indices End of Day Data."""
 
     @validator("Date", pre=True, check_fields=False)
@@ -45,16 +45,18 @@ class YFinanceMajorIndicesEODData(MajorIndicesEODData):
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
-class YFinanceMajorIndicesEODFetcher(
+class YFinanceMajorIndicesHistoricalFetcher(
     Fetcher[
-        YFinanceMajorIndicesEODQueryParams,
-        List[YFinanceMajorIndicesEODData],
+        YFinanceMajorIndicesHistoricalQueryParams,
+        List[YFinanceMajorIndicesHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceMajorIndicesEODQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> YFinanceMajorIndicesHistoricalQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
         if params.get("period") is None:
             transformed_params = params
@@ -65,13 +67,13 @@ class YFinanceMajorIndicesEODFetcher(
 
             if params.get("end_date") is None:
                 transformed_params["end_date"] = now
-            return YFinanceMajorIndicesEODQueryParams(**transformed_params)
+            return YFinanceMajorIndicesHistoricalQueryParams(**transformed_params)
 
-        return YFinanceMajorIndicesEODQueryParams(**params)
+        return YFinanceMajorIndicesHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: YFinanceMajorIndicesEODQueryParams,
+        query: YFinanceMajorIndicesHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -109,6 +111,6 @@ class YFinanceMajorIndicesEODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[YFinanceMajorIndicesEODData]:
+    ) -> List[YFinanceMajorIndicesHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceMajorIndicesEODData.parse_obj(d) for d in data]
+        return [YFinanceMajorIndicesHistoricalData.parse_obj(d) for d in data]

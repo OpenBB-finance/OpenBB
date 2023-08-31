@@ -6,20 +6,23 @@ from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_eod import ForexEODData, ForexEODQueryParams
+from openbb_provider.standard_models.forex_eod import (
+    ForexHistoricalData,
+    ForexHistoricalQueryParams,
+)
 from pydantic import Field, validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
-class FMPForexEODQueryParams(ForexEODQueryParams):
+class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
     """FMP Forex end of day Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
 
 
-class FMPForexEODData(ForexEODData):
+class FMPForexHistoricalData(ForexHistoricalData):
     """FMP Forex end of day Data."""
 
     adjClose: float = Field(
@@ -47,16 +50,16 @@ class FMPForexEODData(ForexEODData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-class FMPForexEODFetcher(
+class FMPForexHistoricalFetcher(
     Fetcher[
-        FMPForexEODQueryParams,
-        List[FMPForexEODData],
+        FMPForexHistoricalQueryParams,
+        List[FMPForexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPForexEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPForexHistoricalQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
         transformed_params = params
 
@@ -67,11 +70,11 @@ class FMPForexEODFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPForexEODQueryParams(**transformed_params)
+        return FMPForexHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPForexEODQueryParams,
+        query: FMPForexHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -86,6 +89,6 @@ class FMPForexEODFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPForexEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPForexHistoricalData]:
         """Return the transformed data."""
-        return [FMPForexEODData(**d) for d in data]
+        return [FMPForexHistoricalData(**d) for d in data]
