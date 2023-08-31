@@ -36,6 +36,18 @@ from openbb_core.app.router import RouterLoader
 # ruff: noqa: T201
 
 
+class Console:
+    """Console to be used by builder and linters."""
+
+    def __init__(self, verbose: bool):
+        self.verbose = verbose
+
+    def log(self, message: str, **kwargs):
+        """Console log method"""
+        if self.verbose or Env().DEBUG_MODE:
+            print(message, **kwargs)
+
+
 class PackageBuilder:
     """Build the extension package for the SDK."""
 
@@ -45,17 +57,14 @@ class PackageBuilder:
         self.directory = directory or Path(__file__).parent
         self.lint = lint
         self.verbose = verbose
-
-    def log(self, message: str, **kwargs):
-        if self.verbose or Env().DEBUG_MODE:
-            print(message, **kwargs)
+        self.console = Console(verbose)
 
     def build(
         self,
         modules: Optional[Union[str, List[str]]] = None,
     ) -> None:
         """Build the extensions for the SDK."""
-        self.log("\nBuilding extensions package...\n")
+        self.console.log("\nBuilding extensions package...\n")
 
         self.save_extension_map()
         self.save_module_map()
@@ -69,7 +78,7 @@ class PackageBuilder:
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {g: sorted(list(entry_points(group=g).names)) for g in groups}
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
-        self.log("Writing extension map...")
+        self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")
 
     def save_module_map(self):
@@ -80,17 +89,17 @@ class PackageBuilder:
             PathHandler.build_module_name(path=path): path for path in path_list
         }
         code = dumps(obj=dict(sorted(module_map.items())), indent=4)
-        self.log("\nWriting module map...")
+        self.console.log("\nWriting module map...")
         self.write_to_package(code=code, name="module_map", extension="json")
 
     def save_modules(self, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
-        self.log("\nWriting modules...")
+        self.console.log("\nWriting modules...")
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
 
         if not path_list:
-            self.log("\nThere is nothing to write.")
+            self.console.log("\nThere is nothing to write.")
             return
 
         MAX_LEN = max([len(path) for path in path_list if path != "/"])
@@ -103,18 +112,18 @@ class PackageBuilder:
             if route is None:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
-                self.log(f"({path})", end=" " * (MAX_LEN - len(path)))
+                self.console.log(f"({path})", end=" " * (MAX_LEN - len(path)))
                 self.write_to_package(code=module_code, name=module_name)
 
     def save_package(self):
         """Save the package."""
-        self.log("\nWriting package __init__...")
+        self.console.log("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         self.write_to_package(code=code, name="__init__")
 
     def run_linters(self):
         """Run the linters."""
-        self.log("\nRunning linters...")
+        self.console.log("\nRunning linters...")
         linters = Linters(self.directory, self.verbose)
         linters.ruff()
         linters.black()
@@ -126,7 +135,7 @@ class PackageBuilder:
 
         package_folder.mkdir(exist_ok=True)
 
-        self.log(package_path)
+        self.console.log(str(package_path))
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
             file.write(code.replace("typing.", ""))
 
@@ -784,14 +793,11 @@ class Linters:
     def __init__(self, directory: Path, verbose: bool = False) -> None:
         self.directory = directory
         self.verbose = verbose
-
-    def log(self, message: str, **kwargs):
-        if self.verbose or Env().DEBUG_MODE:
-            print(message, **kwargs)
+        self.console = Console(verbose)
 
     def print_separator(self, symbol: str, length: int = 160):
         """Print a separator."""
-        self.log(symbol * length)
+        self.console.log(symbol * length)
 
     def run(
         self,
@@ -800,7 +806,7 @@ class Linters:
     ):
         """Run linter with flags."""
         if shutil.which(linter):
-            self.log(f"\n* {linter}")
+            self.console.log(f"\n* {linter}")
             self.print_separator("^")
 
             command = [linter, self.directory]
@@ -810,7 +816,7 @@ class Linters:
 
             self.print_separator("-")
         else:
-            self.log(f"\n* {linter} not found")
+            self.console.log(f"\n* {linter} not found")
 
     def black(self):
         """Run black."""
