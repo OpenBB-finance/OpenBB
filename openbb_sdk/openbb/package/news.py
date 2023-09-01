@@ -2,7 +2,6 @@
 
 from typing import List, Literal, Optional
 
-import pydantic
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
@@ -24,22 +23,21 @@ class CLASS_news(Container):
     def globalnews(
         self,
         page: Annotated[
-            pydantic.types.NonNegativeInt,
-            OpenBBCustomParameter(description="Page of the global news."),
+            int, OpenBBCustomParameter(description="Page of the global news.")
         ] = 0,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Optional[Literal["benzinga", "biztoc", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
 
         Parameters
         ----------
-        page : NonNegativeInt
+        page : int
             Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['benzinga', 'fmp']]
+        provider : Optional[Literal['benzinga', 'biztoc', 'fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -73,13 +71,19 @@ class CLASS_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        filter : Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag']
+            Filter by type of news. (provider: biztoc)
+        source : str
+            Filter by a specific publisher. (provider: biztoc)
+        tag : str
+            Tag, topic, to filter articles by. (provider: biztoc)
 
         Returns
         -------
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp']]
+            provider : Optional[Literal['benzinga', 'biztoc', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -108,8 +112,10 @@ class CLASS_news(Container):
             Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
-        site : Optional[str]
-            Site of the news. (provider: fmp)"""  # noqa: E501
+        favicon : Optional[str]
+            Icon image for the source of the article. (provider: biztoc)
+        domain : Optional[str]
+            Domain base url for the article source. (provider: biztoc)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -177,9 +183,9 @@ class CLASS_news(Container):
         score : Optional[float]
             Article score. (provider: biztoc)
         domain : Optional[str]
-            Domain base url for the source article. (provider: biztoc)
+            Base url to the article source. (provider: biztoc)
         tags : Optional[List[str]]
-            Tags for the source article. (provider: biztoc)"""  # noqa: E501
+            Tags for the article. (provider: biztoc)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

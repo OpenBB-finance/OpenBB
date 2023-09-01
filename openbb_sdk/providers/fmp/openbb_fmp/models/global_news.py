@@ -1,5 +1,6 @@
 """FMP Global News fetcher."""
 
+
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -7,7 +8,6 @@ from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
     GlobalNewsQueryParams,
 )
-from pydantic import Field
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -25,9 +25,7 @@ class FMPGlobalNewsData(GlobalNewsData):
     class Config:
         """Pydantic alias config using fields dict."""
 
-        fields = {"date": "publishedDate"}
-
-    site: str = Field(description="Site of the news.")
+        fields = {"date": "published_date"}
 
 
 class FMPGlobalNewsFetcher(

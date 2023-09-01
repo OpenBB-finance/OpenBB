@@ -23,8 +23,8 @@ class BiztocNewsSearchData(NewsSearchData):
         fields = {"date": "created", "text": "body", "image": "img"}
 
     score: Optional[float] = Field(description="Article score.")
-    domain: Optional[str] = Field(description="Domain base url for the source article.")
-    tags: Optional[List[str]] = Field(description="Tags for the source article.")
+    domain: Optional[str] = Field(description="Base url to the article source.")
+    tags: Optional[List[str]] = Field(description="Tags for the article.")
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
