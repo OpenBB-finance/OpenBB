@@ -1,4 +1,4 @@
-"""CBOE Helpers Module"""
+"""CBOE Helpers Module."""
 
 from datetime import date, timedelta
 from io import BytesIO, StringIO
@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 import requests
 import requests_cache
+from openbb_provider.utils.helpers import to_snake_case
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 # This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
@@ -319,7 +320,7 @@ def get_settlement_prices(
         )
         raise RuntimeError(error_string)
 
-    data.columns = [camel_to_snake(c.replace(" ", "")) for c in data.columns]
+    data.columns = [to_snake_case(c) for c in data.columns]
     data = data.rename(columns={"expiration_date": "expiration"})
 
     if len(data) > 0:

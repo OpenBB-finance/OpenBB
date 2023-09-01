@@ -1,5 +1,7 @@
 from openbb_core.app.model.hub.hub_session import HubSession
 
+# ruff: noqa: S105 S106
+
 
 def test_hub_session():
     session = HubSession(

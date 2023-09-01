@@ -35,7 +35,7 @@ class CLASS_futures(Container):
         provider: Optional[Literal["cboe", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Futures EOD Price.
+        """Futures Historical Price.
 
         Parameters
         ----------
@@ -117,7 +117,7 @@ class CLASS_futures(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Futures EOD Price.
+        """Futures Historical Price.
 
         Parameters
         ----------
@@ -149,7 +149,7 @@ class CLASS_futures(Container):
         Returns
         -------
         OBBject
-            results : List[FuturesEOD]
+            results : List[FuturesHistorical]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -160,8 +160,8 @@ class CLASS_futures(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        FuturesEOD
-        ----------
+        FuturesHistorical
+        -----------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[float]

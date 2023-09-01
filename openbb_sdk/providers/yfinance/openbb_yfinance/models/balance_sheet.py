@@ -10,7 +10,6 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-
 from pydantic import validator
 from yfinance import Ticker
 

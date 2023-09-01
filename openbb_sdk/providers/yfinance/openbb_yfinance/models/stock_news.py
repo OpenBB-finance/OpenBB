@@ -10,7 +10,6 @@ from openbb_provider.standard_models.stock_news import (
     StockNewsData,
     StockNewsQueryParams,
 )
-
 from pydantic import Field, validator
 from yfinance import Ticker
 

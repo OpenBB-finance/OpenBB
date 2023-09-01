@@ -187,7 +187,7 @@ def test_complete_signature(signature_inspector):
     ) -> OBBject:
         pass
 
-    model = "StockEOD"
+    model = "StockHistorical"
 
     assert signature_inspector.complete_signature(sample_function, model)
 
@@ -256,7 +256,7 @@ def test_get_description_no_doc(signature_inspector):
     def some_function():
         pass
 
-    assert signature_inspector.get_description(some_function) == ""
+    assert not signature_inspector.get_description(some_function)
 
 
 @pytest.fixture(scope="module")

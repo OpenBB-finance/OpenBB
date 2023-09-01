@@ -83,7 +83,7 @@ class CLASS_forex(Container):
         Returns
         -------
         OBBject
-            results : List[ForexEOD]
+            results : List[ForexHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
@@ -94,8 +94,8 @@ class CLASS_forex(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        ForexEOD
-        --------
+        ForexHistorical
+        ---------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]

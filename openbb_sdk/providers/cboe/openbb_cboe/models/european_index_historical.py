@@ -5,9 +5,9 @@ from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.european_index_eod import (
-    EuropeanIndexEODData,
-    EuropeanIndexEODQueryParams,
+from openbb_provider.standard_models.european_index_historical import (
+    EuropeanIndexHistoricalData,
+    EuropeanIndexHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
@@ -15,7 +15,7 @@ from pydantic import Field, validator
 from openbb_cboe.utils.helpers import Europe
 
 
-class CboeEuropeanIndexEODQueryParams(EuropeanIndexEODQueryParams):
+class CboeEuropeanIndexHistoricalQueryParams(EuropeanIndexHistoricalQueryParams):
     """CBOE European Indices End of Day query.
 
     Source: https://www.cboe.com/europe/indices/
@@ -27,7 +27,7 @@ class CboeEuropeanIndexEODQueryParams(EuropeanIndexEODQueryParams):
     )
 
 
-class CboeEuropeanIndexEODData(EuropeanIndexEODData):
+class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
     """CBOE Stocks End of Day Data."""
 
     open: Optional[float] = Field(
@@ -49,23 +49,25 @@ class CboeEuropeanIndexEODData(EuropeanIndexEODData):
         return float(v)
 
 
-class CboeEuropeanIndexEODFetcher(
+class CboeEuropeanIndexHistoricalFetcher(
     Fetcher[
-        CboeEuropeanIndexEODQueryParams,
-        List[CboeEuropeanIndexEODData],
+        CboeEuropeanIndexHistoricalQueryParams,
+        List[CboeEuropeanIndexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeEuropeanIndexEODQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> CboeEuropeanIndexHistoricalQueryParams:
         """Transform the query."""
 
-        return CboeEuropeanIndexEODQueryParams(**params)
+        return CboeEuropeanIndexHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: CboeEuropeanIndexEODQueryParams,
+        query: CboeEuropeanIndexHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -126,7 +128,7 @@ class CboeEuropeanIndexEODFetcher(
         return data.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexEODData]:
+    def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexHistoricalData]:
         """Transform the data to the standard format"""
 
-        return [CboeEuropeanIndexEODData.parse_obj(d) for d in data]
+        return [CboeEuropeanIndexHistoricalData.parse_obj(d) for d in data]

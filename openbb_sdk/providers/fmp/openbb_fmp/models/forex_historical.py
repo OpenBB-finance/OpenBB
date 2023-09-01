@@ -1,4 +1,4 @@
-"""FMP Cryptos end of day fetcher."""
+"""FMP Forex end of day fetcher."""
 
 
 from datetime import datetime
@@ -6,31 +6,24 @@ from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.crypto_eod import (
-    CryptoEODData,
-    CryptoEODQueryParams,
+from openbb_provider.standard_models.forex_historical import (
+    ForexHistoricalData,
+    ForexHistoricalQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, validator
 
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
-class FMPCryptoEODQueryParams(CryptoEODQueryParams):
-    # noqa: E501
-    """FMP Crypto end of day Query.
+class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
+    """FMP Forex end of day Query.
 
-    Source:
-    https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
+    Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
 
-    timeseries: Optional[NonNegativeInt] = Field(
-        default=None, description="Number of days to look back."
-    )
 
-
-class FMPCryptoEODData(CryptoEODData):
-    """FMP Crypto end of day Data."""
+class FMPForexHistoricalData(ForexHistoricalData):
+    """FMP Forex end of day Data."""
 
     adjClose: float = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
@@ -57,17 +50,17 @@ class FMPCryptoEODData(CryptoEODData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-class FMPCryptoEODFetcher(
+class FMPForexHistoricalFetcher(
     Fetcher[
-        FMPCryptoEODQueryParams,
-        List[FMPCryptoEODData],
+        FMPForexHistoricalQueryParams,
+        List[FMPForexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPCryptoEODQueryParams:
-        """Transform the query params. Start and end dates are set to 1 year interval."""
+    def transform_query(params: Dict[str, Any]) -> FMPForexHistoricalQueryParams:
+        """Transform the query params. Start and end dates are set to a 1 year interval."""
         transformed_params = params
 
         now = datetime.now().date()
@@ -76,25 +69,26 @@ class FMPCryptoEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return FMPCryptoEODQueryParams(**transformed_params)
+
+        return FMPForexHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPCryptoEODQueryParams,
+        query: FMPForexHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        base_url = "https://financialmodelingprep.com/api/v3/"
+        base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
-        url = f"{base_url}historical-price-full/crypto/{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}/historical-price-full/forex/{query.symbol}?{query_str}&apikey={api_key}"
 
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPCryptoEODData]:
+    def transform_data(data: List[Dict]) -> List[FMPForexHistoricalData]:
         """Return the transformed data."""
-        return [FMPCryptoEODData(**d) for d in data]
+        return [FMPForexHistoricalData(**d) for d in data]

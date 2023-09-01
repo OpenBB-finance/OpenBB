@@ -3,8 +3,6 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 import pydantic
 import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -19,19 +17,14 @@ class CLASS_stocks(Container):
     """/stocks
     /ca
     /dd
-    /disc
-    /dps
     /fa
-    /gov
     info
-    /ins
     load
     multiples
     news
     /options
     quote
     search
-    tob
     """
 
     def __repr__(self) -> str:
@@ -39,39 +32,21 @@ class CLASS_stocks(Container):
 
     @property
     def ca(self):  # route = "/stocks/ca"
-        from openbb.package import stocks_ca
+        from . import stocks_ca
 
         return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
 
     @property
     def dd(self):  # route = "/stocks/dd"
-        from openbb.package import stocks_dd
+        from . import stocks_dd
 
         return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
-    def disc(self):  # route = "/stocks/disc"
-        from openbb.package import stocks_disc
-
-        return stocks_disc.CLASS_stocks_disc(command_runner=self._command_runner)
-
-    @property
-    def dps(self):  # route = "/stocks/dps"
-        from openbb.package import stocks_dps
-
-        return stocks_dps.CLASS_stocks_dps(command_runner=self._command_runner)
-
-    @property
     def fa(self):  # route = "/stocks/fa"
-        from openbb.package import stocks_fa
+        from . import stocks_fa
 
         return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
-
-    @property
-    def gov(self):  # route = "/stocks/gov"
-        from openbb.package import stocks_gov
-
-        return stocks_gov.CLASS_stocks_gov(command_runner=self._command_runner)
 
     @validate_arguments
     def info(
@@ -192,12 +167,6 @@ class CLASS_stocks(Container):
             **inputs,
         )
 
-    @property
-    def ins(self):  # route = "/stocks/ins"
-        from openbb.package import stocks_ins
-
-        return stocks_ins.CLASS_stocks_ins(command_runner=self._command_runner)
-
     @validate_arguments
     def load(
         self,
@@ -219,7 +188,7 @@ class CLASS_stocks(Container):
         ] = None,
         chart: bool = False,
         provider: Optional[
-            Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
+            Literal["cboe", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -235,22 +204,12 @@ class CLASS_stocks(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
+        provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             None
-        interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            None
-        adjusted : Optional[bool]
-            None
-        extended_hours : Optional[bool]
-            Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
-        month : Optional[str]
-            Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
-        outputsize : Optional[Literal['compact', 'full']]
-            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter (see above) is not specified, or the full intraday data for a specific month in history if the month parameter is specified. (provider: alpha_vantage)
         timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
         timezone : Optional[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu']]
@@ -273,8 +232,12 @@ class CLASS_stocks(Container):
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
+        adjusted : bool
+            Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
         adjust : bool
@@ -285,9 +248,9 @@ class CLASS_stocks(Container):
         Returns
         -------
         OBBject
-            results : List[StockEOD]
+            results : List[StockHistorical]
                 Serializable results.
-            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -296,8 +259,8 @@ class CLASS_stocks(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        StockEOD
-        --------
+        StockHistorical
+        ---------------
         date : Union[datetime, date]
             The date of the data.
         open : Optional[PositiveFloat]
@@ -310,12 +273,6 @@ class CLASS_stocks(Container):
             The close price of the symbol.
         volume : Optional[NonNegativeInt]
             The volume of the symbol.
-        adjusted_close : Optional[PositiveFloat]
-            The adjusted close price of the symbol. (provider: alpha_vantage)
-        dividend_amount : Optional[NonNegativeFloat]
-            Dividend amount paid for the corresponding date. (provider: alpha_vantage)
-        split_coefficient : Optional[NonNegativeFloat]
-            Split coefficient for the corresponding date. (provider: alpha_vantage)
         calls_volume : Optional[float]
             Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         puts_volume : Optional[float]
@@ -329,13 +286,13 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Percent change in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         vwap : Optional[float]
             Volume Weighted Average Price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Percent change in the price of the symbol over a period of time. (provider: fmp)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]
@@ -720,7 +677,7 @@ class CLASS_stocks(Container):
 
     @property
     def options(self):  # route = "/stocks/options"
-        from openbb.package import stocks_options
+        from . import stocks_options
 
         return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
@@ -933,20 +890,5 @@ class CLASS_stocks(Container):
 
         return self._command_runner.run(
             "/stocks/search",
-            **inputs,
-        )
-
-    @validate_arguments
-    def tob(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/tob",
             **inputs,
         )

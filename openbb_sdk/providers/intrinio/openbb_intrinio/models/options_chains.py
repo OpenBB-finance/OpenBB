@@ -6,7 +6,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import requests_cache
@@ -106,7 +106,7 @@ def download_json_files(urls):
     return results
 
 
-def get_eod_chain_with_greeks(
+def get_historical_chain_with_greeks(
     symbol: str, date: Optional[str | dateType] = "", api_key: str = ""
 ):
     symbol = symbol.upper()
@@ -234,7 +234,7 @@ def get_eod_chain_with_greeks(
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
-    """Get the complete options chains (EOD) for a ticker from Intrinio.
+    """Get the complete options chains (Historical) for a ticker from Intrinio.
 
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
@@ -289,7 +289,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     vega: Optional[float] = Field(description="The vega value at the end of day.")
     theta: Optional[float] = Field(description="The theta value at the end of day.")
     eod_date: Optional[dateType] = Field(
-        description="EOD date for which the options chains data is from.",
+        description="Historical date for which the options chains data is from.",
     )
     dte: Optional[int] = Field(description="The number of days until expiry.")
 
@@ -318,7 +318,7 @@ class IntrinioOptionsChainsFetcher(
         """Return the raw data from the Intrinio endpoint"""
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        data = get_eod_chain_with_greeks(
+        data = get_historical_chain_with_greeks(
             symbol=query.symbol, date=query.date, api_key=api_key
         )
 

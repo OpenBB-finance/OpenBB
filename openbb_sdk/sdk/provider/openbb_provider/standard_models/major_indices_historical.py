@@ -1,4 +1,4 @@
-"""Stock aggregate end of day price data model."""
+"""Major indices aggregate end of day price data model."""
 
 
 from datetime import (
@@ -15,8 +15,8 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockEODQueryParams(QueryParams, BaseSymbol):
-    """Stock end of day Query."""
+class MajorIndicesHistoricalQueryParams(QueryParams, BaseSymbol):
+    """Major Indices end of day Query."""
 
     start_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -26,12 +26,14 @@ class StockEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class StockEODData(Data):
-    """Stock end of day price Data."""
+class MajorIndicesHistoricalData(Data):
+    """Major Indices end of day price data."""
 
     date: datetime | dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: NonNegativeInt = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: Optional[NonNegativeInt] = Field(
+        description=DATA_DESCRIPTIONS.get("volume", "")
+    )

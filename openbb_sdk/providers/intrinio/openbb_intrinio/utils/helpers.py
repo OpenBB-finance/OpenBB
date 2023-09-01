@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
+import requests
 import requests_cache
 from openbb_provider import helpers
 from openbb_provider.utils.helpers import make_request

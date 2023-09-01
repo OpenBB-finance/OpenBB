@@ -8,14 +8,17 @@ from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
+from openbb_provider.standard_models.stock_historical import (
+    StockHistoricalData,
+    StockHistoricalQueryParams,
+)
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
 
 from openbb_polygon.utils.helpers import get_data
 
 
-class PolygonStockEODQueryParams(StockEODQueryParams):
+class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     """Polygon stocks end of day Query.
 
     Source: https://polygon.io/docs/stocks/getting-started
@@ -36,7 +39,7 @@ class PolygonStockEODQueryParams(StockEODQueryParams):
     )
 
 
-class PolygonStockEODData(StockEODData):
+class PolygonStockHistoricalData(StockHistoricalData):
     """Polygon stocks end of day Data."""
 
     class Config:
@@ -60,14 +63,14 @@ class PolygonStockEODData(StockEODData):
         return datetime.fromtimestamp(v / 1000)
 
 
-class PolygonStockEODFetcher(
+class PolygonStockHistoricalFetcher(
     Fetcher[
-        PolygonStockEODQueryParams,
-        List[PolygonStockEODData],
+        PolygonStockHistoricalQueryParams,
+        List[PolygonStockHistoricalData],
     ]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonStockEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonStockHistoricalQueryParams:
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -75,11 +78,11 @@ class PolygonStockEODFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        return PolygonStockEODQueryParams(**transformed_params)
+        return PolygonStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonStockEODQueryParams,
+        query: PolygonStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
@@ -87,7 +90,9 @@ class PolygonStockEODFetcher(
 
         data: list = []
 
-        def multiple_symbols(symbol: str, data: List[PolygonStockEODData]) -> None:
+        def multiple_symbols(
+            symbol: str, data: List[PolygonStockHistoricalData]
+        ) -> None:
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
@@ -99,7 +104,9 @@ class PolygonStockEODFetcher(
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
 
-            return data.extend([PolygonStockEODData.parse_obj(d) for d in results])
+            return data.extend(
+                [PolygonStockHistoricalData.parse_obj(d) for d in results]
+            )
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
@@ -109,5 +116,5 @@ class PolygonStockEODFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[PolygonStockEODData]:
-        return [PolygonStockEODData.parse_obj(d) for d in data]
+    def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
+        return [PolygonStockHistoricalData.parse_obj(d) for d in data]

@@ -5,21 +5,22 @@ from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_eod import (
-    MajorIndicesEODData,
-    MajorIndicesEODQueryParams,
+from openbb_provider.standard_models.stock_historical import (
+    StockHistoricalData,
+    StockHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field
 
 from openbb_cboe.utils.helpers import (
     TICKER_EXCEPTIONS,
+    get_cboe_directory,
     get_cboe_index_directory,
     get_ticker_info,
 )
 
 
-class CboeMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
+class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
     """CBOE Stock end of day query.
 
     Source: https://www.cboe.com/
@@ -31,7 +32,7 @@ class CboeMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
     )
 
 
-class CboeMajorIndicesEODData(MajorIndicesEODData):
+class CboeStockHistoricalData(StockHistoricalData):
     """CBOE Stocks End of Day Data."""
 
     calls_volume: Optional[float] = Field(
@@ -45,28 +46,29 @@ class CboeMajorIndicesEODData(MajorIndicesEODData):
     )
 
 
-class CboeMajorIndicesEODFetcher(
+class CboeStockHistoricalFetcher(
     Fetcher[
-        CboeMajorIndicesEODQueryParams,
-        CboeMajorIndicesEODData,
+        CboeStockHistoricalQueryParams,
+        CboeStockHistoricalData,
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints"""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeMajorIndicesEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> CboeStockHistoricalQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
-        return CboeMajorIndicesEODQueryParams(**params)
+        return CboeStockHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: CboeMajorIndicesEODQueryParams,
+        query: CboeStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
 
         # Synbol directories are cached for seven days and are used for error handling and URL generation.
+        SYMBOLS = get_cboe_directory()
         INDEXES = get_cboe_index_directory().index.to_list()
         query.symbol = query.symbol.upper()
         data = pd.DataFrame()
@@ -83,10 +85,9 @@ class CboeMajorIndicesEODFetcher(
         )
         query.end_date = query.end_date if query.end_date else now
 
-        if query.symbol not in INDEXES and query.symbol not in TICKER_EXCEPTIONS:
+        if query.symbol not in SYMBOLS.index and query.symbol not in INDEXES:
             raise RuntimeError(
-                f"The symbol, {query.symbol}, was not found in the CBOE index directory. "
-                "Use `index_search()` to find supported indices. If the index is European, try `european_index()`."
+                f"The symbol, {query.symbol}, was not found in the CBOE directory.  Use `search()`."
             )
 
         def __generate_historical_prices_url(
@@ -157,13 +158,11 @@ class CboeMajorIndicesEODFetcher(
 
             data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
             data = data[data["open"] > 0]
-
             data = data[
                 (data.index >= pd.to_datetime(query.start_date, format="%Y-%m-%d"))
                 & (data.index <= pd.to_datetime(query.end_date, format="%Y-%m-%d"))
             ]
             data.index = data.index.astype(str)
-
         if query.interval == "1m":
             data_list = r.json()["data"]
             date: list[datetime] = []
@@ -202,9 +201,10 @@ class CboeMajorIndicesEODFetcher(
             data.index = data.index.astype(str)
             data = data[data["open"] > 0]
 
-        return data.reset_index().to_dict("records")
+        data["volume"] = round(data["volume"].astype("int64"))
+        return data.drop_duplicates().reset_index().to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[CboeMajorIndicesEODData]:
+    def transform_data(data: List[Dict]) -> List[CboeStockHistoricalData]:
         """Transform the data to the standard format"""
-        return [CboeMajorIndicesEODData.parse_obj(d) for d in data]
+        return [CboeStockHistoricalData.parse_obj(d) for d in data]

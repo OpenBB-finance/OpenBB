@@ -15,7 +15,7 @@ from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class EuropeanIndexEODQueryParams(QueryParams, BaseSymbol):
+class EuropeanIndexHistoricalQueryParams(QueryParams, BaseSymbol):
     """European Indices end of day Query."""
 
     start_date: Optional[dateType] = Field(
@@ -26,7 +26,7 @@ class EuropeanIndexEODQueryParams(QueryParams, BaseSymbol):
     )
 
 
-class EuropeanIndexEODData(Data):
+class EuropeanIndexHistoricalData(Data):
     """European Indices end of day price data."""
 
     date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

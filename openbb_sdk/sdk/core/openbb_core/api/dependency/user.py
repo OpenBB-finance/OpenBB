@@ -11,6 +11,7 @@ from openbb_core.app.service.user_service import UserService
 from passlib.context import CryptContext
 from typing_extensions import Annotated
 
+# ruff: noqa: S105
 SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc"  # nosec # pragma: allowlist secret
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
@@ -78,7 +79,7 @@ def create_jwt_token(
 
 async def get_user_service() -> UserService:
     """Get user service."""
-    global __user_service  # pylint: disable=global-statement
+    global __user_service  # pylint: disable=global-statement # noqa: PLW0603
 
     if __user_service is None:
         __user_service = UserService()

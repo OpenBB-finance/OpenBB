@@ -1,9 +1,7 @@
+import pytest
 from openbb_core.app.charting_manager import ChartingManager
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-
-import pytest
-from unittest.mock import MagicMock, patch
 
 
 @pytest.fixture(scope="function", autouse=True)

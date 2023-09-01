@@ -111,12 +111,18 @@ class ParametersBuilder:
 
     @staticmethod
     def update_provider_choices(
+        func: Callable,
         command_coverage: Dict[str, List[str]],
         route: str,
         kwargs: Dict[str, Any],
         route_default: Optional[str],
     ) -> Dict[str, Any]:
         """Update the provider choices with the available providers and set default provider."""
+
+        def _needs_provider(func: Callable) -> bool:
+            """Check if the function needs a provider."""
+            parameters = signature(func).parameters.keys()
+            return "provider_choices" in parameters
 
         def _has_provider(kwargs: Dict[str, Any]) -> bool:
             """Check if the kwargs already have a provider."""
@@ -135,7 +141,8 @@ class ParametersBuilder:
             command_coverage: Dict[str, List[str]],
             route_default: Optional[str],
         ) -> Optional[str]:
-            """Get the default provider for the given route. Either pick it from the user defaults or from the command coverage."""
+            """Get the default provider for the given route.
+            Either pick it from the user defaults or from the command coverage."""
             cmd_cov_given_route = command_coverage.get(route, None)
             command_cov_provider = (
                 cmd_cov_given_route[0] if cmd_cov_given_route else None
@@ -146,7 +153,7 @@ class ParametersBuilder:
 
             return command_cov_provider
 
-        if not _has_provider(kwargs):
+        if not _has_provider(kwargs) and _needs_provider(func):
             provider = (
                 _get_default_provider(
                     command_coverage,
@@ -210,6 +217,7 @@ class ParametersBuilder:
             user_settings=user_settings,
         )
         kwargs = cls.update_provider_choices(
+            func=func,
             command_coverage=command_map.command_coverage,
             route=route,
             kwargs=kwargs,

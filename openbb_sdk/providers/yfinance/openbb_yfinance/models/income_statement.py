@@ -10,7 +10,6 @@ from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-
 from pydantic import validator
 from yfinance import Ticker
 
