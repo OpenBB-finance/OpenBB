@@ -72,7 +72,7 @@ class OpenBBFigureTable(OpenBBFigure):
                 df_outgoing = df_outgoing.reset_index()
 
             for col in df_outgoing.columns:
-                if col == "":
+                if not col:
                     df_outgoing = df_outgoing.rename(columns={col: "  "})
 
             self._backend.send_table(
