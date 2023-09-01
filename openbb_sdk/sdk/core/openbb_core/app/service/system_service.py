@@ -58,13 +58,12 @@ class SystemService(metaclass=SingletonMeta):
             for field in S:
                 if field not in cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET:
                     del system_settings_dict[field]
-                else:
-                    if field == "logging_sub_app":
-                        if cls._compare_hash(system_settings_dict[field]):
-                            system_settings_dict[field] = "pro"
-                            kwargs.pop(field, None)
-                        else:
-                            del system_settings_dict[field]
+                elif field == "logging_sub_app":
+                    if cls._compare_hash(system_settings_dict[field]):
+                        system_settings_dict[field] = "pro"
+                        kwargs.pop(field, None)
+                    else:
+                        del system_settings_dict[field]
 
             system_settings_dict.update(kwargs)
             system_settings = SystemSettings.parse_obj(system_settings_dict)
