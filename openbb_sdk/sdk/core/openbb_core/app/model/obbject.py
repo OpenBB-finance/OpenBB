@@ -1,5 +1,5 @@
 """The OBBject."""
-from typing import Dict, Generic, List, Literal, Optional, TypeVar, Union
+from typing import Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from pydantic import BaseModel, Field
@@ -56,13 +56,13 @@ class OBBject(GenericModel, Generic[T], Tagged):
             )
         )
 
-    def to_dataframe(self) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
+    def to_dataframe(self) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
         Supports converting creating pandas DataFrames from the following
         serializable data formats:
 
-        - List[Basemodel]
+        - List[BaseModel]
         - List[Dict]
         - List[List]
         - List[str]
@@ -70,11 +70,12 @@ class OBBject(GenericModel, Generic[T], Tagged):
         - List[float]
         - Dict[str, Dict]
         - Dict[str, List]
+        - Dict[str, BaseModel]
 
         Returns
         -------
-        Union[pd.DataFrame, Dict[str, pd.DataFrame]]
-            Pandas dataframe or dictionary of dataframes.
+        pd.DataFrame
+            Pandas dataframe.
         """
         if self.results is None or self.results == []:
             raise OpenBBError("Results not found.")
@@ -83,8 +84,18 @@ class OBBject(GenericModel, Generic[T], Tagged):
             res = self.results
 
             df = None
-
-            if isinstance(res, list) and all(
+            if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
+                for r in res:
+                    dict_of_df = {}
+                    for k, v in r.items():
+                        if isinstance(v, list) and all(
+                            isinstance(nv, BaseModel) for nv in v
+                        ):
+                            dict_of_df[k] = basemodel_to_df(v, "date")
+                        else:
+                            dict_of_df[k] = pd.DataFrame(v)
+                    df = pd.concat(dict_of_df, axis=1)
+            elif isinstance(res, list) and all(
                 isinstance(item, BaseModel) for item in res
             ):
                 df = basemodel_to_df(res, "date")
@@ -95,8 +106,8 @@ class OBBject(GenericModel, Generic[T], Tagged):
                 raise OpenBBError("Unsupported data format.")
 
             # Improve output so that all columns that are None are not returned
-            df = df.dropna(axis=1, how="all")
             df.sort_index(axis=1, inplace=True)
+            df = df.dropna(axis=1, how="all")
 
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
