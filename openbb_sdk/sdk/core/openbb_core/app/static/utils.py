@@ -52,7 +52,7 @@ def build(
     lint: bool = True,
     verbose: bool = False,
 ) -> None:
-    """Build extension modules.
+    """Build extension modules in a separate process.
 
     Parameters
     ----------
