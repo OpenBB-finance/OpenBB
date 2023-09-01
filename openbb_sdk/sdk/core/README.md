@@ -20,8 +20,7 @@
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
-    - [4.1.5. Debug mode](#415-debug-mode)
-    - [4.1.6. Develop mode](#416-develop-mode)
+    - [4.1.5. Environment variables](#415-environment-variables)
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
@@ -330,9 +329,13 @@ obb.stocks.load(
     )
 ```
 
-### 4.1.5. Debug mode
+### 4.1.5. Environment variables
 
-To run the app in debug mode you can use the following code or create a .env file inside
+
+
+The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
+
+To apply an environment variable use the following code or create a .env file inside
 `openbb_sdk/sdk/core/openbb_core/app`.
 
 ```python
@@ -341,16 +344,11 @@ os.environ["OPENBB_DEBUG_MODE"] = "True"
 from openbb import sdk
 ```
 
-### 4.1.6. Develop mode
+Some variables we use are:
 
-To run the app in develop mode you can use the following code or create a .env file inside
-`openbb_sdk/sdk/core/openbb_core/app`.
-
-```python
-import os
-os.environ["OPENBB_DEV_MODE"] = "True"
-from openbb import sdk
-```
+- `OPENBB_DEBUG_MODE`: enable/disable debug mode
+- `OPENBB_DEVELOP_MODE`: enable/disable develop mode
+- `OPENBB_AUTO_BUILD`: enable/disable automatic build for python package
 
 ## 4.2 Dynamic version
 
