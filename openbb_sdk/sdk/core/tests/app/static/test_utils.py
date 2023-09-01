@@ -43,9 +43,11 @@ def test_get_ext_map(tmp_dir):
             },
             EntryPoints(
                 (
-                    EntryPoint(name="ext_2", value="", group="openbb_core_extension"),
                     EntryPoint(
-                        name="prov_2", value="", group="openbb_provider_extension"
+                        name="ext_2", value="...", group="openbb_core_extension"
+                    ),
+                    EntryPoint(
+                        name="prov_2", value="...", group="openbb_provider_extension"
                     ),
                 )
             ),
