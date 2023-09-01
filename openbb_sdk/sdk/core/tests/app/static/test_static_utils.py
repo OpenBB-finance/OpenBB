@@ -7,6 +7,7 @@ from unittest.mock import mock_open, patch
 
 import pytest
 from importlib_metadata import EntryPoint, EntryPoints
+from openbb_core.app.env import Env
 from openbb_core.app.static.utils import auto_build, get_ext_map, package_diff
 
 PATH = "openbb_core.app.static.utils."
@@ -94,23 +95,28 @@ def test_package_diff(tmp_dir, ext_built, ext_installed, expected_add, expected_
 
 
 @pytest.mark.parametrize(
-    "add, remove",
+    "add, remove, openbb_auto_build",
     [
-        (set(), set()),
-        ({"this"}, set()),
-        (set(), {"that"}),
-        ({"this"}, {"that"}),
+        (set(), set(), True),
+        ({"this"}, set(), True),
+        (set(), {"that"}, True),
+        ({"this"}, {"that"}, True),
+        ({"this"}, {"that"}, False),
     ],
 )
-def test_auto_build(tmp_dir, add, remove):
+def test_auto_build(tmp_dir, add, remove, openbb_auto_build):
     """Test auto build."""
 
     with patch(PATH + "package_diff") as mock_package_diff, patch(
         PATH + "build"
-    ) as mock_build:
+    ) as mock_build, patch.object(Env, "AUTO_BUILD", openbb_auto_build):
         mock_package_diff.return_value = add, remove
         auto_build(tmp_dir)
 
-    mock_package_diff.assert_called_once_with(Path(tmp_dir, "package"))
-    if add or remove:
-        mock_build.assert_called_once_with(tmp_dir)
+    if openbb_auto_build:
+        mock_package_diff.assert_called_once_with(Path(tmp_dir, "package"))
+        if add or remove:
+            mock_build.assert_called_once_with(tmp_dir)
+    else:
+        mock_package_diff.assert_not_called()
+        mock_build.assert_not_called()
