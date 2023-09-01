@@ -24,6 +24,10 @@ class Env(metaclass=SingletonMeta):
         # TODO: Change default to false when ready to deploy
         return self.str_to_bool(self._environ.get("OPENBB_DEV_MODE", True))
 
+    @property
+    def AUTO_BUILD(self) -> bool:
+        return self.str_to_bool(self._environ.get("OPENBB_AUTO_BUILD", True))
+
     @staticmethod
     def str_to_bool(value) -> bool:
         """Match a string to a boolean value."""

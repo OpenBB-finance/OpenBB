@@ -4,6 +4,8 @@ from typing import List, Optional, Set, Tuple, Union
 
 from importlib_metadata import entry_points
 
+from openbb_core.app.env import Env
+
 
 def get_ext_map(package: Path) -> dict:
     """Get extension map from package folder"""
@@ -83,22 +85,23 @@ def build(
 
 
 def auto_build(directory: Path):
-    """Automatic build
+    """Trigger build if there are differences between built and installed extensions.
 
     Parameters
     ----------
     directory: Path
         The path of directory where package lives
     """
-    add, remove = package_diff(Path(directory, "package"))
-    if add:
-        a = ", ".join(add)
-        print(f"Extensions to add: {a}")
+    if Env().AUTO_BUILD:
+        add, remove = package_diff(Path(directory, "package"))
+        if add:
+            a = ", ".join(add)
+            print(f"Extensions to add: {a}")
 
-    if remove:
-        r = ", ".join(remove)
-        print(f"Extensions to remove: {r}")
+        if remove:
+            r = ", ".join(remove)
+            print(f"Extensions to remove: {r}")
 
-    if add or remove:
-        print("\nBuilding...")
-        build(directory)
+        if add or remove:
+            print("\nBuilding...")
+            build(directory)
