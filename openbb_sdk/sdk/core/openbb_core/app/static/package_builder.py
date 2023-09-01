@@ -28,10 +28,10 @@ from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
-from openbb_core.app.env import Env
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
+from openbb_core.env import Env
 
 
 class Console:

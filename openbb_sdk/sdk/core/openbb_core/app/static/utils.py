@@ -4,7 +4,7 @@ from typing import List, Optional, Set, Tuple, Union
 
 from importlib_metadata import entry_points
 
-from openbb_core.app.env import Env
+from openbb_core.env import Env
 
 
 def get_ext_map(package: Path) -> dict:

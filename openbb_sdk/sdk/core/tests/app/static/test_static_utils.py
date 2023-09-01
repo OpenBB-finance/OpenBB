@@ -7,8 +7,8 @@ from unittest.mock import mock_open, patch
 
 import pytest
 from importlib_metadata import EntryPoint, EntryPoints
-from openbb_core.app.env import Env
 from openbb_core.app.static.utils import auto_build, get_ext_map, package_diff
+from openbb_core.env import Env
 
 PATH = "openbb_core.app.static.utils."
 
