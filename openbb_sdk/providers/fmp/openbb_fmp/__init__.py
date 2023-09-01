@@ -8,13 +8,13 @@ from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
-from openbb_fmp.models.crypto_eod import FMPCryptoEODFetcher
+from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
-from openbb_fmp.models.forex_eod import FMPForexEODFetcher
+from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
 from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
@@ -28,7 +28,7 @@ from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
 from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
-from openbb_fmp.models.major_indices_eod import FMPMajorIndicesEODFetcher
+from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -36,7 +36,7 @@ from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.sec_filings import FMPSECFilingsFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
-from openbb_fmp.models.stock_eod import FMPStockEODFetcher
+from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
 from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_news import FMPStockNewsFetcher
@@ -54,7 +54,7 @@ fmp_provider = Provider(
     required_credentials=["api_key"],
     fetcher_dict={
         "KeyExecutives": FMPKeyExecutivesFetcher,
-        "StockEOD": FMPStockEODFetcher,
+        "StockHistorical": FMPStockHistoricalFetcher,
         "GlobalNews": FMPGlobalNewsFetcher,
         "StockNews": FMPStockNewsFetcher,
         "IncomeStatement": FMPIncomeStatementFetcher,
@@ -64,7 +64,7 @@ fmp_provider = Provider(
         "CashFlowStatement": FMPCashFlowStatementFetcher,
         "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
         "ShareStatistics": FMPShareStatisticsFetcher,
-        "MajorIndicesEOD": FMPMajorIndicesEODFetcher,
+        "MajorIndicesHistorical": FMPMajorIndicesHistoricalFetcher,
         "RevenueGeographic": FMPRevenueGeographicFetcher,
         "RevenueBusinessLine": FMPRevenueBusinessLineFetcher,
         "InstitutionalOwnership": FMPInstitutionalOwnershipFetcher,
@@ -83,8 +83,8 @@ fmp_provider = Provider(
         "SECFilings": FMPSECFilingsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
-        "CryptoEOD": FMPCryptoEODFetcher,
-        "ForexEOD": FMPForexEODFetcher,
+        "CryptoHistorical": FMPCryptoHistoricalFetcher,
+        "ForexHistorical": FMPForexHistoricalFetcher,
         "ForexPairs": FMPForexPairsFetcher,
         "StockPeers": FMPStockPeersFetcher,
         "StockMultiples": FMPStockMultiplesFetcher,

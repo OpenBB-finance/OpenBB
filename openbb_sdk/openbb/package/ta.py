@@ -2,7 +2,6 @@
 
 from typing import List, Literal, Optional, Union
 
-import openbb_core.app.model.results.empty
 import openbb_provider
 import pandas
 import pydantic
@@ -34,15 +33,10 @@ class CLASS_ta(Container):
     ichimoku
     kc
     macd
-    multi
     obv
-    recom
     rsi
-    rsp
     sma
     stoch
-    summary
-    tv
     vwap
     wma
     zlma
@@ -1134,21 +1128,6 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments
-    def multi(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Plot multiple indicators on the same chart."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/ta/multi",
-            **inputs,
-        )
-
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def obv(
         self,
@@ -1198,21 +1177,6 @@ class CLASS_ta(Container):
 
         return self._command_runner.run(
             "/ta/obv",
-            **inputs,
-        )
-
-    @validate_arguments
-    def recom(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Recommendation."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/ta/recom",
             **inputs,
         )
 
@@ -1273,21 +1237,6 @@ class CLASS_ta(Container):
 
         return self._command_runner.run(
             "/ta/rsi",
-            **inputs,
-        )
-
-    @validate_arguments
-    def rsp(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Relative Strength Performance."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/ta/rsp",
             **inputs,
         )
 
@@ -1403,36 +1352,6 @@ class CLASS_ta(Container):
 
         return self._command_runner.run(
             "/ta/stoch",
-            **inputs,
-        )
-
-    @validate_arguments
-    def summary(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Summary."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/ta/summary",
-            **inputs,
-        )
-
-    @validate_arguments
-    def tv(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """TradingView."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/ta/tv",
             **inputs,
         )
 

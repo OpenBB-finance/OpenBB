@@ -42,7 +42,7 @@ class CLASS_crypto(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Crypto EOD Price.
+        """Crypto Historical Price.
 
         Parameters
         ----------
@@ -84,7 +84,7 @@ class CLASS_crypto(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoEOD]
+            results : List[CryptoHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
@@ -95,8 +95,8 @@ class CLASS_crypto(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        CryptoEOD
-        ---------
+        CryptoHistorical
+        ----------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]

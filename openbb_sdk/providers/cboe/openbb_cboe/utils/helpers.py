@@ -1,6 +1,7 @@
-"""CBOE Helpers Module"""
+"""CBOE Helpers Module."""
 
 import os
+import warnings
 from datetime import date, datetime, timedelta
 from io import StringIO
 from pathlib import Path
@@ -202,7 +203,7 @@ def stock_search(query: str, ticker: bool = False) -> dict:
     if len(result) > 0:
         data.update({"results": result})
         return data
-    print(f"No results found for: {query}.  Try another search query.")
+    warnings.warn(f"No results found for: {query}.  Try another search query.")
     return pd.DataFrame()
 
 
@@ -230,14 +231,13 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
     try:
         if symbol in TICKER_EXCEPTIONS:
             new_ticker = "^" + symbol
-        else:
-            if symbol not in INDEXES:
-                new_ticker = symbol
+        elif symbol not in INDEXES:
+            new_ticker = symbol
 
-            elif symbol in INDEXES:
-                new_ticker = "^" + symbol
+        elif symbol in INDEXES:
+            new_ticker = "^" + symbol
 
-                # Get the data to return, and if none returns empty Tuple #
+            # Get the data to return, and if none returns empty Tuple #
 
         symbol_info_url = (
             "https://www.cboe.com/education/tools/trade-optimizer/symbol-info/?symbol="
@@ -250,7 +250,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
         if symbol_info_json.success is False:
             ticker_details = pd.DataFrame()
             ticker_expirations = []
-            print("No data found for the symbol: " f"{symbol}" "")
+            warnings.warn("No data found for the symbol: " f"{symbol}" "")
         else:
             symbol_details = pd.Series(symbol_info_json["details"])
             symbol_details = pd.DataFrame(symbol_details).transpose()
@@ -352,7 +352,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, List[str]]:
                 ).rename(columns={f"{new_ticker}": f"{symbol}"})
 
     except requests.HTTPError:
-        print("There was an error with the request'\n")
+        warnings.warn("There was an error with the request'\n")
         ticker_details = pd.DataFrame()
         ticker_expirations = list()
         return ticker_details, ticker_expirations
@@ -382,24 +382,23 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
                 f"{symbol}"
                 ".json"
             )
-        else:
-            if symbol not in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
-                    f"{symbol}"
-                    ".json"
-                )
+        elif symbol not in INDEXES:
+            quotes_iv_url = (
+                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
+                f"{symbol}"
+                ".json"
+            )
 
-            elif symbol in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                    f"{symbol}"
-                    ".json"
-                )
+        elif symbol in INDEXES:
+            quotes_iv_url = (
+                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
+                f"{symbol}"
+                ".json"
+            )
         h_iv = request(quotes_iv_url)
 
         if h_iv.status_code != 200:
-            print("No data found for the symbol: " f"{symbol}" "")
+            warnings.warn("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
         data = h_iv.json()
@@ -439,7 +438,7 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
 
         ticker_iv = pd.DataFrame(h_data).transpose()
     except requests.HTTPError:
-        print("There was an error with the request'\n")
+        warnings.warn("There was an error with the request'\n")
 
     return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
 
@@ -483,7 +482,7 @@ def get_chains(symbol: str) -> pd.DataFrame:
 
         result = request(quotes_url)
         if result.status_code != 200:
-            print("No data found for the symbol: " f"{symbol}" "")
+            warnings.warn("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
         r_json = result.json()
@@ -552,7 +551,7 @@ def get_chains(symbol: str) -> pd.DataFrame:
         quotes["changePercent"] = round(quotes["changePercent"], 2)
 
     except requests.HTTPError:
-        print("There was an error with the request'\n")
+        warnings.warn("There was an error with the request'\n")
         return pd.DataFrame()
 
     return quotes.reset_index()
@@ -566,7 +565,7 @@ def __generate_historical_prices_url(
     url: str = ""
 
     if data_type not in ["historical", "intraday"]:
-        print(
+        warnings.warn(
             "Invalid data_type. Must be either 'historical' or 'intraday'. Defaulting to 'historical'."
         )
         data_type = "historical"
@@ -577,29 +576,28 @@ def __generate_historical_prices_url(
             f"{symbol}"
             ".json"
         )
-    else:
-        if symbol not in INDEXES:
-            url = (
-                f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/"
-                f"{symbol}"
-                ".json"
-            )
+    elif symbol not in INDEXES:
+        url = (
+            f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/"
+            f"{symbol}"
+            ".json"
+        )
 
-        elif symbol in INDEXES:
-            url = (
-                f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/_"
-                f"{symbol}"
-                ".json"
-            )
+    elif symbol in INDEXES:
+        url = (
+            f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}/_"
+            f"{symbol}"
+            ".json"
+        )
     return url
 
 
-def get_eod_prices(
+def get_historical_prices(
     symbol: str,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
 ) -> pd.DataFrame:
-    """Get EOD data from CBOE.
+    """Get Historical data from CBOE.
 
     Parameters
     ----------
@@ -613,12 +611,14 @@ def get_eod_prices(
     Returns
     -------
     pd.DataFrame
-        DataFrame of daily EOD OHLC+V prices.
+        DataFrame of daily Historical OHLC+V prices.
     """
 
     symbol = symbol.upper()
     if symbol == ("NDX", "^NDX"):
-        print("NDX time series data is not currently supported by the CBOE provider.")
+        warnings.warn(
+            "NDX time series data is not currently supported by the CBOE provider."
+        )
         return pd.DataFrame()
     if "^" in symbol:
         symbol = symbol.replace("^", "")
@@ -626,14 +626,16 @@ def get_eod_prices(
     start_date = start_date if start_date else now - timedelta(days=50000)
     end_date = end_date if end_date else now
     if symbol not in SYMBOLS.index:
-        print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
+        warnings.warn(
+            "The symbol, " f"{symbol}" ", was not found in the CBOE directory."
+        )
         return pd.DataFrame()
 
     url = __generate_historical_prices_url(symbol)
     result = request(url)
 
     if result.status_code != 200:
-        print(f"Error: {result.status_code}")
+        warnings.warn(f"Error: {result.status_code}")
         return pd.DataFrame()
 
     data = (

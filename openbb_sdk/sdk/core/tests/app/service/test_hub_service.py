@@ -1,5 +1,7 @@
 """Test the hub_service.py module."""
 # pylint: disable=W0212
+# ruff: noqa: S105 S106
+
 
 from unittest.mock import MagicMock, patch
 

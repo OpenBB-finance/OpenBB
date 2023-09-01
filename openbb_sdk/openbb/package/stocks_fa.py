@@ -3,8 +3,6 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 import pydantic
 import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -17,7 +15,6 @@ from typing_extensions import Annotated
 
 class CLASS_stocks_fa(Container):
     """/stocks/fa
-    analysis
     balance
     balance_growth
     cal
@@ -25,65 +22,30 @@ class CLASS_stocks_fa(Container):
     cash_growth
     comp
     comsplit
-    customer
-    dcfc
     divs
-    dupont
     earning
     emp
-    enterprise
-    epsfc
     est
-    fama_coe
-    fama_raw
-    fraud
-    growth
-    historical_5
     income
     income_growth
     ins
     ins_own
-    key
     metrics
     mgmt
-    mktcap
-    news
     overview
     own
     pt
     pta
-    rating
     ratios
-    revfc
     revgeo
     revseg
-    rot
-    score
-    sec
-    shares
     shrs
     split
-    supplier
     transcript
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
-
-    @validate_arguments
-    def analysis(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Analyse SEC filings with the help of machine learning."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/analysis",
-            **inputs,
-        )
 
     @validate_arguments
     def balance(
@@ -101,9 +63,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Balance Sheet.
 
         Parameters
@@ -116,7 +78,7 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -160,7 +122,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheet]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -548,9 +510,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Cash Flow Statement.
 
         Parameters
@@ -563,7 +525,7 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -607,7 +569,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CashFlowStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1011,36 +973,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def customer(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """List of customers of the company."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/customer",
-            **inputs,
-        )
-
-    @validate_arguments
-    def dcfc(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Determine the (historical) discounted cash flow."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/dcfc",
-            **inputs,
-        )
-
-    @validate_arguments
     def divs(
         self,
         symbol: Annotated[
@@ -1108,21 +1040,6 @@ class CLASS_stocks_fa(Container):
 
         return self._command_runner.run(
             "/stocks/fa/divs",
-            **inputs,
-        )
-
-    @validate_arguments
-    def dupont(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Detailed breakdown for Return on Equity (RoE)."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/dupont",
             **inputs,
         )
 
@@ -1284,36 +1201,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def enterprise(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Enterprise value."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/enterprise",
-            **inputs,
-        )
-
-    @validate_arguments
-    def epsfc(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Earnings Estimate by Analysts - EPS."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/epsfc",
-            **inputs,
-        )
-
-    @validate_arguments
     def est(
         self,
         symbol: Annotated[
@@ -1429,79 +1316,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def fama_coe(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Fama French 3 Factor Model - Coefficient of Earnings."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/fama_coe",
-            **inputs,
-        )
-
-    @validate_arguments
-    def fama_raw(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Fama French 3 Factor Model - Raw Data."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/fama_raw",
-            **inputs,
-        )
-
-    @validate_arguments
-    def fraud(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Key fraud ratios including M-score, Z-score and McKee."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/fraud",
-            **inputs,
-        )
-
-    @validate_arguments
-    def growth(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Growth of financial statement items and ratios."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/growth",
-            **inputs,
-        )
-
-    @validate_arguments
-    def historical_5(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/historical_5",
-            **inputs,
-        )
-
-    @validate_arguments
     def income(
         self,
         symbol: Annotated[
@@ -1517,9 +1331,9 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Income Statement.
 
         Parameters
@@ -1532,7 +1346,7 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1576,7 +1390,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[IncomeStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2107,19 +1921,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def key(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/key",
-            **inputs,
-        )
-
-    @validate_arguments
     def metrics(
         self,
         symbol: Annotated[
@@ -2378,34 +2179,6 @@ class CLASS_stocks_fa(Container):
 
         return self._command_runner.run(
             "/stocks/fa/mgmt",
-            **inputs,
-        )
-
-    @validate_arguments
-    def mktcap(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Obtain the market capitalization or enterprise value."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/mktcap",
-            **inputs,
-        )
-
-    @validate_arguments
-    def news(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/news",
             **inputs,
         )
 
@@ -2842,21 +2615,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def rating(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Analyst prices and ratings over time of the company."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/rating",
-            **inputs,
-        )
-
-    @validate_arguments
     def ratios(
         self,
         symbol: Annotated[
@@ -3042,21 +2800,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def revfc(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Earning Estimate by Analysts - Revenue."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/revfc",
-            **inputs,
-        )
-
-    @validate_arguments
     def revgeo(
         self,
         symbol: Annotated[
@@ -3217,62 +2960,6 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
-    def rot(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Number of analyst ratings over time on a monthly basis."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/rot",
-            **inputs,
-        )
-
-    @validate_arguments
-    def score(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Value investing scores for any time period."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/score",
-            **inputs,
-        )
-
-    @validate_arguments
-    def sec(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/sec",
-            **inputs,
-        )
-
-    @validate_arguments
-    def shares(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/shares",
-            **inputs,
-        )
-
-    @validate_arguments
     def shrs(
         self,
         symbol: Annotated[
@@ -3403,21 +3090,6 @@ class CLASS_stocks_fa(Container):
 
         return self._command_runner.run(
             "/stocks/fa/split",
-            **inputs,
-        )
-
-    @validate_arguments
-    def supplier(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """List of suppliers of the company."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/fa/supplier",
             **inputs,
         )
 
