@@ -821,13 +821,13 @@ class Linters:
     def black(self):
         """Run black."""
         flags = []
-        if not self.verbose:
+        if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--quiet")
         self.run(linter="black", flags=flags)
 
     def ruff(self):
         """Run ruff."""
         flags = ["--fix"]
-        if not self.verbose:
+        if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")
         self.run(linter="ruff", flags=flags)
