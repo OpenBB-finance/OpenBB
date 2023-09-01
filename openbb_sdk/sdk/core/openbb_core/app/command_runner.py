@@ -126,10 +126,12 @@ class ParametersBuilder:
 
         def _has_provider(kwargs: Dict[str, Any]) -> bool:
             """Check if the kwargs already have a provider."""
-            if (
-                provider_choices := kwargs.get("provider_choices", None)
-            ) and isinstance(provider_choices, dict):
+            provider_choices = kwargs.get("provider_choices", None)
+
+            if isinstance(provider_choices, dict):  # when in python
                 return provider_choices.get("provider", None) is not None
+            if isinstance(provider_choices, object):  # when running as fastapi
+                return getattr(provider_choices, "provider", None) is not None
             return False
 
         def _get_first_provider() -> Optional[str]:
