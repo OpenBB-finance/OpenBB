@@ -351,7 +351,7 @@ To apply an environment variable use one of the following:
     OPENBB_DEBUG_MODE="False"
     ```
 
-Some variables we use are:
+The variables we use are:
 
 - `OPENBB_DEBUG_MODE`: enable/disable debug mode
 - `OPENBB_DEVELOP_MODE`: enable/disable develop mode
