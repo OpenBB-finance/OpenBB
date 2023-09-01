@@ -337,7 +337,7 @@ The OS environment is only read once before the program starts, so make sure you
 
 To apply an environment variable use one of the following:
 
-1. Temporary: use the following code
+1. Temporary: use this snippet
 
     ```python
     import os
