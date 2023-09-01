@@ -116,9 +116,61 @@ def test_to_dataframe_no_results():
                 {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]}
             ),
         ),
-        # Test case 9: Empty results
+        # Test case 9: List of dict of data
+        (
+            [
+                {
+                    "df1": [
+                        Data(date="1956-01-01", another_date="2023-09-01", value=0.0),
+                        Data(date="1956-02-01", another_date="2023-09-01", value=0.0),
+                        Data(date="1956-03-01", another_date="2023-09-01", value=0.0),
+                    ],
+                    "df2": [
+                        Data(date="1955-03-01", another_date="2023-09-01", value=0.0),
+                        Data(date="1955-04-01", another_date="2023-09-01", value=0.0),
+                        Data(date="1955-05-01", another_date="2023-09-01", value=0.0),
+                    ],
+                }
+            ],
+            pd.concat(
+                {
+                    "df1": pd.DataFrame(
+                        {
+                            "date": [
+                                pd.to_datetime("1956-01-01"),
+                                pd.to_datetime("1956-02-01"),
+                                pd.to_datetime("1956-03-01"),
+                            ],
+                            "another_date": [
+                                "2023-09-01",
+                                "2023-09-01",
+                                "2023-09-01",
+                            ],
+                            "value": [0.0, 0.0, 0.0],
+                        }
+                    ).set_index("date"),
+                    "df2": pd.DataFrame(
+                        {
+                            "date": [
+                                pd.to_datetime("1955-03-01"),
+                                pd.to_datetime("1955-04-01"),
+                                pd.to_datetime("1955-05-01"),
+                            ],
+                            "another_date": [
+                                "2023-09-01",
+                                "2023-09-01",
+                                "2023-09-01",
+                            ],
+                            "value": [0.0, 0.0, 0.0],
+                        }
+                    ).set_index("date"),
+                },
+                axis=1,
+            ),
+        ),
+        # Test case 10: Empty results
         ([], OpenBBError("Results not found.")),
-        # Test case 10: Results as None, should raise OpenBBError
+        # Test case 11: Results as None, should raise OpenBBError
         (None, OpenBBError("Results not found.")),
     ],
 )
