@@ -262,11 +262,11 @@ def providers_fmp_key_executives_standardized(
     )
 
 
-def providers_fmp_stock_eod_standardized(
+def providers_fmp_stock_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/stock/eod/standardized` does not have a charting function"
+        "Command `providers/fmp/stock/historical/standardized` does not have a charting function"
     )
 
 
@@ -318,11 +318,11 @@ def providers_fmp_share_statistics_standardized(
     )
 
 
-def providers_fmp_major_indices_eod_standardized(
+def providers_fmp_major_indices_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/major/indices/eod/standardized` does not have a charting function"
+        "Command `providers/fmp/major/indices/historical/standardized` does not have a charting function"
     )
 
 
@@ -502,11 +502,11 @@ def providers_fmp_crypto_price_standardized(
     )
 
 
-def providers_fmp_crypto_eod_standardized(
+def providers_fmp_crypto_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/crypto/eod/standardized` does not have a charting function"
+        "Command `providers/fmp/crypto/historical/standardized` does not have a charting function"
     )
 
 
@@ -518,19 +518,19 @@ def providers_fmp_major_indices_price_standardized(
     )
 
 
-def providers_fmp_forex_eod_standardized(
+def providers_fmp_forex_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/forex/eod/standardized` does not have a charting function"
+        "Command `providers/fmp/forex/historical/standardized` does not have a charting function"
     )
 
 
-def providers_polygon_stock_eod_standardized(
+def providers_polygon_stock_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/polygon/stock/eod/standardized` does not have a charting function"
+        "Command `providers/polygon/stock/historical/standardized` does not have a charting function"
     )
 
 
@@ -582,19 +582,19 @@ def providers_polygon_crypto_price_standardized(
     )
 
 
-def providers_polygon_crypto_eod_standardized(
+def providers_polygon_crypto_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/polygon/crypto/eod/standardized` does not have a charting function"
+        "Command `providers/polygon/crypto/historical/standardized` does not have a charting function"
     )
 
 
-def providers_polygon_major_indices_eod_standardized(
+def providers_polygon_major_indices_historical_standardized(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/polygon/major/indices/eod/standardized` does not have a charting function"
+        "Command `providers/polygon/major/indices/historical/standardized` does not have a charting function"
     )
 
 
@@ -630,9 +630,11 @@ def providers_fmp_key_executives_simple(
     )
 
 
-def providers_fmp_stock_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def providers_fmp_stock_historical_simple(
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/stock/eod/simple` does not have a charting function"
+        "Command `providers/fmp/stock/historical/simple` does not have a charting function"
     )
 
 
@@ -678,11 +680,11 @@ def providers_fmp_share_statistics_simple(
     )
 
 
-def providers_fmp_major_indices_eod_simple(
+def providers_fmp_major_indices_historical_simple(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/major/indices/eod/simple` does not have a charting function"
+        "Command `providers/fmp/major/indices/historical/simple` does not have a charting function"
     )
 
 
@@ -848,9 +850,11 @@ def providers_fmp_crypto_price_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str,
     )
 
 
-def providers_fmp_crypto_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def providers_fmp_crypto_historical_simple(
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/crypto/eod/simple` does not have a charting function"
+        "Command `providers/fmp/crypto/historical/simple` does not have a charting function"
     )
 
 
@@ -862,15 +866,19 @@ def providers_fmp_major_indices_price_simple(
     )
 
 
-def providers_fmp_forex_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def providers_fmp_forex_historical_simple(
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/fmp/forex/eod/simple` does not have a charting function"
+        "Command `providers/fmp/forex/historical/simple` does not have a charting function"
     )
 
 
-def providers_polygon_stock_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def providers_polygon_stock_historical_simple(
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/polygon/stock/eod/simple` does not have a charting function"
+        "Command `providers/polygon/stock/historical/simple` does not have a charting function"
     )
 
 
@@ -922,19 +930,19 @@ def providers_polygon_crypto_price_simple(
     )
 
 
-def providers_polygon_crypto_eod_simple(
+def providers_polygon_crypto_historical_simple(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/polygon/crypto/eod/simple` does not have a charting function"
+        "Command `providers/polygon/crypto/historical/simple` does not have a charting function"
     )
 
 
-def providers_polygon_major_indices_eod_simple(
+def providers_polygon_major_indices_historical_simple(
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `providers/polygon/major/indices/eod/simple` does not have a charting function"
+        "Command `providers/polygon/major/indices/historical/simple` does not have a charting function"
     )
 
 
@@ -1734,9 +1742,9 @@ def stocks_options_dte(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     )
 
 
-def stocks_options_eodchain(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def stocks_options_historicalchain(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `stocks/options/eodchain` does not have a charting function"
+        "Command `stocks/options/historicalchain` does not have a charting function"
     )
 
 

@@ -93,7 +93,7 @@ class CLASS_stocks(Container):
         name : Optional[str]
             Name associated with the ticker symbol.
         price : Optional[float]
-            Last price of the stock.
+            Last transaction price.
         open : Optional[float]
             Opening price of the stock.
         high : Optional[float]
@@ -101,15 +101,17 @@ class CLASS_stocks(Container):
         low : Optional[float]
             Low price of the current trading day.
         close : Optional[float]
-            Closing price of the stock.
+            Closing price of the most recent trading day.
         change : Optional[float]
             Change in price over the current trading period.
         change_percent : Optional[float]
-            % change in price over the current trading period.
-        previous_close : Optional[float]
-            Previous closing price of the stock.
+            Percent change in price over the current trading period.
+        prev_close : Optional[float]
+            Previous closing price.
         type : Optional[str]
             Type of asset. (provider: cboe)
+        exchange_id : Optional[int]
+            The Exchange ID number. (provider: cboe)
         tick : Optional[str]
             Whether the last sale was an up or down tick. (provider: cboe)
         bid : Optional[float]
@@ -122,31 +124,31 @@ class CLASS_stocks(Container):
             Ask lot size. (provider: cboe)
         volume : Optional[float]
             Stock volume for the current trading day. (provider: cboe)
-        iv_thirty : Optional[float]
+        iv30 : Optional[float]
             The 30-day implied volatility of the stock. (provider: cboe)
-        iv_thirty_change : Optional[float]
+        iv30_change : Optional[float]
             Change in 30-day implied volatility of the stock. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
             Last trade timestamp for the stock. (provider: cboe)
-        iv_thirty_one_year_high : Optional[float]
+        iv30_annual_high : Optional[float]
             The 1-year high of implied volatility. (provider: cboe)
-        hv_thirty_one_year_high : Optional[float]
+        hv30_annual_high : Optional[float]
             The 1-year high of realized volatility. (provider: cboe)
-        iv_thirty_one_year_low : Optional[float]
+        iv30_annual_low : Optional[float]
             The 1-year low of implied volatility. (provider: cboe)
-        hv_thirty_one_year_low : Optional[float]
+        hv30_annual_low : Optional[float]
             The 1-year low of realized volatility. (provider: cboe)
-        iv_sixty_one_year_high : Optional[float]
+        iv60_annual_high : Optional[float]
             The 60-day high of implied volatility. (provider: cboe)
-        hv_sixty_one_year_high : Optional[float]
+        hv60_annual_high : Optional[float]
             The 60-day high of realized volatility. (provider: cboe)
-        iv_sixty_one_year_low : Optional[float]
+        iv60_annual_low : Optional[float]
             The 60-day low of implied volatility. (provider: cboe)
-        hv_sixty_one_year_low : Optional[float]
+        hv60_annual_low : Optional[float]
             The 60-day low of realized volatility. (provider: cboe)
-        iv_ninety_one_year_high : Optional[float]
+        iv90_annual_high : Optional[float]
             The 90-day high of implied volatility. (provider: cboe)
-        hv_ninety_one_year_high : Optional[float]
+        hv90_annual_high : Optional[float]
             The 90-day high of realized volatility. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
@@ -206,10 +208,10 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            None
         timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
-        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
-            None
         timezone : Optional[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu']]
             Returns trading times in this timezone. (provider: intrinio)
         source : Optional[Literal['realtime', 'delayed', 'nasdaq_basic']]
@@ -259,7 +261,7 @@ class CLASS_stocks(Container):
 
         StockHistorical
         ---------------
-        date : Optional[datetime]
+        date : Union[datetime, date]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -269,10 +271,14 @@ class CLASS_stocks(Container):
             The low price of the symbol.
         close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : Optional[float]
+        volume : Optional[NonNegativeInt]
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
-            Volume Weighted Average Price of the symbol.
+        calls_volume : Optional[float]
+            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        puts_volume : Optional[float]
+            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        total_options_volume : Optional[float]
+            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]
@@ -281,6 +287,8 @@ class CLASS_stocks(Container):
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
             Change \\% in the price of the symbol. (provider: fmp)
+        vwap : Optional[float]
+            Volume Weighted Average Price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
@@ -291,7 +299,7 @@ class CLASS_stocks(Container):
             The data time frequency. (provider: intrinio)
         average : Optional[float]
             Average trade price of an individual stock during the interval. (provider: intrinio)
-        n : Optional[PositiveInt]
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 

@@ -50,15 +50,16 @@ class PolygonStockHistoricalData(StockHistoricalData):
             "low": "l",
             "close": "c",
             "volume": "v",
-            "vwap": "vw",
         }
 
-    n: Optional[PositiveInt] = Field(
-        description="Number of transactions for the symbol in the time period."
+    vwap: Optional[float] = Field(description="The volume weighted average price.")
+    transactions: Optional[PositiveInt] = Field(
+        description="Number of transactions for the symbol in the time period.",
+        alias="n",
     )
 
     @validator("t", pre=True, check_fields=False)
-    def t_validate(cls, v):  # pylint: disable=E0213
+    def time_validate(cls, v):  # pylint: disable=E0213
         return datetime.fromtimestamp(v / 1000)
 
 
@@ -111,9 +112,6 @@ class PolygonStockHistoricalFetcher(
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
 
         data.sort(key=lambda x: x.date)
-        if query.timespan == "day":
-            for d in data:
-                d.date = datetime.replace(d.date, hour=0, minute=0)
 
         return data
 

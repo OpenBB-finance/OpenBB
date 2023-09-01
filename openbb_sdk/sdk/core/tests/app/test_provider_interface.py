@@ -24,7 +24,7 @@ def test_map(provider_interface):
     provider_interface_map = provider_interface.map
     assert isinstance(provider_interface_map, dict)
     assert len(provider_interface_map) > 0
-    assert "StockEOD" in provider_interface_map
+    assert "StockHistorical" in provider_interface_map
 
 
 def test_required_credentials(provider_interface):
@@ -46,7 +46,7 @@ def test_params(provider_interface):
     params = provider_interface.params
     assert isinstance(params, dict)
     assert len(params) > 0
-    assert "StockEOD" in params
+    assert "StockHistorical" in params
 
 
 def test_data(provider_interface):
@@ -54,7 +54,7 @@ def test_data(provider_interface):
     data = provider_interface.data
     assert isinstance(data, dict)
     assert len(data) > 0
-    assert "StockEOD" in data
+    assert "StockHistorical" in data
 
 
 def test_available_providers(provider_interface):
@@ -76,4 +76,4 @@ def test_models(provider_interface):
     models = provider_interface.models
     assert isinstance(models, list)
     assert len(models) > 0
-    assert "StockEOD" in models
+    assert "StockHistorical" in models

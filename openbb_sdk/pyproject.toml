@@ -25,6 +25,7 @@ openbb-fred = { path = "./providers/fred" }
 openbb-yfinance = { path = "./providers/yfinance" }
 openbb-cboe = { path = "./providers/cboe"}
 openbb-alpha-vantage = { path = "./providers/alpha-vantage" }
+openbb-quandl = { path = "./providers/quandl" }
 
 
 [tool.poetry.group.dev.dependencies]

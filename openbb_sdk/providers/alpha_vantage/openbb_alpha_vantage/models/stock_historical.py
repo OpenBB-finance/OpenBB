@@ -7,13 +7,16 @@ from typing import Any, Dict, List, Literal, Optional, get_args
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_eod import StockEODData, StockEODQueryParams
+from openbb_provider.standard_models.stock_historical import (
+    StockHistoricalData,
+    StockHistoricalQueryParams,
+)
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeFloat, PositiveFloat, root_validator, validator
 
 
-class AVStockEODQueryParams(StockEODQueryParams):
+class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     """Alpha Vantage Stock End of Day Query.
 
     Source: https://www.alphavantage.co/documentation/
@@ -166,7 +169,7 @@ class AVStockEODQueryParams(StockEODQueryParams):
         return v
 
 
-class AVStockEODData(StockEODData):
+class AVStockHistoricalData(StockHistoricalData):
     """Alpha Vantage Stock End of Day Data."""
 
     class Config:
@@ -185,16 +188,16 @@ class AVStockEODData(StockEODData):
     )
 
 
-class AVStockEODFetcher(
+class AVStockHistoricalFetcher(
     Fetcher[
-        AVStockEODQueryParams,
-        List[AVStockEODData],
+        AVStockHistoricalQueryParams,
+        List[AVStockHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Alpha Vantage endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> AVStockEODQueryParams:
+    def transform_query(params: Dict[str, Any]) -> AVStockHistoricalQueryParams:
         """Transform the query."""
 
         transformed_params = params
@@ -206,11 +209,11 @@ class AVStockEODFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return AVStockEODQueryParams(**transformed_params)
+        return AVStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: AVStockEODQueryParams,
+        query: AVStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -238,7 +241,7 @@ class AVStockEODFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[AVStockEODData]:
+    ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
 
-        return [AVStockEODData.parse_obj(d) for d in data]
+        return [AVStockHistoricalData.parse_obj(d) for d in data]

@@ -47,13 +47,7 @@ class PolygonMajorIndicesHistoricalData(MajorIndicesHistoricalData):
             "high": "h",
             "low": "l",
             "close": "c",
-            "volume": "v",
-            "vwap": "vw",
         }
-
-    n: PositiveInt = Field(
-        description="Number of transactions for the symbol in the time period."
-    )
 
     @validator("t", pre=True, check_fields=False)
     def time_validate(cls, v):  # pylint: disable=E0213
