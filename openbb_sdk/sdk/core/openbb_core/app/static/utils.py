@@ -1,11 +1,8 @@
-import os
 from json import load
 from pathlib import Path
 from typing import List, Optional, Set, Tuple, Union
 
 from importlib_metadata import entry_points
-
-CURRENT_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 
 
 def get_ext_map(package: Path) -> dict:
@@ -50,6 +47,7 @@ def package_diff(package: Path) -> Tuple[Set[str], Set[str]]:
 
 
 def build(
+    directory: Path,
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
     verbose: bool = False,
@@ -58,6 +56,8 @@ def build(
 
     Parameters
     ----------
+    directory: Path
+        The path of directory where package lives
     modules : Optional[List[str]], optional
         The modules to rebuild, by default None
         For example: "/news" or ["/news", "/crypto"]
@@ -77,14 +77,20 @@ def build(
     # this was causing docstrings to have repeated sections, for example.
     with Pool(processes=1) as pool:
         pool.apply(
-            PackageBuilder(CURRENT_DIR, lint, verbose).build,
+            PackageBuilder(directory, lint, verbose).build,
             args=(modules,),
         )
 
 
-def auto_build():
-    """Automatic build"""
-    add, remove = package_diff(Path(CURRENT_DIR, "package"))
+def auto_build(directory: Path):
+    """Automatic build
+
+    Parameters
+    ----------
+    directory: Path
+        The path of directory where package lives
+    """
+    add, remove = package_diff(Path(directory, "package"))
     if add:
         a = ", ".join(add)
         print(f"Extensions to add: {a}")
@@ -95,4 +101,4 @@ def auto_build():
 
     if add or remove:
         print("\nBuilding...")
-        build()
+        build(directory)
