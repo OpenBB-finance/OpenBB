@@ -79,8 +79,8 @@ class Account:
         """
         hs = self._create_hub_service(email, password, pat)
         incoming = hs.pull()
-        updated = UserService.update_default(incoming)
-        self._base_app._command_runner = CommandRunner(user_settings=updated)
+        updated: UserSettings = UserService.update_default(incoming)
+        self._base_app._command_runner.user_settings = updated
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(self._openbb_directory, ".sdk_hub_session.json")
@@ -120,13 +120,15 @@ class Account:
         """
         hub_session = self._base_app._command_runner.user_settings.profile.hub_session
         if not hub_session:
-            self._base_app._command_runner = CommandRunner()
+            self._base_app._command_runner.user_settings = (
+                UserService.read_default_user_settings()
+            )
         else:
             hs = HubService(hub_session)
             incoming = hs.pull()
-            updated = UserService.update_default(incoming)
+            updated: UserSettings = UserService.update_default(incoming)
             updated.id = self._base_app._command_runner.user_settings.id
-            self._base_app._command_runner = CommandRunner(user_settings=updated)
+            self._base_app._command_runner.user_settings = updated
         return self._base_app._command_runner.user_settings
 
     def logout(self) -> UserSettings:
@@ -148,5 +150,7 @@ class Account:
         if session_file.exists():
             session_file.unlink()
 
-        self._base_app._command_runner = CommandRunner()
+        self._base_app._command_runner.user_settings = (
+            UserService.read_default_user_settings()
+        )
         return self._base_app._command_runner.user_settings

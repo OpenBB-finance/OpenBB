@@ -404,6 +404,10 @@ class CommandRunner:
     def user_settings(self) -> UserSettings:
         return self._user_settings
 
+    @user_settings.setter
+    def user_settings(self, user_settings: UserSettings) -> None:
+        self._user_settings = user_settings
+
     def run(
         self,
         route: str,
