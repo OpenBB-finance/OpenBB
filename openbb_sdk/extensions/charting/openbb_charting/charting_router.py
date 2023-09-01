@@ -238,714 +238,6 @@ def news_sectornews(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     )
 
 
-def providers_benzinga_global_news_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/benzinga/global/news/standardized` does not have a charting function"
-    )
-
-
-def providers_benzinga_stock_news_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/benzinga/stock/news/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_key_executives_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/key/executives/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_global_news_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/global/news/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_news_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/news/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_income_statement_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/income/statement/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_balance_sheet_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/balance/sheet/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_cash_flow_statement_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/cash/flow/statement/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_share_statistics_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/share/statistics/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_major_indices_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/major/indices/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_revenue_geographic_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/revenue/geographic/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_revenue_business_line_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/revenue/business/line/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_institutional_ownership_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/institutional/ownership/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_company_overview_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/company/overview/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_insider_trading_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/insider/trading/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_ownership_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/ownership/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_e_s_g_score_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/e/s/g/score/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_e_s_g_sector_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/e/s/g/sector/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_e_s_g_risk_rating_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/e/s/g/risk/rating/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_price_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/price/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_price_target_consensus_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/price/target/consensus/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_price_target_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/price/target/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_analyst_estimates_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/analyst/estimates/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_earnings_calendar_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/earnings/calendar/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_earnings_call_transcript_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/earnings/call/transcript/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_historical_stock_splits_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/historical/stock/splits/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_historical_dividends_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/historical/dividends/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_key_metrics_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/key/metrics/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_s_e_c_filings_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/s/e/c/filings/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_treasury_rates_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/treasury/rates/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_executive_compensation_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/executive/compensation/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_crypto_price_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/crypto/price/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_crypto_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/crypto/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_major_indices_price_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/major/indices/price/standardized` does not have a charting function"
-    )
-
-
-def providers_fmp_forex_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/forex/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_stock_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/stock/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_stock_news_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/stock/news/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_balance_sheet_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/balance/sheet/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_income_statement_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/income/statement/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_cash_flow_statement_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/cash/flow/statement/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_stock_price_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/stock/price/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_crypto_price_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/crypto/price/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_crypto_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/crypto/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_major_indices_eod_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/major/indices/eod/standardized` does not have a charting function"
-    )
-
-
-def providers_polygon_major_indices_price_standardized(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/major/indices/price/standardized` does not have a charting function"
-    )
-
-
-def providers_benzinga_global_news_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/benzinga/global/news/simple` does not have a charting function"
-    )
-
-
-def providers_benzinga_stock_news_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/benzinga/stock/news/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_key_executives_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/key/executives/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/eod/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_global_news_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/global/news/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_news_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/news/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_income_statement_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/income/statement/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_balance_sheet_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/balance/sheet/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_cash_flow_statement_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/cash/flow/statement/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_share_statistics_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/share/statistics/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_major_indices_eod_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/major/indices/eod/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_revenue_geographic_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/revenue/geographic/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_revenue_business_line_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/revenue/business/line/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_institutional_ownership_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/institutional/ownership/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_company_overview_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/company/overview/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_insider_trading_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/insider/trading/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_ownership_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/ownership/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_e_s_g_score_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/e/s/g/score/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_e_s_g_sector_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/e/s/g/sector/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_e_s_g_risk_rating_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/e/s/g/risk/rating/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_stock_price_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/stock/price/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_price_target_consensus_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/price/target/consensus/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_price_target_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/price/target/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_analyst_estimates_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/analyst/estimates/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_earnings_calendar_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/earnings/calendar/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_earnings_call_transcript_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/earnings/call/transcript/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_historical_stock_splits_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/historical/stock/splits/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_historical_dividends_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/historical/dividends/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_key_metrics_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/key/metrics/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_s_e_c_filings_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/s/e/c/filings/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_treasury_rates_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/treasury/rates/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_executive_compensation_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/executive/compensation/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_crypto_price_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/crypto/price/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_crypto_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/crypto/eod/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_major_indices_price_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/major/indices/price/simple` does not have a charting function"
-    )
-
-
-def providers_fmp_forex_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/fmp/forex/eod/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_stock_eod_simple(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/stock/eod/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_stock_news_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/stock/news/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_balance_sheet_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/balance/sheet/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_income_statement_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/income/statement/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_cash_flow_statement_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/cash/flow/statement/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_stock_price_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/stock/price/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_crypto_price_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/crypto/price/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_crypto_eod_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/crypto/eod/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_major_indices_eod_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/major/indices/eod/simple` does not have a charting function"
-    )
-
-
-def providers_polygon_major_indices_price_simple(
-    **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError(
-        "Command `providers/polygon/major/indices/price/simple` does not have a charting function"
-    )
-
-
 def qa_normality(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
         "Command `qa/normality` does not have a charting function"
@@ -2115,23 +1407,33 @@ def stocks_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 
 def stocks_fa_balance_growth(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `stocks/fa/balance/growth` does not have a charting function")
+    raise NotImplementedError(
+        "Command `stocks/fa/balance/growth` does not have a charting function"
+    )
 
 
 def stocks_fa_cash_growth(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `stocks/fa/cash/growth` does not have a charting function")
+    raise NotImplementedError(
+        "Command `stocks/fa/cash/growth` does not have a charting function"
+    )
 
 
 def stocks_fa_income_growth(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `stocks/fa/income/growth` does not have a charting function")
+    raise NotImplementedError(
+        "Command `stocks/fa/income/growth` does not have a charting function"
+    )
 
 
 def stocks_fa_ins_own(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `stocks/fa/ins/own` does not have a charting function")
+    raise NotImplementedError(
+        "Command `stocks/fa/ins/own` does not have a charting function"
+    )
 
 
 def stocks_ca_peers(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `stocks/ca/peers` does not have a charting function")
+    raise NotImplementedError(
+        "Command `stocks/ca/peers` does not have a charting function"
+    )
 
 
 def stocks_info(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
@@ -2139,36 +1441,54 @@ def stocks_info(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 
 def fixedincome_sofr(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/sofr` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/sofr` does not have a charting function"
+    )
 
 
 def fixedincome_estr(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/estr` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/estr` does not have a charting function"
+    )
 
 
 def fixedincome_sonia(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/sonia` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/sonia` does not have a charting function"
+    )
 
 
 def fixedincome_ameribor(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/ameribor` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/ameribor` does not have a charting function"
+    )
 
 
 def fixedincome_fed(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/fed` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/fed` does not have a charting function"
+    )
 
 
 def fixedincome_projections(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/projections` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/projections` does not have a charting function"
+    )
 
 
 def fixedincome_iorb(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `fixedincome/iorb` does not have a charting function")
+    raise NotImplementedError(
+        "Command `fixedincome/iorb` does not have a charting function"
+    )
 
 
 def futures_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `futures/load` does not have a charting function")
+    raise NotImplementedError(
+        "Command `futures/load` does not have a charting function"
+    )
 
 
 def futures_curve(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    raise NotImplementedError("Command `futures/curve` does not have a charting function")
+    raise NotImplementedError(
+        "Command `futures/curve` does not have a charting function"
+    )

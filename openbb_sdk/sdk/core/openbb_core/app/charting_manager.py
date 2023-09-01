@@ -25,16 +25,19 @@ class ChartingManager(metaclass=SingletonMeta):
     Charting manager class.
     It is responsible for retrieving and executing the charting function, corresponding
     to a given route, from the user's preferred charting extension.
+
     Parameters
     ----------
     user_settings : Optional[UserSettings]
         User settings.
+
     Attributes
     ----------
     _charting_extension : str
         Charting extension name, which is retrieved from the user preferences.
     _charting_extension_installed : bool
         Either charting extension is installed or not.
+
     Raises
     ------
     ChartingManagerError
