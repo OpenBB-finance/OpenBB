@@ -36,7 +36,6 @@ intrinio_session = requests_cache.CachedSession(
     "OpenBB_Intrinio", expire_after=timedelta(days=5), use_cache_dir=True
 )
 
-api_key = "OmJlYjQ1MjU0MDYxODQ0MjFmNDhlYjlkMjUyNDNiMDNh"
 
 
 def get_options_tickers(api_key: str) -> list[str]:
