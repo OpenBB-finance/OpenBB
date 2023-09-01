@@ -31,7 +31,12 @@ class CLASS_futures(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ] = None,
+<<<<<<< HEAD
         provider: Optional[Literal["yfinance"]] = None,
+=======
+        chart: bool = False,
+        provider: Optional[Literal["cboe", "yfinance"]] = None,
+>>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
         **kwargs
     ) -> OBBject[List]:
         """Futures Historical Price.
@@ -42,9 +47,15 @@ class CLASS_futures(Container):
             Symbol to get data for.
         date : Optional[datetime.date]
             Historical date to search curve for.
+<<<<<<< HEAD
         provider : Optional[Literal['yfinance']]
+=======
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe', 'yfinance']]
+>>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
 
         Returns
@@ -52,7 +63,7 @@ class CLASS_futures(Container):
         OBBject
             results : List[FuturesCurve]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[Literal['cboe', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -66,7 +77,9 @@ class CLASS_futures(Container):
         expiration : Optional[str]
             Futures expiration month.
         price : Optional[float]
-            The close price of the symbol."""  # noqa: E501
+            The close price of the symbol.
+        symbol : Optional[str]
+            The trading symbol for the tenor of future. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

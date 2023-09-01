@@ -6,7 +6,12 @@
     "economy": "/economy",
     "economy_const": "/economy/const",
     "economy_cpi": "/economy/cpi",
+<<<<<<< HEAD
     "economy_cpi_options": "/economy/cpi_options",
+=======
+    "economy_european_index": "/economy/european_index",
+    "economy_european_index_constituents": "/economy/european_index_constituents",
+>>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
     "economy_index": "/economy/index",
     "economy_available_indices": "/economy/available_indices",
     "economy_risk": "/economy/risk",

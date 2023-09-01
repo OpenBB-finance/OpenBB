@@ -25,7 +25,12 @@ class CLASS_stocks_options(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         provider: Optional[Literal["cboe"]] = None,
+=======
+        chart: bool = False,
+        provider: Optional[Literal["cboe", "intrinio"]] = None,
+>>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -34,17 +39,25 @@ class CLASS_stocks_options(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         provider : Optional[Literal['cboe']]
+=======
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe', 'intrinio']]
+>>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        date : Union[datetime.date, str, NoneType]
+            Date for which the options chains are returned. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['cboe']]
+            provider : Optional[Literal['cboe', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -61,6 +74,8 @@ class CLASS_stocks_options(Container):
             Strike price of the contract.
         option_type : Optional[str]
             Call or Put.
+        contract_symbol : Optional[str]
+            Contract symbol for the option.
         bid : Optional[float]
             Bid price of the contract.
         ask : Optional[float]
@@ -69,26 +84,10 @@ class CLASS_stocks_options(Container):
             Open interest on the contract.
         volume : Optional[float]
             Current trading volume on the contract.
-        contract_symbol : Optional[str]
-            Contract symbol for the option. (provider: cboe)
-        dte : Optional[int]
-            Days to expiration for the option. (provider: cboe)
         bid_size : Optional[int]
             Bid size for the option. (provider: cboe)
         ask_size : Optional[int]
             Ask size for the option. (provider: cboe)
-        implied_volatility : Optional[float]
-            Implied volatility of the option. (provider: cboe)
-        delta : Optional[float]
-            Delta of the option. (provider: cboe)
-        gamma : Optional[float]
-            Gamma of the option. (provider: cboe)
-        theta : Optional[float]
-            Theta of the option. (provider: cboe)
-        rho : Optional[float]
-            Rho of the option. (provider: cboe)
-        vega : Optional[float]
-            Vega of the option. (provider: cboe)
         theoretical : Optional[float]
             Theoretical value of the option. (provider: cboe)
         open : Optional[float]
@@ -101,14 +100,47 @@ class CLASS_stocks_options(Container):
             Last trade price of the option. (provider: cboe)
         tick : Optional[str]
             Whether the last tick was up or down in price. (provider: cboe)
-        previous_close : Optional[float]
+        prev_close : Optional[float]
             Previous closing price of the option. (provider: cboe)
         change : Optional[float]
             Change in  price of the option. (provider: cboe)
         change_percent : Optional[float]
             Change, in percent, of the option. (provider: cboe)
+        implied_volatility : Optional[float]
+            Implied volatility of the option. (provider: cboe)
+        delta : Optional[float]
+            Delta of the option. (provider: cboe)
+        gamma : Optional[float]
+            Gamma of the option. (provider: cboe)
+        vega : Optional[float]
+            Vega of the option. (provider: cboe)
+        theta : Optional[float]
+            Theta of the option. (provider: cboe)
+        rho : Optional[float]
+            Rho of the option. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
-            Last trade timestamp of the option. (provider: cboe)"""  # noqa: E501
+            Last trade timestamp of the option. (provider: cboe)
+        dte : Optional[int]
+            Days to expiration for the option. (provider: cboe)
+        mark : Optional[float]
+            The mid-price between the latest bid-ask spread. (provider: intrinio)
+        open_bid : Optional[float]
+            The lowest bid price for the option that day. (provider: intrinio)
+        open_ask : Optional[float]
+            The lowest ask price for the option that day. (provider: intrinio)
+        bid_low : Optional[float]
+            The lowest bid price for the option that day. (provider: intrinio)
+        ask_low : Optional[float]
+            The lowest ask price for the option that day. (provider: intrinio)
+        bid_high : Optional[float]
+            The highest bid price for the option that day. (provider: intrinio)
+        ask_high : Optional[float]
+            The highest ask price for the option that day. (provider: intrinio)
+        close : Optional[float]
+            The close price for the option that day. (provider: intrinio)
+        eod_date : Optional[date]
+            Historical date for which the options chains data is from. (provider: intrinio)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
