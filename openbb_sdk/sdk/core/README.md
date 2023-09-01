@@ -335,14 +335,21 @@ obb.stocks.load(
 
 The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
 
-To apply an environment variable use the following code or create a .env file inside
-`openbb_sdk/sdk/core/openbb_core/app`.
+To apply an environment variable use one of the following:
 
-```python
-import os
-os.environ["OPENBB_DEBUG_MODE"] = "True"
-from openbb import sdk
-```
+1. Temporary: use the following code
+
+    ```python
+    import os
+    os.environ["OPENBB_DEBUG_MODE"] = "True"
+    from openbb import sdk
+    ```
+
+2. Persistent: create a `.env` file inside `openbb_sdk/sdk/core/openbb_core/app` with
+
+    ```text
+    OPENBB_DEBUG_MODE="False"
+    ```
 
 Some variables we use are:
 
