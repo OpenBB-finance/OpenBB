@@ -96,12 +96,12 @@ def auto_build(directory: Path):
         add, remove = package_diff(Path(directory, "package"))
         if add:
             a = ", ".join(add)
-            print(f"Extensions to add: {a}")
+            print(f"Extensions to add: {a}")  # noqa: T201
 
         if remove:
             r = ", ".join(remove)
-            print(f"Extensions to remove: {r}")
+            print(f"Extensions to remove: {r}")  # noqa: T201
 
         if add or remove:
-            print("\nBuilding...")
+            print("\nBuilding...")  # noqa: T201
             build(directory)

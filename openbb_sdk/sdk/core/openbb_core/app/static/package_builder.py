@@ -33,8 +33,6 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 
-# ruff: noqa: T201
-
 
 class Console:
     """Console to be used by builder and linters."""
@@ -45,7 +43,7 @@ class Console:
     def log(self, message: str, **kwargs):
         """Console log method"""
         if self.verbose or Env().DEBUG_MODE:
-            print(message, **kwargs)
+            print(message, **kwargs)  # noqa: T201
 
 
 class PackageBuilder:
