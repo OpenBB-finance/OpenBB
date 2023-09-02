@@ -13,7 +13,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeFloat, PositiveFloat, root_validator, validator
+from pydantic import Field, root_validator, validator
 
 
 class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -48,7 +48,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         default=True,
         available_on_functions=["TIME_SERIES_INTRADAY"],
     )
-    extended_hours: Optional[bool] = Field(
+    prepost: bool = Field(
         description="Extended trading hours during pre-market and after-hours.",
         default=False,
         available_on_functions=["TIME_SERIES_INTRADAY"],
@@ -177,13 +177,13 @@ class AVStockHistoricalData(StockHistoricalData):
 
         fields = {"date": "timestamp", "adj_close": "adjusted_close"}
 
-    adjusted_close: PositiveFloat = Field(
+    adjusted_close: Optional[float] = Field(
         description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
-    dividend_amount: NonNegativeFloat = Field(
+    dividend_amount: Optional[float] = Field(
         description="Dividend amount paid for the corresponding date.",
     )
-    split_coefficient: NonNegativeFloat = Field(
+    split_coefficient: Optional[float] = Field(
         description="Split coefficient for the corresponding date.",
     )
 
@@ -227,6 +227,8 @@ class AVStockHistoricalFetcher(
         query_str = get_querystring(query_dict, ["start_date", "end_date"])
 
         url = f"https://www.alphavantage.co/query?{query_str}&datatype=csv&apikey={api_key}"
+
+        url = url + "&extended_hours=false" if query.prepost is False else url
 
         data = pd.read_csv(url)
         data["timestamp"] = pd.to_datetime(data["timestamp"])
