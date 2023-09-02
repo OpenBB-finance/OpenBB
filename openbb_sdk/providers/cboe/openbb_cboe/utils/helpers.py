@@ -378,20 +378,26 @@ class Europe:
         symbol: str
             The symbol of the index.
 
-    Returns
-    -------
-    pd.DataFrame
-        Pandas DataFrame with results.
-    """
-    info = pd.DataFrame()
-    symbol = symbol.upper()
-    _info = get_ticker_info(symbol)[0]
-    _iv = get_ticker_iv(symbol)
-    if not _info.empty and not _iv.empty:
-        info = pd.concat([_info, _iv])
-        info.index = [camel_to_snake(c) for c in info.index]
-        info.loc["symbol", symbol] = symbol
-        info.loc["name", symbol] = SYMBOLS[SYMBOLS.index == symbol]["Company Name"][0]
-        info = info[symbol]
+        Returns
+        -------
+        list[str]
+            List of constituents as ticker symbols.
+        """
 
-    return info
+        SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
+        symbol = symbol.upper()
+
+        if symbol not in SYMBOLS:
+            raise RuntimeError(
+                f"The symbol, {symbol}, was not found in the CBOE European Index directory.",
+            )
+
+        url = f"https://cdn.cboe.com/api/global/european_indices/definitions/{symbol}.json"
+        r = requests.get(url, timeout=10)
+
+        if r.status_code != 200:
+            raise requests.HTTPError(r.status_code)
+
+        r_json = r.json()["constituents"]
+
+        return [r_json[i]["constituent_symbol"] for i in range(0, len(r_json))]

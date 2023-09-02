@@ -103,9 +103,23 @@ class CboeStockInfoFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
-        data = get_info(query.symbol)
-        if data.empty:
-            raise RuntimeError(f"No data found for, {query.symbol}")
+        query.symbol = query.symbol.upper()
+        INDEXES = get_cboe_index_directory().index.to_list()
+        SYMBOLS = get_cboe_directory()
+
+        if query.symbol not in SYMBOLS.index and query.symbol not in INDEXES:
+            raise RuntimeError(
+                f"The symbol, {query.symbol}, was not found in the CBOE directory."
+            )
+
+        _info = pd.Series(get_ticker_info(query.symbol))
+        _iv = pd.Series(get_ticker_iv(query.symbol))
+        data = (
+            pd.DataFrame(pd.concat([_info, _iv]))
+            .transpose()
+            .drop(columns="seqno")
+            .iloc[0]
+        )
 
         return data.to_dict()
 
