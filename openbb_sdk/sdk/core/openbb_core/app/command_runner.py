@@ -10,7 +10,6 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_service import ChartingService
-from openbb_core.app.env import Env
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -22,6 +21,7 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.env import Env
 
 
 class ExecutionContext:
