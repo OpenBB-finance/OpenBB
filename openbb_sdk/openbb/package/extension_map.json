@@ -1,12 +1,12 @@
 {
     "openbb_core_extension": [
-        "charting",
         "crypto",
         "economy",
         "fixedincome",
         "forex",
         "futures",
         "news",
+        "openbb_charting",
         "qa",
         "stocks",
         "ta"
