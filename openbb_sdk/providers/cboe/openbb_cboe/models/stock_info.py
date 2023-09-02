@@ -96,7 +96,11 @@ class CboeStockInfoFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
-        return get_info(query.symbol).to_dict()
+        data = get_info(query.symbol)
+        if data.empty:
+            raise RuntimeError(f"No data found for, {query.symbol}")
+
+        return data.to_dict()
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockInfoData]:

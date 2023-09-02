@@ -699,15 +699,15 @@ def get_info(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Pandas DataFrame with results.
     """
-
-    symbol = symbol.upper()
     info = pd.DataFrame()
-
+    symbol = symbol.upper()
     _info = get_ticker_info(symbol)[0]
     _iv = get_ticker_iv(symbol)
-    info = pd.concat([_info, _iv])
-    info.index = [camel_to_snake(c) for c in info.index]
-    info.loc["symbol", symbol] = symbol
-    info.loc["name", symbol] = SYMBOLS[SYMBOLS.index == symbol]["Company Name"][0]
+    if not _info.empty and not _iv.empty:
+        info = pd.concat([_info, _iv])
+        info.index = [camel_to_snake(c) for c in info.index]
+        info.loc["symbol", symbol] = symbol
+        info.loc["name", symbol] = SYMBOLS[SYMBOLS.index == symbol]["Company Name"][0]
+        info = info[symbol]
 
-    return info[symbol]
+    return info
