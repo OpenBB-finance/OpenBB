@@ -42,7 +42,7 @@ class CLASS_crypto(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Crypto EOD Price.
+        """Crypto Historical Price.
 
         Parameters
         ----------
@@ -84,7 +84,7 @@ class CLASS_crypto(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoEOD]
+            results : List[CryptoHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
@@ -95,8 +95,8 @@ class CLASS_crypto(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        CryptoEOD
-        ---------
+        CryptoHistorical
+        ----------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
@@ -118,11 +118,11 @@ class CLASS_crypto(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501

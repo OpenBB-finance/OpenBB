@@ -39,14 +39,36 @@ def cpi(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="MajorIndicesEOD")
+@router.command(model="MajorIndicesHistorical")
 def index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get OHLCV data for an index."""
+    """Get historical  levels for an index."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EuropeanIndexHistorical")
+def european_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get historical close values for select European indices."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EuropeanIndexConstituents")
+def european_index_constituents(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get  current levels for constituents of select European indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -57,7 +79,7 @@ def available_indices(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """AVAILABLE_INDICES."""
+    """Lists of available indices from a provider."""
     return OBBject(results=Query(**locals()).execute())
 
 
