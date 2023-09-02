@@ -1,0 +1,22 @@
+{
+    "openbb_core_extension": [
+        "charting",
+        "crypto",
+        "economy",
+        "fixedincome",
+        "forex",
+        "futures",
+        "news",
+        "qa",
+        "stocks",
+        "ta"
+    ],
+    "openbb_provider_extension": [
+        "benzinga",
+        "cboe",
+        "fmp",
+        "fred",
+        "polygon",
+        "yfinance"
+    ]
+}

@@ -34,22 +34,18 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
 
     adjClose: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.",
-        alias="adj_close",
         default=None,
     )
     unadjustedVolume: Optional[float] = Field(
         description="Unadjusted volume of the symbol.",
-        alias="unadjusted_volume",
         default=None,
     )
     change: Optional[float] = Field(
         description="Change in the price of the symbol from the previous day.",
-        alias="change",
         default=None,
     )
     changePercent: Optional[float] = Field(
         description=r"Change \% in the price of the symbol.",
-        alias="change_percent",
         default=None,
     )
     label: Optional[str] = Field(
@@ -57,7 +53,6 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     )
     changeOverTime: Optional[float] = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
-        alias="change_over_time",
         default=None,
     )
 
@@ -94,14 +89,17 @@ class FMPMajorIndicesHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        url = f"{base_url}/historical-chart/{query.interval}/%5E{query.symbol}?&apikey={api_key}"
+        query_str = (
+            get_querystring(query.dict(), ["symbol"])
+            .replace("start_date", "from")
+            .replace("end_date", "to")
+        )
+
+        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}/historical-chart/{query.interval}/%5E{url_params}"
 
         if query.interval == "1day":
-            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
-            query_str = query_str.replace("start_date", "from").replace(
-                "end_date", "to"
-            )
-            url = f"{base_url}/historical-price-full/index/%5E{query.symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-price-full/index/%5E{url_params}"
 
         return get_data_many(url, "historical", **kwargs)
 

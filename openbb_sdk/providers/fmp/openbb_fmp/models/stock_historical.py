@@ -32,26 +32,22 @@ class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
 class FMPStockHistoricalData(StockHistoricalData):
     """FMP Stock end of day Data."""
 
-    adjClose: Optional[float] = Field(
-        description="Adjusted Close Price of the symbol.", alias="adj_close"
-    )
+    adjClose: Optional[float] = Field(description="Adjusted Close Price of the symbol.")
     unadjustedVolume: Optional[float] = Field(
-        description="Unadjusted volume of the symbol.", alias="unadjusted_volume"
+        description="Unadjusted volume of the symbol."
     )
     change: Optional[float] = Field(
-        description="Change in the price of the symbol from the previous day.",
-        alias="change",
+        description="Change in the price of the symbol from the previous day."
     )
     changePercent: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol.", alias="change_percent"
+        description=r"Change \% in the price of the symbol."
     )
     vwap: Optional[float] = Field(
         description="Volume Weighted Average Price of the symbol."
     )
     label: Optional[str] = Field(description="Human readable format of the date.")
     changeOverTime: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
-        alias="change_over_time",
+        description=r"Change \% in the price of the symbol over a period of time."
     )
 
     @validator("date", pre=True, check_fields=False)
@@ -95,16 +91,17 @@ class FMPStockHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
-        query_str = query_str.replace("start_date", "from").replace("end_date", "to")
-        url = f"{base_url}/historical-chart/{query.interval}/{query.symbol}?&apikey={api_key}"
+        query_str = (
+            get_querystring(query.dict(), ["symbol"])
+            .replace("start_date", "from")
+            .replace("end_date", "to")
+        )
+
+        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
 
         if query.interval == "1day":
-            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
-            query_str = query_str.replace("start_date", "from").replace(
-                "end_date", "to"
-            )
-            url = f"{base_url}/historical-price-full/{query.symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-price-full/{url_params}"
 
         return get_data_many(url, "historical", **kwargs)
 

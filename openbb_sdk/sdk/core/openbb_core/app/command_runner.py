@@ -10,7 +10,6 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 from pydantic import BaseConfig, Extra, create_model
 
 from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.app.env import Env
 from openbb_core.app.logs.logging_manager import LoggingManager
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -22,6 +21,7 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.env import Env
 
 
 class ExecutionContext:
@@ -126,10 +126,12 @@ class ParametersBuilder:
 
         def _has_provider(kwargs: Dict[str, Any]) -> bool:
             """Check if the kwargs already have a provider."""
-            if (
-                provider_choices := kwargs.get("provider_choices", None)
-            ) and isinstance(provider_choices, dict):
+            provider_choices = kwargs.get("provider_choices", None)
+
+            if isinstance(provider_choices, dict):  # when in python
                 return provider_choices.get("provider", None) is not None
+            if isinstance(provider_choices, object):  # when running as fastapi
+                return getattr(provider_choices, "provider", None) is not None
             return False
 
         def _get_first_provider() -> Optional[str]:
