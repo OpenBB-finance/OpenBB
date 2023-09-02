@@ -27,6 +27,8 @@
     "news": "/news",
     "news_globalnews": "/news/globalnews",
     "news_search": "/news/search",
+    "options": "/options",
+    "options_chains": "/options/chains",
     "qa": "/qa",
     "qa_capm": "/qa/capm",
     "qa_kurtosis": "/qa/kurtosis",

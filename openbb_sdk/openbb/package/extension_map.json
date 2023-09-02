@@ -7,15 +7,18 @@
         "futures",
         "news",
         "openbb_charting",
+        "options",
         "qa",
         "stocks",
         "ta"
     ],
     "openbb_provider_extension": [
+        "alpha_vantage",
         "benzinga",
         "cboe",
         "fmp",
         "fred",
+        "intrinio",
         "polygon",
         "yfinance"
     ]

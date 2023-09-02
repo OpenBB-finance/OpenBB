@@ -26,7 +26,7 @@ class CLASS_news(Container):
             int, OpenBBCustomParameter(description="Page of the global news.")
         ] = 0,
         chart: bool = False,
-        provider: Optional[Literal["benzinga", "biztoc", "fmp"]] = None,
+        provider: Optional[Literal["benzinga", "biztoc", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -37,7 +37,7 @@ class CLASS_news(Container):
             Page of the global news.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['benzinga', 'biztoc', 'fmp']]
+        provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -77,13 +77,19 @@ class CLASS_news(Container):
             Filter by a specific publisher. (provider: biztoc)
         tag : str
             Tag, topic, to filter articles by. (provider: biztoc)
+        next_page : str
+            Token to get the next page of data from a previous API call. (provider: intrinio)
+        limit : Optional[int]
+            The number of data entries to return. (provider: intrinio)
+        all_pages : Optional[bool]
+            Returns all pages of data from the API call at once. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'biztoc', 'fmp']]
+            provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -115,7 +121,11 @@ class CLASS_news(Container):
         favicon : Optional[str]
             Icon image for the source of the article. (provider: biztoc)
         domain : Optional[str]
-            Domain base url for the article source. (provider: biztoc)"""  # noqa: E501
+            Domain base url for the article source. (provider: biztoc)
+        id : Optional[str]
+            Intrinio ID for the news article. (provider: intrinio)
+        company : Optional[Mapping[str, Any]]
+            Company details related to the news article. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
