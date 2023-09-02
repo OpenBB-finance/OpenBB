@@ -331,8 +331,6 @@ obb.stocks.load(
 
 ### 4.1.5. Environment variables
 
-
-
 The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
 
 To apply an environment variable use one of the following:
@@ -353,9 +351,10 @@ To apply an environment variable use one of the following:
 
 The variables we use are:
 
-- `OPENBB_DEBUG_MODE`: enable/disable debug mode
-- `OPENBB_DEVELOP_MODE`: enable/disable develop mode
-- `OPENBB_AUTO_BUILD`: enable/disable automatic build for python package
+- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
+- `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
+- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
+- `OPENBB_API_AUTH`: enables commands authentication in FastAPI
 
 ## 4.2 Dynamic version
 
