@@ -146,8 +146,8 @@ class CommandValidator:
 
     @classmethod
     def check(cls, func: Callable):
-        cls.check_parameters(func=func)
         cls.check_return(func=func)
+        cls.check_parameters(func=func)
 
 
 class Router:
