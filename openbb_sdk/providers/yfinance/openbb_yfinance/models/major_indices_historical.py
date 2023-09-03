@@ -37,7 +37,10 @@ class YFinanceMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            return datetime.strptime(v, "%Y-%m-%d").date()
 
 
 class YFinanceMajorIndicesHistoricalFetcher(

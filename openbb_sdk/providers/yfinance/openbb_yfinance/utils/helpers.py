@@ -164,7 +164,11 @@ def yf_download(
                 data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d %H:%M:%S")
             )
         if interval not in ["1m", "2m", "5m", "15m", "30m", "90m", "60m", "1h"]:
-            data["date"] = data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d")
+            data["date"] = (
+                pd.to_datetime(data["date"])
+                .dt.tz_localize(None)
+                .dt.strftime("%Y-%m-%d")
+            )
 
         if actions is False:
             data = data.drop(columns=["Adj Close"])

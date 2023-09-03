@@ -4,7 +4,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -59,7 +58,10 @@ class YFinanceStockHistoricalData(StockHistoricalData):
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            return datetime.strptime(v, "%Y-%m-%d").date()
 
 
 class YFinanceStockHistoricalFetcher(
@@ -72,17 +74,7 @@ class YFinanceStockHistoricalFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceStockHistoricalQueryParams:
-        """Transform the query. Setting the start and end dates for a 1 year period."""
-        if params.get("period") is None:
-            transformed_params = params
-
-            now = datetime.now().date()
-            if params.get("start_date") is None:
-                transformed_params["start_date"] = now - relativedelta(years=1)
-
-            if params.get("end_date") is None:
-                transformed_params["end_date"] = now
-            return YFinanceStockHistoricalQueryParams(**transformed_params)
+        """Transform the query."""
 
         return YFinanceStockHistoricalQueryParams(**params)
 
