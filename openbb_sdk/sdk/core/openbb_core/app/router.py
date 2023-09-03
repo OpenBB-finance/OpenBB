@@ -187,8 +187,10 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = {"model": model}
 
-        func = SignatureInspector.complete_signature(func, model)
-        if func is not None:
+        if issubclass(func.__annotations__["return"], OBBject):
+            func = SignatureInspector.complete_signature(func, model)
+
+        if func:
             CommandValidator.check(func=func)
 
             kwargs["operation_id"] = kwargs.get(
