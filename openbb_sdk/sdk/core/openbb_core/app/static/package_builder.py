@@ -23,37 +23,61 @@ from typing import (
 )
 
 import pandas as pd
+from importlib_metadata import entry_points
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
-from openbb_core.app.env import Env
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
+from openbb_core.env import Env
 
-# ruff: noqa: T201
+
+class Console:
+    """Console to be used by builder and linters."""
+
+    def __init__(self, verbose: bool):
+        self.verbose = verbose
+
+    def log(self, message: str, **kwargs):
+        """Console log method"""
+        if self.verbose or Env().DEBUG_MODE:
+            print(message, **kwargs)  # noqa: T201
 
 
 class PackageBuilder:
     """Build the extension package for the SDK."""
 
-    def __init__(self, directory: Optional[Path] = None) -> None:
+    def __init__(
+        self, directory: Optional[Path] = None, lint: bool = True, verbose: bool = False
+    ) -> None:
         self.directory = directory or Path(__file__).parent
+        self.lint = lint
+        self.verbose = verbose
+        self.console = Console(verbose)
 
     def build(
         self,
         modules: Optional[Union[str, List[str]]] = None,
-        lint: bool = True,
     ) -> None:
         """Build the extensions for the SDK."""
-        print("\nBuilding extensions package...\n")
+        self.console.log("\nBuilding extensions package...\n")
 
+        self.save_extension_map()
         self.save_module_map()
         self.save_modules(modules)
         self.save_package()
-        if lint:
-            self.run_linters(self.directory)
+        if self.lint:
+            self.run_linters()
+
+    def save_extension_map(self):
+        """Save the map of extensions available at build time"""
+        groups = ("openbb_core_extension", "openbb_provider_extension")
+        ext_map = {g: sorted(list(entry_points(group=g).names)) for g in groups}
+        code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
+        self.console.log("Writing extension map...")
+        self.write_to_package(code=code, name="extension_map", extension="json")
 
     def save_module_map(self):
         """Save the module map."""
@@ -62,21 +86,18 @@ class PackageBuilder:
         module_map = {
             PathHandler.build_module_name(path=path): path for path in path_list
         }
-        module_code = dumps(obj=dict(sorted(module_map.items())), indent=4)
-        module_name = "module_map"
-        print("Writing module map...")
-        self.write_to_package(
-            module_code=module_code, module_name=module_name, extension="json"
-        )
+        code = dumps(obj=dict(sorted(module_map.items())), indent=4)
+        self.console.log("\nWriting module map...")
+        self.write_to_package(code=code, name="module_map", extension="json")
 
     def save_modules(self, modules: Optional[Union[str, List[str]]] = None):
         """Save the modules."""
-        print("\nWriting modules...")
+        self.console.log("\nWriting modules...")
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
 
         if not path_list:
-            print("\nThere is nothing to write.")
+            self.console.log("\nThere is nothing to write.")
             return
 
         MAX_LEN = max([len(path) for path in path_list if path != "/"])
@@ -89,33 +110,32 @@ class PackageBuilder:
             if route is None:
                 module_code = ModuleBuilder.build(path=path)
                 module_name = PathHandler.build_module_name(path=path)
-                print(f"({path})", end=" " * (MAX_LEN - len(path)))
-                self.write_to_package(module_code=module_code, module_name=module_name)
+                self.console.log(f"({path})", end=" " * (MAX_LEN - len(path)))
+                self.write_to_package(code=module_code, name=module_name)
 
     def save_package(self):
         """Save the package."""
-        print("\nWriting package __init__...")
+        self.console.log("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
-        self.write_to_package(module_code=code, module_name="__init__")
+        self.write_to_package(code=code, name="__init__")
 
-    @staticmethod
-    def run_linters(directory: Path):
+    def run_linters(self):
         """Run the linters."""
-        print("\nRunning linters...")
-        linters = Linters(directory)
+        self.console.log("\nRunning linters...")
+        linters = Linters(self.directory, self.verbose)
         linters.ruff()
         linters.black()
 
-    def write_to_package(self, module_code: str, module_name, extension="py") -> None:
+    def write_to_package(self, code: str, name: str, extension="py") -> None:
         """Write the module to the package."""
         package_folder = self.directory / "package"
-        package_path = package_folder / f"{module_name}.{extension}"
+        package_path = package_folder / f"{name}.{extension}"
 
         package_folder.mkdir(exist_ok=True)
 
-        print(package_path)
+        self.console.log(str(package_path))
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
-            file.write(module_code.replace("typing.", ""))
+            file.write(code.replace("typing.", ""))
 
 
 class ModuleBuilder:
@@ -768,15 +788,14 @@ class PathHandler:
 class Linters:
     """Run the linters for the SDK."""
 
-    debug_mode = Env().DEBUG_MODE
-
-    def __init__(self, directory: Path) -> None:
+    def __init__(self, directory: Path, verbose: bool = False) -> None:
         self.directory = directory
+        self.verbose = verbose
+        self.console = Console(verbose)
 
-    @staticmethod
-    def print_separator(symbol: str, length: int = 160):
+    def print_separator(self, symbol: str, length: int = 160):
         """Print a separator."""
-        print(symbol * length)
+        self.console.log(symbol * length)
 
     def run(
         self,
@@ -785,30 +804,28 @@ class Linters:
     ):
         """Run linter with flags."""
         if shutil.which(linter):
-            print(f"\n* {linter}")
-            if self.debug_mode:
-                Linters.print_separator("^")
+            self.console.log(f"\n* {linter}")
+            self.print_separator("^")
 
             command = [linter, self.directory]
             if flags:
                 command.extend(flags)
             subprocess.run(command, check=False)  # noqa: S603
 
-            if self.debug_mode:
-                Linters.print_separator("-")
+            self.print_separator("-")
         else:
-            print(f"\n* {linter} not found")
+            self.console.log(f"\n* {linter} not found")
 
     def black(self):
         """Run black."""
         flags = []
-        if not self.debug_mode:
+        if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--quiet")
         self.run(linter="black", flags=flags)
 
     def ruff(self):
         """Run ruff."""
         flags = ["--fix"]
-        if not self.debug_mode:
+        if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")
         self.run(linter="ruff", flags=flags)

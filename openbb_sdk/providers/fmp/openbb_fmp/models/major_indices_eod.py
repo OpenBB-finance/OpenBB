@@ -32,11 +32,11 @@ class FMPMajorIndicesEODQueryParams(MajorIndicesEODQueryParams):
 class FMPMajorIndicesEODData(MajorIndicesEODData):
     """FMP Major Indices end of day Data."""
 
-    adjClose: Optional[float] = Field(
+    adj_close: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.",
         default=None,
     )
-    unadjustedVolume: Optional[float] = Field(
+    unadjusted_volume: Optional[float] = Field(
         description="Unadjusted volume of the symbol.",
         default=None,
     )
@@ -44,26 +44,25 @@ class FMPMajorIndicesEODData(MajorIndicesEODData):
         description="Change in the price of the symbol from the previous day.",
         default=None,
     )
-    changePercent: Optional[float] = Field(
+    change_percent: Optional[float] = Field(
         description=r"Change \% in the price of the symbol.",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
-    changeOverTime: Optional[float] = Field(
+    change_over_time: Optional[float] = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
         default=None,
     )
 
     @validator("date", pre=True)
-    def date_validate(  # pylint: disable=E0213
-        cls, v, values: Dict[str, Any]
-    ) -> datetime:
+    def date_validate(cls, v) -> datetime:  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        if values.get("changeOverTime", None) is not None:
-            return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        # TODO: Check if this condition is necessary
+        # if values.get("changeOverTime", None) is not None:
+        #     return datetime.strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPMajorIndicesEODFetcher(
