@@ -1,7 +1,7 @@
 """yfinance Major Indices End of Day fetcher."""
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -11,6 +11,7 @@ from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from pandas import to_datetime
 from pydantic import Field, validator
 
 from openbb_yfinance.utils.helpers import yf_download
@@ -89,6 +90,26 @@ class YFinanceMajorIndicesHistoricalFetcher(
             prepost=query.prepost,
             rounding=query.rounding,
         )
+
+        query.end_date = (
+            datetime.now().date() if query.end_date is None else query.end_date
+        )
+
+        days = (
+            1
+            if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
+            else 0
+        )
+
+        if query.start_date is not None:
+            data = data[
+                (to_datetime(data["date"]) >= to_datetime(query.start_date))
+                & (
+                    to_datetime(data["date"])
+                    <= (to_datetime(query.end_date) + timedelta(days=days))
+                )
+            ]
+
         return data.to_dict("records")
 
     @staticmethod

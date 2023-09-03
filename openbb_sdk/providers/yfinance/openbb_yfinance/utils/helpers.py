@@ -97,7 +97,9 @@ def yf_download(
     group_by: Literal["symbol", "column"] = "column",
     **kwargs: Any,
 ) -> pd.DataFrame:
-    """Base level yFinance OHLC helper function for returning any stock/index ticker and interval available."""
+    """Base level yFinance OHLC helper function for returning any
+    stock/index/crypto/forex ticker and interval available.
+    """
 
     symbol = symbol.upper()
     _start_date = start_date
@@ -110,6 +112,7 @@ def yf_download(
         _start_date = (datetime.now().date() - relativedelta(days=59)).strftime(
             "%Y-%m-%d"
         )
+        period = ""
 
     if interval == "1m":
         period = "5d"
