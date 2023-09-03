@@ -19,6 +19,8 @@ class CLASS_economy(Container):
     european_index
     european_index_constituents
     index
+    index_search
+    index_snapshots
     risk
     """
 
@@ -570,14 +572,12 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
-        back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+        rounding : bool
+            Round prices to two decimals? (provider: yfinance)
 
         Returns
         -------
@@ -642,6 +642,180 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/index",
+            **inputs,
+        )
+
+    @validate_arguments
+    def index_search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        ticker: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        chart: bool = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Search for indices.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        ticker : bool
+            Whether to search by ticker symbol.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        europe : bool
+            Filter for European indices. False for US indices. (provider: cboe)
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSearch]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSearch
+        -----------
+        symbol : Optional[str]
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        region : Optional[str]
+            Region for the index. Valid only for European indices (provider: cboe)
+        description : Optional[str]
+            Description for the index. (provider: cboe)
+        data_delay : Optional[int]
+            Data delay for the index. Valid only for US indices. (provider: cboe)
+        currency : Optional[str]
+            Currency for the index. (provider: cboe)
+        time_zone : Optional[str]
+            Time zone for the index. Valid only for US indices. (provider: cboe)
+        open_time : Optional[time]
+            Opening time for the index. Valid only for US indices. (provider: cboe)
+        close_time : Optional[time]
+            Closing time for the index. Valid only for US indices. (provider: cboe)
+        tick_days : Optional[str]
+            The trading days for the index. Valid only for US indices. (provider: cboe)
+        tick_frequency : Optional[str]
+            Tick frequency for the index. Valid only for US indices. (provider: cboe)
+        tick_period : Optional[str]
+            Tick period for the index. Valid only for US indices. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "ticker": ticker,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_search",
+            **inputs,
+        )
+
+    @validate_arguments
+    def index_snapshots(
+        self,
+        region: Annotated[
+            Optional[Literal["US", "EU"]],
+            OpenBBCustomParameter(
+                description="The region to return. Currently supports US and EU."
+            ),
+        ] = "US",
+        chart: bool = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get current  levels for all indices from a provider.
+
+        Parameters
+        ----------
+        region : Optional[Literal['US', 'EU']]
+            The region to return. Currently supports US and EU.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSnapshots]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSnapshots
+        --------------
+        symbol : Optional[str]
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        currency : Optional[str]
+            Currency of the index.
+        price : Optional[float]
+            Current price of the index.
+        open : Optional[float]
+            Opening price of the index.
+        high : Optional[float]
+            Highest price of the index.
+        low : Optional[float]
+            Lowest price of the index.
+        close : Optional[float]
+            Closing price of the index.
+        prev_close : Optional[float]
+            Previous closing price of the index.
+        change : Optional[float]
+            Change of the index.
+        change_percent : Optional[float]
+            Change percent of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the index. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "region": region,
+            },
+            extra_params=kwargs,
+            chart=chart,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_snapshots",
             **inputs,
         )
 
