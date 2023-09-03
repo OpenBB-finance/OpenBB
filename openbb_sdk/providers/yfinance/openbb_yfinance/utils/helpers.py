@@ -139,7 +139,6 @@ def yf_download(
         data = data.reset_index()
         data = data.rename(columns={"Date": "date", "Datetime": "date"})
         data["date"] = pd.to_datetime(data["date"])
-        data = data[data["Open"] > 0]
 
         if start_date is not None:
             data = data[data["date"] >= pd.to_datetime(start_date)]
@@ -171,7 +170,5 @@ def yf_download(
 
         if actions is False:
             data = data.drop(columns=["Adj Close"])
-
-        data.columns = data.columns.str.lower().to_list()
 
     return data

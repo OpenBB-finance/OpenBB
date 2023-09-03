@@ -102,15 +102,11 @@ class YFinanceMajorIndicesHistoricalFetcher(
         )
 
         if query.start_date is not None:
-            data = data[
-                (to_datetime(data["date"]) >= to_datetime(query.start_date))
-                & (
-                    to_datetime(data["date"])
-                    <= (to_datetime(query.end_date) + timedelta(days=days))
-                )
-            ]
+            data["date"] = to_datetime(data["date"])
+            data.set_index("date", inplace=True)
+            data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
 
-        return data.to_dict("records")
+        return data.reset_index().to_dict("records")
 
     @staticmethod
     def transform_data(

@@ -88,16 +88,13 @@ class YFinanceForexHistoricalFetcher(
             if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
             else 0
         )
-        if query.start_date is not None:
-            data = data[
-                (to_datetime(data["date"]) >= to_datetime(query.start_date))
-                & (
-                    to_datetime(data["date"])
-                    <= (to_datetime(query.end_date) + timedelta(days=days))
-                )
-            ]
 
-        return data.to_dict("records")
+        if query.start_date is not None:
+            data["date"] = to_datetime(data["date"])
+            data.set_index("date", inplace=True)
+            data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
+
+        return data.reset_index().to_dict("records")
 
     @staticmethod
     def transform_data(
