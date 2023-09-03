@@ -187,8 +187,7 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = {"model": model}
 
-        if issubclass(func.__annotations__["return"], OBBject):
-            func = SignatureInspector.complete_signature(func, model)
+        func = SignatureInspector.complete_signature(func, model)
 
         if func:
             CommandValidator.check(func=func)
@@ -222,6 +221,10 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
+
+        if not issubclass(func.__annotations__["return"], OBBject):
+            return func
+
         provider_interface = ProviderInterface()
 
         if model:
