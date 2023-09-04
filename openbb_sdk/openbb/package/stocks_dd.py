@@ -138,7 +138,6 @@ class CLASS_stocks_dd(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -154,8 +153,6 @@ class CLASS_stocks_dd(Container):
             Page number of the results.
         limit : Optional[int]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -203,7 +200,6 @@ class CLASS_stocks_dd(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

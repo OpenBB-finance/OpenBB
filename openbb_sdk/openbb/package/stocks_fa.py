@@ -62,7 +62,6 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -76,8 +75,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -254,7 +251,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -273,7 +269,6 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -285,8 +280,6 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -402,7 +395,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -425,7 +417,6 @@ class CLASS_stocks_fa(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -437,8 +428,6 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -486,7 +475,6 @@ class CLASS_stocks_fa(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -509,7 +497,6 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -523,8 +510,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -673,7 +658,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -692,7 +676,6 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -704,8 +687,6 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -803,7 +784,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -818,7 +798,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -828,8 +807,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -886,7 +863,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -909,7 +885,6 @@ class CLASS_stocks_fa(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -921,8 +896,6 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -964,7 +937,6 @@ class CLASS_stocks_fa(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -979,7 +951,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -989,8 +960,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1035,7 +1004,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1054,7 +1022,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1066,8 +1033,6 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1117,7 +1082,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1132,7 +1096,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1142,8 +1105,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1192,7 +1153,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1215,7 +1175,6 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1229,8 +1188,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1307,7 +1264,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1330,7 +1286,6 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
         provider: Optional[Literal["fmp", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1344,8 +1299,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1502,7 +1455,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1525,7 +1477,6 @@ class CLASS_stocks_fa(Container):
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1539,8 +1490,6 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1631,7 +1580,6 @@ class CLASS_stocks_fa(Container):
                 "period": period,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1685,7 +1633,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1703,8 +1650,6 @@ class CLASS_stocks_fa(Container):
             CIK of the company owner.
         page : Optional[int]
             Page number of the data to fetch.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1769,7 +1714,6 @@ class CLASS_stocks_fa(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1791,7 +1735,6 @@ class CLASS_stocks_fa(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1805,8 +1748,6 @@ class CLASS_stocks_fa(Container):
             Include current quarter data.
         date : Optional[datetime.date]
             A specific date to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1912,7 +1853,6 @@ class CLASS_stocks_fa(Container):
                 "date": date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1935,7 +1875,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1949,8 +1888,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2103,7 +2040,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2118,7 +2054,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2128,8 +2063,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2174,7 +2107,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2189,7 +2121,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -2199,8 +2130,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2303,7 +2232,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2326,7 +2254,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2340,8 +2267,6 @@ class CLASS_stocks_fa(Container):
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2452,7 +2377,6 @@ class CLASS_stocks_fa(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2467,7 +2391,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -2477,8 +2400,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2519,7 +2440,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2534,7 +2454,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2544,8 +2463,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2606,7 +2523,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2629,7 +2545,6 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2643,8 +2558,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2791,7 +2704,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2814,7 +2726,6 @@ class CLASS_stocks_fa(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2828,8 +2739,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2876,7 +2785,6 @@ class CLASS_stocks_fa(Container):
                 "structure": structure,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2899,7 +2807,6 @@ class CLASS_stocks_fa(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2913,8 +2820,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2951,7 +2856,6 @@ class CLASS_stocks_fa(Container):
                 "structure": structure,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2966,7 +2870,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2976,8 +2879,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3020,7 +2921,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -3035,7 +2935,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -3045,8 +2944,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3085,7 +2982,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -3110,7 +3006,6 @@ class CLASS_stocks_fa(Container):
                 description="Quarter of the earnings call transcript."
             ),
         ] = 1,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -3124,8 +3019,6 @@ class CLASS_stocks_fa(Container):
             Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
             Quarter of the earnings call transcript.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3168,7 +3061,6 @@ class CLASS_stocks_fa(Container):
                 "quarter": quarter,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
