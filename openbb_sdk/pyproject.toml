@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "openbb"
-version = "4.0.0a0"
+name = "openbb-sdk"
+version = "4.0.0rc11"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,31 +8,31 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = { path = "./sdk/core" }
+openbb-core = {version = "^0.1.0a1", source = "test-pypi"}
 
-openbb-benzinga = { path = "./providers/benzinga" }
-openbb-fmp = { path = "./providers/fmp" }
-openbb-fred = { path = "./providers/fred" }
-openbb-intrinio = { path = "./providers/intrinio" }
-openbb-polygon = { path = "./providers/polygon" }
+openbb-benzinga = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-fmp = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-fred = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-intrinio = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-polygon = {version = "^0.1.0a0", source = "test-pypi"}
 
-openbb-crypto = { path = "./extensions/crypto" }
-openbb-economy = { path = "./extensions/economy" }
-openbb-forex = { path = "./extensions/forex" }
-openbb-fixedincome = { path = "./extensions/fixedincome" }
-openbb-news = { path = "./extensions/news" }
-openbb-stocks = { path = "./extensions/stocks" }
+openbb-crypto = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-economy = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-forex = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-fixedincome = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-news = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-stocks = {version = "^0.1.0a1", source = "test-pypi"}
 
 # Community dependencies
-openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true }
-openbb-cboe = { path = "./providers/cboe", optional = true }
-openbb-quandl = { path = "./providers/quandl", optional = true }
-openbb-yfinance = { path = "./providers/yfinance", optional = true }
+openbb-alpha-vantage = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-cboe = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-quandl = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-yfinance = { version = "^0.1.0a0", source = "test-pypi", optional = true }
 
-openbb-charting = { path = "./extensions/charting", optional = true }
-openbb-futures = { path = "./extensions/futures", optional = true }
-openbb-qa = { path = "./extensions/qa", optional = true }
-openbb-ta = { path = "./extensions/ta", optional = true }
+openbb-charting = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-futures ={ version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-qa = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-ta = { version = "^0.1.0a0", source = "test-pypi", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
@@ -57,6 +57,12 @@ all = [
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.2"
+
+
+[[tool.poetry.source]]
+name = "test-pypi"
+url = "https://test.pypi.org/simple/"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
