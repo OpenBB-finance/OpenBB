@@ -49,7 +49,7 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
             "net_cash_flow_from_operating_activities": "NetCashProvidedByUsedInOperatingActivities",
             "purchases_of_marketable_securities": "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
             "sales_from_maturities_of_investments": "ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
-            "investments_in_property_plant_and_equipment": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+            "investments_in_property_plant_and_equipment": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",  # noqa: E501
             "payments_from_acquisitions": "PaymentsToAcquireBusinessesNetOfCashAcquired",
             "other_investing_activities": "PaymentsForProceedsFromOtherInvestingActivities",
             "net_cash_flow_from_investing_activities": "NetCashProvidedByUsedInInvestingActivities",
@@ -60,7 +60,7 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
             "debt_repayment": "RepaymentsOfLongTermDebt",
             "other_financing_activities": "ProceedsFromPaymentsForOtherFinancingActivities",
             "net_cash_flow_from_financing_activities": "NetCashProvidedByUsedInFinancingActivities",
-            "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+            "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",   # noqa: E501
         }
 
 
