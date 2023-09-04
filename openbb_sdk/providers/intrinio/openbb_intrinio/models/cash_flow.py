@@ -1,8 +1,8 @@
 """Intrinio Cash Flow Statement Fetcher."""
 
 
-from typing import Any, Dict, List, Literal, Optional
 from datetime import date
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cash_flow import (
@@ -118,10 +118,10 @@ class IntrinioCashFlowStatementFetcher(
         for item in data:
             sub_dict = {}
 
-            if "reported_financials" in item.keys():
+            if "reported_financials" in item:
                 key = "reported_financials"
                 sub_tag = "xbrl_tag"
-            elif "standardized_financials" in item.keys():
+            elif "standardized_financials" in item:
                 key = "standardized_financials"
                 sub_tag = "data_tag"
 
