@@ -1113,7 +1113,7 @@ files = [
 [[package]]
 name = "openbb-alpha-vantage"
 version = "0.1.0"
-description = ""
+description = "Alpha Vantage extension for OpenBB"
 optional = true
 python-versions = "^3.8"
 files = []
@@ -1415,7 +1415,7 @@ url = "extensions/qa"
 [[package]]
 name = "openbb-quandl"
 version = "0.1.0"
-description = ""
+description = "Quandl extension for OpenBB"
 optional = true
 python-versions = "^3.8"
 files = []
