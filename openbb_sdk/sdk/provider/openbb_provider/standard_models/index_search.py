@@ -10,7 +10,7 @@ class IndexSearchQueryParams(QueryParams):
     """Index Search Query Params"""
 
     query: str = Field(description="Search query.", default="")
-    ticker: bool = Field(
+    symbol: bool = Field(
         description="Whether to search by ticker symbol.", default=False
     )
 
