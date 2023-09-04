@@ -9,7 +9,7 @@ packages = [{ include = "openbb_quandl" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 quandl = ">=3.7.0"
-openbb-provider = { path = "../../sdk/provider" }
+openbb-core = { path = "../../sdk/core" }
 
 [build-system]
 requires = ["poetry-core"]
