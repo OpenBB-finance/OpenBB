@@ -21,7 +21,6 @@ class PolygonBalanceSheetData(BalanceSheetData):
 
     class Config:
         fields = {
-            "date": "start_date",
             "total_current_assets": "current_assets",
             "marketable_securities": "fixed_assets",
             "property_plant_equipment_net": "public_utilities_property_plant_and_equipment_net",
@@ -85,9 +84,10 @@ class PolygonBalanceSheetFetcher(
                 key: value["value"]
                 for key, value in item["financials"]["balance_sheet"].items()
             }
-            sub_data["start_date"] = item["start_date"]
+            sub_data["date"] = item["start_date"]
             sub_data["cik"] = item["cik"]
             sub_data["symbol"] = item["tickers"]
+            sub_data["period"] = item["fiscal_period"]
             transformed_data.append(PolygonBalanceSheetData(**sub_data))
 
         return transformed_data

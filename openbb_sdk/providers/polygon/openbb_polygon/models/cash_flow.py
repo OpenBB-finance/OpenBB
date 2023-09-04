@@ -19,9 +19,6 @@ class PolygonCashFlowStatementQueryParams(PolygonFundamentalQueryParams):
 class PolygonCashFlowStatementData(CashFlowStatementData):
     """Return Balance Sheet Data."""
 
-    class Config:
-        fields = {"date": "start_date"}
-
     @validator("symbol", pre=True, check_fields=False)
     def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
         if isinstance(v, list):
@@ -68,9 +65,10 @@ class PolygonCashFlowStatementFetcher(
                 key: value["value"]
                 for key, value in item["financials"]["cash_flow_statement"].items()
             }
-            sub_data["start_date"] = item["start_date"]
+            sub_data["date"] = item["start_date"]
             sub_data["cik"] = item["cik"]
             sub_data["symbol"] = item["tickers"]
+            sub_data["period"] = item["fiscal_period"]
             transformed_data.append(PolygonCashFlowStatementData(**sub_data))
 
         return transformed_data
