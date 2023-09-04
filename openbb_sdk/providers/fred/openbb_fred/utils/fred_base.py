@@ -68,10 +68,6 @@ class Fred:
         root = self.__fetch_data(url, **kwargs)
         if root is None:
             raise ValueError("No data exists for series id: " + series_id)
-        if (
-            "error_code" in root
-            and "error_message" in root
-            and root["error_message"] != ""
-        ):
+        if "error_code" in root and "error_message" in root and root["error_message"]:
             raise ValueError(root["error_message"])
         return root["observations"]
