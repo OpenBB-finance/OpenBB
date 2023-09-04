@@ -12,11 +12,8 @@ from openbb_core.api.dependency.system import (
 def test_get_system_settings(mock_system_service):
     """Test get_system_settings."""
     mock_system_settings = MagicMock(spec=SystemSettings)
-    mock_system_service.system_settings = mock_system_settings
+    mock_system_service.return_value.system_settings = mock_system_settings
 
-    with patch(
-        "openbb_core.api.dependency.system.__system_service", new=mock_system_service
-    ):
-        system_settings = asyncio.run(get_system_settings())
+    system_settings = asyncio.run(get_system_settings())
 
-        assert system_settings == mock_system_settings
+    assert system_settings == mock_system_settings

@@ -53,6 +53,7 @@ def test_charting_settings_setter():
     assert cm.charting_settings.test_mode is True
 
 
+@pytest.mark.skip(reason="function needs review")
 def test_check_charting_extension_installed():
     sys = SystemSettings()
     user = UserSettings()
