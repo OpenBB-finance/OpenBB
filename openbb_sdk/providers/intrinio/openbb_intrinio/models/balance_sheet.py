@@ -34,7 +34,6 @@ class IntrinioBalanceSheetData(BalanceSheetData):
 
     class Config:
         fields = {
-            "period": "fiscal_period",
             "cash_and_cash_equivalents": "cash_and_equivalents",
             "marketable_securities": "short_term_investments",
             "net_receivables": "note_and_lease_receivable",
