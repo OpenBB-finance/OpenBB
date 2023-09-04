@@ -3,7 +3,6 @@ from typing import List, Literal
 import numpy as np
 import pandas as pd
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -110,12 +109,6 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
 
 @router.command(methods=["POST"])
-def qqplot() -> OBBject[Empty]:
-    """QQ Plot."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def om(
     data: List[Data],
     target: str,
@@ -189,42 +182,6 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
 
 
 @router.command(methods=["POST"])
-def pick() -> OBBject[Empty]:
-    """Pick."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def spread() -> OBBject[Empty]:
-    """Spread."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def rolling() -> OBBject[Empty]:
-    """Rolling."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def var() -> OBBject[Empty]:
-    """Value at Risk."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def line() -> OBBject[Empty]:
-    """Line."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def hist() -> OBBject[Empty]:
-    """Histogram."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def unitroot(
     data: List[Data],
     target: str,
@@ -276,12 +233,6 @@ def unitroot(
         ),
     )
     return OBBject(results=unitroot_summary)
-
-
-@router.command(methods=["POST"])
-def beta() -> OBBject[Empty]:
-    """Beta."""
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -368,30 +319,6 @@ def so(
 
 
 @router.command(methods=["POST"])
-def cusum() -> OBBject[Empty]:
-    """Cumulative Sum."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def raw() -> OBBject[Empty]:
-    """Raw."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def cdf() -> OBBject[Empty]:
-    """Cumulative Distribution Function."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def decompose() -> OBBject[Empty]:
-    """Decompose."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def skew(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
     """Skewness.
 
@@ -441,24 +368,6 @@ def quantile(
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def bw() -> OBBject[Empty]:
-    """Bandwidth."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def es() -> OBBject[Empty]:
-    """Expected Shortfall."""
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
-def acf() -> OBBject[Empty]:
-    """Autocorrelation Function."""
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])

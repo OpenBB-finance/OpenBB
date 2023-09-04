@@ -1,27 +1,23 @@
 """OpenBB SDK."""
 # flake8: noqa
 
+import os
+from pathlib import Path
 from typing import List, Optional, Union
 
+from openbb_core.app.static.utils import auto_build as _auto_build, build as _build
 from openbb_core.app.static.app_factory import (
-    create_app as __create_app,
-    BaseApp as __BaseApp,
+    create_app as _create_app,
+    BaseApp as _BaseApp,
 )
 
-try:
-    # pylint: disable=import-outside-toplevel
-    from openbb.package.__extensions__ import Extensions as __Extensions
-
-    obb: Union[__BaseApp, __Extensions] = __create_app(__Extensions)
-    sdk = obb
-except (ImportError, ModuleNotFoundError):
-    print("Failed to import extensions. Run `openbb.build()` to build extensions code.")
-    obb = sdk = __create_app()
+_this_dir = Path(os.path.dirname(os.path.realpath(__file__)))
 
 
 def build(
     modules: Optional[Union[str, List[str]]] = None,
     lint: bool = True,
+    verbose: bool = False,
 ) -> None:
     """Build extension modules.
 
@@ -33,20 +29,20 @@ def build(
         If None, all modules are rebuilt.
     lint : bool, optional
         Whether to lint the code, by default True
+    verbose : bool, optional
+        Enable/disable verbose mode
     """
+    _build(directory=_this_dir, modules=modules, lint=lint, verbose=verbose)
+
+
+_auto_build(directory=_this_dir)
+
+try:
     # pylint: disable=import-outside-toplevel
-    import os
-    from pathlib import Path
-    from multiprocessing import Pool
-    from openbb_core.app.static.package_builder import PackageBuilder
+    from openbb.package.__extensions__ import Extensions as _Extensions
 
-    current_dir = Path(os.path.dirname(os.path.realpath(__file__)))
-
-    # `build` is running in a separate process. This avoids consecutive calls to this
-    # function in the same interpreter to reuse objects already in memory. Not doing
-    # this was causing docstrings to have repeated sections, for example.
-    with Pool(processes=1) as pool:
-        pool.apply(
-            PackageBuilder(current_dir).build,
-            args=(modules, lint),
-        )
+    obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)
+    sdk = obb
+except (ImportError, ModuleNotFoundError):
+    print("Failed to import extensions.")
+    obb = sdk = _create_app()
