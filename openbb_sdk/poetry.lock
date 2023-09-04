@@ -1376,7 +1376,7 @@ url = "extensions/stocks"
 [[package]]
 name = "openbb-ta"
 version = "0.0.0"
-description = "Technical Analysis for OpenBB"
+description = "Technical Analysis extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
 files = []

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-ta"
 version = "0.0.0"
-description = "Technical Analysis for OpenBB"
+description = "Technical Analysis extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_ta" }]
