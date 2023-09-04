@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-polygon"
-version = "0.1.0"
+version = "0.1.0a0"
 description = "Polygon extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
