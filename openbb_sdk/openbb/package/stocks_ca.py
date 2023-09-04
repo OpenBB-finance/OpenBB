@@ -25,8 +25,12 @@ class CLASS_stocks_ca(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[BaseModel]:
         """Company peers.
@@ -35,9 +39,13 @@ class CLASS_stocks_ca(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -71,7 +79,6 @@ class CLASS_stocks_ca(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

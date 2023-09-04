@@ -45,6 +45,122 @@ class CLASS_stocks(Container):
         return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
 
     @validate_arguments
+<<<<<<< HEAD
+=======
+    def info(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get general price and performance metrics of a stock.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[StockInfo]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        StockInfo
+        ---------
+        symbol : Optional[str]
+            Symbol to get data for.
+        name : Optional[str]
+            Name associated with the ticker symbol.
+        price : Optional[float]
+            Last price of the stock.
+        open : Optional[float]
+            Opening price of the stock.
+        high : Optional[float]
+            High price of the current trading day.
+        low : Optional[float]
+            Low price of the current trading day.
+        close : Optional[float]
+            Closing price of the stock.
+        change : Optional[float]
+            Change in price over the current trading period.
+        change_percent : Optional[float]
+            % change in price over the current trading period.
+        previous_close : Optional[float]
+            Previous closing price of the stock.
+        type : Optional[str]
+            Type of asset. (provider: cboe)
+        tick : Optional[str]
+            Whether the last sale was an up or down tick. (provider: cboe)
+        bid : Optional[float]
+            Current bid price. (provider: cboe)
+        bid_size : Optional[float]
+            Bid lot size. (provider: cboe)
+        ask : Optional[float]
+            Current ask price. (provider: cboe)
+        ask_size : Optional[float]
+            Ask lot size. (provider: cboe)
+        volume : Optional[float]
+            Stock volume for the current trading day. (provider: cboe)
+        iv_thirty : Optional[float]
+            The 30-day implied volatility of the stock. (provider: cboe)
+        iv_thirty_change : Optional[float]
+            Change in 30-day implied volatility of the stock. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the stock. (provider: cboe)
+        iv_thirty_one_year_high : Optional[float]
+            The 1-year high of implied volatility. (provider: cboe)
+        hv_thirty_one_year_high : Optional[float]
+            The 1-year high of realized volatility. (provider: cboe)
+        iv_thirty_one_year_low : Optional[float]
+            The 1-year low of implied volatility. (provider: cboe)
+        hv_thirty_one_year_low : Optional[float]
+            The 1-year low of realized volatility. (provider: cboe)
+        iv_sixty_one_year_high : Optional[float]
+            The 60-day high of implied volatility. (provider: cboe)
+        hv_sixty_one_year_high : Optional[float]
+            The 60-day high of realized volatility. (provider: cboe)
+        iv_sixty_one_year_low : Optional[float]
+            The 60-day low of implied volatility. (provider: cboe)
+        hv_sixty_one_year_low : Optional[float]
+            The 60-day low of realized volatility. (provider: cboe)
+        iv_ninety_one_year_high : Optional[float]
+            The 90-day high of implied volatility. (provider: cboe)
+        hv_ninety_one_year_high : Optional[float]
+            The 90-day high of realized volatility. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/stocks/info",
+            **inputs,
+        )
+
+    @validate_arguments
+>>>>>>> feature/openbb-sdk-v4
     def load(
         self,
         symbol: typing_extensions.Annotated[
@@ -67,7 +183,7 @@ class CLASS_stocks(Container):
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Load stock data for a specific ticker.
+        r"""Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -135,11 +251,11 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -509,8 +625,12 @@ class CLASS_stocks(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -519,9 +639,13 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -595,10 +719,77 @@ class CLASS_stocks(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
             "/stocks/quote",
             **inputs,
         )
+<<<<<<< HEAD
+=======
+
+    @validate_arguments
+    def search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        ticker: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Search for a company or stock ticker.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        ticker : bool
+            Whether to search by ticker symbol.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[StockSearch]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        StockSearch
+        -----------
+        symbol : Optional[str]
+            Symbol to get data for.
+        name : Optional[str]
+            Name of the company.
+        dpm_name : Optional[str]
+            Name of the primary market maker. (provider: cboe)
+        post_station : Optional[str]
+            Post and station location on the CBOE trading floor. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "ticker": ticker,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/stocks/search",
+            **inputs,
+        )
+>>>>>>> feature/openbb-sdk-v4

@@ -25,18 +25,26 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def available_indices(
+<<<<<<< HEAD
         self,
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
+=======
+        self, provider: Optional[Literal["fmp"]] = None, **kwargs
+>>>>>>> feature/openbb-sdk-v4
     ) -> OBBject[List]:
         """AVAILABLE_INDICES.
 
         Parameters
         ----------
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -74,7 +82,6 @@ class CLASS_economy(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -91,8 +98,12 @@ class CLASS_economy(Container):
                 description="Index for which we want to fetch the constituents."
             ),
         ] = "dowjones",
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Get the constituents of an index.
@@ -101,9 +112,13 @@ class CLASS_economy(Container):
         ----------
         index : Literal['nasdaq', 'sp500', 'dowjones']
             Index for which we want to fetch the constituents.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -149,7 +164,6 @@ class CLASS_economy(Container):
                 "index": index,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -242,8 +256,12 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """CPI.
@@ -262,9 +280,13 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -307,7 +329,6 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -334,11 +355,15 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
+=======
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
-        """Get OHLCV data for an index.
+        r"""Get OHLCV data for an index.
 
         Parameters
         ----------
@@ -348,9 +373,13 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp', 'polygon'], NoneType]
+=======
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -406,11 +435,11 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -425,7 +454,6 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -435,18 +463,26 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def risk(
+<<<<<<< HEAD
         self,
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
+=======
+        self, provider: Optional[Literal["fmp"]] = None, **kwargs
+>>>>>>> feature/openbb-sdk-v4
     ) -> OBBject[List]:
         """Market Risk Premium.
 
         Parameters
         ----------
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -482,7 +518,6 @@ class CLASS_economy(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

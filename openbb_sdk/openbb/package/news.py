@@ -26,8 +26,12 @@ class CLASS_news(Container):
             pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["benzinga", "fmp"], None] = None,
+=======
+        provider: Optional[Literal["benzinga", "fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -36,9 +40,13 @@ class CLASS_news(Container):
         ----------
         page : NonNegativeInt
             Page of the global news.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['benzinga', 'fmp'], NoneType]
+=======
+        provider : Optional[Literal['benzinga', 'fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -118,7 +126,6 @@ class CLASS_news(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

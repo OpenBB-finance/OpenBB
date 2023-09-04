@@ -32,6 +32,11 @@ class Env(metaclass=SingletonMeta):
         return self.str2bool(self._environ.get("OPENBB_AUTO_BUILD", True))
 
     @property
+    def CHARTING_EXTENSION(self) -> str:
+        """Charting extension: enables charting extension"""
+        return self._environ.get("OPENBB_CHARTING_EXTENSION", "openbb_charting")
+
+    @property
     def API_AUTH(self) -> bool:
         """API authentication: enables commands authentication in FastAPI"""
         return self.str2bool(self._environ.get("OPENBB_API_AUTH", True))

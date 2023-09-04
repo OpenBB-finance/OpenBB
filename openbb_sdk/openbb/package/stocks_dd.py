@@ -138,8 +138,12 @@ class CLASS_stocks_dd(Container):
             Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """SEC Filings.
@@ -154,9 +158,13 @@ class CLASS_stocks_dd(Container):
             Page number of the results.
         limit : Union[int, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -203,7 +211,6 @@ class CLASS_stocks_dd(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

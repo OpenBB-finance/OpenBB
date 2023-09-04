@@ -62,8 +62,12 @@ class CLASS_stocks_fa(Container):
             Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
+=======
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet.
@@ -76,9 +80,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp', 'polygon'], NoneType]
+=======
+        provider : Optional[Literal['fmp', 'polygon']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -254,7 +262,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -273,8 +280,12 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
@@ -285,9 +296,13 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -402,7 +417,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -425,8 +439,12 @@ class CLASS_stocks_fa(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
@@ -437,9 +455,13 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -486,7 +508,6 @@ class CLASS_stocks_fa(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -509,8 +530,12 @@ class CLASS_stocks_fa(Container):
             Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
+=======
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement.
@@ -523,9 +548,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp', 'polygon'], NoneType]
+=======
+        provider : Optional[Literal['fmp', 'polygon']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -673,7 +702,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -692,8 +720,12 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement Growth.
@@ -704,9 +736,13 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -803,7 +839,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -818,8 +853,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Executive Compensation.
@@ -828,9 +867,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -886,7 +929,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -909,8 +951,12 @@ class CLASS_stocks_fa(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Stock Split Calendar.
@@ -921,9 +967,13 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -964,7 +1014,6 @@ class CLASS_stocks_fa(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -979,8 +1028,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Historical Dividends.
@@ -989,9 +1042,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1035,7 +1092,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1054,8 +1110,12 @@ class CLASS_stocks_fa(Container):
             Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Earnings Calendar.
@@ -1066,9 +1126,13 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : Union[int, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1117,7 +1181,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1132,8 +1195,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Number of Employees.
@@ -1142,9 +1209,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1192,7 +1263,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1215,8 +1285,12 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Analyst Estimates.
@@ -1229,9 +1303,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1307,7 +1385,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1330,8 +1407,12 @@ class CLASS_stocks_fa(Container):
             Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp", "polygon"], None] = None,
+=======
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Income Statement.
@@ -1344,9 +1425,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp', 'polygon'], NoneType]
+=======
+        provider : Optional[Literal['fmp', 'polygon']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1502,7 +1587,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1525,8 +1609,12 @@ class CLASS_stocks_fa(Container):
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Income Statement Growth.
@@ -1539,9 +1627,13 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Period of the data to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1631,7 +1723,6 @@ class CLASS_stocks_fa(Container):
                 "period": period,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1686,8 +1777,12 @@ class CLASS_stocks_fa(Container):
             Union[int, None],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Stock Insider Trading.
@@ -1704,9 +1799,13 @@ class CLASS_stocks_fa(Container):
             CIK of the company owner.
         page : Union[int, NoneType]
             Page number of the data to fetch.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1770,7 +1869,6 @@ class CLASS_stocks_fa(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1792,8 +1890,12 @@ class CLASS_stocks_fa(Container):
             Union[datetime.date, None],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Institutional Ownership.
@@ -1806,9 +1908,13 @@ class CLASS_stocks_fa(Container):
             Include current quarter data.
         date : Union[datetime.date, NoneType]
             A specific date to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1913,7 +2019,6 @@ class CLASS_stocks_fa(Container):
                 "date": date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1936,8 +2041,12 @@ class CLASS_stocks_fa(Container):
             Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Key Metrics.
@@ -1950,9 +2059,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[int, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2104,7 +2217,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2119,8 +2231,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Key Executives.
@@ -2129,9 +2245,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2175,7 +2295,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2190,8 +2309,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[BaseModel]:
         """Company Overview.
@@ -2200,9 +2323,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2304,7 +2431,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2327,8 +2453,12 @@ class CLASS_stocks_fa(Container):
             Union[int, None],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Stock Ownership.
@@ -2341,9 +2471,13 @@ class CLASS_stocks_fa(Container):
             A specific date to get data for.
         page : Union[int, NoneType]
             Page number of the data to fetch.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2453,7 +2587,6 @@ class CLASS_stocks_fa(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2468,8 +2601,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[BaseModel]:
         """Price Target Consensus.
@@ -2478,9 +2615,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2520,7 +2661,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2535,8 +2675,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Price Target.
@@ -2545,9 +2689,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2607,7 +2755,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2630,8 +2777,12 @@ class CLASS_stocks_fa(Container):
             Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Extensive set of ratios over time.
@@ -2644,9 +2795,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, NoneType]
             The number of data entries to return.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2792,7 +2947,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2815,8 +2969,12 @@ class CLASS_stocks_fa(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Revenue Geographic.
@@ -2829,9 +2987,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2877,7 +3039,6 @@ class CLASS_stocks_fa(Container):
                 "structure": structure,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2900,8 +3061,12 @@ class CLASS_stocks_fa(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Revenue Business Line.
@@ -2914,9 +3079,13 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2952,7 +3121,6 @@ class CLASS_stocks_fa(Container):
                 "structure": structure,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2967,8 +3135,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Share Statistics.
@@ -2977,9 +3149,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3021,7 +3197,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -3036,8 +3211,12 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Historical Stock Splits.
@@ -3046,9 +3225,13 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3086,7 +3269,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -3111,8 +3293,12 @@ class CLASS_stocks_fa(Container):
                 description="Quarter of the earnings call transcript."
             ),
         ] = 1,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Earnings Call Transcript.
@@ -3125,9 +3311,13 @@ class CLASS_stocks_fa(Container):
             Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
             Quarter of the earnings call transcript.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3169,7 +3359,6 @@ class CLASS_stocks_fa(Container):
                 "quarter": quarter,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

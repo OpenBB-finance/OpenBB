@@ -42,8 +42,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """
@@ -57,9 +61,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -96,7 +104,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -119,8 +126,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """
@@ -135,9 +146,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -174,7 +189,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -197,8 +211,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """
@@ -213,9 +231,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -252,7 +274,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -275,8 +296,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """
@@ -291,9 +316,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -328,7 +357,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -338,10 +366,14 @@ class CLASS_fixedincome(Container):
 
     @validate_arguments
     def projections(
+<<<<<<< HEAD
         self,
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
+=======
+        self, provider: Optional[Literal["fred"]] = None, **kwargs
+>>>>>>> feature/openbb-sdk-v4
     ) -> OBBject[List]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -351,9 +383,13 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -399,7 +435,6 @@ class CLASS_fixedincome(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -422,8 +457,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Get United States yield curve.
@@ -434,9 +473,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -473,7 +516,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -496,8 +538,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """
@@ -511,9 +557,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -550,7 +600,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -573,8 +622,12 @@ class CLASS_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fmp"], None] = None,
+=======
+        provider: Optional[Literal["fmp"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Get treasury rates.
@@ -585,9 +638,13 @@ class CLASS_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fmp'], NoneType]
+=======
+        provider : Optional[Literal['fmp']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -644,7 +701,6 @@ class CLASS_fixedincome(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -665,8 +721,12 @@ class CLASS_fixedincome(Container):
             Union[bool, None],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
+<<<<<<< HEAD
         chart: bool = False,
         provider: Union[Literal["fred"], None] = None,
+=======
+        provider: Optional[Literal["fred"]] = None,
+>>>>>>> feature/openbb-sdk-v4
         **kwargs
     ) -> OBBject[List]:
         """Get United States yield curve.
@@ -677,9 +737,13 @@ class CLASS_fixedincome(Container):
             Date to get Yield Curve data.  Defaults to the most recent FRED entry.
         inflation_adjusted : Union[bool, NoneType]
             Get inflation adjusted rates.
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['fred'], NoneType]
+=======
+        provider : Optional[Literal['fred']]
+>>>>>>> feature/openbb-sdk-v4
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -714,7 +778,6 @@ class CLASS_fixedincome(Container):
                 "inflation_adjusted": inflation_adjusted,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
