@@ -17,13 +17,10 @@ class CLASS_stocks(Container):
     /ca
     /dd
     /fa
-    info
     load
     multiples
     news
-    /options
     quote
-    search
     """
 
     def __repr__(self) -> str:
@@ -46,123 +43,6 @@ class CLASS_stocks(Container):
         from . import stocks_fa
 
         return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
-
-    @validate_arguments
-    def info(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        chart: bool = False,
-        provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[List]:
-        """Get general price and performance metrics of a stock.
-
-        Parameters
-        ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['cboe']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[StockInfo]
-                Serializable results.
-            provider : Optional[Literal['cboe']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
-
-        StockInfo
-        ---------
-        symbol : Optional[str]
-            Symbol to get data for.
-        name : Optional[str]
-            Name associated with the ticker symbol.
-        price : Optional[float]
-            Last price of the stock.
-        open : Optional[float]
-            Opening price of the stock.
-        high : Optional[float]
-            High price of the current trading day.
-        low : Optional[float]
-            Low price of the current trading day.
-        close : Optional[float]
-            Closing price of the stock.
-        change : Optional[float]
-            Change in price over the current trading period.
-        change_percent : Optional[float]
-            % change in price over the current trading period.
-        previous_close : Optional[float]
-            Previous closing price of the stock.
-        type : Optional[str]
-            Type of asset. (provider: cboe)
-        tick : Optional[str]
-            Whether the last sale was an up or down tick. (provider: cboe)
-        bid : Optional[float]
-            Current bid price. (provider: cboe)
-        bid_size : Optional[float]
-            Bid lot size. (provider: cboe)
-        ask : Optional[float]
-            Current ask price. (provider: cboe)
-        ask_size : Optional[float]
-            Ask lot size. (provider: cboe)
-        volume : Optional[float]
-            Stock volume for the current trading day. (provider: cboe)
-        iv_thirty : Optional[float]
-            The 30-day implied volatility of the stock. (provider: cboe)
-        iv_thirty_change : Optional[float]
-            Change in 30-day implied volatility of the stock. (provider: cboe)
-        last_trade_timestamp : Optional[datetime]
-            Last trade timestamp for the stock. (provider: cboe)
-        iv_thirty_one_year_high : Optional[float]
-            The 1-year high of implied volatility. (provider: cboe)
-        hv_thirty_one_year_high : Optional[float]
-            The 1-year high of realized volatility. (provider: cboe)
-        iv_thirty_one_year_low : Optional[float]
-            The 1-year low of implied volatility. (provider: cboe)
-        hv_thirty_one_year_low : Optional[float]
-            The 1-year low of realized volatility. (provider: cboe)
-        iv_sixty_one_year_high : Optional[float]
-            The 60-day high of implied volatility. (provider: cboe)
-        hv_sixty_one_year_high : Optional[float]
-            The 60-day high of realized volatility. (provider: cboe)
-        iv_sixty_one_year_low : Optional[float]
-            The 60-day low of implied volatility. (provider: cboe)
-        hv_sixty_one_year_low : Optional[float]
-            The 60-day low of realized volatility. (provider: cboe)
-        iv_ninety_one_year_high : Optional[float]
-            The 90-day high of implied volatility. (provider: cboe)
-        hv_ninety_one_year_high : Optional[float]
-            The 90-day high of realized volatility. (provider: cboe)"""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/info",
-            **inputs,
-        )
 
     @validate_arguments
     def load(
@@ -622,12 +502,6 @@ class CLASS_stocks(Container):
             **inputs,
         )
 
-    @property
-    def options(self):  # route = "/stocks/options"
-        from . import stocks_options
-
-        return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
-
     @validate_arguments
     def quote(
         self,
@@ -726,20 +600,5 @@ class CLASS_stocks(Container):
 
         return self._command_runner.run(
             "/stocks/quote",
-            **inputs,
-        )
-
-    @validate_arguments
-    def tob(
-        self, chart: bool = False
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """View top of book for loaded ticker (US exchanges only)."""  # noqa: E501
-
-        inputs = filter_inputs(
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/stocks/tob",
             **inputs,
         )
