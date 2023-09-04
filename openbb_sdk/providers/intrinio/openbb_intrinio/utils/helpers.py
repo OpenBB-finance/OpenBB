@@ -21,7 +21,7 @@ intrinio_session = requests_cache.CachedSession(
 )
 
 
-def get_options_tickers(api_key: str = "") -> list[str]:
+def get_options_tickers(api_key: str = "") -> List[str]:
     """Returns all tickers that have existing options contracts.
 
     Parameters
@@ -31,7 +31,7 @@ def get_options_tickers(api_key: str = "") -> list[str]:
 
     Returns
     -------
-    list[str]
+    List[str]
         List of tickers
     """
     url = f"https://api-v2.intrinio.com/options/tickers?api_key={api_key}"

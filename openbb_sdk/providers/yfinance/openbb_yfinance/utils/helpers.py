@@ -6,7 +6,7 @@ from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Union, Optional
 
 import pandas as pd
 import yfinance as yf
@@ -81,8 +81,8 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
 
 def yf_download(
     symbol: str,
-    start_date: Optional[str | dateType] = None,
-    end_date: Optional[str | dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     interval: str = "1d",
     period: str = "max",
     prepost: bool = False,

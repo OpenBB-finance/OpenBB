@@ -6,7 +6,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Union, Optional
 
 import pandas as pd
 import requests_cache
@@ -61,7 +61,7 @@ def get_options_tickers(api_key: str) -> List[str]:
 def get_options_expirations(
     symbol: str,
     api_key: str,
-    after: Optional[datetime | str] = datetime.now().strftime("%Y-%m-%d"),
+    after: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
     before: Optional[str] = "",
 ) -> list:
     """Returns a list of all current and upcoming option contract expiration dates for a particular symbol.
@@ -105,7 +105,7 @@ def download_json_files(urls):
 
 
 def get_historical_chain_with_greeks(
-    symbol: str, date: Optional[str | dateType] = "", api_key: str = ""
+    symbol: str, date: Optional[Union[str, dateType]] = "", api_key: str = ""
 ):
     symbol = symbol.upper()
     SYMBOLS = get_options_tickers(api_key)
@@ -237,7 +237,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
 
-    date: Optional[dateType | str] = Field(
+    date: Optional[Union[str, dateType]] = Field(
         description="Date for which the options chains are returned.",
         default="",
     )
