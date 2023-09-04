@@ -9,13 +9,11 @@ packages = [{ include = "openbb" }]
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
 openbb-core = { path = "./sdk/core" }
+
 openbb-benzinga = { path = "./providers/benzinga" }
 openbb-fmp = { path = "./providers/fmp" }
 openbb-fred = { path = "./providers/fred" }
 openbb-polygon = { path = "./providers/polygon" }
-
-openbb-cboe = { path = "./providers/cboe", optional = true }
-openbb-yfinance = { path = "./providers/yfinance", optional = true }
 
 openbb-crypto = { path = "./extensions/crypto" }
 openbb-economy = { path = "./extensions/economy" }
@@ -23,6 +21,10 @@ openbb-forex = { path = "./extensions/forex" }
 openbb-fixedincome = { path = "./extensions/fixedincome" }
 openbb-news = { path = "./extensions/news" }
 openbb-stocks = { path = "./extensions/stocks" }
+
+# Community dependencies
+openbb-cboe = { path = "./providers/cboe", optional = true }
+openbb-yfinance = { path = "./providers/yfinance", optional = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true }
 openbb-futures = { path = "./extensions/futures", optional = true }
