@@ -8,6 +8,7 @@ class Extensions(Container):
     """
     /crypto
     /economy
+    /etf
     /fixedincome
     /forex
     /futures
@@ -31,6 +32,12 @@ class Extensions(Container):
         from . import economy
 
         return economy.CLASS_economy(command_runner=self._command_runner)
+
+    @property
+    def etf(self):  # route = "/etf"
+        from . import etf
+
+        return etf.CLASS_etf(command_runner=self._command_runner)
 
     @property
     def fixedincome(self):  # route = "/fixedincome"

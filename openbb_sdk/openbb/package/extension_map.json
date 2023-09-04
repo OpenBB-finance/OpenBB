@@ -2,6 +2,7 @@
     "openbb_core_extension": [
         "crypto",
         "economy",
+        "etf",
         "fixedincome",
         "forex",
         "futures",
@@ -20,6 +21,7 @@
         "intrinio",
         "polygon",
         "quandl",
+        "tmx",
         "yfinance"
     ]
 }

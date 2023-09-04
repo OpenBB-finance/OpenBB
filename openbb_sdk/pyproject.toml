@@ -10,6 +10,7 @@ packages = [{ include = "openbb" }]
 python = ">=3.8,<3.12"
 openbb-core = { path = "./sdk/core" }
 openbb-stocks = { path = "./extensions/stocks" }
+openbb-etf = { path = "./extensions/etf" }
 openbb-crypto = { path = "./extensions/crypto" }
 openbb-forex = { path = "./extensions/forex" }
 openbb-futures = { path = "./extensions/futures" }

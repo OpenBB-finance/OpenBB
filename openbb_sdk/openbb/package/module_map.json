@@ -10,6 +10,8 @@
     "economy_european_index_constituents": "/economy/european_index_constituents",
     "economy_index": "/economy/index",
     "economy_risk": "/economy/risk",
+    "etf": "/etf",
+    "etf_search": "/etf/search",
     "fixedincome": "/fixedincome",
     "fixedincome_ameribor": "/fixedincome/ameribor",
     "fixedincome_estr": "/fixedincome/estr",
