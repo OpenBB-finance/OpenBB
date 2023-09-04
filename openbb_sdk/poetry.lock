@@ -1090,7 +1090,7 @@ files = [
 
 [[package]]
 name = "openbb-benzinga"
-version = "0.0.0"
+version = "0.1.0"
 description = "Benzinga extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1106,7 +1106,7 @@ url = "providers/benzinga"
 
 [[package]]
 name = "openbb-cboe"
-version = "0.0.0"
+version = "0.1.0"
 description = "CBOE extension for OpenBB"
 optional = true
 python-versions = "^3.8"
@@ -1123,7 +1123,7 @@ url = "providers/cboe"
 
 [[package]]
 name = "openbb-charting"
-version = "0.0.0"
+version = "0.1.0"
 description = "Charting extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
@@ -1148,7 +1148,7 @@ url = "extensions/charting"
 
 [[package]]
 name = "openbb-core"
-version = "0.0.0"
+version = "0.1.0"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = "^3.8"
@@ -1177,7 +1177,7 @@ url = "sdk/core"
 
 [[package]]
 name = "openbb-crypto"
-version = "0.0.0"
+version = "0.1.0"
 description = "Crypto extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1193,7 +1193,7 @@ url = "extensions/crypto"
 
 [[package]]
 name = "openbb-economy"
-version = "0.0.0"
+version = "0.1.0"
 description = "Economy extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1209,7 +1209,7 @@ url = "extensions/economy"
 
 [[package]]
 name = "openbb-fixedincome"
-version = "0.0.0"
+version = "0.1.0"
 description = "Fixed income extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1225,7 +1225,7 @@ url = "extensions/fixedincome"
 
 [[package]]
 name = "openbb-fmp"
-version = "0.0.0"
+version = "0.1.0"
 description = "FMP extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1241,7 +1241,7 @@ url = "providers/fmp"
 
 [[package]]
 name = "openbb-forex"
-version = "0.0.0"
+version = "0.1.0"
 description = "Forex extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1257,7 +1257,7 @@ url = "extensions/forex"
 
 [[package]]
 name = "openbb-fred"
-version = "0.0.0"
+version = "0.1.0"
 description = "FRED extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1273,7 +1273,7 @@ url = "providers/fred"
 
 [[package]]
 name = "openbb-futures"
-version = "0.0.0"
+version = "0.1.0"
 description = "Futures extension for OpenBB"
 optional = true
 python-versions = "^3.8"
@@ -1289,7 +1289,7 @@ url = "extensions/futures"
 
 [[package]]
 name = "openbb-news"
-version = "0.0.0"
+version = "0.1.0"
 description = "News extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1305,7 +1305,7 @@ url = "extensions/news"
 
 [[package]]
 name = "openbb-polygon"
-version = "0.0.0"
+version = "0.1.0"
 description = "Polygon extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1321,7 +1321,7 @@ url = "providers/polygon"
 
 [[package]]
 name = "openbb-provider"
-version = "0.0.0"
+version = "0.1.0"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = "^3.8"
@@ -1340,7 +1340,7 @@ url = "sdk/provider"
 
 [[package]]
 name = "openbb-qa"
-version = "0.0.0"
+version = "0.1.0"
 description = "Quantitative Analysis extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
@@ -1359,7 +1359,7 @@ url = "extensions/qa"
 
 [[package]]
 name = "openbb-stocks"
-version = "0.0.0"
+version = "0.1.0"
 description = "Stocks extension for OpenBB"
 optional = false
 python-versions = "^3.8"
@@ -1375,7 +1375,7 @@ url = "extensions/stocks"
 
 [[package]]
 name = "openbb-ta"
-version = "0.0.0"
+version = "0.1.0"
 description = "Technical Analysis extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
@@ -1394,7 +1394,7 @@ url = "extensions/ta"
 
 [[package]]
 name = "openbb-yfinance"
-version = "0.0.0"
+version = "0.1.0"
 description = "yfinance extension for OpenBB"
 optional = true
 python-versions = "^3.8"

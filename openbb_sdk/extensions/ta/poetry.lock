@@ -417,7 +417,7 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.0.0"
+version = "0.1.0"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = "^3.8"
@@ -446,7 +446,7 @@ url = "../../sdk/core"
 
 [[package]]
 name = "openbb-provider"
-version = "0.0.0"
+version = "0.1.0"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = "^3.8"
