@@ -24,25 +24,26 @@ openbb-fixedincome = { path = "./extensions/fixedincome" }
 openbb-news = { path = "./extensions/news" }
 openbb-stocks = { path = "./extensions/stocks" }
 
+openbb-charting = { path = "./extensions/charting", optional = true }
 openbb-futures = { path = "./extensions/futures", optional = true }
 openbb-qa = { path = "./extensions/qa", optional = true }
 openbb-ta = { path = "./extensions/ta", optional = true }
-openbb-charting = { path = "./extensions/charting", optional = true }
 
 [tool.poetry.extras]
 cboe = ["openbb-cboe"]
 yfinance = ["openbb-yfinance"]
+charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
 ta = ["openbb-ta"]
-charting = ["openbb-charting"]
+
 all = [
     "openbb-cboe",
     "openbb-yfinance",
+    "openbb-charting",
     "openbb-futures",
     "openbb-qa",
     "openbb-ta",
-    "openbb-charting",
 ]
 
 [tool.poetry.group.dev.dependencies]
