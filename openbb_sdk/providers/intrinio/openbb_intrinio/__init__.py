@@ -3,6 +3,8 @@
 
 from openbb_provider.abstract.provider import Provider
 
+from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
+from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher

@@ -39,11 +39,10 @@ class CLASS_forex(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Forex Intraday Price.
+        r"""Forex Intraday Price.
 
         Parameters
         ----------
@@ -53,8 +52,6 @@ class CLASS_forex(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -117,11 +114,11 @@ class CLASS_forex(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -136,7 +133,6 @@ class CLASS_forex(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -146,18 +142,13 @@ class CLASS_forex(Container):
 
     @validate_arguments
     def pairs(
-        self,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -231,7 +222,6 @@ class CLASS_forex(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

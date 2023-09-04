@@ -1,5 +1,6 @@
 from importlib import import_module
-from typing import Callable, Optional, Tuple, TypeVar
+from inspect import getmembers, getsource, isfunction
+from typing import Callable, List, Optional, Tuple, TypeVar
 
 from importlib_metadata import entry_points
 
@@ -8,10 +9,13 @@ from openbb_core.app.model.charts.chart import Chart, ChartFormat
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.env import Env
 
 T = TypeVar("T")
 
 POETRY_PLUGIN = "openbb_core_extension"
+# this is needed because static assets and api endpoints are built before any user is instantiated
+EXTENSION_NAME = Env().CHARTING_EXTENSION
 
 
 class ChartingServiceError(Exception):
@@ -60,7 +64,9 @@ class ChartingService(metaclass=SingletonMeta):
             )
 
         self._charting_settings = ChartingSettings(user_settings, system_settings)
-        self._charting_extension = user_settings.preferences.charting_extension
+        self._charting_extension = self._check_and_get_charting_extension_name(
+            user_settings.preferences.charting_extension
+        )
         self._charting_extension_installed = self._check_charting_extension_installed(
             self._charting_extension
         )
@@ -76,6 +82,20 @@ class ChartingService(metaclass=SingletonMeta):
             user_settings=user_settings,
             system_settings=system_settings,
         )
+
+    @staticmethod
+    def _check_and_get_charting_extension_name(
+        user_preferences_charting_extension: str,
+    ):
+        """
+        Checks if the charting extension defined on user preferences is the same as the one defined in the env file.
+        """
+        if user_preferences_charting_extension != EXTENSION_NAME:
+            raise ChartingServiceError(
+                f"The charting extension defined on user preferences must be the same as the one defined in the env file."
+                f"diff: {user_preferences_charting_extension} != {EXTENSION_NAME}"
+            )
+        return user_preferences_charting_extension
 
     @staticmethod
     def _check_charting_extension_installed(
@@ -101,34 +121,16 @@ class ChartingService(metaclass=SingletonMeta):
         return charting_extension in extensions
 
     @staticmethod
-    def _get_extension_module(
+    def _get_extension_router(
         extension_name: str, plugin: Optional[str] = POETRY_PLUGIN
     ):
         """
         Get the module of the given extension.
         """
+
         for entry_point in entry_points(group=plugin):
             if entry_point.name == extension_name:
                 return import_module(entry_point.module)
-
-    @classmethod
-    def _get_chart_format(cls, extension_name: str) -> ChartFormat:
-        """
-        Given an extension name, it returns the chart format.
-        The module must contain the `CHART_FORMAT` attribute.
-        """
-        module = cls._get_extension_module(extension_name)
-        return getattr(module, "CHART_FORMAT")
-
-    @classmethod
-    def _get_chart_function(cls, extension_name: str, route: str) -> Callable:
-        """
-        Given an extension name and a route, it returns the chart function.
-        The module must contain the given route.
-        """
-        adjusted_route = route.replace("/", "_")[1:]
-        module = cls._get_extension_module(extension_name)
-        return getattr(module, adjusted_route)
 
     @staticmethod
     def _handle_backend(charting_extension: str, charting_settings: ChartingSettings):
@@ -153,6 +155,50 @@ class ChartingService(metaclass=SingletonMeta):
 
         create_backend_func(charting_settings=charting_settings)
         get_backend_func().start(debug=charting_settings.debug_mode)
+
+    @classmethod
+    def _get_chart_format(cls, extension_name: str) -> ChartFormat:
+        """
+        Given an extension name, it returns the chart format.
+        The module must contain the `CHART_FORMAT` attribute.
+        """
+        module = cls._get_extension_router(extension_name)
+        return getattr(module, "CHART_FORMAT")
+
+    @classmethod
+    def _get_chart_function(cls, extension_name: str, route: str) -> Callable:
+        """
+        Given an extension name and a route, it returns the chart function.
+        The module must contain the given route.
+        """
+        adjusted_route = route.replace("/", "_")[1:]
+        module = cls._get_extension_router(extension_name)
+        return getattr(module, adjusted_route)
+
+    @classmethod
+    def get_implemented_charting_functions(
+        cls, extension_name: str = EXTENSION_NAME
+    ) -> List[str]:
+        """
+        Given an extension name, it returns the implemented charting functions from its router.
+        """
+
+        module = cls._get_extension_router(extension_name)
+        if not module:
+            return []
+
+        implemented_functions = []
+        module_name = module.__name__
+
+        for name, obj in getmembers(module, isfunction):
+            if (
+                obj.__module__ == module_name
+                and not name.startswith("_")
+                and "NotImplementedError" not in getsource(obj)
+            ):
+                implemented_functions.append(name)
+
+        return implemented_functions
 
     def to_chart(self, **kwargs) -> Chart:
         """
