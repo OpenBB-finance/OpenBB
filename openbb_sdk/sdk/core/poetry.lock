@@ -440,22 +440,25 @@ files = [
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0"
+version = "0.1.0a0"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_provider-0.1.0a0-py3-none-any.whl", hash = "sha256:680573548f696984acf93c263206b150f09d3dfb5e1c98e7173617923b282e8a"},
+    {file = "openbb_provider-0.1.0a0.tar.gz", hash = "sha256:64ff6cd48ca3a00703dd70d489624460e5db0a9f4f1e45705767fcce4137806a"},
+]
 
 [package.dependencies]
-importlib-metadata = "^6.8.0"
-pydantic = {version = "^1.10", extras = ["dotenv"]}
-requests = "^2.31.0"
+importlib-metadata = ">=6.8.0,<7.0.0"
+pydantic = {version = ">=1.10,<2.0", extras = ["dotenv"]}
+requests = ">=2.31.0,<3.0.0"
 urllib3 = "<2.0.0"
 
 [package.source]
-type = "directory"
-url = "../provider"
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "test-pypi"
 
 [[package]]
 name = "packaging"
@@ -1025,4 +1028,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "216953d6c5fe3f0ed15702427c52650a15b83a4d15cd2f67ef391ae57c91f305"
+content-hash = "e84978bcef8cfcc044dc8c8c43461e125d27f957664f3e804eba8d03554965e2"
