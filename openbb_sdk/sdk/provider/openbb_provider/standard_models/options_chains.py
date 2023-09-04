@@ -19,6 +19,7 @@ class OptionsChainsData(Data):
     expiration: datetime = Field(description="Expiration date of the contract.")
     strike: float = Field(description="Strike price of the contract.")
     option_type: str = Field(description="Call or Put.")
+    contract_symbol: str = Field(description="Contract symbol for the option.")
     bid: float = Field(description="Bid price of the contract.")
     ask: float = Field(description="Ask price of the contract.")
     open_interest: float = Field(description="Open interest on the contract.")

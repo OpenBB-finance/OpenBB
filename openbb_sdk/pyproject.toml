@@ -13,6 +13,7 @@ openbb-core = { path = "./sdk/core" }
 openbb-benzinga = { path = "./providers/benzinga" }
 openbb-fmp = { path = "./providers/fmp" }
 openbb-fred = { path = "./providers/fred" }
+openbb-intrinio = { path = "./providers/intrinio" }
 openbb-polygon = { path = "./providers/polygon" }
 
 openbb-crypto = { path = "./extensions/crypto" }
@@ -23,7 +24,9 @@ openbb-news = { path = "./extensions/news" }
 openbb-stocks = { path = "./extensions/stocks" }
 
 # Community dependencies
+openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true }
 openbb-cboe = { path = "./providers/cboe", optional = true }
+openbb-quandl = { path = "./providers/quandl", optional = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true }
@@ -32,7 +35,9 @@ openbb-qa = { path = "./extensions/qa", optional = true }
 openbb-ta = { path = "./extensions/ta", optional = true }
 
 [tool.poetry.extras]
+alpha_vantage = ["openbb-alpha-vantage"]
 cboe = ["openbb-cboe"]
+quandl = ["openbb-quandl"]
 yfinance = ["openbb-yfinance"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
@@ -40,7 +45,9 @@ qa = ["openbb-qa"]
 ta = ["openbb-ta"]
 
 all = [
+    "openbb-alpha-vantage",
     "openbb-cboe",
+    "openbb-quandl",
     "openbb-yfinance",
     "openbb-charting",
     "openbb-futures",

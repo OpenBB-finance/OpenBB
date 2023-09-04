@@ -61,7 +61,7 @@ class QueryExecutor:
         provider_name : str
             Name of the provider, for example: "fmp".
         model_name : str
-            Name of the model, for example: "StockEOD".
+            Name of the model, for example: "StockHistorical".
         params : Dict[str, Any]
             Query parameters, for example: {"symbol": "AAPL"}
         credentials : Optional[Dict[str, str]], optional

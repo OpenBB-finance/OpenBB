@@ -18,26 +18,26 @@ from pydantic import BaseModel
 def create_mock_query():
     """Mock query."""
 
-    class StockEOD:
-        """Mock StockEOD class."""
+    class StockHistorical:
+        """Mock StockHistorical class."""
 
         start_date = "2020-01-01"
         end_date = "2020-01-05"
         symbol = "AAPL"
 
-    return StockEOD()
+    return StockHistorical()
 
 
 def create_mock_extra_params():
     """Mock ExtraParams dataclass."""
 
     @dataclass
-    class StockEOD:
+    class StockHistorical:
         """Mock ExtraParams dataclass."""
 
         sort: str = "desc"
 
-    return StockEOD()
+    return StockHistorical()
 
 
 @pytest.fixture(scope="module")
@@ -69,13 +69,13 @@ def test_filter_extra_params_wrong_param(query):
     """Test filter_extra_params."""
 
     @dataclass
-    class StockEOD:
+    class StockHistorical:
         """Mock ExtraParams dataclass."""
 
         sort: str = "desc"
         limit: int = 4
 
-    extra_params = StockEOD()
+    extra_params = StockHistorical()
 
     assert not query.filter_extra_params(extra_params, "fmp")
 
