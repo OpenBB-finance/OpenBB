@@ -1,12 +1,14 @@
+import hashlib
 import json
 from pathlib import Path
 from typing import Optional
 
 from openbb_core.app.constants import SYSTEM_SETTINGS_PATH
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 
 
-class SystemService:
+class SystemService(metaclass=SingletonMeta):
     """System service."""
 
     SYSTEM_SETTINGS_PATH = SYSTEM_SETTINGS_PATH
@@ -14,12 +16,34 @@ class SystemService:
         "log_collect",
         "test_mode",
         "headless",
-        "dbms_uri",
+        "logging_sub_app",
     }
 
+    PRO_VALIDATION_HASH = (
+        "a35f9683d36f45fa6fac4f62d98c24974a3332e16ddf2832fcf8b119126b83db"
+    )
+
+    def __init__(
+        self,
+        **kwargs,
+    ):
+        self._system_settings = self._read_default_system_settings(
+            path=self.SYSTEM_SETTINGS_PATH, **kwargs
+        )
+
     @classmethod
-    def read_default_system_settings(
-        cls, path: Optional[Path] = None
+    def _compare_hash(cls, input_value, existing_hash: Optional[str] = None):
+        existing_hash = existing_hash or cls.PRO_VALIDATION_HASH
+
+        hash_object = hashlib.sha256()
+        hash_object.update(input_value.encode("utf-8"))
+        hashed_input = hash_object.hexdigest()
+
+        return hashed_input == existing_hash
+
+    @classmethod
+    def _read_default_system_settings(
+        cls, path: Optional[Path] = None, **kwargs
     ) -> SystemSettings:
         """Read default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH
@@ -29,14 +53,22 @@ class SystemService:
                 system_settings_json = file.read()
 
             system_settings_dict = json.loads(system_settings_json)
+
             S = system_settings_dict.copy()
             for field in S:
                 if field not in cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET:
                     del system_settings_dict[field]
+                elif field == "logging_sub_app":
+                    if cls._compare_hash(system_settings_dict[field]):
+                        system_settings_dict[field] = "pro"
+                        kwargs.pop(field, None)
+                    else:
+                        del system_settings_dict[field]
 
+            system_settings_dict.update(kwargs)
             system_settings = SystemSettings.parse_obj(system_settings_dict)
         else:
-            system_settings = SystemSettings()
+            system_settings = SystemSettings.parse_obj(kwargs)
 
         return system_settings
 
@@ -57,13 +89,6 @@ class SystemService:
         with path.open(mode="w") as file:
             file.write(system_settings_json)
 
-    def __init__(
-        self,
-        path: Path = SYSTEM_SETTINGS_PATH,
-    ):
-        self._path = path
-        self._system_settings = self.read_default_system_settings()
-
     @property
     def system_settings(self) -> SystemSettings:
         """Get system settings."""
@@ -76,6 +101,6 @@ class SystemService:
 
     def refresh_system_settings(self) -> SystemSettings:
         """Refresh system settings."""
-        self._system_settings = self.read_default_system_settings()
+        self._system_settings = self._read_default_system_settings()
 
         return self._system_settings
