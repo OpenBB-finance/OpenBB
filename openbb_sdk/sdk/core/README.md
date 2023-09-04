@@ -20,8 +20,7 @@
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
-    - [4.1.5. Debug mode](#415-debug-mode)
-    - [4.1.6. Develop mode](#416-develop-mode)
+    - [4.1.5. Environment variables](#415-environment-variables)
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
   - [5.1 Test users](#51-test-users)
@@ -330,27 +329,32 @@ obb.stocks.load(
     )
 ```
 
-### 4.1.5. Debug mode
+### 4.1.5. Environment variables
 
-To run the app in debug mode you can use the following code or create a .env file inside
-`openbb_sdk/sdk/core/openbb_core/app`.
+The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
 
-```python
-import os
-os.environ["OPENBB_DEBUG_MODE"] = "True"
-from openbb import sdk
-```
+To apply an environment variable use one of the following:
 
-### 4.1.6. Develop mode
+1. Temporary: use this snippet
 
-To run the app in develop mode you can use the following code or create a .env file inside
-`openbb_sdk/sdk/core/openbb_core/app`.
+    ```python
+    import os
+    os.environ["OPENBB_DEBUG_MODE"] = "True"
+    from openbb import sdk
+    ```
 
-```python
-import os
-os.environ["OPENBB_DEV_MODE"] = "True"
-from openbb import sdk
-```
+2. Persistent: create a `.env` file inside `openbb_sdk/sdk/core/openbb_core` with
+
+    ```text
+    OPENBB_DEBUG_MODE="False"
+    ```
+
+The variables we use are:
+
+- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
+- `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
+- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
+- `OPENBB_API_AUTH`: enables commands authentication in FastAPI
 
 ## 4.2 Dynamic version
 

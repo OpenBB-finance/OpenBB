@@ -63,7 +63,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Balance Sheet.
@@ -78,12 +78,14 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            None
+        type : Literal['reported', 'standardized']
+            Type of the statement to be fetched. (provider: intrinio)
+        year : Optional[int]
+            Year of the statement to be fetched. (provider: intrinio)
         company_name : Optional[str]
             Name of the company. (provider: polygon)
         company_name_search : Optional[str]
@@ -122,7 +124,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheet]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -135,114 +137,112 @@ class CLASS_stocks_fa(Container):
         ------------
         date : Optional[date]
             Date of the fetched statement.
-        symbol : Optional[str]
-            Symbol of the company.
-        cik : Optional[int]
-            Central Index Key.
-        currency : Optional[str]
-            Reporting currency.
-        filing_date : Optional[date]
-            Filling date.
-        accepted_date : Optional[datetime]
-            Accepted date.
         period : Optional[str]
             Reporting period of the statement.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
         short_term_investments : Optional[int]
             Short-term investments
-        inventory : Optional[int]
-            Inventory
         net_receivables : Optional[int]
             Receivables, net
+        inventory : Optional[int]
+            Inventory
         other_current_assets : Optional[int]
             Other current assets
-        current_assets : Optional[int]
+        total_current_assets : Optional[int]
             Total current assets
-        long_term_investments : Optional[int]
-            Long-term investments
+        marketable_securities : Optional[int]
+            Marketable securities
         property_plant_equipment_net : Optional[int]
             Property, plant and equipment, net
         goodwill : Optional[int]
             Goodwill
         intangible_assets : Optional[int]
             Intangible assets
-        other_non_current_assets : Optional[int]
-            Other non-current assets
         tax_assets : Optional[int]
             Accrued income taxes
+        other_non_current_assets : Optional[int]
+            Other non-current assets
+        total_non_current_assets : Optional[int]
+            Total non-current assets
         other_assets : Optional[int]
             Other assets
-        noncurrent_assets : Optional[int]
-            None
-        assets : Optional[int]
-            None
+        total_assets : Optional[int]
+            Total assets
         account_payables : Optional[int]
-            None
-        other_current_liabilities : Optional[int]
-            None
+            Accounts payables
+        short_term_debt : Optional[int]
+            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
         tax_payables : Optional[int]
             Accrued income taxes
         deferred_revenue : Optional[int]
             Accrued income taxes, other deferred revenue
-        short_term_debt : Optional[int]
-            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
-        current_liabilities : Optional[int]
-            None
+        other_current_liabilities : Optional[int]
+            Other current liabilities
+        total_current_liabilities : Optional[int]
+            Total current liabilities
         long_term_debt : Optional[int]
             Long-term debt, Operating lease obligations, Long-term finance lease obligations
+        deferred_revenue_non_current : Optional[int]
+            Deferred revenue, non-current
+        deferred_tax_liabilities_non_current : Optional[int]
+            Deferred income taxes and other
         other_non_current_liabilities : Optional[int]
             Deferred income taxes and other
+        total_non_current_liabilities : Optional[int]
+            Total non-current liabilities
         other_liabilities : Optional[int]
-            None
-        noncurrent_liabilities : Optional[int]
-            None
-        liabilities : Optional[int]
-            None
-        common_stock : Optional[int]
-            None
-        other_stockholder_equity : Optional[int]
-            Capital in excess of par value
-        accumulated_other_comprehensive_income_loss : Optional[int]
-            Accumulated other comprehensive income (loss)
+            Other liabilities
+        total_liabilities : Optional[int]
+            Total liabilities
         preferred_stock : Optional[int]
             Preferred stock
+        common_stock : Optional[int]
+            Common stock
         retained_earnings : Optional[int]
             Retained earnings
+        accumulated_other_comprehensive_income_loss : Optional[int]
+            Accumulated other comprehensive income (loss)
+        other_shareholder_equity : Optional[int]
+            Other shareholder's equity
+        total_shareholder_equity : Optional[int]
+            Total shareholder's equity
+        total_equity : Optional[int]
+            Total equity
+        total_liabilities_and_shareholder_equity : Optional[int]
+            Total liabilities and shareholder's equity
         minority_interest : Optional[int]
             Minority interest
-        total_stockholders_equity : Optional[int]
-            None
-        total_equity : Optional[int]
-            None
-        total_liabilities_and_stockholders_equity : Optional[int]
-            None
         total_liabilities_and_total_equity : Optional[int]
-            None
+            Total liabilities and total equity
+        symbol : Optional[str]
+            Symbol of the company. (provider: fmp)
+        reported_currency : Optional[str]
+            Reported currency in the statement. (provider: fmp)
+        cik : Optional[str]
+            Central Index Key. (provider: fmp)
+        filling_date : Optional[date]
+            Filling date. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date. (provider: fmp)
         calendar_year : Optional[int]
-            None
-        link : Optional[str]
-            None
-        final_link : Optional[str]
-            None
+            Calendar year. (provider: fmp)
         cash_and_short_term_investments : Optional[int]
-            None
+            Cash and short term investments (provider: fmp)
         goodwill_and_intangible_assets : Optional[int]
-            None
-        deferred_revenue_non_current : Optional[int]
-            None
-        total_investments : Optional[int]
-            None
+            Goodwill and Intangible Assets (provider: fmp)
         capital_lease_obligations : Optional[int]
-            None
-        deferred_tax_liabilities_non_current : Optional[int]
-            None
-        total_non_current_liabilities : Optional[int]
-            None
+            Capital lease obligations (provider: fmp)
+        total_investments : Optional[int]
+            Total investments (provider: fmp)
         total_debt : Optional[int]
-            None
+            Total debt (provider: fmp)
         net_debt : Optional[int]
-            None"""  # noqa: E501
+            Net debt (provider: fmp)
+        link : Optional[str]
+            Link to the statement. (provider: fmp)
+        final_link : Optional[str]
+            Link to the final statement. (provider: fmp)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

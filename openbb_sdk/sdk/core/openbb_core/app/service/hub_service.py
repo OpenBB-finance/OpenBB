@@ -5,7 +5,6 @@ from fastapi import HTTPException
 from jose import JWTError
 from jose.exceptions import ExpiredSignatureError
 from jose.jwt import decode, get_unverified_header
-from openbb_core.app.env import Env
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.features_keys import FeaturesKeys
@@ -13,6 +12,7 @@ from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.hub.hub_user_settings import HubUserSettings
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.env import Env
 from requests import get, post, put
 
 

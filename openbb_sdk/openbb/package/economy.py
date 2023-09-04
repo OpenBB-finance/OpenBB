@@ -540,7 +540,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get historical  levels for an index.
+        """Get OHLCV data for an index.
 
         Parameters
         ----------
@@ -625,6 +625,8 @@ class CLASS_economy(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
+        n : Optional[PositiveInt]
+            Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
         inputs = filter_inputs(
