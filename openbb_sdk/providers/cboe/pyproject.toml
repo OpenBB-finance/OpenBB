@@ -9,7 +9,7 @@ packages = [{ include = "openbb_cboe" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests-cache = "^1.1.0"
-openbb-core = { path = "../../sdk/core" }
+openbb-provider = { path = "../../sdk/provider" }
 
 [build-system]
 requires = ["poetry-core"]
