@@ -27,6 +27,7 @@ class CLASS_stocks_options(Container):
         ],
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider: Optional[Literal["cboe"]] = None,
 =======
         chart: bool = False,
@@ -35,6 +36,9 @@ class CLASS_stocks_options(Container):
 =======
         provider: Optional[Literal["cboe", "intrinio"]] = None,
 >>>>>>> c9435cec4a (static)
+=======
+        provider: Optional[Literal["cboe", "intrinio"]] = None,
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -43,6 +47,7 @@ class CLASS_stocks_options(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         provider : Optional[Literal['cboe']]
@@ -54,6 +59,9 @@ class CLASS_stocks_options(Container):
 =======
         provider : Optional[Literal['cboe', 'intrinio']]
 >>>>>>> c9435cec4a (static)
+=======
+        provider : Optional[Literal['cboe', 'intrinio']]
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.

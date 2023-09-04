@@ -33,6 +33,7 @@ class CLASS_futures(Container):
         ] = None,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider: Optional[Literal["yfinance"]] = None,
 =======
         chart: bool = False,
@@ -41,6 +42,9 @@ class CLASS_futures(Container):
 =======
         provider: Optional[Literal["cboe", "yfinance"]] = None,
 >>>>>>> c9435cec4a (static)
+=======
+        provider: Optional[Literal["cboe", "yfinance"]] = None,
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         **kwargs
     ) -> OBBject[List]:
         """Futures Historical Price.
@@ -53,6 +57,7 @@ class CLASS_futures(Container):
             Historical date to search curve for.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider : Optional[Literal['yfinance']]
 =======
         chart : bool
@@ -62,6 +67,9 @@ class CLASS_futures(Container):
 =======
         provider : Optional[Literal['cboe', 'yfinance']]
 >>>>>>> c9435cec4a (static)
+=======
+        provider : Optional[Literal['cboe', 'yfinance']]
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.

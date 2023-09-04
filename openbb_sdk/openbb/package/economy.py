@@ -29,6 +29,7 @@ class CLASS_economy(Container):
     def available_indices(
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
 =======
         self,
@@ -39,11 +40,15 @@ class CLASS_economy(Container):
 =======
         self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
 >>>>>>> c9435cec4a (static)
+=======
+        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
     ) -> OBBject[List]:
         """Lists of available indices from a provider.
 
         Parameters
         ----------
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         provider : Optional[Literal['fmp']]
@@ -55,6 +60,9 @@ class CLASS_economy(Container):
 =======
         provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
 >>>>>>> c9435cec4a (static)
+=======
+        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -446,6 +454,7 @@ class CLASS_economy(Container):
 
     @validate_arguments
 <<<<<<< HEAD
+<<<<<<< HEAD
     def cpi_options(
         self,
         chart: bool = False,
@@ -457,6 +466,8 @@ class CLASS_economy(Container):
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """Get the options for v3 cpi(options=True)"""  # noqa: E501
 =======
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
     def european_index(
         self,
         symbol: Annotated[
@@ -523,20 +534,27 @@ class CLASS_economy(Container):
             Low price for the interval. Only valid when interval is 1m. (provider: cboe)
         utc_datetime : Optional[datetime]
             UTC datetime. Only valid when interval is 1m. (provider: cboe)"""  # noqa: E501
+<<<<<<< HEAD
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
 
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },
             extra_params=kwargs,
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
             chart=chart,
@@ -550,10 +568,17 @@ class CLASS_economy(Container):
 =======
             "/economy/european_index",
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+        )
+
+        return self._command_runner.run(
+            "/economy/european_index",
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             **inputs,
         )
 
     @validate_arguments
+<<<<<<< HEAD
 <<<<<<< HEAD
     def currencies(
         self,
@@ -566,6 +591,8 @@ class CLASS_economy(Container):
     ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
         """CURRENCIES."""  # noqa: E501
 =======
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
     def european_index_constituents(
         self,
         symbol: Annotated[
@@ -632,7 +659,10 @@ class CLASS_economy(Container):
             Sequence number of the last trade on the tape. (provider: cboe)
         asset_type : Optional[str]
             Type of asset. (provider: cboe)"""  # noqa: E501
+<<<<<<< HEAD
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
 
         inputs = filter_inputs(
             provider_choices={
@@ -640,12 +670,16 @@ class CLASS_economy(Container):
             },
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             chart=chart,
 =======
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
+<<<<<<< HEAD
 >>>>>>> c9435cec4a (static)
         )
 
@@ -853,6 +887,12 @@ class CLASS_economy(Container):
 =======
             "/economy/european_index_constituents",
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+        )
+
+        return self._command_runner.run(
+            "/economy/european_index_constituents",
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             **inputs,
         )
 
@@ -877,6 +917,7 @@ class CLASS_economy(Container):
         ] = None,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
 =======
         chart: bool = False,
@@ -885,6 +926,9 @@ class CLASS_economy(Container):
 =======
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
 >>>>>>> c9435cec4a (static)
+=======
+        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         **kwargs
     ) -> OBBject[List]:
         """Get historical  levels for an index.
@@ -899,6 +943,7 @@ class CLASS_economy(Container):
             End date of the data, in YYYY-MM-DD format.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
 =======
         chart : bool
@@ -908,6 +953,9 @@ class CLASS_economy(Container):
 =======
         provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
 >>>>>>> c9435cec4a (static)
+=======
+        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.

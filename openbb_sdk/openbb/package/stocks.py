@@ -290,6 +290,7 @@ class CLASS_stocks(Container):
         change_over_time : Optional[float]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             Change \% in the price of the symbol over a period of time. (provider: fmp)
 =======
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
@@ -297,6 +298,9 @@ class CLASS_stocks(Container):
 =======
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
 >>>>>>> c9435cec4a (static)
+=======
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]
@@ -693,9 +697,12 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
 <<<<<<< HEAD
+<<<<<<< HEAD
         chart: bool = False,
 =======
 >>>>>>> c9435cec4a (static)
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -706,10 +713,13 @@ class CLASS_stocks(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for.
 <<<<<<< HEAD
+<<<<<<< HEAD
         chart : bool
             Whether to create a chart or not, by default False.
 =======
 >>>>>>> c9435cec4a (static)
+=======
+>>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
