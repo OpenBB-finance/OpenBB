@@ -306,7 +306,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "cattrs"
 version = "23.1.2"
 description = "Composable complex class support for attrs and dataclasses."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "cattrs-23.1.2-py3-none-any.whl", hash = "sha256:b2bb14311ac17bed0d58785e5a60f022e5431aca3932e3fc5cc8ed8639de50a4"},
@@ -728,6 +728,17 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [[package]]
+name = "inflection"
+version = "0.5.1"
+description = "A port of Ruby on Rails inflector to Python"
+optional = true
+python-versions = ">=3.5"
+files = [
+    {file = "inflection-0.5.1-py2.py3-none-any.whl", hash = "sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2"},
+    {file = "inflection-0.5.1.tar.gz", hash = "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"},
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.0.0"
 description = "brain-dead simple config-ini parsing"
@@ -926,6 +937,17 @@ files = [
 ]
 
 [[package]]
+name = "more-itertools"
+version = "10.1.0"
+description = "More routines for operating on iterables, beyond itertools"
+optional = true
+python-versions = ">=3.8"
+files = [
+    {file = "more-itertools-10.1.0.tar.gz", hash = "sha256:626c369fa0eb37bac0291bce8259b332fd59ac792fa5497b59837309cd5b114a"},
+    {file = "more_itertools-10.1.0-py3-none-any.whl", hash = "sha256:64e0735fcfdc6f3464ea133afe8ea4483b1c5fe3a3d69852e6503b43a0b222e6"},
+]
+
+[[package]]
 name = "multidict"
 version = "6.0.4"
 description = "multidict implementation"
@@ -1087,6 +1109,22 @@ files = [
     {file = "numpy-1.24.4-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:e98f220aa76ca2a977fe435f5b04d7b3470c0a2e6312907b37ba6068f26787f2"},
     {file = "numpy-1.24.4.tar.gz", hash = "sha256:80f5e3a4e498641401868df4208b74581206afbee7cf7b8329daae82676d9463"},
 ]
+
+[[package]]
+name = "openbb-alpha-vantage"
+version = "0.1.0"
+description = ""
+optional = true
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-core = {path = "../../sdk/core"}
+
+[package.source]
+type = "directory"
+url = "providers/alpha_vantage"
 
 [[package]]
 name = "openbb-benzinga"
@@ -1288,6 +1326,23 @@ type = "directory"
 url = "extensions/futures"
 
 [[package]]
+name = "openbb-intrinio"
+version = "0.1.0"
+description = "Intrinio extension for OpenBB"
+optional = false
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-core = {path = "../../sdk/core"}
+requests-cache = "^1.1.0"
+
+[package.source]
+type = "directory"
+url = "providers/intrinio"
+
+[[package]]
 name = "openbb-news"
 version = "0.1.0"
 description = "News extension for OpenBB"
@@ -1356,6 +1411,23 @@ statsmodels = "^0.14.0"
 [package.source]
 type = "directory"
 url = "extensions/qa"
+
+[[package]]
+name = "openbb-quandl"
+version = "0.1.0"
+description = ""
+optional = true
+python-versions = "^3.8"
+files = []
+develop = false
+
+[package.dependencies]
+openbb-core = {path = "../../sdk/core"}
+quandl = ">=3.7.0"
+
+[package.source]
+type = "directory"
+url = "providers/quandl"
 
 [[package]]
 name = "openbb-stocks"
@@ -1923,6 +1995,26 @@ setproctitle = "*"
 dev = ["auditwheel", "wheel"]
 
 [[package]]
+name = "quandl"
+version = "3.7.0"
+description = "Package for quandl API access"
+optional = true
+python-versions = ">= 3.6"
+files = [
+    {file = "Quandl-3.7.0-py2.py3-none-any.whl", hash = "sha256:0e3e5dc60fd057c73c67380b1b0f2e3dc0e4c500fb5e6e146ac3a3c0d992cd1d"},
+    {file = "Quandl-3.7.0.tar.gz", hash = "sha256:6e0b82fbc7861610b3577c5397277c4220e065eee0fed4e46cd6b6021655b64c"},
+]
+
+[package.dependencies]
+inflection = ">=0.3.1"
+more-itertools = "*"
+numpy = ">=1.8"
+pandas = ">=0.14"
+python-dateutil = "*"
+requests = ">=2.7.0"
+six = "*"
+
+[[package]]
 name = "referencing"
 version = "0.30.2"
 description = "JSON Referencing + Python"
@@ -1981,7 +2073,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "requests-cache"
 version = "1.1.0"
 description = "A persistent cache for python requests"
-optional = true
+optional = false
 python-versions = ">=3.7,<4.0"
 files = [
     {file = "requests_cache-1.1.0-py3-none-any.whl", hash = "sha256:178282bce704b912c59e7f88f367c42bddd6cde6bf511b2a3e3cfb7e5332a92a"},
@@ -2535,7 +2627,7 @@ files = [
 name = "url-normalize"
 version = "1.4.3"
 description = "URL normalization for Python"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
     {file = "url-normalize-1.4.3.tar.gz", hash = "sha256:d23d3a070ac52a67b83a1c59a0e68f8608d1cd538783b401bc9de2c0fac999b2"},
@@ -2805,15 +2897,17 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-cboe", "openbb-charting", "openbb-futures", "openbb-qa", "openbb-ta", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-cboe", "openbb-charting", "openbb-futures", "openbb-qa", "openbb-quandl", "openbb-ta", "openbb-yfinance"]
+alpha-vantage = ["openbb-alpha-vantage"]
 cboe = ["openbb-cboe"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
+quandl = ["openbb-quandl"]
 ta = ["openbb-ta"]
 yfinance = ["openbb-yfinance"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "e3a2f27c7308848ee2bc8fc6130ec2a7bc144803c53c9bca3b25565aeefb7580"
+content-hash = "c5c289543644ffbafe04fec1a8c0b9ff14c2023f8f9102821882db7cce9cdf46"

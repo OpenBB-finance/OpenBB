@@ -187,7 +187,7 @@ def test_complete_signature(signature_inspector):
     ) -> OBBject:
         pass
 
-    model = "StockEOD"
+    model = "StockHistorical"
 
     assert signature_inspector.complete_signature(sample_function, model)
 
