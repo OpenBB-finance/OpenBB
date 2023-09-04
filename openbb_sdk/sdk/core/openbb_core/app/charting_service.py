@@ -2,7 +2,6 @@ from importlib import import_module
 from inspect import getmembers, getsource, isfunction
 from typing import Callable, List, Optional, Tuple, TypeVar
 
-
 from importlib_metadata import entry_points
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
