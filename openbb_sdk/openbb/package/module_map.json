@@ -60,6 +60,7 @@
     "forex_pairs": "/forex/pairs",
     "forex": "/forex",
     "forex_load": "/forex/load",
+<<<<<<< HEAD
     "futures_load": "/futures/load",
     "futures": "/futures",
     "futures_curve": "/futures/curve",
@@ -93,6 +94,11 @@
     "qa_acf": "/qa/acf",
     "qa_summary": "/qa/summary",
     "stocks_fa_analysis": "/stocks/fa/analysis",
+=======
+    "forex_pairs": "/forex/pairs",
+    "news": "/news",
+    "news_globalnews": "/news/globalnews",
+>>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
     "stocks": "/stocks",
     "stocks_ca": "/stocks/ca",
     "stocks_ca_peers": "/stocks/ca/peers",
@@ -126,10 +132,10 @@
     "stocks_fa_shrs": "/stocks/fa/shrs",
     "stocks_fa_split": "/stocks/fa/split",
     "stocks_fa_transcript": "/stocks/fa/transcript",
-    "stocks_info": "/stocks/info",
     "stocks_load": "/stocks/load",
     "stocks_multiples": "/stocks/multiples",
     "stocks_news": "/stocks/news",
+<<<<<<< HEAD
     "stocks_options": "/stocks/options",
     "stocks_options_chains": "/stocks/options/chains",
     "stocks_quote": "/stocks/quote",
@@ -167,3 +173,7 @@
     "ta_zlma": "/ta/zlma"
 }
 >>>>>>> 5bc4b6c2e4 (Rename EOD to Historical in code and files (#5395))
+=======
+    "stocks_quote": "/stocks/quote"
+}
+>>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7

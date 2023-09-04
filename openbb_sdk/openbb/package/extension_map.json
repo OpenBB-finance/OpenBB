@@ -4,20 +4,13 @@
         "economy",
         "fixedincome",
         "forex",
-        "futures",
         "news",
-        "openbb_charting",
-        "qa",
-        "stocks",
-        "ta"
+        "stocks"
     ],
     "openbb_provider_extension": [
         "benzinga",
-        "cboe",
         "fmp",
         "fred",
-        "intrinio",
-        "polygon",
-        "yfinance"
+        "polygon"
     ]
 }
