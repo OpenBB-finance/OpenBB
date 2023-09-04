@@ -1,30 +1,41 @@
 [tool.poetry]
-name = "openbb-sdk"
+name = "openbb"
 version = "4.0.0"
-description = ""
+description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-provider = { path = "./sdk/provider" }
 openbb-core = { path = "./sdk/core" }
+openbb-benzinga = { path = "./providers/benzinga" }
+openbb-fmp = { path = "./providers/fmp" }
+openbb-fred = { path = "./providers/fred" }
+openbb-polygon = { path = "./providers/polygon" }
 openbb-stocks = { path = "./extensions/stocks" }
 openbb-crypto = { path = "./extensions/crypto" }
 openbb-forex = { path = "./extensions/forex" }
-openbb-futures = { path = "./extensions/futures" }
 openbb-news = { path = "./extensions/news" }
 openbb-economy = { path = "./extensions/economy" }
 openbb-fixedincome = { path = "./extensions/fixedincome" }
-openbb-charting = { path = "./extensions/charting"}
-openbb-benzinga = { path = "./providers/benzinga" }
-openbb-fmp = { path = "./providers/fmp" }
-openbb-polygon = { path = "./providers/polygon" }
-openbb-fred = { path = "./providers/fred" }
-openbb-yfinance = { path = "./providers/yfinance" }
-openbb-cboe = { path = "./providers/cboe"}
 
+openbb-cboe = { path = "./providers/cboe", optional = true }
+openbb-yfinance = { path = "./providers/yfinance", optional = true }
+openbb-futures = { path = "./extensions/futures", optional = true }
+openbb-charting = { path = "./extensions/charting", optional = true }
+
+[tool.poetry.extras]
+cboe = ["openbb-cboe"]
+yfinance = ["openbb-yfinance"]
+futures = ["openbb-futures"]
+charting = ["openbb-charting"]
+all = [
+    "openbb-cboe",
+    "openbb-yfinance",
+    "openbb-futures",
+    "openbb-charting",
+]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.2"
