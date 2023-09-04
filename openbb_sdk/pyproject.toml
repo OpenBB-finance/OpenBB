@@ -13,27 +13,35 @@ openbb-benzinga = { path = "./providers/benzinga" }
 openbb-fmp = { path = "./providers/fmp" }
 openbb-fred = { path = "./providers/fred" }
 openbb-polygon = { path = "./providers/polygon" }
-openbb-stocks = { path = "./extensions/stocks" }
-openbb-crypto = { path = "./extensions/crypto" }
-openbb-forex = { path = "./extensions/forex" }
-openbb-news = { path = "./extensions/news" }
-openbb-economy = { path = "./extensions/economy" }
-openbb-fixedincome = { path = "./extensions/fixedincome" }
 
 openbb-cboe = { path = "./providers/cboe", optional = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true }
+
+openbb-crypto = { path = "./extensions/crypto" }
+openbb-economy = { path = "./extensions/economy" }
+openbb-forex = { path = "./extensions/forex" }
+openbb-fixedincome = { path = "./extensions/fixedincome" }
+openbb-news = { path = "./extensions/news" }
+openbb-stocks = { path = "./extensions/stocks" }
+
 openbb-futures = { path = "./extensions/futures", optional = true }
+openbb-qa = { path = "./extensions/qa", optional = true }
+openbb-ta = { path = "./extensions/ta", optional = true }
 openbb-charting = { path = "./extensions/charting", optional = true }
 
 [tool.poetry.extras]
 cboe = ["openbb-cboe"]
 yfinance = ["openbb-yfinance"]
 futures = ["openbb-futures"]
+qa = ["openbb-qa"]
+ta = ["openbb-ta"]
 charting = ["openbb-charting"]
 all = [
     "openbb-cboe",
     "openbb-yfinance",
     "openbb-futures",
+    "openbb-qa",
+    "openbb-ta",
     "openbb-charting",
 ]
 
