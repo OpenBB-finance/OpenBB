@@ -420,7 +420,7 @@ Refer to the [`to_chart` implementation](openbb_sdk/extensions/charting/openbb_c
 In order to contribute to the SDK you need to setup your environment in order to ensure a smooth development experience.
 
 <details>
-<summary>Need help seting up Miniconda or Git?</summary>
+<summary>Need help setting up Miniconda or Git?</summary>
 
 Sometimes installing Miniconda or Git can be a bit tricky, so we've prepared a set of instructions to help you get started.
 
