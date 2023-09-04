@@ -7,9 +7,7 @@
         "futures",
         "news",
         "openbb_charting",
-        "qa",
-        "stocks",
-        "ta"
+        "stocks"
     ],
     "openbb_provider_extension": [
         "benzinga",
