@@ -8,8 +8,8 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.standard_models.base import (
-    FinancialStatementQueryParams,
     BaseSymbol,
+    FinancialStatementQueryParams,
 )
 
 
