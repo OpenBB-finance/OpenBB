@@ -6,7 +6,7 @@ from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import Any, Literal, Union, Optional
+from typing import Any, Literal, Optional, Union
 
 import pandas as pd
 import yfinance as yf

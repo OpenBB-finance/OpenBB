@@ -1,6 +1,5 @@
 """European Index Constituents data model."""
 
-from typing import Optional
 
 from pydantic import Field
 
