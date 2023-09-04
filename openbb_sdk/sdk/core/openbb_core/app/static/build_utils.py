@@ -41,7 +41,9 @@ def package_diff(package: Path) -> Tuple[Set[str], Set[str]]:
     groups = ("openbb_core_extension", "openbb_provider_extension")
     for g in groups:
         built = set(ext_map.get(g, {}))
-        installed = entry_points(group=g).names
+        installed = set(
+            f"{e.name}@{getattr(e.dist, 'version', '')}" for e in entry_points(group=g)
+        )
         add = add.union(installed - built)
         remove = remove.union(built - installed)
 

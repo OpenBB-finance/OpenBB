@@ -75,7 +75,15 @@ class PackageBuilder:
     def save_extension_map(self):
         """Save the map of extensions available at build time"""
         groups = ("openbb_core_extension", "openbb_provider_extension")
-        ext_map = {g: sorted(list(entry_points(group=g).names)) for g in groups}
+        ext_map = {
+            g: sorted(
+                [
+                    f"{e.name}@{getattr(e.dist, 'version', '')}"
+                    for e in entry_points(group=g)
+                ]
+            )
+            for g in groups
+        }
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")

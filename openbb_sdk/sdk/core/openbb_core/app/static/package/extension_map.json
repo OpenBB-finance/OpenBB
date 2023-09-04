@@ -1,0 +1,16 @@
+{
+    "openbb_core_extension": [
+        "crypto",
+        "economy",
+        "fixedincome",
+        "forex",
+        "news",
+        "stocks"
+    ],
+    "openbb_provider_extension": [
+        "benzinga",
+        "fmp",
+        "fred",
+        "polygon"
+    ]
+}
