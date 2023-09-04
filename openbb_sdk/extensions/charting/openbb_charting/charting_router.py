@@ -1026,9 +1026,9 @@ def stocks_options_dte(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     )
 
 
-def stocks_options_eodchain(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def stocks_options_historicalchain(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     raise NotImplementedError(
-        "Command `stocks/options/eodchain` does not have a charting function"
+        "Command `stocks/options/historicalchain` does not have a charting function"
     )
 
 

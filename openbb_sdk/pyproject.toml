@@ -9,44 +9,23 @@ packages = [{ include = "openbb" }]
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
 openbb-core = { path = "./sdk/core" }
-
+openbb-stocks = { path = "./extensions/stocks" }
+openbb-crypto = { path = "./extensions/crypto" }
+openbb-forex = { path = "./extensions/forex" }
+openbb-futures = { path = "./extensions/futures" }
+openbb-news = { path = "./extensions/news" }
+openbb-economy = { path = "./extensions/economy" }
+openbb-fixedincome = { path = "./extensions/fixedincome" }
+openbb-charting = { path = "./extensions/charting"}
+openbb-alpha-vantage = { path = "./providers/alpha_vantage" }
 openbb-benzinga = { path = "./providers/benzinga" }
+openbb-cboe = { path = "./providers/cboe"}
 openbb-fmp = { path = "./providers/fmp" }
 openbb-fred = { path = "./providers/fred" }
+openbb-intrinio = { path = "./providers/intrinio" }
 openbb-polygon = { path = "./providers/polygon" }
-
-openbb-crypto = { path = "./extensions/crypto" }
-openbb-economy = { path = "./extensions/economy" }
-openbb-forex = { path = "./extensions/forex" }
-openbb-fixedincome = { path = "./extensions/fixedincome" }
-openbb-news = { path = "./extensions/news" }
-openbb-stocks = { path = "./extensions/stocks" }
-
-# Community dependencies
-openbb-cboe = { path = "./providers/cboe", optional = true }
-openbb-yfinance = { path = "./providers/yfinance", optional = true }
-
-openbb-charting = { path = "./extensions/charting", optional = true }
-openbb-futures = { path = "./extensions/futures", optional = true }
-openbb-qa = { path = "./extensions/qa", optional = true }
-openbb-ta = { path = "./extensions/ta", optional = true }
-
-[tool.poetry.extras]
-cboe = ["openbb-cboe"]
-yfinance = ["openbb-yfinance"]
-charting = ["openbb-charting"]
-futures = ["openbb-futures"]
-qa = ["openbb-qa"]
-ta = ["openbb-ta"]
-
-all = [
-    "openbb-cboe",
-    "openbb-yfinance",
-    "openbb-charting",
-    "openbb-futures",
-    "openbb-qa",
-    "openbb-ta",
-]
+openbb-quandl = { path = "./providers/quandl" }
+openbb-yfinance = { path = "./providers/yfinance" }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.2"

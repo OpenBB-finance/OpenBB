@@ -11,6 +11,8 @@
         "benzinga",
         "fmp",
         "fred",
-        "polygon"
+        "intrinio",
+        "polygon",
+        "yfinance"
     ]
 }
