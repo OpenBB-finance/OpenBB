@@ -11,6 +11,7 @@ from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
+from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 
 intrinio_provider = Provider(
     name="intrinio",
@@ -27,5 +28,6 @@ intrinio_provider = Provider(
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "BalanceSheet": IntrinioBalanceSheetFetcher,
         "CashFlowStatement": IntrinioCashFlowStatementFetcher,
+        "IncomeStatement": IntrinioIncomeStatementFetcher,
     },
 )
