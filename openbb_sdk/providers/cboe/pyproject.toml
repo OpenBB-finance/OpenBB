@@ -9,7 +9,12 @@ packages = [{ include = "openbb_cboe" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests-cache = "^1.1.0"
-openbb-core = { path = "../../sdk/core" }
+openbb-core = {version = "^0.1.0a1", source = "test-pypi"}
+
+[[tool.poetry.source]]
+name = "test-pypi"
+url = "https://test.pypi.org/simple/"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
