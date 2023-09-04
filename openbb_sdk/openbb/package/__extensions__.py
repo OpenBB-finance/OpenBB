@@ -10,11 +10,8 @@ class Extensions(Container):
     /economy
     /fixedincome
     /forex
-    /futures
     /news
-    /qa
     /stocks
-    /ta
     """
 
     def __repr__(self) -> str:
@@ -45,31 +42,13 @@ class Extensions(Container):
         return forex.CLASS_forex(command_runner=self._command_runner)
 
     @property
-    def futures(self):  # route = "/futures"
-        from . import futures
-
-        return futures.CLASS_futures(command_runner=self._command_runner)
-
-    @property
     def news(self):  # route = "/news"
         from . import news
 
         return news.CLASS_news(command_runner=self._command_runner)
 
     @property
-    def qa(self):  # route = "/qa"
-        from . import qa
-
-        return qa.CLASS_qa(command_runner=self._command_runner)
-
-    @property
     def stocks(self):  # route = "/stocks"
         from . import stocks
 
         return stocks.CLASS_stocks(command_runner=self._command_runner)
-
-    @property
-    def ta(self):  # route = "/ta"
-        from . import ta
-
-        return ta.CLASS_ta(command_runner=self._command_runner)

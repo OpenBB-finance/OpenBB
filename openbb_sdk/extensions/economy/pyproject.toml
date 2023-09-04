@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-economy"
-version = "0.1.1"
-description = ""
+version = "0.1.0"
+description = "Economy extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_economy" }]
