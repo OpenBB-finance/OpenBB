@@ -27,13 +27,13 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def available_indices(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
+        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject[List]:
         """Lists of available indices from a provider.
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -346,7 +346,6 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -360,8 +359,6 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -408,7 +405,6 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -423,7 +419,6 @@ class CLASS_economy(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -433,8 +428,6 @@ class CLASS_economy(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -495,7 +488,6 @@ class CLASS_economy(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -522,10 +514,10 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Get OHLCV data for an index.
+        """Get historical  levels for an index.
 
         Parameters
         ----------
@@ -535,7 +527,7 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -603,13 +595,11 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         """  # noqa: E501
 
         inputs = filter_inputs(

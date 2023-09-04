@@ -42,7 +42,7 @@ class CLASS_forex(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Forex Intraday Price.
+        """Forex Intraday Price.
 
         Parameters
         ----------
@@ -114,11 +114,11 @@ class CLASS_forex(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -142,13 +142,13 @@ class CLASS_forex(Container):
 
     @validate_arguments
     def pairs(
-        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
+        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.

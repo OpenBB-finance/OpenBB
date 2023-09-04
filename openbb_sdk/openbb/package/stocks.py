@@ -188,7 +188,7 @@ class CLASS_stocks(Container):
         ] = None,
         **kwargs
     ) -> OBBject[List]:
-        r"""Load stock data for a specific ticker.
+        """Load stock data for a specific ticker.
 
         Parameters
         ----------
@@ -282,12 +282,20 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \% in the price of the symbol. (provider: fmp)
+            Change \\% in the price of the symbol. (provider: fmp)
+        vwap : Optional[float]
+            Volume Weighted Average Price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+        close_time : Optional[datetime]
+            The timestamp that represents the end of the interval span. (provider: intrinio)
+        interval : Optional[str]
+            The data time frequency. (provider: intrinio)
+        average : Optional[float]
+            Average trade price of an individual stock during the interval. (provider: intrinio)
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
@@ -676,7 +684,7 @@ class CLASS_stocks(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Load stock data for a specific ticker.
@@ -685,7 +693,7 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.

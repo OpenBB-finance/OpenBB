@@ -31,7 +31,7 @@ class CLASS_futures(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ] = None,
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Optional[Literal["cboe", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Futures Historical Price.
@@ -42,7 +42,7 @@ class CLASS_futures(Container):
             Symbol to get data for.
         date : Optional[datetime.date]
             Historical date to search curve for.
-        provider : Optional[Literal['yfinance']]
+        provider : Optional[Literal['cboe', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.

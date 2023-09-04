@@ -26,7 +26,7 @@ class CLASS_news(Container):
             pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="Page of the global news."),
         ] = 0,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -35,7 +35,7 @@ class CLASS_news(Container):
         ----------
         page : NonNegativeInt
             Page of the global news.
-        provider : Optional[Literal['benzinga', 'fmp']]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
