@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-sdk"
-version = "4.0.0rc11"
+version = "4.0.0rc12"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -10,8 +10,8 @@ packages = [{ include = "openbb" }]
 python = ">=3.8,<3.12"
 openbb-core = {version = "^0.1.0a1", source = "test-pypi"}
 
-openbb-benzinga = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-fmp = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-benzinga = {version = "^0.1.0a1", source = "test-pypi"}
+openbb-fmp = {version = "^0.1.0a1", source = "test-pypi"}
 openbb-fred = {version = "^0.1.0a0", source = "test-pypi"}
 openbb-intrinio = {version = "^0.1.0a0", source = "test-pypi"}
 openbb-polygon = {version = "^0.1.0a0", source = "test-pypi"}
