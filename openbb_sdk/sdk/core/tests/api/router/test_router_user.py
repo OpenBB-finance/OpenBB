@@ -6,6 +6,8 @@ from openbb_core.api.router.user import patch_user_credentials, read_users_setti
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
 
+# ruff: noqa: S106
+
 
 def test_read_users_settings():
     """Test read users settings."""

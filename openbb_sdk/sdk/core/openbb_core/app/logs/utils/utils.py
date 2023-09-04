@@ -1,6 +1,7 @@
 # IMPORT STANDARD
 import time
 import uuid
+import warnings
 from pathlib import Path, PosixPath
 
 # IMPORT THIRD-PARTY
@@ -14,14 +15,13 @@ def get_session_id() -> str:
 
 
 def get_app_id(contextual_user_data_directory: str) -> str:
-    """UUID of the current installation."""
-
+    """Get UUID of the current installation."""
     try:
         app_id = get_log_dir(contextual_user_data_directory).stem
     except OSError as e:
         if e.errno == 30:
-            print("Please move the application into a writable location.")
-            print(
+            warnings.warn("Please move the application into a writable location.")
+            warnings.warn(
                 "Note for macOS users: copy `OpenBB Terminal` folder outside the DMG."
             )
         raise e
@@ -33,7 +33,6 @@ def get_app_id(contextual_user_data_directory: str) -> str:
 
 def get_log_dir(contextual_user_data_directory: str) -> PosixPath:
     """Retrieve application's log directory."""
-
     log_dir = create_log_dir_if_not_exists(contextual_user_data_directory)
     logging_uuid = create_log_uuid_if_not_exists(log_dir)
     uuid_log_dir = create_uuid_dir_if_not_exists(log_dir, logging_uuid)

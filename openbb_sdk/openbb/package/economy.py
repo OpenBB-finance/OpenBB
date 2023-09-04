@@ -3,8 +3,6 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_core.app.model.command_context
-import openbb_core.app.model.results.empty
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
@@ -16,39 +14,10 @@ from typing_extensions import Annotated
 class CLASS_economy(Container):
     """/economy
     available_indices
-    balance
-    bigmac
     const
-    corecpi
-    country_codes
     cpi
-    cpi_options
-    currencies
-    debt
-    events
-    fgdp
-    fred
-    fred_search
-    futures
-    gdp
-    glbonds
     index
-    indices
-    macro
-    macro_countries
-    macro_parameters
-    overview
-    perfmap
-    performance
-    revenue
-    rgdp
     risk
-    rtps
-    search_index
-    spending
-    trust
-    usbonds
-    valuation
     """
 
     def __repr__(self) -> str:

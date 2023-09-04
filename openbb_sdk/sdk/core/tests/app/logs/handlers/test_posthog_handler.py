@@ -12,6 +12,7 @@ class MockLoggingSettings:
     def __init__(
         self,
         app_name,
+        sub_app_name,
         user_logs_directory,
         session_id,
         frequency,
@@ -22,6 +23,7 @@ class MockLoggingSettings:
         userid,
     ):
         self.app_name = app_name
+        self.sub_app_name = sub_app_name
         self.user_logs_directory = Path(user_logs_directory)
         self.session_id = session_id
         self.frequency = frequency
@@ -34,6 +36,7 @@ class MockLoggingSettings:
 
 logging_settings = MagicMock(spec=MockLoggingSettings)
 logging_settings.app_name = "TestApp"
+logging_settings.sub_app_name = "TestSubApp"
 logging_settings.user_logs_directory = MagicMock()
 logging_settings.user_logs_directory.absolute.return_value = Path(
     "/mocked/logs/directory"
@@ -195,6 +198,7 @@ def test_log_to_dict(handler, log_info, expected_dict):
             ),
             {
                 "appName": "TestApp",
+                "subAppName": "TestSubApp",
                 "appId": "test123",
                 "sessionId": "session123",
                 "platform": "Windows",

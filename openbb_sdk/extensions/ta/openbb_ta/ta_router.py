@@ -2,7 +2,6 @@ from typing import List, Literal, Optional
 
 import pandas as pd
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.results.empty import Empty
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -274,15 +273,6 @@ def adosc(
 
 
 @router.command(methods=["POST"])
-def tv() -> OBBject[Empty]:
-    """TradingView."""
-
-    # TODO : probably out of scope for now
-
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def bbands(
     data: List[Data],
     target: str = "close",
@@ -351,15 +341,6 @@ def bbands(
     results = df_to_basemodel(df_target.join(bbands_df, how="left"), index=True)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def multi() -> OBBject[Empty]:
-    """Plot multiple indicators on the same chart."""
-
-    # TODO : probably out of scope for now
-
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -625,16 +606,6 @@ def vwap(
     results = df_to_basemodel(df_target.join(df_vwap, how="left"), index=True)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def recom() -> OBBject[Empty]:
-    """Recommendation."""
-
-    # TODO : this command does only a call to a Tradingview's endpoint
-    #        thus, it should probably be implement on a provider level
-
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])
@@ -1155,16 +1126,6 @@ def rsi(
 
 
 @router.command(methods=["POST"])
-def summary() -> OBBject[Empty]:
-    """Summary."""
-
-    # TODO : this command does only a call to a finbrain's endpoint
-    #        thus, it should probably be implement on a provider level
-
-    return OBBject(results=Empty())
-
-
-@router.command(methods=["POST"])
 def stoch(
     data: List[Data],
     index: str = "date",
@@ -1218,15 +1179,6 @@ def stoch(
     results = df_to_basemodel(df_target.join(stoch_df, how="left"), index=True)
 
     return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def rsp() -> OBBject[Empty]:
-    """Relative Strength Performance."""
-
-    # TODO : https://github.com/OpenBB-finance/OpenBBTerminal/issues/5167
-
-    return OBBject(results=Empty())
 
 
 @router.command(methods=["POST"])

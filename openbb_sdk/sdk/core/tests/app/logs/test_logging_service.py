@@ -3,9 +3,11 @@ from typing import Optional
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
-from openbb_core.app.logs.logging_manager import LoggingManager
+from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import BaseModel
+
+# ruff: noqa: S106
 
 
 class MockLoggingSettings:
@@ -20,7 +22,7 @@ class MockOBBject(BaseModel):
 
 
 @pytest.fixture(scope="function")
-def logging_manager():
+def logging_service():
     mock_system_settings = Mock()
     mock_system_settings = "mock_system_settings"
     mock_user_settings = Mock()
@@ -29,16 +31,16 @@ def logging_manager():
     mock_log_startup = Mock()
 
     with patch(
-        "openbb_core.app.logs.logging_manager.LoggingSettings",
+        "openbb_core.app.logs.logging_service.LoggingSettings",
         MockLoggingSettings,
     ), patch(
-        "openbb_core.app.logs.logging_manager.LoggingManager._setup_handlers",
+        "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
         mock_setup_handlers,
     ), patch(
-        "openbb_core.app.logs.logging_manager.LoggingManager._log_startup",
+        "openbb_core.app.logs.logging_service.LoggingService._log_startup",
         mock_log_startup,
     ):
-        logging_manager = LoggingManager(
+        logging_service = LoggingService(
             system_settings=mock_system_settings,
             user_settings=mock_user_settings,
         )
@@ -46,31 +48,31 @@ def logging_manager():
         assert mock_setup_handlers.assert_called_once
         assert mock_log_startup.assert_called_once
 
-        return logging_manager
+        return logging_service
 
 
-def test_correctly_initialized(logging_manager):
-    assert logging_manager
+def test_correctly_initialized(logging_service):
+    assert logging_service
 
 
-def test_logging_settings_setter(logging_manager):
+def test_logging_settings_setter(logging_service):
     custom_user_settings = "custom_user_settings"
     custom_system_settings = "custom_system_settings"
 
     with patch(
-        "openbb_core.app.logs.logging_manager.LoggingSettings",
+        "openbb_core.app.logs.logging_service.LoggingSettings",
         MockLoggingSettings,
     ):
-        logging_manager.logging_settings = (
+        logging_service.logging_settings = (
             custom_system_settings,
             custom_user_settings,
         )
 
-    assert logging_manager.logging_settings.system_settings == "custom_system_settings"
-    assert logging_manager.logging_settings.user_settings == "custom_user_settings"
+    assert logging_service.logging_settings.system_settings == "custom_system_settings"
+    assert logging_service.logging_settings.user_settings == "custom_user_settings"
 
 
-def test_log_startup(logging_manager):
+def test_log_startup(logging_service):
     with patch("logging.getLogger") as mock_get_logger:
         mock_info = mock_get_logger.return_value.info
 
@@ -78,13 +80,13 @@ def test_log_startup(logging_manager):
             username: str
             password: str
 
-        logging_manager._user_settings = MagicMock(
+        logging_service._user_settings = MagicMock(
             preferences="your_preferences",
             credentials=MockCredentials(username="username", password="password"),
         )
-        logging_manager._system_settings = "your_system_settings"
+        logging_service._system_settings = "your_system_settings"
 
-        logging_manager._log_startup()
+        logging_service._log_startup()
 
         expected_log_data = {
             "PREFERENCES": "your_preferences",
@@ -128,17 +130,17 @@ def test_log_startup(logging_manager):
     ],
 )
 def test_log(
-    logging_manager, user_settings, system_settings, route, func, kwargs, exec_info
+    logging_service, user_settings, system_settings, route, func, kwargs, exec_info
 ):
     with patch(
-        "openbb_core.app.logs.logging_manager.LoggingSettings",
+        "openbb_core.app.logs.logging_service.LoggingSettings",
         MockLoggingSettings,
     ), patch("logging.getLogger") as mock_get_logger:
         if route == "login":
             with patch(
-                "openbb_core.app.logs.logging_manager.LoggingManager._log_startup"
+                "openbb_core.app.logs.logging_service.LoggingService._log_startup"
             ) as mock_log_startup:
-                logging_manager.log(
+                logging_service.log(
                     user_settings=user_settings,
                     system_settings=system_settings,
                     route=route,
@@ -155,7 +157,7 @@ def test_log(
             mock_callable = Mock()
             mock_callable.__name__ = func
 
-            logging_manager.log(
+            logging_service.log(
                 user_settings=user_settings,
                 system_settings=system_settings,
                 route=route,

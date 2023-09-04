@@ -13,6 +13,7 @@ from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.env import Env
 from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
 
@@ -64,14 +65,15 @@ def build_new_signature(func):
         )
     )
 
-    new_parameter_list.append(
-        Parameter(
-            "__authenticated_user_settings",
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            default=UserSettings(),
-            annotation=Annotated[UserSettings, Depends(get_user)],
+    if Env().API_AUTH:
+        new_parameter_list.append(
+            Parameter(
+                "__authenticated_user_settings",
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                default=UserSettings(),
+                annotation=Annotated[UserSettings, Depends(get_user)],
+            )
         )
-    )
 
     return Signature(
         parameters=new_parameter_list,
@@ -164,6 +166,6 @@ def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> Non
     api_router.include_router(router=plugins_router.api_router)
 
 
-system_settings = SystemService.read_default_system_settings()
+system_settings = SystemService(logging_sub_app="api").system_settings
 command_runner_instance = CommandRunner(system_settings=system_settings)
 add_command_map(command_runner=command_runner_instance, api_router=router)
