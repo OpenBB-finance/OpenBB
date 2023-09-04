@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
-from typing_extensions import Annotated
 
 
 class CLASS_fixedincome(Container):
@@ -30,20 +30,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ameribor(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """
@@ -59,7 +59,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -71,7 +71,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[AMERIBOR]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -107,20 +107,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def estr(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """
@@ -137,7 +137,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -149,7 +149,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[ESTR]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -185,20 +185,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def fed(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """
@@ -215,7 +215,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -227,7 +227,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[FEDFUNDS]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -263,20 +263,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def iorb(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """
@@ -293,7 +293,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -303,7 +303,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[IORB]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -338,7 +338,10 @@ class CLASS_fixedincome(Container):
 
     @validate_arguments
     def projections(
-        self, chart: bool = False, provider: Optional[Literal["fred"]] = None, **kwargs
+        self,
+        chart: bool = False,
+        provider: Union[Literal["fred"], None] = None,
+        **kwargs
     ) -> OBBject[List]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -350,7 +353,7 @@ class CLASS_fixedincome(Container):
         ----------
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -362,7 +365,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[PROJECTIONS]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -407,20 +410,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def sofr(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get United States yield curve.
@@ -433,7 +436,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -445,7 +448,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[SOFR]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -481,20 +484,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def sonia(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """
@@ -510,7 +513,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -522,7 +525,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[SONIA]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -558,20 +561,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         chart: bool = False,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get treasury rates.
@@ -584,7 +587,7 @@ class CLASS_fixedincome(Container):
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -594,7 +597,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[TreasuryRates]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -652,31 +655,31 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ycrv(
         self,
-        date: Annotated[
-            Optional[datetime.date],
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
             OpenBBCustomParameter(
                 description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
             ),
         ] = None,
-        inflation_adjusted: Annotated[
-            Optional[bool],
+        inflation_adjusted: typing_extensions.Annotated[
+            Union[bool, None],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
         chart: bool = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get United States yield curve.
 
         Parameters
         ----------
-        date : Optional[datetime.date]
+        date : Union[datetime.date, NoneType]
             Date to get Yield Curve data.  Defaults to the most recent FRED entry.
-        inflation_adjusted : Optional[bool]
+        inflation_adjusted : Union[bool, NoneType]
             Get inflation adjusted rates.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -686,7 +689,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[USYieldCurve]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
