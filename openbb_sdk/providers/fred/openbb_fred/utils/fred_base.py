@@ -1,3 +1,4 @@
+"""Base class for Fred API."""
 from datetime import date
 from typing import Any, Optional
 from urllib.parse import urlencode
@@ -8,7 +9,16 @@ ROOT_URL = "https://api.stlouisfed.org/fred"
 
 
 class Fred:
+    """Base class for Fred API."""
+
     def __init__(self, api_key: Optional[str]):
+        """Initialize Fred class.
+
+        Parameters
+        ----------
+        api_key : str
+            API key for FRED
+        """
         self.api_key = api_key
 
     def __fetch_data(self, url: str, **kwargs: Any):
@@ -23,8 +33,9 @@ class Fred:
         end_date: Optional[date] = None,
         **kwargs,
     ) -> dict:
-        """
-        Get data for a Fred series id. This fetches the latest known data.
+        """Get data for a Fred series id.
+
+        This fetches the latest known data.
         Code copied from: https://github.com/mortada/fredapi/blob/master/fredapi/fred.py
 
         Parameters
@@ -57,4 +68,10 @@ class Fred:
         root = self.__fetch_data(url, **kwargs)
         if root is None:
             raise ValueError("No data exists for series id: " + series_id)
+        if (
+            "error_code" in root
+            and "error_message" in root
+            and root["error_message"] != ""
+        ):
+            raise ValueError(root["error_message"])
         return root["observations"]
