@@ -24,6 +24,16 @@ class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
 class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     """FMP Income Statement Growth Data."""
 
+    class Config:
+        """Pydantic alias config using fields dict."""
+
+        fields = {
+            "growth_ebitda": "growthEBITDA",
+            "growth_ebitda_ratio": "growthEBITDARatio",
+            "growth_eps": "growthEPS",
+            "growth_eps_diluted": "growthEPSDiluted",
+        }
+
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""

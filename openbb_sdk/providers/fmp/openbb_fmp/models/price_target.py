@@ -28,9 +28,14 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
 class FMPPriceTargetData(PriceTargetData):
     """FMP Price Target Data."""
 
-    newGrade: Optional[str] = Field(alias="new_grade", default=None)
-    previousGrade: Optional[str] = Field(alias="previous_grade", default=None)
-    gradingCompany: Optional[str] = Field(alias="grading_company", default=None)
+    class Config:
+        """Pydantic alias config using fields dict."""
+
+        fields = {"news_url": "newsURL", "news_base_url": "newsBaseURL"}
+
+    new_grade: Optional[str]
+    previous_grade: Optional[str]
+    grading_company: Optional[str]
 
 
 class FMPPriceTargetFetcher(

@@ -62,13 +62,13 @@ class CLASS_stocks_options(Container):
             Expiration date of the contract.
         strike : Optional[float]
             Strike price of the contract.
-        optionType : Optional[str]
+        option_type : Optional[str]
             Call or Put.
         bid : Optional[float]
             Bid price of the contract.
         ask : Optional[float]
             Ask price of the contract.
-        openInterest : Optional[float]
+        open_interest : Optional[float]
             Open interest on the contract.
         volume : Optional[float]
             Current trading volume on the contract.
