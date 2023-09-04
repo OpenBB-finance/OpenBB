@@ -142,17 +142,12 @@ class CLASS_forex(Container):
 
     @validate_arguments
     def pairs(
-        self,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

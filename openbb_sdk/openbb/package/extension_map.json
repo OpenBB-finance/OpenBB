@@ -16,6 +16,7 @@
         "cboe",
         "fmp",
         "fred",
+        "intrinio",
         "polygon",
         "yfinance"
     ]

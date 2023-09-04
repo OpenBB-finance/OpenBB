@@ -28,6 +28,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def available_indices(
 <<<<<<< HEAD
+<<<<<<< HEAD
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
 =======
         self,
@@ -35,11 +36,15 @@ class CLASS_economy(Container):
         provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None,
         **kwargs
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
+>>>>>>> c9435cec4a (static)
     ) -> OBBject[List]:
         """Lists of available indices from a provider.
 
         Parameters
         ----------
+<<<<<<< HEAD
 <<<<<<< HEAD
         provider : Optional[Literal['fmp']]
 =======
@@ -47,6 +52,9 @@ class CLASS_economy(Container):
             Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
+>>>>>>> c9435cec4a (static)
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -467,7 +475,6 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -481,8 +488,6 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -532,8 +537,11 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
+<<<<<<< HEAD
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
             chart=chart,
+=======
+>>>>>>> c9435cec4a (static)
         )
 
         return self._command_runner.run(
@@ -564,7 +572,6 @@ class CLASS_economy(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -574,8 +581,6 @@ class CLASS_economy(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -634,7 +639,14 @@ class CLASS_economy(Container):
                 "provider": provider,
             },
 <<<<<<< HEAD
+<<<<<<< HEAD
             chart=chart,
+=======
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+>>>>>>> c9435cec4a (static)
         )
 
         return self._command_runner.run(
@@ -864,11 +876,15 @@ class CLASS_economy(Container):
             ),
         ] = None,
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
 =======
         chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
+>>>>>>> c9435cec4a (static)
         **kwargs
     ) -> OBBject[List]:
         """Get historical  levels for an index.
@@ -882,12 +898,16 @@ class CLASS_economy(Container):
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
 <<<<<<< HEAD
+<<<<<<< HEAD
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
 =======
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
 >>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
+=======
+        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
+>>>>>>> c9435cec4a (static)
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
