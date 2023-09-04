@@ -1,5 +1,6 @@
 from importlib import import_module
-from typing import Callable, Optional, Tuple, TypeVar
+from inspect import getmembers, getsource, isfunction
+from typing import Callable, Optional, Tuple, TypeVar, List
 
 from importlib_metadata import entry_points
 
@@ -154,6 +155,22 @@ class ChartingService(metaclass=SingletonMeta):
         adjusted_route = route.replace("/", "_")[1:]
         module = cls._get_extension_router(extension_name)
         return getattr(module, adjusted_route)
+
+    @classmethod
+    def get_implemented_charting_functions(cls, extension_name: str) -> List[str]:
+        module = cls._get_extension_router(extension_name)
+        implemented_functions = []
+        module_name = module.__name__
+
+        for name, obj in getmembers(module, isfunction):
+            if (
+                obj.__module__ == module_name
+                and not name.startswith("_")
+                and "NotImplementedError" not in getsource(obj)
+            ):
+                implemented_functions.append(name)
+
+        return implemented_functions
 
     def to_chart(self, **kwargs) -> Chart:
         """
