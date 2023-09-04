@@ -18,15 +18,15 @@ openbb-news = { path = "./extensions/news" }
 openbb-economy = { path = "./extensions/economy" }
 openbb-fixedincome = { path = "./extensions/fixedincome" }
 openbb-charting = { path = "./extensions/charting"}
+openbb-alpha-vantage = { path = "./providers/alpha_vantage" }
 openbb-benzinga = { path = "./providers/benzinga" }
-openbb-fmp = { path = "./providers/fmp" }
-openbb-polygon = { path = "./providers/polygon" }
-openbb-fred = { path = "./providers/fred" }
-openbb-yfinance = { path = "./providers/yfinance" }
 openbb-cboe = { path = "./providers/cboe"}
-openbb-alpha-vantage = { path = "./providers/alpha-vantage" }
+openbb-fmp = { path = "./providers/fmp" }
+openbb-fred = { path = "./providers/fred" }
+openbb-intrinio = { path = "./providers/intrinio" }
+openbb-polygon = { path = "./providers/polygon" }
 openbb-quandl = { path = "./providers/quandl" }
-
+openbb-yfinance = { path = "./providers/yfinance" }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.2"
