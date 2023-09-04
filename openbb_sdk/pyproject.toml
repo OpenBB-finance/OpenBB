@@ -45,7 +45,9 @@ qa = ["openbb-qa"]
 ta = ["openbb-ta"]
 
 all = [
+    "openbb-alpha-vantage",
     "openbb-cboe",
+    "openbb-quandl",
     "openbb-yfinance",
     "openbb-charting",
     "openbb-futures",
