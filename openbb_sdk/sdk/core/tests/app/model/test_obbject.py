@@ -10,17 +10,17 @@ from openbb_provider.abstract.data import Data
 def test_OBBject():
     """Smoke test."""
     co = OBBject()
-    assert isinstance(co, OBBject)  # noqa: S101
+    assert isinstance(co, OBBject)
 
 
 def test_fields():
     """Smoke test."""
     fields = OBBject.__fields__.keys()
 
-    assert "results" in fields  # noqa: S101
-    assert "provider" in fields  # noqa: S101
-    assert "warnings" in fields  # noqa: S101
-    assert "chart" in fields  # noqa: S101
+    assert "results" in fields
+    assert "provider" in fields
+    assert "warnings" in fields
+    assert "chart" in fields
 
 
 def test_to_dataframe_no_results():
@@ -182,12 +182,12 @@ def test_to_dataframe(results, expected_df):
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
         result = co.to_dataframe()
-        assert result.equals(expected_df)  # noqa: S101
+        assert result.equals(expected_df)
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
             co.to_dataframe()
 
-        assert str(exc_info.value) == str(expected_df)  # noqa: S101
+        assert str(exc_info.value) == str(expected_df)
 
 
 @pytest.mark.parametrize(
@@ -224,12 +224,12 @@ def test_to_dict(results, expected):
         with pytest.raises(expected.__class__) as exc_info:
             co.to_dict()
 
-        assert str(exc_info.value) == str(expected)  # noqa: S101
+        assert str(exc_info.value) == str(expected)
     else:
         result = co.to_dict()
         result.pop("index", None)
 
-        assert result == expected  # noqa: S101
+        assert result == expected
 
 
 @patch("openbb_core.app.charting_manager.ChartingManager.to_chart")
@@ -249,8 +249,8 @@ def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
     result = mock_instance.to_chart()
 
     # Assert
-    assert result == {"fig": "some_mock_fig"}  # noqa: S101
-    assert mock_instance.chart.content == {"content": "some_new_content"}  # noqa: S101
+    assert result == {"fig": "some_mock_fig"}
+    assert mock_instance.chart.content == {"content": "some_new_content"}
 
     mock_to_dataframe.assert_called_once()
 
@@ -284,8 +284,8 @@ def test_to_chart_with_new_chart(
     result = mock_instance.to_chart()
 
     # Assert
-    assert result == {"fig": "some_mock_fig"}  # noqa: S101
-    assert mock_instance.chart.content == {"content": "some_new_content"}  # noqa: S101
+    assert result == {"fig": "some_mock_fig"}
+    assert mock_instance.chart.content == {"content": "some_new_content"}
 
     # Ensure self.to_dataframe() was called
     mock_to_dataframe.assert_called_once()

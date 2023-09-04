@@ -16,7 +16,7 @@ def setup_and_teardown():
 
 def test_charting_manager():
     """Smoke test."""
-    assert ChartingManager() is not None  # noqa: S101
+    assert ChartingManager() is not None
 
 
 def test_charting_manager_singleton_prop():
@@ -24,7 +24,7 @@ def test_charting_manager_singleton_prop():
     cm_1 = ChartingManager()
     cm_2 = ChartingManager()
 
-    assert cm_1 is cm_2  # noqa: S101
+    assert cm_1 is cm_2
 
 
 def test_charting_settings():
@@ -34,8 +34,8 @@ def test_charting_settings():
 
     cm = ChartingManager(user_settings=user, system_settings=sys)
 
-    assert cm.charting_settings.plot_enable_pywry is False  # noqa: S101
-    assert cm.charting_settings.test_mode is True  # noqa: S101
+    assert cm.charting_settings.plot_enable_pywry is False
+    assert cm.charting_settings.test_mode is True
 
 
 def test_charting_settings_setter():
@@ -47,8 +47,8 @@ def test_charting_settings_setter():
 
     cm.charting_settings = (sys, user)
 
-    assert cm.charting_settings.plot_enable_pywry is False  # noqa: S101
-    assert cm.charting_settings.test_mode is True  # noqa: S101
+    assert cm.charting_settings.plot_enable_pywry is False
+    assert cm.charting_settings.test_mode is True
 
 
 def test_check_charting_extension_installed():
@@ -58,9 +58,7 @@ def test_check_charting_extension_installed():
     try:
         import openbb_charting  # pylint: disable=unused-import,import-outside-toplevel  # noqa: F401,E501
 
-        assert cm.check_charting_extension_installed("charting") is True  # noqa: S101
+        assert cm.check_charting_extension_installed("charting") is True
     except ImportError:
-        assert cm.check_charting_extension_installed("charting") is False  # noqa: S101
-    assert (  # noqa: S101
-        cm.check_charting_extension_installed("openbb_core_extension_2") is False
-    )
+        assert cm.check_charting_extension_installed("charting") is False
+    assert cm.check_charting_extension_installed("openbb_core_extension_2") is False

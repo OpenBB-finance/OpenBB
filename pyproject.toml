@@ -193,6 +193,9 @@ convention = "numpy"
 match = '((?!test_).)*\.py'
 add-ignore = "D401"
 
+[tool.flake8]
+max-line-length = 122
+ignore = "S101"
 
 [tool.ruff]
 line-length = 122
