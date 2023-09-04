@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_economy(Container):
@@ -27,55 +27,13 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def available_indices(
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
-=======
-        self,
-        chart: bool = False,
-        provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None,
-        **kwargs
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
         self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
->>>>>>> c9435cec4a (static)
-=======
-        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
-=======
-        self,
-        chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
     ) -> OBBject[List]:
         """Lists of available indices from a provider.
 
         Parameters
         ----------
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        provider : Optional[Literal['fmp']]
-=======
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
-        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
->>>>>>> c9435cec4a (static)
-=======
-        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
-=======
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -87,11 +45,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-<<<<<<< HEAD
             provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
-=======
-            provider : Union[Literal['fmp'], NoneType]
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -141,7 +95,6 @@ class CLASS_economy(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -150,64 +103,15 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
-    def balance(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """BALANCE."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/balance",
-            **inputs,
-        )
-
-    @validate_arguments
-    def bigmac(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """BIGMAC."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/bigmac",
-            **inputs,
-        )
-
-    @validate_arguments
     def const(
         self,
-        index: typing_extensions.Annotated[
+        index: Annotated[
             Literal["nasdaq", "sp500", "dowjones"],
             OpenBBCustomParameter(
                 description="Index for which we want to fetch the constituents."
             ),
         ] = "dowjones",
-        chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the constituents of an index.
@@ -216,9 +120,7 @@ class CLASS_economy(Container):
         ----------
         index : Literal['nasdaq', 'sp500', 'dowjones']
             Index for which we want to fetch the constituents.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -228,7 +130,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[MajorIndicesConstituents]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -264,7 +166,6 @@ class CLASS_economy(Container):
                 "index": index,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -273,57 +174,9 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
-    def corecpi(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """CORECPI."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/corecpi",
-            **inputs,
-        )
-
-    @validate_arguments
-    def country_codes(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """COUNTRY_CODES."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/country_codes",
-            **inputs,
-        )
-
-    @validate_arguments
     def cpi(
         self,
-        countries: typing_extensions.Annotated[
+        countries: Annotated[
             List[
                 Literal[
                     "australia",
@@ -379,34 +232,33 @@ class CLASS_economy(Container):
             ],
             OpenBBCustomParameter(description="The country or countries to get data."),
         ],
-        units: typing_extensions.Annotated[
+        units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
             OpenBBCustomParameter(description="The data units."),
         ] = "growth_same",
-        frequency: typing_extensions.Annotated[
+        frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
         ] = "monthly",
-        harmonized: typing_extensions.Annotated[
+        harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
             ),
         ] = False,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """CPI.
@@ -425,9 +277,7 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -437,7 +287,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[CPI]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -470,7 +320,6 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -479,21 +328,6 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
-<<<<<<< HEAD
-<<<<<<< HEAD
-    def cpi_options(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Get the options for v3 cpi(options=True)"""  # noqa: E501
-=======
-=======
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
     def european_index(
         self,
         symbol: Annotated[
@@ -560,65 +394,25 @@ class CLASS_economy(Container):
             Low price for the interval. Only valid when interval is 1m. (provider: cboe)
         utc_datetime : Optional[datetime]
             UTC datetime. Only valid when interval is 1m. (provider: cboe)"""  # noqa: E501
-<<<<<<< HEAD
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
 
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "start_date": start_date,
                 "end_date": end_date,
             },
             extra_params=kwargs,
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-            chart=chart,
-=======
->>>>>>> c9435cec4a (static)
-        )
-
-        return self._command_runner.run(
-<<<<<<< HEAD
-            "/economy/cpi_options",
-=======
-            "/economy/european_index",
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
         )
 
         return self._command_runner.run(
             "/economy/european_index",
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             **inputs,
         )
 
     @validate_arguments
-<<<<<<< HEAD
-<<<<<<< HEAD
-    def currencies(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """CURRENCIES."""  # noqa: E501
-=======
-=======
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
     def european_index_constituents(
         self,
         symbol: Annotated[
@@ -685,287 +479,45 @@ class CLASS_economy(Container):
             Sequence number of the last trade on the tape. (provider: cboe)
         asset_type : Optional[str]
             Type of asset. (provider: cboe)"""  # noqa: E501
-<<<<<<< HEAD
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
 
         inputs = filter_inputs(
             provider_choices={
                 "provider": provider,
             },
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-            chart=chart,
-=======
-=======
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-<<<<<<< HEAD
->>>>>>> c9435cec4a (static)
-        )
-
-        return self._command_runner.run(
-            "/economy/currencies",
-            **inputs,
-        )
-
-    @validate_arguments
-    def debt(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """DEBT."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-=======
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-<<<<<<< HEAD
-            "/economy/debt",
-            **inputs,
-        )
-
-    @validate_arguments
-    def events(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """EVENTS."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/events",
-            **inputs,
-        )
-
-    @validate_arguments
-    def fgdp(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FGDP."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/fgdp",
-            **inputs,
-        )
-
-    @validate_arguments
-    def fred(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FRED."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/fred",
-            **inputs,
-        )
-
-    @validate_arguments
-    def fred_search(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FRED Search (was fred_notes)."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/fred_search",
-            **inputs,
-        )
-
-    @validate_arguments
-    def futures(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """FUTURES. 2 sources"""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/futures",
-            **inputs,
-        )
-
-    @validate_arguments
-    def gdp(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """GDP."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/gdp",
-            **inputs,
-        )
-
-    @validate_arguments
-    def glbonds(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """GLBONDS."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/glbonds",
-=======
-            "/economy/european_index_constituents",
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
         )
 
         return self._command_runner.run(
             "/economy/european_index_constituents",
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             **inputs,
         )
 
     @validate_arguments
     def index(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-=======
-        chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
-        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
->>>>>>> c9435cec4a (static)
-=======
-        provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         **kwargs
     ) -> OBBject[List]:
         """Get historical  levels for an index.
-=======
-        chart: bool = False,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
-        **kwargs
-    ) -> OBBject[List]:
-        """Get OHLCV data for an index.
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
 
         Parameters
         ----------
@@ -975,41 +527,14 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
-=======
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
-        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
->>>>>>> c9435cec4a (static)
-=======
-        provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
-=======
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp', 'polygon'], NoneType]
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-<<<<<<< HEAD
         interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             None
         timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
-=======
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
-            Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Interval of the data to fetch. (provider: fmp)
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -1020,17 +545,21 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return. (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        adjust : bool
+            Adjust all the data automatically. (provider: yfinance)
+        back_adjust : bool
+            Back-adjusted data to mimic true historical prices. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[MajorIndicesHistorical]
                 Serializable results.
-<<<<<<< HEAD
             provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
-=======
-            provider : Union[Literal['fmp', 'polygon'], NoneType]
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1041,7 +570,7 @@ class CLASS_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : Union[datetime, date]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -1071,11 +600,6 @@ class CLASS_economy(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
-<<<<<<< HEAD
-=======
-        n : Optional[PositiveInt]
-            Number of transactions for the symbol in the time period. (provider: polygon)
->>>>>>> cd9a3dc9c839ee359d2e310df2c30695778ebee7
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1088,7 +612,6 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1097,235 +620,14 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
-    def indices(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """INDICES."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/indices",
-            **inputs,
-        )
-
-    @validate_arguments
-    def macro(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """Query EconDB for macro data."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/macro",
-            **inputs,
-        )
-
-    @validate_arguments
-    def macro_countries(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_COUNTRIES."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/macro_countries",
-            **inputs,
-        )
-
-    @validate_arguments
-    def macro_parameters(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """MACRO_PARAMETERS."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/macro_parameters",
-            **inputs,
-        )
-
-    @validate_arguments
-    def overview(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """OVERVIEW."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/overview",
-            **inputs,
-        )
-
-    @validate_arguments
-    def perfmap(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """PERFMAP."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/perfmap",
-            **inputs,
-        )
-
-    @validate_arguments
-    def performance(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """PERFORMANCE."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/performance",
-            **inputs,
-        )
-
-    @validate_arguments
-    def revenue(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """REVENUE."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/revenue",
-            **inputs,
-        )
-
-    @validate_arguments
-    def rgdp(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """RGDP."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/rgdp",
-            **inputs,
-        )
-
-    @validate_arguments
     def risk(
-        self,
-        chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[List]:
         """Market Risk Premium.
 
         Parameters
         ----------
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1335,7 +637,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[RiskPremium]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1361,154 +663,9 @@ class CLASS_economy(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
             "/economy/risk",
-            **inputs,
-        )
-
-    @validate_arguments
-    def rtps(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """RTPS."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/rtps",
-            **inputs,
-        )
-
-    @validate_arguments
-    def search_index(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """SEARCH_INDEX."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/search_index",
-            **inputs,
-        )
-
-    @validate_arguments
-    def spending(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """SPENDING."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/spending",
-            **inputs,
-        )
-
-    @validate_arguments
-    def trust(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """TRUST."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/trust",
-            **inputs,
-        )
-
-    @validate_arguments
-    def usbonds(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """USBONDS."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/usbonds",
-            **inputs,
-        )
-
-    @validate_arguments
-    def valuation(
-        self,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "benzinga", "cboe", "fmp", "fred", "intrinio", "polygon", "yfinance"
-            ]
-        ] = None,
-    ) -> OBBject[openbb_core.app.model.results.empty.Empty]:
-        """VALUATION."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            chart=chart,
-        )
-
-        return self._command_runner.run(
-            "/economy/valuation",
             **inputs,
         )

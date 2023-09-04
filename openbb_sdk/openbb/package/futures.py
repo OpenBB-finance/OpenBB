@@ -31,20 +31,7 @@ class CLASS_futures(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ] = None,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        provider: Optional[Literal["yfinance"]] = None,
-=======
-        chart: bool = False,
         provider: Optional[Literal["cboe", "yfinance"]] = None,
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
-        provider: Optional[Literal["cboe", "yfinance"]] = None,
->>>>>>> c9435cec4a (static)
-=======
-        provider: Optional[Literal["cboe", "yfinance"]] = None,
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
         **kwargs
     ) -> OBBject[List]:
         """Futures Historical Price.
@@ -55,21 +42,7 @@ class CLASS_futures(Container):
             Symbol to get data for.
         date : Optional[datetime.date]
             Historical date to search curve for.
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        provider : Optional[Literal['yfinance']]
-=======
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'yfinance']]
->>>>>>> 055bee4d79 (feature/quandl-provider: Add Quandl provider to SDK-V4 (#5339))
-=======
-        provider : Optional[Literal['cboe', 'yfinance']]
->>>>>>> c9435cec4a (static)
-=======
-        provider : Optional[Literal['cboe', 'yfinance']]
->>>>>>> 026b9329553dd45edc1c0d36efd457cb9a8af77f
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
