@@ -96,34 +96,16 @@ class ChartingManager(metaclass=SingletonMeta):
         return charting_extension in extensions
 
     @staticmethod
-    def _get_extension_module(
+    def _get_extension_router(
         extension_name: str, plugin: Optional[str] = POETRY_PLUGIN
     ):
         """
         Get the module of the given extension.
         """
+
         for entry_point in entry_points(group=plugin):
             if entry_point.name == extension_name:
                 return import_module(entry_point.module)
-
-    @classmethod
-    def get_chart_format(cls, extension_name: str) -> ChartFormat:
-        """
-        Given an extension name, it returns the chart format.
-        The module must contain the `CHART_FORMAT` attribute.
-        """
-        module = cls._get_extension_module(extension_name)
-        return getattr(module, "CHART_FORMAT")
-
-    @classmethod
-    def get_chart_function(cls, extension_name: str, route: str) -> Callable:
-        """
-        Given an extension name and a route, it returns the chart function.
-        The module must contain the given route.
-        """
-        adjusted_route = route.replace("/", "_")[1:]
-        module = cls._get_extension_module(extension_name)
-        return getattr(module, adjusted_route)
 
     @staticmethod
     def handle_backend(charting_extension: str, charting_settings: ChartingSettings):
@@ -148,6 +130,25 @@ class ChartingManager(metaclass=SingletonMeta):
 
         create_backend_func(charting_settings=charting_settings)
         get_backend_func().start(debug=charting_settings.debug_mode)
+
+    @classmethod
+    def get_chart_format(cls, extension_name: str) -> ChartFormat:
+        """
+        Given an extension name, it returns the chart format.
+        The module must contain the `CHART_FORMAT` attribute.
+        """
+        module = cls._get_extension_router(extension_name)
+        return getattr(module, "CHART_FORMAT")
+
+    @classmethod
+    def get_chart_function(cls, extension_name: str, route: str) -> Callable:
+        """
+        Given an extension name and a route, it returns the chart function.
+        The module must contain the given route.
+        """
+        adjusted_route = route.replace("/", "_")[1:]
+        module = cls._get_extension_router(extension_name)
+        return getattr(module, adjusted_route)
 
     def to_chart(self, **kwargs) -> Chart:
         """
