@@ -483,8 +483,8 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.2.0"
-description = ""
+version = "0.0.0"
+description = "OpenBB package with core functionality for OpenBB SDK"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -495,16 +495,13 @@ bcrypt = "^4.0.1"
 black = "^23.7.0"
 fastapi = "^0.100.1"
 html5lib = "^1.1"
-importlib_metadata = "^6.8.0"
 openbb-provider = {path = "../provider"}
-pandas = ">1.5.3"
+pandas = ">=1.5.3"
 passlib = "^1.7.4"
 posthog = "^3.0.1"
 python-jose = "^3.3.0"
 python-multipart = "^0.0.6"
-requests = "^2.28.2"
 ruff = "0.0.256"
-urllib3 = "<2.0.0"
 uuid7 = "^0.1.0"
 uvicorn = "^0.20.0"
 websockets = "^10.4"
@@ -515,8 +512,8 @@ url = "../../sdk/core"
 
 [[package]]
 name = "openbb-provider"
-version = "0.2.0"
-description = ""
+version = "0.0.0"
+description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = "^3.8"
 files = []
