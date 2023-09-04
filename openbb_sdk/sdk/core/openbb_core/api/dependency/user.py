@@ -16,7 +16,7 @@ SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc" 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
-__user_service: Optional[UserService] = None
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/account/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -79,12 +79,8 @@ def create_jwt_token(
 
 async def get_user_service() -> UserService:
     """Get user service."""
-    global __user_service  # pylint: disable=global-statement # noqa: PLW0603
 
-    if __user_service is None:
-        __user_service = UserService()
-
-    return __user_service
+    return UserService()
 
 
 async def get_user(

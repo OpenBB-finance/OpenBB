@@ -232,33 +232,10 @@ def test_to_dict(results, expected):
         assert result == expected
 
 
-@patch("openbb_core.app.charting_manager.ChartingManager.to_chart")
 @patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
-def test_to_chart_with_existing_chart(mock_to_dataframe, mock_to_chart):
-    """Test helper."""
-    # Arrange
-    mock_instance = OBBject()
-    mock_instance.chart = Chart(content={"existing_chart_data": "some_data"})
-
-    # mock the return value of ChartingManager.to_chart()
-    mock_to_chart.return_value = Chart(
-        content={"content": "some_new_content"}, fig={"fig": "some_mock_fig"}
-    )
-
-    # Act
-    result = mock_instance.to_chart()
-
-    # Assert
-    assert result == {"fig": "some_mock_fig"}
-    assert mock_instance.chart.content == {"content": "some_new_content"}
-
-    mock_to_dataframe.assert_called_once()
-
-
-@patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
-@patch("openbb_core.app.model.obbject.ChartingManager")
+@patch("openbb_core.app.model.obbject.ChartingService")
 def test_to_chart_with_new_chart(
-    mock_charting_manager,
+    mock_charting_service,
     mock_to_dataframe,
 ):
     """Test helper."""
@@ -274,8 +251,8 @@ def test_to_chart_with_new_chart(
 
     # Arrange
     mock_instance = OBBject()
-    mock_charting_manager_instance = mock_charting_manager.return_value
-    mock_charting_manager_instance.to_chart.return_value = Chart(
+    mock_charting_service_instance = mock_charting_service.return_value
+    mock_charting_service_instance.to_chart.return_value = Chart(
         content={"content": "some_new_content"}, fig={"fig": "some_mock_fig"}
     )
     mock_to_dataframe.return_value = get_mock_dataframe()
@@ -290,8 +267,8 @@ def test_to_chart_with_new_chart(
     # Ensure self.to_dataframe() was called
     mock_to_dataframe.assert_called_once()
 
-    # Ensure ChartingManager was called with the correct parameters
-    mock_charting_manager_instance.to_chart.assert_called_once()
+    # Ensure ChartingService was called with the correct parameters
+    mock_charting_service_instance.to_chart.assert_called_once()
 
 
 def test_show_chart_exists():

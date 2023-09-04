@@ -1,7 +1,7 @@
 """The OpenBB Standardized Data Model."""
 from pydantic import BaseModel, Extra
 
-from openbb_provider.utils.helpers import to_snake_case
+from openbb_provider.utils.helpers import to_camel_case, to_snake_case
 
 
 class Data(BaseModel):
@@ -13,15 +13,11 @@ class Data(BaseModel):
 
     def __repr__(self):
         """Return a string representation of the object."""
-        return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in self.dict().items()])})"
+        return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in super().dict().items()])})"
 
     class Config:
         """Pydantic configuration."""
 
         extra = Extra.allow
         allow_population_by_field_name = True
-
-    def __init__(self, **data):
-        """Initialize the model."""
-        data = {to_snake_case(k): v for k, v in data.items()}
-        super().__init__(**data)
+        alias_generator = to_camel_case

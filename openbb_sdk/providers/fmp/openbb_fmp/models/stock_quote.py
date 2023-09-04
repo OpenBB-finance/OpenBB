@@ -28,8 +28,6 @@ class FMPStockQuoteData(StockQuoteData):
         """Pydantic alias config using fields dict."""
 
         fields = {
-            "price_avg50": "priceAvg50",
-            "price_avg200": "priceAvg200",
             "date": "timestamp",
         }
 
