@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-crypto"
 version = "0.0.0"
-description = "Crypto extension for OpenBB SDK"
+description = "Crypto extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_crypto" }]

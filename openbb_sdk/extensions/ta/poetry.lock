@@ -418,7 +418,7 @@ files = [
 [[package]]
 name = "openbb-core"
 version = "0.0.0"
-description = "OpenBB package with core functionality for OpenBB SDK"
+description = "OpenBB package with core functionality"
 optional = false
 python-versions = "^3.8"
 files = []

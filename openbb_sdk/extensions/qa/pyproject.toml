@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-qa"
 version = "0.0.0"
-description = "Quantitative Analysis extension for OpenBB SDK"
+description = "Quantitative Analysis extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_qa" }]

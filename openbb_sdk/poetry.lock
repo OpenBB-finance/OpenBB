@@ -1114,7 +1114,7 @@ files = [
 [[package]]
 name = "openbb-benzinga"
 version = "0.0.0"
-description = "Benzinga integration for OpenBB SDK"
+description = "Benzinga integration for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1130,7 +1130,7 @@ url = "providers/benzinga"
 [[package]]
 name = "openbb-cboe"
 version = "0.0.0"
-description = "CBOE integration for OpenBB SDK"
+description = "CBOE integration for OpenBB"
 optional = true
 python-versions = "^3.8"
 files = []
@@ -1147,7 +1147,7 @@ url = "providers/cboe"
 [[package]]
 name = "openbb-charting"
 version = "0.0.0"
-description = "Charting extension for OpenBB SDK"
+description = "Charting extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
 files = []
@@ -1172,7 +1172,7 @@ url = "extensions/charting"
 [[package]]
 name = "openbb-core"
 version = "0.0.0"
-description = "OpenBB package with core functionality for OpenBB SDK"
+description = "OpenBB package with core functionality for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1201,7 +1201,7 @@ url = "sdk/core"
 [[package]]
 name = "openbb-crypto"
 version = "0.0.0"
-description = "Crypto extension for OpenBB SDK"
+description = "Crypto extension for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1217,7 +1217,7 @@ url = "extensions/crypto"
 [[package]]
 name = "openbb-economy"
 version = "0.0.0"
-description = "Economy extension for OpenBB SDK"
+description = "Economy extension for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1233,7 +1233,7 @@ url = "extensions/economy"
 [[package]]
 name = "openbb-fixedincome"
 version = "0.0.0"
-description = "Fixed income extension for OpenBB SDK"
+description = "Fixed income extension for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1249,7 +1249,7 @@ url = "extensions/fixedincome"
 [[package]]
 name = "openbb-fmp"
 version = "0.0.0"
-description = "FMP integration for OpenBB SDK"
+description = "FMP integration for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1265,7 +1265,7 @@ url = "providers/fmp"
 [[package]]
 name = "openbb-forex"
 version = "0.0.0"
-description = "Forex extension for OpenBB SDK"
+description = "Forex extension for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1281,7 +1281,7 @@ url = "extensions/forex"
 [[package]]
 name = "openbb-fred"
 version = "0.0.0"
-description = "FRED integration for OpenBB SDK"
+description = "FRED integration for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1297,7 +1297,7 @@ url = "providers/fred"
 [[package]]
 name = "openbb-futures"
 version = "0.0.0"
-description = "Futures extension for OpenBB SDK"
+description = "Futures extension for OpenBB"
 optional = true
 python-versions = "^3.8"
 files = []
@@ -1313,7 +1313,7 @@ url = "extensions/futures"
 [[package]]
 name = "openbb-news"
 version = "0.0.0"
-description = "News extension for OpenBB SDK"
+description = "News extension for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1329,7 +1329,7 @@ url = "extensions/news"
 [[package]]
 name = "openbb-polygon"
 version = "0.0.0"
-description = "Polygon integration for OpenBB SDK"
+description = "Polygon integration for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1364,7 +1364,7 @@ url = "sdk/provider"
 [[package]]
 name = "openbb-stocks"
 version = "0.0.0"
-description = "Stocks extension for OpenBB SDK"
+description = "Stocks extension for OpenBB"
 optional = false
 python-versions = "^3.8"
 files = []
@@ -1380,7 +1380,7 @@ url = "extensions/stocks"
 [[package]]
 name = "openbb-yfinance"
 version = "0.0.0"
-description = "yfinance integration for OpenBB SDK"
+description = "yfinance integration for OpenBB"
 optional = true
 python-versions = "^3.8"
 files = []

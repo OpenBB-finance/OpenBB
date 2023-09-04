@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-charting"
 version = "0.0.0"
-description = "Charting extension for OpenBB SDK"
+description = "Charting extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_charting" }]

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-forex"
 version = "0.0.0"
-description = "Forex extension for OpenBB SDK"
+description = "Forex extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_forex" }]
