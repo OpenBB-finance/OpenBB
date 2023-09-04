@@ -11,6 +11,7 @@
     "economy_index": "/economy/index",
     "economy_risk": "/economy/risk",
     "etf": "/etf",
+    "etf_holdings": "/etf/holdings",
     "etf_search": "/etf/search",
     "fixedincome": "/fixedincome",
     "fixedincome_ameribor": "/fixedincome/ameribor",

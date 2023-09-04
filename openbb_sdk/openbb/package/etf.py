@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -12,11 +12,89 @@ from typing_extensions import Annotated
 
 class CLASS_etf(Container):
     """/etf
+    holdings
     search
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @validate_arguments
+    def holdings(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Optional[Literal["tmx"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get holdings for an ETF.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        provider : Optional[Literal['tmx']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'tmx' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfHoldings]
+                Serializable results.
+            provider : Optional[Literal['tmx']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        EtfHoldings
+        -----------
+        symbol : Optional[str]
+            The ticker symbol of the asset. (provider: tmx)
+        name : Optional[str]
+            The name of the asset. (provider: tmx)
+        weight : Optional[float]
+            The weight of the asset in the portfolio. (provider: tmx)
+        number_of_shares : Optional[int]
+            The value of the assets under management. (provider: tmx)
+        market_value : Optional[float]
+            The market value of the holding. (provider: tmx)
+        currency : Optional[str]
+            The currency of the holding. (provider: tmx)
+        share_percentage : Optional[float]
+            The share percentage of the holding. (provider: tmx)
+        share_change : Optional[float]
+            The change in shares of the holding. (provider: tmx)
+        country : Optional[str]
+            The country of the holding. (provider: tmx)
+        exchange : Optional[str]
+            The exchange code of the holding. (provider: tmx)
+        type_id : Optional[str]
+            The holding type ID of the asset. (provider: tmx)
+        fund_id : Optional[str]
+            The fund ID of the asset. (provider: tmx)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/etf/holdings",
+            **inputs,
+        )
 
     @validate_arguments
     def search(
