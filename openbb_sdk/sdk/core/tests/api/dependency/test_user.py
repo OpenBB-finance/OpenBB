@@ -61,8 +61,10 @@ def test_create_jwt_token():
 @patch("openbb_core.api.dependency.user.UserService")
 def test_get_user_service(mock_user_service):
     """Test get_user_service."""
-    with patch("openbb_core.api.dependency.user.__user_service", new=None):
-        asyncio.run(get_user_service())
+
+    mock_user_service.return_value = MagicMock()
+
+    asyncio.run(get_user_service())
 
     mock_user_service.assert_called_once_with()
 
@@ -74,7 +76,7 @@ def test_get_user(mock_user_service, mock_decode):
     mock_decode.return_value = {"sub": "user_id"}
     mock_user_settings = MagicMock(spec=UserSettings, profile=MagicMock(active=True))
     mock_user_service.user_settings_repository.read.return_value = mock_user_settings
-    with patch("openbb_core.api.dependency.user.__user_service", new=mock_user_service):
-        result = asyncio.run(get_user("jwt_token", mock_user_service))
+    mock_user_service.return_value = mock_user_service
+    result = asyncio.run(get_user("jwt_token", mock_user_service))
 
     assert result == mock_user_settings
