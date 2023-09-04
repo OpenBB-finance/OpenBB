@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-fmp"
 version = "0.0.0"
-description = "FMP integration for OpenBB"
+description = "FMP extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_fmp" }]

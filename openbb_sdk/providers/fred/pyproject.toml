@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-fred"
 version = "0.0.0"
-description = "FRED integration for OpenBB"
+description = "FRED extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_fred" }]
