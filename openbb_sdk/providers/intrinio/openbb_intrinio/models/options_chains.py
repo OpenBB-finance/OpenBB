@@ -37,7 +37,7 @@ intrinio_session = requests_cache.CachedSession(
 )
 
 
-def get_options_tickers(api_key: str) -> list[str]:
+def get_options_tickers(api_key: str) -> List[str]:
     """Returns all tickers that have existing options contracts.
 
     Parameters
@@ -47,7 +47,7 @@ def get_options_tickers(api_key: str) -> list[str]:
 
     Returns
     -------
-    list[str]
+    List[str]
         List of tickers
     """
 
@@ -138,31 +138,31 @@ def get_historical_chain_with_greeks(
     for i in range(0, len(results)):
         chains = results[i]
 
-        contract_symbol: list[str] = []
-        expiry: list[str] = []
-        strikes: list[float] = []
-        option_type: list[str] = []
-        close: list[float] = []
-        close_bid: list[float] = []
-        close_ask: list[float] = []
-        volume: list[int] = []
-        open: list[float] = []
-        open_bid: list[float] = []
-        open_ask: list[float] = []
-        open_interest: list[int] = []
-        high: list[float] = []
-        low: list[float] = []
-        mark: list[float] = []
-        ask_high: list[float] = []
-        ask_low: list[float] = []
-        bid_high: list[float] = []
-        bid_low: list[float] = []
-        implied_volatility: list[float] = []
-        delta: list[float] = []
-        gamma: list[float] = []
-        theta: list[float] = []
-        vega: list[float] = []
-        eod_date: list[str] = []
+        contract_symbol: List[str] = []
+        expiry: List[str] = []
+        strikes: List[float] = []
+        option_type: List[str] = []
+        close: List[float] = []
+        close_bid: List[float] = []
+        close_ask: List[float] = []
+        volume: List[int] = []
+        open: List[float] = []
+        open_bid: List[float] = []
+        open_ask: List[float] = []
+        open_interest: List[int] = []
+        high: List[float] = []
+        low: List[float] = []
+        mark: List[float] = []
+        ask_high: List[float] = []
+        ask_low: List[float] = []
+        bid_high: List[float] = []
+        bid_low: List[float] = []
+        implied_volatility: List[float] = []
+        delta: List[float] = []
+        gamma: List[float] = []
+        theta: List[float] = []
+        vega: List[float] = []
+        eod_date: List[str] = []
 
         for item in chains:
             contract_symbol.append(item["option"]["code"])

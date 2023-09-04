@@ -370,7 +370,7 @@ class Europe:
         return data.to_dict("records")
 
     @staticmethod
-    def list_index_constituents(symbol: str, **kwargs) -> list[str]:
+    def list_index_constituents(symbol: str, **kwargs) -> List[str]:
         """List symbols for constituents of a European index.
 
         Parameters
@@ -380,7 +380,7 @@ class Europe:
 
         Returns
         -------
-        list[str]
+        List[str]
             List of constituents as ticker symbols.
         """
 
