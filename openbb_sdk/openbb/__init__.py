@@ -5,7 +5,10 @@ import os
 from pathlib import Path
 from typing import List, Optional, Union
 
-from openbb_core.app.static.utils import auto_build as _auto_build, build as _build
+from openbb_core.app.static.build_utils import (
+    auto_build as _auto_build,
+    build as _build,
+)
 from openbb_core.app.static.app_factory import (
     create_app as _create_app,
     BaseApp as _BaseApp,
