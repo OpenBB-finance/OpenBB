@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "openbb-polygon"
-version = "0.1.1"
-description = ""
+version = "0.0.0"
+description = "Polygon integration for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_polygon" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = { path = "../../sdk/provider" }
+openbb-core = { path = "../../sdk/core" }
 
 [build-system]
 requires = ["poetry-core"]

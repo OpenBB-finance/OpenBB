@@ -1,16 +1,15 @@
 [tool.poetry]
 name = "openbb-cboe"
-version = "0.1.1"
-description = ""
+version = "0.0.0"
+description = "CBOE integration for OpenBB SDK"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_cboe" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = { path = "../../sdk/provider" }
 requests-cache = "^1.1.0"
-pandas = "^2.0.3"
+openbb-core = { path = "../../sdk/core" }
 
 [build-system]
 requires = ["poetry-core"]
