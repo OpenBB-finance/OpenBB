@@ -60,7 +60,7 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
             "debt_repayment": "RepaymentsOfLongTermDebt",
             "other_financing_activities": "ProceedsFromPaymentsForOtherFinancingActivities",
             "net_cash_flow_from_financing_activities": "NetCashProvidedByUsedInFinancingActivities",
-            "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",   # noqa: E501
+            "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",  # noqa: E501
         }
 
 
