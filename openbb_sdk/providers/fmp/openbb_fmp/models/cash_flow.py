@@ -1,14 +1,15 @@
 """FMP Cash Flow Statement Fetcher."""
 
 
+from datetime import date as dateType, datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cash_flows import (
+from openbb_provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from pydantic import Field, root_validator
+from pydantic import Field, validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -19,14 +20,7 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Cash-Flow-Statement
     """
 
-    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
-
-    @root_validator()
-    def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
-        """Validate that either a symbol or CIK is provided."""
-        if values.get("symbol") is None and values.get("cik") is None:
-            raise ValueError("symbol or cik must be provided")
-        return values
+    symbol: str = Field(description="Symbol/CIK of the company.")
 
 
 class FMPCashFlowStatementData(CashFlowStatementData):
@@ -36,20 +30,52 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         """Pydantic alias config using fields dict."""
 
         fields = {
-            "currency": "reportedCurrency",
             "net_cash_flow_from_operating_activities": "netCashProvidedByOperatingActivities",
+            "purchases_of_marketable_securities": "purchasesOfInvestments",
+            "sales_from_maturities_of_investments": "salesMaturitiesOfInvestments",
+            "payments_from_acquisitions": "acquisitionsNet",
             "other_investing_activities": "otherInvestingActivites",
-            "net_cash_used_for_investing_activities": "netCashUsedForInvestingActivites",
+            "net_cash_flow_from_investing_activities": "netCashUsedForInvestingActivites",
             "other_financing_activities": "otherFinancingActivites",
             "net_cash_flow_from_financing_activities": "netCashUsedProvidedByFinancingActivities",
         }
 
-    # Leftovers below
-    calendar_year: Optional[int] = Field(
-        description="Calendar Year", alias="calendarYear"
+    reported_currency: str = Field(description="Reported currency in the statement.")
+    filling_date: dateType = Field(description="Filling date.")
+    accepted_date: datetime = Field(description="Accepted date.")
+    calendar_year: int = Field(description="Calendar year.")
+
+    change_in_working_capital: Optional[int] = Field(
+        description="Change in working capital."
     )
-    link: Optional[str]
-    final_link: Optional[str] = Field(description="Final Link", alias="finalLink")
+    other_working_capital: Optional[int] = Field(description="Other working capital.")
+    common_stock_issued: Optional[int] = Field(description="Common stock issued.")
+    effect_of_forex_changes_on_cash: Optional[int] = Field(
+        description="Effect of forex changes on cash."
+    )
+
+    cash_at_beginning_of_period: Optional[int] = Field(
+        description="Cash at beginning of period."
+    )
+    cash_at_end_of_period: Optional[int] = Field(
+        description="Cash, cash equivalents, and restricted cash at end of period"
+    )
+    operating_cash_flow: Optional[int] = Field(description="Operating cash flow.")
+    capital_expenditure: Optional[int] = Field(description="Capital expenditure.")
+    free_cash_flow: Optional[int] = Field(description="Free cash flow.")
+
+    link: str = Field(description="Link to the statement.")
+    final_link: str = Field(description="Link to the final statement.")
+
+    @validator("filing_date", pre=True, check_fields=False)
+    def filing_date_validate(cls, v):  # pylint: disable=no-self-argument
+        """Validate the filing date."""
+        return datetime.strptime(v, "%Y-%m-%d").date()
+
+    @validator("accepted_date", pre=True, check_fields=False)
+    def accepted_date_validate(cls, v):  # pylint: disable=no-self-argument
+        """Validate the accepted date."""
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPCashFlowStatementFetcher(
