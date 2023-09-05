@@ -66,16 +66,10 @@ class CLASS_forex(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+        interval : Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
             Data granularity. (provider: yfinance)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
             Period of the data to return. (provider: yfinance)
-        prepost : bool
-            Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
-        back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
 
         Returns
         -------
@@ -95,17 +89,17 @@ class CLASS_forex(Container):
         ---------------
         date : Optional[datetime]
             The date of the data.
-        open : Optional[PositiveFloat]
+        open : Optional[float]
             The open price of the symbol.
-        high : Optional[PositiveFloat]
+        high : Optional[float]
             The high price of the symbol.
-        low : Optional[PositiveFloat]
+        low : Optional[float]
             The low price of the symbol.
-        close : Optional[PositiveFloat]
+        close : Optional[float]
             The close price of the symbol.
-        volume : Optional[NonNegativeFloat]
+        volume : Optional[int]
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
+        vwap : Optional[float]
             Volume Weighted Average Price of the symbol.
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)

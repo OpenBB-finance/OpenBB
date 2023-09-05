@@ -93,3 +93,25 @@ def risk(
 ) -> OBBject[BaseModel]:
     """Market Risk Premium."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="IndexSearch")
+def index_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search for indices."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="IndexSnapshots")
+def index_snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get current  levels for all indices from a provider."""
+    return OBBject(results=Query(**locals()).execute())

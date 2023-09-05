@@ -245,7 +245,19 @@ class CLASS_stocks(Container):
         adjust : bool
             Adjust all the data automatically. (provider: yfinance)
         back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+            Attempt to adjust all the data automatically. (provider: yfinance)
+        progress : bool
+            Show progress bar. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+        rounding : bool
+            Round to two decimal places? (provider: yfinance)
+        repair : bool
+            Detect currency unit 100x mixups and attempt repair. (provider: yfinance)
+        keepna : bool
+            Keep NaN rows returned by Yahoo? (provider: yfinance)
+        group_by : Literal['ticker', 'column']
+            Group by ticker or column. (provider: yfinance)
 
         Returns
         -------
