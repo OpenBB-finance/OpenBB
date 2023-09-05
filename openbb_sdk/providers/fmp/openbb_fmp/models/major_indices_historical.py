@@ -56,13 +56,13 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         default=None,
     )
 
-    @validator("date", pre=True)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v) -> datetime:  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        # TODO: Check if this condition is necessary
-        # if values.get("changeOverTime", None) is not None:
-        #     return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPMajorIndicesHistoricalFetcher(
