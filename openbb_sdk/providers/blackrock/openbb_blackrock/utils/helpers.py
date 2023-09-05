@@ -61,10 +61,13 @@ class Canada:
         portfolioID = etfs[etfs["symbol"] == symbol]["portfolioId"].iloc[0]
         symbol = symbol.replace(".", "")
 
-        base_url = f"https://www.blackrock.com/ca/investors/en/products/{portfolioID}/fund/1464253357814.ajax?fileType=csv"
-        if not date:
-            url = base_url + f"&asOfDate={date}"
-        url = base_url + f"&fileName={symbol}_holdings&dataType=fund"
+        url = (
+            f"https://www.blackrock.com/ca/investors/en/products/{portfolioID}/fund/1464253357814.ajax?fileType=csv"
+        )
+        if date:
+            url = url + f"&asOfDate={date}"
+
+        url = url + f"&fileName={symbol}_holdings&dataType=fund"
 
         # url = (
         #    f"https://www.blackrock.com{etf_url}/1464253357814.ajax?"
