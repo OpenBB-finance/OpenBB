@@ -1160,16 +1160,22 @@ reference = "test-pypi"
 
 [[package]]
 name = "openbb-benzinga"
-version = "0.1.0a0"
+version = "0.1.0a1"
 description = "Benzinga extension for OpenBB"
 optional = false
-python-versions = "*"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_benzinga-0.1.0a1-py3-none-any.whl", hash = "sha256:1038e2199cebdd770b698d1c832dd1846ed9da1c56e05761f0d879a0757f87fc"},
+    {file = "openbb_benzinga-0.1.0a1.tar.gz", hash = "sha256:8e4fc62785e704b3e0a16efa139d4aa5f73bfbee1be9eaaa24bd8653576b17c2"},
+]
+
+[package.dependencies]
+openbb-core = ">=0.1.0a1,<0.2.0"
 
 [package.source]
-type = "directory"
-url = "providers/benzinga"
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "test-pypi"
 
 [[package]]
 name = "openbb-cboe"
@@ -1310,16 +1316,22 @@ reference = "test-pypi"
 
 [[package]]
 name = "openbb-fmp"
-version = "0.1.0a0"
+version = "0.1.0a1"
 description = "FMP extension for OpenBB"
 optional = false
-python-versions = "*"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_fmp-0.1.0a1-py3-none-any.whl", hash = "sha256:9559ac65f6ce3e99998129174c0e5a9375248c101905d4cccef3efff80136f43"},
+    {file = "openbb_fmp-0.1.0a1.tar.gz", hash = "sha256:c693188637464b1442aea6b42e4b220ab7956f2280dd60dde85ed0b733e6aa4b"},
+]
+
+[package.dependencies]
+openbb-core = ">=0.1.0a1,<0.2.0"
 
 [package.source]
-type = "directory"
-url = "providers/fmp"
+type = "legacy"
+url = "https://test.pypi.org/simple"
+reference = "test-pypi"
 
 [[package]]
 name = "openbb-forex"
@@ -1443,11 +1455,6 @@ description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = "*"
 files = []
-develop = false
-
-[package.source]
-type = "directory"
-url = "sdk/provider"
 
 [[package]]
 name = "openbb-qa"
@@ -3051,4 +3058,4 @@ yfinance = ["openbb-yfinance"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "b781c56a67db27c7a12aa064cfbb1897830dca736cc2d9b130f25ce986f7a6f3"
+content-hash = "8c795876290acefd59555f5dff79a60180b725b30aba52182b8c05c62974ade8"
