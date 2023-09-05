@@ -26,7 +26,7 @@ class SystemSettings(Tagged):
 
     # OpenBB section
     # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
-    version: str = FrozenField(default="4.0.0dev")
+    version: str = FrozenField(default="4.0.0a0")
     home_directory: str = FrozenField(default=str(HOME_DIRECTORY))
     openbb_directory: str = FrozenField(default=str(OPENBB_DIRECTORY))
     user_settings_path: str = FrozenField(default=str(USER_SETTINGS_PATH))
