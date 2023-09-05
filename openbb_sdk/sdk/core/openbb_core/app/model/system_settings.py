@@ -33,13 +33,13 @@ class SystemSettings(Tagged):
     system_settings_path: str = FrozenField(default=str(SYSTEM_SETTINGS_PATH))
 
     # Logging section
-    logging_app_name: str = FrozenField(default="gst")
+    logging_app_name: Literal["sdk"] = FrozenField(default="sdk")
     logging_commit_hash: Optional[str] = FrozenField(default=None)
     logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(default="H")
     logging_handlers: List[str] = FrozenField(default_factory=lambda: ["file"])
     logging_rolling_clock: bool = FrozenField(default=False)
     logging_verbosity: int = FrozenField(default=20)
-    logging_sub_app: str = FrozenField(default="sdk")
+    logging_sub_app: Literal["python", "api", "pro"] = FrozenField(default="python")
     logging_suppress: bool = FrozenField(default=False)
     log_collect: bool = FrozenField(default=True)
 

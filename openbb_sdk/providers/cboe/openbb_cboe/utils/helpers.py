@@ -159,11 +159,11 @@ def get_cboe_index_directory(**kwargs) -> pd.DataFrame:
     return CBOE_INDEXES[idx]
 
 
-def get_ticker_info(symbol: str, **kwargs) -> dict[str, Any]:
+def get_ticker_info(symbol: str, **kwargs) -> Dict[str, Any]:
     symbol = symbol.upper()
     SYMBOLS = get_cboe_directory()
     INDEXES = get_cboe_index_directory()
-    data: dict[str, Any] = {}
+    data: Dict[str, Any] = {}
 
     if symbol not in SYMBOLS.index and symbol not in INDEXES.index:
         raise RuntimeError(f"Data not found for: {symbol}")
@@ -205,7 +205,7 @@ def get_ticker_info(symbol: str, **kwargs) -> dict[str, Any]:
     return _data.transpose()[0].to_dict()
 
 
-def get_ticker_iv(symbol: str, **kwargs) -> dict[str, float]:
+def get_ticker_iv(symbol: str, **kwargs) -> Dict[str, float]:
     """Get annualized high/low historical and implied volatility over 30/60/90 day windows.
 
     Parameters
@@ -333,12 +333,12 @@ class Europe:
     """Class for European CBOE data."""
 
     @staticmethod
-    def get_all_index_definitions(**kwargs) -> dict[Any, Any]:
+    def get_all_index_definitions(**kwargs) -> Dict[Any, Any]:
         """Get the full list of European index definitions.
 
         Returns
         -------
-        dict[Any, Any]
+        Dict[Any, Any]
             Dictionary with results.
         """
 
@@ -357,7 +357,7 @@ class Europe:
 
         Returns
         -------
-        dict[str, str]
+        Dict[str, str]
             List of dictionaries with the results.
         """
 
@@ -370,7 +370,7 @@ class Europe:
         return data.to_dict("records")
 
     @staticmethod
-    def list_index_constituents(symbol: str, **kwargs) -> list[str]:
+    def list_index_constituents(symbol: str, **kwargs) -> List[str]:
         """List symbols for constituents of a European index.
 
         Parameters
@@ -380,7 +380,7 @@ class Europe:
 
         Returns
         -------
-        list[str]
+        List[str]
             List of constituents as ticker symbols.
         """
 

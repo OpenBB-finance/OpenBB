@@ -1,13 +1,10 @@
 """Forex aggregate end of day price data model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date, datetime
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, NonNegativeFloat, PositiveFloat
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -18,11 +15,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class ForexHistoricalQueryParams(QueryParams, BaseSymbol):
     """Forex end of day Query."""
 
-    start_date: Optional[dateType] = Field(
+    start_date: Optional[date] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[dateType] = Field(
+    end_date: Optional[date] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -31,10 +28,10 @@ class ForexHistoricalQueryParams(QueryParams, BaseSymbol):
 class ForexHistoricalData(Data):
     """Forex end of day price Data."""
 
-    date: datetime | dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[int] = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: NonNegativeFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))

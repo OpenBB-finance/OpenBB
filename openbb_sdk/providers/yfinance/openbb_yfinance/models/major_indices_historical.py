@@ -1,21 +1,20 @@
 """yfinance Major Indices End of Day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalData,
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pandas import to_datetime
 from pydantic import Field, validator
+from yfinance import Ticker
 
-from openbb_yfinance.utils.helpers import yf_download
-from openbb_yfinance.utils.references import INDICES, INTERVALS, PERIODS
+from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
 class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
@@ -24,12 +23,17 @@ class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParam
     Source: https://finance.yahoo.com/world-indices
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
-        default="max", description=QUERY_DESCRIPTIONS.get("period", "")
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("period", "")
     )
-    prepost: bool = Field(default=True, description="Include Pre and Post market data.")
-    rounding: bool = Field(default=True, description="Round prices to two decimals?")
+    prepost: bool = Field(
+        default=False, description="Include Pre and Post market data."
+    )
+    adjust: bool = Field(default=True, description="Adjust all the data automatically.")
+    back_adjust: bool = Field(
+        default=False, description="Back-adjusted data to mimic true historical prices."
+    )
 
 
 class YFinanceMajorIndicesHistoricalData(MajorIndicesHistoricalData):
@@ -38,10 +42,7 @@ class YFinanceMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            return datetime.strptime(v, "%Y-%m-%d").date()
+        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
 class YFinanceMajorIndicesHistoricalFetcher(
@@ -56,7 +57,17 @@ class YFinanceMajorIndicesHistoricalFetcher(
     def transform_query(
         params: Dict[str, Any]
     ) -> YFinanceMajorIndicesHistoricalQueryParams:
-        """Transform the query."""
+        """Transform the query. Setting the start and end dates for a 1 year period."""
+        if params.get("period") is None:
+            transformed_params = params
+
+            now = datetime.now().date()
+            if params.get("start_date") is None:
+                transformed_params["start_date"] = now - relativedelta(years=1)
+
+            if params.get("end_date") is None:
+                transformed_params["end_date"] = now
+            return YFinanceMajorIndicesHistoricalQueryParams(**transformed_params)
 
         return YFinanceMajorIndicesHistoricalQueryParams(**params)
 
@@ -65,48 +76,37 @@ class YFinanceMajorIndicesHistoricalFetcher(
         query: YFinanceMajorIndicesHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> dict:
         """Return the raw data from the yfinance endpoint."""
+        query.symbol = f"^{query.symbol}"
 
-        symbol = query.symbol.lower()
-        indices = pd.DataFrame(INDICES).transpose().reset_index()
-        indices.columns = ["code", "name", "symbol"]
+        if query.period:
+            data = Ticker(query.symbol).history(
+                interval=query.interval,
+                period=query.period,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
+                actions=False,
+                raise_errors=True,
+            )
+        else:
+            data = Ticker(query.symbol).history(
+                interval=query.interval,
+                start=query.start_date,
+                end=query.end_date,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
+                actions=False,
+                raise_errors=True,
+            )
 
-        if symbol in indices["code"].to_list():
-            symbol = indices[indices["code"] == symbol]["symbol"].values[0]
-
-        if symbol.title() in indices["name"].to_list():
-            symbol = indices[indices["name"] == symbol.title()]["symbol"].values[0]
-
-        if "^" + symbol.upper() in indices["symbol"].to_list():
-            symbol = "^" + symbol.upper()
-
-        data = yf_download(
-            symbol=symbol,
-            start_date=query.start_date,
-            end_date=query.end_date,
-            interval=query.interval,
-            period=query.period,
-            prepost=query.prepost,
-            rounding=query.rounding,
+        data = data.reset_index()
+        data["Date"] = (
+            data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
-
-        query.end_date = (
-            datetime.now().date() if query.end_date is None else query.end_date
-        )
-
-        days = (
-            1
-            if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
-            else 0
-        )
-
-        if query.start_date is not None:
-            data["date"] = to_datetime(data["date"])
-            data.set_index("date", inplace=True)
-            data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
-
-        return data.reset_index().to_dict("records")
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(

@@ -21,9 +21,20 @@ class PolygonBalanceSheetData(BalanceSheetData):
 
     class Config:
         fields = {
-            "date": "start_date",
-            "equity": "total_equity",
-            "total_liabilities_and_stockholders_equity": "liabilities_and_equity",
+            "total_current_assets": "current_assets",
+            "marketable_securities": "fixed_assets",
+            "property_plant_equipment_net": "public_utilities_property_plant_and_equipment_net",
+            "other_non_current_assets": "other_noncurrent_assets_of_regulated_entity",
+            "total_non_current_assets": "noncurrent_assets",
+            "total_assets": "assets",
+            "total_current_liabilities": "current_liabilities",
+            "other_non_current_liabilities": "other _noncurrent_liabilities_of_regulated_entity",
+            "total_non_current_liabilities": "noncurrent_liabilities",
+            "total_liabilities": "liabilities",
+            "preferred_stock": "temporary_equity",
+            "total_shareholder_equity": "temporary_equity_attributable_to_parent",
+            "total_equity": "equity",
+            "total_liabilities_and_shareholders_equity": "liabilities_and_equity",
             "minority_interest": "equity_attributable_to_noncontrolling_interest",
         }
 
@@ -66,25 +77,17 @@ class PolygonBalanceSheetFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonBalanceSheetData]:
-        FIELDS = [
-            "assets",
-            "current_assets",
-            "current_liabilities",
-            "equity",
-            "equity_attributable_to_noncontrolling_interest",
-            "equity_attributable_to_parent",
-            "liabilities",
-            "liabilities_and_equity",
-            "noncurrent_assets",
-            "noncurrent_liabilities",
-        ]
+        transformed_data = []
 
-        to_return = []
         for item in data:
-            new = {"start_date": item["start_date"], "cik": item["cik"]}
-            if bs := item["financials"]["balance_sheet"]:
-                for field in FIELDS:
-                    new[field] = bs[field].get("value", 0)
+            sub_data = {
+                key: value["value"]
+                for key, value in item["financials"]["balance_sheet"].items()
+            }
+            sub_data["date"] = item["start_date"]
+            sub_data["cik"] = item["cik"]
+            sub_data["symbol"] = item["tickers"]
+            sub_data["period"] = item["fiscal_period"]
+            transformed_data.append(PolygonBalanceSheetData(**sub_data))
 
-            to_return.append(PolygonBalanceSheetData(**new))
-        return to_return
+        return transformed_data

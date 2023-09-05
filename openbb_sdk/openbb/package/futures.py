@@ -31,7 +31,6 @@ class CLASS_futures(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["cboe", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -43,8 +42,6 @@ class CLASS_futures(Container):
             Symbol to get data for.
         date : Optional[datetime.date]
             Historical date to search curve for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -82,7 +79,6 @@ class CLASS_futures(Container):
                 "date": date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -113,7 +109,6 @@ class CLASS_futures(Container):
             Optional[str],
             OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -129,8 +124,6 @@ class CLASS_futures(Container):
             End date of the data, in YYYY-MM-DD format.
         expiration : Optional[str]
             Future expiry date with format YYYY-MM
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is
@@ -186,7 +179,6 @@ class CLASS_futures(Container):
                 "expiration": expiration,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

@@ -1,19 +1,19 @@
 """yfinance Crypto End of Day fetcher."""
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pandas import to_datetime
 from pydantic import Field, validator
+from yfinance import Ticker
 
-from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 
 
@@ -23,9 +23,16 @@ class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://finance.yahoo.com/crypto/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
-        default="max", description=QUERY_DESCRIPTIONS.get("period", "")
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    prepost: bool = Field(
+        default=False, description="Include Pre and Post market data."
+    )
+    adjust: bool = Field(default=True, description="Adjust all the data automatically.")
+    back_adjust: bool = Field(
+        default=False, description="Back-adjusted data to mimic true historical prices."
     )
 
 
@@ -35,10 +42,7 @@ class YFinanceCryptoHistoricalData(CryptoHistoricalData):
     @validator("Date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            return datetime.strptime(v, "%Y-%m-%d").date()
+        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
 class YFinanceCryptoHistoricalFetcher(
@@ -51,7 +55,17 @@ class YFinanceCryptoHistoricalFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCryptoHistoricalQueryParams:
-        """Transform the query."""
+        """Transform the query. Setting the start and end dates for a 1 year period."""
+        if params.get("period") is None:
+            transformed_params = params
+
+            now = datetime.now().date()
+            if params.get("start_date") is None:
+                transformed_params["start_date"] = now - relativedelta(years=1)
+
+            if params.get("end_date") is None:
+                transformed_params["end_date"] = now
+            return YFinanceCryptoHistoricalQueryParams(**transformed_params)
 
         return YFinanceCryptoHistoricalQueryParams(**params)
 
@@ -60,42 +74,39 @@ class YFinanceCryptoHistoricalFetcher(
         query: YFinanceCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> dict:
         """Return the raw data from the yfinance endpoint."""
+        if query.period:
+            data = Ticker(query.symbol).history(
+                interval=query.interval,
+                period=query.period,
+                actions=False,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
+                raise_errors=True,
+            )
+        else:
+            data = Ticker(query.symbol).history(
+                interval=query.interval,
+                start=query.start_date,
+                end=query.end_date,
+                actions=False,
+                prepost=query.prepost,
+                auto_adjust=query.adjust,
+                back_adjust=query.back_adjust,
+                raise_errors=True,
+            )
 
-        if "-" not in query.symbol:
-            position = len(query.symbol) - 3
-            query.symbol = query.symbol[:position] + "-" + query.symbol[position:]
-
-        data = yf_download(
-            query.symbol,
-            start=query.start_date,
-            end=query.end_date,
-            interval=query.interval,
-            period=query.period,
-            auto_adjust=False,
-            actions=False,
+        data = data.reset_index()
+        data["Date"] = (
+            data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
-
-        query.end_date = (
-            datetime.now().date() if query.end_date is None else query.end_date
-        )
-        days = (
-            1
-            if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
-            else 0
-        )
-
-        if query.start_date is not None:
-            data["date"] = to_datetime(data["date"])
-            data.set_index("date", inplace=True)
-            data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
-
-        return data.reset_index().to_dict("records")
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
-        data: List[Dict],
+        data: dict,
     ) -> List[YFinanceCryptoHistoricalData]:
         """Transform the data to the standard format."""
         return [YFinanceCryptoHistoricalData.parse_obj(d) for d in data]

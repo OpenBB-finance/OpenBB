@@ -55,7 +55,6 @@ class CLASS_stocks(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -65,8 +64,6 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -159,7 +156,6 @@ class CLASS_stocks(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -208,14 +204,14 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
-        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             None
         interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             None
         adjusted : Optional[bool]
             None
-        prepost : bool
-            None
+        extended_hours : Optional[bool]
+            Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
         month : Optional[str]
             Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
         outputsize : Optional[Literal['compact', 'full']]
@@ -244,10 +240,10 @@ class CLASS_stocks(Container):
             Sort order of the data. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        actions : bool
-            Include actions. (provider: yfinance)
-        auto_adjust : bool
-            Adjust all OHLC data automatically. (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        adjust : bool
+            Adjust all the data automatically. (provider: yfinance)
         back_adjust : bool
             Attempt to adjust all the data automatically. (provider: yfinance)
         progress : bool
@@ -279,7 +275,7 @@ class CLASS_stocks(Container):
 
         StockHistorical
         ---------------
-        date : Union[datetime, date]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -291,11 +287,13 @@ class CLASS_stocks(Container):
             The close price of the symbol.
         volume : Optional[NonNegativeInt]
             The volume of the symbol.
-        adjusted_close : Optional[float]
+        vwap : Optional[PositiveFloat]
+            Volume Weighted Average Price of the symbol.
+        adjusted_close : Optional[PositiveFloat]
             The adjusted close price of the symbol. (provider: alpha_vantage)
-        dividend_amount : Optional[float]
+        dividend_amount : Optional[NonNegativeFloat]
             Dividend amount paid for the corresponding date. (provider: alpha_vantage)
-        split_coefficient : Optional[float]
+        split_coefficient : Optional[NonNegativeFloat]
             Split coefficient for the corresponding date. (provider: alpha_vantage)
         calls_volume : Optional[float]
             Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
@@ -311,8 +309,6 @@ class CLASS_stocks(Container):
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
             Change \\% in the price of the symbol. (provider: fmp)
-        vwap : Optional[float]
-            Volume Weighted Average Price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
@@ -712,7 +708,6 @@ class CLASS_stocks(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -722,8 +717,6 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -840,7 +833,6 @@ class CLASS_stocks(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -856,7 +848,6 @@ class CLASS_stocks(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -868,8 +859,6 @@ class CLASS_stocks(Container):
             Search query.
         ticker : bool
             Whether to search by ticker symbol.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -909,7 +898,6 @@ class CLASS_stocks(Container):
                 "ticker": ticker,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

@@ -1,6 +1,5 @@
 """European Index Constituents data model."""
 
-from typing import Optional
 
 from pydantic import Field
 
@@ -18,11 +17,11 @@ class EuropeanIndexConstituentsData(Data):
     """European Index Constituents data."""
 
     symbol: str = Field(description="Symbol of the constituent company in the index.")
-    price: Optional[float] = Field(
+    price: float = Field(
         description="Current price of the constituent company in the index."
     )
-    open: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))

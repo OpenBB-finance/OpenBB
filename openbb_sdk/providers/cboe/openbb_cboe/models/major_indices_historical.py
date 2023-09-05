@@ -10,7 +10,7 @@ from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_cboe.utils.helpers import (
     TICKER_EXCEPTIONS,
@@ -43,6 +43,11 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     total_options_volume: Optional[float] = Field(
         description="Total number of options traded during the most recent trading period. Only valid if interval is 1m."
     )
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return datetime object from string."""
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeMajorIndicesHistoricalFetcher(
@@ -168,15 +173,15 @@ class CboeMajorIndicesHistoricalFetcher(
 
         if query.interval == "1m":
             data_list = r.json()["data"]
-            date: list[datetime] = []
-            open: list[float] = []
-            high: list[float] = []
-            low: list[float] = []
-            close: list[float] = []
-            volume: list[float] = []
-            calls_volume: list[float] = []
-            puts_volume: list[float] = []
-            total_options_volume: list[float] = []
+            date: List[datetime] = []
+            open: List[float] = []
+            high: List[float] = []
+            low: List[float] = []
+            close: List[float] = []
+            volume: List[float] = []
+            calls_volume: List[float] = []
+            puts_volume: List[float] = []
+            total_options_volume: List[float] = []
 
             for i in range(0, len(data_list)):
                 date.append(data_list[i]["datetime"])

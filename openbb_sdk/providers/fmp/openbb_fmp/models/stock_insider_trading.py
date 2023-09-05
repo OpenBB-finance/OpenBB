@@ -22,14 +22,6 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
 class FMPStockInsiderTradingData(StockInsiderTradingData):
     """FMP Stock Insider Trading Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "acquisition_or_disposition": "acquistionOrDisposition",
-            "last_number_of_13f_shares": "lastNumberOf13FShares",
-        }
-
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[

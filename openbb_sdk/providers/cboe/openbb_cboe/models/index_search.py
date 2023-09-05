@@ -87,7 +87,7 @@ class CboeIndexSearchFetcher(
         if query.europe is False:
             symbols = get_cboe_index_directory().reset_index()
 
-        target = "name" if not query.ticker else "symbol"
+        target = "name" if not query.symbol else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx]
 

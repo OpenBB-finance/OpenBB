@@ -39,7 +39,6 @@ class CLASS_forex(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -53,8 +52,6 @@ class CLASS_forex(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -90,7 +87,7 @@ class CLASS_forex(Container):
 
         ForexHistorical
         ---------------
-        date : Union[datetime, date]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[float]
             The open price of the symbol.
@@ -130,7 +127,6 @@ class CLASS_forex(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -140,17 +136,12 @@ class CLASS_forex(Container):
 
     @validate_arguments
     def pairs(
-        self,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -225,7 +216,6 @@ class CLASS_forex(Container):
             },
             standard_params={},
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

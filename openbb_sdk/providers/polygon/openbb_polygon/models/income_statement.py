@@ -1,10 +1,9 @@
-from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import IncomeStatementData
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import validator
+from pydantic import Field, validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
@@ -17,35 +16,51 @@ class PolygonIncomeStatementQueryParams(PolygonFundamentalQueryParams):
 class PolygonIncomeStatementData(IncomeStatementData):
     class Config:
         fields = {
-            "date": "start_date",
-            "accepted_date": "acceptance_datetime",
-            "period": "fiscal_period",
-            "revenue": "revenues",
-            "operating_income": "operating_income_loss",
-            "income_before_tax": "income_loss_from_continuing_operations_before_tax",
-            "income_tax_expense": "income_tax_expense_benefit",
-            "net_income": "net_income_loss",
-            "eps": "basic_earnings_per_share",
-            "eps_diluted": "diluted_earnings_per_share",
-            "interest_expense": "interest_expense_operating",
-            "symbol": "tickers",
+            "revenue": "Revenues",
+            "cost_of_revenue": "Cost Of Revenue",
+            "gross_profit": "Gross Profit",
+            "cost_and_expenses": "Costs And Expenses",
+            "operating_expenses": "Operating Expenses",
+            "operating_income": "Operating Income/Loss",
+            "interest_expense": "Interest Expense, Operating",
+            "income_tax_expense": "Income Tax Expense/Benefit",
+            "net_income": "Net Income/Loss",
+            "eps": "Basic Earnings Per Share",
+            "eps_diluted": "Diluted Earnings Per Share",
         }
 
-    # tickers: Optional[List[str]]
-    cik: Optional[str]
-    filing_date: Optional[dateType]
-    cost_of_revenue: Optional[int]
-    gross_profit: Optional[int]
-    operating_expenses: Optional[int]
-    income_loss_from_continuing_operations_after_tax: Optional[float]
-    benefits_costs_expenses: Optional[float]
-    net_income_loss_attributable_to_noncontrolling_interest: Optional[int]
-    net_income_loss_attributable_to_parent: Optional[float]
-    net_income_loss_available_to_common_stockholders_basic: Optional[float]
+    income_loss_from_continuing_operations_before_tax: Optional[float] = Field(
+        description="Income/Loss From Continuing Operations After Tax"
+    )
+    income_loss_from_continuing_operations_after_tax: Optional[float] = Field(
+        description="Income/Loss From Continuing Operations After Tax"
+    )
+    benefits_costs_expenses: Optional[float] = Field(
+        description="Benefits, Costs And Expenses"
+    )
+    net_income_loss_attributable_to_noncontrolling_interest: Optional[float] = Field(
+        description="Net Income/Loss Attributable To Noncontrolling Interest"
+    )
+    net_income_loss_attributable_to_parent: Optional[float] = Field(
+        description="Net Income/Loss Attributable To Parent"
+    )
+    income_tax_expense_benefit_deferred: Optional[float] = Field(
+        description="Income Tax Expense/Benefit Deferred"
+    )
     participating_securities_distributed_and_undistributed_earnings_loss_basic: Optional[
         float
-    ]
-    preferred_stock_dividends_and_other_adjustments: Optional[float]
+    ] = Field(
+        description="Participating Securities Distributed And Undistributed Earnings Loss Basic"
+    )
+    net_income_loss_available_to_common_stockholders_basic: Optional[float] = Field(
+        description="Net Income/Loss Available To Common Stockholders Basic"
+    )
+    nonoperating_income_loss: Optional[float] = Field(
+        description="Nonoperating Income Loss"
+    )
+    preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
+        description="Preferred Stock Dividends And Other Adjustments"
+    )
 
     @validator("symbol", pre=True, check_fields=False)
     def symbol_from_tickers(cls, v):  # pylint: disable=E0213
@@ -86,39 +101,17 @@ class PolygonIncomeStatementFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonIncomeStatementData]:
-        FIELDS = [
-            "revenues",
-            "cost_of_revenue",
-            "gross_profit",
-            "operating_expenses" "income_loss_from_continuing_operations_before_tax",
-            "income_tax_expense_benefit",
-            "net_income_loss",
-            "basic_earnings_per_share",
-            "diluted_earnings_per_share",
-            "net_income_loss_attributable_to_noncontrolling_interest",
-            "net_income_loss_attributable_to_parent",
-            "net_income_loss_available_to_common_stockholders_basic",
-            "operating_income_loss",
-            "participating_securities_distributed_and_undistributed_earnings_loss_basic",
-            "preferred_stock_dividends_and_other_adjustments",
-            "income_loss_from_continuing_operations_after_tax",
-            "benefits_costs_expenses",
-            "interest_expense_operating",
-        ]
+        transformed_data = []
 
-        to_return = []
         for item in data:
-            new = {"acceptance_datetime": item.get("acceptance_datetime")}
-            new["start_date"] = item["start_date"]
-            new["filing_date"] = item.get("filing_date")
-            new["fiscal_period"] = item["fiscal_period"]
-            new["tickers"] = item["tickers"]
-            new["cik"] = item["cik"]
-            incs = item["financials"].get("income_statement", {})
+            sub_data = {
+                key: value["value"]
+                for key, value in item["financials"]["income_statement"].items()
+            }
+            sub_data["date"] = item["start_date"]
+            sub_data["cik"] = item["cik"]
+            sub_data["symbol"] = item["tickers"]
+            sub_data["period"] = item["fiscal_period"]
+            transformed_data.append(PolygonIncomeStatementData(**sub_data))
 
-            if incs:
-                for field in FIELDS:
-                    new[field] = incs.get(field, {}).get("value", 0)
-
-            to_return.append(PolygonIncomeStatementData(**new))
-        return to_return
+        return transformed_data

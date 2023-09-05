@@ -6,7 +6,7 @@ from datetime import (
     datetime,
 )
 from pathlib import Path
-from typing import Any, Literal, Optional
+from typing import Any, Literal, Optional, Union
 
 import pandas as pd
 import yfinance as yf
@@ -81,8 +81,8 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
 
 def yf_download(
     symbol: str,
-    start_date: Optional[str | dateType] = None,
-    end_date: Optional[str | dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     interval: str = "1d",
     period: str = "max",
     prepost: bool = False,
@@ -97,9 +97,7 @@ def yf_download(
     group_by: Literal["symbol", "column"] = "column",
     **kwargs: Any,
 ) -> pd.DataFrame:
-    """Base level yFinance OHLC helper function for returning any
-    stock/index/crypto/forex ticker and interval available.
-    """
+    """Base level yFinance OHLC helper function for returning any ticker and interval available."""
 
     symbol = symbol.upper()
     _start_date = start_date
@@ -112,7 +110,6 @@ def yf_download(
         _start_date = (datetime.now().date() - relativedelta(days=59)).strftime(
             "%Y-%m-%d"
         )
-        period = ""
 
     if interval == "1m":
         period = "5d"
@@ -139,6 +136,7 @@ def yf_download(
         data = data.reset_index()
         data = data.rename(columns={"Date": "date", "Datetime": "date"})
         data["date"] = pd.to_datetime(data["date"])
+        data = data[data["Open"] > 0]
 
         if start_date is not None:
             data = data[data["date"] >= pd.to_datetime(start_date)]
@@ -170,5 +168,7 @@ def yf_download(
 
         if actions is False:
             data = data.drop(columns=["Adj Close"])
+
+        data.columns = data.columns.str.lower().to_list()
 
     return data

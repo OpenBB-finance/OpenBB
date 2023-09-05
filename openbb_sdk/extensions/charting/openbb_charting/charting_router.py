@@ -2120,3 +2120,91 @@ def stocks_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     content = tbl_fig.to_table().show(external=True).to_plotly_json()
 
     return tbl_fig, content
+
+
+def stocks_fa_balance_growth(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `stocks/fa/balance/growth` does not have a charting function"
+    )
+
+
+def stocks_fa_cash_growth(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `stocks/fa/cash/growth` does not have a charting function"
+    )
+
+
+def stocks_fa_income_growth(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `stocks/fa/income/growth` does not have a charting function"
+    )
+
+
+def stocks_fa_ins_own(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `stocks/fa/ins/own` does not have a charting function"
+    )
+
+
+def stocks_ca_peers(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `stocks/ca/peers` does not have a charting function"
+    )
+
+
+def stocks_info(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError("Command `stocks/info` does not have a charting function")
+
+
+def fixedincome_sofr(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/sofr` does not have a charting function"
+    )
+
+
+def fixedincome_estr(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/estr` does not have a charting function"
+    )
+
+
+def fixedincome_sonia(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/sonia` does not have a charting function"
+    )
+
+
+def fixedincome_ameribor(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/ameribor` does not have a charting function"
+    )
+
+
+def fixedincome_fed(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/fed` does not have a charting function"
+    )
+
+
+def fixedincome_projections(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/projections` does not have a charting function"
+    )
+
+
+def fixedincome_iorb(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `fixedincome/iorb` does not have a charting function"
+    )
+
+
+def futures_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `futures/load` does not have a charting function"
+    )
+
+
+def futures_curve(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    raise NotImplementedError(
+        "Command `futures/curve` does not have a charting function"
+    )

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-yfinance"
-version = "0.1.1"
-description = ""
+version = "0.1.0"
+description = "yfinance extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_yfinance" }]
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_yfinance" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 yfinance="^0.2.27"
-openbb-provider = { path = "../../sdk/provider" }
+openbb-core = { path = "../../sdk/core" }
 
 [build-system]
 requires = ["poetry-core"]

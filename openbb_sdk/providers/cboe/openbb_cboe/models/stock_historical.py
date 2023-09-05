@@ -1,10 +1,6 @@
 """CBOE Major Indices End of Day fetcher."""
 
-
-from datetime import (
-    datetime,
-    timedelta,
-)
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
@@ -14,7 +10,7 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_cboe.utils.helpers import (
     TICKER_EXCEPTIONS,
@@ -49,6 +45,14 @@ class CboeStockHistoricalData(StockHistoricalData):
         description="Total number of options traded during the most recent trading period. Only valid if interval is 1m."
     )
 
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return datetime object from string."""
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d")
+
 
 class CboeStockHistoricalFetcher(
     Fetcher[
@@ -74,161 +78,139 @@ class CboeStockHistoricalFetcher(
         # Synbol directories are cached for seven days and are used for error handling and URL generation.
         SYMBOLS = get_cboe_directory()
         INDEXES = get_cboe_index_directory().index.to_list()
-        multi = pd.DataFrame()
+        query.symbol = query.symbol.upper()
+        data = pd.DataFrame()
+        if "^" in query.symbol:
+            query.symbol = query.symbol.replace("^", "")
+        if query.symbol == "NDX" and query.interval == "1d":
+            raise RuntimeError(
+                "NDX time series data is only supported when `interval='1m'`."
+            )
+
         now = datetime.now()
-        tickers = query.symbol.split(",")
-        if len(tickers) > 1:
-            query.start_date = (
-                query.start_date if query.start_date else now - timedelta(days=720)
-            )
-        if len(tickers) == 1:
-            query.start_date = (
-                query.start_date if query.start_date else now - timedelta(days=50000)
-            )
+        query.start_date = (
+            query.start_date if query.start_date else now - timedelta(days=50000)
+        )
         query.end_date = query.end_date if query.end_date else now
 
-        def get_one(symbol, start_date, end_date, interval):
-            symbol = symbol.upper()
-            if "^" in symbol:
-                symbol = symbol.replace("^", "")
-            if symbol == "NDX" and interval == "1d":
-                raise RuntimeError(
-                    "NDX time series data is only supported when `interval='1m'`."
-                )
-
-            data = pd.DataFrame()
-
-            if symbol not in SYMBOLS.index and symbol not in INDEXES:
-                raise RuntimeError(
-                    f"The symbol, {symbol}, was not found in the CBOE directory.  Use `search()`."
-                )
-
-            def __generate_historical_prices_url(
-                symbol,
-                data_type: Optional[Literal["intraday", "historical"]] = "historical",
-            ) -> str:
-                """Generate the final URL for historical prices data."""
-                url: str = (
-                    f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}"
-                )
-                url = (
-                    url + f"/_{symbol}.json"
-                    if symbol in TICKER_EXCEPTIONS or symbol in INDEXES
-                    else url + f"/{symbol}.json"
-                )
-                return url
-
-            url = (
-                __generate_historical_prices_url(symbol, "intraday")
-                if interval == "1m"
-                else __generate_historical_prices_url(symbol)
+        if query.symbol not in SYMBOLS.index and query.symbol not in INDEXES:
+            raise RuntimeError(
+                f"The symbol, {query.symbol}, was not found in the CBOE directory.  Use `search()`."
             )
-            r = make_request(url)
 
-            if r.status_code != 200:
-                raise RuntimeError(r.status_code)
+        def __generate_historical_prices_url(
+            symbol,
+            data_type: Optional[Literal["intraday", "historical"]] = "historical",
+        ) -> str:
+            """Generate the final URL for historical prices data."""
+            url: str = (
+                f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{data_type}"
+            )
+            url = (
+                url + f"/_{symbol}.json"
+                if symbol in TICKER_EXCEPTIONS or symbol in INDEXES
+                else url + f"/{symbol}.json"
+            )
+            return url
 
-            if interval == "1d":
-                data = (
-                    pd.DataFrame(r.json()["data"])[
-                        ["date", "open", "high", "low", "close", "volume"]
-                    ]
-                ).set_index("date")
+        url = (
+            __generate_historical_prices_url(query.symbol, "intraday")
+            if query.interval == "1m"
+            else __generate_historical_prices_url(query.symbol)
+        )
+        r = make_request(url)
 
-                # Fill in missing data from current or most recent trading session.
+        if r.status_code != 200:
+            raise RuntimeError(r.status_code)
 
-                today = pd.to_datetime(datetime.now().date())
-                if today.weekday() > 4:
-                    day_minus = today.weekday() - 4
-                    today = pd.to_datetime(today - timedelta(days=day_minus))
-                if today != data.index[-1]:
-                    _today = pd.Series(get_ticker_info(symbol))
-                    today_df = pd.Series(dtype="object")
-                    today_df["open"] = round(_today["open"], 2)
-                    today_df["high"] = round(_today["high"], 2)
-                    today_df["low"] = round(_today["low"], 2)
-                    today_df["close"] = round(_today["close"], 2)
-                    if symbol not in INDEXES and symbol not in TICKER_EXCEPTIONS:
-                        data = data[data["volume"] > 0]
-                        today_df["volume"] = _today["volume"]
-                    today_df["date"] = today.date()
-                    today_df = pd.DataFrame(today_df).transpose().set_index("date")
-
-                    data = pd.concat([data, today_df], axis=0)
-
-                # If ticker is an index there is no volume data and the types must be set.
-
-                if symbol in INDEXES or symbol in TICKER_EXCEPTIONS:
-                    data = data[["open", "high", "low", "close", "volume"]]
-                    data["open"] = round(data.open.astype(float), 2)
-                    data["high"] = round(data.high.astype(float), 2)
-                    data["low"] = round(data.low.astype(float), 2)
-                    data["close"] = round(data.close.astype(float), 2)
-                    data["volume"] = 0
-
-                data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
-                data = data[data["open"] > 0]
-                data = data[
-                    (data.index >= pd.to_datetime(start_date, format="%Y-%m-%d"))
-                    & (data.index <= pd.to_datetime(end_date, format="%Y-%m-%d"))
+        if query.interval == "1d":
+            data = (
+                pd.DataFrame(r.json()["data"])[
+                    ["date", "open", "high", "low", "close", "volume"]
                 ]
-                data.index = data.index.astype(str)
-            if query.interval == "1m":
-                data_list = r.json()["data"]
-                date: list[datetime] = []
-                open: list[float] = []
-                high: list[float] = []
-                low: list[float] = []
-                close: list[float] = []
-                volume: list[float] = []
-                calls_volume: list[float] = []
-                puts_volume: list[float] = []
-                total_options_volume: list[float] = []
+            ).set_index("date")
 
-                for i in range(0, len(data_list)):
-                    date.append(data_list[i]["datetime"])
-                    open.append(data_list[i]["price"]["open"])
-                    high.append(data_list[i]["price"]["high"])
-                    low.append(data_list[i]["price"]["low"])
-                    close.append(data_list[i]["price"]["close"])
-                    volume.append(data_list[i]["volume"]["stock_volume"])
-                    calls_volume.append(data_list[i]["volume"]["calls_volume"])
-                    puts_volume.append(data_list[i]["volume"]["puts_volume"])
-                    total_options_volume.append(
-                        data_list[i]["volume"]["total_options_volume"]
-                    )
-                data = pd.DataFrame()
-                data["date"] = pd.to_datetime(date)
-                data["open"] = open
-                data["high"] = high
-                data["low"] = low
-                data["close"] = close
-                data["volume"] = volume
-                data["calls_volume"] = calls_volume
-                data["puts_volume"] = puts_volume
-                data["total_options_volume"] = total_options_volume
-                data = data.set_index("date").sort_index()
-                data.index = data.index.astype(str)
-                data = data[data["open"] > 0]
+            # Fill in missing data from current or most recent trading session.
 
-            data["volume"] = round(data["volume"].astype("int64"))
-            data["symbol"] = symbol
-            return data.drop_duplicates().reset_index()
+            today = pd.to_datetime(datetime.now().date())
+            if today.weekday() > 4:
+                day_minus = today.weekday() - 4
+                today = pd.to_datetime(today - timedelta(days=day_minus))
+            if today != data.index[-1]:
+                _today = pd.Series(get_ticker_info(query.symbol))
+                today_df = pd.Series(dtype="object")
+                today_df["open"] = round(_today["open"], 2)
+                today_df["high"] = round(_today["high"], 2)
+                today_df["low"] = round(_today["low"], 2)
+                today_df["close"] = round(_today["close"], 2)
+                if (
+                    query.symbol not in INDEXES
+                    and query.symbol not in TICKER_EXCEPTIONS
+                ):
+                    data = data[data["volume"] > 0]
+                    today_df["volume"] = _today["volume"]
+                today_df["date"] = today.date()
+                today_df = pd.DataFrame(today_df).transpose().set_index("date")
 
-        for ticker in tickers:
-            data = get_one(
-                ticker,
-                start_date=query.start_date,
-                end_date=query.end_date,
-                interval=query.interval,
-            ).set_index(["date", "symbol"])
-            multi = pd.concat([multi, data], axis=0)
+                data = pd.concat([data, today_df], axis=0)
 
-        multi = multi.sort_index().reset_index()
-        if len(tickers) == 1:
-            multi = multi.drop(columns=["symbol"])
+            # If ticker is an index there is no volume data and the types must be set.
 
-        return multi.to_dict("records")
+            if query.symbol in INDEXES or query.symbol in TICKER_EXCEPTIONS:
+                data = data[["open", "high", "low", "close", "volume"]]
+                data["open"] = round(data.open.astype(float), 2)
+                data["high"] = round(data.high.astype(float), 2)
+                data["low"] = round(data.low.astype(float), 2)
+                data["close"] = round(data.close.astype(float), 2)
+                data["volume"] = 0
+
+            data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
+            data = data[data["open"] > 0]
+            data = data[
+                (data.index >= pd.to_datetime(query.start_date, format="%Y-%m-%d"))
+                & (data.index <= pd.to_datetime(query.end_date, format="%Y-%m-%d"))
+            ]
+            data.index = data.index.astype(str)
+        if query.interval == "1m":
+            data_list = r.json()["data"]
+            date: List[datetime] = []
+            open: List[float] = []
+            high: List[float] = []
+            low: List[float] = []
+            close: List[float] = []
+            volume: List[float] = []
+            calls_volume: List[float] = []
+            puts_volume: List[float] = []
+            total_options_volume: List[float] = []
+
+            for i in range(0, len(data_list)):
+                date.append(data_list[i]["datetime"])
+                open.append(data_list[i]["price"]["open"])
+                high.append(data_list[i]["price"]["high"])
+                low.append(data_list[i]["price"]["low"])
+                close.append(data_list[i]["price"]["close"])
+                volume.append(data_list[i]["volume"]["stock_volume"])
+                calls_volume.append(data_list[i]["volume"]["calls_volume"])
+                puts_volume.append(data_list[i]["volume"]["puts_volume"])
+                total_options_volume.append(
+                    data_list[i]["volume"]["total_options_volume"]
+                )
+            data = pd.DataFrame()
+            data["date"] = pd.to_datetime(date)
+            data["open"] = open
+            data["high"] = high
+            data["low"] = low
+            data["close"] = close
+            data["volume"] = volume
+            data["calls_volume"] = calls_volume
+            data["puts_volume"] = puts_volume
+            data["total_options_volume"] = total_options_volume
+            data = data.set_index("date").sort_index()
+            data.index = data.index.astype(str)
+            data = data[data["open"] > 0]
+
+        data["volume"] = round(data["volume"].astype("int64"))
+        return data.drop_duplicates().reset_index().to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeStockHistoricalData]:
