@@ -35,7 +35,6 @@ class CLASS_econometrics(Container):
         y_column: str,
         x_columns: List[str],
         lags: pydantic.types.PositiveInt = 1,
-        chart: bool = False,
     ) -> OBBject[openbb_provider.abstract.data.Data]:
         """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
@@ -60,7 +59,6 @@ class CLASS_econometrics(Container):
             y_column=y_column,
             x_columns=x_columns,
             lags=lags,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -73,7 +71,6 @@ class CLASS_econometrics(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         columns: List[str],
-        chart: bool = False,
     ) -> OBBject[openbb_provider.abstract.data.Data]:
         """Show co-integration between two timeseries using the two step Engle-Granger test.
 
@@ -94,7 +91,6 @@ class CLASS_econometrics(Container):
         inputs = filter_inputs(
             data=data,
             columns=columns,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -104,9 +100,7 @@ class CLASS_econometrics(Container):
 
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def corr(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        chart: bool = False,
+        self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame]
     ) -> OBBject[List]:
         """Get the corrlelation matrix of an input dataset.
 
@@ -123,7 +117,6 @@ class CLASS_econometrics(Container):
 
         inputs = filter_inputs(
             data=data,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -137,7 +130,6 @@ class CLASS_econometrics(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-        chart: bool = False,
     ) -> OBBject[Dict]:
         """Perform Durbin-Watson test for autocorrelation
 
@@ -160,7 +152,6 @@ class CLASS_econometrics(Container):
             data=data,
             y_column=y_column,
             x_columns=x_columns,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -175,7 +166,6 @@ class CLASS_econometrics(Container):
         y_column: str,
         x_column: str,
         lag: pydantic.types.PositiveInt = 3,
-        chart: bool = False,
     ) -> OBBject[openbb_provider.abstract.data.Data]:
         """Perform Granger causality test to determine if X "causes" y.
 
@@ -200,7 +190,6 @@ class CLASS_econometrics(Container):
             y_column=y_column,
             x_column=x_column,
             lag=lag,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -214,7 +203,6 @@ class CLASS_econometrics(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-        chart: bool = False,
     ) -> OBBject[Dict]:
         """Perform OLS regression.  This returns the model and results objects from statsmodels.
 
@@ -237,7 +225,6 @@ class CLASS_econometrics(Container):
             data=data,
             y_column=y_column,
             x_columns=x_columns,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -251,7 +238,6 @@ class CLASS_econometrics(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-        chart: bool = False,
     ) -> OBBject[openbb_provider.abstract.data.Data]:
         """Perform OLS regression.  This returns the summary object from statsmodels.
 
@@ -274,7 +260,6 @@ class CLASS_econometrics(Container):
             data=data,
             y_column=y_column,
             x_columns=x_columns,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -288,7 +273,6 @@ class CLASS_econometrics(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         column: str,
         regression: Literal["c", "ct", "ctt"] = "c",
-        chart: bool = False,
     ) -> OBBject[openbb_provider.abstract.data.Data]:
         """Perform Augmented Dickey-Fuller unit root test.
 
@@ -299,7 +283,8 @@ class CLASS_econometrics(Container):
         column: str
             Data columns to check unit root
         regression: str
-            Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for constant, trend, and trend-squared.
+            Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
+            constant, trend, and trend-squared.
         Returns
         -------
         OBBject[Data]
@@ -310,7 +295,6 @@ class CLASS_econometrics(Container):
             data=data,
             column=column,
             regression=regression,
-            chart=chart,
         )
 
         return self._command_runner.run(

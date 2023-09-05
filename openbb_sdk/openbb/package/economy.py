@@ -382,7 +382,7 @@ class CLASS_economy(Container):
 
         EuropeanIndexHistorical
         -----------------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         close : Optional[float]
             The close price of the symbol.

@@ -56,6 +56,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
             )
         )
 
+    def to_df(self) -> pd.DataFrame:
+        """Alias for `to_dataframe`."""
+        return self.to_dataframe()
+
     def to_dataframe(self) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
@@ -79,6 +83,9 @@ class OBBject(GenericModel, Generic[T], Tagged):
         """
         if self.results is None or self.results == []:
             raise OpenBBError("Results not found.")
+
+        if isinstance(self.results, pd.DataFrame):
+            return self.results
 
         try:
             res = self.results
@@ -122,7 +129,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe().reset_index()  # type: ignore
+        df = self.to_dataframe().reset_index(drop=True)  # type: ignore
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()
