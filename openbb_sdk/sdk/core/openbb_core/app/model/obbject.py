@@ -1,5 +1,5 @@
 """The OBBject."""
-from typing import Dict, Generic, List, Literal, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from pydantic import BaseModel, Field
@@ -13,6 +13,11 @@ from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
+
+try:
+    from polars import DataFrame as PolarsDataFrame
+except ImportError:
+    PolarsDataFrame = Any
 
 T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
@@ -121,6 +126,17 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
         return df
 
+    def to_polars(self) -> PolarsDataFrame:
+        """Convert results field to polars dataframe."""
+        try:
+            from polars import from_pandas
+        except ImportError:
+            raise ImportError(
+                "Please install polars: `pip install polars`  to use this function."
+            )
+
+        return from_pandas(self.to_dataframe().reset_index())
+
     def to_dict(self) -> Dict[str, List]:
         """Convert results field to list of values.
 
@@ -129,7 +145,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe().reset_index(drop=True)  # type: ignore
+        df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()
