@@ -3,6 +3,7 @@
 from openbb_provider.abstract.provider import Provider
 
 from openbb_blackrock.models.etf_holdings import BlackrockEtfHoldingsFetcher
+from openbb_blackrock.models.etf_search import BlackrockEtfSearchFetcher
 
 blackrock_provider = Provider(
     name="blackrock",
@@ -11,5 +12,6 @@ blackrock_provider = Provider(
     required_credentials=None,
     fetcher_dict={
         "EtfHoldings": BlackrockEtfHoldingsFetcher,
+        "EtfSearch": BlackrockEtfSearchFetcher,
     },
 )

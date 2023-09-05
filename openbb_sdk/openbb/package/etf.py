@@ -41,7 +41,7 @@ class CLASS_etf(Container):
             no default.
         date : Union[str, datetime.date, NoneType]
             The as-of date for historical daily holdings. (provider: blackrock)
-        country : Optional[Literal['canada', 'us']]
+        country : Optional[Literal['canada']]
             The country the ETF is registered in. (provider: blackrock)
 
         Returns
@@ -90,8 +90,6 @@ class CLASS_etf(Container):
             The currency for the market the asset trades in. (provider: blackrock)
         fx_rate : Optional[float]
             The exchange rate of the asset against the fund's base currency. (provider: blackrock)
-        number_of_shares : Optional[int]
-            The value of the assets under management. (provider: tmx)
         share_percentage : Optional[float]
             The share percentage of the holding. (provider: tmx)
         share_change : Optional[float]
@@ -122,7 +120,7 @@ class CLASS_etf(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
-        provider: Optional[Literal["tmx"]] = None,
+        provider: Optional[Literal["blackrock", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Search for ETFs. An empty query returns the full list of ETFs from the provider.
@@ -131,9 +129,9 @@ class CLASS_etf(Container):
         ----------
         query : Optional[str]
             Search query.
-        provider : Optional[Literal['tmx']]
+        provider : Optional[Literal['blackrock', 'tmx']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'tmx' if there is
+            If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
         div_freq : Optional[Literal['monthly', 'annually', 'quarterly']]
             The dividend payment frequency. (provider: tmx)
@@ -145,7 +143,7 @@ class CLASS_etf(Container):
         OBBject
             results : List[EtfSearch]
                 Serializable results.
-            provider : Optional[Literal['tmx']]
+            provider : Optional[Literal['blackrock', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -162,16 +160,46 @@ class CLASS_etf(Container):
             Name of the ETF.
         currency : Optional[str]
             Currency of the ETF.
-        aum : Optional[int]
-            The value of the assets under management. (provider: tmx)
+        aum : Union[float, NoneType, int]
+            The value of the assets under management. (provider: blackrock)
+        asset_class : Optional[str]
+            The asset class of the ETF. (provider: blackrock)
+        sub_asset_class : Optional[str]
+            The sub-asset class of the ETF. (provider: blackrock)
+        region : Optional[str]
+            The region of the ETF. (provider: blackrock)
+        market_type : Optional[str]
+            The market type of the ETF. (provider: blackrock)
         investment_style : Optional[str]
-            The investment style of the ETF. (provider: tmx)
+            The investment style of the ETF. (provider: blackrock)
+        investment_strategy : Optional[str]
+            The investment strategy of the ETF. (provider: blackrock)
+        premium_discount : Optional[float]
+            The premium/discount to NAV. (provider: blackrock)
+        distribution_yield : Optional[float]
+            The annualized distribution yield. (provider: blackrock)
+        ttm_yield : Optional[float]
+            The trailing twelve months (TTM) annualized yield. (provider: blackrock)
+        weighted_avg_ytm : Optional[float]
+            The weighted average yield-to-maturity. (provider: blackrock)
+        return_1y : Optional[float]
+            The one-year annualized return on net assets. (provider: blackrock)
+        return_3y : Optional[float]
+            The three-year annualized return on net assets. (provider: blackrock)
+        return_5y : Optional[float]
+            The five-year annualized return on net assets. (provider: blackrock)
+        return_ytd : Optional[float]
+            The year-to-date annualized return on net assets. (provider: blackrock)
+        return_inception : Optional[float]
+            The annualized return on net assets since inception. (provider: blackrock)
+        mer : Optional[float]
+            The management expense ratio. (provider: blackrock)
+        ineception_date : Optional[str]
+            The inception date. (provider: blackrock)
         return_1m : Optional[float]
             The one-month return. (provider: tmx)
         return_3m : Optional[float]
             The three-month return. (provider: tmx)
-        return_ytd : Optional[float]
-            The year-to-date return. (provider: tmx)
         close : Optional[float]
             The closing price. (provider: tmx)
         prev_close : Optional[float]
@@ -180,8 +208,6 @@ class CLASS_etf(Container):
             The average daily volume. (provider: tmx)
         management_fee : Optional[float]
             The management fee. (provider: tmx)
-        distribution_yield : Optional[float]
-            The distribution yield. (provider: tmx)
         dividend_frequency : Optional[str]
             The dividend payment frequency. (provider: tmx)"""  # noqa: E501
 

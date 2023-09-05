@@ -1,3 +1,5 @@
+"""ETF Router."""
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -34,6 +36,7 @@ def holdings(
 ) -> OBBject[BaseModel]:
     """Get holdings for an ETF."""
     data = OBBject(results=Query(**locals()).execute())
+
     class EtfHoldings:
         """
         ETFHoldingsData
@@ -87,6 +90,10 @@ def holdings(
             return repr_str
 
         def to_dataframe(self):
-            return basemodel_to_df(self.results).set_index("symbol").convert_dtypes()
+            data = basemodel_to_df(self.results).convert_dtypes()
+            for column in data.columns:
+                if data[column].unique().tolist()[0] is None:
+                    data.drop(columns=column, inplace=True)
+            return data
 
     return EtfHoldings(data)

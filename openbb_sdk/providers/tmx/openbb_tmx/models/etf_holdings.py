@@ -28,9 +28,9 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     weight: Optional[float | None] = Field(
         description="The weight of the asset in the portfolio."
     )
-    shares: Optional[int | None] = Field(
+    shares: Optional[int | str | None] = Field(
         description="The value of the assets under management.",
-        alias="number_of_shares"
+        alias="number_of_shares",
     )
     market_value: Optional[float | None] = Field(
         description="The market value of the holding."
@@ -39,8 +39,8 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     share_percentage: Optional[float | None] = Field(
         description="The share percentage of the holding."
     )
-    share_change: Optional[float | None] = Field(
-        description="The change in shares of the holding."
+    share_change: Optional[float | str | None] = Field(
+        description="The change in shares of the holding.",
     )
     country: Optional[str | None] = Field(description="The country of the holding.")
     exchange: Optional[str | None] = Field(
@@ -92,6 +92,7 @@ class TmxEtfHoldingsFetcher(
                 "weighting": "weight",
                 "sharepercentage": "share_percentage",
                 "sharechange": "share_change",
+                "shareChange": "share_change",
             }
             top_holdings.rename(columns=_columns, inplace=True)
             results = top_holdings.to_dict("records")
