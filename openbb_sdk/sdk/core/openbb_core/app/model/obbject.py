@@ -2,6 +2,7 @@
 from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
+from numpy import ndarray
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 
@@ -136,6 +137,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
             )
 
         return from_pandas(self.to_dataframe().reset_index())
+
+    def to_numpy(self) -> ndarray:
+        """Convert results field to numpy array."""
+        return self.to_dataframe().reset_index().to_numpy()
 
     def to_dict(self) -> Dict[str, List]:
         """Convert results field to list of values.
