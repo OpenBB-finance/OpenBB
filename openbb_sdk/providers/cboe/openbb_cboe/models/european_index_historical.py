@@ -43,10 +43,10 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
         description="UTC datetime. Only valid when interval is 1m."
     )
 
-    @validator("close", pre=True, check_fields=False)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
-        return float(v)
+        """Return datetime object from string."""
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeEuropeanIndexHistoricalFetcher(

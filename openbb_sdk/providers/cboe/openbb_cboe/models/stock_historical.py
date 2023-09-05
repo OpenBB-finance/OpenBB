@@ -10,7 +10,7 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_cboe.utils.helpers import (
     TICKER_EXCEPTIONS,
@@ -44,6 +44,11 @@ class CboeStockHistoricalData(StockHistoricalData):
     total_options_volume: Optional[float] = Field(
         description="Total number of options traded during the most recent trading period. Only valid if interval is 1m."
     )
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return datetime object from string."""
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeStockHistoricalFetcher(

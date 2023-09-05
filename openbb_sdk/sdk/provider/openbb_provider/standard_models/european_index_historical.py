@@ -29,5 +29,5 @@ class EuropeanIndexHistoricalQueryParams(QueryParams, BaseSymbol):
 class EuropeanIndexHistoricalData(Data):
     """European Indices end of day price data."""
 
-    date: dateType | datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
