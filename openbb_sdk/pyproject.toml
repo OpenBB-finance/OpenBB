@@ -24,15 +24,15 @@ openbb-news = "^0.1.0a0"
 openbb-stocks = "^0.1.0a0"
 
 # Community dependencies
-openbb-alpha-vantage = "^0.1.0a0"
-openbb-cboe = "^0.1.0a0"
-openbb-quandl = "^0.1.0a0"
-openbb-yfinance = "^0.1.0a0"
+openbb-alpha-vantage = { version="^0.1.0a0", optional=true }
+openbb-cboe = { version="^0.1.0a0", optional=true }
+openbb-quandl = { version="^0.1.0a0", optional=true }
+openbb-yfinance = { version="^0.1.0a0", optional=true }
 
-openbb-charting = "^0.1.0a0"
-openbb-futures ="^0.1.0a0"
-openbb-qa = "^0.1.0a0"
-openbb-ta = "^0.1.0a0"
+openbb-charting = { version="^0.1.0a0", optional=true }
+openbb-futures = { version="^0.1.0a0", optional=true }
+openbb-qa = { version="^0.1.0a0", optional=true }
+openbb-ta = { version="^0.1.0a0", optional=true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
