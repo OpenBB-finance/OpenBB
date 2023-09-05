@@ -151,7 +151,7 @@ class CLASS_economy(Container):
             Sub-sector the constituent company in the index belongs to.
         headquarter : Optional[str]
             Location of the headquarter of the constituent company in the index.
-        date_first_added : Union[date, str, NoneType]
+        date_first_added : Union[str, date, NoneType]
             Date the constituent company was added to the index.
         cik : Optional[int]
             Central Index Key of the constituent company in the index.

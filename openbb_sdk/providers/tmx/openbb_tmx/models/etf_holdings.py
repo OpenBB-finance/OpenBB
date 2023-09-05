@@ -28,8 +28,9 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     weight: Optional[float | None] = Field(
         description="The weight of the asset in the portfolio."
     )
-    number_of_shares: Optional[int | None] = Field(
-        description="The value of the assets under management."
+    shares: Optional[int | None] = Field(
+        description="The value of the assets under management.",
+        alias="number_of_shares"
     )
     market_value: Optional[float | None] = Field(
         description="The market value of the holding."

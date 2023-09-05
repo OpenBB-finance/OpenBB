@@ -15,6 +15,7 @@
     "openbb_provider_extension": [
         "alpha_vantage",
         "benzinga",
+        "blackrock",
         "cboe",
         "fmp",
         "fred",
