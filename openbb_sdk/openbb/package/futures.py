@@ -31,11 +31,10 @@ class CLASS_futures(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ] = None,
-        chart: bool = False,
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Optional[Literal["cboe", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Futures EOD Price.
+        """Futures Historical Price.
 
         Parameters
         ----------
@@ -43,11 +42,9 @@ class CLASS_futures(Container):
             Symbol to get data for.
         date : Optional[datetime.date]
             Historical date to search curve for.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['yfinance']]
+        provider : Optional[Literal['cboe', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
 
         Returns
@@ -55,7 +52,7 @@ class CLASS_futures(Container):
         OBBject
             results : List[FuturesCurve]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[Literal['cboe', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -69,7 +66,9 @@ class CLASS_futures(Container):
         expiration : Optional[str]
             Futures expiration month.
         price : Optional[float]
-            The close price of the symbol."""  # noqa: E501
+            The close price of the symbol.
+        symbol : Optional[str]
+            The trading symbol for the tenor of future. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -80,7 +79,6 @@ class CLASS_futures(Container):
                 "date": date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -111,11 +109,10 @@ class CLASS_futures(Container):
             Optional[str],
             OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Futures EOD Price.
+        """Futures Historical Price.
 
         Parameters
         ----------
@@ -127,8 +124,6 @@ class CLASS_futures(Container):
             End date of the data, in YYYY-MM-DD format.
         expiration : Optional[str]
             Future expiry date with format YYYY-MM
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is
@@ -147,7 +142,7 @@ class CLASS_futures(Container):
         Returns
         -------
         OBBject
-            results : List[FuturesEOD]
+            results : List[FuturesHistorical]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -158,8 +153,8 @@ class CLASS_futures(Container):
             metadata: Optional[Metadata]
                 Metadata info about the command execution.
 
-        FuturesEOD
-        ----------
+        FuturesHistorical
+        -----------------
         date : Optional[datetime]
             The date of the data.
         open : Optional[float]
@@ -184,7 +179,6 @@ class CLASS_futures(Container):
                 "expiration": expiration,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

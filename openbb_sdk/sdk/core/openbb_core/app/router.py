@@ -22,7 +22,6 @@ from pydantic.config import BaseConfig
 from pydantic.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
-from openbb_core.app.env import Env
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -32,6 +31,7 @@ from openbb_core.app.provider_interface import (
     ProviderInterface,
     StandardParams,
 )
+from openbb_core.env import Env
 
 P = ParamSpec("P")
 
@@ -146,8 +146,8 @@ class CommandValidator:
 
     @classmethod
     def check(cls, func: Callable):
-        cls.check_parameters(func=func)
         cls.check_return(func=func)
+        cls.check_parameters(func=func)
 
 
 class Router:
@@ -188,15 +188,13 @@ class Router:
             kwargs["openapi_extra"] = {"model": model}
 
         func = SignatureInspector.complete_signature(func, model)
-        if func is not None:
-            CommandValidator.check(func=func)
-            create_operation_id = [
-                t.replace("_router", "")
-                for t in func.__module__.split(".")[1:] + [func.__name__]
-            ]
-            cleaned_id = "_".join({c: "" for c in create_operation_id if c}.keys())
 
-            kwargs["operation_id"] = kwargs.get("operation_id", cleaned_id)
+        if func:
+            CommandValidator.check(func=func)
+
+            kwargs["operation_id"] = kwargs.get(
+                "operation_id", SignatureInspector.get_operation_id(func)
+            )
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
@@ -223,19 +221,11 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
+
+        if not issubclass(func.__annotations__["return"], OBBject):
+            return func
+
         provider_interface = ProviderInterface()
-        return_type = func.__annotations__["return"]
-        is_list = False
-
-        results_type = get_type_hints(return_type)["results"]
-        if not isinstance(results_type, type(None)):
-            results_type = get_args(results_type)[0]
-
-        is_list = get_origin(results_type) == list
-        inner_type = results_type.__args__[0] if is_list else results_type
-
-        func.__annotations__["return"].__doc__ = "OBBject"
-        func.__annotations__["return"].__name__ = f"OBBject[{inner_type.__name__}]"
 
         if model:
             if model not in provider_interface.models:
@@ -275,26 +265,59 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            ReturnModel = merged_return = provider_interface.return_schema[model]
-
-            if get_origin(provider_interface.return_map[model]) == list or is_list:
-                ReturnModel = List[ReturnModel]  # type: ignore
-
-            return_type = OBBject[ReturnModel]  # type: ignore
-            return_type.__name__ = f"OBBject[{merged_return.__name__}]"
-            return_type.__doc__ = (
-                f"OBBject with results of type '{merged_return.__name__}'."
-            )
-            func.__annotations__["return"] = return_type
-        elif (
-            "provider_choices" in func.__annotations__
-            and func.__annotations__["provider_choices"] == ProviderChoices
-        ):
-            func = cls.inject_dependency(
+            func = cls.inject_return_type(
                 func=func,
-                arg="provider_choices",
-                callable_=provider_interface.provider_choices,
+                inner_type=provider_interface.return_schema[model],
+                outer_type=provider_interface.return_map[model],
             )
+        else:
+            func = cls.polish_return_schema(func)
+            if (
+                "provider_choices" in func.__annotations__
+                and func.__annotations__["provider_choices"] == ProviderChoices
+            ):
+                func = cls.inject_dependency(
+                    func=func,
+                    arg="provider_choices",
+                    callable_=provider_interface.provider_choices,
+                )
+
+        return func
+
+    @staticmethod
+    def inject_return_type(
+        func: Callable[P, OBBject], inner_type: Any, outer_type: Any
+    ) -> Callable[P, OBBject]:
+        """Inject full return model into the function.
+        Also updates __name__ and __doc__ for API schemas."""
+        ReturnModel = inner_type
+        if get_origin(outer_type) == list:
+            ReturnModel = List[inner_type]
+
+        return_type = OBBject[ReturnModel]  # type: ignore
+        return_type.__name__ = f"OBBject[{inner_type.__name__}]"
+        return_type.__doc__ = f"OBBject with results of type '{inner_type.__name__}'."
+
+        func.__annotations__["return"] = return_type
+        return func
+
+    @staticmethod
+    def polish_return_schema(func: Callable[P, OBBject]) -> Callable[P, OBBject]:
+        """Polish API schemas by filling __doc__ and __name__"""
+        return_type = func.__annotations__["return"]
+        is_list = False
+
+        results_type = get_type_hints(return_type)["results"]
+        if not isinstance(results_type, type(None)):
+            results_type = get_args(results_type)[0]
+
+        is_list = get_origin(results_type) == list
+        args = get_args(results_type)
+        inner_type = args[0] if is_list and args else results_type
+
+        func.__annotations__["return"].__doc__ = "OBBject"
+        func.__annotations__["return"].__name__ = f"OBBject[{inner_type.__name__}]"
+
         return func
 
     @staticmethod
@@ -332,6 +355,16 @@ class SignatureInspector:
 
             return description
         return ""
+
+    @staticmethod
+    def get_operation_id(func: Callable) -> str:
+        """Get operation id"""
+        operation_id = [
+            t.replace("_router", "")
+            for t in func.__module__.split(".")[1:] + [func.__name__]
+        ]
+        cleaned_id = "_".join({c: "" for c in operation_id if c}.keys())
+        return cleaned_id
 
 
 class CommandMap:

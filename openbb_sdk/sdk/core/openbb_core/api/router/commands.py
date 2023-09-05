@@ -6,6 +6,7 @@ from typing import Any, Callable, Dict, Tuple, TypeVar
 from fastapi import APIRouter, Depends
 from fastapi.routing import APIRoute
 from openbb_core.api.dependency.user import get_user
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -13,6 +14,7 @@ from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.env import Env
 from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
 
@@ -35,7 +37,7 @@ def build_new_annotation_map(sig: Signature) -> Dict[str, Any]:
     return annotation_map
 
 
-def build_new_signature(func):
+def build_new_signature(path: str, func: Callable) -> Signature:
     """Build new function signature."""
     sig = signature(func)
     parameter_list = sig.parameters.values()
@@ -55,23 +57,28 @@ def build_new_signature(func):
             )
         )
 
-    new_parameter_list.append(
-        Parameter(
-            "chart",
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            default=False,
-            annotation=bool,
+    if (
+        path.replace("/", "_")[1:]
+        in ChartingService.get_implemented_charting_functions()
+    ):
+        new_parameter_list.append(
+            Parameter(
+                "chart",
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                default=False,
+                annotation=bool,
+            )
         )
-    )
 
-    new_parameter_list.append(
-        Parameter(
-            "__authenticated_user_settings",
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            default=UserSettings(),
-            annotation=Annotated[UserSettings, Depends(get_user)],
+    if Env().API_AUTH:
+        new_parameter_list.append(
+            Parameter(
+                "__authenticated_user_settings",
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                default=UserSettings(),
+                annotation=Annotated[UserSettings, Depends(get_user)],
+            )
         )
-    )
 
     return Signature(
         parameters=new_parameter_list,
@@ -133,7 +140,7 @@ def build_api_wrapper(
     func: Callable = route.endpoint  # type: ignore
     path: str = route.path  # type: ignore
 
-    new_signature = build_new_signature(func=func)
+    new_signature = build_new_signature(path=path, func=func)
     new_annotations_map = build_new_annotation_map(sig=new_signature)
 
     func.__signature__ = new_signature  # type: ignore
@@ -164,6 +171,6 @@ def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> Non
     api_router.include_router(router=plugins_router.api_router)
 
 
-system_settings = SystemService.read_default_system_settings()
+system_settings = SystemService(logging_sub_app="api").system_settings
 command_runner_instance = CommandRunner(system_settings=system_settings)
 add_command_map(command_runner=command_runner_instance, api_router=router)

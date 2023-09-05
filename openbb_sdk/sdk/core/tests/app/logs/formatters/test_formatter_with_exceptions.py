@@ -198,12 +198,12 @@ def test_mock_flair(input_text, expected_output, formatter):
     [
         (
             "This is C:\\Users\\username\\file.txt",
-            "This is C:\\Users\\username\\file.txt",
+            "This is C:/Users/username/file.txt",
         ),
         ("No home directory here!", "No home directory here!"),
         (
             f"This is {os.path.expanduser('~')}\\file.txt",
-            "This is MOCKING_USER_PATH\\file.txt",
+            "This is MOCKING_USER_PATH/file.txt",
         ),
         (
             f"Some path: {os.path.expanduser('~/subfolder')}",
@@ -240,7 +240,7 @@ def test_filter_special_tags(input_text, expected_output, formatter):
     [
         (
             f"This is {os.path.expanduser('~')}\\file.txt",
-            "This is MOCKING_USER_PATH\\file.txt",
+            "This is MOCKING_USER_PATH/file.txt",
         ),
         ('{"FLAIR": "[announcement]"}', '{"FLAIR": "[ FILTERED_FLAIR ]"}'),
         ("Another email: alice@example.co.uk", "Another email:  FILTERED_EMAIL "),
@@ -257,7 +257,7 @@ def test_filter_piis(input_text, expected_output, formatter):
     [
         (
             f"This is {os.path.expanduser('~')}\\file.txt",
-            "This is MOCKING_USER_PATH\\file.txt",
+            "This is MOCKING_USER_PATH/file.txt",
         ),
         ('{"FLAIR": "[announcement]"}', '{"FLAIR": "[ FILTERED_FLAIR ]"}'),
         ("Another email: alice@example.co.uk", "Another email:  FILTERED_EMAIL "),

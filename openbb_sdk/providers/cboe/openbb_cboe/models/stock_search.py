@@ -10,7 +10,7 @@ from openbb_provider.standard_models.stock_search import (
 )
 from pydantic import Field
 
-from openbb_cboe.utils.helpers import stock_search
+from openbb_cboe.utils.helpers import get_cboe_directory
 
 
 class CboeStockSearchQueryParams(StockSearchQueryParams):
@@ -23,20 +23,9 @@ class CboeStockSearchQueryParams(StockSearchQueryParams):
 class CboeStockSearchData(StockSearchData):
     """CBOE Company Search Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict"""
-
-        fields = {
-            "name": "Company Name",
-        }
-
-    dpmName: Optional[str] = Field(
-        description="Name of the primary market maker.",
-        alias="DPM Name",
-    )
-    postStation: Optional[str] = Field(
-        description="Post and station location on the CBOE trading floor.",
-        alias="Post/Station",
+    dpm_name: Optional[str] = Field(description="Name of the primary market maker.")
+    post_station: Optional[str] = Field(
+        description="Post and station location on the CBOE trading floor."
     )
 
 
@@ -60,14 +49,17 @@ class CboeStockSearchFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint."""
-        data = stock_search(query.query, ticker=query.ticker)
 
-        if "results" in data:
-            return data["results"]
+        data = {}
+        symbols = get_cboe_directory().reset_index()
+        target = "name" if not query.ticker else "symbol"
+        idx = symbols[target].str.contains(query.query, case=False)
+        result = symbols[idx].to_dict("records")
+        data.update({"results": result})
 
-        raise ValueError("No results found.")
+        return data
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockSearchData]:
         """Transform the data to the standard format."""
-        return [CboeStockSearchData.parse_obj(d) for d in data]
+        return [CboeStockSearchData.parse_obj(d) for d in data["results"]]

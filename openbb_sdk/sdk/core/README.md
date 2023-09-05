@@ -78,10 +78,10 @@ def some_command(
 
 If your command only makes use of a standard model defined inside `openbb_provider/standard_models` directory, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
 
-This is an example how we do it for `stocks.load` which only depends on `StockEOD` model defined in `openbb-provider`:
+This is an example how we do it for `stocks.load` which only depends on `StockHistorical` model defined in `openbb-provider`:
 
 ```python
-@router.command(model="StockEOD")
+@router.command(model="StockHistorical")
 def load(
     cc: CommandContext,                 # user settings inside
     provider_choices: ProviderChoices,  # available providers
@@ -331,8 +331,6 @@ obb.stocks.load(
 
 ### 4.1.5. Environment variables
 
-
-
 The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
 
 To apply an environment variable use one of the following:
@@ -345,7 +343,7 @@ To apply an environment variable use one of the following:
     from openbb import sdk
     ```
 
-2. Persistent: create a `.env` file inside `openbb_sdk/sdk/core/openbb_core/app` with
+2. Persistent: create a `.env` file inside `openbb_sdk/sdk/core/openbb_core` with
 
     ```text
     OPENBB_DEBUG_MODE="False"
@@ -353,9 +351,10 @@ To apply an environment variable use one of the following:
 
 The variables we use are:
 
-- `OPENBB_DEBUG_MODE`: enable/disable debug mode
-- `OPENBB_DEVELOP_MODE`: enable/disable develop mode
-- `OPENBB_AUTO_BUILD`: enable/disable automatic build for python package
+- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
+- `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
+- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
+- `OPENBB_API_AUTH`: enables commands authentication in FastAPI
 
 ## 4.2 Dynamic version
 

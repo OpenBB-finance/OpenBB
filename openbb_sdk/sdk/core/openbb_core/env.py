@@ -17,20 +17,33 @@ class Env(metaclass=SingletonMeta):
 
     @property
     def DEBUG_MODE(self) -> bool:
-        return self.str_to_bool(self._environ.get("OPENBB_DEBUG_MODE", False))
+        """Debug mode: enables verbosity while running the program"""
+        return self.str2bool(self._environ.get("OPENBB_DEBUG_MODE", False))
 
     @property
     def DEV_MODE(self) -> bool:
+        """Develop mode: points hub service to .co or .dev"""
         # TODO: Change default to false when ready to deploy
-        return self.str_to_bool(self._environ.get("OPENBB_DEV_MODE", True))
+        return self.str2bool(self._environ.get("OPENBB_DEV_MODE", True))
 
     @property
     def AUTO_BUILD(self) -> bool:
-        return self.str_to_bool(self._environ.get("OPENBB_AUTO_BUILD", True))
+        """Automatic build: enables automatic SDK package build on import"""
+        return self.str2bool(self._environ.get("OPENBB_AUTO_BUILD", True))
+
+    @property
+    def CHARTING_EXTENSION(self) -> str:
+        """Charting extension: enables charting extension"""
+        return self._environ.get("OPENBB_CHARTING_EXTENSION", "openbb_charting")
+
+    @property
+    def API_AUTH(self) -> bool:
+        """API authentication: enables commands authentication in FastAPI"""
+        return self.str2bool(self._environ.get("OPENBB_API_AUTH", True))
 
     @staticmethod
-    def str_to_bool(value) -> bool:
-        """Match a string to a boolean value."""
+    def str2bool(value) -> bool:
+        """Match a value to its boolean correspondent."""
         if isinstance(value, bool):
             return value
         if value.lower() in {"false", "f", "0", "no", "n"}:

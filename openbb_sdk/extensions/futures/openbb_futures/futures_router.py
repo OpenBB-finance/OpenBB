@@ -13,14 +13,14 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
-@router.command(model="FuturesEOD")
+@router.command(model="FuturesHistorical")
 def load(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Futures EOD Price."""
+    """Futures Historical Price."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -31,5 +31,5 @@ def curve(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Futures EOD Price."""
+    """Futures Historical Price."""
     return OBBject(results=Query(**locals()).execute())

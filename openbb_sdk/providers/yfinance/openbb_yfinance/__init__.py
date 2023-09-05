@@ -3,12 +3,19 @@
 
 from openbb_provider.abstract.provider import Provider
 
-from openbb_yfinance.models.crypto_eod import YFinanceCryptoEODFetcher
-from openbb_yfinance.models.forex_eod import YFinanceForexEODFetcher
+from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
+from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
+from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
+from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
+from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
-from openbb_yfinance.models.futures_eod import YFinanceFuturesEODFetcher
-from openbb_yfinance.models.major_indices_eod import YFinanceMajorIndicesEODFetcher
-from openbb_yfinance.models.stock_eod import YFinanceStockEODFetcher
+from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
+from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
+from openbb_yfinance.models.major_indices_historical import (
+    YFinanceMajorIndicesHistoricalFetcher,
+)
+from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
+from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -16,13 +23,17 @@ yfinance_provider = Provider(
     description="""Yahoo! Finance is a web-based platform that offers financial news,
     data, and tools for investors and individuals interested in tracking and analyzing
     financial markets and assets.""",
-    required_credentials=None,
     fetcher_dict={
-        "CryptoEOD": YFinanceCryptoEODFetcher,
-        "ForexEOD": YFinanceForexEODFetcher,
-        "MajorIndicesEOD": YFinanceMajorIndicesEODFetcher,
-        "StockEOD": YFinanceStockEODFetcher,
-        "FuturesEOD": YFinanceFuturesEODFetcher,
+        "CryptoHistorical": YFinanceCryptoHistoricalFetcher,
+        "ForexHistorical": YFinanceForexHistoricalFetcher,
+        "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
+        "StockHistorical": YFinanceStockHistoricalFetcher,
+        "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
+        "StockNews": YFinanceStockNewsFetcher,
+        "BalanceSheet": YFinanceBalanceSheetFetcher,
+        "CashFlowStatement": YFinanceCashFlowStatementFetcher,
+        "IncomeStatement": YFinanceIncomeStatementFetcher,
+        "AvailableIndices": YFinanceAvailableIndicesFetcher,
     },
 )

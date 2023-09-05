@@ -3,14 +3,14 @@
 
 
 from pathlib import Path
-from unittest.mock import mock_open, patch
+from unittest.mock import PropertyMock, mock_open, patch
 
 import pytest
 from importlib_metadata import EntryPoint, EntryPoints
-from openbb_core.app.env import Env
-from openbb_core.app.static.utils import auto_build, get_ext_map, package_diff
+from openbb_core.app.static.build_utils import auto_build, get_ext_map, package_diff
+from openbb_core.env import Env
 
-PATH = "openbb_core.app.static.utils."
+PATH = "openbb_core.app.static.build_utils."
 
 
 @pytest.fixture(scope="function")
@@ -29,17 +29,17 @@ def test_get_ext_map(tmp_dir):
 
 
 @pytest.mark.parametrize(
-    "ext_built, ext_installed, expected_add, expected_remove",
+    "ext_built, ext_installed, ext_inst_version, expected_add, expected_remove",
     [
         (
             {
                 "openbb_core_extension": [
-                    "ext_1",
-                    "ext_2",
+                    "ext_1@0.0.0",
+                    "ext_2@0.0.0",
                 ],
                 "openbb_provider_extension": [
-                    "prov_1",
-                    "prov_2",
+                    "prov_1@0.0.0",
+                    "prov_2@1.1.1",
                 ],
             },
             EntryPoints(
@@ -52,13 +52,14 @@ def test_get_ext_map(tmp_dir):
                     ),
                 )
             ),
-            set(),
-            {"ext_1", "prov_1"},
+            "0.0.0",
+            {"prov_2@0.0.0"},
+            {"ext_1@0.0.0", "prov_1@0.0.0", "prov_2@1.1.1"},
         ),
         (
             {
-                "openbb_core_extension": ["ext_1"],
-                "openbb_provider_extension": ["prov_2"],
+                "openbb_core_extension": ["ext_1@9.9.9"],
+                "openbb_provider_extension": ["prov_2@0.0.0"],
             },
             EntryPoints(
                 (
@@ -70,12 +71,20 @@ def test_get_ext_map(tmp_dir):
                     ),
                 )
             ),
-            {"ext_2", "prov_1"},
-            {"ext_1", "prov_2"},
+            "5.5.5",
+            {"ext_2@5.5.5", "prov_1@5.5.5"},
+            {"ext_1@9.9.9", "prov_2@0.0.0"},
         ),
     ],
 )
-def test_package_diff(tmp_dir, ext_built, ext_installed, expected_add, expected_remove):
+def test_package_diff(
+    tmp_dir,
+    ext_built,
+    ext_installed,
+    ext_inst_version,
+    expected_add,
+    expected_remove,
+):
     """Test package differences."""
 
     def mock_entry_points(group):
@@ -83,7 +92,12 @@ def test_package_diff(tmp_dir, ext_built, ext_installed, expected_add, expected_
 
     with patch(PATH + "get_ext_map") as mock_get_ext_map, patch(
         PATH + "entry_points", mock_entry_points
-    ):
+    ), patch.object(EntryPoint, "dist", new_callable=PropertyMock) as mock_obj:
+
+        class MockPathDistribution:
+            version = ext_inst_version
+
+        mock_obj.return_value = MockPathDistribution()
         mock_get_ext_map.return_value = ext_built
 
         add, remove = package_diff(tmp_dir)

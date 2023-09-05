@@ -9,9 +9,8 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 
 from pydantic import BaseConfig, Extra, create_model
 
-from openbb_core.app.charting_manager import ChartingManager
-from openbb_core.app.env import Env
-from openbb_core.app.logs.logging_manager import LoggingManager
+from openbb_core.app.charting_service import ChartingService
+from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.command_context import CommandContext
@@ -22,6 +21,7 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.env import Env
 
 
 class ExecutionContext:
@@ -230,9 +230,6 @@ class ParametersBuilder:
 
 
 class StaticCommandRunner:
-    logging_manager: LoggingManager = LoggingManager()
-    charting_manager: ChartingManager = ChartingManager()
-
     @classmethod
     def __command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
         """Run a command and return the output"""
@@ -264,7 +261,10 @@ class StaticCommandRunner:
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
-        obbject.chart = cls.charting_manager.chart(
+        cs = ChartingService(
+            user_settings=user_settings, system_settings=system_settings
+        )
+        obbject.chart = cs.chart(
             user_settings=user_settings,
             system_settings=system_settings,
             route=route,
@@ -324,7 +324,10 @@ class StaticCommandRunner:
         except Exception as e:
             raise OpenBBError(e) from e
         finally:
-            cls.logging_manager.log(
+            ls = LoggingService(
+                user_settings=user_settings, system_settings=system_settings
+            )
+            ls.log(
                 user_settings=user_settings,
                 system_settings=system_settings,
                 route=route,
@@ -334,13 +337,6 @@ class StaticCommandRunner:
             )
 
         return obbject
-
-    @classmethod
-    def __update_managers_settings(
-        cls, system_settings: SystemSettings, user_settings: UserSettings
-    ):
-        cls.logging_manager.logging_settings = (system_settings, user_settings)
-        cls.charting_manager.charting_settings = (system_settings, user_settings)
 
     @classmethod
     def run(
@@ -355,10 +351,6 @@ class StaticCommandRunner:
 
         command_map = execution_context.command_map
         route = execution_context.route
-
-        cls.__update_managers_settings(
-            execution_context.system_settings, execution_context.user_settings
-        )
 
         if func := command_map.get_command(route=route):
             obbject = cls.__execute_func(
@@ -392,10 +384,15 @@ class CommandRunner:
         user_settings: Optional[UserSettings] = None,
     ) -> None:
         self._command_map = command_map or CommandMap()
-        self._system_settings = (
-            system_settings or SystemService.read_default_system_settings()
-        )
+        self._system_settings = system_settings or SystemService().system_settings
         self._user_settings = user_settings or UserService.read_default_user_settings()
+
+        self._logging_service = LoggingService(
+            system_settings=self._system_settings, user_settings=self._user_settings
+        )
+        self._charting_service = ChartingService(
+            system_settings=self._system_settings, user_settings=self._user_settings
+        )
 
     @property
     def command_map(self) -> CommandMap:
@@ -408,6 +405,10 @@ class CommandRunner:
     @property
     def user_settings(self) -> UserSettings:
         return self._user_settings
+
+    @user_settings.setter
+    def user_settings(self, user_settings: UserSettings) -> None:
+        self._user_settings = user_settings
 
     def run(
         self,

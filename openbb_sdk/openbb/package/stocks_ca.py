@@ -25,7 +25,6 @@ class CLASS_stocks_ca(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -35,8 +34,6 @@ class CLASS_stocks_ca(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -71,7 +68,6 @@ class CLASS_stocks_ca(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
