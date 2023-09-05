@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "openbb-sdk"
-version = "4.0.0rc13"
+name = "openbb"
+version = "4.0.0a0"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,31 +8,31 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = {version = "^0.1.0a1", source = "test-pypi"}
+openbb-core = "^0.1.0a0"
 
-openbb-benzinga = {version = "^0.1.0a1", source = "test-pypi"}
-openbb-fmp = {version = "^0.1.0a1", source = "test-pypi"}
-openbb-fred = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-intrinio = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-polygon = {version = "^0.1.0a0", source = "test-pypi"}
+openbb-benzinga = "^0.1.0a0"
+openbb-fmp = "^0.1.0a0"
+openbb-fred = "^0.1.0a0"
+openbb-intrinio = "^0.1.0a0"
+openbb-polygon = "^0.1.0a0"
 
-openbb-crypto = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-economy = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-forex = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-fixedincome = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-news = {version = "^0.1.0a0", source = "test-pypi"}
-openbb-stocks = {version = "^0.1.0a1", source = "test-pypi"}
+openbb-crypto = "^0.1.0a0"
+openbb-economy = "^0.1.0a0"
+openbb-forex = "^0.1.0a0"
+openbb-fixedincome = "^0.1.0a0"
+openbb-news = "^0.1.0a0"
+openbb-stocks = "^0.1.0a0"
 
 # Community dependencies
-openbb-alpha-vantage = { version = "^0.1.0a0", source = "test-pypi", optional = true }
-openbb-cboe = { version = "^0.1.0a0", source = "test-pypi", optional = true }
-openbb-quandl = { version = "^0.1.0a0", source = "test-pypi", optional = true }
-openbb-yfinance = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-alpha-vantage = "^0.1.0a0"
+openbb-cboe = "^0.1.0a0"
+openbb-quandl = "^0.1.0a0"
+openbb-yfinance = "^0.1.0a0"
 
-openbb-charting = { version = "^0.1.0a0", source = "test-pypi", optional = true }
-openbb-futures ={ version = "^0.1.0a0", source = "test-pypi", optional = true }
-openbb-qa = { version = "^0.1.0a0", source = "test-pypi", optional = true }
-openbb-ta = { version = "^0.1.0a0", source = "test-pypi", optional = true }
+openbb-charting = "^0.1.0a0"
+openbb-futures ="^0.1.0a0"
+openbb-qa = "^0.1.0a0"
+openbb-ta = "^0.1.0a0"
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
@@ -57,12 +57,6 @@ all = [
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2.2"
-
-
-[[tool.poetry.source]]
-name = "test-pypi"
-url = "https://test.pypi.org/simple/"
-priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]

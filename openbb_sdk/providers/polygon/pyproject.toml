@@ -8,12 +8,7 @@ packages = [{ include = "openbb_polygon" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = {version = "^0.1.0a1", source = "test-pypi"}
-
-[[tool.poetry.source]]
-name = "test-pypi"
-url = "https://test.pypi.org/simple/"
-priority = "explicit"
+openbb-core = "^0.1.0a0"
 
 [build-system]
 requires = ["poetry-core"]
