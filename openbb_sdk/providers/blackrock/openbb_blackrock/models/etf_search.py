@@ -13,7 +13,7 @@ from pydantic import Field
 from openbb_blackrock.utils.helpers import COUNTRIES, Canada
 
 
-def search(query: str = "", country: COUNTRIES = "canada", **kwagrs) -> pd.DataFrame:
+def search(query: str, country: COUNTRIES = "canada", **kwagrs) -> pd.DataFrame:
     """Search Blackrock ETFs by fuzzy query."""
 
     etfs = pd.DataFrame()
@@ -45,74 +45,70 @@ def search(query: str = "", country: COUNTRIES = "canada", **kwagrs) -> pd.DataF
             "symbol",
         ]
 
-        if not query:
-            results = etfs
+        results = etfs[
+            etfs["fundName"].str.contains(query, case=False)
+            | etfs["aladdinSubAssetClass"].str.contains(query, case=False)
+            | etfs["aladdinAssetClass"].str.contains(query, case=False)
+            | etfs["aladdinRegion"].str.contains(query, case=False)
+            | etfs["aladdinCountry"].str.contains(query, case=False)
+            | etfs["aladdinMarketType"].str.contains(query, case=False)
+        ]
 
-        if query:
-            results = etfs[
-                etfs["fundName"].str.contains(query, case=False)
-                | etfs["aladdinSubAssetClass"].str.contains(query, case=False)
-                | etfs["aladdinAssetClass"].str.contains(query, case=False)
-                | etfs["aladdinRegion"].str.contains(query, case=False)
-                | etfs["aladdinCountry"].str.contains(query, case=False)
-                | etfs["aladdinMarketType"].str.contains(query, case=False)
-            ]
+        results = results[columns].set_index("symbol")
+        results = results.replace("-", "")
 
-            results = results[columns].set_index("symbol")
-            results = results.replace("-", "")
+        mer = []
+        nav = []
+        nav1y = []
+        nav3y = []
+        nav5y = []
+        nav_inception = []
+        nav_ytd = []
+        premium_discount = []
+        ttm_yield = []
+        dist_yield = []
+        ytm = []
+        inception_date = []
+        for i in results.index:
+            inception_date.append(dict(results.inceptionDate.loc[i]).get("r"))
+            mer.append(dict(results.mer.loc[i]).get("r"))
+            nav.append(dict(results.totalNetAssets.loc[i]).get("r"))
+            nav1y.append(dict(results.navOneYearAnnualized.loc[i]).get("r"))
+            nav3y.append(dict(results.navThreeYearAnnualized.loc[i]).get("r"))
+            nav5y.append(dict(results.navFiveYearAnnualized.loc[i]).get("r"))
+            nav_inception.append(
+                dict(results.navSinceInceptionAnnualized.loc[i]).get("r")
+            )
+            if results.navYearToDate.loc[i] is not None:
+                nav_ytd.append(dict(results.navYearToDate.loc[i]).get("r"))
+            else:
+                nav_ytd.append(None)
+            premium_discount.append(dict(results.premiumDiscount.loc[i]).get("r"))
+            if results.twelveMonTrlYield.loc[i] is not None:
+                ttm_yield.append(dict(results.twelveMonTrlYield.loc[i]).get("r"))
+            else:
+                ttm_yield.append(None)
+            if results.distYield.loc[i] is not None:
+                dist_yield.append(dict(results.distYield.loc[i]).get("r"))
+            else:
+                dist_yield.append(None)
+            if results.weightedAvgYieldToMaturity.loc[i] is not None:
+                ytm.append(dict(results.weightedAvgYieldToMaturity.loc[i]).get("r"))
+            else:
+                ytm.append(None)
 
-            mer = []
-            nav = []
-            nav1y = []
-            nav3y = []
-            nav5y = []
-            nav_inception = []
-            nav_ytd = []
-            premium_discount = []
-            ttm_yield = []
-            dist_yield = []
-            ytm = []
-            inception_date = []
-            for i in results.index:
-                inception_date.append(dict(results.inceptionDate.loc[i]).get("r"))
-                mer.append(dict(results.mer.loc[i]).get("r"))
-                nav.append(dict(results.totalNetAssets.loc[i]).get("r"))
-                nav1y.append(dict(results.navOneYearAnnualized.loc[i]).get("r"))
-                nav3y.append(dict(results.navThreeYearAnnualized.loc[i]).get("r"))
-                nav5y.append(dict(results.navFiveYearAnnualized.loc[i]).get("r"))
-                nav_inception.append(
-                    dict(results.navSinceInceptionAnnualized.loc[i]).get("r")
-                )
-                if results.navYearToDate.loc[i] is not None:
-                    nav_ytd.append(dict(results.navYearToDate.loc[i]).get("r"))
-                else:
-                    nav_ytd.append(None)
-                premium_discount.append(dict(results.premiumDiscount.loc[i]).get("r"))
-                if results.twelveMonTrlYield.loc[i] is not None:
-                    ttm_yield.append(dict(results.twelveMonTrlYield.loc[i]).get("r"))
-                else:
-                    ttm_yield.append(None)
-                if results.distYield.loc[i] is not None:
-                    dist_yield.append(dict(results.distYield.loc[i]).get("r"))
-                else:
-                    dist_yield.append(None)
-                if results.weightedAvgYieldToMaturity.loc[i] is not None:
-                    ytm.append(dict(results.weightedAvgYieldToMaturity.loc[i]).get("r"))
-                else:
-                    ytm.append(None)
-
-            results["mer"] = mer
-            results["totalNetAssets"] = nav
-            results["premiumDiscount"] = premium_discount
-            results["twelveMonTrlYield"] = ttm_yield
-            results["distYield"] = dist_yield
-            results["weightedAvgYieldToMaturity"] = ytm
-            results["inceptionDate"] = inception_date
-            results["navOneYearAnnualized"] = nav1y
-            results["navThreeYearAnnualized"] = nav3y
-            results["navFiveYearAnnualized"] = nav5y
-            results["navSinceInceptionAnnualized"] = nav_inception
-            results["navYearToDate"] = nav_ytd
+        results["mer"] = mer
+        results["totalNetAssets"] = nav
+        results["premiumDiscount"] = premium_discount
+        results["twelveMonTrlYield"] = ttm_yield
+        results["distYield"] = dist_yield
+        results["weightedAvgYieldToMaturity"] = ytm
+        results["inceptionDate"] = inception_date
+        results["navOneYearAnnualized"] = nav1y
+        results["navThreeYearAnnualized"] = nav3y
+        results["navFiveYearAnnualized"] = nav5y
+        results["navSinceInceptionAnnualized"] = nav_inception
+        results["navYearToDate"] = nav_ytd
 
     return results
 
