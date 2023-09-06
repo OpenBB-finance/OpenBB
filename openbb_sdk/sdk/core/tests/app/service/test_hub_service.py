@@ -4,9 +4,9 @@
 
 
 from unittest.mock import MagicMock, patch
-from openbb_core.app.model.hub.features_keys import FeaturesKeys
 
 import pytest
+from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from openbb_core.app.service.hub_service import (
     Credentials,
     HubService,
