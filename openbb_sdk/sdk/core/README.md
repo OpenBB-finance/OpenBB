@@ -343,7 +343,7 @@ To apply an environment variable use one of the following:
     from openbb import sdk
     ```
 
-2. Persistent: create a `.env` file in `/.openbb_sdk` inside your home directory with
+2. Persistent: create a `.env` file in `/.openbb_sdk` folder inside your home directory with
 
     ```text
     OPENBB_DEBUG_MODE="False"
