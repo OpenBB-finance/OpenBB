@@ -88,7 +88,7 @@ class CLASS_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : Optional[datetime]
+        date : Union[datetime, date]
             The date of the data.
         open : Optional[float]
             The open price of the symbol.

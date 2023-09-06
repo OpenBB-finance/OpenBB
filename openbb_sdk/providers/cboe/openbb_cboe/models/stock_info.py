@@ -103,8 +103,12 @@ class CboeStockInfoFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the CBOE endpoint"""
+<<<<<<< HEAD
 
         query.symbol = query.symbol.upper()
+=======
+        query.symbol = query.symbol.upper().replace("^", "")
+>>>>>>> feature/v4-bug-fixes
         INDEXES = get_cboe_index_directory().index.to_list()
         SYMBOLS = get_cboe_directory()
 
