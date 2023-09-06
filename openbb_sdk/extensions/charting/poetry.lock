@@ -981,13 +981,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.1.0a0"
+version = "0.1.0a1"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_core-0.1.0a0-py3-none-any.whl", hash = "sha256:982cc2bd8570460dc8cccf0cae777c749dcbd34f2bf34580d13d832cd7d0d8d3"},
-    {file = "openbb_core-0.1.0a0.tar.gz", hash = "sha256:951548600739fe37e025fc7ad2e6f1eae53eb7a249def8ea2e3e1af4f233b310"},
+    {file = "openbb_core-0.1.0a1-py3-none-any.whl", hash = "sha256:b1da36e5ce2c74f36ddd916befce2ffe9b30677a6dd96e21f5e8879f1c166738"},
+    {file = "openbb_core-0.1.0a1.tar.gz", hash = "sha256:7c1ac0389bd8860181d3c9a145146fbe49fe5e8f2a17687e629cd17150c131c6"},
 ]
 
 [package.dependencies]
@@ -995,7 +995,7 @@ bcrypt = ">=4.0.1,<5.0.0"
 black = ">=23.7.0,<24.0.0"
 fastapi = ">=0.100.1,<0.101.0"
 html5lib = ">=1.1,<2.0"
-openbb-provider = ">=0.1.0a0,<0.2.0"
+openbb-provider = ">=0.1.0a1,<0.2.0"
 pandas = ">=1.5.3"
 passlib = ">=1.7.4,<2.0.0"
 posthog = ">=3.0.1,<4.0.0"
@@ -1008,13 +1008,13 @@ websockets = ">=10.4,<11.0"
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0a0"
+version = "0.1.0a1"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_provider-0.1.0a0-py3-none-any.whl", hash = "sha256:680573548f696984acf93c263206b150f09d3dfb5e1c98e7173617923b282e8a"},
-    {file = "openbb_provider-0.1.0a0.tar.gz", hash = "sha256:d3ff80de972f70b8c858feecd174ac6e3cedf81b70d869befe97a43d33529b97"},
+    {file = "openbb_provider-0.1.0a1-py3-none-any.whl", hash = "sha256:a571fd6c4282143adb99cc6af6c3d5651539bc4ef5f7bff6fb8853c1f9caa0ef"},
+    {file = "openbb_provider-0.1.0a1.tar.gz", hash = "sha256:0db56bf2889b40159bc448c29439ed2356d0e7ee461421351bbc87b39d599177"},
 ]
 
 [package.dependencies]
@@ -2229,4 +2229,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "2ad15223fb6c2f8d520829298c6e11a920b9dc183ae8597423fa967a46e5602e"
+content-hash = "4a683cff5d5e434e701931402e732fb072a751115a43263a807c34752cc5c24d"
