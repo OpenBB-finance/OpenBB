@@ -24,13 +24,6 @@ class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
 class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     """FMP Balance Sheet Growth Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "growth_deferred_tax_liabilities_non_current": "growthDeferrredTaxLiabilitiesNonCurrent",
-        }
-
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""

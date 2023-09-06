@@ -3,6 +3,7 @@
 
 from openbb_provider.abstract.provider import Provider
 
+from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
@@ -33,5 +34,6 @@ yfinance_provider = Provider(
         "BalanceSheet": YFinanceBalanceSheetFetcher,
         "CashFlowStatement": YFinanceCashFlowStatementFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
+        "AvailableIndices": YFinanceAvailableIndicesFetcher,
     },
 )

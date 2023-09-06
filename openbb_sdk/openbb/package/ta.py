@@ -51,7 +51,6 @@ class CLASS_ta(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         index: str = "date",
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The Accumulation/Distribution Line is similar to the On Balance
@@ -91,7 +90,6 @@ class CLASS_ta(Container):
             data=data,
             index=index,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -107,7 +105,6 @@ class CLASS_ta(Container):
         fast: pydantic.types.PositiveInt = 3,
         slow: pydantic.types.PositiveInt = 10,
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
@@ -146,7 +143,6 @@ class CLASS_ta(Container):
             fast=fast,
             slow=slow,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -276,7 +272,6 @@ class CLASS_ta(Container):
         mamode: Literal["rma", "ema", "sma", "wma"] = "rma",
         drift: pydantic.types.NonNegativeInt = 1,
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         Average True Range is used to measure volatility, especially volatility caused by
@@ -316,7 +311,6 @@ class CLASS_ta(Container):
             mamode=mamode,
             drift=drift,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -334,7 +328,6 @@ class CLASS_ta(Container):
         std: pydantic.types.NonNegativeFloat = 2,
         mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
             Bollinger Bands consist of three lines. The middle band is a simple
@@ -389,7 +382,6 @@ class CLASS_ta(Container):
             std=std,
             mamode=mamode,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -404,7 +396,6 @@ class CLASS_ta(Container):
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         scalar: pydantic.types.PositiveFloat = 0.015,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The CCI is designed to detect beginning and ending market trends.
@@ -435,7 +426,6 @@ class CLASS_ta(Container):
             index=index,
             length=length,
             scalar=scalar,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -449,7 +439,6 @@ class CLASS_ta(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The Center of Gravity indicator, in short, is used to anticipate future price movements
@@ -483,7 +472,6 @@ class CLASS_ta(Container):
             data=data,
             index=index,
             length=length,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -498,7 +486,6 @@ class CLASS_ta(Container):
         index: str = "date",
         target: str = "adj_close",
         period: pydantic.types.PositiveInt = 90,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         Clenow Volatility Adjusted Momentum.
@@ -531,7 +518,6 @@ class CLASS_ta(Container):
             index=index,
             target=target,
             period=period,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -555,7 +541,6 @@ class CLASS_ta(Container):
             "Yang-Zhang",
         ] = "STD",
         is_crypto: bool = False,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Calculate the realized volatility quantiles over rolling windows of time.
 
@@ -615,7 +600,6 @@ class CLASS_ta(Container):
             upper_q=upper_q,
             model=model,
             is_crypto=is_crypto,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -632,7 +616,6 @@ class CLASS_ta(Container):
         show_all: bool = False,
         asint: bool = False,
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         Demark sequential indicator
@@ -671,7 +654,6 @@ class CLASS_ta(Container):
             show_all=show_all,
             asint=asint,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -687,7 +669,6 @@ class CLASS_ta(Container):
         lower_length: pydantic.types.PositiveInt = 20,
         upper_length: pydantic.types.PositiveInt = 20,
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         Donchian Channels are three lines generated by moving average
@@ -728,7 +709,6 @@ class CLASS_ta(Container):
             lower_length=lower_length,
             upper_length=upper_length,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -805,7 +785,6 @@ class CLASS_ta(Container):
         period: pydantic.types.PositiveInt = 120,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Create Fibonacci Retracement Levels.
 
@@ -837,7 +816,6 @@ class CLASS_ta(Container):
             period=period,
             start_date=start_date,
             end_date=end_date,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -852,7 +830,6 @@ class CLASS_ta(Container):
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         signal: pydantic.types.PositiveInt = 1,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The Fisher Transform is a technical indicator created by John F. Ehlers
@@ -889,7 +866,6 @@ class CLASS_ta(Container):
             index=index,
             length=length,
             signal=signal,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -962,7 +938,6 @@ class CLASS_ta(Container):
         lagging: pydantic.types.PositiveInt = 52,
         offset: pydantic.types.PositiveInt = 26,
         lookahead: bool = False,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
@@ -996,7 +971,6 @@ class CLASS_ta(Container):
             lagging=lagging,
             offset=offset,
             lookahead=lookahead,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1013,7 +987,6 @@ class CLASS_ta(Container):
         scalar: pydantic.types.PositiveFloat = 20,
         mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
         offset: pydantic.types.NonNegativeInt = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         Keltner Channels are volatility-based bands that are placed
@@ -1056,7 +1029,6 @@ class CLASS_ta(Container):
             scalar=scalar,
             mamode=mamode,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1134,7 +1106,6 @@ class CLASS_ta(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         index: str = "date",
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
            The On Balance Volume (OBV) is a cumulative total of the up and
@@ -1172,7 +1143,6 @@ class CLASS_ta(Container):
             data=data,
             index=index,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1306,7 +1276,6 @@ class CLASS_ta(Container):
         fast_k_period: pydantic.types.NonNegativeInt = 14,
         slow_d_period: pydantic.types.NonNegativeInt = 3,
         slow_k_period: pydantic.types.NonNegativeInt = 3,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The Stochastic Oscillator measures where the close is in relation
@@ -1347,7 +1316,6 @@ class CLASS_ta(Container):
             fast_k_period=fast_k_period,
             slow_d_period=slow_d_period,
             slow_k_period=slow_k_period,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1362,7 +1330,6 @@ class CLASS_ta(Container):
         index: str = "date",
         anchor: str = "D",
         offset: int = 0,
-        chart: bool = False,
     ) -> OBBject[List]:
         """
         The Volume Weighted Average Price that measures the average typical price
@@ -1398,7 +1365,6 @@ class CLASS_ta(Container):
             index=index,
             anchor=anchor,
             offset=offset,
-            chart=chart,
         )
 
         return self._command_runner.run(

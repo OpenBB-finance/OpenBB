@@ -18,14 +18,14 @@ def test_system_service_init(system_service):
 
 def test_read_default_system_settings(system_service):
     """Test read default system settings."""
-    system_settings = system_service.read_default_system_settings()
+    system_settings = system_service._read_default_system_settings()
 
     assert system_settings
 
 
 def test_write_default_system_settings(system_service):
     """Test write default system settings."""
-    system_settings = system_service.read_default_system_settings()
+    system_settings = system_service._read_default_system_settings()
     system_service.write_default_system_settings(system_settings=system_settings)
 
     assert system_service

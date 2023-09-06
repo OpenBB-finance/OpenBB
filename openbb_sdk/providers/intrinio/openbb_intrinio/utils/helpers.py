@@ -1,15 +1,71 @@
 """Intrinio Helpers Module."""
 
 import json
+from datetime import datetime, timedelta
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
 import requests
+import requests_cache
 from openbb_provider import helpers
+from openbb_provider.utils.helpers import make_request
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
+
+
+# This will cache the symbol directory requests for 5 days.
+intrinio_session = requests_cache.CachedSession(
+    "OpenBB_Intrinio", expire_after=timedelta(days=5), use_cache_dir=True
+)
+
+
+def get_options_tickers(api_key: str = "") -> List[str]:
+    """Returns all tickers that have existing options contracts.
+
+    Parameters
+    ----------
+    api_key: str
+        Intrinio API key.
+
+    Returns
+    -------
+    List[str]
+        List of tickers
+    """
+    url = f"https://api-v2.intrinio.com/options/tickers?api_key={api_key}"
+
+    r = intrinio_session.get(url, timeout=10)
+
+    return r.json()["tickers"]
+
+
+def get_options_expirations(
+    symbol: str,
+    after: Optional[str] = datetime.now().date().strftime("%Y-%m-%d"),
+    before: Optional[str] = "",
+    api_key: str = "",
+) -> list:
+    """Returns a list of all current and upcoming option contract expiration dates for a particular symbol.
+
+    Parameters
+    ----------
+    symbol: str
+        The options symbol, corresponding to the underlying security.
+    after: str
+        Return option contract expiration dates after this date. Format: YYYY-MM-DD
+    before: str
+        Return option contract expiration dates before this date. Format: YYYY-MM-DD
+    api_key: str
+        Intrinio API key.
+    """
+
+    url = f"https://api-v2.intrinio.com/options/expirations/{symbol}/eod?before={before}&after={after}&api_key={api_key}"
+
+    r = make_request(url)
+
+    return sorted(list(r.json()["expirations"]))
 
 
 class BasicResponse:

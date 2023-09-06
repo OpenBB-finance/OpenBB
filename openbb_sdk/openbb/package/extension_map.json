@@ -1,25 +1,25 @@
 {
     "openbb_core_extension": [
-        "crypto",
-        "economy",
-        "fixedincome",
-        "forex",
-        "futures",
-        "news",
-        "openbb_charting",
-        "options",
-        "qa",
-        "stocks",
-        "ta"
+        "crypto@0.1.0",
+        "economy@0.1.0",
+        "fixedincome@0.1.0",
+        "forex@0.1.0",
+        "futures@0.1.0",
+        "news@0.1.0",
+        "openbb_charting@0.1.0",
+        "qa@0.1.0",
+        "stocks@0.1.0",
+        "ta@0.1.0"
     ],
     "openbb_provider_extension": [
-        "alpha_vantage",
-        "benzinga",
-        "cboe",
-        "fmp",
-        "fred",
-        "intrinio",
-        "polygon",
-        "yfinance"
+        "alpha_vantage@0.1.0",
+        "benzinga@0.1.0",
+        "cboe@0.1.0",
+        "fmp@0.1.0",
+        "fred@0.1.0",
+        "intrinio@0.1.0",
+        "polygon@0.1.0",
+        "quandl@0.1.0",
+        "yfinance@0.1.0"
     ]
 }

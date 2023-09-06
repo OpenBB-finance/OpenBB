@@ -25,8 +25,7 @@ class CLASS_news(Container):
         page: Annotated[
             int, OpenBBCustomParameter(description="Page of the global news.")
         ] = 0,
-        chart: bool = False,
-        provider: Optional[Literal["benzinga", "biztoc", "fmp", "intrinio"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -35,9 +34,7 @@ class CLASS_news(Container):
         ----------
         page : int
             Page of the global news.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio']]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -71,12 +68,6 @@ class CLASS_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        filter : Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag']
-            Filter by type of news. (provider: biztoc)
-        source : str
-            Filter by a specific publisher. (provider: biztoc)
-        tag : str
-            Tag, topic, to filter articles by. (provider: biztoc)
         next_page : str
             Token to get the next page of data from a previous API call. (provider: intrinio)
         limit : Optional[int]
@@ -89,7 +80,7 @@ class CLASS_news(Container):
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -118,10 +109,8 @@ class CLASS_news(Container):
             Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
-        favicon : Optional[str]
-            Icon image for the source of the article. (provider: biztoc)
-        domain : Optional[str]
-            Domain base url for the article source. (provider: biztoc)
+        site : Optional[str]
+            Site of the news. (provider: fmp)
         id : Optional[str]
             Intrinio ID for the news article. (provider: intrinio)
         company : Optional[Mapping[str, Any]]
@@ -135,7 +124,6 @@ class CLASS_news(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

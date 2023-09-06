@@ -27,7 +27,7 @@ for /d /r %%d in (openbb_*) do (
     echo Installing !dirname!
 
     pushd "!parentdir!"
-    "%PYTHON_PATH%" -m pip install -U -e . >NUL 2>&1
+    "%PYTHON_PATH%" -m poetry install -C >NUL 2>&1
 
     popd
 )

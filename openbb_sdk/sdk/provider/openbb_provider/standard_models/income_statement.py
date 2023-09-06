@@ -1,34 +1,28 @@
 """Income Statement Data Model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType
 from typing import Optional
 
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data
-from openbb_provider.standard_models.base import FinancialStatementQueryParams
+from openbb_provider.standard_models.base import (
+    BaseSymbol,
+    FinancialStatementQueryParams,
+)
 
 
 class IncomeStatementQueryParams(FinancialStatementQueryParams):
     """Income Statement Query."""
 
 
-class IncomeStatementData(Data):
+class IncomeStatementData(Data, BaseSymbol):
     """Income Statement Data."""
 
     date: dateType = Field(description="Date of the income statement.")
-    symbol: Optional[str] = Field(description="Symbol of the company.")
-    cik: Optional[str] = Field(description="Central Index Key.")
-
-    currency: Optional[str] = Field(description="Reporting currency.")
-    filing_date: Optional[dateType] = Field(description="Filling date.")
-    accepted_date: Optional[datetime] = Field(description="Accepted date.")
-    calendar_year: Optional[int] = Field(description="Calendar year.")
-    period: Optional[str] = Field(description="Period of the income statement.")
+    period: str = Field(description="Period of the income statement.")
+    cik: str = Field(description="Central Index Key.")
 
     revenue: Optional[int] = Field(description="Revenue.")
     cost_of_revenue: Optional[int] = Field(description="Cost of revenue.")
@@ -87,5 +81,3 @@ class IncomeStatementData(Data):
     weighted_average_shares_outstanding_dil: Optional[int] = Field(
         description="Weighted average shares outstanding diluted."
     )
-    link: Optional[str] = Field(description="Link to the income statement.")
-    final_link: Optional[str] = Field(description="Final link to the income statement.")

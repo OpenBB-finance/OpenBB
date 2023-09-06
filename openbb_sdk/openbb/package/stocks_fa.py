@@ -62,8 +62,7 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Balance Sheet.
@@ -76,14 +75,14 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            None
+        type : Literal['reported', 'standardized']
+            Type of the statement to be fetched. (provider: intrinio)
+        year : Optional[int]
+            Year of the statement to be fetched. (provider: intrinio)
         company_name : Optional[str]
             Name of the company. (provider: polygon)
         company_name_search : Optional[str]
@@ -122,7 +121,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheet]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -133,116 +132,114 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
+        symbol : Optional[str]
+            Symbol to get data for.
         date : Optional[date]
             Date of the fetched statement.
-        symbol : Optional[str]
-            Symbol of the company.
-        cik : Optional[int]
-            Central Index Key.
-        currency : Optional[str]
-            Reporting currency.
-        filing_date : Optional[date]
-            Filling date.
-        accepted_date : Optional[datetime]
-            Accepted date.
         period : Optional[str]
             Reporting period of the statement.
+        cik : Optional[int]
+            Central Index Key (CIK) of the company.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
         short_term_investments : Optional[int]
             Short-term investments
-        inventory : Optional[int]
-            Inventory
         net_receivables : Optional[int]
             Receivables, net
+        inventory : Optional[int]
+            Inventory
         other_current_assets : Optional[int]
             Other current assets
-        current_assets : Optional[int]
+        total_current_assets : Optional[int]
             Total current assets
-        long_term_investments : Optional[int]
-            Long-term investments
+        marketable_securities : Optional[int]
+            Marketable securities
         property_plant_equipment_net : Optional[int]
             Property, plant and equipment, net
         goodwill : Optional[int]
             Goodwill
         intangible_assets : Optional[int]
             Intangible assets
-        other_non_current_assets : Optional[int]
-            Other non-current assets
         tax_assets : Optional[int]
             Accrued income taxes
+        other_non_current_assets : Optional[int]
+            Other non-current assets
+        total_non_current_assets : Optional[int]
+            Total non-current assets
         other_assets : Optional[int]
             Other assets
-        noncurrent_assets : Optional[int]
-            None
-        assets : Optional[int]
-            None
+        total_assets : Optional[int]
+            Total assets
         account_payables : Optional[int]
-            None
-        other_current_liabilities : Optional[int]
-            None
+            Accounts payables
+        short_term_debt : Optional[int]
+            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
         tax_payables : Optional[int]
             Accrued income taxes
         deferred_revenue : Optional[int]
             Accrued income taxes, other deferred revenue
-        short_term_debt : Optional[int]
-            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
-        current_liabilities : Optional[int]
-            None
+        other_current_liabilities : Optional[int]
+            Other current liabilities
+        total_current_liabilities : Optional[int]
+            Total current liabilities
         long_term_debt : Optional[int]
             Long-term debt, Operating lease obligations, Long-term finance lease obligations
+        deferred_revenue_non_current : Optional[int]
+            Deferred revenue, non-current
+        deferred_tax_liabilities_non_current : Optional[int]
+            Deferred income taxes and other
         other_non_current_liabilities : Optional[int]
             Deferred income taxes and other
+        total_non_current_liabilities : Optional[int]
+            Total non-current liabilities
         other_liabilities : Optional[int]
-            None
-        noncurrent_liabilities : Optional[int]
-            None
-        liabilities : Optional[int]
-            None
-        common_stock : Optional[int]
-            None
-        other_stockholder_equity : Optional[int]
-            Capital in excess of par value
-        accumulated_other_comprehensive_income_loss : Optional[int]
-            Accumulated other comprehensive income (loss)
+            Other liabilities
+        total_liabilities : Optional[int]
+            Total liabilities
         preferred_stock : Optional[int]
             Preferred stock
+        common_stock : Optional[int]
+            Common stock
         retained_earnings : Optional[int]
             Retained earnings
+        accumulated_other_comprehensive_income_loss : Optional[int]
+            Accumulated other comprehensive income (loss)
+        other_shareholder_equity : Optional[int]
+            Other shareholder's equity
+        total_shareholder_equity : Optional[int]
+            Total shareholder's equity
+        total_equity : Optional[int]
+            Total equity
+        total_liabilities_and_shareholders_equity : Optional[int]
+            Total liabilities and shareholder's equity
         minority_interest : Optional[int]
             Minority interest
-        total_stockholders_equity : Optional[int]
-            None
-        total_equity : Optional[int]
-            None
-        total_liabilities_and_stockholders_equity : Optional[int]
-            None
         total_liabilities_and_total_equity : Optional[int]
-            None
+            Total liabilities and total equity
+        reported_currency : Optional[str]
+            Reported currency in the statement. (provider: fmp)
+        filling_date : Optional[date]
+            Filling date. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date. (provider: fmp)
         calendar_year : Optional[int]
-            None
-        link : Optional[str]
-            None
-        final_link : Optional[str]
-            None
+            Calendar year. (provider: fmp)
         cash_and_short_term_investments : Optional[int]
-            None
+            Cash and short term investments (provider: fmp)
         goodwill_and_intangible_assets : Optional[int]
-            None
-        deferred_revenue_non_current : Optional[int]
-            None
-        total_investments : Optional[int]
-            None
+            Goodwill and Intangible Assets (provider: fmp)
         capital_lease_obligations : Optional[int]
-            None
-        deferred_tax_liabilities_non_current : Optional[int]
-            None
-        total_non_current_liabilities : Optional[int]
-            None
+            Capital lease obligations (provider: fmp)
+        total_investments : Optional[int]
+            Total investments (provider: fmp)
         total_debt : Optional[int]
-            None
+            Total debt (provider: fmp)
         net_debt : Optional[int]
-            None"""  # noqa: E501
+            Net debt (provider: fmp)
+        link : Optional[str]
+            Link to the statement. (provider: fmp)
+        final_link : Optional[str]
+            Link to the final statement. (provider: fmp)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -254,7 +251,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -273,7 +269,6 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -285,8 +280,6 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -402,7 +395,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -425,7 +417,6 @@ class CLASS_stocks_fa(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -437,8 +428,6 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -486,7 +475,6 @@ class CLASS_stocks_fa(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -509,8 +497,7 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Cash Flow Statement.
@@ -523,14 +510,14 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            Central Index Key (CIK) of the company. (provider: fmp)
+        type : Literal['reported', 'standardized']
+            Type of the statement to be fetched. (provider: intrinio)
+        year : Optional[int]
+            Year of the statement to be fetched. (provider: intrinio)
         company_name : Optional[str]
             Name of the company. (provider: polygon)
         company_name_search : Optional[str]
@@ -569,7 +556,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CashFlowStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -580,88 +567,100 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
+        symbol : Optional[str]
+            Symbol to get data for.
         date : Optional[date]
             Date of the fetched statement.
-        symbol : Optional[str]
-            Symbol of the company.
-        cik : Optional[int]
-            Central Index Key.
-        currency : Optional[str]
-            Reporting currency.
-        filing_date : Optional[date]
-            Filling date.
-        accepted_date : Optional[datetime]
-            Accepted date.
         period : Optional[str]
             Reporting period of the statement.
-        cash_at_beginning_of_period : Optional[int]
-            Cash at beginning of period.
+        cik : Optional[int]
+            Central Index Key (CIK) of the company.
         net_income : Optional[int]
             Net income.
         depreciation_and_amortization : Optional[int]
             Depreciation and amortization.
         stock_based_compensation : Optional[int]
             Stock based compensation.
-        other_non_cash_items : Optional[int]
-            Other non-cash items.
         deferred_income_tax : Optional[int]
             Deferred income tax.
-        inventory : Optional[int]
-            Inventory.
-        accounts_payables : Optional[int]
-            Accounts payables.
+        other_non_cash_items : Optional[int]
+            Other non-cash items.
+        changes_in_operating_assets_and_liabilities : Optional[int]
+            Changes in operating assets and liabilities.
         accounts_receivables : Optional[int]
             Accounts receivables.
-        change_in_working_capital : Optional[int]
-            Change in working capital.
-        other_working_capital : Optional[int]
-            Accrued expenses and other, Unearned revenue.
-        capital_expenditure : Optional[int]
-            Purchases of property and equipment.
-        other_investing_activities : Optional[int]
-            Proceeds from property and equipment sales and incentives.
-        acquisitions_net : Optional[int]
-            Acquisitions, net of cash acquired, and other
-        sales_maturities_of_investments : Optional[int]
-            Sales and maturities of investments.
-        purchases_of_investments : Optional[int]
-            Purchases of investments.
+        inventory : Optional[int]
+            Inventory.
+        vendor_non_trade_receivables : Optional[int]
+            Vendor non-trade receivables.
+        other_current_and_non_current_assets : Optional[int]
+            Other current and non-current assets.
+        accounts_payables : Optional[int]
+            Accounts payables.
+        deferred_revenue : Optional[int]
+            Deferred revenue.
+        other_current_and_non_current_liabilities : Optional[int]
+            Other current and non-current liabilities.
         net_cash_flow_from_operating_activities : Optional[int]
             Net cash flow from operating activities.
-        net_cash_flow_from_investing_activities : Optional[int]
-            Net cash flow from investing activities.
-        net_cash_flow_from_financing_activities : Optional[int]
-            Net cash flow from financing activities.
+        purchases_of_marketable_securities : Optional[int]
+            Purchases of investments.
+        sales_from_maturities_of_investments : Optional[int]
+            Sales and maturities of investments.
         investments_in_property_plant_and_equipment : Optional[int]
             Investments in property, plant, and equipment.
-        net_cash_used_for_investing_activities : Optional[int]
+        payments_from_acquisitions : Optional[int]
+            Acquisitions, net of cash acquired, and other
+        other_investing_activities : Optional[int]
+            Other investing activities
+        net_cash_flow_from_investing_activities : Optional[int]
             Net cash used for investing activities.
-        effect_of_forex_changes_on_cash : Optional[int]
-            Foreign currency effect on cash, cash equivalents, and restricted cash
+        taxes_paid_on_net_share_settlement : Optional[int]
+            Taxes paid on net share settlement of equity awards.
         dividends_paid : Optional[int]
             Payments for dividends and dividend equivalents
-        common_stock_issued : Optional[int]
-            Proceeds from issuance of common stock
         common_stock_repurchased : Optional[int]
             Payments related to repurchase of common stock
+        debt_proceeds : Optional[int]
+            Proceeds from issuance of term debt
         debt_repayment : Optional[int]
             Payments of long-term debt
         other_financing_activities : Optional[int]
             Other financing activities, net
+        net_cash_flow_from_financing_activities : Optional[int]
+            Net cash flow from financing activities.
         net_change_in_cash : Optional[int]
             Net increase (decrease) in cash, cash equivalents, and restricted cash
-        cash_at_end_of_period : Optional[int]
-            Cash, cash equivalents, and restricted cash at end of period
-        free_cash_flow : Optional[int]
-            Net cash flow from operating, investing and financing activities
-        operating_cash_flow : Optional[int]
-            Net cash flow from operating activities
+        reported_currency : Optional[str]
+            Reported currency in the statement. (provider: fmp)
+        filling_date : Optional[date]
+            Filling date. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date. (provider: fmp)
         calendar_year : Optional[int]
-            Calendar Year (provider: fmp)
+            Calendar year. (provider: fmp)
+        change_in_working_capital : Optional[int]
+            Change in working capital. (provider: fmp)
+        other_working_capital : Optional[int]
+            Other working capital. (provider: fmp)
+        common_stock_issued : Optional[int]
+            Common stock issued. (provider: fmp)
+        effect_of_forex_changes_on_cash : Optional[int]
+            Effect of forex changes on cash. (provider: fmp)
+        cash_at_beginning_of_period : Optional[int]
+            Cash at beginning of period. (provider: fmp)
+        cash_at_end_of_period : Optional[int]
+            Cash, cash equivalents, and restricted cash at end of period (provider: fmp)
+        operating_cash_flow : Optional[int]
+            Operating cash flow. (provider: fmp)
+        capital_expenditure : Optional[int]
+            Capital expenditure. (provider: fmp)
+        free_cash_flow : Optional[int]
+            Free cash flow. (provider: fmp)
         link : Optional[str]
-            None
+            Link to the statement. (provider: fmp)
         final_link : Optional[str]
-            Final Link (provider: fmp)"""  # noqa: E501
+            Link to the final statement. (provider: fmp)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -673,7 +672,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -692,7 +690,6 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -704,8 +701,6 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -803,7 +798,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -818,7 +812,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -828,8 +821,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -886,7 +877,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -909,7 +899,6 @@ class CLASS_stocks_fa(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -921,8 +910,6 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -964,7 +951,6 @@ class CLASS_stocks_fa(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -979,7 +965,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -989,8 +974,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1035,7 +1018,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1054,7 +1036,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1066,8 +1047,6 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1117,7 +1096,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1132,7 +1110,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1142,8 +1119,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1192,7 +1167,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1215,7 +1189,6 @@ class CLASS_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1229,8 +1202,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1307,7 +1278,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1330,8 +1300,7 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Income Statement.
@@ -1344,14 +1313,14 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided. (provider: fmp)
+        type : Literal['reported', 'standardized']
+            Type of the statement to be fetched. (provider: intrinio)
+        year : Optional[int]
+            Year of the statement to be fetched. (provider: intrinio)
         company_name : Optional[str]
             Name of the company. (provider: polygon)
         company_name_search : Optional[str]
@@ -1390,7 +1359,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[IncomeStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1401,22 +1370,14 @@ class CLASS_stocks_fa(Container):
 
         IncomeStatement
         ---------------
+        symbol : Optional[str]
+            Symbol to get data for.
         date : Optional[date]
             Date of the income statement.
-        symbol : Optional[str]
-            Symbol of the company.
-        cik : Optional[str]
-            Central Index Key.
-        currency : Optional[str]
-            Reporting currency.
-        filing_date : Optional[date]
-            Filling date.
-        accepted_date : Optional[datetime]
-            Accepted date.
-        calendar_year : Optional[int]
-            Calendar year.
         period : Optional[str]
             Period of the income statement.
+        cik : Optional[str]
+            Central Index Key.
         revenue : Optional[int]
             Revenue.
         cost_of_revenue : Optional[int]
@@ -1473,24 +1434,26 @@ class CLASS_stocks_fa(Container):
             Weighted average shares outstanding.
         weighted_average_shares_outstanding_dil : Optional[int]
             Weighted average shares outstanding diluted.
-        link : Optional[str]
-            Link to the income statement.
-        final_link : Optional[str]
-            Final link to the income statement.
+        income_loss_from_continuing_operations_before_tax : Optional[float]
+            Income/Loss From Continuing Operations After Tax (provider: polygon)
         income_loss_from_continuing_operations_after_tax : Optional[float]
-            None
+            Income/Loss From Continuing Operations After Tax (provider: polygon)
         benefits_costs_expenses : Optional[float]
-            None
-        net_income_loss_attributable_to_noncontrolling_interest : Optional[int]
-            None
+            Benefits, Costs And Expenses (provider: polygon)
+        net_income_loss_attributable_to_noncontrolling_interest : Optional[float]
+            Net Income/Loss Attributable To Noncontrolling Interest (provider: polygon)
         net_income_loss_attributable_to_parent : Optional[float]
-            None
-        net_income_loss_available_to_common_stockholders_basic : Optional[float]
-            None
+            Net Income/Loss Attributable To Parent (provider: polygon)
+        income_tax_expense_benefit_deferred : Optional[float]
+            Income Tax Expense/Benefit Deferred (provider: polygon)
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
-            None
+            Participating Securities Distributed And Undistributed Earnings Loss Basic (provider: polygon)
+        net_income_loss_available_to_common_stockholders_basic : Optional[float]
+            Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
+        nonoperating_income_loss : Optional[float]
+            Nonoperating Income Loss (provider: polygon)
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            None"""  # noqa: E501
+            Preferred Stock Dividends And Other Adjustments (provider: polygon)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1502,7 +1465,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1525,7 +1487,6 @@ class CLASS_stocks_fa(Container):
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1539,8 +1500,6 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1631,7 +1590,6 @@ class CLASS_stocks_fa(Container):
                 "period": period,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1685,7 +1643,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1703,8 +1660,6 @@ class CLASS_stocks_fa(Container):
             CIK of the company owner.
         page : Optional[int]
             Page number of the data to fetch.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1769,7 +1724,6 @@ class CLASS_stocks_fa(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1791,7 +1745,6 @@ class CLASS_stocks_fa(Container):
             Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1805,8 +1758,6 @@ class CLASS_stocks_fa(Container):
             Include current quarter data.
         date : Optional[datetime.date]
             A specific date to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1912,7 +1863,6 @@ class CLASS_stocks_fa(Container):
                 "date": date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -1935,7 +1885,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -1949,8 +1898,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2103,7 +2050,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2118,7 +2064,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2128,8 +2073,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2174,7 +2117,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2189,7 +2131,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -2199,8 +2140,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2303,7 +2242,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2326,7 +2264,6 @@ class CLASS_stocks_fa(Container):
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2340,8 +2277,6 @@ class CLASS_stocks_fa(Container):
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2452,7 +2387,6 @@ class CLASS_stocks_fa(Container):
                 "page": page,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2467,7 +2401,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -2477,8 +2410,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2519,7 +2450,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2534,7 +2464,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2544,8 +2473,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2606,7 +2533,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2629,7 +2555,6 @@ class CLASS_stocks_fa(Container):
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2643,8 +2568,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2791,7 +2714,6 @@ class CLASS_stocks_fa(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2814,7 +2736,6 @@ class CLASS_stocks_fa(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2828,8 +2749,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2876,7 +2795,6 @@ class CLASS_stocks_fa(Container):
                 "structure": structure,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2899,7 +2817,6 @@ class CLASS_stocks_fa(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2913,8 +2830,6 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2951,7 +2866,6 @@ class CLASS_stocks_fa(Container):
                 "structure": structure,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -2966,7 +2880,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -2976,8 +2889,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3020,7 +2931,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -3035,7 +2945,6 @@ class CLASS_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -3045,8 +2954,6 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3085,7 +2992,6 @@ class CLASS_stocks_fa(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -3110,7 +3016,6 @@ class CLASS_stocks_fa(Container):
                 description="Quarter of the earnings call transcript."
             ),
         ] = 1,
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -3124,8 +3029,6 @@ class CLASS_stocks_fa(Container):
             Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
             Quarter of the earnings call transcript.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3168,7 +3071,6 @@ class CLASS_stocks_fa(Container):
                 "quarter": quarter,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

@@ -1,4 +1,5 @@
 from inspect import Parameter
+from typing import Dict
 from unittest.mock import patch
 
 import pytest
@@ -26,7 +27,9 @@ def execution_context():
 def mock_func():
     """Set up mock function."""
 
-    def mock_func(a: int, b: int, c: float = 10.0, d: int = 5) -> None:
+    def mock_func(
+        a: int, b: int, c: float = 10.0, d: int = 5, provider_choices: Dict = {}
+    ) -> None:
         pass
 
     return mock_func
@@ -138,30 +141,27 @@ def test_parameters_builder_merge_args_and_kwargs(
             {"cc": "existing_cc"},
             SystemSettings(),
             UserSettings(),
-            {"cc": "existing_cc"},
-        ),
-        ({}, SystemSettings(), UserSettings(), {}),
-        (
-            {"other_arg": "value"},
-            SystemSettings(),
-            UserSettings(),
-            {"other_arg": "value"},
+            {"cc": "mock_cc"},
         ),
     ],
 )
 def test_parameters_builder_update_command_context(
     kwargs, system_settings, user_settings, expected_result
 ):
+    def other_mock_func(
+        cc: CommandContext,
+        a: int,
+        b: int,
+    ) -> None:
+        pass
+
     result = ParametersBuilder.update_command_context(
-        kwargs, system_settings, user_settings
+        other_mock_func, kwargs, system_settings, user_settings
     )
 
-    if "cc" in expected_result:
-        assert isinstance(result["cc"], CommandContext)
-        assert result["cc"].system_settings == system_settings
-        assert result["cc"].user_settings == user_settings
-    else:
-        assert result == expected_result
+    assert isinstance(result["cc"], CommandContext)
+    assert result["cc"].system_settings == system_settings
+    assert result["cc"].user_settings == user_settings
 
 
 @pytest.mark.parametrize(
@@ -172,28 +172,21 @@ def test_parameters_builder_update_command_context(
             "route1",
             {"provider_choices": {"provider": None}},
             None,
-            {"provider_choices": {"provider": "choice1"}},
+            {"provider_choices": {"provider": None}},
         ),
         (
             {"route1": ["choice1", "choice2"]},
             "route1",
-            {},
-            {"provider": "default_provider"},
-            {"provider_choices": {"provider": "default_provider"}},
-        ),
-        (
-            {},
-            "route2",
-            {"provider_choices": {"provider": None}},
-            None,
-            {"provider_choices": {"provider": "provider1"}},
+            {"provider_choices": {"provider": ["choice1", "choice2"]}},
+            {"provider": "choice1"},
+            {"provider_choices": {"provider": ["choice1", "choice2"]}},
         ),
         (
             {},
             "route2",
             {},
             {"provider": "default_provider"},
-            {"provider_choices": {"provider": "provider1"}},
+            {},
         ),
         (
             {},
@@ -201,13 +194,6 @@ def test_parameters_builder_update_command_context(
             {"provider_choices": {"provider": "existing_provider"}},
             None,
             {"provider_choices": {"provider": "existing_provider"}},
-        ),
-        (
-            {"route4": []},
-            "route4",
-            {},
-            None,
-            {"provider_choices": {"provider": None}},
         ),
     ],
 )
@@ -219,7 +205,7 @@ def test_parameters_builder_update_provider_choices(
         **{"return_value.available_providers": ["provider1", "provider2"]}
     ):
         result = ParametersBuilder.update_provider_choices(
-            command_coverage, route, kwargs, route_default
+            mock_func, command_coverage, route, kwargs, route_default
         )
 
         assert result == expected_result
@@ -234,7 +220,7 @@ def test_parameters_builder_validate_kwargs(mock_func):
         mock_func, {"a": 1, "b": "2", "c": 3.0, "d": 4.3}
     )
 
-    assert result == {"a": 1, "b": 2, "c": 3.0, "d": 4}
+    assert result == {"a": 1, "b": 2, "c": 3.0, "d": 4, "provider_choices": {}}
 
 
 def test_parameters_builder_build(mock_func, execution_context):
@@ -248,7 +234,11 @@ def test_parameters_builder_build(mock_func, execution_context):
     ):
         result = ParametersBuilder.build(
             args=[1, 2],
-            kwargs={"c": 3, "d": "4"},
+            kwargs={
+                "c": 3,
+                "d": "4",
+                "provider_choices": {"provider": ["provider1", "provider2"]},
+            },
             func=mock_func,
             execution_context=execution_context,
             route="mock/route",
@@ -259,7 +249,7 @@ def test_parameters_builder_build(mock_func, execution_context):
             "b": 2,
             "c": 3.0,
             "d": 4,
-            "provider_choices": {"provider": "provider1"},
+            "provider_choices": {"provider": ["provider1", "provider2"]},
         }
 
 
