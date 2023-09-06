@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-stocks"
 version = "0.1.0"
-description = "Stocks extension for OpenBB SDK"
+description = "Stocks extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_stocks" }]

@@ -219,19 +219,29 @@ class HubService:
     def hub2sdk(cls, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to SDK models."""
         credentials = Credentials(
-            fmp_api_key=settings.features_keys.API_KEY_FINANCIALMODELINGPREP,
-            polygon_api_key=settings.features_keys.API_POLYGON_KEY,
+            alpha_vantage_api_key=settings.features_keys.API_KEY_ALPHAVANTAGE,
             fred_api_key=settings.features_keys.API_FRED_KEY,
+            fmp_api_key=settings.features_keys.API_KEY_FINANCIALMODELINGPREP,
+            intrinio_api_key=settings.features_keys.API_INTRINIO_KEY,
+            polygon_api_key=settings.features_keys.API_POLYGON_KEY,
+            quandl_api_key=settings.features_keys.API_KEY_QUANDL,
         )
         return credentials
 
     @classmethod
     def sdk2hub(cls, credentials: Credentials) -> HubUserSettings:
         """Convert SDK models to Hub user settings."""
+
+        def get_cred(cred: str) -> Optional[str]:
+            return getattr(credentials, cred, None)
+
         features_keys = FeaturesKeys(
-            API_KEY_FINANCIALMODELINGPREP=credentials.fmp_api_key,
-            API_POLYGON_KEY=credentials.polygon_api_key,
-            API_FRED_KEY=credentials.fred_api_key,
+            API_KEY_ALPHAVANTAGE=get_cred("alpha_vantage_api_key"),
+            API_FRED_KEY=get_cred("fred_api_key"),
+            API_KEY_FINANCIALMODELINGPREP=get_cred("fmp_api_key"),
+            API_INTRINIO_KEY=get_cred("intrinio_api_key"),
+            API_POLYGON_KEY=get_cred("polygon_api_key"),
+            API_KEY_QUANDL=get_cred("quandl_api_key"),
         )
         hub_user_settings = HubUserSettings(features_keys=features_keys)
         return hub_user_settings

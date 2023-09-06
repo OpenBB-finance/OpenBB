@@ -1,10 +1,11 @@
-from typing import Dict, Generic, List, Literal, Optional, TypeVar, Union
+"""The OBBject."""
+from typing import Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
-from pydantic import Field
+from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 
-from openbb_core.app.charting_manager import ChartingManager
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
@@ -42,44 +43,70 @@ class OBBject(GenericModel, Generic[T], Tagged):
     )
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}\n\n" + "\n".join(
-            f"{k}: {v}" for k, v in self.dict().items()
+        """Human readable representation of the object."""
+        return (
+            self.__class__.__name__
+            + "\n\n"
+            + "\n".join(
+                [
+                    f"{k}: {v}"[:83]
+                    + ("..." if len(f"{k}: {v}") > len(f"{k}: {v}"[:83]) else "")
+                    for k, v in self.dict().items()
+                ]
+            )
         )
 
-    def to_dataframe(
-        self, concat: bool = True
-    ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
-        """Converts results field to pandas dataframe.
+    def to_dataframe(self) -> pd.DataFrame:
+        """Convert results field to pandas dataframe.
 
-        Parameters
-        ----------
-        concat : bool, optional
-            If True, it concatenates the dataframes, by default True.
+        Supports converting creating pandas DataFrames from the following
+        serializable data formats:
+
+        - List[BaseModel]
+        - List[Dict]
+        - List[List]
+        - List[str]
+        - List[int]
+        - List[float]
+        - Dict[str, Dict]
+        - Dict[str, List]
+        - Dict[str, BaseModel]
 
         Returns
         -------
-        Union[pd.DataFrame, Dict[str, pd.DataFrame]]
-            Pandas dataframe or dictionary of dataframes.
+        pd.DataFrame
+            Pandas dataframe.
         """
-        if not self.results:
+        if self.results is None or self.results == []:
             raise OpenBBError("Results not found.")
 
         try:
             res = self.results
-            if isinstance(res, list):
-                if isinstance(res[0], dict):
-                    for r in res:
-                        dict_of_df = {
-                            k: basemodel_to_df(v, "date") for k, v in r.items()
-                        }
-                        df = pd.concat(dict_of_df, axis=1) if concat else dict_of_df
 
-                else:
-                    df = basemodel_to_df(res, "date")  # type: ignore
+            df = None
+            if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
+                for r in res:
+                    dict_of_df = {}
+                    for k, v in r.items():
+                        if isinstance(v, list) and all(
+                            isinstance(nv, BaseModel) for nv in v
+                        ):
+                            dict_of_df[k] = basemodel_to_df(v, "date")
+                        else:
+                            dict_of_df[k] = pd.DataFrame(v)
+                    df = pd.concat(dict_of_df, axis=1)
+            elif isinstance(res, list) and all(
+                isinstance(item, BaseModel) for item in res
+            ):
+                df = basemodel_to_df(res, "date")
             else:
-                df = basemodel_to_df(res, "date")  # type: ignore
+                df = pd.DataFrame(res)
+
+            if df is None:
+                raise OpenBBError("Unsupported data format.")
 
             # Improve output so that all columns that are None are not returned
+            df.sort_index(axis=1, inplace=True)
             df = df.dropna(axis=1, how="all")
 
         except Exception as e:
@@ -88,7 +115,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
         return df
 
     def to_dict(self) -> Dict[str, List]:
-        """Converts results field to list of values.
+        """Convert results field to list of values.
 
         Returns
         -------
@@ -105,6 +132,9 @@ class OBBject(GenericModel, Generic[T], Tagged):
     def to_chart(self, **kwargs):
         """
         Create or update the `Chart`.
+        This function assumes that the provided data is a time series, if it's not, it will
+        most likely result in an Exception.
+
         Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
 
         Parameters
@@ -119,15 +149,18 @@ class OBBject(GenericModel, Generic[T], Tagged):
         chart.fig
             The chart figure.
         """
-        cm = ChartingManager()
+
+        cs = ChartingService()
         kwargs["data"] = self.to_dataframe()
 
-        self.chart = cm.to_chart(**kwargs)
+        self.chart = cs.to_chart(**kwargs)
         return self.chart.fig
 
     def show(self):
-        """Displays chart."""
-
+        """Display chart."""
         if not self.chart or not self.chart.fig:
-            raise OpenBBError("Chart not found.")
+            raise OpenBBError(
+                "Chart not found. "
+                "Please compute the chart first by using the `chart=True` argument."
+            )
         self.chart.fig.show()

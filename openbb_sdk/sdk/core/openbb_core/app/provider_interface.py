@@ -407,7 +407,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         Example:
         -------
-        class StockEODData(StandardData):
+        class StockHistoricalData(StandardData):
             date: date
             open: PositiveFloat
             high: PositiveFloat

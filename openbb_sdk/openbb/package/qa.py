@@ -35,14 +35,12 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
         """Capital Asset Pricing Model."""  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
             target=target,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -56,7 +54,6 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         window: pydantic.types.PositiveInt,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Kurtosis.
 
@@ -79,7 +76,6 @@ class CLASS_qa(Container):
             data=data,
             target=target,
             window=window,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -92,7 +88,6 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.NormalityModel]:
         """
         Normality Statistics.
@@ -119,7 +114,6 @@ class CLASS_qa(Container):
         inputs = filter_inputs(
             data=data,
             target=target,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -134,7 +128,6 @@ class CLASS_qa(Container):
         target: str,
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Omega Ratio.
 
@@ -160,7 +153,6 @@ class CLASS_qa(Container):
             target=target,
             threshold_start=threshold_start,
             threshold_end=threshold_end,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -175,7 +167,6 @@ class CLASS_qa(Container):
         target: str,
         window: pydantic.types.PositiveInt,
         quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Quantile."""  # noqa: E501
 
@@ -184,7 +175,6 @@ class CLASS_qa(Container):
             target=target,
             window=window,
             quantile_pct=quantile_pct,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -199,7 +189,6 @@ class CLASS_qa(Container):
         target: str,
         rfr: float = 0.0,
         window: pydantic.types.PositiveInt = 252,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Sharpe Ratio.
 
@@ -225,7 +214,6 @@ class CLASS_qa(Container):
             target=target,
             rfr=rfr,
             window=window,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -239,7 +227,6 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         window: pydantic.types.PositiveInt,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Skewness.
 
@@ -262,7 +249,6 @@ class CLASS_qa(Container):
             data=data,
             target=target,
             window=window,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -278,7 +264,6 @@ class CLASS_qa(Container):
         target_return: float = 0.0,
         window: pydantic.types.PositiveInt = 252,
         adjusted: bool = False,
-        chart: bool = False,
     ) -> OBBject[List]:
         """Sortino Ratio.
 
@@ -309,7 +294,6 @@ class CLASS_qa(Container):
             target_return=target_return,
             window=window,
             adjusted=adjusted,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -322,7 +306,6 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
         """Summary.
 
@@ -342,7 +325,6 @@ class CLASS_qa(Container):
         inputs = filter_inputs(
             data=data,
             target=target,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -357,7 +339,6 @@ class CLASS_qa(Container):
         target: str,
         fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
-        chart: bool = False,
     ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
         """Unit Root Test.
 
@@ -386,7 +367,6 @@ class CLASS_qa(Container):
             target=target,
             fuller_reg=fuller_reg,
             kpss_reg=kpss_reg,
-            chart=chart,
         )
 
         return self._command_runner.run(

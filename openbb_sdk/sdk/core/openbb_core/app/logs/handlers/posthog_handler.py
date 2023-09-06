@@ -111,11 +111,12 @@ class PosthogHandler(logging.Handler):
 
         log_extra: Dict[str, Any] = {
             "appName": self._settings.app_name,
+            "subAppName": self._settings.sub_app_name,
             "appId": self._settings.app_id,
             "sessionId": self._settings.session_id,
             "platform": self._settings.platform,
             "pythonVersion": self._settings.python_version,
-            "terminalVersion": self._settings.terminal_version,
+            "obbPlatformVersion": self._settings.terminal_version,
         }
 
         if self._settings.user_id:

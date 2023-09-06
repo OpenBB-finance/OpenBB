@@ -28,6 +28,7 @@ from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
@@ -74,7 +75,15 @@ class PackageBuilder:
     def save_extension_map(self):
         """Save the map of extensions available at build time"""
         groups = ("openbb_core_extension", "openbb_provider_extension")
-        ext_map = {g: sorted(list(entry_points(group=g).names)) for g in groups}
+        ext_map = {
+            g: sorted(
+                [
+                    f"{e.name}@{getattr(e.dist, 'version', '')}"
+                    for e in entry_points(group=g)
+                ]
+            )
+            for g in groups
+        }
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")
@@ -480,7 +489,7 @@ class MethodDefinition:
 
     @staticmethod
     def format_params(
-        parameter_map: Dict[str, Parameter]
+        path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
         # These are types we want to expand.
@@ -500,12 +509,17 @@ class MethodDefinition:
         }
 
         parameter_map.pop("cc", None)
-        parameter_map["chart"] = Parameter(
-            name="chart",
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            annotation=bool,
-            default=False,
-        )
+        # we need to add the chart parameter here bc of the docstring generation
+        if (
+            path.replace("/", "_")[1:]
+            in ChartingService.get_implemented_charting_functions()
+        ):
+            parameter_map["chart"] = Parameter(
+                name="chart",
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                annotation=bool,
+                default=False,
+            )
 
         formatted: Dict[str, Parameter] = {}
 
@@ -660,12 +674,17 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
-        parameter_map["chart"] = Parameter(
-            name="chart",
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            annotation=bool,
-            default=False,
-        )
+
+        if (
+            path.replace("/", "_")[1:]
+            in ChartingService.get_implemented_charting_functions()
+        ):
+            parameter_map["chart"] = Parameter(
+                name="chart",
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                annotation=bool,
+                default=False,
+            )
 
         code = "        inputs = filter_inputs(\n"
         for name, param in parameter_map.items():
@@ -702,7 +721,7 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
 
-        formatted_params = cls.format_params(parameter_map=parameter_map)
+        formatted_params = cls.format_params(path=path, parameter_map=parameter_map)
 
         code = cls.build_command_method_signature(
             func_name=func_name,

@@ -1,28 +1,26 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cash_flows import CashFlowStatementData
+from openbb_provider.standard_models.cash_flow import CashFlowStatementData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 
-# noqa: E501
-
 
 class PolygonCashFlowStatementQueryParams(PolygonFundamentalQueryParams):
-    __doc__ = PolygonFundamentalQueryParams.__doc__
+    """Polygon Fundamental QueryParams.
+
+    Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
+    """
 
 
 class PolygonCashFlowStatementData(CashFlowStatementData):
-    """Cash Flow Statement Data."""
-
-    class Config:
-        fields = {"date": "start_date"}
+    """Return Balance Sheet Data."""
 
     @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):
+    def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -52,7 +50,7 @@ class PolygonCashFlowStatementFetcher(
         data = get_data(request_url, **kwargs)["results"]
 
         if len(data) == 0:
-            raise RuntimeError("No Cash Flow Statement found")
+            raise RuntimeError("No balance sheet found")
 
         return data
 
@@ -60,23 +58,17 @@ class PolygonCashFlowStatementFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonCashFlowStatementData]:
-        FIELDS = [
-            "net_cash_flow_from_financing_activities",
-            "net_cash_flow_from_investing_activities",
-            "net_cash_flow_from_operating_activities",
-            "net_cash_flow_continuing",
-            "net_cash_flow_from_financing_activities_continuing",
-            "net_cash_flow_from_investing_activities_continuing",
-            "net_cash_flow_from_operating_activities_continuing",
-            "net_cash_flow",
-        ]
+        transformed_data = []
 
-        to_return = []
         for item in data:
-            new = {"start_date": item["start_date"], "cik": item["cik"]}
-            if cf := item["financials"]["cash_flow_statement"]:
-                for field in FIELDS:
-                    new[field] = cf[field].get("value", 0)
+            sub_data = {
+                key: value["value"]
+                for key, value in item["financials"]["cash_flow_statement"].items()
+            }
+            sub_data["date"] = item["start_date"]
+            sub_data["cik"] = item["cik"]
+            sub_data["symbol"] = item["tickers"]
+            sub_data["period"] = item["fiscal_period"]
+            transformed_data.append(PolygonCashFlowStatementData(**sub_data))
 
-            to_return.append(PolygonCashFlowStatementData(**new))
-        return to_return
+        return transformed_data

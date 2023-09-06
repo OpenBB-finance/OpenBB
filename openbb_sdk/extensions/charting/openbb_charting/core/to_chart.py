@@ -44,20 +44,25 @@ def to_chart(
 
     Returns
     -------
-    str
-        Plotly json representation of the chart.
+    Tuple[OpenBBFigure, Dict[str, Any]]
+        Tuple containing the OpenBBFigure and the plotly json representation of the chart.
     """
 
-    ta = PlotlyTA(charting_settings=charting_settings)
-    fig = ta.plot(
-        df_stock=data,
-        indicators=indicators,
-        symbol=symbol,
-        candles=candles,
-        volume=volume,
-        prepost=prepost,
-        volume_ticks_x=volume_ticks_x,
-    )
-    content = fig.show(external=True).to_plotly_json()
+    try:
+        ta = PlotlyTA(charting_settings=charting_settings)
+        fig = ta.plot(
+            df_stock=data,
+            indicators=indicators,
+            symbol=symbol,
+            candles=candles,
+            volume=volume,
+            prepost=prepost,
+            volume_ticks_x=volume_ticks_x,
+        )
+        content = fig.show(external=True).to_plotly_json()
 
-    return fig, content
+        return fig, content
+    except Exception as e:
+        raise Exception(
+            f"Failed to convert results to chart. Ensure the provided data is a valid time series. {e}"
+        ) from e
