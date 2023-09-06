@@ -343,7 +343,7 @@ To apply an environment variable use one of the following:
     from openbb import sdk
     ```
 
-2. Persistent: create a `.env` file inside `openbb_sdk/sdk/core/openbb_core` with
+2. Persistent: create a `.env` file in `/.openbb_sdk` inside your home directory with
 
     ```text
     OPENBB_DEBUG_MODE="False"
@@ -354,6 +354,7 @@ The variables we use are:
 - `OPENBB_DEBUG_MODE`: enables verbosity while running the program
 - `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
 - `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
+- `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
 - `OPENBB_API_AUTH`: enables commands authentication in FastAPI
 
 ## 4.2 Dynamic version
