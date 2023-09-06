@@ -47,9 +47,9 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
         try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+            return datetime.strptime(v, "%Y-%m-%d").date()
         except Exception:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+            return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
 class CboeEuropeanIndexHistoricalFetcher(

@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, NonNegativeInt, PositiveFloat
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -29,11 +29,11 @@ class MajorIndicesHistoricalQueryParams(QueryParams, BaseSymbol):
 class MajorIndicesHistoricalData(Data):
     """Major Indices end of day price data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[NonNegativeInt] = Field(
+    date: datetime | dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    volume: Optional[float] = Field(
         description=DATA_DESCRIPTIONS.get("volume", "")
     )

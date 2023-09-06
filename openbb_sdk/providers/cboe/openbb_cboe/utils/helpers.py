@@ -262,6 +262,71 @@ def list_futures(**kwargs) -> List[dict]:
 
     return r.json()["data"]
 
+def get_settlement_prices(
+    settlement_date: Optional[date] = None,
+    options: bool = False,
+    archives: bool = False,
+    final_settlement: bool = False,
+    **kwargs,
+) -> pd.DataFrame:
+    """Gets the settlement prices of CBOE futures.
+
+    Parameters
+    -----------
+    settlement_date: Optional[date]
+        The settlement date. Only valid for active contracts. [YYYY-MM-DD]
+    options: bool
+        If true, returns options on futures.
+    archives: bool
+        Settlement price archives for select years and products.  Overridden by other parameters.
+    final_settlement: bool
+        Final settlement prices for expired contracts.  Overrides archives.
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas DataFrame with results.
+    """
+    url = ""
+    if archives is True:
+        url = "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_FinalSettlement_Archive.csv"
+
+    if settlement_date is not None:
+        url = f"https://www.cboe.com/us/futures/market_statistics/settlement/csv?dt={settlement_date}"
+        if options is True:
+            url = f"https://www.cboe.com/us/futures/market_statistics/settlement/csv?options=t&dt={settlement_date}"
+
+    if settlement_date is None:
+        url = "https://www.cboe.com/us/futures/market_statistics/settlement/csv"
+        if options is True:
+            url = "https://www.cboe.com/us/futures/market_statistics/settlement/csv?options=t"
+
+    if final_settlement is True:
+        url = "https://www.cboe.com/us/futures/market_statistics/final_settlement_prices/csv/"
+
+    r = requests.get(url, timeout=10)
+
+    if r.status_code != 200:
+        raise RuntimeError(r.status_code)
+
+    data = pd.read_csv(BytesIO(r.content), index_col=None, parse_dates=True)
+
+    if data.empty:
+        error_string = (
+            f"No results found for, {settlement_date}."
+            if settlement_date is not None
+            else "No results found."
+        )
+        raise RuntimeError(error_string)
+
+    data.columns = [to_snake_case(c) for c in data.columns]
+    data = data.rename(columns={"expiration_date": "expiration"})
+
+    if len(data) > 0:
+        return data
+
+    return pd.DataFrame()
+
 
 def __generate_historical_prices_url(
     symbol, data_type: Optional[str] = "historical"

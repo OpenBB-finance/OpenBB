@@ -19,10 +19,10 @@ class GlobalNewsQueryParams(QueryParams):
 class GlobalNewsData(Data):
     """Return Global News Data."""
 
-    date: datetime = Field(description="Published date of the news.")
-    title: str = Field(description="Title of the news.")
+    date: Optional[datetime] = Field(description="Published date of the news.")
+    title: Optional[str] = Field(description="Title of the news.")
     text: Optional[str] = Field(description="Text/body of the news.")
     tags: Optional[List[str]] = Field(description="Tags for the article.")
     site: Optional[str] = Field(description="Base url for the article source.")
-    url: str = Field(description="URL of the news.")
+    url: Optional[str] = Field(description="URL of the news.")
     image: Optional[Any] = Field(description="Image URL of the news.")

@@ -12,7 +12,6 @@ class Extensions(Container):
     /forex
     /futures
     /news
-    /options
     /qa
     /stocks
     /ta
@@ -56,12 +55,6 @@ class Extensions(Container):
         from . import news
 
         return news.CLASS_news(command_runner=self._command_runner)
-
-    @property
-    def options(self):  # route = "/options"
-        from . import options
-
-        return options.CLASS_options(command_runner=self._command_runner)
 
     @property
     def qa(self):  # route = "/qa"
