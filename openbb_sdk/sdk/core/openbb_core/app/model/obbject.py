@@ -130,7 +130,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
         return results
 
     def to_chart(self, **kwargs):
-        """Create or update the `Chart`.
+        """
+        Create or update the `Chart`.
+        This function assumes that the provided data is a time series, if it's not, it will
+        most likely result in an Exception.
 
         Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
 
