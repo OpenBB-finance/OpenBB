@@ -20,8 +20,15 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-harmonized_cpi_path = pathlib.Path(__file__).parent / "datasets" / "harmonized_cpi.csv"
-cpi_path = pathlib.Path(__file__).parent / "datasets" / "cpi.csv"
+BASE_DIR = (
+    pathlib.Path(__file__).parent.parent.parent.parent.parent
+    / "openbb_terminal"
+    / "economy"
+    / "datasets"
+)
+
+harmonized_cpi_path = BASE_DIR / "harmonized_cpi.csv"
+cpi_path = BASE_DIR / "cpi.csv"
 
 CPI_COUNTRIES = [
     "australia",
