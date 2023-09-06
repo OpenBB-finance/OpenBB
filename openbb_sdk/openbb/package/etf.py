@@ -64,15 +64,15 @@ class CLASS_etf(Container):
             The asset's ticker symbol. (provider: blackrock)
         name : Optional[str]
             The name of the asset. (provider: blackrock)
-        weight : Optional[float]
+        weight : Union[float, str, NoneType]
             The weight of the holding. (provider: blackrock)
-        price : Optional[float]
+        price : Union[float, str, NoneType]
             The price-per-share of the asset. (provider: blackrock)
-        shares : Optional[int]
+        shares : Union[int, str, NoneType]
             The number of shares held. (provider: blackrock)
-        market_value : Optional[float]
+        market_value : Union[float, str, NoneType]
             The market value of the holding. (provider: blackrock)
-        notional_value : Optional[float]
+        notional_value : Union[float, str, NoneType]
             The notional value of the holding. (provider: blackrock)
         sector : Optional[str]
             The sector the asset belongs to. (provider: blackrock)
@@ -90,9 +90,23 @@ class CLASS_etf(Container):
             The currency for the market the asset trades in. (provider: blackrock)
         fx_rate : Optional[float]
             The exchange rate of the asset against the fund's base currency. (provider: blackrock)
+        coupon : Union[float, str, NoneType]
+            The coupon rate of the asset. (provider: blackrock)
+        ytm : Union[float, str, NoneType]
+            The yield-to-maturity of the asset. (provider: blackrock)
+        yield_to_worst : Union[float, str, NoneType]
+            The yield-to-worst of the asset. (provider: blackrock)
+        duration : Union[float, str, NoneType]
+            The duration of the asset. (provider: blackrock)
+        yield_to_call : Union[float, str, NoneType]
+            The yield-to-call of the asset. (provider: blackrock)
+        mod_duration : Union[float, str, NoneType]
+            The modified duration of the asset. (provider: blackrock)
+        maturity : Union[float, str, NoneType]
+            The maturity date of the asset. (provider: blackrock)
         share_percentage : Optional[float]
             The share percentage of the holding. (provider: tmx)
-        share_change : Optional[float]
+        share_change : Union[float, str, NoneType]
             The change in shares of the holding. (provider: tmx)
         type_id : Optional[str]
             The holding type ID of the asset. (provider: tmx)
@@ -133,6 +147,8 @@ class CLASS_etf(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
+        country : Literal['america', 'canada']
+            The country the ETF is registered in. (provider: blackrock)
         div_freq : Optional[Literal['monthly', 'annually', 'quarterly']]
             The dividend payment frequency. (provider: tmx)
         sort_by : Optional[Literal['aum', 'return_1m', 'return_3m', 'return_ytd', 'volume_avg_daily', 'management_fee', 'distribution_yield']]
@@ -158,48 +174,28 @@ class CLASS_etf(Container):
             The exchange ticker symbol for the ETF.
         name : Optional[str]
             Name of the ETF.
-        currency : Optional[str]
-            Currency of the ETF.
-        aum : Union[float, NoneType, int]
-            The value of the assets under management. (provider: blackrock)
         asset_class : Optional[str]
             The asset class of the ETF. (provider: blackrock)
         sub_asset_class : Optional[str]
             The sub-asset class of the ETF. (provider: blackrock)
         region : Optional[str]
             The region of the ETF. (provider: blackrock)
+        country : Optional[str]
+            The country the ETF is registered in. (provider: blackrock)
         market_type : Optional[str]
             The market type of the ETF. (provider: blackrock)
         investment_style : Optional[str]
             The investment style of the ETF. (provider: blackrock)
         investment_strategy : Optional[str]
             The investment strategy of the ETF. (provider: blackrock)
-        premium_discount : Optional[float]
-            The premium/discount to NAV. (provider: blackrock)
-        distribution_yield : Optional[float]
-            The annualized distribution yield. (provider: blackrock)
-        ttm_yield : Optional[float]
-            The trailing twelve months (TTM) annualized yield. (provider: blackrock)
-        weighted_avg_ytm : Optional[float]
-            The weighted average yield-to-maturity. (provider: blackrock)
-        return_1y : Optional[float]
-            The one-year annualized return on net assets. (provider: blackrock)
-        return_3y : Optional[float]
-            The three-year annualized return on net assets. (provider: blackrock)
-        return_5y : Optional[float]
-            The five-year annualized return on net assets. (provider: blackrock)
-        return_ytd : Optional[float]
-            The year-to-date annualized return on net assets. (provider: blackrock)
-        return_inception : Optional[float]
-            The annualized return on net assets since inception. (provider: blackrock)
-        mer : Optional[float]
-            The management expense ratio. (provider: blackrock)
-        ineception_date : Optional[str]
-            The inception date. (provider: blackrock)
+        aum : Union[float, NoneType, int]
+            The value of the assets under management. (provider: blackrock)
         return_1m : Optional[float]
             The one-month return. (provider: tmx)
         return_3m : Optional[float]
             The three-month return. (provider: tmx)
+        return_ytd : Optional[float]
+            The year-to-date return. (provider: tmx)
         close : Optional[float]
             The closing price. (provider: tmx)
         prev_close : Optional[float]
@@ -208,6 +204,8 @@ class CLASS_etf(Container):
             The average daily volume. (provider: tmx)
         management_fee : Optional[float]
             The management fee. (provider: tmx)
+        distribution_yield : Optional[float]
+            The distribution yield. (provider: tmx)
         dividend_frequency : Optional[str]
             The dividend payment frequency. (provider: tmx)"""  # noqa: E501
 
