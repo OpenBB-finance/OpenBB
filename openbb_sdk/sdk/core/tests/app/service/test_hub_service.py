@@ -4,6 +4,7 @@
 
 
 from unittest.mock import MagicMock, patch
+from openbb_core.app.model.hub.features_keys import FeaturesKeys
 
 import pytest
 from openbb_core.app.service.hub_service import (
@@ -173,7 +174,7 @@ def test_put_user_settings():
 def test_hub2sdk():
     """Test hub2sdk."""
     mock_user_settings = MagicMock(spec=HubUserSettings)
-    mock_user_settings.features_keys = MagicMock(
+    mock_user_settings.features_keys = FeaturesKeys(
         API_KEY_FINANCIALMODELINGPREP="fmp",
         API_POLYGON_KEY="polygon",
         API_FRED_KEY="fred",
