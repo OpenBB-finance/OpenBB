@@ -88,18 +88,20 @@ class CLASS_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : Union[datetime, date]
+        date : Optional[datetime]
             The date of the data.
-        open : Optional[float]
+        open : Optional[PositiveFloat]
             The open price of the symbol.
-        high : Optional[float]
+        high : Optional[PositiveFloat]
             The high price of the symbol.
-        low : Optional[float]
+        low : Optional[PositiveFloat]
             The low price of the symbol.
-        close : Optional[float]
+        close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : Optional[float]
+        volume : Optional[PositiveFloat]
             The volume of the symbol.
+        vwap : Optional[PositiveFloat]
+            Volume Weighted Average Price of the symbol.
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]

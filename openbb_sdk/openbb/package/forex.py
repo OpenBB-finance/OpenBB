@@ -87,19 +87,19 @@ class CLASS_forex(Container):
 
         ForexHistorical
         ---------------
-        date : Union[datetime, date]
+        date : Optional[datetime]
             The date of the data.
-        open : Optional[float]
+        open : Optional[PositiveFloat]
             The open price of the symbol.
-        high : Optional[float]
+        high : Optional[PositiveFloat]
             The high price of the symbol.
-        low : Optional[float]
+        low : Optional[PositiveFloat]
             The low price of the symbol.
-        close : Optional[float]
+        close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : Optional[int]
+        volume : Optional[NonNegativeFloat]
             The volume of the symbol.
-        vwap : Optional[float]
+        vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
@@ -136,17 +136,12 @@ class CLASS_forex(Container):
 
     @validate_arguments
     def pairs(
-        self,
-        chart: bool = False,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

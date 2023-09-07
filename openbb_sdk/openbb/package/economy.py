@@ -29,17 +29,12 @@ class CLASS_economy(Container):
 
     @validate_arguments
     def available_indices(
-        self,
-        chart: bool = False,
-        provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject[List]:
         """Lists of available indices from a provider.
 
         Parameters
         ----------
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -353,7 +348,6 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -367,8 +361,6 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -392,7 +384,7 @@ class CLASS_economy(Container):
 
         EuropeanIndexHistorical
         -----------------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         close : Optional[float]
             The close price of the symbol.
@@ -415,7 +407,6 @@ class CLASS_economy(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -430,7 +421,6 @@ class CLASS_economy(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -440,8 +430,6 @@ class CLASS_economy(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -502,7 +490,6 @@ class CLASS_economy(Container):
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -529,7 +516,6 @@ class CLASS_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -543,8 +529,6 @@ class CLASS_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe', 'fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -639,11 +623,10 @@ class CLASS_economy(Container):
     def index_search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        ticker: Annotated[
-            bool,
+        symbol: Annotated[
+            Union[bool, List[str]],
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -653,10 +636,8 @@ class CLASS_economy(Container):
         ----------
         query : str
             Search query.
-        ticker : bool
+        symbol : Union[bool, List[str]]
             Whether to search by ticker symbol.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -713,10 +694,9 @@ class CLASS_economy(Container):
             },
             standard_params={
                 "query": query,
-                "ticker": ticker,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -733,7 +713,6 @@ class CLASS_economy(Container):
                 description="The region to return. Currently supports US and EU."
             ),
         ] = "US",
-        chart: bool = False,
         provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -743,8 +722,6 @@ class CLASS_economy(Container):
         ----------
         region : Optional[Literal['US', 'EU']]
             The region to return. Currently supports US and EU.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -801,7 +778,6 @@ class CLASS_economy(Container):
                 "region": region,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(

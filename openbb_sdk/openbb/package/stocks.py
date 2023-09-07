@@ -210,8 +210,8 @@ class CLASS_stocks(Container):
             None
         adjusted : Optional[bool]
             None
-        prepost : bool
-            None
+        extended_hours : Optional[bool]
+            Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
         month : Optional[str]
             Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
         outputsize : Optional[Literal['compact', 'full']]
@@ -240,6 +240,8 @@ class CLASS_stocks(Container):
             Sort order of the data. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
         actions : bool
             Include actions. (provider: yfinance)
         auto_adjust : bool
@@ -287,11 +289,13 @@ class CLASS_stocks(Container):
             The close price of the symbol.
         volume : Optional[NonNegativeInt]
             The volume of the symbol.
-        adjusted_close : Optional[float]
+        vwap : Optional[PositiveFloat]
+            Volume Weighted Average Price of the symbol.
+        adjusted_close : Optional[PositiveFloat]
             The adjusted close price of the symbol. (provider: alpha_vantage)
-        dividend_amount : Optional[float]
+        dividend_amount : Optional[NonNegativeFloat]
             Dividend amount paid for the corresponding date. (provider: alpha_vantage)
-        split_coefficient : Optional[float]
+        split_coefficient : Optional[NonNegativeFloat]
             Split coefficient for the corresponding date. (provider: alpha_vantage)
         calls_volume : Optional[float]
             Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
@@ -307,8 +311,6 @@ class CLASS_stocks(Container):
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
             Change \\% in the price of the symbol. (provider: fmp)
-        vwap : Optional[float]
-            Volume Weighted Average Price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
@@ -708,7 +710,6 @@ class CLASS_stocks(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -718,8 +719,6 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
