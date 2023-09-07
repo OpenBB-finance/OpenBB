@@ -1,11 +1,7 @@
 """Intrinio Options Chains fetcher."""
 
 import concurrent.futures
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
+from datetime import date as dateType, datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
@@ -313,11 +309,11 @@ class IntrinioOptionsChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the Intrinio endpoint"""
+        """Return the raw data from the Intrinio endpoint."""
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         data = get_historical_chain_with_greeks(
-            symbol=query.symbol, date=query.date, api_key=api_key
+            symbol=query.symbol, date=query.date, api_key=api_key  # type: ignore
         )
 
         return data.to_dict("records")

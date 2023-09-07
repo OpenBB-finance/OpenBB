@@ -3,15 +3,14 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import SOURCES
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_quote import (
     StockQuoteData,
     StockQuoteQueryParams,
 )
 from pydantic import Field, validator
-
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_intrinio.utils.references import SOURCES
 
 
 class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
@@ -92,7 +91,7 @@ class IntrinioStockQuoteData(StockQuoteData):
 class IntrinioStockQuoteFetcher(
     Fetcher[
         IntrinioStockQuoteQueryParams,
-        List[IntrinioStockQuoteData],
+        IntrinioStockQuoteData,
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -100,7 +99,6 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioStockQuoteQueryParams:
         """Transform the query params."""
-
         return IntrinioStockQuoteQueryParams(**params)
 
     @staticmethod
@@ -110,7 +108,6 @@ class IntrinioStockQuoteFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
@@ -121,7 +118,6 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_data(data: Dict) -> IntrinioStockQuoteData:
         """Return the transformed data."""
-
         del data["messages"]
         del data["security"]
 
