@@ -1,11 +1,12 @@
 """FMP Helpers Module."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import StringIO
-from typing import Any, List, Optional, TypeVar, Union
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 import requests
+import requests_cache
 from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
 from openbb_provider.utils.helpers import get_querystring
@@ -164,3 +165,24 @@ class BaseStockPriceData(Data):
         if len(v) < 12:
             return datetime.strptime(v, "%Y-%m-%d")
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+
+
+# Caches the data for one hour to make subsequent requests faster
+fmp_etfs = requests_cache.CachedSession(
+    "OpenBB_FMP_ETFs",
+    expire_after=timedelta(hours=1),
+    use_cache_dir=True,
+)
+
+
+def get_available_etfs(api_key: str) -> Dict:
+    """Returns the list of queryable ETFs from FMP."""
+
+    url = f"https://financialmodelingprep.com/api/v3/stock-screener?isEtf=true&limit=10000&apikey={api_key}"
+
+    r = fmp_etfs.get(url, timeout=10)
+
+    if r.status_code != 200:
+        raise RuntimeError(f"Error in FMP request -> {r.text}")
+
+    return r.json()

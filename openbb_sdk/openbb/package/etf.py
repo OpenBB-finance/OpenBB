@@ -134,7 +134,7 @@ class CLASS_etf(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
-        provider: Optional[Literal["blackrock", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Search for ETFs. An empty query returns the full list of ETFs from the provider.
@@ -143,15 +143,19 @@ class CLASS_etf(Container):
         ----------
         query : Optional[str]
             Search query.
-        provider : Optional[Literal['blackrock', 'tmx']]
+        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
         country : Literal['america', 'canada']
             The country the ETF is registered in. (provider: blackrock)
+        exchange : Optional[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT']]
+            The exchange code the ETF trades on. (provider: fmp)
+        is_active : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
         div_freq : Optional[Literal['monthly', 'annually', 'quarterly']]
             The dividend payment frequency. (provider: tmx)
-        sort_by : Optional[Literal['aum', 'return_1m', 'return_3m', 'return_ytd', 'volume_avg_daily', 'management_fee', 'distribution_yield']]
+        sort_by : Optional[Literal['aum', 'return_1m', 'return_3m', 'return_6m', 'return_1y', 'return_3y', 'return_ytd', 'beta_1y', 'volume_avg_daily', 'management_fee', 'distribution_yield', 'pb_ratio', 'pe_ratio']]
             The column to sort by. (provider: tmx)
 
         Returns
@@ -159,7 +163,7 @@ class CLASS_etf(Container):
         OBBject
             results : List[EtfSearch]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'tmx']]
+            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -190,6 +194,26 @@ class CLASS_etf(Container):
             The investment strategy of the ETF. (provider: blackrock)
         aum : Union[float, NoneType, int]
             The value of the assets under management. (provider: blackrock)
+        market_cap : Optional[float]
+            The market cap of the ETF. (provider: fmp)
+        sector : Optional[str]
+            The sector of the ETF. (provider: fmp)
+        industry : Optional[str]
+            The industry of the ETF. (provider: fmp)
+        beta : Optional[float]
+            The beta of the ETF. (provider: fmp)
+        price : Optional[float]
+            The current price of the ETF. (provider: fmp)
+        last_annual_dividend : Optional[float]
+            The last annual dividend paid. (provider: fmp)
+        volume : Optional[float]
+            The current trading volume of the ETF. (provider: fmp)
+        exchange : Optional[str]
+            The exchange code the ETF trades on. (provider: fmp)
+        exchange_name : Optional[str]
+            The full name of the exchange the ETF trades on. (provider: fmp)
+        actively_trading : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
         return_1m : Optional[float]
             The one-month return. (provider: tmx)
         return_3m : Optional[float]
