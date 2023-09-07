@@ -29,7 +29,6 @@ class PosthogHandler(logging.Handler):
 
         log_startup = "log_startup"
         log_cmd = "log_cmd"
-        log_sdk = "log_sdk"
         log_error = "log_error"
         log_warning = "log_warning"
 
@@ -59,10 +58,6 @@ class PosthogHandler(logging.Handler):
 
         for log in re.findall(log_regex, log_info):
             log_dict[log[0]] = json.loads(log[1])
-
-        sdk_regex = r"({\"INPUT\":.*})"
-        if sdk_dict := re.findall(sdk_regex, log_info):
-            log_dict["SDK"] = json.loads(sdk_dict[0])
 
         return log_dict
 
