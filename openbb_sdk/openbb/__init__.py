@@ -48,4 +48,4 @@ try:
     sdk = obb
 except (ImportError, ModuleNotFoundError):
     print("Failed to import extensions.")
-    obb = sdk = _create_app()
+    obb = sdk = _create_app()  # type: ignore

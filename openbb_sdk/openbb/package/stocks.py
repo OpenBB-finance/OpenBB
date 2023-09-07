@@ -4,12 +4,11 @@ import datetime
 from typing import List, Literal, Optional, Union
 
 import pydantic
-import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 from typing_extensions import Annotated
 
 
@@ -498,7 +497,7 @@ class CLASS_stocks(Container):
         chart: bool = False,
         provider: Optional[Literal["benzinga", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Get news for one or more stock tickers.
 
         Parameters

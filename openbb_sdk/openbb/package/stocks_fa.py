@@ -1294,7 +1294,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Income Statement.
 
         Parameters
