@@ -78,7 +78,7 @@ class TmxEtfHoldingsFetcher(
         etf = etfs[etfs["symbol"] == query.symbol.upper()]
 
         if len(etf) == 1:
-            top_holdings = pd.DataFrame(etf["holdings_top_10"].iloc[0])
+            top_holdings = pd.DataFrame(etf["holdings_top10"].iloc[0])
             _columns = {
                 "numberofshares": "number_of_shares",
                 "symbol": "symbol",
