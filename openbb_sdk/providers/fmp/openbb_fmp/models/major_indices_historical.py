@@ -45,14 +45,14 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         default=None,
     )
     change_percent: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol.",
+        description=r"Change % in the price of the symbol.",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
     change_over_time: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
+        description=r"Change % in the price of the symbol over a period of time.",
         default=None,
     )
 
