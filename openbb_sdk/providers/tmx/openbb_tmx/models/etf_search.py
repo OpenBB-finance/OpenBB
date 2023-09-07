@@ -10,28 +10,12 @@ from openbb_provider.standard_models.etf_search import (
 )
 from pydantic import Field
 
-from openbb_tmx.utils.helpers import get_all_etfs
+from openbb_tmx.utils.helpers import COLUMNS_DICT, get_all_etfs
 
 
 def search(query: str = "", **kwargs) -> pd.DataFrame:
     etfs = get_all_etfs()
     results = pd.DataFrame()
-    columns = [
-        "symbol",
-        "name",
-        "aum",
-        "currency",
-        "investment_style",
-        "return_1_m",
-        "return_3_m",
-        "return_ytd",
-        "close",
-        "prev_close",
-        "volume_avg_daily",
-        "management_fee",
-        "distribution_yield",
-        "dividend_frequency",
-    ]
 
     if query:
         results = etfs[
@@ -40,10 +24,10 @@ def search(query: str = "", **kwargs) -> pd.DataFrame:
             | etfs["investment_style"].str.contains(query, case=False)
             | etfs["investment_objectives"].str.contains(query, case=False)
         ]
-        results = results[columns].set_index("symbol")
+        results = results.set_index("symbol")
 
     if not query:
-        results = etfs[columns].set_index("symbol")
+        results = etfs.set_index("symbol")
 
     results = results.reset_index().convert_dtypes()
 
@@ -65,10 +49,16 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
             "aum",
             "return_1m",
             "return_3m",
+            "return_6m",
+            "return_1y",
+            "return_3y",
             "return_ytd",
+            "beta_1y",
             "volume_avg_daily",
             "management_fee",
             "distribution_yield",
+            "pb_ratio",
+            "pe_ratio",
         ]
     ] = Field(description="The column to sort by.", default=None)
 
@@ -82,12 +72,8 @@ class TmxEtfSearchData(EtfSearchData):
     investment_style: Optional[str | None] = Field(
         description="The investment style of the ETF."
     )
-    return_1m: Optional[float | None] = Field(
-        description="The one-month return.", alias="return_1_m"
-    )
-    return_3m: Optional[float | None] = Field(
-        description="The three-month return.", alias="return_3_m"
-    )
+    return_1m: Optional[float | None] = Field(description="The one-month return.")
+    return_3m: Optional[float | None] = Field(description="The three-month return.")
     return_ytd: Optional[float | None] = Field(description="The year-to-date return.")
     close: Optional[float | None] = Field(description="The closing price.")
     prev_close: Optional[float | None] = Field(
@@ -126,22 +112,13 @@ class TmxEtfSearchFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
 
-        sort_dict = {
-            "aum": "aum",
-            "return_1m": "return_1_m",
-            "return_3m": "return_3_m",
-            "return_ytd": "return_ytd",
-            "volume_avg_daily": "volume_avg_daily",
-            "management_fee": "management_fee",
-            "distribution_yield": "distribution_yield",
-        }
         data = search(query.query)
 
         if query.div_freq:
             data = data[data["dividend_frequency"] == query.div_freq.capitalize()]
 
         if query.sort_by:
-            data = data.sort_values(by=sort_dict[query.sort_by], ascending=False)
+            data = data.sort_values(by=query.sort_by, ascending=False)
 
         return data.to_dict("records")
 

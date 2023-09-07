@@ -1,15 +1,72 @@
-"""CBOE Helpers Module."""
+"""TMX Helpers Module."""
 
 from datetime import timedelta
 
 import pandas as pd
 import requests_cache
-from openbb_provider.utils.helpers import to_snake_case
 
 # Only used for obtaining all ETFs.
 tmx_etfs_session = requests_cache.CachedSession(
     "OpenBB_TMX_ETFs", expire_after=timedelta(hours=4), use_cache_dir=True
 )
+
+COLUMNS_DICT = {
+    "symbol": "symbol",
+    "shortname": "short_name",
+    "longname": "name",
+    "fundfamily": "fund_family",
+    "regions": "regions",
+    "sectors": "sectors",
+    "currency": "currency",
+    "inceptiondate": "inception_date",
+    "unitprice": "unit_price",
+    "prevClose": "prev_close",
+    "close": "close",
+    "esg": "esg",
+    "investmentstyle": "investment_style",
+    "avgdailyvolume": "volume_avg_daily",
+    "totalreturn1month": "return_1m",
+    "totalreturn3month": "return_3m",
+    "totalreturn1year": "return_1y",
+    "totalreturn3year": "return_3y",
+    "totalreturn5year": "return_5y",
+    "totalreturnytd": "return_ytd",
+    "totalreturnsinceinception": "return_from_inception",
+    "distributionyeld": "distribution_yield",
+    "dividendfrequency": "dividend_frequency",
+    "pricetoearnings": "pe_ratio",
+    "pricetobook": "pb_ratio",
+    "assetclass": "asset_class_id",
+    "prospectobjective": "investment_objectives",
+    "beta1y": "beta_1y",
+    "beta2y": "beta_2y",
+    "beta3y": "beta_3y",
+    "beta4y": "beta_4y",
+    "beta5y": "beta_5y",
+    "beta6y": "beta_6y",
+    "beta7y": "beta_7y",
+    "beta8y": "beta_8y",
+    "beta9y": "beta_9y",
+    "beta10y": "beta_10y",
+    "beta11y": "beta_11y",
+    "beta12y": "beta_12y",
+    "beta13y": "beta_13y",
+    "beta14y": "beta_14y",
+    "beta15y": "beta_15y",
+    "beta16y": "beta_16y",
+    "beta17y": "beta_17y",
+    "beta18y": "beta_18y",
+    "beta19y": "beta_19y",
+    "beta20y": "beta_20y",
+    "avgvol30days": "volume_avg_30d",
+    "aum": "aum",
+    "top10holdings": "holdings_top10",
+    "top10holdingsummary": "holdings_top10_summary",
+    "totalreturn6month": "return_6m",
+    "totalreturn10year": "return_10y",
+    "managementfee": "management_fee",
+    "altData": "additional_data",
+}
 
 
 def get_all_etfs() -> pd.DataFrame:
@@ -31,65 +88,25 @@ def get_all_etfs() -> pd.DataFrame:
 
     etfs = pd.DataFrame(r.json())
 
-    etfs = etfs.rename(
-        columns={
-            "symbol": "Symbol",
-            "shortname": "Short Name",
-            "longname": "Name",
-            "fundfamily": "Fund Family",
-            "regions": "Regions",
-            "sectors": "Sectors",
-            "currency": "Currency",
-            "inceptiondate": "Inception Date",
-            "unitprice": "Unit Price",
-            "prevClose": "Prev Close",
-            "close": "Close",
-            "esg": "ESG",
-            "investmentstyle": "Investment Style",
-            "avgdailyvolume": "Volume Avg Daily",
-            "totalreturn1month": "Return 1M",
-            "totalreturn3month": "Return 3M",
-            "totalreturn1year": "Return 1Y",
-            "totalreturn3year": "Return 3Y",
-            "totalreturn5year": "Return 5Y",
-            "totalreturnytd": "Return YTD",
-            "totalreturnsinceinception": "Return From Inception",
-            "distributionyeld": "Distribution Yield",
-            "dividendfrequency": "Dividend Frequency",
-            "pricetoearnings": "PE Ratio",
-            "pricetobook": "PB Ratio",
-            "assetclass": "Asset Class ID",
-            "prospectobjective": "Investment Objectives",
-            "beta1y": "Beta 1Y",
-            "beta2y": "Beta 2Y",
-            "beta3y": "Beta 3Y",
-            "beta4y": "Beta 4Y",
-            "beta5y": "Beta 5Y",
-            "beta6y": "Beta 6Y",
-            "beta7y": "Beta 7Y",
-            "beta8y": "Beta 8Y",
-            "beta9y": "Beta 9Y",
-            "beta10y": "Beta 10Y",
-            "beta11y": "Beta 11Y",
-            "beta12y": "Beta 12Y",
-            "beta13y": "Beta 13Y",
-            "beta14y": "Beta 14Y",
-            "beta15y": "Beta 15Y",
-            "beta16y": "Beta 16Y",
-            "beta17y": "Beta 17Y",
-            "beta18y": "Beta 18Y",
-            "beta19y": "Beta 19Y",
-            "beta20y": "Beta 20Y",
-            "avgvol30days": "Volume Avg 30 Days",
-            "aum": "AUM",
-            "top10holdings": "Holdings Top 10",
-            "top10holdingsummary": "Holdings Top 10 Summary",
-            "totalreturn6month": "Return 6M",
-            "totalreturn10year": "Return 10Y",
-            "managementfee": "Management Fee",
-            "altData": "Additional Data",
-        }
+    etfs = etfs.rename(columns=(COLUMNS_DICT))
+
+    etfs = etfs.drop(
+        columns=[
+            "beta_2y",
+            "beta_4y",
+            "beta_6y",
+            "beta_7y",
+            "beta_8y",
+            "beta_9y",
+            "beta_11y",
+            "beta_12y",
+            "beta_13y",
+            "beta_14y",
+            "beta_16y",
+            "beta_17y",
+            "beta_18y",
+            "beta_19y",
+        ]
     )
-    etfs.columns = [to_snake_case(c) for c in etfs.columns]
 
     return etfs.replace("-", None).convert_dtypes()

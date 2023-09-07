@@ -18,4 +18,4 @@ class EtfSearchData(Data):
     """ETF Search Data."""
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
-    name: str = Field(description="Name of the ETF.")
+    name: Optional[str] = Field(description="Name of the ETF.")
