@@ -64,7 +64,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Balance Sheet.
 
         Parameters
@@ -495,7 +495,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Cash Flow Statement.
 
         Parameters
