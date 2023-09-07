@@ -1,16 +1,17 @@
 """Intrinio Stock Quote fetcher."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_intrinio.utils.references import SOURCES
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_quote import (
     StockQuoteData,
     StockQuoteQueryParams,
 )
 from pydantic import Field, validator
+
+from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import SOURCES
 
 
 class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
