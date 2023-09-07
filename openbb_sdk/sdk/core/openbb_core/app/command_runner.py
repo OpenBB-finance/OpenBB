@@ -151,7 +151,7 @@ class ParametersBuilder:
             )
 
             if route_default:
-                return route_default.get("provider", None) or command_cov_provider
+                return route_default.get("provider", None) or command_cov_provider  # type: ignore
 
             return command_cov_provider
 

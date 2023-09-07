@@ -34,7 +34,7 @@ class YFinanceBalanceSheetData(BalanceSheetData):
 class YFinanceBalanceSheetFetcher(
     Fetcher[
         YFinanceBalanceSheetQueryParams,
-        YFinanceBalanceSheetData,
+        List[YFinanceBalanceSheetData],
     ]
 ):
     @staticmethod
@@ -47,7 +47,7 @@ class YFinanceBalanceSheetFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceBalanceSheetData]:
-        query.period = "yearly" if query.period == "annually" else "quarterly"
+        query.period = "yearly" if query.period == "annually" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_balance_sheet(
             as_dict=True, pretty=False, freq=query.period
         )
