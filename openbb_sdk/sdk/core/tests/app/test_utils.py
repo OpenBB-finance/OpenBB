@@ -1,11 +1,10 @@
+import pandas as pd
 from openbb_core.app.utils import (
     basemodel_to_df,
     df_to_basemodel,
     get_target_column,
     get_target_columns,
 )
-import pandas as pd
-
 from openbb_provider.abstract.data import Data
 
 df = pd.DataFrame(
