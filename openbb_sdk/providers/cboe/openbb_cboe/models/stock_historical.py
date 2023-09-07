@@ -4,6 +4,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import (
+    TICKER_EXCEPTIONS,
+    get_cboe_directory,
+    get_cboe_index_directory,
+    get_ticker_info,
+)
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -11,13 +17,6 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_cboe_directory,
-    get_cboe_index_directory,
-    get_ticker_info,
-)
 
 
 class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -57,10 +56,10 @@ class CboeStockHistoricalData(StockHistoricalData):
 class CboeStockHistoricalFetcher(
     Fetcher[
         CboeStockHistoricalQueryParams,
-        CboeStockHistoricalData,
+        List[CboeStockHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockHistoricalQueryParams:
@@ -73,8 +72,7 @@ class CboeStockHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
-
+        """Return the raw data from the CBOE endpoint."""
         # Synbol directories are cached for seven days and are used for error handling and URL generation.
         SYMBOLS = get_cboe_directory()
         INDEXES = get_cboe_index_directory().index.to_list()
@@ -183,18 +181,19 @@ class CboeStockHistoricalFetcher(
             puts_volume: List[float] = []
             total_options_volume: List[float] = []
 
-            for i in range(0, len(data_list)):
-                date.append(data_list[i]["datetime"])
-                open.append(data_list[i]["price"]["open"])
-                high.append(data_list[i]["price"]["high"])
-                low.append(data_list[i]["price"]["low"])
-                close.append(data_list[i]["price"]["close"])
-                volume.append(data_list[i]["volume"]["stock_volume"])
-                calls_volume.append(data_list[i]["volume"]["calls_volume"])
-                puts_volume.append(data_list[i]["volume"]["puts_volume"])
+            for i in enumerate(data_list):
+                date.append(data_list[i[0]]["datetime"])
+                open.append(data_list[i[0]]["price"]["open"])
+                high.append(data_list[i[0]]["price"]["high"])
+                low.append(data_list[i[0]]["price"]["low"])
+                close.append(data_list[i[0]]["price"]["close"])
+                volume.append(data_list[i[0]]["volume"]["stock_volume"])
+                calls_volume.append(data_list[i[0]]["volume"]["calls_volume"])
+                puts_volume.append(data_list[i[0]]["volume"]["puts_volume"])
                 total_options_volume.append(
-                    data_list[i]["volume"]["total_options_volume"]
+                    data_list[i[0]]["volume"]["total_options_volume"]
                 )
+
             data = pd.DataFrame()
             data["date"] = pd.to_datetime(date)
             data["open"] = open

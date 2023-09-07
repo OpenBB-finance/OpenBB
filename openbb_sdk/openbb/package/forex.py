@@ -42,7 +42,7 @@ class CLASS_forex(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Forex Intraday Price.
+        r"""Forex Intraday Price.
 
         Parameters
         ----------
@@ -108,11 +108,11 @@ class CLASS_forex(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change \% in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change \% in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -136,13 +136,13 @@ class CLASS_forex(Container):
 
     @validate_arguments
     def pairs(
-        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
+        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -166,7 +166,7 @@ class CLASS_forex(Container):
         OBBject
             results : List[ForexPairs]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['fmp', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -187,12 +187,6 @@ class CLASS_forex(Container):
             Stock exchange of the currency pair. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange of the currency pair. (provider: fmp)
-        code : Optional[str]
-            Code of the currency pair. (provider: intrinio)
-        base_currency : Optional[str]
-            ISO 4217 currency code of the base currency. (provider: intrinio)
-        quote_currency : Optional[str]
-            ISO 4217 currency code of the quote currency. (provider: intrinio)
         market : Optional[str]
             The name of the trading market. Always 'fx'. (provider: polygon)
         locale : Optional[str]
