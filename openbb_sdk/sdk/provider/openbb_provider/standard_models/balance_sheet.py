@@ -22,7 +22,7 @@ class BalanceSheetData(Data, BaseSymbol):
 
     date: dateType = Field(description="Date of the fetched statement.")
     period: Optional[str] = Field(description="Reporting period of the statement.")
-    cik: Optional[int] = Field(description="Central Index Key (CIK) of the company.")
+    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
 
     cash_and_cash_equivalents: Optional[int] = Field(
         description="Cash and cash equivalents"
