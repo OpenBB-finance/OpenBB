@@ -7,6 +7,8 @@ from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
+from pydantic import BaseConfig, Extra, create_model
+
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -20,7 +22,6 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
-from pydantic import BaseConfig, Extra, create_model
 
 
 class ExecutionContext:

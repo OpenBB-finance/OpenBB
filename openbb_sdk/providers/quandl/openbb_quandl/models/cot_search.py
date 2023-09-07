@@ -8,6 +8,7 @@ from openbb_provider.standard_models.cot_search import (
     CotSearchData,
     CotSearchQueryParams,
 )
+
 from openbb_quandl.utils.series_ids import CFTC
 
 
