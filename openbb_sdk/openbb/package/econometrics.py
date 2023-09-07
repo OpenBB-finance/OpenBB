@@ -22,7 +22,12 @@ class CLASS_econometrics(Container):
     granger
     ols
     ols_summary
-    panel
+    panelbols
+    panelfd
+    panelfmac
+    panelols
+    panelpols
+    panelre
     unitroot
     """
 
@@ -269,13 +274,13 @@ class CLASS_econometrics(Container):
         )
 
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def panel(
+    def panelbols(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Perform OLS regression.  This returns the model and results objects from statsmodels.
+        """Perform a Between estimator regression on panel data
 
         Parameters
         ----------
@@ -289,7 +294,7 @@ class CLASS_econometrics(Container):
         Returns
         -------
         OBBject[Dict]
-            OBBject with the results being model and results objects.
+            OBBject with the fit model returned
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -299,7 +304,182 @@ class CLASS_econometrics(Container):
         )
 
         return self._command_runner.run(
-            "/econometrics/panel",
+            "/econometrics/panelbols",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def panelfd(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_columns: List[str],
+    ) -> OBBject[Dict]:
+        """Perform a first-difference estimate for panel data
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_columns: str
+            List of columns to use as exogenous variables.
+
+        Returns
+        -------
+        OBBject[Dict]
+            OBBject with the fit model returned
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_columns=x_columns,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/panelfd",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def panelfmac(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_columns: List[str],
+    ) -> OBBject[Dict]:
+        """Fama-MacBeth estimator for panel data
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_columns: str
+            List of columns to use as exogenous variables.
+
+        Returns
+        -------
+        OBBject[Dict]
+            OBBject with the fit model returned
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_columns=x_columns,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/panelfmac",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def panelols(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_columns: List[str],
+    ) -> OBBject[Dict]:
+        """One- and two-way fixed effects estimator for panel data
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_columns: str
+            List of columns to use as exogenous variables.
+
+        Returns
+        -------
+        OBBject[Dict]
+            OBBject with the fit model returned
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_columns=x_columns,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/panelols",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def panelpols(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_columns: List[str],
+    ) -> OBBject[Dict]:
+        """Perform a Pooled coefficvient estimator regression on panel data
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_columns: str
+            List of columns to use as exogenous variables.
+
+        Returns
+        -------
+        OBBject[Dict]
+            OBBject with the fit model returned
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_columns=x_columns,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/panelpols",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def panelre(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_columns: List[str],
+    ) -> OBBject[Dict]:
+        """Perform One-way Random Effects model for panel data
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_columns: str
+            List of columns to use as exogenous variables.
+
+        Returns
+        -------
+        OBBject[Dict]
+            OBBject with the fit model returned
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_columns=x_columns,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/panelre",
             **inputs,
         )
 

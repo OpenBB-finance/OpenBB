@@ -4,6 +4,11 @@ from typing import Dict, List, Literal
 import pandas as pd
 import statsmodels.api as sm
 from linearmodels.panel import (
+    BetweenOLS,
+    FamaMacBeth,
+    FirstDifferenceOLS,
+    PanelOLS,
+    PooledOLS,
     RandomEffects,
 )
 from openbb_core.app.model.obbject import OBBject
@@ -294,8 +299,6 @@ def unitroot(
     )
 
 
-
-
 @router.command(methods=["POST"], include_in_schema=False)
 def panelre(
     data: List[Data],
@@ -316,10 +319,155 @@ def panelre(
     Returns
     -------
     OBBject[Dict]
-        OBBject with the results being model and results objects.
+        OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)
-    model = RandomEffects(y, exogenous).fit()
-    return OBBject(results={"model": model})
+    results = RandomEffects(y, exogenous).fit()
+    return OBBject(results={"results": results})
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def panelbols(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """Perform a Between estimator regression on panel data
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the fit model returned
+    """
+    X = get_target_columns(basemodel_to_df(data), x_columns)
+    y = get_target_column(basemodel_to_df(data), y_column)
+    exogenous = sm.add_constant(X)
+    results = BetweenOLS(y, exogenous).fit()
+    return OBBject(results={"results": results})
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def panelpols(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """Perform a Pooled coefficvient estimator regression on panel data
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the fit model returned
+    """
+    X = get_target_columns(basemodel_to_df(data), x_columns)
+    y = get_target_column(basemodel_to_df(data), y_column)
+    exogenous = sm.add_constant(X)
+    results = PooledOLS(y, exogenous).fit()
+    return OBBject(results={"results": results})
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def panelols(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """One- and two-way fixed effects estimator for panel data
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the fit model returned
+    """
+    X = get_target_columns(basemodel_to_df(data), x_columns)
+    y = get_target_column(basemodel_to_df(data), y_column)
+    exogenous = sm.add_constant(X)
+    results = PanelOLS(y, exogenous).fit()
+    return OBBject(results={"results": results})
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def panelfd(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """Perform a first-difference estimate for panel data
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the fit model returned
+    """
+    X = get_target_columns(basemodel_to_df(data), x_columns)
+    y = get_target_column(basemodel_to_df(data), y_column)
+    exogenous = X
+    results = FirstDifferenceOLS(y, exogenous).fit()
+    return OBBject(results={"results": results})
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def panelfmac(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """Fama-MacBeth estimator for panel data
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the fit model returned
+    """
+    X = get_target_columns(basemodel_to_df(data), x_columns)
+    y = get_target_column(basemodel_to_df(data), y_column)
+    exogenous = sm.add_constant(X)
+    results = FamaMacBeth(y, exogenous).fit()
+    return OBBject(results={"results": results})
