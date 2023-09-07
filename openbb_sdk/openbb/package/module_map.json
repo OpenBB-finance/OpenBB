@@ -10,6 +10,7 @@
     "econometrics_granger": "/econometrics/granger",
     "econometrics_ols": "/econometrics/ols",
     "econometrics_ols_summary": "/econometrics/ols_summary",
+    "econometrics_panel": "/econometrics/panel",
     "econometrics_unitroot": "/econometrics/unitroot",
     "economy": "/economy",
     "economy_available_indices": "/economy/available_indices",

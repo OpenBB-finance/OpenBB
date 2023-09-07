@@ -22,6 +22,7 @@ class CLASS_econometrics(Container):
     granger
     ols
     ols_summary
+    panel
     unitroot
     """
 
@@ -264,6 +265,41 @@ class CLASS_econometrics(Container):
 
         return self._command_runner.run(
             "/econometrics/ols_summary",
+            **inputs,
+        )
+
+    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    def panel(
+        self,
+        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        y_column: str,
+        x_columns: List[str],
+    ) -> OBBject[Dict]:
+        """Perform OLS regression.  This returns the model and results objects from statsmodels.
+
+        Parameters
+        ----------
+        data: List[Data]
+            Input dataset.
+        y_column: str
+            Target column.
+        x_columns: str
+            List of columns to use as exogenous variables.
+
+        Returns
+        -------
+        OBBject[Dict]
+            OBBject with the results being model and results objects.
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            data=data,
+            y_column=y_column,
+            x_columns=x_columns,
+        )
+
+        return self._command_runner.run(
+            "/econometrics/panel",
             **inputs,
         )
 

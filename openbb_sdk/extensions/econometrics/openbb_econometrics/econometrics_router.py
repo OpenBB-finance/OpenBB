@@ -3,6 +3,9 @@ from typing import Dict, List, Literal
 
 import pandas as pd
 import statsmodels.api as sm
+from linearmodels.panel import (
+    RandomEffects,
+)
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -289,3 +292,34 @@ def unitroot(
             icbest=icbest,
         )
     )
+
+
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def panelre(
+    data: List[Data],
+    y_column: str,
+    x_columns: List[str],
+) -> OBBject[Dict]:
+    """Perform One-way Random Effects model for panel data
+
+    Parameters
+    ----------
+    data: List[Data]
+        Input dataset.
+    y_column: str
+        Target column.
+    x_columns: str
+        List of columns to use as exogenous variables.
+
+    Returns
+    -------
+    OBBject[Dict]
+        OBBject with the results being model and results objects.
+    """
+    X = get_target_columns(basemodel_to_df(data), x_columns)
+    y = get_target_column(basemodel_to_df(data), y_column)
+    exogenous = sm.add_constant(X)
+    model = RandomEffects(y, exogenous).fit()
+    return OBBject(results={"model": model})

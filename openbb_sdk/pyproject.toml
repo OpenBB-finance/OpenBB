@@ -33,6 +33,7 @@ openbb-charting = { path = "./extensions/charting", optional = true }
 openbb-futures = { path = "./extensions/futures", optional = true }
 openbb-qa = { path = "./extensions/qa", optional = true }
 openbb-ta = { path = "./extensions/ta", optional = true }
+openbb-econometrics = { path = "./extensions/econometrics", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
@@ -43,6 +44,7 @@ charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
 ta = ["openbb-ta"]
+econometrics = ["openbb-econometrics"]
 
 all = [
     "openbb-alpha-vantage",
@@ -53,6 +55,7 @@ all = [
     "openbb-futures",
     "openbb-qa",
     "openbb-ta",
+    "openbb-econometrics"
 ]
 
 [tool.poetry.group.dev.dependencies]
