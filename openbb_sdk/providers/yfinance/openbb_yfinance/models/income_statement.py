@@ -47,17 +47,20 @@ class YFinanceIncomeStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceIncomeStatementData]:
-        query.period = "yearly" if query.period == "annually" else "quarterly"
+        query.period = "yearly" if query.period == "annual" else "quarterly"
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=True, pretty=False, freq=query.period
         )
-        data = [{"date": str(key), **value} for key, value in data.items()]
+        data = [
+            {"date": str(key), "symbol": query.symbol, **value}
+            for key, value in data.items()
+        ]
         data = json.loads(json.dumps(data))
 
-        return [YFinanceIncomeStatementData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceIncomeStatementData],
+        data: List[Dict],
     ) -> List[YFinanceIncomeStatementData]:
-        return data
+        return [YFinanceIncomeStatementData.parse_obj(d) for d in data]
