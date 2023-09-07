@@ -15,6 +15,7 @@ import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
+from openbb_core.env import Env
 from packaging import version
 from reportlab.graphics import renderPDF
 
@@ -22,7 +23,8 @@ from reportlab.graphics import renderPDF
 try:
     from pywry import PyWry
 except ImportError as e:
-    print(f"\033[91m{e}\033[0m")  # noqa: T201
+    if Env().DEBUG_MODE:
+        print(f"\033[91m{e}\033[0m")  # noqa: T201
     # pylint: disable=C0412
     from .dummy_backend import DummyBackend
 
