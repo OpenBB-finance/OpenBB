@@ -34,7 +34,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
 class YFinanceIncomeStatementFetcher(
     Fetcher[
         YFinanceIncomeStatementQueryParams,
-        YFinanceIncomeStatementData,
+        List[YFinanceIncomeStatementData],
     ]
 ):
     @staticmethod

@@ -1,7 +1,11 @@
 """Intrinio Options Chains fetcher."""
 
 import concurrent.futures
-from datetime import date as dateType, datetime, timedelta
+from datetime import (
+    date as dateType,
+    datetime,
+    timedelta,
+)
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
