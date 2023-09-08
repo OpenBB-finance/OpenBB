@@ -1,41 +1,42 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
-
-import openbb_provider
-import openbb_qa.qa_models
-import pandas
-import pydantic
-import pydantic.types
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import validate_arguments, BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
 
+import openbb_qa.qa_models
+import pydantic.types
+import typing
 
 class CLASS_qa(Container):
     """/qa
-    capm
-    kurtosis
-    normality
-    om
-    quantile
-    sh
-    skew
-    so
-    summary
-    unitroot
+capm
+kurtosis
+normality
+om
+quantile
+sh
+skew
+so
+summary
+unitroot
     """
-
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def capm(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-    ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
+    def capm(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str) -> OBBject[openbb_qa.qa_models.CAPMModel]:
         """Capital Asset Pricing Model."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -48,29 +49,25 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def kurtosis(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        window: pydantic.types.PositiveInt,
-    ) -> OBBject[List]:
+    def kurtosis(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, window: pydantic.types.PositiveInt) -> OBBject[List]:
         """Kurtosis.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        window : PositiveInt
-            Window size.
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    window : PositiveInt
+        Window size.
 
-        Returns
-        -------
-        OBBject[List[Data]]
-            Kurtosis.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[List[Data]]
+        Kurtosis.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -83,33 +80,30 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def normality(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-    ) -> OBBject[openbb_qa.qa_models.NormalityModel]:
+    def normality(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str) -> OBBject[openbb_qa.qa_models.NormalityModel]:
         """
-        Normality Statistics.
+    Normality Statistics.
 
-        - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
-        - **Skewness**: whether the skewness of a sample differs from the normal distribution.
-        - **Jarque-Bera**: whether the sample data has the skewness and kurtosis matching a normal distribution.
-        - **Shapiro-Wilk**: whether a random sample comes from a normal distribution.
-        - **Kolmogorov-Smirnov**: whether two underlying one-dimensional probability distributions differ.
+    - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
+    - **Skewness**: whether the skewness of a sample differs from the normal distribution.
+    - **Jarque-Bera**: whether the sample data has the skewness and kurtosis matching a normal distribution.
+    - **Shapiro-Wilk**: whether a random sample comes from a normal distribution.
+    - **Kolmogorov-Smirnov**: whether two underlying one-dimensional probability distributions differ.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
 
-        Returns
-        -------
-        OBBject[NormalityModel]
-            Normality tests summary. See qa_models.NormalityModel for details.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[NormalityModel]
+        Normality tests summary. See qa_models.NormalityModel for details.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -121,32 +115,27 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def om(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        threshold_start: float = 0.0,
-        threshold_end: float = 1.5,
-    ) -> OBBject[List]:
+    def om(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, threshold_start: float = 0.0, threshold_end: float = 1.5) -> OBBject[List]:
         """Omega Ratio.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        threshold_start : float, optional
-            Start threshold, by default 0.0
-        threshold_end : float, optional
-            End threshold, by default 1.5
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    threshold_start : float, optional
+        Start threshold, by default 0.0
+    threshold_end : float, optional
+        End threshold, by default 1.5
 
-        Returns
-        -------
-        OBBject[List[OmegaModel]]
-            Omega ratios.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[List[OmegaModel]]
+        Omega ratios.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -160,14 +149,9 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def quantile(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        window: pydantic.types.PositiveInt,
-        quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
-    ) -> OBBject[List]:
+    def quantile(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, window: pydantic.types.PositiveInt, quantile_pct: pydantic.types.NonNegativeFloat = 0.5) -> OBBject[List]:
         """Quantile."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -182,32 +166,27 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def sh(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        rfr: float = 0.0,
-        window: pydantic.types.PositiveInt = 252,
-    ) -> OBBject[List]:
+    def sh(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, rfr: float = 0.0, window: pydantic.types.PositiveInt = 252) -> OBBject[List]:
         """Sharpe Ratio.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        rfr : float, optional
-            Risk-free rate, by default 0.0
-        window : PositiveInt, optional
-            Window size, by default 252
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    rfr : float, optional
+        Risk-free rate, by default 0.0
+    window : PositiveInt, optional
+        Window size, by default 252
 
-        Returns
-        -------
-        OBBject[List[Data]]
-            Sharpe ratio.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[List[Data]]
+        Sharpe ratio.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -221,29 +200,25 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def skew(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        window: pydantic.types.PositiveInt,
-    ) -> OBBject[List]:
+    def skew(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, window: pydantic.types.PositiveInt) -> OBBject[List]:
         """Skewness.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        window : PositiveInt
-            Window size.
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    window : PositiveInt
+        Window size.
 
-        Returns
-        -------
-        OBBject[List[Data]]
-            Skewness.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[List[Data]]
+        Skewness.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -256,37 +231,31 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def so(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        target_return: float = 0.0,
-        window: pydantic.types.PositiveInt = 252,
-        adjusted: bool = False,
-    ) -> OBBject[List]:
+    def so(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, target_return: float = 0.0, window: pydantic.types.PositiveInt = 252, adjusted: bool = False) -> OBBject[List]:
         """Sortino Ratio.
 
-        For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
+    For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        target_return : float, optional
-            Target return, by default 0.0
-        window : PositiveInt, optional
-            Window size, by default 252
-        adjusted : bool, optional
-            Adjust sortino ratio to compare it to sharpe ratio, by default False
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    target_return : float, optional
+        Target return, by default 0.0
+    window : PositiveInt, optional
+        Window size, by default 252
+    adjusted : bool, optional
+        Adjust sortino ratio to compare it to sharpe ratio, by default False
 
-        Returns
-        -------
-        OBBject[List[Data]]
-            Sortino ratio.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[List[Data]]
+        Sortino ratio.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -301,26 +270,23 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def summary(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-    ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
+    def summary(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str) -> OBBject[openbb_qa.qa_models.SummaryModel]:
         """Summary.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
 
-        Returns
-        -------
-        OBBject[SummaryModel]
-            Summary table.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[SummaryModel]
+        Summary table.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -332,35 +298,30 @@ class CLASS_qa(Container):
             **inputs,
         )
 
+
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
-    def unitroot(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
-        kpss_reg: Literal["c", "ct"] = "c",
-    ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
+    def unitroot(self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame], target: str, fuller_reg: Literal['c', 'ct', 'ctt', 'nc'] = 'c', kpss_reg: Literal['c', 'ct'] = 'c') -> OBBject[openbb_qa.qa_models.UnitRootModel]:
         """Unit Root Test.
 
-        Augmented Dickey-Fuller test for unit root.
-        Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
+    Augmented Dickey-Fuller test for unit root.
+    Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
 
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        fuller_reg : Literal["c", "ct", "ctt", "nc", "c"]
-            Regression type for ADF test.
-        kpss_reg : Literal["c", "ct"]
-            Regression type for KPSS test.
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    fuller_reg : Literal["c", "ct", "ctt", "nc", "c"]
+        Regression type for ADF test.
+    kpss_reg : Literal["c", "ct"]
+        Regression type for KPSS test.
 
-        Returns
-        -------
-        OBBject[UnitRootModel]
-            Unit root tests summary.
-        """  # noqa: E501
+    Returns
+    -------
+    OBBject[UnitRootModel]
+        Unit root tests summary.
+    """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -373,3 +334,4 @@ class CLASS_qa(Container):
             "/qa/unitroot",
             **inputs,
         )
+
