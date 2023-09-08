@@ -29,7 +29,7 @@ class CLASS_etf(Container):
         provider: Optional[Literal["blackrock", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get holdings for an ETF.
+        """Get the holdings for an individual ETF.
 
         Parameters
         ----------
@@ -137,7 +137,7 @@ class CLASS_etf(Container):
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Search for ETFs. An empty query returns the full list of ETFs from the provider.
+        """Fuzzy search for ETFs. An empty query returns the full list of ETFs from the provider.
 
         Parameters
         ----------

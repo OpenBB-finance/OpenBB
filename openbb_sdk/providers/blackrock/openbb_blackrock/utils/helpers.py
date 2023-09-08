@@ -179,6 +179,9 @@ def clean_data(etfs: pd.DataFrame) -> pd.DataFrame:  # noqa
     q_price10y = []
     q_price_inception = []
     q_price_ytd = []
+    yield_to_worst = []
+    effective_duration = []
+    clean_duration = []
 
     for i in etfs.index:
         nav.append(dict(etfs.totalNetAssets.loc[i]).get("r"))
@@ -214,6 +217,24 @@ def clean_data(etfs: pd.DataFrame) -> pd.DataFrame:  # noqa
                 dist_yield.append(dict(etfs.distYield.loc[i]).get("r"))
             else:
                 dist_yield.append(None)
+
+        if "yieldToWorst" in etfs.columns:
+            if etfs.yieldToWorst.loc[i] is not None:
+                yield_to_worst.append(dict(etfs.yieldToWorst.loc[i]).get("r"))
+            else:
+                yield_to_worst.append(None)
+
+        if "effectiveDuration" in etfs.columns:
+            if etfs.effectiveDuration.iloc[i] is not None:
+                effective_duration.append(dict(etfs.effectiveDuration.iloc[i]).get("r"))
+            else:
+                yield_to_worst.append(None)
+
+        if "cleanDuration" in etfs.columns:
+            if etfs.cleanDuration.iloc[i] is not None:
+                clean_duration.append(dict(etfs.cleanDuration.iloc[i]).get("r"))
+            else:
+                clean_duration.append(None)
 
         if "mer" in etfs.columns:
             mer.append(dict(etfs.mer.loc[i]).get("r"))
@@ -375,6 +396,10 @@ def clean_data(etfs: pd.DataFrame) -> pd.DataFrame:  # noqa
         etfs["optionAdjustedSpread"] = oas
         etfs["wtdAvgCarbonIntensity"] = carbon
 
+    if "yieldToWorst" in etfs.columns:
+        etfs["yieldToWorst"] = yield_to_worst
+        etfs["effectiveDuration"] = effective_duration
+        etfs["cleanDuration"] = clean_duration
     return etfs
 
 
