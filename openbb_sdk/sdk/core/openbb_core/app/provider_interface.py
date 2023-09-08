@@ -180,7 +180,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         merged_default = F(  # type: ignore
             default=current.default.default,
             title=f"{current.default.title},{incoming.default.title}",
-            description=f"{new_desc}",
+            description=new_desc,
         )
 
         merged_type = (
