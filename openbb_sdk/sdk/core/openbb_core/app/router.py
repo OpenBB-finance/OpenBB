@@ -314,9 +314,10 @@ class SignatureInspector:
         is_list = get_origin(results_type) == list
         args = get_args(results_type)
         inner_type = args[0] if is_list and args else results_type
+        inner_type_name = getattr(inner_type, "__name__", inner_type)
 
         func.__annotations__["return"].__doc__ = "OBBject"
-        func.__annotations__["return"].__name__ = f"OBBject[{inner_type.__name__}]"
+        func.__annotations__["return"].__name__ = f"OBBject[{inner_type_name}]"
 
         return func
 

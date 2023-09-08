@@ -1,6 +1,7 @@
 {
     "openbb_core_extension": [
         "crypto@0.1.0a0",
+        "econometrics@0.1.0",
         "economy@0.1.0a0",
         "fixedincome@0.1.0a0",
         "forex@0.1.0a0",
