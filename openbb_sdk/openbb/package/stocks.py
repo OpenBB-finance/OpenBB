@@ -565,7 +565,7 @@ class CLASS_stocks(Container):
         published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
-            Order in which to sort the news. Options are: published_at, updated_at, title, author, channel, ticker, topic, content_type. (provider: benzinga); Sort of the query, by default None (provider: polygon)
+            Order in which to sort the news. (provider: benzinga); Sort of the query, by default None (provider: polygon)
         isin : Union[str, NoneType]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Union[str, NoneType]
