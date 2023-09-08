@@ -62,10 +62,10 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         description="The mid-price between the latest bid-ask spread."
     )
     open_bid: Optional[float] = Field(
-        description="The lowest bid price for the option that day."
+        description="The opening bid price for the option that day."
     )
     open_ask: Optional[float] = Field(
-        description="The lowest ask price for the option that day."
+        description="The opening ask price for the option that day."
     )
     bid_low: Optional[float] = Field(
         description="The lowest bid price for the option that day."
