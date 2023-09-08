@@ -7,7 +7,6 @@ from openbb_core.app.static.container import Container
 class Extensions(Container):
     """
     /crypto
-    /econometrics
     /economy
     /fixedincome
     /forex
@@ -26,12 +25,6 @@ class Extensions(Container):
         from . import crypto
 
         return crypto.CLASS_crypto(command_runner=self._command_runner)
-
-    @property
-    def econometrics(self):  # route = "/econometrics"
-        from . import econometrics
-
-        return econometrics.CLASS_econometrics(command_runner=self._command_runner)
 
     @property
     def economy(self):  # route = "/economy"
