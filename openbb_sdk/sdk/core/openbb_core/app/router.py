@@ -292,7 +292,7 @@ class SignatureInspector:
         Also updates __name__ and __doc__ for API schemas."""
         ReturnModel = inner_type
         if get_origin(outer_type) == list:
-            ReturnModel = List[inner_type]
+            ReturnModel = List[inner_type]  # type: ignore
 
         return_type = OBBject[ReturnModel]  # type: ignore
         return_type.__name__ = f"OBBject[{inner_type.__name__}]"

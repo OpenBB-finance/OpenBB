@@ -301,6 +301,174 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
+    def european_index(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get historical close values for select European indices.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        start_date : Union[datetime.date, NoneType, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, NoneType, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        interval : Optional[Literal['1d', '1m']]
+            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe)
+
+        Returns
+        -------
+        OBBject
+            results : List[EuropeanIndexHistorical]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        EuropeanIndexHistorical
+        -----------------------
+        date : Optional[datetime]
+            The date of the data.
+        close : Optional[float]
+            The close price of the symbol.
+        open : Optional[float]
+            Opening price for the interval. Only valid when interval is 1m. (provider: cboe)
+        high : Optional[float]
+            High price for the interval. Only valid when interval is 1m. (provider: cboe)
+        low : Optional[float]
+            Low price for the interval. Only valid when interval is 1m. (provider: cboe)
+        utc_datetime : Optional[datetime]
+            UTC datetime. Only valid when interval is 1m. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/european_index",
+            **inputs,
+        )
+
+    @validate_arguments
+    def european_index_constituents(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get  current levels for constituents of select European indices.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EuropeanIndexConstituents]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        EuropeanIndexConstituents
+        -------------------------
+        symbol : Optional[str]
+            Symbol of the constituent company in the index.
+        price : Optional[float]
+            Current price of the constituent company in the index.
+        open : Optional[float]
+            The open price of the symbol.
+        high : Optional[float]
+            The high price of the symbol.
+        low : Optional[float]
+            The low price of the symbol.
+        close : Optional[float]
+            The close price of the symbol.
+        volume : Optional[float]
+            The volume of the symbol.
+        prev_close : Optional[float]
+            Previous closing  price. (provider: cboe)
+        change : Optional[float]
+            Change in price. (provider: cboe)
+        change_percent : Optional[float]
+            Change in price as a percentage. (provider: cboe)
+        tick : Optional[str]
+            Whether the last sale was an up or down tick. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the symbol. (provider: cboe)
+        exchange_id : Optional[int]
+            The Exchange ID number. (provider: cboe)
+        seqno : Optional[int]
+            Sequence number of the last trade on the tape. (provider: cboe)
+        asset_type : Optional[str]
+            Type of asset. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/european_index_constituents",
+            **inputs,
+        )
+
+    @validate_arguments
     def index(
         self,
         symbol: typing_extensions.Annotated[

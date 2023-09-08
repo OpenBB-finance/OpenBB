@@ -46,7 +46,7 @@ class YFinanceStockNewsData(StockNewsData):
 class YFinanceStockNewsFetcher(
     Fetcher[
         YFinanceStockNewsQueryParams,
-        YFinanceStockNewsData,
+        List[YFinanceStockNewsData],
     ]
 ):
     @staticmethod
@@ -58,15 +58,15 @@ class YFinanceStockNewsFetcher(
         query: YFinanceStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceStockNewsData]:
+    ) -> dict:
         data = Ticker(query.symbols).get_news()
         data = json.loads(json.dumps(data))
         data = [{**d, "relatedTickers": ",".join(d["relatedTickers"])} for d in data]
 
-        return [YFinanceStockNewsData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceStockNewsData],
+        data: dict,
     ) -> List[YFinanceStockNewsData]:
-        return data
+        return [YFinanceStockNewsData.parse_obj(d) for d in data]

@@ -34,7 +34,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
 class YFinanceIncomeStatementFetcher(
     Fetcher[
         YFinanceIncomeStatementQueryParams,
-        YFinanceIncomeStatementData,
+        List[YFinanceIncomeStatementData],
     ]
 ):
     @staticmethod
@@ -47,7 +47,7 @@ class YFinanceIncomeStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceIncomeStatementData]:
-        query.period = "yearly" if query.period == "annually" else "quarterly"
+        query.period = "yearly" if query.period == "annually" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=True, pretty=False, freq=query.period
         )

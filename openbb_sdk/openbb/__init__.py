@@ -5,13 +5,13 @@ import os
 from pathlib import Path
 from typing import List, Optional, Union
 
+from openbb_core.app.static.app_factory import (
+    BaseApp as _BaseApp,
+    create_app as _create_app,
+)
 from openbb_core.app.static.build_utils import (
     auto_build as _auto_build,
     build as _build,
-)
-from openbb_core.app.static.app_factory import (
-    create_app as _create_app,
-    BaseApp as _BaseApp,
 )
 
 _this_dir = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -44,8 +44,8 @@ try:
     # pylint: disable=import-outside-toplevel
     from openbb.package.__extensions__ import Extensions as _Extensions
 
-    obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)
+    obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)  # type: ignore
     sdk = obb
 except (ImportError, ModuleNotFoundError):
     print("Failed to import extensions.")
-    obb = sdk = _create_app()
+    obb = sdk = _create_app()  # type: ignore
