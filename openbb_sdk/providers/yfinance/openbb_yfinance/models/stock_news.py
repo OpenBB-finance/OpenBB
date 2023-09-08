@@ -33,7 +33,7 @@ class YFinanceStockNewsData(StockNewsData):
     uuid: str = Field(description="Unique identifier for the news article")
     publisher: str = Field(description="Publisher of the news article")
     type: str = Field(description="Type of the news article")
-    thumbnail: Optional[Dict[str, Any]] = Field(
+    thumbnail: Optional[List] = Field(
         description="Thumbnail related data to the ticker news article."
     )
     relatedTickers: str = Field(description="Tickers related to the news article.")
@@ -43,8 +43,12 @@ class YFinanceStockNewsData(StockNewsData):
         return datetime.fromtimestamp(v)
 
     @validator("relatedTickers", pre=True, check_fields=False)
-    def related_tickers_validate(cls, v):  # pylint: disable=E0213
+    def related_tickers_string(cls, v):  # pylint: disable=E0213
         return ", ".join(v)
+
+    @validator("thumbnail", pre=True, check_fields=False)
+    def thumbnail_list(cls, v):  # pylint: disable=E0213
+        return v["resolutions"]
 
 
 class YFinanceStockNewsFetcher(
@@ -62,7 +66,7 @@ class YFinanceStockNewsFetcher(
         query: YFinanceStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         data = Ticker(query.symbols).get_news()
         data = json.loads(json.dumps(data))
 
@@ -70,6 +74,6 @@ class YFinanceStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: List[Dict],
     ) -> List[YFinanceStockNewsData]:
         return [YFinanceStockNewsData.parse_obj(d) for d in data]
