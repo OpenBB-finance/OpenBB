@@ -2,24 +2,25 @@
 
 
 from datetime import date as dateType
-from typing import Optional
+from typing import List, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.standard_models.base import (
-    BaseSymbol,
     FinancialStatementQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class IncomeStatementQueryParams(FinancialStatementQueryParams):
     """Income Statement Query."""
 
 
-class IncomeStatementData(Data, BaseSymbol):
+class IncomeStatementData(Data):
     """Income Statement Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description="Date of the income statement.")
     period: Optional[str] = Field(description="Period of the income statement.")
     cik: Optional[str] = Field(description="Central Index Key.")
@@ -81,3 +82,10 @@ class IncomeStatementData(Data, BaseSymbol):
     weighted_average_shares_outstanding_dil: Optional[int] = Field(
         description="Weighted average shares outstanding diluted."
     )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

@@ -2,24 +2,33 @@
 
 
 from datetime import date as dateType
+from typing import List, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class CashFlowStatementGrowthQueryParams(QueryParams, BaseSymbol):
+class CashFlowStatementGrowthQueryParams(QueryParams):
     """Cash Flow Statement Growth Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
-class CashFlowStatementGrowthData(Data, BaseSymbol):
+
+class CashFlowStatementGrowthData(Data):
     """Cash Flow Statement Growth Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period the statement is returned for.")
     growth_net_income: float = Field(description="Growth rate of net income.")
@@ -102,3 +111,10 @@ class CashFlowStatementGrowthData(Data, BaseSymbol):
         description="Growth rate of capital expenditure."
     )
     growth_free_cash_flow: float = Field(description="Growth rate of free cash flow.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
