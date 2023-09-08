@@ -8,26 +8,26 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = { path = "./sdk/core" }
+openbb-core = "^0.1.0a0"
 
-openbb-benzinga = { path = "./providers/benzinga" }
-openbb-fmp = { path = "./providers/fmp" }
-openbb-fred = { path = "./providers/fred" }
-openbb-intrinio = { path = "./providers/intrinio" }
-openbb-polygon = { path = "./providers/polygon" }
+openbb-benzinga = "^0.1.0a0"
+openbb-fmp = "^0.1.0a0"
+openbb-fred = "^0.1.0a0"
+openbb-intrinio = "^0.1.0a0"
+openbb-polygon = "^0.1.0a0"
 
-openbb-crypto = { path = "./extensions/crypto" }
-openbb-economy = { path = "./extensions/economy" }
-openbb-forex = { path = "./extensions/forex" }
-openbb-fixedincome = { path = "./extensions/fixedincome" }
-openbb-news = { path = "./extensions/news" }
-openbb-stocks = { path = "./extensions/stocks" }
+openbb-crypto = "^0.1.0a0"
+openbb-economy = "^0.1.0a0"
+openbb-forex = "^0.1.0a0"
+openbb-fixedincome = "^0.1.0a0"
+openbb-news = "^0.1.0a0"
+openbb-stocks = "^0.1.0a0"
 
 # Community dependencies
-openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true }
-openbb-cboe = { path = "./providers/cboe", optional = true }
-openbb-quandl = { path = "./providers/quandl", optional = true }
-openbb-yfinance = { path = "./providers/yfinance", optional = true }
+openbb-alpha-vantage = { version="^0.1.0a0", optional=true }
+openbb-cboe = { version="^0.1.0a0", optional=true }
+openbb-quandl = { version="^0.1.0a0", optional=true }
+openbb-yfinance = { version="^0.1.0a0", optional=true }
 
 openbb-charting = { path = "./extensions/charting", optional = true }
 openbb-futures = { path = "./extensions/futures", optional = true }

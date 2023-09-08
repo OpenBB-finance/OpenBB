@@ -13,7 +13,7 @@ The library includes:
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install .
+pip install openbb-charting
 ```
 
 ## PyWry dependency on Linux
