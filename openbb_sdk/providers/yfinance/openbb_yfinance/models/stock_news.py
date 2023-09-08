@@ -33,7 +33,7 @@ class YFinanceStockNewsData(StockNewsData):
     uuid: str = Field(description="Unique identifier for the news article")
     publisher: str = Field(description="Publisher of the news article")
     type: str = Field(description="Type of the news article")
-    thumbnail: Dict[str, Any] = Field(
+    thumbnail: Optional[Dict[str, Any]] = Field(
         description="Thumbnail related data to the ticker news article."
     )
     relatedTickers: str = Field(description="Tickers related to the news article.")
@@ -41,6 +41,10 @@ class YFinanceStockNewsData(StockNewsData):
     @validator("providerPublishTime", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.fromtimestamp(v)
+
+    @validator("relatedTickers", pre=True, check_fields=False)
+    def related_tickers_validate(cls, v):  # pylint: disable=E0213
+        return ", ".join(v)
 
 
 class YFinanceStockNewsFetcher(
@@ -61,7 +65,6 @@ class YFinanceStockNewsFetcher(
     ) -> dict:
         data = Ticker(query.symbols).get_news()
         data = json.loads(json.dumps(data))
-        data = [{**d, "relatedTickers": ",".join(d["relatedTickers"])} for d in data]
 
         return data
 
