@@ -27,7 +27,7 @@ class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
     """
 
     interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Use interval, 1m, for intraday prices during the most recent trading period.",
+        description="Data granularity.",
         default="1d",
     )
 

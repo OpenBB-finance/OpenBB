@@ -208,7 +208,7 @@ class CLASS_stocks(Container):
         period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: alpha_vantage, yfinance)
         interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            The interval between two consecutive data points in the time series. (provider: alpha_vantage); Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe); Interval of the data to fetch. (provider: fmp); Data granularity. (provider: yfinance)
+            Data granularity. (provider: alpha_vantage, cboe, fmp, yfinance)
         adjusted : Union[bool, NoneType]
             Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon)
         extended_hours : Union[bool, NoneType]
