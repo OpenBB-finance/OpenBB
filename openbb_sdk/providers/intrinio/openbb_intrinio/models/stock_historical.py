@@ -43,7 +43,7 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     )
     limit: Optional[NonNegativeInt] = Field(
         default=300,
-        description=f"{QUERY_DESCRIPTIONS.get('limit', '')}. Max value allowed is 300.",
+        description=f"{QUERY_DESCRIPTIONS.get('limit', '')} Max value allowed is 300.",
     )
     next_page: Optional[str] = Field(
         description="Token to get the next page of data from a previous API call."

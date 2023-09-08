@@ -1,12 +1,13 @@
 from dataclasses import dataclass, make_dataclass
-from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
+from difflib import SequenceMatcher
+from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
-from pydantic.fields import ModelField
+from pydantic.fields import ModelField, FieldInfo
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
@@ -154,15 +155,36 @@ class ProviderInterface(metaclass=SingletonMeta):
     ) -> DataclassField:
         current_name = current.name
         current_type = current.type_
-        incoming_type = incoming.type_
+        current_desc = getattr(current.default, "description", "")
 
-        if query:
-            merged_default = Query(
-                default=current.default.default,
-                title=f"{current.default.title}, {incoming.default.title}",
-            )
+        incoming_type = incoming.type_
+        incoming_desc = getattr(incoming.default, "description", "")
+
+        F: Union[Callable, object] = Query if query else FieldInfo
+
+        def split_desc(desc: str) -> Tuple[str, str]:
+            """Split field description"""
+            l = desc.split(" (provider: ")
+            detail = l[0] if l else ""
+            if len(l) > 1:
+                prov = l[-1].replace(")", "")
+            else:
+                prov = ""
+            return detail, prov
+
+        curr_detail, curr_prov = split_desc(current_desc)
+        inc_detail, inc_prov = split_desc(incoming_desc)
+
+        if SequenceMatcher(None, curr_detail, inc_detail).ratio() > 0.8:
+            new_desc = f"{curr_detail} (provider: {curr_prov}, {inc_prov})"
         else:
-            merged_default = current.default
+            new_desc = f"{current_desc}; {incoming_desc}"
+
+        merged_default = F(  # type: ignore
+            default=current.default.default,
+            title=f"{current.default.title},{incoming.default.title}",
+            description=f"{new_desc}"
+        )
 
         merged_type = (
             Union[current_type, incoming_type]
@@ -256,13 +278,6 @@ class ProviderInterface(metaclass=SingletonMeta):
                         else:
                             updated = incoming
 
-                        if not updated.default.title.startswith(
-                            "Available for providers:"
-                        ):
-                            updated.default.title = (
-                                "Available for providers: " + updated.default.title
-                            )
-
                         extra[updated.name] = (
                             updated.name,
                             updated.type_,
@@ -331,7 +346,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             pageSize: int = Query(default=15, title="benzinga")
             displayOutput: int = Query(default="headline", title="benzinga")
             ...
-            sort: str = Query(default=None, title="benzinga, polygon")
+            sort: str = Query(default=None, title="benzinga,polygon")
         """
         result: Dict = {}
 

@@ -65,7 +65,7 @@ class CLASS_economy(Container):
         region : Optional[str]
             Region for the index. Valid only for European indices (provider: cboe)
         symbol : Optional[str]
-            Symbol for the index. (provider: cboe)
+            Symbol for the index. (provider: cboe); yFinance ticker symbol for the index. (provider: yfinance)
         description : Optional[str]
             Description for the index. Valid only for US indices. (provider: cboe)
         data_delay : Optional[int]
@@ -532,7 +532,7 @@ class CLASS_economy(Container):
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
         interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            None
+            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe); Interval of the data to fetch. (provider: fmp); Data granularity. (provider: yfinance)
         timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
