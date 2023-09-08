@@ -7,7 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 from typing_extensions import Annotated
 
 
@@ -15,6 +15,8 @@ class CLASS_economy(Container):
     """/economy
     available_indices
     const
+    cot
+    cot_search
     cpi
     european_index
     european_index_constituents
@@ -22,6 +24,7 @@ class CLASS_economy(Container):
     index_search
     index_snapshots
     risk
+    sp500_multiples
     """
 
     def __repr__(self) -> str:
@@ -172,6 +175,160 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/const",
+            **inputs,
+        )
+
+    @validate_arguments
+    def cot(
+        self, provider: Optional[Literal["quandl"]] = None, **kwargs
+    ) -> OBBject[List]:
+        """Lookup Commitment of Traders Reports by series ID.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['quandl']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+        code : str
+
+                    CFTC series code.  Use search_cot() to find the code.
+                    Codes not listed in the curated list, but are published by on the Nasdaq Data Link website, are valid.
+                    Certain symbols, such as "ES=F", or exact names are also valid.
+                    Default report is: S&P 500 Consolidated (CME))
+                     (provider: quandl)
+        data_type : Optional[Literal['F', 'FO', 'CITS']]
+
+                    The type of data to reuturn. Default is "FO".
+
+                    F = Futures only
+
+                    FO = Futures and Options
+
+                    CITS = Commodity Index Trader Supplemental. Only valid for commodities.
+                 (provider: quandl)
+        legacy_format : Optional[bool]
+            Returns the legacy format of report. Default is False. (provider: quandl)
+        report_type : Optional[Literal['ALL', 'CHG', 'OLD', 'OTR']]
+
+                    The type of report to return. Default is "ALL".
+
+                        ALL = All
+
+                        CHG = Change in Positions
+
+                        OLD = Old Crop Years
+
+                        OTR = Other Crop Years
+                 (provider: quandl)
+        measure : Optional[Literal['CR', 'NT', 'OI', 'CHG']]
+
+                    The measure to return. Default is None.
+
+                    CR = Concentration Ratios
+
+                    NT = Number of Traders
+
+                    OI = Percent of Open Interest
+
+                    CHG = Change in Positions. Only valid when data_type is "CITS".
+                 (provider: quandl)
+        start_date : Optional[datetime.date]
+            The start date of the time series. Defaults to all. (provider: quandl)
+        end_date : Optional[datetime.date]
+            The end date of the time series. Defaults to the most recent data. (provider: quandl)
+        transform : Optional[Literal['diff', 'rdiff', 'cumul', 'normalize']]
+            Transform the data as w/w difference, percent change, cumulative, or normalize. (provider: quandl)
+
+        Returns
+        -------
+        OBBject
+            results : List[COT]
+                Serializable results.
+            provider : Optional[Literal['quandl']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        COT
+        ---"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={},
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/cot",
+            **inputs,
+        )
+
+    @validate_arguments
+    def cot_search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        provider: Optional[Literal["quandl"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Fuzzy search and list of curated Commitment of Traders Reports series information.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        provider : Optional[Literal['quandl']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[COTSearch]
+                Serializable results.
+            provider : Optional[Literal['quandl']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        COTSearch
+        ---------
+        code : Optional[str]
+            CFTC Code of the report.
+        name : Optional[str]
+            Name of the underlying asset.
+        category : Optional[str]
+            Category of the underlying asset.
+        subcategory : Optional[str]
+            Subcategory of the underlying asset.
+        units : Optional[str]
+            The units for one contract.
+        symbol : Optional[str]
+            Trading symbol representing the underlying asset."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/cot_search",
             **inputs,
         )
 
@@ -534,7 +691,7 @@ class CLASS_economy(Container):
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
         interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity. (provider: cboe, fmp, yfinance)
+            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe); Data granularity. (provider: fmp); Data granularity. (provider: yfinance)
         timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -570,7 +727,7 @@ class CLASS_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : Union[datetime, date]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -833,5 +990,135 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/risk",
+            **inputs,
+        )
+
+    @validate_arguments
+    def sp500_multiples(
+        self,
+        series_name: Annotated[
+            Literal[
+                "Shiller PE Ratio by Month",
+                "Shiller PE Ratio by Year",
+                "PE Ratio by Year",
+                "PE Ratio by Month",
+                "Dividend by Year",
+                "Dividend by Month",
+                "Dividend Growth by Quarter",
+                "Dividend Growth by Year",
+                "Dividend Yield by Year",
+                "Dividend Yield by Month",
+                "Earnings by Year",
+                "Earnings by Month",
+                "Earnings Growth by Year",
+                "Earnings Growth by Quarter",
+                "Real Earnings Growth by Year",
+                "Real Earnings Growth by Quarter",
+                "Earnings Yield by Year",
+                "Earnings Yield by Month",
+                "Real Price by Year",
+                "Real Price by Month",
+                "Inflation Adjusted Price by Year",
+                "Inflation Adjusted Price by Month",
+                "Sales by Year",
+                "Sales by Quarter",
+                "Sales Growth by Year",
+                "Sales Growth by Quarter",
+                "Real Sales by Year",
+                "Real Sales by Quarter",
+                "Real Sales Growth by Year",
+                "Real Sales Growth by Quarter",
+                "Price to Sales Ratio by Year",
+                "Price to Sales Ratio by Quarter",
+                "Price to Book Value Ratio by Year",
+                "Price to Book Value Ratio by Quarter",
+                "Book Value per Share by Year",
+                "Book Value per Share by Quarter",
+            ],
+            OpenBBCustomParameter(
+                description="The name of the series. Defaults to 'PE Ratio by Month'."
+            ),
+        ] = "PE Ratio by Month",
+        start_date: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="The start date of the time series. Format: YYYY-MM-DD"
+            ),
+        ] = "",
+        end_date: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="The end date of the time series. Format: YYYY-MM-DD"
+            ),
+        ] = "",
+        collapse: Annotated[
+            Optional[Literal["daily", "weekly", "monthly", "quarterly", "annual"]],
+            OpenBBCustomParameter(
+                description="Collapse the frequency of the time series."
+            ),
+        ] = "monthly",
+        transform: Annotated[
+            Optional[Literal["diff", "rdiff", "cumul", "normalize"]],
+            OpenBBCustomParameter(description="The transformation of the time series."),
+        ] = None,
+        provider: Optional[Literal["quandl"]] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Historical S&P 500 multiples and Shiller PE ratios.
+
+        Parameters
+        ----------
+        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Ratio by Year', 'PE Ratio by Month', 'Dividend by Year', 'Dividend by Month', 'Dividend Growth by Quarter', 'Dividend Growth by Year', 'Dividend Yield by Year', 'Dividend Yield by Month', 'Earnings by Year', 'Earnings by Month', 'Earnings Growth by Year', 'Earnings Growth by Quarter', 'Real Earnings Growth by Year', 'Real Earnings Growth by Quarter', 'Earnings Yield by Year', 'Earnings Yield by Month', 'Real Price by Year', 'Real Price by Month', 'Inflation Adjusted Price by Year', 'Inflation Adjusted Price by Month', 'Sales by Year', 'Sales by Quarter', 'Sales Growth by Year', 'Sales Growth by Quarter', 'Real Sales by Year', 'Real Sales by Quarter', 'Real Sales Growth by Year', 'Real Sales Growth by Quarter', 'Price to Sales Ratio by Year', 'Price to Sales Ratio by Quarter', 'Price to Book Value Ratio by Year', 'Price to Book Value Ratio by Quarter', 'Book Value per Share by Year', 'Book Value per Share by Quarter']
+            The name of the series. Defaults to 'PE Ratio by Month'.
+        start_date : Optional[str]
+            The start date of the time series. Format: YYYY-MM-DD
+        end_date : Optional[str]
+            The end date of the time series. Format: YYYY-MM-DD
+        collapse : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual']]
+            Collapse the frequency of the time series.
+        transform : Optional[Literal['diff', 'rdiff', 'cumul', 'normalize']]
+            The transformation of the time series.
+        provider : Optional[Literal['quandl']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SP500Multiples]
+                Serializable results.
+            provider : Optional[Literal['quandl']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        SP500Multiples
+        --------------
+        date : Optional[str]
+            The date data for the time series.
+        value : Optional[float]
+            The data value for the time series."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "series_name": series_name,
+                "start_date": start_date,
+                "end_date": end_date,
+                "collapse": collapse,
+                "transform": transform,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/sp500_multiples",
             **inputs,
         )

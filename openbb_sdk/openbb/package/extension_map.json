@@ -1,25 +1,26 @@
 {
     "openbb_core_extension": [
-        "crypto@0.1.0",
-        "economy@0.1.0",
-        "fixedincome@0.1.0",
-        "forex@0.1.0",
-        "futures@0.1.0",
-        "news@0.1.0",
-        "openbb_charting@0.1.0",
-        "qa@0.1.0",
-        "stocks@0.1.0",
-        "ta@0.1.0"
+        "crypto@0.1.0a0",
+        "econometrics@0.1.0a0",
+        "economy@0.1.0a0",
+        "fixedincome@0.1.0a0",
+        "forex@0.1.0a0",
+        "futures@0.1.0a0",
+        "news@0.1.0a0",
+        "openbb_charting@0.1.0a1",
+        "qa@0.1.0a0",
+        "stocks@0.1.0a0",
+        "ta@0.1.0a0"
     ],
     "openbb_provider_extension": [
-        "alpha_vantage@0.1.0",
-        "benzinga@0.1.0",
-        "cboe@0.1.0",
-        "fmp@0.1.0",
-        "fred@0.1.0",
-        "intrinio@0.1.0",
-        "polygon@0.1.0",
-        "quandl@0.1.0",
-        "yfinance@0.1.0"
+        "alpha_vantage@0.1.0a0",
+        "benzinga@0.1.0a0",
+        "cboe@0.1.0a0",
+        "fmp@0.1.0a0",
+        "fred@0.1.0a0",
+        "intrinio@0.1.0a0",
+        "polygon@0.1.0a0",
+        "quandl@0.1.0a0",
+        "yfinance@0.1.0a0"
     ]
 }
