@@ -1,10 +1,13 @@
 """Intrinio Helpers Module."""
 
 import json
+from datetime import datetime, timedelta
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
+import pandas as pd
 import requests
+import requests_cache
 from openbb_provider import helpers
 from pydantic import BaseModel
 from requests.exceptions import SSLError
@@ -113,3 +116,68 @@ def get_data_one(url: str, **kwargs: Any) -> dict:
             raise ValueError("Expected dict, got list of dicts") from e
 
     return data
+
+
+class Options:
+    """Intrinio Options Helper Class."""
+
+    intrinio_session = requests_cache.CachedSession(
+        "OpenBB_Intrinio", expire_after=timedelta(days=5), use_cache_dir=True
+    )
+
+    @staticmethod
+    def get_options_tickers(api_key: str) -> List[str]:
+        """Returns all tickers that have existing options contracts.
+
+        Parameters
+        ----------
+        api_key: str
+            Intrinio API key.
+
+        Returns
+        -------
+        List[str]
+            List of tickers
+        """
+
+        url = f"https://api-v2.intrinio.com/options/tickers?api_key={api_key}"
+
+        r = Options.intrinio_session.get(url, timeout=10)
+
+        if r.status_code != 200:
+            raise RuntimeError("HTTP Error -> Status Code: " + str(r.status_code))
+
+        return r.json()["tickers"]
+
+    @staticmethod
+    def get_options_expirations(
+        symbol: str,
+        api_key: str,
+        after: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
+        before: Optional[str] = "",
+    ) -> List:
+        """Returns a list of all current and upcoming option contract expiration dates for a particular symbol.
+
+        Parameters
+        ----------
+        symbol: str
+            The options symbol, corresponding to the underlying security.
+        api_key: str
+            Intrinio API key.
+        after: str
+            Return option contract expiration dates after this date. Format: YYYY-MM-DD
+        before: str
+            Return option contract expiration dates before this date. Format: YYYY-MM-DD
+        """
+
+        url = (
+            f"https://api-v2.intrinio.com/options/expirations/{symbol}/"
+            f"eod?before={before}&after={after}&api_key={api_key}"
+        )
+        r = helpers.make_request(url)
+
+        if r.status_code != 200:
+            raise RuntimeError("HTTP Error -> Status Code: " + str(r.status_code))
+
+        expirations = pd.DatetimeIndex(sorted(list(r.json()["expirations"])))
+        return list(filter(lambda x: x > pd.to_datetime(after), expirations))
