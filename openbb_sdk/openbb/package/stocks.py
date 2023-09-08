@@ -230,7 +230,7 @@ class CLASS_stocks(Container):
         interval_size : Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h'], NoneType]
             The data time frequency. (provider: intrinio)
         limit : Union[pydantic.types.NonNegativeInt, NoneType, pydantic.types.PositiveInt]
-            The number of data entries to return. Max value allowed is 300. (provider: intrinio); The number of data entries to return. (provider: polygon)
+            The number of data entries to return. (provider: intrinio, polygon)
         next_page : Union[str, NoneType]
             Token to get the next page of data from a previous API call. (provider: intrinio)
         all_pages : Union[bool, NoneType]
