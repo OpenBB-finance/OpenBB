@@ -153,8 +153,10 @@ class IntrinioOptionsChainsFetcher(
             Return option contract expiration dates before this date. Format: YYYY-MM-DD
         """
 
-        url = f"https://api-v2.intrinio.com/options/expirations/{symbol}/eod?before={before}&after={after}&api_key={api_key}"
-
+        url = (
+            f"https://api-v2.intrinio.com/options/expirations/{symbol}/"
+            f"eod?before={before}&after={after}&api_key={api_key}"
+        )
         r = make_request(url)
 
         if r.status_code != 200:
