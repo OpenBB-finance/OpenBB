@@ -1,11 +1,8 @@
 """CBOE Helpers Module."""
 
-import os
-import warnings
-from datetime import date, datetime, timedelta
-from io import StringIO, BytesIO
-from pathlib import Path
-from typing import List, Optional, Tuple, Dict, Any
+from datetime import date, timedelta
+from io import BytesIO, StringIO
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import requests
