@@ -113,7 +113,7 @@ class CLASS_news(Container):
         site : Optional[str]
             Site of the news. (provider: fmp)
         id : Optional[str]
-            Intrinio ID for the news article. (provider: intrinio)
+            Article ID. (provider: intrinio)
         company : Optional[Mapping[str, Any]]
             Company details related to the news article. (provider: intrinio)"""  # noqa: E501
 

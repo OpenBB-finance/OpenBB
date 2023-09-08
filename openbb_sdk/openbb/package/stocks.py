@@ -206,11 +206,11 @@ class CLASS_stocks(Container):
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
         period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
-            None
+            Period of the data to return. (provider: alpha_vantage, yfinance)
         interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            None
+            Data granularity. (provider: alpha_vantage, cboe, fmp, yfinance)
         adjusted : Union[bool, NoneType]
-            None
+            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon)
         extended_hours : Union[bool, NoneType]
             Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
         month : Union[str, NoneType]
@@ -230,7 +230,7 @@ class CLASS_stocks(Container):
         interval_size : Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h'], NoneType]
             The data time frequency. (provider: intrinio)
         limit : Union[pydantic.types.NonNegativeInt, NoneType, pydantic.types.PositiveInt]
-            None
+            The number of data entries to return. (provider: intrinio, polygon)
         next_page : Union[str, NoneType]
             Token to get the next page of data from a previous API call. (provider: intrinio)
         all_pages : Union[bool, NoneType]
@@ -295,7 +295,7 @@ class CLASS_stocks(Container):
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day. (provider: fmp)
+            Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
         change_percent : Optional[float]
             Change \\% in the price of the symbol. (provider: fmp)
         label : Optional[str]
@@ -565,7 +565,7 @@ class CLASS_stocks(Container):
         published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
-            None
+            Order in which to sort the news. (provider: benzinga, polygon)
         isin : Union[str, NoneType]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Union[str, NoneType]
@@ -583,25 +583,25 @@ class CLASS_stocks(Container):
         all_pages : Union[bool, NoneType]
             Returns all pages of data from the API call at once. (provider: intrinio)
         ticker_lt : Union[str, NoneType]
-            Less than, by default None (provider: polygon)
+            Less than. (provider: polygon)
         ticker_lte : Union[str, NoneType]
-            Less than or equal, by default None (provider: polygon)
+            Less than or equal. (provider: polygon)
         ticker_gt : Union[str, NoneType]
-            Greater than, by default None (provider: polygon)
+            Greater than. (provider: polygon)
         ticker_gte : Union[str, NoneType]
-            Greater than or equal, by default None (provider: polygon)
+            Greater than or equal. (provider: polygon)
         published_utc : Union[str, NoneType]
-            Published date of the query, by default None (provider: polygon)
+            Published date of the query. (provider: polygon)
         published_utc_lt : Union[str, NoneType]
-            Less than, by default None (provider: polygon)
+            Less than. (provider: polygon)
         published_utc_lte : Union[str, NoneType]
-            Less than or equal, by default None (provider: polygon)
+            Less than or equal. (provider: polygon)
         published_utc_gt : Union[str, NoneType]
-            Greater than, by default None (provider: polygon)
+            Greater than. (provider: polygon)
         published_utc_gte : Union[str, NoneType]
-            Greater than or equal, by default None (provider: polygon)
+            Greater than or equal. (provider: polygon)
         order : Union[Literal['asc', 'desc'], NoneType]
-            Sort order of the query, by default None (provider: polygon)
+            Sort order of the query. (provider: polygon)
 
         Returns
         -------
@@ -644,7 +644,7 @@ class CLASS_stocks(Container):
         site : Optional[str]
             Name of the news source. (provider: fmp)
         id : Optional[str]
-            Intrinio ID for the news article. (provider: intrinio)
+            Article ID. (provider: intrinio, polygon)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         author : Optional[str]
@@ -654,7 +654,7 @@ class CLASS_stocks(Container):
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
         publisher : Union[PolygonPublisher, NoneType, str]
-            Publisher of the article. (provider: polygon)
+            Publisher of the article. (provider: polygon, yfinance)
         tickers : Optional[List[str]]
             Tickers covered in the article. (provider: polygon)
         uuid : Optional[str]
