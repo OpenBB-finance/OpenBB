@@ -644,7 +644,7 @@ class CLASS_stocks(Container):
         site : Optional[str]
             Name of the news source. (provider: fmp)
         id : Optional[str]
-            Intrinio ID for the news article. (provider: intrinio); Article ID. (provider: polygon)
+            Article ID. (provider: intrinio, polygon)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         author : Optional[str]
