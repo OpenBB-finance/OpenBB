@@ -55,6 +55,9 @@ def get_options_tickers(api_key: str) -> List[str]:
 
     r = intrinio_session.get(url, timeout=10)
 
+    if r.status_code != 200:
+        raise RuntimeError("HTTP Error -> Status Code: " + str(r.status_code))
+
     return r.json()["tickers"]
 
 
@@ -63,7 +66,7 @@ def get_options_expirations(
     api_key: str,
     after: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
     before: Optional[str] = "",
-) -> list:
+) -> List:
     """Returns a list of all current and upcoming option contract expiration dates for a particular symbol.
 
     Parameters
@@ -81,6 +84,9 @@ def get_options_expirations(
     url = f"https://api-v2.intrinio.com/options/expirations/{symbol}/eod?before={before}&after={after}&api_key={api_key}"
 
     r = make_request(url)
+
+    if r.status_code != 200:
+        raise RuntimeError("HTTP Error -> Status Code: " + str(r.status_code))
 
     expirations = pd.DatetimeIndex(sorted(list(r.json()["expirations"])))
     return list(filter(lambda x: x > pd.to_datetime(after), expirations))
@@ -225,7 +231,7 @@ def get_historical_chain_with_greeks(
     df = df.sort_index().reset_index()
     now = pd.DatetimeIndex(df["eod_date"])
     temp = pd.DatetimeIndex(df["expiration"])
-    temp_ = (temp - now).days + 1
+    temp_ = (temp - now).days
     df["dte"] = temp_
 
     return df
