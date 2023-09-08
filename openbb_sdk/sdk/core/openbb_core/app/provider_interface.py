@@ -162,24 +162,26 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         F: Union[Callable, object] = Query if query else FieldInfo
 
-        def split_desc(desc: str) -> Tuple[str, str]:
+        def split_desc(desc: str) -> str:
             """Split field description"""
             item = desc.split(" (provider: ")
             detail = item[0] if item else ""
-            prov = item[-1].replace(")", "") if len(item) > 1 else ""
-            return detail, prov
+            return detail
 
-        curr_detail, curr_prov = split_desc(current_desc)
-        inc_detail, inc_prov = split_desc(incoming_desc)
+        curr_detail = split_desc(current_desc)
+        inc_detail = split_desc(incoming_desc)
+
+        providers = f"{current.default.title},{incoming.default.title}"
+        formatted_prov = providers.replace(",", ", ")
 
         if SequenceMatcher(None, curr_detail, inc_detail).ratio() > 0.8:
-            new_desc = f"{curr_detail} (provider: {curr_prov}, {inc_prov})"
+            new_desc = f"{curr_detail} (provider: {formatted_prov})"
         else:
             new_desc = f"{current_desc}; {incoming_desc}"
 
         merged_default = F(  # type: ignore
             default=current.default.default,
-            title=f"{current.default.title},{incoming.default.title}",
+            title=providers,
             description=new_desc,
         )
 
