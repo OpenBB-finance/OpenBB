@@ -65,7 +65,7 @@ class CLASS_economy(Container):
         region : Optional[str]
             Region for the index. Valid only for European indices (provider: cboe)
         symbol : Optional[str]
-            Symbol for the index. (provider: cboe); yFinance ticker symbol for the index. (provider: yfinance)
+            Symbol for the index. (provider: cboe, yfinance)
         description : Optional[str]
             Description for the index. Valid only for US indices. (provider: cboe)
         data_delay : Optional[int]

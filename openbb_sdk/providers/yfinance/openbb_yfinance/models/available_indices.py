@@ -24,7 +24,7 @@ class YFinanceAvailableIndicesData(AvailableIndicesData):
         description="ID code for keying the index in the OpenBB Terminal."
     )
     symbol: str = Field(
-        description="yFinance ticker symbol for the index.", alias="ticker"
+        description="Symbol for the index.", alias="ticker"
     )
 
 
