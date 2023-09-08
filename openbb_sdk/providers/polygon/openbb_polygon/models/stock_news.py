@@ -23,30 +23,20 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     class Config:
         fields = {"symbols": "ticker"}
 
-    ticker_lt: Optional[str] = Field(
-        default=None, description="Less than."
-    )
-    ticker_lte: Optional[str] = Field(
-        default=None, description="Less than or equal."
-    )
-    ticker_gt: Optional[str] = Field(
-        default=None, description="Greater than."
-    )
+    ticker_lt: Optional[str] = Field(default=None, description="Less than.")
+    ticker_lte: Optional[str] = Field(default=None, description="Less than or equal.")
+    ticker_gt: Optional[str] = Field(default=None, description="Greater than.")
     ticker_gte: Optional[str] = Field(
         default=None, description="Greater than or equal."
     )
     published_utc: Optional[str] = Field(
         default=None, description="Published date of the query."
     )
-    published_utc_lt: Optional[str] = Field(
-        default=None, description="Less than."
-    )
+    published_utc_lt: Optional[str] = Field(default=None, description="Less than.")
     published_utc_lte: Optional[str] = Field(
         default=None, description="Less than or equal."
     )
-    published_utc_gt: Optional[str] = Field(
-        default=None, description="Greater than."
-    )
+    published_utc_gt: Optional[str] = Field(default=None, description="Greater than.")
     published_utc_gte: Optional[str] = Field(
         default=None, description="Greater than or equal."
     )
