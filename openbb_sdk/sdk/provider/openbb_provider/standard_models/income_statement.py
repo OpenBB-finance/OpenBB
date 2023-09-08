@@ -21,8 +21,8 @@ class IncomeStatementData(Data, BaseSymbol):
     """Income Statement Data."""
 
     date: dateType = Field(description="Date of the income statement.")
-    period: str = Field(description="Period of the income statement.")
-    cik: str = Field(description="Central Index Key.")
+    period: Optional[str] = Field(description="Period of the income statement.")
+    cik: Optional[str] = Field(description="Central Index Key.")
 
     revenue: Optional[int] = Field(description="Revenue.")
     cost_of_revenue: Optional[int] = Field(description="Cost of revenue.")

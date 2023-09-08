@@ -52,6 +52,9 @@ class YFinanceCashFlowStatementFetcher(
             as_dict=True, pretty=False, freq=query.period
         )
         data = [{"date": str(key), **value} for key, value in data.items()]
+        # To match standardization
+        for d in data:
+            d["Symbol"] = query.symbol
         data = json.loads(json.dumps(data))
 
         return [YFinanceCashFlowStatementData.parse_obj(d) for d in data]
