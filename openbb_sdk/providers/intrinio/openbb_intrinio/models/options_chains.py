@@ -276,9 +276,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     open: Optional[float] = Field(description="Opening price of the option.")
     high: Optional[float] = Field(description="High price of the option.")
     low: Optional[float] = Field(description="Low price of the option.")
-    close: Optional[float] = Field(
-        description="Close price for the option that day."
-    )
+    close: Optional[float] = Field(description="Close price for the option that day.")
     implied_volatility: Optional[float] = Field(
         description="Implied volatility of the option."
     )

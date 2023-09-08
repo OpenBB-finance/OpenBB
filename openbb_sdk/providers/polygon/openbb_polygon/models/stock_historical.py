@@ -33,7 +33,10 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    adjusted: bool = Field(default=True, description="Output time series is adjusted by historical split and dividend events.")
+    adjusted: bool = Field(
+        default=True,
+        description="Output time series is adjusted by historical split and dividend events.",
+    )
     multiplier: PositiveInt = Field(
         default=1, description="Multiplier of the timespan."
     )

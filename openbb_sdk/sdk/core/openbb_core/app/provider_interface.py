@@ -7,7 +7,7 @@ from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
-from pydantic.fields import ModelField, FieldInfo
+from pydantic.fields import FieldInfo, ModelField
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
@@ -164,12 +164,9 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         def split_desc(desc: str) -> Tuple[str, str]:
             """Split field description"""
-            l = desc.split(" (provider: ")
-            detail = l[0] if l else ""
-            if len(l) > 1:
-                prov = l[-1].replace(")", "")
-            else:
-                prov = ""
+            item = desc.split(" (provider: ")
+            detail = item[0] if item else ""
+            prov = item[-1].replace(")", "") if len(item) > 1 else ""
             return detail, prov
 
         curr_detail, curr_prov = split_desc(current_desc)
@@ -183,7 +180,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         merged_default = F(  # type: ignore
             default=current.default.default,
             title=f"{current.default.title},{incoming.default.title}",
-            description=f"{new_desc}"
+            description=f"{new_desc}",
         )
 
         merged_type = (
