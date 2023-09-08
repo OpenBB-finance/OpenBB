@@ -115,3 +115,36 @@ def index_snapshots(
 ) -> OBBject[BaseModel]:
     """Get current  levels for all indices from a provider."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="COTSearch")
+def cot_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fuzzy search and list of curated Commitment of Traders Reports series information."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="COT")
+def cot(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Lookup Commitment of Traders Reports by series ID."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="SP500Multiples")
+def sp500_multiples(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Historical S&P 500 multiples and Shiller PE ratios."""
+    return OBBject(results=Query(**locals()).execute())
