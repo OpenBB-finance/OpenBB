@@ -565,7 +565,7 @@ class CLASS_stocks(Container):
         published_since : Union[int, NoneType]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
-            Order in which to sort the news. (provider: benzinga); Sort of the query, by default None (provider: polygon)
+            Order in which to sort the news. (provider: benzinga, polygon)
         isin : Union[str, NoneType]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Union[str, NoneType]
@@ -583,25 +583,25 @@ class CLASS_stocks(Container):
         all_pages : Union[bool, NoneType]
             Returns all pages of data from the API call at once. (provider: intrinio)
         ticker_lt : Union[str, NoneType]
-            Less than, by default None (provider: polygon)
+            Less than. (provider: polygon)
         ticker_lte : Union[str, NoneType]
-            Less than or equal, by default None (provider: polygon)
+            Less than or equal. (provider: polygon)
         ticker_gt : Union[str, NoneType]
-            Greater than, by default None (provider: polygon)
+            Greater than. (provider: polygon)
         ticker_gte : Union[str, NoneType]
-            Greater than or equal, by default None (provider: polygon)
+            Greater than or equal. (provider: polygon)
         published_utc : Union[str, NoneType]
-            Published date of the query, by default None (provider: polygon)
+            Published date of the query. (provider: polygon)
         published_utc_lt : Union[str, NoneType]
-            Less than, by default None (provider: polygon)
+            Less than. (provider: polygon)
         published_utc_lte : Union[str, NoneType]
-            Less than or equal, by default None (provider: polygon)
+            Less than or equal. (provider: polygon)
         published_utc_gt : Union[str, NoneType]
-            Greater than, by default None (provider: polygon)
+            Greater than. (provider: polygon)
         published_utc_gte : Union[str, NoneType]
-            Greater than or equal, by default None (provider: polygon)
+            Greater than or equal. (provider: polygon)
         order : Union[Literal['asc', 'desc'], NoneType]
-            Sort order of the query, by default None (provider: polygon)
+            Sort order of the query. (provider: polygon)
 
         Returns
         -------
