@@ -19,6 +19,7 @@ class Preferences(BaseModel):
     table_style: Literal["dark", "light"] = "dark"
     request_timeout: PositiveInt = 15
     metadata: bool = True
+    data_output: Literal["OBBject", "df", "dict"] = "df"
 
     class Config:
         validate_assignment = True

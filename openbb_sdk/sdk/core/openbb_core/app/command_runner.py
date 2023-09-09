@@ -2,6 +2,7 @@ import warnings
 from contextlib import nullcontext
 from copy import deepcopy
 from datetime import datetime
+import pandas as pd
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
@@ -345,7 +346,7 @@ class StaticCommandRunner:
         /,
         *args,
         **kwargs,
-    ) -> OBBject:
+    ) -> Union[OBBject, Dict, pd.DataFrame]:
         timestamp = datetime.now()
         start_ns = perf_counter_ns()
 
@@ -372,6 +373,13 @@ class StaticCommandRunner:
                 "route": route,
                 "timestamp": timestamp,
             }
+
+        # Based on user configuration for data output
+        # we return the data in the desired format
+        if execution_context.user_settings.preferences.data_output == "df":
+            return obbject.to_dataframe()
+        if execution_context.user_settings.preferences.data_output == "dict":
+            return obbject.to_dict()
 
         return obbject
 
