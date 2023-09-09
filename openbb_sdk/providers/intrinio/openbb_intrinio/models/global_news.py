@@ -45,7 +45,7 @@ class IntrinioGlobalNewsData(GlobalNewsData):
             "text": "summary",
         }
 
-    id: str = Field(description="Intrinio ID for the news article.")
+    id: str = Field(description="Article ID.")
     company: Dict[str, Any] = Field(
         description="Company details related to the news article."
     )

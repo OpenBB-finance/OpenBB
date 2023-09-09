@@ -273,23 +273,21 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     ask_high: Optional[float] = Field(
         description="The highest ask price for the option that day."
     )
-    open: Optional[float] = Field(description="The open price for the option that day.")
-    high: Optional[float] = Field(description="The high price for the option that day.")
-    low: Optional[float] = Field(description="The low price for the option that day.")
-    close: Optional[float] = Field(
-        description="The close price for the option that day."
-    )
+    open: Optional[float] = Field(description="Opening price of the option.")
+    high: Optional[float] = Field(description="High price of the option.")
+    low: Optional[float] = Field(description="Low price of the option.")
+    close: Optional[float] = Field(description="Close price for the option that day.")
     implied_volatility: Optional[float] = Field(
-        description="The implied volatility for the option at the end of day."
+        description="Implied volatility of the option."
     )
-    delta: Optional[float] = Field(description="The delta value at the end of day.")
-    gamma: Optional[float] = Field(description="The gamma value at the end of day.")
-    vega: Optional[float] = Field(description="The vega value at the end of day.")
-    theta: Optional[float] = Field(description="The theta value at the end of day.")
+    delta: Optional[float] = Field(description="Delta of the option.")
+    gamma: Optional[float] = Field(description="Gamma of the option.")
+    vega: Optional[float] = Field(description="Vega of the option.")
+    theta: Optional[float] = Field(description="Theta of the option.")
     eod_date: Optional[dateType] = Field(
         description="Historical date for which the options chains data is from.",
     )
-    dte: Optional[int] = Field(description="The number of days until expiry.")
+    dte: Optional[int] = Field(description="Days to expiration for the option.")
 
     @validator("expiration", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -313,11 +311,11 @@ class IntrinioOptionsChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the Intrinio endpoint"""
+        """Return the raw data from the Intrinio endpoint."""
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         data = get_historical_chain_with_greeks(
-            symbol=query.symbol, date=query.date, api_key=api_key
+            symbol=query.symbol, date=query.date, api_key=api_key  # type: ignore
         )
 
         return data.to_dict("records")

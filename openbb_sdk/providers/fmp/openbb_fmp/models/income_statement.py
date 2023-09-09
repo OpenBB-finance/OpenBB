@@ -141,7 +141,7 @@ class FMPIncomeStatementFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        symbol = query.symbol or query.cik
+        symbol = query.symbol
         base_url = "https://financialmodelingprep.com/api/v3"
 
         url = (

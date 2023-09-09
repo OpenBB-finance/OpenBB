@@ -203,7 +203,7 @@ def test_log_to_dict(handler, log_info, expected_dict):
                 "sessionId": "session123",
                 "platform": "Windows",
                 "pythonVersion": "3.9",
-                "terminalVersion": "1.2.3",
+                "obbPlatformVersion": "1.2.3",
                 "userId": "user123",
             },
         ),

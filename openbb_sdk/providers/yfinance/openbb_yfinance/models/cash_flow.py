@@ -34,7 +34,7 @@ class YFinanceCashFlowStatementData(CashFlowStatementData):
 class YFinanceCashFlowStatementFetcher(
     Fetcher[
         YFinanceCashFlowStatementQueryParams,
-        YFinanceCashFlowStatementData,
+        List[YFinanceCashFlowStatementData],
     ]
 ):
     @staticmethod
@@ -47,7 +47,7 @@ class YFinanceCashFlowStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
-        query.period = "yearly" if query.period == "annually" else "quarterly"
+        query.period = "yearly" if query.period == "annually" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=True, pretty=False, freq=query.period
         )
