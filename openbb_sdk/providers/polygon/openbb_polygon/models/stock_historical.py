@@ -53,9 +53,9 @@ class PolygonStockHistoricalData(StockHistoricalData):
             "low": "l",
             "close": "c",
             "volume": "v",
+            "vwap": "vw",
         }
 
-    vwap: Optional[float] = Field(description="The volume weighted average price.")
     transactions: Optional[PositiveInt] = Field(
         description="Number of transactions for the symbol in the time period.",
         alias="n",
