@@ -13,7 +13,7 @@ from openbb_provider.abstract.query_params import QueryParams
 class GlobalNewsQueryParams(QueryParams):
     """Global news query."""
 
-    page: NonNegativeInt = Field(default=0, description="Page of the global news.")
+    limit: NonNegativeInt = Field(default=20, description="Number of articles to return.")
 
 
 class GlobalNewsData(Data):
