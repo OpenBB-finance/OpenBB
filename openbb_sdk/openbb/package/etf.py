@@ -26,7 +26,7 @@ class CLASS_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["blackrock", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the holdings for an individual ETF.
@@ -35,12 +35,12 @@ class CLASS_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['blackrock', 'tmx']]
+        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
         date : Union[str, datetime.date, NoneType]
-            The as-of date for historical daily holdings. (provider: blackrock)
+            None
         country : Optional[Literal['canada']]
             The country the ETF is registered in. (provider: blackrock)
 
@@ -49,7 +49,7 @@ class CLASS_etf(Container):
         OBBject
             results : List[EtfHoldings]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'tmx']]
+            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -104,6 +104,34 @@ class CLASS_etf(Container):
             The modified duration of the asset. (provider: blackrock)
         maturity : Union[float, str, NoneType]
             The maturity date of the asset. (provider: blackrock)
+        lei : Optional[str]
+            The LEI of the company. (provider: fmp)
+        title : Optional[str]
+            The title of the holding. (provider: fmp)
+        isin : Optional[str]
+            The ISIN of the holding. (provider: fmp)
+        balance : Optional[float]
+            The balance of the holding. (provider: fmp)
+        units : Union[float, str, NoneType]
+            The units of the holding. (provider: fmp)
+        value : Optional[float]
+            The value of the holding in USD. (provider: fmp)
+        payoff_profile : Optional[str]
+            The payoff profile of the holding. (provider: fmp)
+        asset_category : Optional[str]
+            The asset category of the holding. (provider: fmp)
+        issuer_category : Optional[str]
+            The issuer category of the holding. (provider: fmp)
+        is_restricted : Optional[str]
+            Whether the holding is restricted. (provider: fmp)
+        fair_value_level : Optional[int]
+            The fair value level of the holding. (provider: fmp)
+        is_cash_collateral : Optional[str]
+            Whether the holding is cash collateral. (provider: fmp)
+        is_non_cash_collateral : Optional[str]
+            Whether the holding is non-cash collateral. (provider: fmp)
+        is_loan_by_fund : Optional[str]
+            Whether the holding is loan by fund. (provider: fmp)
         share_percentage : Optional[float]
             The share percentage of the holding. (provider: tmx)
         share_change : Union[float, str, NoneType]

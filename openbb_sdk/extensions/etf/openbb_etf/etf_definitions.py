@@ -61,7 +61,9 @@ class EtfSearch(OBBject):
 
     model: str = Field(description="The OpenBB data model.")
     provider: Optional[str] = Field(description="The data source.")
-    fields: List[str] = Field(description="Fields returned from the provider.")
+    fields: Optional[List[str]] = Field(
+        description="Fields returned from the provider."
+    )
     results: List[Dict] = Field(description="Serialized results.")
     metadata: Optional[Dict] = Field(
         description="Parameter and command execution metadata."
@@ -79,10 +81,10 @@ class EtfSearch(OBBject):
         )
         return repr_str
 
-    def to_dataframe(self):
+    def to_dataframe(self) -> pd.DataFrame:
         if len(self.results) == 0:
             return pd.DataFrame()
-        data = pd.DataFrame.from_records(self.dict()["results"]).convert_dtypes()
+        data = pd.DataFrame.from_records(self.dict()["results"])
         return data
 
 
@@ -100,7 +102,7 @@ class EtfHoldings(OBBject):
         fields: List
             Fields returned from the provider.
         info: Dict
-            Additional information about the daily holdings.
+            Additional information about the daily holdings.  Valid only for providers: ['blackrock', 'fmp']
         results: List
             Serialized results.
         metadata: Dict
@@ -122,7 +124,7 @@ class EtfHoldings(OBBject):
     provider: Optional[str] = Field(description="The data source.")
     fields: List[str] = Field(description="Fields returned from the provider.")
     info: Optional[Dict] = Field(
-        description="Additional information about the daily holdings.  Valid only for providers: ['blackrock']"
+        description="Additional information about the daily holdings.  Valid only for providers: ['blackrock', 'fmp']"
     )
     results: List[Dict] = Field(description="Serialized results.")
     metadata: Optional[Dict] = Field(
@@ -141,7 +143,7 @@ class EtfHoldings(OBBject):
         )
         return repr_str
 
-    def to_dataframe(self):
+    def to_dataframe(self) -> pd.DataFrame:
         if len(self.results) == 0:
             return pd.DataFrame()
         data = pd.DataFrame.from_records(self.dict()["results"]).convert_dtypes()
