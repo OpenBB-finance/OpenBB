@@ -58,8 +58,8 @@ class FMPBalanceSheetData(BalanceSheetData):
     total_debt: Optional[int] = Field(description="Total debt")
     net_debt: Optional[int] = Field(description="Net debt")
 
-    link: str = Field(description="Link to the statement.")
-    final_link: str = Field(description="Link to the final statement.")
+    link: Optional[str] = Field(description="Link to the statement.")
+    final_link: Optional[str] = Field(description="Link to the final statement.")
 
     @validator("filing_date", pre=True, check_fields=False)
     def filing_date_validate(cls, v):  # pylint: disable=no-self-argument
