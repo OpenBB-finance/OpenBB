@@ -156,6 +156,11 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
+        if isinstance(self.results, dict) and all(
+            isinstance(v, dict) for v in self.results.values()
+        ):
+            return self.results
+
         df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
         for field in df.columns:
@@ -164,6 +169,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
         # remove index from results
         if "index" in results:
             del results["index"]
+
         return results
 
     def to_chart(self, **kwargs):
