@@ -41,4 +41,6 @@ def holdings(
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfHoldings")
     results = EtfHoldings.parse_obj(data.__dict__)
+    results.results = data.results
+    results.fields = sorted(results.to_dataframe().columns.to_list())
     return results

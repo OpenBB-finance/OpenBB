@@ -24,7 +24,7 @@ class BlackrockEtfSearchQueryParams(EtfSearchQueryParams):
 class BlackrockEtfSearchData(EtfSearchData):
     """Blackrock ETF Search Data."""
 
-    name: str = Field(description="The name of the ETF.", alias="fund_name")
+    name: Optional[str] = Field(description="The name of the ETF.", alias="fund_name")
 
     asset_class: Optional[str | None] = Field(
         description="The asset class of the ETF.", alias="aladdin_asset_class"
@@ -35,7 +35,7 @@ class BlackrockEtfSearchData(EtfSearchData):
     region: Optional[str | None] = Field(
         description="The region of the ETF.", alias="aladdin_region"
     )
-    country: str = Field(
+    country: Optional[str] = Field(
         description="The country the ETF is registered in.", alias="aladdin_country"
     )
     market_type: Optional[str | None] = Field(

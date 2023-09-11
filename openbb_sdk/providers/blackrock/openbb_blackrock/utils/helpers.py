@@ -1,8 +1,7 @@
 """BlackRock ETF Data"""
 
 from datetime import timedelta
-from io import StringIO
-from typing import Literal, Tuple
+from typing import Literal
 
 import pandas as pd
 import requests_cache
@@ -19,14 +18,7 @@ blackrock_canada_products = requests_cache.CachedSession(
     use_cache_dir=True,
 )
 
-blackrock_canada_holdings = requests_cache.CachedSession(
-    "OpenBB_Blackrock_Canada_Holdings",
-    expire_after=timedelta(days=1),
-    use_cache_dir=True,
-)
-
 COUNTRIES = Literal["america", "canada"]
-
 
 CANADA_COLUMNS = [
     "portfolioId",
@@ -422,6 +414,22 @@ class America:
 
         return etfs[AMERICA_COLUMNS].convert_dtypes()
 
+    @staticmethod
+    def generate_holdings_url(symbol: str, date: str = "") -> str:
+        """Generates the URL for the Blackrock US ETF holdings."""
+        symbol = symbol.upper()
+        etfs = America.get_all_etfs()
+        product_page_url = etfs[etfs["symbol"] == symbol].iloc[0].get("productPageUrl")
+        url = (
+            f"https://www.ishares.com{product_page_url}/1467271812596.ajax?fileType=csv"
+        )
+        if date:
+            date = date.replace("-", "")
+            url = url + f"&asOfDate={date}"
+        url = url + f"&fileName={symbol.lower()}_holdings&dataType=fund"
+
+        return url
+
 
 class Canada:
     @staticmethod
@@ -472,22 +480,3 @@ class Canada:
         url = url + f"&fileName={symbol}_holdings&dataType=fund"
 
         return url
-
-    @staticmethod
-    def get_holdings(symbol: str, date: str = "") -> Tuple[pd.DataFrame, pd.Series]:
-        """Gets the Blackrock Canada ETF holdings."""
-
-        url = Canada.generate_holdings_url(symbol, date)
-
-        r = blackrock_canada_holdings.get(url, timeout=10)
-
-        if r.status_code != 200:
-            raise RuntimeError(r.status_code)
-
-        metadata = pd.read_csv(StringIO(r.text), nrows=8).iloc[:, 0]
-
-        holdings = pd.read_csv(StringIO(r.text), header=10, thousands=",")
-
-        holdings = holdings.replace("-", "").convert_dtypes()
-
-        return holdings, metadata

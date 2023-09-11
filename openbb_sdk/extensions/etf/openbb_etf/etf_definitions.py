@@ -122,7 +122,9 @@ class EtfHoldings(OBBject):
 
     model: str = Field(description="The OpenBB data model.")
     provider: Optional[str] = Field(description="The data source.")
-    fields: List[str] = Field(description="Fields returned from the provider.")
+    fields: List[str] = Field(
+        description="Fields returned from the provider.", default=[]
+    )
     info: Optional[Dict] = Field(
         description="Additional information about the daily holdings.  Valid only for providers: ['blackrock', 'fmp']"
     )
