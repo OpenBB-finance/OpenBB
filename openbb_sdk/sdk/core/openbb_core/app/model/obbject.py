@@ -3,6 +3,9 @@ from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from numpy import ndarray
+from pydantic import BaseModel, Field
+from pydantic.generics import GenericModel
+
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
@@ -11,8 +14,6 @@ from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
-from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel
 
 try:
     from polars import DataFrame as PolarsDataFrame
@@ -96,6 +97,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
             res = self.results
 
             df = None
+
             sort_columns = True
             if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
                 for r in res:
@@ -108,7 +110,6 @@ class OBBject(GenericModel, Generic[T], Tagged):
                             sort_columns = False
                         else:
                             dict_of_df[k] = pd.DataFrame(v)
-                    # Pass keys (column names) in the order we want them
                     df = pd.concat(dict_of_df, axis=1)  # , keys=dict_of_df.keys())
 
             elif isinstance(res, list) and all(
@@ -129,6 +130,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
+
+        if isinstance(df.index, pd.MultiIndex):
+            df.sort_index(axis=0, level=0, inplace=True)
+            df.sort_index(axis=0, level=1, inplace=True)
 
         return df
 

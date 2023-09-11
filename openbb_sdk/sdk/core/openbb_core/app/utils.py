@@ -37,6 +37,9 @@ def basemodel_to_df(
             df.index = pd.to_datetime(df.index)
             df.sort_index(axis=0, inplace=True)
 
+    if isinstance(df.index, pd.MultiIndex):
+        df = df.sort_index(axis=0, level=0, inplace=True)
+        df = df.sort_index(axis=0, level=1, inplace=True)
     return df
 
 

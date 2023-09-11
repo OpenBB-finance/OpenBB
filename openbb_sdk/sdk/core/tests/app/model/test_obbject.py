@@ -5,6 +5,7 @@ import pandas as pd
 import pytest
 from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
 from openbb_provider.abstract.data import Data
+from pandas.testing import assert_frame_equal
 
 
 def test_OBBject():
@@ -141,11 +142,7 @@ def test_to_dataframe_no_results():
                                 pd.to_datetime("1956-02-01"),
                                 pd.to_datetime("1956-03-01"),
                             ],
-                            "another_date": [
-                                "2023-09-01",
-                                "2023-09-01",
-                                "2023-09-01",
-                            ],
+                            "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
                         }
                     ).set_index("date"),
@@ -156,16 +153,13 @@ def test_to_dataframe_no_results():
                                 pd.to_datetime("1955-04-01"),
                                 pd.to_datetime("1955-05-01"),
                             ],
-                            "another_date": [
-                                "2023-09-01",
-                                "2023-09-01",
-                                "2023-09-01",
-                            ],
+                            "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
                         }
                     ).set_index("date"),
                 },
                 axis=1,
+                sort=True,
             ),
         ),
         # Test case 10: Empty results
@@ -182,7 +176,8 @@ def test_to_dataframe(results, expected_df):
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
         result = co.to_dataframe()
-        assert result.equals(expected_df)
+        # assert result.equals(expected_df)
+        assert_frame_equal(result, expected_df)
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
             co.to_dataframe()
