@@ -161,6 +161,9 @@ class OBBject(GenericModel, Generic[T], Tagged):
         for field in df.columns:
             results[field] = df[field].tolist()
 
+        # remove index from results
+        if "index" in results:
+            del results["index"]
         return results
 
     def to_chart(self, **kwargs):

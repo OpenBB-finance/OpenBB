@@ -209,13 +209,7 @@ def test_to_dataframe(results, expected_df):
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
         result = co.to_dataframe()
-        # assert result.equals(expected_df)
-        # try:
         assert_frame_equal(result, expected_df)
-        # except AssertionError:
-        #     assert set(expected_df.columns) == set(result.columns)
-        #     for col in result.columns:
-        #         assert expected_df[col].equals(result[col])
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
             co.to_dataframe()
@@ -224,45 +218,74 @@ def test_to_dataframe(results, expected_df):
 
 
 @pytest.mark.parametrize(
-    "results, expected",
-    [
-        # Test case 1: Normal results with "date" column
+    "results, expected_dict",
+    [  # Case 1: Normal results with "date" column
         (
             [{"date": "2023-07-30", "value": 10}, {"date": "2023-07-31", "value": 20}],
-            {
-                "date": [pd.to_datetime("2023-07-30"), pd.to_datetime("2023-07-31")],
-                "value": [10, 20],
-            },
+            {"date": ["2023-07-30", "2023-07-31"], "value": [10, 20]},
         ),
-        # Test case 2: Normal results without "date" column
+        # Case 2: Normal results without "date" column
         (
             [{"value": 10}, {"value": 20}],
+            {"value": [10, 20]},
+        ),
+        # Test case 3: Dict of lists
+        (
+            {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
+            {"0": [0, 2], "1": [1, 3], "2": [2, 0], "3": [3, 1], "4": [4, 6]},
+        ),
+        # Test case 4: No results
+        ([], OpenBBError("Results not found.")),
+        # Test case 5: Results as None, should raise OpenBBError
+        (None, OpenBBError("Results not found.")),
+        # Test case 6: List of tuples
+        (
+            [(3, 2), (1, 3), (2, 0), (3, 1), (4, 6)],
+            {0: [3, 1, 2, 3, 4], 1: [2, 3, 0, 1, 6]},
+        ),
+        # Test case 7: List of Strings
+        (
+            ["YOLO2", "YOLO3", "YOLO0", "YOLO1", "YOLO6"],
+            {0: ["YOLO2", "YOLO3", "YOLO0", "YOLO1", "YOLO6"]},
+        ),
+        # Test case 8: List of Numbers
+        (
+            [1, 0.42, 12321, 1293, 0.00123],
+            {0: [1, 0.42, 12321, 1293, 0.00123]},
+        ),
+        # Test case 9: Dict of Dicts
+        (
             {
-                "value": [10, 20],
+                "0": {"x": 0, "y": 2},
+                "1": {"x": 1, "y": 3},
+                "2": {"x": 2, "y": 0},
+                "3": {"x": 3, "y": 1},
+                "4": {"x": 4, "y": 6},
+            },
+            {
+                "0": [0, 2],
+                "1": [1, 3],
+                "2": [2, 0],
+                "3": [3, 1],
+                "4": [4, 6],
             },
         ),
-        # Test case 3: Empty results
-        ([], OpenBBError("Results not found.")),
     ],
 )
-def test_to_dict(results, expected):
+def test_to_dict(results, expected_dict):
     """Test helper."""
     # Arrange
-    if results:
-        results = [Data(**d) for d in results]
     co = OBBject(results=results)
 
     # Act and Assert
-    if isinstance(expected, Exception):
-        with pytest.raises(expected.__class__) as exc_info:
+    if isinstance(expected_dict, (list, dict)):
+        result = co.to_dict()
+        assert result == expected_dict
+    else:
+        with pytest.raises(expected_dict.__class__) as exc_info:
             co.to_dict()
 
-        assert str(exc_info.value) == str(expected)
-    else:
-        result = co.to_dict()
-        result.pop("index", None)
-
-        assert result == expected
+        assert str(exc_info.value) == str(expected_dict)
 
 
 @patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
