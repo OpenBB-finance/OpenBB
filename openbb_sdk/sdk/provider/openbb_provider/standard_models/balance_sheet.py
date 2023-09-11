@@ -17,7 +17,7 @@ class BalanceSheetQueryParams(FinancialStatementQueryParams):
     """Balance Sheet query."""
 
 
-class BalanceSheetData(Data, BaseSymbol):
+class BalanceSheetData(Data):
     """Balance Sheet Data."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))

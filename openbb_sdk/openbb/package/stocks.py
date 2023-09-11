@@ -674,7 +674,7 @@ class CLASS_stocks(Container):
             Unique identifier for the news article (provider: yfinance)
         type : Optional[str]
             Type of the news article (provider: yfinance)
-        thumbnail : Optional[Mapping[str, Any]]
+        thumbnail : Optional[List[Any]]
             Thumbnail related data to the ticker news article. (provider: yfinance)
         related_tickers : Optional[str]
             Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
@@ -708,8 +708,8 @@ class CLASS_stocks(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+            OpenBBCustomParameter(description="Comma separated list of symbols."),
+        ] = None,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -718,7 +718,7 @@ class CLASS_stocks(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for.
+            Comma separated list of symbols.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

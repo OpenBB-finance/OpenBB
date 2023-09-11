@@ -24,7 +24,9 @@ class CLASS_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="The exchange ticker symbol for the ETF."
+            ),
         ],
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
@@ -34,14 +36,14 @@ class CLASS_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for.
+            The exchange ticker symbol for the ETF.
         provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
         date : Union[str, datetime.date, NoneType]
-            None
-        country : Optional[Literal['canada']]
+            The as-of date for historical daily holdings. (provider: blackrock, fmp)
+        country : Optional[Literal['america', 'canada']]
             The country the ETF is registered in. (provider: blackrock)
 
         Returns
@@ -61,55 +63,67 @@ class CLASS_etf(Container):
         EtfHoldings
         -----------
         symbol : Optional[str]
-            The asset's ticker symbol. (provider: blackrock)
+            The asset's ticker symbol. (provider: blackrock); The ticker symbol of the holding. (provider: fmp); The ticker symbol of the asset. (provider: tmx)
         name : Optional[str]
-            The name of the asset. (provider: blackrock)
+            The name of the asset. (provider: blackrock, fmp, tmx)
         weight : Union[float, str, NoneType]
-            The weight of the holding. (provider: blackrock)
+            The weight of the holding. (provider: blackrock, fmp); The weight of the asset in the portfolio. (provider: tmx)
         price : Union[float, str, NoneType]
             The price-per-share of the asset. (provider: blackrock)
         shares : Union[int, str, NoneType]
-            The number of shares held. (provider: blackrock)
+            The number of shares held. (provider: blackrock); The value of the assets under management. (provider: tmx)
         market_value : Union[float, str, NoneType]
-            The market value of the holding. (provider: blackrock)
+            The market value of the holding. (provider: blackrock, tmx)
         notional_value : Union[float, str, NoneType]
             The notional value of the holding. (provider: blackrock)
+        asset_class : Optional[str]
+            The asset class of the asset. (provider: blackrock)
         sector : Optional[str]
             The sector the asset belongs to. (provider: blackrock)
+        isin : Optional[str]
+            The ISIN of the asset. (provider: blackrock); The ISIN of the holding. (provider: fmp)
         sedol : Optional[str]
             The SEDOL of the asset. (provider: blackrock)
         cusip : Optional[str]
-            The CUSIP of the asset. (provider: blackrock)
+            The CUSIP of the asset. (provider: blackrock); The CUSIP of the holding. (provider: fmp)
         exchange : Optional[str]
-            The exchange the asset is traded on. (provider: blackrock)
+            The exchange the asset is traded on. (provider: blackrock); The exchange code of the holding. (provider: tmx)
         country : Optional[str]
-            The location of the risk exposure is. (provider: blackrock)
+            The location of the risk exposure is. (provider: blackrock); The country of the holding. (provider: fmp); The country of the holding. (provider: tmx)
         currency : Optional[str]
-            The currency of the asset. (provider: blackrock)
+            The currency of the asset. (provider: blackrock); The currency of the holding. (provider: fmp); The currency of the holding. (provider: tmx)
         market_currency : Optional[str]
             The currency for the market the asset trades in. (provider: blackrock)
         fx_rate : Optional[float]
             The exchange rate of the asset against the fund's base currency. (provider: blackrock)
         coupon : Union[float, str, NoneType]
             The coupon rate of the asset. (provider: blackrock)
+        par_value : Union[float, str, NoneType]
+            The par value of the asset. (provider: blackrock)
         ytm : Union[float, str, NoneType]
             The yield-to-maturity of the asset. (provider: blackrock)
+        real_ytm : Union[float, str, NoneType]
+            The real yield-to-maturity of the asset. (provider: blackrock)
         yield_to_worst : Union[float, str, NoneType]
             The yield-to-worst of the asset. (provider: blackrock)
         duration : Union[float, str, NoneType]
             The duration of the asset. (provider: blackrock)
+        real_duration : Union[float, str, NoneType]
+            The real duration of the asset. (provider: blackrock)
         yield_to_call : Union[float, str, NoneType]
             The yield-to-call of the asset. (provider: blackrock)
         mod_duration : Union[float, str, NoneType]
             The modified duration of the asset. (provider: blackrock)
         maturity : Union[float, str, NoneType]
             The maturity date of the asset. (provider: blackrock)
+        accrual_date : Union[str, date, NoneType]
+            The accrual date of the asset. (provider: blackrock)
+        effective_date : Union[str, date, NoneType]
+            The effective date of the asset. (provider: blackrock)
         lei : Optional[str]
             The LEI of the company. (provider: fmp)
         title : Optional[str]
             The title of the holding. (provider: fmp)
-        isin : Optional[str]
-            The ISIN of the holding. (provider: fmp)
         balance : Optional[float]
             The balance of the holding. (provider: fmp)
         units : Union[float, str, NoneType]
@@ -213,15 +227,15 @@ class CLASS_etf(Container):
         region : Optional[str]
             The region of the ETF. (provider: blackrock)
         country : Optional[str]
-            The country the ETF is registered in. (provider: blackrock)
+            The country the ETF is registered in. (provider: blackrock, fmp)
         market_type : Optional[str]
             The market type of the ETF. (provider: blackrock)
         investment_style : Optional[str]
-            The investment style of the ETF. (provider: blackrock)
+            The investment style of the ETF. (provider: blackrock, tmx)
         investment_strategy : Optional[str]
             The investment strategy of the ETF. (provider: blackrock)
         aum : Union[float, NoneType, int]
-            The value of the assets under management. (provider: blackrock)
+            The value of the assets under management. (provider: blackrock, tmx)
         market_cap : Optional[float]
             The market cap of the ETF. (provider: fmp)
         sector : Optional[str]

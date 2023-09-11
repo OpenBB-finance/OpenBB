@@ -38,7 +38,7 @@ class CLASS_stocks_options(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Union[datetime.date, str, NoneType]
+        date : Optional[datetime.date]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns
@@ -114,9 +114,9 @@ class CLASS_stocks_options(Container):
         mark : Optional[float]
             The mid-price between the latest bid-ask spread. (provider: intrinio)
         open_bid : Optional[float]
-            The lowest bid price for the option that day. (provider: intrinio)
+            The opening bid price for the option that day. (provider: intrinio)
         open_ask : Optional[float]
-            The lowest ask price for the option that day. (provider: intrinio)
+            The opening ask price for the option that day. (provider: intrinio)
         bid_low : Optional[float]
             The lowest bid price for the option that day. (provider: intrinio)
         ask_low : Optional[float]

@@ -139,7 +139,7 @@ class FMPEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> pd.DataFrame:
         """Return the raw data from the FMP endpoint."""
-
+        query.symbol = query.symbol.upper()
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         return FMPEtfHoldingsFetcher.get_holdings(

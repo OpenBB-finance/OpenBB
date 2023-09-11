@@ -17,7 +17,7 @@ class IncomeStatementQueryParams(FinancialStatementQueryParams):
     """Income Statement Query."""
 
 
-class IncomeStatementData(Data, BaseSymbol):
+class IncomeStatementData(Data):
     """Income Statement Data."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))

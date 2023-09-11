@@ -3,6 +3,7 @@
         "crypto@0.1.0a0",
         "econometrics@0.1.0a0",
         "economy@0.1.0a0",
+        "etf@0.1.0",
         "fixedincome@0.1.0a0",
         "forex@0.1.0a0",
         "futures@0.1.0a0",
@@ -15,12 +16,14 @@
     "openbb_provider_extension": [
         "alpha_vantage@0.1.0a0",
         "benzinga@0.1.0a0",
+        "blackrock@0.1.0",
         "cboe@0.1.0a0",
         "fmp@0.1.0a0",
         "fred@0.1.0a0",
         "intrinio@0.1.0a0",
         "polygon@0.1.0a0",
         "quandl@0.1.0a0",
+        "tmx@0.1.0",
         "yfinance@0.1.0a0"
     ]
 }

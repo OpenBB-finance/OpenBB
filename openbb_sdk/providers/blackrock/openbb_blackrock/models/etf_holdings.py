@@ -159,7 +159,7 @@ class BlackrockEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
         """Return the raw data from the Blackrock endpoint."""
-
+        query.symbol = query.symbol.upper()
         data: Tuple[pd.DataFrame, Dict[str, Any]]
         holdings: pd.DataFrame = pd.DataFrame()
         metadata = pd.Series(dtype="object")
