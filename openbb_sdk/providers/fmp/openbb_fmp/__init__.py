@@ -14,6 +14,7 @@ from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
+from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
@@ -99,5 +100,6 @@ fmp_provider = Provider(
         "FinancialRatios": FMPFinancialRatiosFetcher,
         "EtfSearch": FMPEtfSearchFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
+        "EtfSectors": FMPEtfSectorsFetcher,
     },
 )

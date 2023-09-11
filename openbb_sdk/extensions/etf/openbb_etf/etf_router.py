@@ -10,7 +10,7 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
-from openbb_etf.etf_definitions import EtfHoldings, EtfSearch, Results
+from openbb_etf.etf_definitions import EtfHoldings, EtfSearch, EtfSectors, Results
 
 router = Router(prefix="")
 
@@ -43,4 +43,19 @@ def holdings(
     results = EtfHoldings.parse_obj(data.__dict__)
     results.results = data.results
     results.fields = sorted(results.to_dataframe().columns.to_list())
+    return results
+
+
+@router.command(model="EtfSectors")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> EtfSectors:
+    """ETF Sector weighting."""
+
+    data = Results(OBBject(results=Query(**locals()).execute()), "EtfSectors")
+    results = EtfSectors.parse_obj(data.__dict__)
+
     return results

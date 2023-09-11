@@ -69,7 +69,7 @@ class FMPEtfSearchFetcher(
         List[FMPEtfSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEtfSearchQueryParams:

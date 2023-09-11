@@ -13,6 +13,7 @@ from typing_extensions import Annotated
 class CLASS_etf(Container):
     """/etf
     holdings
+    info
     search
     """
 
@@ -167,6 +168,101 @@ class CLASS_etf(Container):
 
         return self._command_runner.run(
             "/etf/holdings",
+            **inputs,
+        )
+
+    @validate_arguments
+    def info(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="The exchange ticker symbol for the ETF."
+            ),
+        ],
+        scope: Annotated[
+            Optional[Literal["sector", "country"]],
+            OpenBBCustomParameter(
+                description="\n            The scope of the query.\n\n            sector: The weighting by sector/industry of the ETF.\n            country: The weighting by country/region of the ETF.\n            "
+            ),
+        ] = "sector",
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """ETF Sector weighting.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            The exchange ticker symbol for the ETF.
+        scope : Optional[Literal['sector', 'country']]
+
+                    The scope of the query.
+
+                    sector: The weighting by sector/industry of the ETF.
+                    country: The weighting by country/region of the ETF.
+
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfSectors]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        EtfSectors
+        ----------
+        symbol : Optional[str]
+            The exchange ticker symbol for the ETF.
+        energy : Optional[float]
+            Energy Sector Weight. (provider: fmp)
+        materials : Optional[float]
+            Materials Sector Weight. (provider: fmp)
+        industrials : Optional[float]
+            Industrials Sector Weight. (provider: fmp)
+        consumer_cyclical : Optional[float]
+            Consumer Cyclical Sector Weight. (provider: fmp)
+        consumer_defensive : Optional[float]
+            Consumer Defensive Sector Weight. (provider: fmp)
+        financial_services : Optional[float]
+            Financial Services Sector Weight. (provider: fmp)
+        technology : Optional[float]
+            Technology Sector Weight. (provider: fmp)
+        health_care : Optional[float]
+            Health Care Sector Weight. (provider: fmp)
+        communication_services : Optional[float]
+            Communication Services Sector Weight. (provider: fmp)
+        utilities : Optional[float]
+            Utilities Sector Weight. (provider: fmp)
+        real_estate : Optional[float]
+            Real Estate Sector Weight. (provider: fmp)
+        other : Optional[float]
+            Other Sector Weight. (provider: fmp)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "scope": scope,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/etf/info",
             **inputs,
         )
 
