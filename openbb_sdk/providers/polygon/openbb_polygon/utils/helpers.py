@@ -67,7 +67,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         value = message or error
 
         raise RuntimeError(f"Error in Polygon request -> {value}")
-    
+
     if len(data) == 0:
         raise RuntimeError("No results found. Try adjusting the query parameters.")
 
@@ -127,5 +127,5 @@ def get_date_condition(date: str) -> str:
     for key, value in date_conditions.items():
         if key in date:
             return date.split(key)[1], value
-        
+
     return date, "eq"

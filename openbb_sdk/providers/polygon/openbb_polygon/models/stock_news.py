@@ -2,7 +2,6 @@
 
 
 from typing import Any, Dict, List, Literal, Optional
-import math
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
@@ -28,12 +27,11 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         description="Date query to fetch articles. Supports operators <, <=, >, >="
     )
     order: Optional[Literal["asc", "desc"]] = Field(
-        default = "desc",
-        description="Sort order of the articles."
+        default="desc", description="Sort order of the articles."
     )
 
     @validator("limit", pre=True)
-    def limit_validator(cls, v: int) -> int: # pylint: disable=E0213
+    def limit_validator(cls, v: int) -> int:  # pylint: disable=E0213
         """Limit validator."""
         return min(v, 1000)
 
@@ -88,7 +86,9 @@ class PolygonStockNewsFetcher(
             date, condition = get_date_condition(query.published_utc)
 
             if condition != "eq":
-                query_str = get_querystring(query.dict(by_alias=True), ["published_utc"])
+                query_str = get_querystring(
+                    query.dict(by_alias=True), ["published_utc"]
+                )
                 query_str += f"&published_utc.{condition}={date}"
 
         else:

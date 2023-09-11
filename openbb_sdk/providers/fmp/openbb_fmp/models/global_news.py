@@ -1,8 +1,8 @@
 """FMP Global News fetcher."""
 
-from typing import Any, Dict, List, Optional
-from datetime import datetime
 import math
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.global_news import (
@@ -60,7 +60,7 @@ class FMPGlobalNewsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v4"
-        pages = math.ceil(query.limit/20)
+        pages = math.ceil(query.limit / 20)
         all_data = []
 
         for page in range(pages):
@@ -69,7 +69,7 @@ class FMPGlobalNewsFetcher(
             all_data.extend(data)
 
         all_data = sorted(all_data, key=lambda x: x["publishedDate"], reverse=True)
-        all_data = all_data[:query.limit]
+        all_data = all_data[: query.limit]
 
         return all_data
 

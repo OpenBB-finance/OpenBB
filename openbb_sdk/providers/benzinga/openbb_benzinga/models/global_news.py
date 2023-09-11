@@ -1,13 +1,12 @@
 """Benzinga Global News Fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.global_news import GlobalNewsQueryParams
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field
 
 from openbb_benzinga.utils.helpers import BenzingaStockNewsData, get_data
 

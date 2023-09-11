@@ -1,7 +1,6 @@
 """Benzinga Stock News Fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
