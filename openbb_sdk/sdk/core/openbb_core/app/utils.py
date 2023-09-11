@@ -10,14 +10,20 @@ def basemodel_to_df(
     index: Optional[Union[str, Iterable]] = None,
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
+    # Get consistent column order from the first data instance
+    columns_order = (
+        list(data[0].dict().keys())
+        if isinstance(data, list) and data
+        else list(data.dict().keys())  # type: ignore
+    )
 
     if isinstance(data, list):
-        df = pd.DataFrame([d.dict() for d in data])
+        df = pd.DataFrame([d.dict() for d in data], columns=columns_order)
     else:
         try:
-            df = pd.DataFrame(data.dict())
+            df = pd.DataFrame(data.dict(), columns=columns_order)
         except ValueError:
-            df = pd.DataFrame(data.dict(), index=["values"])
+            df = pd.DataFrame(data.dict(), index=["values"], columns=columns_order)
 
     if "is_multiindex" in df.columns:
         col_names = ast.literal_eval(df.multiindex_names.unique()[0])
@@ -30,6 +36,7 @@ def basemodel_to_df(
         if df.index.name == "date":
             df.index = pd.to_datetime(df.index)
             df.sort_index(axis=0, inplace=True)
+
     return df
 
 
