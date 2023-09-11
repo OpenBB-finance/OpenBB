@@ -31,6 +31,21 @@ def test_to_dataframe_no_results():
         co.to_dataframe()
 
 
+class MockData(Data):
+    """Test helper."""
+
+    x: int
+    y: int
+
+
+class MockMultiData(Data):
+    """Test helper."""
+
+    date: str
+    another_date: str
+    value: float
+
+
 @pytest.mark.parametrize(
     "results, expected_df",
     [
@@ -52,24 +67,28 @@ def test_to_dataframe_no_results():
         # Test case 3: List of Data
         (
             [
-                Data(x=0, y=2),
-                Data(x=1, y=3),
-                Data(x=2, y=0),
-                Data(x=3, y=1),
-                Data(x=4, y=6),
+                MockData(x=0, y=2),
+                MockData(x=1, y=3),
+                MockData(x=2, y=0),
+                MockData(x=3, y=1),
+                MockData(x=4, y=6),
             ],
-            pd.DataFrame({"x": [0, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]}),
+            pd.DataFrame(
+                {"x": [0, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]}, columns=["x", "y"]
+            ),
         ),
         # Test case 4: List of dict
         (
             [
-                {"x": 1, "y": 2},
-                {"x": 1, "y": 3},
-                {"x": 2, "y": 0},
-                {"x": 3, "y": 1},
-                {"x": 4, "y": 6},
+                {"a": 1, "y": 2},
+                {"a": 1, "y": 3},
+                {"a": 2, "y": 0},
+                {"a": 3, "y": 1},
+                {"a": 4, "y": 6},
             ],
-            pd.DataFrame({"x": [1, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]}),
+            pd.DataFrame(
+                {"a": [1, 1, 2, 3, 4], "y": [2, 3, 0, 1, 6]}, columns=["a", "y"]
+            ),
         ),
         # Test case 5: List of Lists
         (
@@ -122,14 +141,26 @@ def test_to_dataframe_no_results():
             [
                 {
                     "df1": [
-                        Data(date="1956-01-01", another_date="2023-09-01", value=0.0),
-                        Data(date="1956-02-01", another_date="2023-09-01", value=0.0),
-                        Data(date="1956-03-01", another_date="2023-09-01", value=0.0),
+                        MockMultiData(
+                            date="1956-01-01", another_date="2023-09-01", value=0.0
+                        ),
+                        MockMultiData(
+                            date="1956-02-01", another_date="2023-09-01", value=0.0
+                        ),
+                        MockMultiData(
+                            date="1956-03-01", another_date="2023-09-01", value=0.0
+                        ),
                     ],
                     "df2": [
-                        Data(date="1955-03-01", another_date="2023-09-01", value=0.0),
-                        Data(date="1955-04-01", another_date="2023-09-01", value=0.0),
-                        Data(date="1955-05-01", another_date="2023-09-01", value=0.0),
+                        MockMultiData(
+                            date="1955-03-01", another_date="2023-09-01", value=0.0
+                        ),
+                        MockMultiData(
+                            date="1955-04-01", another_date="2023-09-01", value=0.0
+                        ),
+                        MockMultiData(
+                            date="1955-05-01", another_date="2023-09-01", value=0.0
+                        ),
                     ],
                 }
             ],
@@ -144,7 +175,8 @@ def test_to_dataframe_no_results():
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
-                        }
+                        },
+                        columns=["date", "another_date", "value"],
                     ).set_index("date"),
                     "df2": pd.DataFrame(
                         {
@@ -155,7 +187,8 @@ def test_to_dataframe_no_results():
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
-                        }
+                        },
+                        columns=["date", "another_date", "value"],
                     ).set_index("date"),
                 },
                 axis=1,
@@ -177,7 +210,12 @@ def test_to_dataframe(results, expected_df):
     if isinstance(expected_df, pd.DataFrame):
         result = co.to_dataframe()
         # assert result.equals(expected_df)
+        # try:
         assert_frame_equal(result, expected_df)
+        # except AssertionError:
+        #     assert set(expected_df.columns) == set(result.columns)
+        #     for col in result.columns:
+        #         assert expected_df[col].equals(result[col])
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
             co.to_dataframe()
