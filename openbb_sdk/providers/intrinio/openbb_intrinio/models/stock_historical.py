@@ -11,7 +11,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, validator
 
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
@@ -46,6 +46,7 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     interval_size: Optional[INTERVALS] = Field(
         default="60m", description=QUERY_DESCRIPTIONS.get("frequency", "")
     )
+
 
 class IntrinioStockHistoricalData(StockHistoricalData):
     """Intrinio Stock end of day Data."""
