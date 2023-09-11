@@ -118,7 +118,7 @@ class YFinanceStockHistoricalFetcher(
             data.set_index("date", inplace=True)
             data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
 
-        return data.reset_index().to_dict("records")
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
