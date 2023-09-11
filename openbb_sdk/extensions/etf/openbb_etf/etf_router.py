@@ -27,6 +27,7 @@ def search(
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfSearch")
     results = EtfSearch.parse_obj(data.__dict__)
+    results.results = data.results
     return results
 
 
@@ -47,7 +48,7 @@ def holdings(
 
 
 @router.command(model="EtfSectors")
-def info(
+def sectors(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -57,5 +58,6 @@ def info(
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfSectors")
     results = EtfSectors.parse_obj(data.__dict__)
+    results.results = data.results
 
     return results

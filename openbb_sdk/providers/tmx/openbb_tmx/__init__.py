@@ -5,6 +5,7 @@ from openbb_provider.abstract.provider import Provider
 
 from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_search import TmxEtfSearchFetcher
+from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
 
 tmx_provider = Provider(
     name="tmx",
@@ -26,5 +27,6 @@ tmx_provider = Provider(
     fetcher_dict={
         "EtfSearch": TmxEtfSearchFetcher,
         "EtfHoldings": TmxEtfHoldingsFetcher,
+        "EtfSectors": TmxEtfSectorsFetcher,
     },
 )
