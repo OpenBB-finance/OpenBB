@@ -25,21 +25,11 @@ class IntrinioStockNewsQueryParams(StockNewsQueryParams):
         """Pydantic alias config using fields dict."""
 
         fields = {
-            "symbols": "symbols",
-            "page": "next_page",
             "limit": "page_size",
         }
 
     symbols: str = Field(
         description="A Company identifier (Ticker, CIK, LEI, Intrinio ID)."
-    )
-    next_page: Optional[str] = Field(
-        description="Token to get the next page of data from a previous API call."
-    )
-    # TODO: Add support for all_pages
-    all_pages: Optional[bool] = Field(
-        default=False,
-        description="Returns all pages of data from the API call at once.",
     )
 
 
@@ -54,7 +44,7 @@ class IntrinioStockNewsData(StockNewsData):
             "text": "summary",
         }
 
-    id: str = Field(description="Article ID.")
+    id: str = Field(description="Intrinio ID for the article.")
 
     @validator("publication_date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -87,7 +77,7 @@ class IntrinioStockNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbols", "all_pages"])
+        query_str = get_querystring(query.dict(by_alias=True), ["symbols"])
         url = f"{base_url}/companies/{query.symbols}/news?{query_str}&api_key={api_key}"
 
         return get_data_many(url, "news", **kwargs)
