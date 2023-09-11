@@ -9,7 +9,6 @@ from datetime import (
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
-import requests_cache
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
