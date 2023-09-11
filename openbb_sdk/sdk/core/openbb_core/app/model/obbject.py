@@ -110,7 +110,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
                             sort_columns = False
                         else:
                             dict_of_df[k] = pd.DataFrame(v)
-                    df = pd.concat(dict_of_df, axis=1)  # , keys=dict_of_df.keys())
+                    df = pd.concat(dict_of_df, axis=1)
 
             elif isinstance(res, list) and all(
                 isinstance(item, BaseModel) for item in res
@@ -130,10 +130,6 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
         except Exception as e:
             raise OpenBBError("Failed to convert results to DataFrame.") from e
-
-        if isinstance(df.index, pd.MultiIndex):
-            df.sort_index(axis=0, level=0, inplace=True)
-            df.sort_index(axis=0, level=1, inplace=True)
 
         return df
 
