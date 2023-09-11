@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-fmp"
-version = "0.1.0"
+version = "0.1.0a0"
 description = "FMP extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,8 +8,7 @@ packages = [{ include = "openbb_fmp" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-requests-cache = "^1.1.0"
-openbb-core = { path = "../../sdk/core" }
+openbb-core = "^0.1.0a0"
 
 [build-system]
 requires = ["poetry-core"]

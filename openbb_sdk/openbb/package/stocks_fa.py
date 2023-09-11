@@ -64,7 +64,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Balance Sheet.
 
         Parameters
@@ -138,7 +138,7 @@ class CLASS_stocks_fa(Container):
             Date of the fetched statement.
         period : Optional[str]
             Reporting period of the statement.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
@@ -499,7 +499,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Cash Flow Statement.
 
         Parameters
@@ -573,7 +573,7 @@ class CLASS_stocks_fa(Container):
             Date of the fetched statement.
         period : Optional[str]
             Reporting period of the statement.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         net_income : Optional[int]
             Net income.
@@ -1302,7 +1302,7 @@ class CLASS_stocks_fa(Container):
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Income Statement.
 
         Parameters

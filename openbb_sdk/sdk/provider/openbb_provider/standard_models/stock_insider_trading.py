@@ -2,13 +2,13 @@
 
 
 from datetime import date, datetime
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 TRANSACTION_TYPES = Literal[
     "A-Award",
@@ -32,9 +32,10 @@ TRANSACTION_TYPES = Literal[
 ]
 
 
-class StockInsiderTradingQueryParams(QueryParams, BaseSymbol):
+class StockInsiderTradingQueryParams(QueryParams):
     """Stock Insider Trading Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     transactionType: Optional[List[TRANSACTION_TYPES]] = Field(
         default=["P-Purchase"], description="Type of the transaction."
     )
@@ -44,10 +45,18 @@ class StockInsiderTradingQueryParams(QueryParams, BaseSymbol):
         default=0, description="Page number of the data to fetch."
     )
 
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
-class StockInsiderTradingData(Data, BaseSymbol):
+
+class StockInsiderTradingData(Data):
     """Stock Insider Trading Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     filing_date: datetime = Field(
         description="Filing date of the stock insider trading."
     )
@@ -82,3 +91,10 @@ class StockInsiderTradingData(Data, BaseSymbol):
         description="Security name of the stock insider trading."
     )
     link: str = Field(description="Link of the stock insider trading.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

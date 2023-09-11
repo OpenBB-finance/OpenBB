@@ -38,7 +38,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     interval: Optional[Literal["1min", "5min", "15min", "30min", "60min"]] = Field(
-        description="The interval between two consecutive data points in the time series.",
+        description="Data granularity.",
         default="60min",
         available_on_functions=["TIME_SERIES_INTRADAY"],
         required_on_functions=["TIME_SERIES_INTRADAY"],

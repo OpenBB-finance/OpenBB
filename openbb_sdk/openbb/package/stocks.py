@@ -204,12 +204,12 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
-        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
-            None
+        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Period of the data to return. (provider: alpha_vantage, yfinance)
         interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            None
+            Data granularity. (provider: alpha_vantage, cboe, fmp, yfinance)
         adjusted : Optional[bool]
-            None
+            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon)
         extended_hours : Optional[bool]
             Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
         month : Optional[str]
@@ -229,7 +229,7 @@ class CLASS_stocks(Container):
         interval_size : Optional[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]
             The data time frequency. (provider: intrinio)
         limit : Union[pydantic.types.NonNegativeInt, NoneType, pydantic.types.PositiveInt]
-            None
+            The number of data entries to return. (provider: intrinio, polygon)
         next_page : Optional[str]
             Token to get the next page of data from a previous API call. (provider: intrinio)
         all_pages : Optional[bool]
@@ -242,10 +242,24 @@ class CLASS_stocks(Container):
             Multiplier of the timespan. (provider: polygon)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
+        actions : bool
+            Include actions. (provider: yfinance)
+        auto_adjust : bool
+            Adjust all OHLC data automatically. (provider: yfinance)
         back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+            Attempt to adjust all the data automatically. (provider: yfinance)
+        progress : bool
+            Show progress bar. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+        rounding : bool
+            Round to two decimal places? (provider: yfinance)
+        repair : bool
+            Detect currency unit 100x mixups and attempt repair. (provider: yfinance)
+        keepna : bool
+            Keep NaN rows returned by Yahoo? (provider: yfinance)
+        group_by : Literal['ticker', 'column']
+            Group by ticker or column. (provider: yfinance)
 
         Returns
         -------
@@ -294,13 +308,13 @@ class CLASS_stocks(Container):
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day. (provider: fmp)
+            Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]
@@ -534,7 +548,7 @@ class CLASS_stocks(Container):
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Get news for one or more stock tickers.
 
         Parameters
@@ -564,7 +578,7 @@ class CLASS_stocks(Container):
         published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
-            None
+            Order in which to sort the news. (provider: benzinga, polygon)
         isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Optional[str]
@@ -582,25 +596,25 @@ class CLASS_stocks(Container):
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
         ticker_lt : Optional[str]
-            Less than, by default None (provider: polygon)
+            Less than. (provider: polygon)
         ticker_lte : Optional[str]
-            Less than or equal, by default None (provider: polygon)
+            Less than or equal. (provider: polygon)
         ticker_gt : Optional[str]
-            Greater than, by default None (provider: polygon)
+            Greater than. (provider: polygon)
         ticker_gte : Optional[str]
-            Greater than or equal, by default None (provider: polygon)
+            Greater than or equal. (provider: polygon)
         published_utc : Optional[str]
-            Published date of the query, by default None (provider: polygon)
+            Published date of the query. (provider: polygon)
         published_utc_lt : Optional[str]
-            Less than, by default None (provider: polygon)
+            Less than. (provider: polygon)
         published_utc_lte : Optional[str]
-            Less than or equal, by default None (provider: polygon)
+            Less than or equal. (provider: polygon)
         published_utc_gt : Optional[str]
-            Greater than, by default None (provider: polygon)
+            Greater than. (provider: polygon)
         published_utc_gte : Optional[str]
-            Greater than or equal, by default None (provider: polygon)
+            Greater than or equal. (provider: polygon)
         order : Optional[Literal['asc', 'desc']]
-            Sort order of the query, by default None (provider: polygon)
+            Sort order of the query. (provider: polygon)
 
         Returns
         -------
@@ -643,7 +657,7 @@ class CLASS_stocks(Container):
         site : Optional[str]
             Name of the news source. (provider: fmp)
         id : Optional[str]
-            Intrinio ID for the news article. (provider: intrinio)
+            Article ID. (provider: intrinio, polygon)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         author : Optional[str]
@@ -653,7 +667,7 @@ class CLASS_stocks(Container):
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
         publisher : Union[PolygonPublisher, NoneType, str]
-            Publisher of the article. (provider: polygon)
+            Publisher of the article. (provider: polygon, yfinance)
         tickers : Optional[List[str]]
             Tickers covered in the article. (provider: polygon)
         uuid : Optional[str]
@@ -698,7 +712,7 @@ class CLASS_stocks(Container):
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Load stock data for a specific ticker.
 
         Parameters

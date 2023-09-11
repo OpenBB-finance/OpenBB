@@ -1,7 +1,8 @@
 """The OBBject."""
-from typing import Dict, Generic, List, Literal, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
+from numpy import ndarray
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 
@@ -13,6 +14,11 @@ from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
+
+try:
+    from polars import DataFrame as PolarsDataFrame
+except ImportError:
+    PolarsDataFrame = Any
 
 T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
@@ -56,6 +62,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
             )
         )
 
+    def to_df(self) -> pd.DataFrame:
+        """Alias for `to_dataframe`."""
+        return self.to_dataframe()
+
     def to_dataframe(self) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
@@ -79,6 +89,9 @@ class OBBject(GenericModel, Generic[T], Tagged):
         """
         if self.results is None or self.results == []:
             raise OpenBBError("Results not found.")
+
+        if isinstance(self.results, pd.DataFrame):
+            return self.results
 
         try:
             res = self.results
@@ -114,6 +127,21 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
         return df
 
+    def to_polars(self) -> PolarsDataFrame:
+        """Convert results field to polars dataframe."""
+        try:
+            from polars import from_pandas
+        except ImportError:
+            raise ImportError(
+                "Please install polars: `pip install polars`  to use this function."
+            )
+
+        return from_pandas(self.to_dataframe().reset_index())
+
+    def to_numpy(self) -> ndarray:
+        """Convert results field to numpy array."""
+        return self.to_dataframe().reset_index().to_numpy()
+
     def to_dict(self) -> Dict[str, List]:
         """Convert results field to list of values.
 
@@ -130,7 +158,10 @@ class OBBject(GenericModel, Generic[T], Tagged):
         return results
 
     def to_chart(self, **kwargs):
-        """Create or update the `Chart`.
+        """
+        Create or update the `Chart`.
+        This function assumes that the provided data is a time series, if it's not, it will
+        most likely result in an Exception.
 
         Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
 

@@ -37,7 +37,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
             "research_and_development_expenses": "ResearchAndDevelopmentExpense",
             "selling_general_and_administrative_expenses": "SellingGeneralAndAdministrativeExpense",
             "operating_income": "OperatingIncomeLoss",
-            "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+            "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",  # noqa: E501
             "eps_diluted": "EarningsPerShareDiluted",
             "weighted_average_shares_outstanding": "WeightedAverageNumberOfSharesOutstandingBasic",
             "weighted_average_shares_outstanding_dil": "WeightedAverageNumberOfDilutedSharesOutstanding",

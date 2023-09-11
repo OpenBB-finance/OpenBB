@@ -116,7 +116,7 @@ class PosthogHandler(logging.Handler):
             "sessionId": self._settings.session_id,
             "platform": self._settings.platform,
             "pythonVersion": self._settings.python_version,
-            "terminalVersion": self._settings.terminal_version,
+            "obbPlatformVersion": self._settings.terminal_version,
         }
 
         if self._settings.user_id:

@@ -23,38 +23,28 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     class Config:
         fields = {"symbols": "ticker"}
 
-    ticker_lt: Optional[str] = Field(
-        default=None, description="Less than, by default None"
-    )
-    ticker_lte: Optional[str] = Field(
-        default=None, description="Less than or equal, by default None"
-    )
-    ticker_gt: Optional[str] = Field(
-        default=None, description="Greater than, by default None"
-    )
+    ticker_lt: Optional[str] = Field(default=None, description="Less than.")
+    ticker_lte: Optional[str] = Field(default=None, description="Less than or equal.")
+    ticker_gt: Optional[str] = Field(default=None, description="Greater than.")
     ticker_gte: Optional[str] = Field(
-        default=None, description="Greater than or equal, by default None"
+        default=None, description="Greater than or equal."
     )
     published_utc: Optional[str] = Field(
-        default=None, description="Published date of the query, by default None"
+        default=None, description="Published date of the query."
     )
-    published_utc_lt: Optional[str] = Field(
-        default=None, description="Less than, by default None"
-    )
+    published_utc_lt: Optional[str] = Field(default=None, description="Less than.")
     published_utc_lte: Optional[str] = Field(
-        default=None, description="Less than or equal, by default None"
+        default=None, description="Less than or equal."
     )
-    published_utc_gt: Optional[str] = Field(
-        default=None, description="Greater than, by default None"
-    )
+    published_utc_gt: Optional[str] = Field(default=None, description="Greater than.")
     published_utc_gte: Optional[str] = Field(
-        default=None, description="Greater than or equal, by default None"
+        default=None, description="Greater than or equal."
     )
     order: Optional[Literal["asc", "desc"]] = Field(
-        default=None, description="Sort order of the query, by default None"
+        default=None, description="Sort order of the query."
     )
     sort: Optional[str] = Field(
-        default=None, description="Sort of the query, by default None"
+        default=None, description="Order in which to sort the news."
     )
 
 

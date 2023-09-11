@@ -5,6 +5,7 @@ from typing import List
 
 import dotenv
 from openbb_core.app.constants import OPENBB_DIRECTORY
+from openbb_core.env import Env
 
 SETTINGS_ENV_FILE = OPENBB_DIRECTORY / ".env"
 
@@ -60,7 +61,8 @@ class DummyBackend:
             self.loop = asyncio.new_event_loop()
             asyncio.set_event_loop(self.loop)
 
-        warnings.warn(pywry_missing)
+        if Env().DEBUG_MODE:
+            warnings.warn(pywry_missing)
         dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
 
     def close(self, reset: bool = False):  # pylint: disable=W0613

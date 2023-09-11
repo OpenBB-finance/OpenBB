@@ -22,7 +22,7 @@ class CboeEuropeanIndexHistoricalQueryParams(EuropeanIndexHistoricalQueryParams)
     """
 
     interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Use interval, 1m, for intraday prices during the most recent trading period.",
+        description="Data granularity.",
         default="1d",
     )
 
@@ -43,10 +43,13 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
         description="UTC datetime. Only valid when interval is 1m."
     )
 
-    @validator("close", pre=True, check_fields=False)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
-        return float(v)
+        """Return datetime object from string."""
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class CboeEuropeanIndexHistoricalFetcher(

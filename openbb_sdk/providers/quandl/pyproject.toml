@@ -1,15 +1,15 @@
 [tool.poetry]
 name = "openbb-quandl"
-version = "0.1.0"
-description = ""
+version = "0.1.0a0"
+description = "Quandl extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
 packages = [{ include = "openbb_quandl" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-provider = { path = "../../sdk/provider" }
 quandl = ">=3.7.0"
+openbb-core = "^0.1.0a0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -26,7 +26,7 @@ class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     )
     interval: Literal[
         "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Interval of the data to fetch.")
+    ] = Field(default="1day", description="Data granularity.")
 
 
 class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
@@ -45,24 +45,24 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         default=None,
     )
     change_percent: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol.",
+        description=r"Change % in the price of the symbol.",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
     change_over_time: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
+        description=r"Change % in the price of the symbol over a period of time.",
         default=None,
     )
 
-    @validator("date", pre=True)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v) -> datetime:  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        # TODO: Check if this condition is necessary
-        # if values.get("changeOverTime", None) is not None:
-        #     return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPMajorIndicesHistoricalFetcher(
