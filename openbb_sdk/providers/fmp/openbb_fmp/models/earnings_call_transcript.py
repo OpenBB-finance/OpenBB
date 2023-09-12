@@ -9,7 +9,7 @@ from openbb_provider.standard_models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -20,7 +20,8 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/earning-call-transcript-api/
     """
 
-    @validator("year", pre=True, check_fields=False)
+    @field_validator("year", mode="before", check_fields=False)
+    @classmethod
     def time_validate(cls, v: int):  # pylint: disable=E0213
         """Return the year as an integer."""
         current_year = datetime.now().year
@@ -30,7 +31,8 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
 class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
     """FMP Earnings Call Transcript Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")

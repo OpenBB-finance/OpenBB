@@ -11,7 +11,7 @@ from openbb_provider.standard_models.forex_historical import (
     ForexHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, validator
+from pydantic import Field, PositiveInt, field_validator
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -40,23 +40,24 @@ class PolygonForexHistoricalQueryParams(ForexHistoricalQueryParams):
 class PolygonForexHistoricalData(ForexHistoricalData):
     """Polygon forex end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "t",
-            "open": "o",
-            "high": "h",
-            "low": "l",
-            "close": "c",
-            "volume": "v",
-            "vwap": "vw",
-        }
+    __alias_dict__ = {
+        "date": "t",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+        "volume": "v",
+        "vwap": "vw",
+        "transactions": "n",
+    }
 
-    n: Optional[PositiveInt] = Field(
+    transactions: Optional[PositiveInt] = Field(
+        default=None,
         description="Number of transactions for the symbol in the time period.",
-        alias="transactions",
     )
 
-    @validator("t", pre=True, check_fields=False)
+    @field_validator("t", mode="before", check_fields=False)
+    @classmethod
     def time_validate(cls, v):  # pylint: disable=E0213
         return datetime.fromtimestamp(v / 1000)
 

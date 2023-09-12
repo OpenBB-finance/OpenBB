@@ -29,14 +29,11 @@ class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
 class IntrinioStockQuoteData(StockQuoteData):
     """Intrinio Stock Quote Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "day_low": "low_price",
-            "day_high": "high_price",
-            "date": "last_time",
-        }
+    __alias_dict__ = {
+        "day_low": "low_price",
+        "day_high": "high_price",
+        "date": "last_time",
+    }
 
     last_price: float = Field(description="Price of the last trade.")
     last_time: datetime = Field(

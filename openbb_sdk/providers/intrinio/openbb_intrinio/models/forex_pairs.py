@@ -23,10 +23,7 @@ class IntrinioForexPairsQueryParams(ForexPairsQueryParams):
 class IntrinioForexPairsData(ForexPairsData):
     """Intrinio Forex available pairs Data."""
 
-    class Config:
-        fields = {
-            "name": "code",
-        }
+    __alias_dict__ = {"name": "code"}
 
     code: str = Field(description="Code of the currency pair.")
     base_currency: str = Field(

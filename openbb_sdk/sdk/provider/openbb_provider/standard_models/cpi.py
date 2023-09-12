@@ -2,7 +2,7 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -100,7 +100,8 @@ class CPIData(Data):
     )  # TODO: What is this?
     value: float = Field(description="Value of the data.")
 
-    @validator("value", pre=True)
+    @field_validator("value", mode="before")
+    @classmethod
     def value_validate(cls, v: str):  # pylint: disable=E0213
         """Validate value."""
         if v == ".":

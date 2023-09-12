@@ -13,7 +13,11 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, validator
+from pydantic import (
+    Field,
+    PositiveInt,
+    field_validator,
+)
 
 from openbb_polygon.utils.helpers import get_data
 
@@ -45,24 +49,25 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
 class PolygonStockHistoricalData(StockHistoricalData):
     """Polygon stocks end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "t",
-            "open": "o",
-            "high": "h",
-            "low": "l",
-            "close": "c",
-            "volume": "v",
-        }
+    __alias_dict__ = {
+        "date": "t",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+        "volume": "v",
+        "vwap": "vw",
+        "transactions": "n",
+    }
 
-    vwap: Optional[float] = Field(description="The volume weighted average price.")
     transactions: Optional[PositiveInt] = Field(
+        default=None,
         description="Number of transactions for the symbol in the time period.",
-        alias="n",
     )
 
-    @validator("t", pre=True, check_fields=False)
-    def time_validate(cls, v):  # pylint: disable=E0213
+    @field_validator("t", mode="before", check_fields=False)
+    @classmethod
+    def t_validate(cls, v):  # pylint: disable=E0213
         return datetime.fromtimestamp(v / 1000)
 
 
@@ -107,9 +112,7 @@ class PolygonStockHistoricalFetcher(
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
 
-            return data.extend(
-                [PolygonStockHistoricalData.parse_obj(d) for d in results]
-            )
+            return data.extend([PolygonStockHistoricalData(**d) for d in results])
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
@@ -120,4 +123,4 @@ class PolygonStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        return [PolygonStockHistoricalData.parse_obj(d) for d in data]
+        return data

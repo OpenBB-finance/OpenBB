@@ -46,7 +46,7 @@ class Query:
 
         for k, v in original.items():
             f = fields[k]
-            providers = f.title.split(",")
+            providers = f.title.split(", ") if hasattr(f, "title") else []
             if v != f.default:
                 if provider_name in providers:
                     filtered[k] = v
@@ -73,6 +73,6 @@ class Query:
             provider_name=self.provider,
             model_name=self.name,
             params={**standard_dict, **extra_dict},
-            credentials=self.cc.user_settings.credentials.dict(),
-            preferences=self.cc.user_settings.preferences.dict(),
+            credentials=self.cc.user_settings.credentials.model_dump(),
+            preferences=self.cc.user_settings.preferences.model_dump(),
         )

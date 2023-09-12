@@ -9,7 +9,7 @@ from openbb_provider.standard_models.key_executives import (
     KeyExecutivesData,
     KeyExecutivesQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -24,7 +24,8 @@ class FMPKeyExecutivesQueryParams(KeyExecutivesQueryParams):
 class FMPKeyExecutivesData(KeyExecutivesData):
     """FMP Key Executives Data."""
 
-    @validator("titleSince", pre=True, check_fields=False)
+    @field_validator("titleSince", mode="before", check_fields=False)
+    @classmethod
     def time_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.fromtimestamp(v / 1000)

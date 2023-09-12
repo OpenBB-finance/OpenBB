@@ -11,7 +11,7 @@ from openbb_provider.standard_models.futures_historical import (
     FuturesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 from yfinance import Ticker
 
 from openbb_yfinance.utils.helpers import get_futures_data
@@ -40,7 +40,8 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     """YFinance Futures End of Day Data."""
 
-    @validator("Date", pre=True, check_fields=False)
+    @field_validator("Date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")

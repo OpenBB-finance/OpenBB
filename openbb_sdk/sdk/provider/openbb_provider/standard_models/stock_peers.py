@@ -1,6 +1,6 @@
 """Stock Peers data model."""
 
-from typing import List, Optional
+from typing import List
 
 from pydantic import Field
 
@@ -18,6 +18,7 @@ class StockPeersData(Data):
     """Stock Peers data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    peers_list: Optional[List[str]] = Field(
-        description="A list of stock peers based on sector, exchange and market cap."
+    peers_list: List[str] = Field(
+        default_factory=list,
+        description="A list of stock peers based on sector, exchange and market cap.",
     )

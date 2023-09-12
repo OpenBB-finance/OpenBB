@@ -1,9 +1,10 @@
 from typing import Any, Dict, List, Optional
 
+from openbb_provider.abstract.data import StrictInt
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import IncomeStatementData
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
@@ -14,38 +15,42 @@ class PolygonIncomeStatementQueryParams(PolygonFundamentalQueryParams):
 
 
 class PolygonIncomeStatementData(IncomeStatementData):
-    class Config:
-        fields = {
-            "revenue": "Revenues",
-            "cost_of_revenue": "Cost Of Revenue",
-            "gross_profit": "Gross Profit",
-            "cost_and_expenses": "Costs And Expenses",
-            "operating_expenses": "Operating Expenses",
-            "operating_income": "Operating Income/Loss",
-            "interest_expense": "Interest Expense, Operating",
-            "income_tax_expense": "Income Tax Expense/Benefit",
-            "net_income": "Net Income/Loss",
-            "eps": "Basic Earnings Per Share",
-            "eps_diluted": "Diluted Earnings Per Share",
-        }
+    __alias_dict__ = {
+        "date": "start_date",
+        "accepted_date": "acceptance_datetime",
+        "period": "fiscal_period",
+        "revenue": "revenues",
+        "operating_income": "operating_income_loss",
+        "income_before_tax": "income_loss_from_continuing_operations_before_tax",
+        "income_tax_expense": "income_tax_expense_benefit",
+        "net_income": "net_income_loss",
+        "eps": "basic_earnings_per_share",
+        "eps_diluted": "diluted_earnings_per_share",
+        "interest_expense": "interest_expense_operating",
+        "symbol": "tickers",
+    }
 
     income_loss_from_continuing_operations_before_tax: Optional[float] = Field(
         description="Income/Loss From Continuing Operations After Tax"
     )
     income_loss_from_continuing_operations_after_tax: Optional[float] = Field(
-        description="Income/Loss From Continuing Operations After Tax"
+        default=None, description="Income (loss) from continuing operations after tax"
     )
     benefits_costs_expenses: Optional[float] = Field(
-        description="Benefits, Costs And Expenses"
+        default=None, description="Benefits, costs and expenses"
     )
-    net_income_loss_attributable_to_noncontrolling_interest: Optional[float] = Field(
-        description="Net Income/Loss Attributable To Noncontrolling Interest"
+    net_income_loss_attributable_to_noncontrolling_interest: Optional[
+        StrictInt
+    ] = Field(
+        default=None,
+        description="Net income (loss) attributable to noncontrolling interest",
     )
     net_income_loss_attributable_to_parent: Optional[float] = Field(
-        description="Net Income/Loss Attributable To Parent"
+        default=None, description="Net income (loss) attributable to parent"
     )
-    income_tax_expense_benefit_deferred: Optional[float] = Field(
-        description="Income Tax Expense/Benefit Deferred"
+    net_income_loss_available_to_common_stockholders_basic: Optional[float] = Field(
+        default=None,
+        description="Net income (loss) available to common stockholders basic",
     )
     participating_securities_distributed_and_undistributed_earnings_loss_basic: Optional[
         float
@@ -59,10 +64,11 @@ class PolygonIncomeStatementData(IncomeStatementData):
         description="Nonoperating Income Loss"
     )
     preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
-        description="Preferred Stock Dividends And Other Adjustments"
+        default=None, description="Preferred stock dividends and other adjustments"
     )
 
-    @validator("symbol", pre=True, check_fields=False)
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def symbol_from_tickers(cls, v):  # pylint: disable=E0213
         if isinstance(v, list):
             return ",".join(v)
@@ -88,7 +94,7 @@ class PolygonIncomeStatementFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.dict(by_alias=True), [])
+        query_string = get_querystring(query.model_dump(), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 

@@ -189,7 +189,7 @@ class HubService:
         if response.status_code == 200:
             user_settings = response.json()
             filtered = {k: v for k, v in user_settings.items() if v is not None}
-            return HubUserSettings.parse_obj(filtered)
+            return HubUserSettings.model_validate(filtered)
         status_code = response.status_code
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
@@ -205,7 +205,7 @@ class HubService:
         response = put(
             url=self._base_url + "/user",
             headers={"Authorization": authorization},
-            json=settings.dict(),
+            json=settings.model_dump(),
             timeout=self.TIMEOUT,
         )
 

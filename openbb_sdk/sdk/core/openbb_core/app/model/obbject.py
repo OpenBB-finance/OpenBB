@@ -1,10 +1,17 @@
 """The OBBject."""
-from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    List,
+    Literal,
+    Optional,
+    TypeVar,
+)
 
 import pandas as pd
 from numpy import ndarray
 from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel
 
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -24,7 +31,7 @@ T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
 
 
-class OBBject(GenericModel, Generic[T], Tagged):
+class OBBject(Tagged, Generic[T]):
     """OpenBB object."""
 
     results: Optional[T] = Field(

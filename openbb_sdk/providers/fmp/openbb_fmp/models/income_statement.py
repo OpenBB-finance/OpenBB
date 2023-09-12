@@ -12,7 +12,7 @@ from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from pydantic import Field, root_validator
+from pydantic import Field, model_validator
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -25,9 +25,12 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
     """
 
-    symbol: str = Field(description="Symbol/CIK of the company.")
+    cik: Optional[str] = Field(
+        default=None, description="The CIK of the company if no symbol is provided."
+    )
 
-    @root_validator()
+    @model_validator(mode="before")
+    @classmethod
     def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
         """Validate that either a symbol or CIK is provided."""
         if values.get("symbol") is None and values.get("cik") is None:
@@ -38,85 +41,88 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
 class FMPIncomeStatementData(IncomeStatementData):
     """FMP Income Statement Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {
+        "reported_currency": "reportedCurrency",
+        "ebitda_ratio": "ebitdaratio",
+        "eps_diluted": "epsdiluted",
+        "weighted_average_shares_outstanding": "weightedAverageShsOut",
+        "weighted_average_shares_outstanding_dil": "weightedAverageShsOutDil",
+        "filling_date": "fillingDate",
+    }
 
-        fields = {
-            "cost_of_revenue": "costOfRevenue",
-            "gross_profit": "grossProfit",
-            "gross_profit_ratio": "grossProfitRatio",
-            "research_and_development_expenses": "researchAndDevelopmentExpenses",
-            "general_and_administrative_expenses": "generalAndAdministrativeExpenses",
-            "selling_and_marketing_expenses": "sellingAndMarketingExpenses",
-            "selling_general_and_administrative_expenses": "sellingGeneralAndAdministrativeExpenses",
-            "other_expenses": "otherExpenses",
-            "operating_expenses": "operatingExpenses",
-            "depreciation_and_amortization": "depreciationAndAmortization",
-            "ebitda_ratio": "ebitdaratio",
-            "operating_income": "operatingIncome",
-            "operating_income_ratio": "operatingIncomeRatio",
-            "interest_income": "interestIncome",
-            "interest_expense": "interestExpense",
-            "total_other_income_expenses_net": "totalOtherIncomeExpensesNet",
-            "income_before_tax": "incomeBeforeTax",
-            "income_before_tax_ratio": "incomeBeforeTaxRatio",
-            "income_tax_expense": "incomeTaxExpense",
-            "net_income": "netIncome",
-            "net_income_ratio": "netIncomeRatio",
-            "eps_diluted": "epsdiluted",
-            "weighted_average_shares_outstanding": "weightedAverageShsOut",
-            "weighted_average_shares_outstanding_dil": "weightedAverageShsOutDil",
-        }
+    reported_currency: Optional[str] = Field(
+        default=None, description="Reporting currency."
+    )
+    filling_date: Optional[dateType] = Field(default=None, description="Filling date.")
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Accepted date."
+    )
+    calendar_year: Optional[int] = Field(default=None, description="Calendar year.")
 
-        reported_currency: Optional[str] = Field(description="Reporting currency.")
-        filing_date: Optional[dateType] = Field(description="Filling date.")
-        accepted_date: Optional[datetime] = Field(description="Accepted date.")
-        calendar_year: Optional[int] = Field(description="Calendar year.")
+    cost_of_revenue: Optional[float] = Field(
+        default=None, description="Cost of revenue."
+    )
+    gross_profit: Optional[float] = Field(default=None, description="Gross profit.")
+    gross_profit_ratio: Optional[float] = Field(
+        default=None, description="Gross profit ratio."
+    )
+    research_and_development_expenses: Optional[float] = Field(
+        default=None, description="Research and development expenses."
+    )
+    general_and_administrative_expenses: Optional[float] = Field(
+        default=None, description="General and administrative expenses."
+    )
+    selling_and_marketing_expenses: Optional[float] = Field(
+        default=None, description="Selling and marketing expenses."
+    )
+    selling_general_and_administrative_expenses: Optional[float] = Field(
+        default=None, description="Selling, general and administrative expenses."
+    )
+    other_expenses: Optional[float] = Field(default=None, description="Other expenses.")
 
-        cost_of_revenue: Optional[float] = Field(description="Cost of revenue.")
-        gross_profit: Optional[float] = Field(description="Gross profit.")
-        gross_profit_ratio: Optional[float] = Field(description="Gross profit ratio.")
-        research_and_development_expenses: Optional[float] = Field(
-            description="Research and development expenses."
-        )
-        general_and_administrative_expenses: Optional[float] = Field(
-            description="General and administrative expenses."
-        )
-        selling_and_marketing_expenses: Optional[float] = Field(
-            description="Selling and marketing expenses."
-        )
-        selling_general_and_administrative_expenses: Optional[float] = Field(
-            description="Selling, general and administrative expenses."
-        )
-        other_expenses: Optional[float] = Field(description="Other expenses.")
+    operating_expenses: Optional[float] = Field(
+        default=None, description="Operating expenses."
+    )
+    depreciation_and_amortization: Optional[float] = Field(
+        default=None, description="Depreciation and amortization."
+    )
+    ebitda_ratio: Optional[float] = Field(default=None, description="EBIDTA ratio.")
+    operating_income: Optional[float] = Field(
+        default=None, description="Operating income."
+    )
+    operating_income_ratio: Optional[float] = Field(
+        default=None, description="Operating income ratio."
+    )
+    interest_income: Optional[float] = Field(
+        default=None, description="Interest income."
+    )
+    interest_expense: Optional[float] = Field(
+        default=None, description="Interest expense."
+    )
 
-        operating_expenses: Optional[float] = Field(description="Operating expenses.")
-        depreciation_and_amortization: Optional[float] = Field(
-            description="Depreciation and amortization."
-        )
-        ebitda_ratio: Optional[float] = Field(description="EBIDTA ratio.")
-        operating_income: Optional[float] = Field(description="Operating income.")
-        operating_income_ratio: Optional[float] = Field(
-            description="Operating income ratio."
-        )
-        interest_income: Optional[float] = Field(description="Interest income.")
-        interest_expense: Optional[float] = Field(description="Interest expense.")
+    total_other_income_expenses_net: Optional[float] = Field(
+        default=None, description="Total other income expenses net."
+    )
+    income_before_tax: Optional[float] = Field(
+        default=None, description="Income before tax."
+    )
+    income_before_tax_ratio: Optional[float] = Field(
+        default=None, description="Income before tax ratio."
+    )
+    income_tax_expense: Optional[float] = Field(
+        default=None, description="Income tax expense."
+    )
+    net_income: Optional[float] = Field(default=None, description="Net income.")
+    net_income_ratio: Optional[float] = Field(
+        default=None, description="Net income ratio."
+    )
 
-        total_other_income_expenses_net: Optional[float] = Field(
-            description="Total other income expenses net."
-        )
-        income_before_tax: Optional[float] = Field(description="Income before tax.")
-        income_before_tax_ratio: Optional[float] = Field(
-            description="Income before tax ratio."
-        )
-        income_tax_expense: Optional[float] = Field(description="Income tax expense.")
-        net_income: Optional[float] = Field(description="Net income.")
-        net_income_ratio: Optional[float] = Field(description="Net income ratio.")
-
-        link: Optional[str] = Field(description="Link to the income statement.")
-        final_link: Optional[str] = Field(
-            description="Final link to the income statement."
-        )
+    link: Optional[str] = Field(
+        default=None, description="Link to the income statement."
+    )
+    final_link: Optional[str] = Field(
+        default=None, description="Final link to the income statement."
+    )
 
 
 class FMPIncomeStatementFetcher(

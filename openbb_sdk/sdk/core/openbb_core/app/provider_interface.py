@@ -3,11 +3,19 @@ from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
+from openbb_provider import standard_models
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from openbb_provider.utils.helpers import to_snake_case
-from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
-from pydantic.fields import FieldInfo, ModelField
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Extra,
+    Field,
+    create_model,
+)
+from pydantic.fields import FieldInfo
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
@@ -200,25 +208,28 @@ class ProviderInterface(metaclass=SingletonMeta):
     @staticmethod
     def _create_field(
         name: str,
-        field: ModelField,
+        field: FieldInfo,
         provider_name: Optional[str] = None,
         query: bool = False,
         force_optional: bool = False,
+        alias_dict: Optional[Dict[str, List[str]]] = None,
     ) -> DataclassField:
+        alias_dict = alias_dict or {}
         new_name = name.replace(".", "_")
         # field.type_ don't work for nested types
         # field.outer_type_ don't work for Optional nested types
         type_ = field.annotation
+
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )
         description = (
-            f"{field.field_info.description} {provider_field}"
-            if provider_name and field.field_info.description
-            else f"{field.field_info.description}"
+            f"{field.description} {provider_field}"
+            if provider_name and field.description
+            else f"{field.description}"
         )
 
-        if field.required:
+        if field.is_required():
             if force_optional:
                 type_ = Optional[type_]  # type: ignore
                 default = None
@@ -234,11 +245,16 @@ class ProviderInterface(metaclass=SingletonMeta):
                 default=default, title=provider_name, description=description
             )
         elif provider_name:
-            default = Field(
-                default=default,
+            default: FieldInfo = Field(
+                default=default or None,
                 title=provider_name,
                 description=description,
-                alias=field.field_info.alias or field.alias,
+                validation_alias=AliasChoices(
+                    field.alias,
+                    *list(set(alias_dict.get(name, []))),
+                )
+                if alias_dict.get(name, [])
+                else None,
             )
 
         return DataclassField(new_name, type_, default)
@@ -292,12 +308,9 @@ class ProviderInterface(metaclass=SingletonMeta):
     def _extract_data(
         cls,
         providers: Any,
-    ) -> Tuple[
-        Dict[str, TupleFieldType], Dict[str, TupleFieldType], Dict[str, Dict[str, str]]
-    ]:
+    ) -> Tuple[Dict[str, TupleFieldType], Dict[str, TupleFieldType]]:
         standard: Dict[str, TupleFieldType] = {}
         extra: Dict[str, TupleFieldType] = {}
-        config_fields: Dict[str, str] = {}
 
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
@@ -310,22 +323,15 @@ class ProviderInterface(metaclass=SingletonMeta):
                         incoming.default,
                     )
             else:
-                # config fields from provider model
-                # reversed to be used in the fastapi endpoint
-                # return schema
-                config_fields.update(
-                    {
-                        v: k
-                        for k, v in model_details.get("Data", {})
-                        .get("config_fields", {})
-                        .items()
-                    }
-                )
+                alias_dict = model_details.get("Data", {}).get("alias_dict", {})
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
-                        s_name = to_snake_case(name)
                         incoming = cls._create_field(
-                            s_name, field, provider_name, force_optional=True
+                            to_snake_case(name),
+                            field,
+                            provider_name,
+                            force_optional=True,
+                            alias_dict=alias_dict,
                         )
 
                         if incoming.name in extra:
@@ -340,7 +346,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                             updated.default,
                         )
 
-        return standard, extra, config_fields
+        return standard, extra
 
     def _generate_params_dc(
         self, map_: MapType
@@ -414,7 +420,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
     def _generate_data_dc(
         self, map_: MapType
-    ) -> Dict[str, Dict[str, Union[StandardData, ExtraData, Dict[str, str]]]]:
+    ) -> Dict[str, Dict[str, Union[StandardData, ExtraData]]]:
         """Generate dataclasses for data.
 
         This creates a dictionary of dataclasses.
@@ -435,7 +441,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         for model_name, providers in map_.items():
             standard: dict
             extra: dict
-            standard, extra, config_fields = self._extract_data(providers)
+            standard, extra = self._extract_data(providers)
             result[model_name] = {
                 "standard": make_dataclass(  # type: ignore
                     cls_name=model_name,
@@ -447,14 +453,13 @@ class ProviderInterface(metaclass=SingletonMeta):
                     fields=list(extra.values()),
                     bases=(ExtraData,),
                 ),
-                "config_fields": config_fields,  # type: ignore
             }
 
         return result
 
     def _generate_return_schema(
         self,
-        data: Dict[str, Dict[str, Union[StandardData, ExtraData, Dict[str, str]]]],
+        data: Dict[str, Dict[str, Union[StandardData, ExtraData]]],
     ) -> Dict[str, Type[BaseModel]]:
         """Merge standard data with extra data into a single BaseModel to be injected as FastAPI dependency."""
         result: Dict = {}
@@ -462,8 +467,8 @@ class ProviderInterface(metaclass=SingletonMeta):
             standard = dataclasses["standard"]
             extra = dataclasses["extra"]
 
-            fields = standard.__fields__.copy()
-            fields.update(extra.__fields__)
+            fields = standard.model_fields.copy()
+            fields.update(extra.model_fields)
 
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
             for name, field in fields.items():
@@ -471,22 +476,36 @@ class ProviderInterface(metaclass=SingletonMeta):
                     field.annotation,
                     Field(
                         default=field.default,
-                        title=field.field_info.title,
-                        description=field.field_info.description,
-                        alias=field.field_info.alias or field.alias,
+                        title=field.title,
+                        description=field.description,
+                        alias=field.alias,
+                        validation_alias=field.validation_alias,
                     ),
                 )
 
-            class Config(BaseConfig):
-                extra = Extra.allow
-                # we need the fields dict so we can use the alias
-                fields = dataclasses.get("config_fields", {})
-
-            result[model_name] = create_model(  # type: ignore
-                model_name,
-                __config__=Config,
-                **fields_dict,  # type: ignore
+            model_config = ConfigDict(
+                extra=Extra.allow,
+                populate_by_name=True,
             )
+
+            # we try to find the model in the standard models folder
+            # if we can't find it, we create a new model
+            if (
+                data_model := standard_models.DATA_MODELS.get(model_name, None)
+            ) is not None:
+                result[model_name] = create_model(  # type: ignore
+                    model_name,
+                    __config__=model_config,
+                    __module__=data_model.__module__,
+                    **fields_dict,  # type: ignore
+                )
+
+            else:
+                result[model_name] = create_model(  # type: ignore
+                    model_name,
+                    __config__=model_config,
+                    **fields_dict,  # type: ignore
+                )
 
         return result
 

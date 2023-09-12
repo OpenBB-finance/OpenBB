@@ -1,11 +1,10 @@
 import json
-import os
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
 from functools import partial
 from pathlib import Path
 from typing import List, Literal, Optional
 
-from pydantic import Field, root_validator, validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 
 from openbb_core.app.constants import (
     HOME_DIRECTORY,
@@ -15,7 +14,7 @@ from openbb_core.app.constants import (
 )
 from openbb_core.app.model.abstract.tagged import Tagged
 
-FrozenField = partial(Field, allow_mutation=False)
+FrozenField = partial(Field, frozen=True)
 
 
 class SystemSettings(Tagged):
@@ -47,49 +46,44 @@ class SystemSettings(Tagged):
     test_mode: bool = FrozenField(default=False)
     headless: bool = FrozenField(default=False)
 
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}\n\n" + "\n".join(
-            f"{k}: {v}" for k, v in self.dict().items()
+            f"{k}: {v}" for k, v in self.model_dump().items()
         )
 
     @staticmethod
     def create_empty_json(path: Path) -> None:
-        with open(path, mode="w") as file:
-            json.dump({}, file)
+        path.write_text(json.dumps({}), encoding="utf-8", newline="\n")
 
-    @root_validator(allow_reuse=True)
+    @model_validator(mode="after")
     @classmethod
-    def create_openbb_directory(cls, values):
-        obb_dir = values["openbb_directory"]
-        user_settings = values["user_settings_path"]
-        system_settings = values["system_settings_path"]
-        if not os.path.exists(obb_dir):
-            os.makedirs(obb_dir)
-            cls.create_empty_json(user_settings)
-            cls.create_empty_json(system_settings)
-        else:
-            if not os.path.exists(user_settings):
-                cls.create_empty_json(user_settings)
-            if not os.path.exists(system_settings):
-                cls.create_empty_json(system_settings)
+    def create_openbb_directory(cls, values: "SystemSettings") -> "SystemSettings":
+        obb_dir = Path(values.openbb_directory).resolve()
+        user_settings = Path(values.user_settings_path).resolve()
+        system_settings = Path(values.system_settings_path).resolve()
+        obb_dir.mkdir(parents=True, exist_ok=True)
+
+        for path in [user_settings, system_settings]:
+            if not path.exists():
+                cls.create_empty_json(path)
+
         return values
 
-    @root_validator(allow_reuse=True)
+    @model_validator(mode="after")
     @classmethod
-    def validate_posthog_handler(cls, values):
+    def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
         if (
-            not any([values["test_mode"], values["logging_suppress"]])
-            and values["log_collect"]
-            and "posthog" not in values["logging_handlers"]
+            not any([values.test_mode, values.logging_suppress])
+            and values.log_collect
+            and "posthog" not in values.logging_handlers
         ):
-            values["logging_handlers"].append("posthog")
+            values.logging_handlers.append("posthog")
 
         return values
 
-    @validator("logging_handlers", allow_reuse=True, always=True)
+    @field_validator("logging_handlers")
     @classmethod
     def validate_logging_handlers(cls, v):
         for value in v:

@@ -9,7 +9,7 @@ from openbb_provider.standard_models.income_statement_growth import (
     IncomeStatementGrowthData,
     IncomeStatementGrowthQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -24,17 +24,15 @@ class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
 class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     """FMP Income Statement Growth Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {
+        "growth_ebitda": "growthEBITDA",
+        "growth_ebitda_ratio": "growthEBITDARatio",
+        "growth_eps": "growthEPS",
+        "growth_eps_diluted": "growthEPSDiluted",
+    }
 
-        fields = {
-            "growth_ebitda": "growthEBITDA",
-            "growth_ebitda_ratio": "growthEBITDARatio",
-            "growth_eps": "growthEPS",
-            "growth_eps_diluted": "growthEPSDiluted",
-        }
-
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")

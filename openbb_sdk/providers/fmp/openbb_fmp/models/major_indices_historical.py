@@ -10,7 +10,7 @@ from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_fmp.utils.helpers import get_data_many
 
@@ -56,12 +56,13 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         default=None,
     )
 
-    @validator("date", pre=True, check_fields=False)
-    def date_validate(cls, v) -> datetime:  # pylint: disable=E0213
-        """Return the date as a datetime object."""
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the datetime object from the date string"""
         try:
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
+        except ValueError:
             return datetime.strptime(v, "%Y-%m-%d")
 
 
@@ -89,7 +90,7 @@ class FMPMajorIndicesHistoricalFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = (
-            get_querystring(query.dict(), ["symbol"])
+            get_querystring(query.model_dump(), ["symbol"])
             .replace("start_date", "from")
             .replace("end_date", "to")
         )

@@ -2,7 +2,9 @@
 
 import os
 from inspect import getfile, isclass
-from typing import Any, Dict, List, Literal, Optional, Tuple
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union, get_origin
+
+from pydantic import BaseModel
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
@@ -69,6 +71,7 @@ class RegistryMap:
         """Generate map for the provider package."""
         map_: MapType = {}
         return_map: MapType = {}
+        union_return_map: MapType = {}
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
@@ -87,7 +90,18 @@ class RegistryMap:
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
+
+                in_return_map = return_map.get(model_name, return_type)
+                if union_return_map.get(model_name, None) is None and (
+                    get_origin(return_type) != list
+                    and get_origin(in_return_map) == list
+                ):
+                    union_return_map[model_name] = Union[in_return_map, return_type]
+
                 return_map[model_name] = return_type
+
+        for model_name, return_type in union_return_map.items():
+            return_map[model_name] = return_type
 
         return map_, return_map
 
@@ -98,16 +112,16 @@ class RegistryMap:
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        super_model = getattr(fetcher, f"{type_}_type")
-
+        super_model: BaseModel = getattr(fetcher, f"{type_}_type")
         RegistryMap.validate_model(super_model, type_)
 
         skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
-        inheritance_list = [
+        inheritance_list: List[BaseModel] = [
             model for model in super_model.__mro__ if model.__name__ not in skip_classes
         ]
 
         all_fields = {}
+        alias_dict: Dict[str, List[str]] = {}
         standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
         found_standard = False
 
@@ -119,15 +133,17 @@ class RegistryMap:
                 if not found_standard:
                     standard_info["docstring"] = model.__doc__
                 found_standard = True
-                standard_info["fields"].update(model.__fields__)
+                standard_info["fields"].update(model.model_fields)
             else:
-                all_fields.update(model.__fields__)
+                all_fields.update(model.model_fields)
+                if hasattr(model, "__alias_dict__"):
+                    for name, alias in getattr(model, "__alias_dict__").items():
+                        alias_dict.setdefault(name, []).append(alias)
 
-        config_fields = super_model.__config__.fields or {}
         extra_info = {
             "fields": {},
             "docstring": super_model.__doc__,
-            "config_fields": config_fields,
+            "alias_dict": alias_dict,
         }
 
         for name, field in all_fields.items():

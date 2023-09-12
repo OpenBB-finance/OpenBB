@@ -15,11 +15,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class CryptoHistoricalQueryParams(QueryParams, BaseSymbol):
     """Crypto end of day Query."""
 
-    start_date: Optional[date] = Field(
+    start_date: date = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[date] = Field(
+    end_date: date = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -33,5 +33,7 @@ class CryptoHistoricalData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
+    )

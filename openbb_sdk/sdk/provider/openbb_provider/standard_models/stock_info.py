@@ -1,5 +1,6 @@
 """Stock Info data model."""
 
+
 from typing import Optional
 
 from pydantic import Field
@@ -23,9 +24,12 @@ class StockInfoData(Data, BaseSymbol):
     low: float = Field(description="Low price of the current trading day.")
     close: float = Field(description="Closing price of the most recent trading day.")
     change: Optional[float] = Field(
-        description="Change in price over the current trading period."
+        default=None, description="Change in price over the current trading period."
     )
     change_percent: Optional[float] = Field(
-        description="Percent change in price over the current trading period."
+        default=None,
+        description="Percent change in price over the current trading period.",
     )
-    prev_close: Optional[float] = Field(description="Previous closing price.")
+    prev_close: Optional[float] = Field(
+        default=None, description="Previous closing price."
+    )

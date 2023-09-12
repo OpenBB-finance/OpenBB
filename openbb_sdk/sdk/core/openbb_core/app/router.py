@@ -1,3 +1,4 @@
+import traceback
 import warnings
 from functools import partial
 from inspect import Parameter, Signature, signature
@@ -9,6 +10,7 @@ from typing import (
     Mapping,
     Optional,
     Type,
+    Union,
     get_args,
     get_origin,
     get_type_hints,
@@ -18,8 +20,7 @@ from typing import (
 from fastapi import APIRouter, Depends
 from importlib_metadata import entry_points
 from pydantic import BaseModel
-from pydantic.config import BaseConfig
-from pydantic.validators import find_validators
+from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -36,16 +37,24 @@ from openbb_core.env import Env
 P = ParamSpec("P")
 
 
+class OpenBBErrorResponse(BaseModel):
+    """OpenBB Error Response."""
+
+    detail: str
+    error_kind: str
+
+
 class CommandValidator:
     @staticmethod
     def is_standard_pydantic_type(value_type: Type) -> bool:
         """Check whether or not a parameter type is a valid Pydantic Standard Type."""
-
-        class ArbitraryTypesAllowed(BaseConfig):
-            arbitrary_types_allowed = True
-
-        func = next(find_validators(value_type, config=ArbitraryTypesAllowed))
-        valid_type = func.__name__ != "arbitrary_type_validator"
+        try:
+            func = next(
+                find_validators(value_type, config=dict(arbitrary_types_allowed=True))
+            )
+            valid_type = func.__name__ != "arbitrary_type_validator"
+        except Exception:
+            valid_type = False
 
         return valid_type
 
@@ -53,7 +62,7 @@ class CommandValidator:
     def is_valid_pydantic_model_type(model_type: Type) -> bool:
         if issubclass(model_type, BaseModel):
             try:
-                model_type.schema_json()
+                model_type.model_json_schema()
                 return True
             except ValueError:
                 return False
@@ -121,17 +130,22 @@ class CommandValidator:
         sig = signature(func)
         return_type = sig.return_annotation
 
-        if issubclass(return_type, OBBject):
-            results_type = get_type_hints(return_type)["results"]
-            if isinstance(results_type, type(None)):
-                valid_return_type = False
-            else:
+        valid_return_type = False
+
+        if hasattr(return_type, "__class__") and issubclass(return_type, OBBject):
+            results_type = return_type.__pydantic_generic_metadata__.get("args", [])[
+                0
+            ]  # type: ignore
+            if not isinstance(results_type, type(None)):
                 generic_type_list = get_args(results_type)
-                valid_return_type = cls.is_serializable_value_type(
-                    value_type=generic_type_list[0]
-                )
-        else:
-            valid_return_type = False
+                if len(generic_type_list) >= 1:
+                    valid_return_type = cls.is_serializable_value_type(
+                        value_type=generic_type_list[len(generic_type_list) - 1]
+                    )
+                else:
+                    valid_return_type = cls.is_serializable_value_type(
+                        value_type=results_type
+                    )
 
         if not valid_return_type:
             raise TypeError(
@@ -198,7 +212,25 @@ class Router:
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
+            kwargs["response_model"] = kwargs.get(
+                "response_model",
+                func.__annotations__["return"],  # type: ignore
+            )
             kwargs["description"] = SignatureInspector.get_description(func)
+            kwargs["responses"] = kwargs.get(
+                "responses",
+                {
+                    400: {
+                        "model": OpenBBErrorResponse,
+                        "description": "No Results Found",
+                    },
+                    404: {"description": "Not found"},
+                    500: {
+                        "model": OpenBBErrorResponse,
+                        "description": "Internal Error",
+                    },
+                },
+            )
 
             api_router.add_api_route(**kwargs)
 
@@ -293,10 +325,13 @@ class SignatureInspector:
         ReturnModel = inner_type
         if get_origin(outer_type) == list:
             ReturnModel = List[inner_type]  # type: ignore
+        elif get_origin(outer_type) == Union:
+            ReturnModel = Union[List[inner_type], inner_type]  # type: ignore
 
         return_type = OBBject[ReturnModel]  # type: ignore
         return_type.__name__ = f"OBBject[{inner_type.__name__}]"
         return_type.__doc__ = f"OBBject with results of type '{inner_type.__name__}'."
+        return_type.model_rebuild(force=True)
 
         func.__annotations__["return"] = return_type
         return func
@@ -479,8 +514,7 @@ class RouterLoader:
                     router=entry_point.load(), prefix=f"/{entry_point.name}"
                 )
             except Exception as e:
-                raise LoadingError(
-                    f"Invalid extension '{entry_point.name}': {e}"
-                ) from e
+                traceback.print_exception(type(e), e, e.__traceback__)
+                raise LoadingError(f"Invalid extension '{entry_point.name}'") from e
 
         return router

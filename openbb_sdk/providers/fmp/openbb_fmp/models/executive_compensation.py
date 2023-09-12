@@ -9,7 +9,7 @@ from openbb_provider.standard_models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -26,12 +26,14 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
 
-    @validator("filingDate", pre=True, check_fields=False)
+    @field_validator("filingDate", mode="before", check_fields=False)
+    @classmethod
     def filing_date_validate(cls, v):  # pylint: disable=E0213
         """Return the filing date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
-    @validator("acceptedDate", pre=True, check_fields=False)
+    @field_validator("acceptedDate", mode="before", check_fields=False)
+    @classmethod
     def accepted_date_validate(cls, v):  # pylint: disable=E0213
         """Return the accepted date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")

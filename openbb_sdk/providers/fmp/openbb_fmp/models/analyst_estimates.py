@@ -45,8 +45,6 @@ class FMPAnalystEstimatesFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "quarter" if query.period == "quarterly" else "annual"
-
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )

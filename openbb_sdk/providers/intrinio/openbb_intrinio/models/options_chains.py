@@ -246,11 +246,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
 class IntrinioOptionsChainsData(OptionsChainsData):
     """Intrinio Options Chains Data."""
 
-    class Config:
-        fields = {
-            "bid": "close_bid",
-            "ask": "close_ask",
-        }
+    __alias_dict__ = {"bid": "close_bid", "ask": "close_ask"}
 
     mark: Optional[float] = Field(
         description="The mid-price between the latest bid-ask spread."

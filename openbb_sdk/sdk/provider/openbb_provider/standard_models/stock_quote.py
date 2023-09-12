@@ -36,5 +36,5 @@ class StockQuoteData(Data):
         description="Highest price of the stock in the current trading day.",
     )
     date: Optional[datetime] = Field(
-        description="Timestamp of the stock quote.", alias="timestamp"
+        description="Timestamp of the stock quote.", default=None
     )

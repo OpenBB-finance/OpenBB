@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cash_flow import CashFlowStatementData
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_polygon.utils.types import PolygonFundamentalQueryParams
@@ -17,10 +17,13 @@ class PolygonCashFlowStatementQueryParams(PolygonFundamentalQueryParams):
 
 
 class PolygonCashFlowStatementData(CashFlowStatementData):
-    """Return Balance Sheet Data."""
+    """Cash Flow Statement Data."""
 
-    @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
+    __alias_dict__ = {"date": "start_date"}
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def symbol_from_tickers(cls, v):
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -45,7 +48,7 @@ class PolygonCashFlowStatementFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.dict(by_alias=True), [])
+        query_string = get_querystring(query.model_dump(), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 

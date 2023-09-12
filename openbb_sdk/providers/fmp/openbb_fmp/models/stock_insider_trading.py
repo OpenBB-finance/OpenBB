@@ -22,6 +22,11 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
 class FMPStockInsiderTradingData(StockInsiderTradingData):
     """FMP Stock Insider Trading Data."""
 
+    __alias_dict__ = {
+        "acquisition_or_disposition": "acquistionOrDisposition",
+        "last_number_of_13f_shares": "lastNumberOf13FShares",
+    }
+
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[

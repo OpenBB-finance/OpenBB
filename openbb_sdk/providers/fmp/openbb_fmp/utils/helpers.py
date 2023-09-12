@@ -9,7 +9,7 @@ import requests
 from openbb_provider import helpers
 from openbb_provider.abstract.data import Data
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import BaseModel, PositiveFloat, validator
+from pydantic import BaseModel, PositiveFloat, field_validator
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
@@ -102,7 +102,7 @@ def create_url(
     str
         The querystring.
     """
-    the_dict = {} if not query else query.dict(by_alias=True)
+    the_dict = {} if not query else query.model_dump()
     query_string = get_querystring(the_dict, exclude or [])
     base_url = f"https://financialmodelingprep.com/api/v{version}/"
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
@@ -130,6 +130,9 @@ def get_data_many(
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
         raise ValueError("Expected list of dicts, got dict")
+    if len(data) == 0:
+        raise ValueError("No results found. Try adjusting the query parameters.")
+
     return data
 
 
@@ -158,7 +161,8 @@ class BaseStockPriceData(Data):
     close: PositiveFloat
     volume: float
 
-    @validator("date", pre=True)
+    @field_validator("date", mode="before")
+    @classmethod
     def time_validate(cls, v: str) -> datetime:  # pylint: disable=E0213
         """Validate the date."""
         if len(v) < 12:

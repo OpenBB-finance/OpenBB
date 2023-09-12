@@ -9,7 +9,7 @@ from typing import Optional
 
 from pydantic import Field
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.standard_models.base import FinancialStatementQueryParams
 
 
@@ -21,94 +21,113 @@ class CashFlowStatementData(Data):
     """Cash Flow Statement Data."""
 
     date: dateType = Field(description="Date of the fetched statement.")
-    symbol: Optional[str] = Field(description="Symbol of the company.")
-    cik: Optional[int] = Field(description="Central Index Key.")
-    currency: Optional[str] = Field(description="Reporting currency.")
-    filing_date: Optional[dateType] = Field(description="Filling date.")
-    accepted_date: Optional[datetime] = Field(description="Accepted date.")
-    period: Optional[str] = Field(description="Reporting period of the statement.")
-
-    cash_at_beginning_of_period: Optional[int] = Field(
-        description="Cash at beginning of period."
+    symbol: Optional[str] = Field(default=None, description="Symbol of the company.")
+    cik: Optional[StrictInt] = Field(default=None, description="Central Index Key.")
+    currency: Optional[str] = Field(default=None, description="Reporting currency.")
+    filling_date: Optional[dateType] = Field(default=None, description="Filling date.")
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Accepted date."
     )
-    net_income: Optional[int] = Field(description="Net income.")
-    depreciation_and_amortization: Optional[int] = Field(
-        description="Depreciation and amortization."
-    )
-    stock_based_compensation: Optional[int] = Field(
-        description="Stock based compensation."
-    )
-    other_non_cash_items: Optional[int] = Field(description="Other non-cash items.")
-    deferred_income_tax: Optional[int] = Field(description="Deferred income tax.")
-    inventory: Optional[int] = Field(description="Inventory.")
-    accounts_payables: Optional[int] = Field(description="Accounts payables.")
-    accounts_receivables: Optional[int] = Field(description="Accounts receivables.")
-    change_in_working_capital: Optional[int] = Field(
-        description="Change in working capital."
-    )
-    other_working_capital: Optional[int] = Field(
-        description="Accrued expenses and other, Unearned revenue."
+    period: Optional[str] = Field(
+        default=None, description="Reporting period of the statement."
     )
 
-    capital_expenditure: Optional[int] = Field(
-        description="Purchases of property and equipment."
+    cash_at_beginning_of_period: Optional[StrictInt] = Field(
+        default=None, description="Cash at beginning of period."
     )
-    other_investing_activities: Optional[int] = Field(
-        description="Proceeds from property and equipment sales and incentives."
+    net_income: Optional[StrictInt] = Field(default=None, description="Net income.")
+    depreciation_and_amortization: Optional[StrictInt] = Field(
+        default=None, description="Depreciation and amortization."
     )
-    acquisitions_net: Optional[int] = Field(
-        description="Acquisitions, net of cash acquired, and other"
+    stock_based_compensation: Optional[StrictInt] = Field(
+        default=None, description="Stock based compensation."
     )
-    sales_maturities_of_investments: Optional[int] = Field(
-        description="Sales and maturities of investments."
+    other_non_cash_items: Optional[StrictInt] = Field(
+        default=None, description="Other non-cash items."
     )
-    purchases_of_investments: Optional[int] = Field(
-        description="Purchases of investments."
+    deferred_income_tax: Optional[StrictInt] = Field(
+        default=None, description="Deferred income tax."
     )
-    net_cash_flow_from_operating_activities: Optional[int] = Field(
-        description="Net cash flow from operating activities."
+    inventory: Optional[StrictInt] = Field(default=None, description="Inventory.")
+    accounts_payables: Optional[StrictInt] = Field(
+        default=None, description="Accounts payables."
     )
-    net_cash_flow_from_investing_activities: Optional[int] = Field(
-        description="Net cash flow from investing activities."
+    accounts_receivables: Optional[StrictInt] = Field(
+        default=None, description="Accounts receivables."
     )
-    net_cash_flow_from_financing_activities: Optional[int] = Field(
-        description="Net cash flow from financing activities."
+    change_in_working_capital: Optional[StrictInt] = Field(
+        default=None, description="Change in working capital."
     )
-    investments_in_property_plant_and_equipment: Optional[int] = Field(
-        description="Investments in property, plant, and equipment."
-    )
-    net_cash_used_for_investing_activities: Optional[int] = Field(
-        description="Net cash used for investing activities."
-    )
-    effect_of_forex_changes_on_cash: Optional[int] = Field(
-        description="Foreign currency effect on cash, cash equivalents, and restricted cash"
+    other_working_capital: Optional[StrictInt] = Field(
+        default=None, description="Accrued expenses and other, Unearned revenue."
     )
 
-    dividends_paid: Optional[int] = Field(
-        description="Payments for dividends and dividend equivalents"
+    capital_expenditure: Optional[StrictInt] = Field(
+        default=None, description="Purchases of property and equipment."
     )
-    common_stock_issued: Optional[int] = Field(
-        description="Proceeds from issuance of common stock"
+    other_investing_activities: Optional[StrictInt] = Field(
+        default=None,
+        description="Proceeds from property and equipment sales and incentives.",
     )
-    common_stock_repurchased: Optional[int] = Field(
-        description="Payments related to repurchase of common stock"
+    acquisitions_net: Optional[StrictInt] = Field(
+        default=None, description="Acquisitions, net of cash acquired, and other"
     )
-    debt_repayment: Optional[int] = Field(description="Payments of long-term debt")
+    sales_maturities_of_investments: Optional[StrictInt] = Field(
+        default=None, description="Sales and maturities of investments."
+    )
+    purchases_of_investments: Optional[StrictInt] = Field(
+        default=None, description="Purchases of investments."
+    )
+    net_cash_flow_from_operating_activities: Optional[StrictInt] = Field(
+        default=None, description="Net cash flow from operating activities."
+    )
+    net_cash_flow_from_investing_activities: Optional[StrictInt] = Field(
+        default=None, description="Net cash flow from investing activities."
+    )
+    net_cash_flow_from_financing_activities: Optional[StrictInt] = Field(
+        default=None, description="Net cash flow from financing activities."
+    )
+    investments_in_property_plant_and_equipment: Optional[StrictInt] = Field(
+        default=None, description="Investments in property, plant, and equipment."
+    )
+    net_cash_used_for_investing_activities: Optional[StrictInt] = Field(
+        default=None, description="Net cash used for investing activities."
+    )
+    effect_of_forex_changes_on_cash: Optional[StrictInt] = Field(
+        default=None,
+        description="Foreign currency effect on cash, cash equivalents, and restricted cash",
+    )
 
-    other_financing_activities: Optional[int] = Field(
-        description="Other financing activities, net"
+    dividends_paid: Optional[StrictInt] = Field(
+        default=None, description="Payments for dividends and dividend equivalents"
+    )
+    common_stock_issued: Optional[StrictInt] = Field(
+        default=None, description="Proceeds from issuance of common stock"
+    )
+    common_stock_repurchased: Optional[StrictInt] = Field(
+        default=None, description="Payments related to repurchase of common stock"
+    )
+    debt_repayment: Optional[StrictInt] = Field(
+        default=None, description="Payments of long-term debt"
     )
 
-    net_change_in_cash: Optional[int] = Field(
-        description="Net increase (decrease) in cash, cash equivalents, and restricted cash"
+    other_financing_activities: Optional[StrictInt] = Field(
+        default=None, description="Other financing activities, net"
     )
 
-    cash_at_end_of_period: Optional[int] = Field(
-        description="Cash, cash equivalents, and restricted cash at end of period"
+    net_change_in_cash: Optional[StrictInt] = Field(
+        default=None,
+        description="Net increase (decrease) in cash, cash equivalents, and restricted cash",
     )
-    free_cash_flow: Optional[int] = Field(
-        description="Net cash flow from operating, investing and financing activities"
+
+    cash_at_end_of_period: Optional[StrictInt] = Field(
+        default=None,
+        description="Cash, cash equivalents, and restricted cash at end of period",
     )
-    operating_cash_flow: Optional[int] = Field(
-        description="Net cash flow from operating activities"
+    free_cash_flow: Optional[StrictInt] = Field(
+        default=None,
+        description="Net cash flow from operating, investing and financing activities",
+    )
+    operating_cash_flow: Optional[StrictInt] = Field(
+        default=None, description="Net cash flow from operating activities"
     )

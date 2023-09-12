@@ -22,10 +22,7 @@ class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
 class FMPGlobalNewsData(GlobalNewsData):
     """FMP Global News Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {"date": "publishedDate"}
+    __alias_dict__ = {"date": "publishedDate"}
 
     site: str = Field(description="Site of the news.")
 

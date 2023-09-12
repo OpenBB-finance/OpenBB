@@ -5,9 +5,9 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional
+from typing import Optional, Union
 
-from pydantic import Field, NonNegativeInt, PositiveFloat
+from pydantic import Field, PositiveFloat
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -34,5 +34,7 @@ class StockHistoricalData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: NonNegativeInt = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+    volume: Union[float, int] = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
+    )

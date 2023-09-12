@@ -24,12 +24,12 @@ from typing import (
 
 import pandas as pd
 from importlib_metadata import entry_points
-from pydantic.fields import ModelField
+from openbb_provider import standard_models
+from pydantic.fields import FieldInfo
 from starlette.routing import BaseRoute
-from typing_extensions import Annotated, _AnnotatedAlias
+from typing_extensions import _AnnotatedAlias
 
 from openbb_core.app.charting_service import ChartingService
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.env import Env
@@ -337,6 +337,10 @@ class DocstringGenerator:
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
+        obb_query_fields: Dict[str, FieldInfo] = cls.provider_interface.map[model_name][
+            "openbb"
+        ]["QueryParams"]["fields"]
+
         docstring = summary
         docstring += "\n"
         docstring += "\nParameters\n----------\n"
@@ -345,10 +349,9 @@ class DocstringGenerator:
         for param_name, param in explicit_params.items():
             if param_name in standard_dict:
                 # pylint: disable=W0212
-                p_type = param._annotation.__args__[0]
+                p_type = obb_query_fields[param_name].annotation
                 type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                meta = param._annotation.__metadata__
-                description = getattr(meta[0], "description", "") if meta else ""
+                description = obb_query_fields[param_name].description
             elif param_name == "provider":
                 # pylint: disable=W0212
                 type_ = param._annotation
@@ -383,15 +386,25 @@ class DocstringGenerator:
         underline = "-" * len(model_name)
         docstring += f"\n{model_name}\n{underline}\n"
 
-        for _, field in returns.items():
+        for name, field in returns.items():
             try:
-                field_type = field.__repr_args__()[1][1]
-            except AttributeError:
+                field_type = (
+                    str(field.annotation)
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                    .replace("typing.", "")
+                    .replace("pydantic.types.", "")
+                    .replace("datetime.datetime", "datetime")
+                    .replace("datetime.date", "date")
+                    .replace("NoneType", "None")
+                    .replace("None, str]", "str]")
+                )
+            except TypeError:
                 # Fallback to the annotation if the repr fails
                 field_type = field.annotation
 
-            docstring += f"{field.field_info.alias or field.alias} : {field_type}\n"
-            docstring += f"    {field.field_info.description}\n"
+            docstring += f"{field.alias or name} : {field_type}\n"
+            docstring += f"    {field.description}\n"
 
         return docstring
 
@@ -410,7 +423,7 @@ class DocstringGenerator:
                 explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
 
-                returns = return_schema.__fields__
+                returns = return_schema.model_fields
 
                 func.__doc__ = cls.generate_model_docstring(
                     model_name=model_name,
@@ -441,7 +454,7 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def get_type(field: ModelField) -> type:
+    def get_type(field: FieldInfo) -> type:
         """Get the type of the field."""
         field_type = getattr(field, "type", Parameter.empty)
         if isclass(field_type):
@@ -453,9 +466,9 @@ class MethodDefinition:
         return field_type
 
     @staticmethod
-    def get_default(field: ModelField):
+    def get_default(field: FieldInfo):
         """Get the default value of the field."""
-        field_default = getattr(field, "default", None)
+        field_default = getattr(field, "get_default", lambda: MISSING)()
         if field_default is None or field_default is MISSING:
             return Parameter.empty
 
@@ -574,17 +587,7 @@ class MethodDefinition:
                 if param not in available_fields:
                     continue
 
-                description = (
-                    ProviderInterface()
-                    .map[model_name]["openbb"]["QueryParams"]["fields"][param]
-                    .field_info.description
-                )
-
-                new_value = value.replace(
-                    annotation=Annotated[
-                        value.annotation, OpenBBCustomParameter(description=description)
-                    ]
-                )
+                new_value = value.replace(annotation=value.annotation)
 
                 od[param] = new_value
 
@@ -600,7 +603,7 @@ class MethodDefinition:
         return func_params
 
     @staticmethod
-    def build_func_returns(return_type: type) -> str:
+    def build_func_returns(return_type: type, model_name: str = None) -> str:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
@@ -615,12 +618,13 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                inner_type_name = (
-                    item_type.__name__
-                    if hasattr(item_type, "__name__")
-                    else item_type._name
-                )
-                result_type = f"{item_type.__module__}.{inner_type_name}"
+                result_type = "list" if "List" in str(return_type) else "BaseModel"
+                if (
+                    data_model := standard_models.DATA_MODELS.get(model_name, None)
+                ) is not None:
+                    result_type = f"{data_model.__module__}.{data_model.__name__}"
+                    if "List" in str(return_type):
+                        result_type = f"List[{result_type}]"
 
                 if "pydantic.main" in result_type:
                     result_type = "BaseModel"
@@ -641,7 +645,7 @@ class MethodDefinition:
             od=formatted_params, model_name=model_name
         )  # this modified `od` in place
         func_params = MethodDefinition.build_func_params(formatted_params)
-        func_returns = MethodDefinition.build_func_returns(return_type)
+        func_returns = MethodDefinition.build_func_returns(return_type, model_name)
 
         extra = (
             "(config=dict(arbitrary_types_allowed=True))"

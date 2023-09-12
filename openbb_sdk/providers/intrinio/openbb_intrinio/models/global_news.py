@@ -37,13 +37,7 @@ class IntrinioGlobalNewsQueryParams(GlobalNewsQueryParams):
 class IntrinioGlobalNewsData(GlobalNewsData):
     """Intrinio Global News Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "date": "publication_date",
-            "text": "summary",
-        }
+    __alias_dict__ = {"date": "publication_date", "text": "summary"}
 
     id: str = Field(description="Article ID.")
     company: Dict[str, Any] = Field(

@@ -10,7 +10,7 @@ from openbb_provider.standard_models.dividend_calendar import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
@@ -28,22 +28,26 @@ class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
 class FMPDividendCalendarData(DividendCalendarData):
     """FMP Dividend Calendar Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("recordDate", pre=True, check_fields=False)
+    @field_validator("recordDate", mode="before", check_fields=False)
+    @classmethod
     def record_date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the record date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("paymentDate", pre=True, check_fields=False)
+    @field_validator("paymentDate", mode="before", check_fields=False)
+    @classmethod
     def payment_date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the payment date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("declarationDate", pre=True, check_fields=False)
+    @field_validator("declarationDate", mode="before", check_fields=False)
+    @classmethod
     def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the declaration date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
@@ -81,7 +85,7 @@ class FMPDividendCalendarFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(by_alias=True), [])
+        query_str = get_querystring(query.model_dump(), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/stock_dividend_calendar?{query_str}&apikey={api_key}"
 

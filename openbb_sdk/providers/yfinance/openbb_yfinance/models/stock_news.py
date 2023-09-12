@@ -24,11 +24,7 @@ class YFinanceStockNewsQueryParams(StockNewsQueryParams):
 class YFinanceStockNewsData(StockNewsData):
     """YFinance Stock News Data."""
 
-    class Config:
-        fields = {
-            "date": "providerPublishTime",
-            "url": "link",
-        }
+    __alias_dict__ = {"date": "providerPublishTime", "url": "link"}
 
     uuid: str = Field(description="Unique identifier for the news article")
     publisher: str = Field(description="Publisher of the news article")

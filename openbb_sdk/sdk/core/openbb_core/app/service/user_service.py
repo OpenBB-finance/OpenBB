@@ -1,4 +1,5 @@
 """User service."""
+import json
 from functools import reduce
 from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
@@ -59,15 +60,11 @@ class UserService(metaclass=SingletonMeta):
         """Read default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
-        if path.exists():
-            with path.open(mode="r") as file:
-                user_settings_json = file.read()
-
-            user_settings = UserSettings.parse_raw(user_settings_json)
-        else:
-            user_settings = UserSettings()
-
-        return user_settings
+        return (
+            UserSettings.model_validate(json.loads(path.read_text(encoding="utf-8")))
+            if path.exists()
+            else UserSettings()
+        )
 
     @classmethod
     def write_default_user_settings(
@@ -83,17 +80,16 @@ class UserService(metaclass=SingletonMeta):
             indent=4,
             sort_keys=True,
         )
-        with path.open(mode="w") as file:
-            file.write(user_settings_json)
+        path.write_text(user_settings_json, encoding="utf-8", newline="\n")
 
     @classmethod
     def update_default(cls, user_settings: UserSettings) -> UserSettings:
         """Update default user settings."""
-        d1 = cls.read_default_user_settings().dict()
-        d2 = user_settings.dict() if user_settings else {}
+        d1 = cls.read_default_user_settings().model_dump()
+        d2 = user_settings.model_dump() if user_settings else {}
         updated = cls.merge_dicts([d1, d2])
 
-        return UserSettings.parse_obj(updated)
+        return UserSettings.model_validate(updated)
 
     @staticmethod
     def merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:

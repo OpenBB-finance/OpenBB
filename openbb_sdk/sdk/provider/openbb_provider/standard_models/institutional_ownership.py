@@ -15,16 +15,18 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class InstitutionalOwnershipQueryParams(QueryParams, BaseSymbol):
     """Institutional Ownership Query."""
 
-    include_current_quarter: bool = Field(
+    include_current_quarter: Optional[bool] = Field(
         default=False, description="Include current quarter data."
     )
-    date: Optional[dateType] = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
 
 
 class InstitutionalOwnershipData(Data, BaseSymbol):
     """Institutional Ownership Data."""
 
-    cik: Optional[str] = Field(description="CIK of the company.")
+    cik: str = Field(default=None, description="CIK of the company.")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     investors_holding: int = Field(description="Number of investors holding the stock.")
     last_investors_holding: int = Field(
@@ -33,12 +35,12 @@ class InstitutionalOwnershipData(Data, BaseSymbol):
     investors_holding_change: int = Field(
         description="Change in the number of investors holding the stock."
     )
-    number_of_13f_shares: Optional[int] = Field(description="Number of 13F shares.")
-    last_number_of_13f_shares: Optional[int] = Field(
-        description="Number of 13F shares in the last quarter."
+    number_of_13f_shares: int = Field(default=None, description="Number of 13F shares.")
+    last_number_of_13f_shares: int = Field(
+        default=None, description="Number of 13F shares in the last quarter."
     )
-    number_of_13f_shares_change: Optional[int] = Field(
-        description="Change in the number of 13F shares."
+    number_of_13f_shares_change: int = Field(
+        default=None, description="Change in the number of 13F shares."
     )
     total_invested: float = Field(description="Total amount invested.")
     last_total_invested: float = Field(

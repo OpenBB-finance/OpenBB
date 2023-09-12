@@ -32,36 +32,35 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 class IntrinioCashFlowStatementData(CashFlowStatementData):
     """Intrinio Cash Flow Statement Data."""
 
-    class Config:
-        fields = {
-            "net_income": "NetIncomeLoss",
-            "depreciation_and_amortization": "DepreciationDepletionAndAmortization",
-            "stock_based_compensation": "ShareBasedCompensation",
-            "deferred_income_tax": "DeferredIncomeTaxExpenseBenefit",
-            "other_non_cash_items": "OtherNoncashIncomeExpense",
-            "accounts_receivables": "IncreaseDecreaseInAccountsReceivable",
-            "inventory": "IncreaseDecreaseInInventories",
-            "vendor_non_trade_receivables": "IncreaseDecreaseInOtherReceivables",
-            "other_current_and_non_current_assets": "IncreaseDecreaseInOtherOperatingAssets",
-            "accounts_payables": "IncreaseDecreaseInAccountsPayable",
-            "deferred_revenue": "IncreaseDecreaseInContractWithCustomerLiability",
-            "other_current_and_non_current_liabilities": "IncreaseDecreaseInOtherOperatingLiabilities",
-            "net_cash_flow_from_operating_activities": "NetCashProvidedByUsedInOperatingActivities",
-            "purchases_of_marketable_securities": "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
-            "sales_from_maturities_of_investments": "ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
-            "investments_in_property_plant_and_equipment": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",  # noqa: E501
-            "payments_from_acquisitions": "PaymentsToAcquireBusinessesNetOfCashAcquired",
-            "other_investing_activities": "PaymentsForProceedsFromOtherInvestingActivities",
-            "net_cash_flow_from_investing_activities": "NetCashProvidedByUsedInInvestingActivities",
-            "taxes_paid_on_net_share_settlement": "PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
-            "dividends_paid": "PaymentsOfDividends",
-            "common_stock_repurchased": "PaymentsForRepurchaseOfCommonStock",
-            "debt_proceeds": "ProceedsFromIssuanceOfLongTermDebt",
-            "debt_repayment": "RepaymentsOfLongTermDebt",
-            "other_financing_activities": "ProceedsFromPaymentsForOtherFinancingActivities",
-            "net_cash_flow_from_financing_activities": "NetCashProvidedByUsedInFinancingActivities",
-            "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",  # noqa: E501
-        }
+    __alias_dict__ = {
+        "net_income": "NetIncomeLoss",
+        "depreciation_and_amortization": "DepreciationDepletionAndAmortization",
+        "stock_based_compensation": "ShareBasedCompensation",
+        "deferred_income_tax": "DeferredIncomeTaxExpenseBenefit",
+        "other_non_cash_items": "OtherNoncashIncomeExpense",
+        "accounts_receivables": "IncreaseDecreaseInAccountsReceivable",
+        "inventory": "IncreaseDecreaseInInventories",
+        "vendor_non_trade_receivables": "IncreaseDecreaseInOtherReceivables",
+        "other_current_and_non_current_assets": "IncreaseDecreaseInOtherOperatingAssets",
+        "accounts_payables": "IncreaseDecreaseInAccountsPayable",
+        "deferred_revenue": "IncreaseDecreaseInContractWithCustomerLiability",
+        "other_current_and_non_current_liabilities": "IncreaseDecreaseInOtherOperatingLiabilities",
+        "net_cash_flow_from_operating_activities": "NetCashProvidedByUsedInOperatingActivities",
+        "purchases_of_marketable_securities": "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+        "sales_from_maturities_of_investments": "ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+        "investments_in_property_plant_and_equipment": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",  # noqa: E501
+        "payments_from_acquisitions": "PaymentsToAcquireBusinessesNetOfCashAcquired",
+        "other_investing_activities": "PaymentsForProceedsFromOtherInvestingActivities",
+        "net_cash_flow_from_investing_activities": "NetCashProvidedByUsedInInvestingActivities",
+        "taxes_paid_on_net_share_settlement": "PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
+        "dividends_paid": "PaymentsOfDividends",
+        "common_stock_repurchased": "PaymentsForRepurchaseOfCommonStock",
+        "debt_proceeds": "ProceedsFromIssuanceOfLongTermDebt",
+        "debt_repayment": "RepaymentsOfLongTermDebt",
+        "other_financing_activities": "ProceedsFromPaymentsForOtherFinancingActivities",
+        "net_cash_flow_from_financing_activities": "NetCashProvidedByUsedInFinancingActivities",
+        "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",  # noqa: E501
+    }
 
 
 class IntrinioCashFlowStatementFetcher(

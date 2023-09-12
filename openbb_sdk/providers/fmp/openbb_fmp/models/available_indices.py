@@ -23,14 +23,6 @@ class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 class FMPAvailableIndicesData(AvailableIndicesData):
     """FMP Available Indices Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "stock_exchange": "stockExchange",
-            "exchange_short_name": "exchangeShortName",
-        }
-
     stock_exchange: str = Field(
         description="Stock exchange where the index is listed.", alias="stockExchange"
     )

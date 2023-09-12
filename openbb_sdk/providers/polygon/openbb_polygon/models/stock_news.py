@@ -20,8 +20,7 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
 
-    class Config:
-        fields = {"symbols": "ticker"}
+    __alias_dict__ = {"symbols": "ticker"}
 
     ticker_lt: Optional[str] = Field(default=None, description="Less than.")
     ticker_lte: Optional[str] = Field(default=None, description="Less than or equal.")
@@ -58,12 +57,11 @@ class PolygonPublisher(BaseModel):
 class PolygonStockNewsData(StockNewsData):
     """Source: https://polygon.io/docs/stocks/get_v2_reference_news"""
 
-    class Config:
-        fields = {
-            "url": "article_url",
-            "text": "description",
-            "date": "published_utc",
-        }
+    __alias_dict__ = {
+        "url": "article_url",
+        "text": "description",
+        "date": "published_utc",
+    }
 
     amp_url: Optional[str] = Field(description="AMP URL.")
     author: Optional[str] = Field(description="Author of the article.")
@@ -93,7 +91,7 @@ class PolygonStockNewsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
-        querystring = get_querystring(query.dict(by_alias=True), [])
+        querystring = get_querystring(query.model_dump(), [])
         request_url = f"{base_url}?{querystring}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 

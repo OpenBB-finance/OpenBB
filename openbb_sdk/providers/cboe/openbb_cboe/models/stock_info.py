@@ -30,56 +30,58 @@ class CboeStockInfoQueryParams(StockInfoQueryParams):
 class CboeStockInfoData(StockInfoData):
     """CBOE Company Search Data."""
 
-    type: Optional[str] = Field(description="Type of asset.")
-    exchange_id: Optional[int] = Field(description="The Exchange ID number.")
-    tick: Optional[str] = Field(
-        description="Whether the last sale was an up or down tick."
+    type: Optional[str] = Field(default=None, description="Type of asset.")
+    exchange_id: Optional[int] = Field(
+        default=None, description="The Exchange ID number."
     )
-    bid: Optional[float] = Field(description="Current bid price.")
-    bid_size: Optional[float] = Field(description="Bid lot size.")
-    ask: Optional[float] = Field(description="Current ask price.")
-    ask_size: Optional[float] = Field(description="Ask lot size.")
+    tick: Optional[str] = Field(
+        default=None, description="Whether the last sale was an up or down tick."
+    )
+    bid: Optional[float] = Field(default=None, description="Current bid price.")
+    bid_size: Optional[float] = Field(default=None, description="Bid lot size.")
+    ask: Optional[float] = Field(default=None, description="Current ask price.")
+    ask_size: Optional[float] = Field(default=None, description="Ask lot size.")
     volume: Optional[float] = Field(
-        description="Stock volume for the current trading day."
+        default=None, description="Stock volume for the current trading day."
     )
     iv30: Optional[float] = Field(
-        description="The 30-day implied volatility of the stock."
+        default=None, description="The 30-day implied volatility of the stock."
     )
     iv30_change: Optional[float] = Field(
-        description="Change in 30-day implied volatility of the stock."
+        default=None, description="Change in 30-day implied volatility of the stock."
     )
     last_trade_timestamp: Optional[datetime] = Field(
-        description="Last trade timestamp for the stock."
+        default=None, description="Last trade timestamp for the stock."
     )
     iv30_annual_high: Optional[float] = Field(
-        description="The 1-year high of implied volatility."
+        default=None, description="The 1-year high of implied volatility."
     )
     hv30_annual_high: Optional[float] = Field(
-        description="The 1-year high of realized volatility."
+        default=None, description="The 1-year high of realized volatility."
     )
     iv30_annual_low: Optional[float] = Field(
-        description="The 1-year low of implied volatility."
+        default=None, description="The 1-year low of implied volatility."
     )
     hv30_annual_low: Optional[float] = Field(
-        description="The 1-year low of realized volatility."
+        default=None, description="The 1-year low of realized volatility."
     )
     iv60_annual_high: Optional[float] = Field(
-        description="The 60-day high of implied volatility."
+        default=None, description="The 60-day high of implied volatility."
     )
     hv60_annual_high: Optional[float] = Field(
-        description="The 60-day high of realized volatility."
+        default=None, description="The 60-day high of realized volatility."
     )
     iv60_annual_low: Optional[float] = Field(
-        description="The 60-day low of implied volatility."
+        default=None, description="The 60-day low of implied volatility."
     )
     hv60_annual_low: Optional[float] = Field(
-        description="The 60-day low of realized volatility."
+        default=None, description="The 60-day low of realized volatility."
     )
     iv90_annual_high: Optional[float] = Field(
-        description="The 90-day high of implied volatility."
+        default=None, description="The 90-day high of implied volatility."
     )
     hv90_annual_high: Optional[float] = Field(
-        description="The 90-day high of realized volatility."
+        default=None, description="The 90-day high of realized volatility."
     )
 
 

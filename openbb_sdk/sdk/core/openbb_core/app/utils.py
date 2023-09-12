@@ -1,4 +1,5 @@
 import ast
+import json
 from typing import Iterable, List, Optional, Union
 
 import pandas as pd
@@ -11,12 +12,12 @@ def basemodel_to_df(
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
     if isinstance(data, list):
-        df = pd.DataFrame([d.dict() for d in data])
+        df = pd.DataFrame([d.model_dump() for d in data])
     else:
         try:
-            df = pd.DataFrame(data.dict())
+            df = pd.DataFrame(data.model_dump())
         except ValueError:
-            df = pd.DataFrame(data.dict(), index=["values"])
+            df = pd.DataFrame(data.model_dump(), index=["values"])
 
     if "is_multiindex" in df.columns:
         col_names = ast.literal_eval(df.multiindex_names.unique()[0])
@@ -48,7 +49,9 @@ def df_to_basemodel(
         df["multiindex_names"] = str(df.index.names)
         df = df.reset_index()
 
-    return [Data(**d) for d in df.to_dict(orient="records")]
+    return [
+        Data(**d) for d in json.loads(df.to_json(orient="records", date_format="iso"))
+    ]
 
 
 def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:

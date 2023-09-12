@@ -62,10 +62,7 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
 class IntrinioStockHistoricalData(StockHistoricalData):
     """Intrinio Stock end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "time",
-        }
+    __alias_dict__ = {"date": "time"}
 
     close_time: Optional[datetime] = Field(
         description="The timestamp that represents the end of the interval span."

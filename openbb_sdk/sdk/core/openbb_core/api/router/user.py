@@ -15,16 +15,16 @@ async def read_users_settings(
     return user_settings
 
 
-@router.patch("/credentials")
+@router.patch("/credentials", operation_id="patch_user_credentials")
 async def patch_user_credentials(
     credentials: Credentials,
     user_settings: Annotated[UserSettings, Depends(get_user)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
     """Patch user credentials."""
-    current = user_settings.credentials.dict()
-    incoming = credentials.dict(exclude_none=True)
+    current = user_settings.credentials.model_dump()
+    incoming = credentials.model_dump(exclude_none=True)
     current.update(incoming)
-    user_settings.credentials = Credentials.parse_obj(current)
+    user_settings.credentials = Credentials.model_validate(current)
     user_service.user_settings_repository.update(user_settings)
     return user_settings

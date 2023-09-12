@@ -32,22 +32,28 @@ class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
 class FMPStockHistoricalData(StockHistoricalData):
     """FMP Stock end of day Data."""
 
-    adjClose: Optional[float] = Field(description="Adjusted Close Price of the symbol.")
-    unadjustedVolume: Optional[float] = Field(
-        description="Unadjusted volume of the symbol."
+    adj_close: Optional[float] = Field(
+        default=None, description="Adjusted Close Price of the symbol."
+    )
+    unadjusted_volume: Optional[float] = Field(
+        default=None, description="Unadjusted volume of the symbol."
     )
     change: Optional[float] = Field(
-        description="Change in the price of the symbol from the previous day."
+        default=None,
+        description="Change in the price of the symbol from the previous day.",
     )
-    changePercent: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol."
+    change_percent: Optional[float] = Field(
+        default=None, description=r"Change \% in the price of the symbol."
     )
     vwap: Optional[float] = Field(
-        description="Volume Weighted Average Price of the symbol."
+        default=None, description="Volume Weighted Average Price of the symbol."
     )
-    label: Optional[str] = Field(description="Human readable format of the date.")
-    changeOverTime: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol over a period of time."
+    label: Optional[str] = Field(
+        default=None, description="Human readable format of the date."
+    )
+    change_over_time: Optional[float] = Field(
+        default=None,
+        description=r"Change \% in the price of the symbol over a period of time.",
     )
 
     @validator("date", pre=True, check_fields=False)
@@ -92,7 +98,7 @@ class FMPStockHistoricalFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = (
-            get_querystring(query.dict(), ["symbol"])
+            get_querystring(query.model_dump(), ["symbol"])
             .replace("start_date", "from")
             .replace("end_date", "to")
         )

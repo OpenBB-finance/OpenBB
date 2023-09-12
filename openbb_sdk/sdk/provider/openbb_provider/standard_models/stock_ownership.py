@@ -7,9 +7,9 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
@@ -45,12 +45,15 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
 class StockOwnershipQueryParams(QueryParams, BaseSymbol):
     """Stock ownership Query."""
 
-    date: Optional[dateType] = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
-    page: Optional[int] = Field(
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
+    page: Optional[StrictInt] = Field(
         default=0, description="Page number of the data to fetch."
     )
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def time_validate(cls, v: str):  # pylint: disable=E021
         """Validate the date."""
         if v is None:

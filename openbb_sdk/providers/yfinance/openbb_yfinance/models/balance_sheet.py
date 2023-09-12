@@ -10,7 +10,7 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 from yfinance import Ticker
 
 
@@ -26,7 +26,7 @@ class YFinanceBalanceSheetData(BalanceSheetData):
 
     # TODO: Standardize the fields
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before")
     def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
 

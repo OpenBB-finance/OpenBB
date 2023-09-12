@@ -2,14 +2,16 @@
 
 
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.base import FinancialStatementQueryParams
 from openbb_provider.standard_models.financial_ratios import FinancialRatiosData
+from pydantic import Field
 
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_fmp.utils.helpers import get_data_many, get_data_one
 
 PeriodType = Literal["annual", "quarter"]
 
@@ -22,9 +24,20 @@ class FMPFinancialRatiosQueryParams(FinancialStatementQueryParams):
     Symbol must be provided.
     """
 
+    with_ttm: Optional[bool] = Field(
+        default=False, description="Include trailing twelve months (TTM) data."
+    )
+
 
 class FMPFinancialRatiosData(FinancialRatiosData):
     """FMP Financial Ratios Data."""
+
+    __alias_dict__ = {
+        "net_income_per_ebt": "netIncomePerEBT",
+        "dividend_yield": "dividendYiel",
+        "dividend_yield_percentage": "dividendYielPercentage",
+        "dividend_per_share": "dividendPerShare",
+    }
 
 
 class FMPFinancialRatiosFetcher(
@@ -57,6 +70,19 @@ class FMPFinancialRatiosFetcher(
                 f"{base_url}/ratios/{symbol}?"
                 f"period={query.period}&limit={query.limit}&apikey={api_key}"
             )
+
+            # TTM data
+            ttm_url = f"{base_url}/ratios-ttm/{symbol}?&apikey={api_key}"
+            if query.with_ttm and (ratios_ttm := get_data_one(ttm_url, **kwargs)):
+                data.append(
+                    {
+                        "symbol": symbol,
+                        "period": "TTM",
+                        "date": datetime.now().strftime("%Y-%m-%d"),
+                        **{k.replace("TTM", ""): v for k, v in ratios_ttm.items()},
+                    }
+                )
+
             return data.extend(get_data_many(url, **kwargs))
 
         with ThreadPoolExecutor() as executor:

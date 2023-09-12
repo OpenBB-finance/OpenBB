@@ -2,7 +2,7 @@
 
 
 from datetime import date
-from typing import Literal, Optional, Union
+from typing import Literal, Union
 
 from pydantic import Field
 
@@ -27,14 +27,16 @@ class MajorIndicesConstituentsData(Data, BaseSymbol):
     sector: str = Field(
         description="Sector the constituent company in the index belongs to."
     )
-    sub_sector: Optional[str] = Field(
-        description="Sub-sector the constituent company in the index belongs to."
+    sub_sector: str = Field(
+        default=None,
+        description="Sub-sector the constituent company in the index belongs to.",
     )
-    headquarter: Optional[str] = Field(
-        description="Location of the headquarter of the constituent company in the index."
+    headquarter: str = Field(
+        default=None,
+        description="Location of the headquarter of the constituent company in the index.",
     )
-    date_first_added: Optional[Union[date, str]] = Field(
-        description="Date the constituent company was added to the index."
+    date_first_added: Union[date, str] = Field(
+        default=None, description="Date the constituent company was added to the index."
     )
     cik: int = Field(
         description="Central Index Key of the constituent company in the index."

@@ -7,9 +7,9 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, NonNegativeInt, PositiveFloat
+from pydantic import Field, PositiveFloat
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
@@ -34,6 +34,6 @@ class MajorIndicesHistoricalData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[NonNegativeInt] = Field(
-        description=DATA_DESCRIPTIONS.get("volume", "")
+    volume: Optional[StrictInt] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )

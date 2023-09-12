@@ -10,7 +10,7 @@ from openbb_provider.standard_models.forex_historical import (
     ForexHistoricalData,
     ForexHistoricalQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
@@ -25,29 +25,25 @@ class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
 class FMPForexHistoricalData(ForexHistoricalData):
     """FMP Forex end of day Data."""
 
-    adjClose: float = Field(
-        description="Adjusted Close Price of the symbol.", alias="adj_close"
-    )
-    unadjustedVolume: float = Field(
-        description="Unadjusted volume of the symbol.", alias="unadjusted_volume"
-    )
+    adj_close: float = Field(description="Adjusted Close Price of the symbol.")
+    unadjusted_volume: float = Field(description="Unadjusted volume of the symbol.")
     change: float = Field(
-        description="Change in the price of the symbol from the previous day.",
-        alias="change",
+        description="Change in the price of the symbol from the previous day."
     )
-    changePercent: float = Field(
-        description=r"Change \% in the price of the symbol.", alias="change_percent"
-    )
+    change_percent: float = Field(description=r"Change \% in the price of the symbol.")
     label: str = Field(description="Human readable format of the date.")
-    changeOverTime: float = Field(
+    change_over_time: float = Field(
         description=r"Change \% in the price of the symbol over a period of time.",
-        alias="change_over_time",
     )
 
-    @validator("date", pre=True)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
+        """Return the datetime object from the date string"""
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPForexHistoricalFetcher(
@@ -82,7 +78,7 @@ class FMPForexHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
+        query_str = get_querystring(query.model_dump(), ["symbol"])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/historical-price-full/forex/{query.symbol}?{query_str}&apikey={api_key}"
 

@@ -2,6 +2,7 @@
 
 
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Optional
 
@@ -10,8 +11,9 @@ from openbb_provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
+from pydantic import Field
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many, get_data_one
 
 
 class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
@@ -20,17 +22,20 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
     """
 
+    with_ttm: Optional[bool] = Field(
+        default=False, description="Include trailing twelve months (TTM) data."
+    )
+
 
 class FMPKeyMetricsData(KeyMetricsData):
     """FMP Key Metrics Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "pocf_ratio": "pocfratio",
-            "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
-        }
+    __alias_dict__ = {
+        "pocf_ratio": "pocfratio",
+        "research_and_development_to_revenue": "researchAndDdevelopementToRevenue",
+        "net_debt_to_ebitda": "netDebtToEBITDA",
+        "enterprise_value_over_ebitda": "enterpriseValueOverEBITDA",
+    }
 
 
 class FMPKeyMetricsFetcher(
@@ -61,6 +66,19 @@ class FMPKeyMetricsFetcher(
             url = create_url(
                 3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
             )
+            ttm_url = create_url(
+                3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
+            )
+            if query.with_ttm and (metrics_ttm := get_data_one(ttm_url, **kwargs)):
+                data.append(
+                    {
+                        "symbol": symbol,
+                        "period": "TTM",
+                        "date": datetime.now().strftime("%Y-%m-%d"),
+                        **{k.replace("TTM", ""): v for k, v in metrics_ttm.items()},
+                    }
+                )
+
             return data.extend(get_data_many(url, **kwargs))
 
         with ThreadPoolExecutor() as executor:

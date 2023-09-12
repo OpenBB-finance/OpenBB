@@ -9,7 +9,7 @@ from openbb_provider.standard_models.balance_sheet_growth import (
     BalanceSheetGrowthData,
     BalanceSheetGrowthQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -24,7 +24,8 @@ class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
 class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     """FMP Balance Sheet Growth Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")

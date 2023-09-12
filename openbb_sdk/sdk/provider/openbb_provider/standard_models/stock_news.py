@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -16,11 +16,12 @@ class StockNewsQueryParams(QueryParams):
 
     symbols: str = Field(min_length=1, description=QUERY_DESCRIPTIONS.get("symbol", ""))
     page: int = Field(default=0, description="Page of the stock news to be retrieved.")
-    limit: Optional[NonNegativeInt] = Field(
+    limit: NonNegativeInt = Field(
         default=15, description="Number of results to return per page."
     )
 
-    @validator("symbols", pre=True)
+    @field_validator("symbols", mode="before")
+    @classmethod
     def symbols_validate(cls, v: str):  # pylint: disable=E0213
         """Validate the symbols."""
         return v.upper()

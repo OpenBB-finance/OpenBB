@@ -12,7 +12,7 @@ from openbb_provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 
@@ -27,12 +27,13 @@ class FMPShareStatisticsQueryParams(ShareStatisticsQueryParams):
 class FMPShareStatisticsData(ShareStatisticsData):
     """FMP Share Statistics Data."""
 
-    @validator("date", pre=True)
+    @field_validator("date", mode="before")
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        if isinstance(v, dateType):
+        if isinstance(v, dateType) or v is None:
             return v
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
 
 
 class FMPShareStatisticsFetcher(

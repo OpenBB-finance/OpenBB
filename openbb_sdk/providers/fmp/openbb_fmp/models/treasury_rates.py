@@ -9,7 +9,7 @@ from openbb_provider.standard_models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
@@ -26,25 +26,23 @@ class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):
 class FMPTreasuryRatesData(TreasuryRatesData):
     """FMP Treasury Rates Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {
+        "month_1": "month1",
+        "month_2": "month2",
+        "month_3": "month3",
+        "month_6": "month6",
+        "year_1": "year1",
+        "year_2": "year2",
+        "year_3": "year3",
+        "year_5": "year5",
+        "year_7": "year7",
+        "year_10": "year10",
+        "year_20": "year20",
+        "year_30": "year30",
+    }
 
-        fields = {
-            "month_1": "month1",
-            "month_2": "month2",
-            "month_3": "month3",
-            "month_6": "month6",
-            "year_1": "year1",
-            "year_2": "year2",
-            "year_3": "year3",
-            "year_5": "year5",
-            "year_7": "year7",
-            "year_10": "year10",
-            "year_20": "year20",
-            "year_30": "year30",
-        }
-
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
@@ -82,7 +80,7 @@ class FMPTreasuryRatesFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v4/"
-        query_str = get_querystring(query.dict(by_alias=True), [])
+        query_str = get_querystring(query.model_dump(), [])
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
 

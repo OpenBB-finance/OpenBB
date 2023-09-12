@@ -7,13 +7,14 @@ from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
-from pydantic import BaseConfig, Extra, create_model
+from pydantic import ConfigDict, Extra, create_model
 
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -175,9 +176,7 @@ class ParametersBuilder:
     ) -> Dict[str, Any]:
         """Validate kwargs and if possible coerce to the correct type"""
 
-        class Config(BaseConfig):
-            arbitrary_types_allowed = True
-            extra = Extra.allow
+        config = ConfigDict(extra=Extra.allow, arbitrary_types_allowed=True)
 
         sig = signature(func)
         fields = {
@@ -187,7 +186,7 @@ class ParametersBuilder:
             )
             for n, p in sig.parameters.items()
         }
-        ValidationModel = create_model(func.__name__, __config__=Config, **fields)  # type: ignore
+        ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
         model = ValidationModel(**kwargs)
         result = dict(model)
 
@@ -366,12 +365,12 @@ class StaticCommandRunner:
         duration = perf_counter_ns() - start_ns
 
         if execution_context.user_settings.preferences.metadata:
-            obbject.metadata = {  # type: ignore
-                "arguments": kwargs,
-                "duration": duration,
-                "route": route,
-                "timestamp": timestamp,
-            }
+            obbject.metadata = Metadata(
+                arguments=kwargs,
+                duration=duration,
+                route=route,
+                timestamp=timestamp,
+            )
 
         return obbject
 
