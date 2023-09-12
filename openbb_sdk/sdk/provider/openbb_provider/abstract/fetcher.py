@@ -75,3 +75,10 @@ class Fetcher(Generic[Q, R]):
         if get_origin(data) == list:
             data = get_args(data)[0]
         return data
+
+    @classmethod
+    def test_fetcher(cls, params: Dict[str, Any], credentials: Dict[str, str]) -> R:
+        """Test the fetcher."""
+        query = cls.transform_query(params=params)
+        data = cls.extract_data(query=query, credentials=credentials)
+        return cls.transform_data(data=data)
