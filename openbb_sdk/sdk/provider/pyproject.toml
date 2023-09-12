@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-provider"
-version = "0.1.0"
+version = "0.1.0a1"
 description = "OpenBB package to execute queries to financial data providers"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"

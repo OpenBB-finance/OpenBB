@@ -54,7 +54,7 @@ class IntrinioStockNewsData(StockNewsData):
             "text": "summary",
         }
 
-    id: str = Field(description="Intrinio ID for the news article.")
+    id: str = Field(description="Article ID.")
 
     @validator("publication_date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

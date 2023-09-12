@@ -7,7 +7,7 @@ from openbb_quandl.models.sp500_multiples import QuandlSP500MultiplesFetcher
 
 quandl_provider = Provider(
     name="quandl",
-    website="data.nasdaq.com/publishers/qdl",
+    website="https://data.nasdaq.com/publishers/QDL",
     description="""Quandl is a premier publisher of alternative data for institutional investors.
     A dedicated team of data scientists, quants and engineers combine uncompromising curation,
     high quality standards and experienced data science application to provide some of the most powerful data available

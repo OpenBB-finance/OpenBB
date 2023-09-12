@@ -440,51 +440,47 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.1.0"
+version = "0.1.0a0"
 description = "OpenBB package with core functionality"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_core-0.1.0a0-py3-none-any.whl", hash = "sha256:982cc2bd8570460dc8cccf0cae777c749dcbd34f2bf34580d13d832cd7d0d8d3"},
+    {file = "openbb_core-0.1.0a0.tar.gz", hash = "sha256:951548600739fe37e025fc7ad2e6f1eae53eb7a249def8ea2e3e1af4f233b310"},
+]
 
 [package.dependencies]
-bcrypt = "^4.0.1"
-black = "^23.7.0"
-fastapi = "^0.100.1"
-html5lib = "^1.1"
-openbb-provider = {path = "../provider"}
+bcrypt = ">=4.0.1,<5.0.0"
+black = ">=23.7.0,<24.0.0"
+fastapi = ">=0.100.1,<0.101.0"
+html5lib = ">=1.1,<2.0"
+openbb-provider = ">=0.1.0a0,<0.2.0"
 pandas = ">=1.5.3"
-passlib = "^1.7.4"
-posthog = "^3.0.1"
-python-jose = "^3.3.0"
-python-multipart = "^0.0.6"
+passlib = ">=1.7.4,<2.0.0"
+posthog = ">=3.0.1,<4.0.0"
+python-jose = ">=3.3.0,<4.0.0"
+python-multipart = ">=0.0.6,<0.0.7"
 ruff = "0.0.256"
-uuid7 = "^0.1.0"
-uvicorn = "^0.20.0"
-websockets = "^10.4"
-
-[package.source]
-type = "directory"
-url = "../../sdk/core"
+uuid7 = ">=0.1.0,<0.2.0"
+uvicorn = ">=0.20.0,<0.21.0"
+websockets = ">=10.4,<11.0"
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0"
+version = "0.1.0a0"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_provider-0.1.0a0-py3-none-any.whl", hash = "sha256:680573548f696984acf93c263206b150f09d3dfb5e1c98e7173617923b282e8a"},
+    {file = "openbb_provider-0.1.0a0.tar.gz", hash = "sha256:d3ff80de972f70b8c858feecd174ac6e3cedf81b70d869befe97a43d33529b97"},
+]
 
 [package.dependencies]
-importlib-metadata = "^6.8.0"
-pydantic = {version = "^1.10", extras = ["dotenv"]}
-requests = "^2.31.0"
+importlib-metadata = ">=6.8.0,<7.0.0"
+pydantic = {version = ">=1.10,<2.0", extras = ["dotenv"]}
+requests = ">=2.31.0,<3.0.0"
 urllib3 = "<2.0.0"
-
-[package.source]
-type = "directory"
-url = "../../sdk/provider"
 
 [[package]]
 name = "packaging"
@@ -794,13 +790,13 @@ dev = ["atomicwrites (==1.2.1)", "attrs (==19.2.0)", "coverage (==6.5.0)", "hatc
 
 [[package]]
 name = "pytz"
-version = "2023.3"
+version = "2023.3.post1"
 description = "World timezone definitions, modern and historical"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
-    {file = "pytz-2023.3.tar.gz", hash = "sha256:1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588"},
+    {file = "pytz-2023.3.post1-py2.py3-none-any.whl", hash = "sha256:ce42d816b81b68506614c11e8937d3aa9e41007ceb50bfdcb0749b921bf646c7"},
+    {file = "pytz-2023.3.post1.tar.gz", hash = "sha256:7b4fddbeb94a1eba4b557da24f19fdf9db575192544270a9101d8509f9f43d7b"},
 ]
 
 [[package]]
@@ -1172,4 +1168,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "1bb48c155ab8e06c0c0933e2b8bf073060f81ec36858ede84532ea84cf0a5d26"
+content-hash = "ca5b7a4ea5935f7d4865045fd20a589708acf5d37a3beb8ddb6a434dc5949647"

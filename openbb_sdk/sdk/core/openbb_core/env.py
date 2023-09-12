@@ -23,8 +23,7 @@ class Env(metaclass=SingletonMeta):
     @property
     def DEV_MODE(self) -> bool:
         """Develop mode: points hub service to .co or .dev"""
-        # TODO: Change default to false when ready to deploy
-        return self.str2bool(self._environ.get("OPENBB_DEV_MODE", True))
+        return self.str2bool(self._environ.get("OPENBB_DEV_MODE", False))
 
     @property
     def AUTO_BUILD(self) -> bool:

@@ -440,22 +440,20 @@ files = [
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0"
+version = "0.1.0a1"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_provider-0.1.0a1-py3-none-any.whl", hash = "sha256:a571fd6c4282143adb99cc6af6c3d5651539bc4ef5f7bff6fb8853c1f9caa0ef"},
+    {file = "openbb_provider-0.1.0a1.tar.gz", hash = "sha256:0db56bf2889b40159bc448c29439ed2356d0e7ee461421351bbc87b39d599177"},
+]
 
 [package.dependencies]
-importlib-metadata = "^6.8.0"
-pydantic = {version = "^1.10", extras = ["dotenv"]}
-requests = "^2.31.0"
+importlib-metadata = ">=6.8.0,<7.0.0"
+pydantic = {version = ">=1.10,<2.0", extras = ["dotenv"]}
+requests = ">=2.31.0,<3.0.0"
 urllib3 = "<2.0.0"
-
-[package.source]
-type = "directory"
-url = "../provider"
 
 [[package]]
 name = "packaging"
@@ -730,13 +728,13 @@ dev = ["atomicwrites (==1.2.1)", "attrs (==19.2.0)", "coverage (==6.5.0)", "hatc
 
 [[package]]
 name = "pytz"
-version = "2023.3"
+version = "2023.3.post1"
 description = "World timezone definitions, modern and historical"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
-    {file = "pytz-2023.3.tar.gz", hash = "sha256:1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588"},
+    {file = "pytz-2023.3.post1-py2.py3-none-any.whl", hash = "sha256:ce42d816b81b68506614c11e8937d3aa9e41007ceb50bfdcb0749b921bf646c7"},
+    {file = "pytz-2023.3.post1.tar.gz", hash = "sha256:7b4fddbeb94a1eba4b557da24f19fdf9db575192544270a9101d8509f9f43d7b"},
 ]
 
 [[package]]
@@ -1025,4 +1023,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "216953d6c5fe3f0ed15702427c52650a15b83a4d15cd2f67ef391ae57c91f305"
+content-hash = "c48b84cbad5fde8538ea777d79dbf542b7446235e724d10b4c5ef8797b61f138"
