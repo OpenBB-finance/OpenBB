@@ -1,13 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_options(Container):
@@ -21,11 +21,11 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def chains(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["cboe", "intrinio"], None] = None,
+        provider: Optional[Literal["cboe"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -34,19 +34,17 @@ class CLASS_stocks_options(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['cboe', 'intrinio'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Union[datetime.date, str, NoneType]
-            Date for which the options chains are returned. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['cboe', 'intrinio'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -80,11 +78,11 @@ class CLASS_stocks_options(Container):
         theoretical : Optional[float]
             Theoretical value of the option. (provider: cboe)
         open : Optional[float]
-            Opening price of the option. (provider: cboe, intrinio)
+            Opening price of the option. (provider: cboe)
         high : Optional[float]
-            High price of the option. (provider: cboe, intrinio)
+            High price of the option. (provider: cboe)
         low : Optional[float]
-            Low price of the option. (provider: cboe, intrinio)
+            Low price of the option. (provider: cboe)
         last_trade_price : Optional[float]
             Last trade price of the option. (provider: cboe)
         tick : Optional[str]
@@ -96,40 +94,21 @@ class CLASS_stocks_options(Container):
         change_percent : Optional[float]
             Change, in percent, of the option. (provider: cboe)
         implied_volatility : Optional[float]
-            Implied volatility of the option. (provider: cboe, intrinio)
+            Implied volatility of the option. (provider: cboe)
         delta : Optional[float]
-            Delta of the option. (provider: cboe, intrinio)
+            Delta of the option. (provider: cboe)
         gamma : Optional[float]
-            Gamma of the option. (provider: cboe, intrinio)
+            Gamma of the option. (provider: cboe)
         vega : Optional[float]
-            Vega of the option. (provider: cboe, intrinio)
+            Vega of the option. (provider: cboe)
         theta : Optional[float]
-            Theta of the option. (provider: cboe, intrinio)
+            Theta of the option. (provider: cboe)
         rho : Optional[float]
             Rho of the option. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
             Last trade timestamp of the option. (provider: cboe)
         dte : Optional[int]
-            Days to expiration for the option. (provider: cboe, intrinio)
-        mark : Optional[float]
-            The mid-price between the latest bid-ask spread. (provider: intrinio)
-        open_bid : Optional[float]
-            The lowest bid price for the option that day. (provider: intrinio)
-        open_ask : Optional[float]
-            The lowest ask price for the option that day. (provider: intrinio)
-        bid_low : Optional[float]
-            The lowest bid price for the option that day. (provider: intrinio)
-        ask_low : Optional[float]
-            The lowest ask price for the option that day. (provider: intrinio)
-        bid_high : Optional[float]
-            The highest bid price for the option that day. (provider: intrinio)
-        ask_high : Optional[float]
-            The highest ask price for the option that day. (provider: intrinio)
-        close : Optional[float]
-            Close price for the option that day. (provider: intrinio)
-        eod_date : Optional[date]
-            Historical date for which the options chains data is from. (provider: intrinio)
-        """  # noqa: E501
+            Days to expiration for the option. (provider: cboe)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

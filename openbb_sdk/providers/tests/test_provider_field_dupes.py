@@ -1,3 +1,4 @@
+"""Test for duplicate fields in the provider models."""
 import fnmatch
 import glob
 import importlib
@@ -55,8 +56,9 @@ def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
 
 def get_subclasses(
     python_files: List[str], package_name: str, cls: Type
-) -> Dict[str, Type]:
-    """
+) -> Dict[Type, List[str]]:
+    """Get subclasses of a class defined in a list of python files.
+
     Given a list of python files, and a class, return a dictionary of
     subclasses of that class that are defined in those files.
 
@@ -113,12 +115,14 @@ def child_parent_map(map_: Dict, parents: Dict, module: object) -> None:
 
 
 class ProviderFieldDupesTest(unittest.TestCase):
+    """Test for duplicate fields in the provider models."""
+
     def test_provider_field_dupes(self):
-        """
+        """Check for duplicate fields in the provider models.
+
         This function checks for duplicate fields in the provider models
         and identifies the fields that should be standardized.
         """
-
         standard_models_directory = os.path.dirname(standard_models.__file__)
         standard_models_files = glob.glob(
             os.path.join(standard_models_directory, "*.py")
