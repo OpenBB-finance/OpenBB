@@ -179,12 +179,6 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
         return results
 
-    # def to_dict(self, list_fields: bool = False) -> Dict[str, Any]:
-    #     if list_fields:
-    #         df = self.to_dataframe().reset_index()
-    #         return {field: df[field].tolist() for field in df.columns}
-    #     return self.dict()["results"]
-
     def to_chart(self, **kwargs):
         """
         Create or update the `Chart`.
