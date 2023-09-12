@@ -91,18 +91,29 @@ class PolygonStockHistoricalFetcher(
     ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        data: list = []
+        data: List = []
 
         def multiple_symbols(
             symbol: str, data: List[PolygonStockHistoricalData]
         ) -> None:
-            request_url = (
+            results: List = []
+
+            url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
-            results = get_data(request_url, **kwargs).get("results", [])
+            response = get_data(url, **kwargs)
+
+            next_url = response.get("next_url", None)
+            results = response.get("results", [])
+
+            while next_url:
+                url = f"{next_url}&apiKey={api_key}"
+                response = get_data(url, **kwargs)
+                next_url = response.get("next_url", None)
+                results.extend(response.get("results", []))
 
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
