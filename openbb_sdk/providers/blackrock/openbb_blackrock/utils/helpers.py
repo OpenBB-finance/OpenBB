@@ -468,7 +468,7 @@ class Canada:
         """
 
         symbol = symbol.upper()
-        date = date.replace("-", "")
+        date = date.replace("-", "") if date else ""
         etfs = Canada.get_all_etfs()
         portfolioID = etfs[etfs["symbol"] == symbol]["portfolioId"].iloc[0]
         symbol = symbol.replace(".", "")

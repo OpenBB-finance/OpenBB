@@ -21,11 +21,11 @@ class Results:
         if model == "EtfHoldings" and len(data.results) == 2:
             setattr(self, "info", data.results[1])
             setattr(self, "results", data.results[0])
-        if len(self.results) > 0:
+        if len(self.results) > 0:  # type: ignore
             setattr(
                 self,
                 "fields",
-                sorted(basemodel_to_df(self.results).columns.tolist()),
+                sorted(basemodel_to_df(self.results).columns.tolist()),  # type: ignore
             )
 
 
@@ -74,9 +74,9 @@ class EtfSearch(OBBject):
     id: str = Field(description="Unique hash string for the request.")
 
     def __repr__(self):
-        query = self.metadata["arguments"]["standard_params"]["query"]
+        query = self.metadata["arguments"]["standard_params"]["query"]  # type: ignore
         repr_str = (
-            f"EtfSearch(provider={self.provider.lower()}, query={query}, "
+            f"EtfSearch(provider={self.provider.lower()}, query={query}, "  # type: ignore
             f"fields={self.fields})"
         )
         return repr_str
@@ -142,9 +142,9 @@ class EtfHoldings(OBBject):
     id: str = Field(description="Unique hash string for the request.")
 
     def __repr__(self):
-        symbol = self.metadata["arguments"]["standard_params"]["symbol"]
+        symbol = self.metadata["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
-            f"EtfHoldings(provider={self.provider.lower()}, symbol={symbol.lower()}, "
+            f"EtfHoldings(provider={self.provider.lower()}, symbol={symbol.lower()}, "  # type: ignore
             f"fields={self.fields})"
         )
         return repr_str
@@ -201,10 +201,10 @@ class EtfSectors(OBBject):
     id: str = Field(description="Unique hash string for the request.")
 
     def __repr__(self) -> str:
-        symbols = self.metadata["arguments"]["standard_params"]["symbol"]
+        symbols = self.metadata["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
-            f"EtfInfo(provider={self.provider.lower()}, symbols=[{symbols}], "
-            f"fields={self.to_dataframe().reset_index().columns.to_list()})"
+            f"EtfInfo(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
+            f"fields={self.to_dataframe().transpose().reset_index().columns.to_list()})"
         )
         return repr_str
 

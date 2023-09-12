@@ -207,7 +207,7 @@ class BlackrockEtfHoldingsFetcher(
         )
         holdings = holdings.convert_dtypes().fillna("0")
         try:
-            metadata = pd.read_csv(StringIO(r.text), nrows=4).iloc[:, 0]  # type: ignore
+            metadata = pd.read_csv(StringIO(r.text), nrows=3).iloc[:, 0]  # type: ignore
         except Exception:
             _metadata = pd.read_csv(
                 StringIO(r.text), nrows=1, header=0  # type: ignore
