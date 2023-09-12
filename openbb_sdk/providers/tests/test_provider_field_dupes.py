@@ -6,11 +6,10 @@ import os
 import unittest
 from typing import Dict, List, Type
 
+import providers
 from openbb_provider import standard_models
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-
-import providers
 
 
 def get_module(file_path: str, package_name: str):
@@ -116,7 +115,8 @@ def child_parent_map(map_: Dict, parents: Dict, module: object) -> None:
 class ProviderFieldDupesTest(unittest.TestCase):
     def test_provider_field_dupes(self):
         """
-        This function checks for duplicate fields in the provider models and identifies the fields that should be standardized.
+        This function checks for duplicate fields in the provider models
+        and identifies the fields that should be standardized.
         """
 
         standard_models_directory = os.path.dirname(standard_models.__file__)
@@ -167,7 +167,6 @@ class ProviderFieldDupesTest(unittest.TestCase):
 
         for std_cls in child_parent_dict:
             with self.subTest(i=std_cls):
-                print(std_cls)
                 providers_w_fields = child_parent_dict[std_cls]
 
                 fields = []
