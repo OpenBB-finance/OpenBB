@@ -118,7 +118,7 @@ class SECFilingsQueryParams(QueryParams):
     """SEC Filings Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    type: FORM_TYPES = Field(default="10-K", description="Type of the SEC filing form.")
+    type: Optional[FORM_TYPES] = Field(description="Type of the SEC filing form.")
     page: Optional[int] = Field(default=0, description="Page number of the results.")
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
