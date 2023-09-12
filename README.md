@@ -1,10 +1,6 @@
 <br />
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/images/openbb-logo-dark.svg?raw=true#gh-light-mode-only">
-  <img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/hotfix/readme-title/images/openbb-logo-dark.svg?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
-</a>
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/images/openbb-logo-light.svg?raw=true#gh-dark-mode-only">
-  <img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/hotfix/readme-title/images/openbb-logo-light.svg?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
-</a>
+<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-dark.svg?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-light.svg?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
 <br />
 <br />
 
