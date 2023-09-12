@@ -10,7 +10,6 @@ def basemodel_to_df(
     index: Optional[Union[str, Iterable]] = None,
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
-
     if isinstance(data, list):
         df = pd.DataFrame([d.dict() for d in data])
     else:
@@ -30,6 +29,7 @@ def basemodel_to_df(
         if df.index.name == "date":
             df.index = pd.to_datetime(df.index)
             df.sort_index(axis=0, inplace=True)
+
     return df
 
 

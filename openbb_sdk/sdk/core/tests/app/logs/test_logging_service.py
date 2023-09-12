@@ -86,9 +86,10 @@ def test_log_startup(logging_service):
         )
         logging_service._system_settings = "your_system_settings"
 
-        logging_service._log_startup()
+        logging_service._log_startup(route="test_route")
 
         expected_log_data = {
+            "route": "test_route",
             "PREFERENCES": "your_preferences",
             "KEYS": {"username": "defined", "password": "defined"},
             "SYSTEM": "your_system_settings",
