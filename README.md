@@ -27,7 +27,7 @@ OpenBB is committed to building the future of investment research by focusing on
     <a href="https://docs.openbb.co/terminal/installation">
       <strong>≪  GETTING STARTED</strong>
     </a>
-    &nbsp · &nbsp 
+    &nbsp · &nbsp
     <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md">
       <strong>CONTRIBUTING</strong>
     </a>
