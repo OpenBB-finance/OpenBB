@@ -159,7 +159,14 @@ class OBBject(GenericModel, Generic[T], Tagged):
         if isinstance(self.results, dict) and all(
             isinstance(v, dict) for v in self.results.values()
         ):
-            return self.results
+            results: Dict[str, List] = {}
+            for _, v in self.results.items():
+                for kk, vv in v.items():
+                    if kk not in results:
+                        results[kk] = []
+                    results[kk].append(vv)
+
+            return results
 
         df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
@@ -171,6 +178,12 @@ class OBBject(GenericModel, Generic[T], Tagged):
             del results["index"]
 
         return results
+
+    # def to_dict(self, list_fields: bool = False) -> Dict[str, Any]:
+    #     if list_fields:
+    #         df = self.to_dataframe().reset_index()
+    #         return {field: df[field].tolist() for field in df.columns}
+    #     return self.dict()["results"]
 
     def to_chart(self, **kwargs):
         """
