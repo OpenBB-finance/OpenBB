@@ -10,7 +10,7 @@ from openbb_provider.standard_models.etf_search import (
 )
 from pydantic import Field
 
-from openbb_tmx.utils.helpers import COLUMNS_DICT, get_all_etfs
+from openbb_tmx.utils.helpers import get_all_etfs
 
 
 def search(query: str = "", **kwargs) -> pd.DataFrame:
@@ -46,7 +46,7 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
 
     sort_by: Optional[
         Literal[
-            "aum",
+            "nav",
             "return_1m",
             "return_3m",
             "return_6m",
@@ -66,7 +66,7 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
 class TmxEtfSearchData(EtfSearchData):
     """TMX ETF Search Data."""
 
-    aum: Optional[int | None] = Field(
+    nav: Optional[int | None] = Field(
         description="The value of the assets under management."
     )
     investment_style: Optional[str | None] = Field(
@@ -112,7 +112,7 @@ class TmxEtfSearchFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
 
-        data = search(query.query)
+        data = search(query.query)  # type: ignore
 
         if query.div_freq:
             data = data[data["dividend_frequency"] == query.div_freq.capitalize()]

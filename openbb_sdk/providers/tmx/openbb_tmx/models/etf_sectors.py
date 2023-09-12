@@ -20,39 +20,21 @@ class TmxEtfSectorsQueryParams(EtfSectorsQueryParams):
 class TmxEtfSectorsData(EtfSectorsData):
     """TMX ETF Info Data."""
 
-    symbol: str = Field(description="The exchange ticker symbol for the ETF.")
-    energy: Optional[float] = Field(description="Energy Sector Weight.", alias="Energy")
-    materials: Optional[float] = Field(
-        description="Materials Sector Weight.", alias="Basic Materials"
-    )
-    industrials: Optional[float] = Field(
-        description="Industrials Sector Weight.", alias="Industrials"
-    )
-    consumer_cyclical: Optional[float] = Field(
-        description="Consumer Cyclical Sector Weight.", alias="Consumer Cyclical"
-    )
-    consumer_defensive: Optional[float] = Field(
-        description="Consumer Defensive Sector Weight.", alias="Consumer Defensive"
-    )
-    financial_services: Optional[float] = Field(
-        description="Financial Services Sector Weight.", alias="Financial Services"
-    )
-    technology: Optional[float] = Field(
-        description="Technology Sector Weight.", alias="Technology"
-    )
-    health_care: Optional[float] = Field(
-        description="Health Care Sector Weight.", alias="Healthcare"
-    )
-    communication_services: Optional[float] = Field(
-        description="Communication Services Sector Weight.",
-        alias="Communication Services",
-    )
-    utilities: Optional[float] = Field(
-        description="Utilities Sector Weight.", alias="Utilities"
-    )
-    real_estate: Optional[float] = Field(
-        description="Real Estate Sector Weight.", alias="Real Estate"
-    )
+    class Config:
+        fields = {
+            "energy": "Energy",
+            "materials": "Basic Materials",
+            "industrials": "Industrials",
+            "consumer_cyclical": "Consumer Cyclical",
+            "consumer_defensive": "Consumer Defensive",
+            "financial_services": "Financial Services",
+            "technology": "Technology",
+            "health_care": "Healthcare",
+            "communication_services": "Communication Services",
+            "utilities": "Utilities",
+            "real_estate": "Real Estate",
+        }
+
     other: Optional[float] = Field(description="Other Sector Weight.", alias="Other")
 
 
@@ -62,7 +44,7 @@ class TmxEtfSectorsFetcher(
         List[TmxEtfSectorsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """Transform the query, extract and transform the data from the TMX endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEtfSectorsQueryParams:
@@ -82,11 +64,11 @@ class TmxEtfSectorsFetcher(
         )
 
         _data = get_all_etfs()
-        data = {}
         results = {}
         for symbol in symbols:
+            data = {}
             if ".TO" in symbol:
-                symbol = symbol.replace(".TO", "")
+                symbol = symbol.replace(".TO", "")  # noqa
             _target = _data[_data["symbol"] == symbol]["sectors"]
             target = pd.DataFrame()
             if len(_target) > 0:

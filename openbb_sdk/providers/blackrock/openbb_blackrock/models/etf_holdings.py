@@ -164,6 +164,10 @@ class BlackrockEtfHoldingsFetcher(
         holdings: pd.DataFrame = pd.DataFrame()
         metadata = pd.Series(dtype="object")
 
+        if ".TO" in query.symbol or query.country == "canada":
+            query.symbol = query.symbol.replace(".TO", "")  # noqa
+            query.country = "canada"
+
         if query.country == "canada":
             symbols = Canada.get_all_etfs()["symbol"].to_list()
             if query.symbol not in symbols:
@@ -171,7 +175,7 @@ class BlackrockEtfHoldingsFetcher(
                     f"Symbol, {query.symbol}, not found from Blackrock Canada. "
                     "Use search(provider='blackrock', country='canada')"
                 )
-            url = Canada.generate_holdings_url(query.symbol, query.date)
+            url = Canada.generate_holdings_url(query.symbol, query.date)  # type: ignore
             r = blackrock_canada_holdings.get(url, timeout=10)
 
         if query.country == "america":
@@ -181,18 +185,18 @@ class BlackrockEtfHoldingsFetcher(
                     f"Symbol, {query.symbol}, not found from Blackrock US. "
                     "Use search(provider='blackrock', country='america')"
                 )
-            url = America.generate_holdings_url(query.symbol, query.date)
+            url = America.generate_holdings_url(query.symbol, query.date)  # type: ignore
             r = blackrock_america_holdings.get(url, timeout=10)
 
-        if r.status_code != 200:
-            raise RuntimeError(r.status_code)
+        if r.status_code != 200:  # type: ignore
+            raise RuntimeError(r.status_code)  # type: ignore
 
-        indexed = pd.read_csv(StringIO(r.text), usecols=[0])
+        indexed = pd.read_csv(StringIO(r.text), usecols=[0])  # type: ignore
         target = "Ticker" if "Name" not in indexed.iloc[:, 0].to_list() else "Name"
         idx = []
         idx = indexed[indexed.iloc[:, 0] == target].index.tolist()
         idx_value = idx[1] if len(idx) > 1 else idx[0]
-        _holdings = pd.read_csv(StringIO(r.text), header=idx_value, thousands=",")
+        _holdings = pd.read_csv(StringIO(r.text), header=idx_value, thousands=",")  # type: ignore
         _holdings = _holdings.reset_index()
         columns = _holdings.iloc[0, :].values.tolist()
         _holdings.columns = columns
@@ -203,10 +207,10 @@ class BlackrockEtfHoldingsFetcher(
         )
         holdings = holdings.convert_dtypes().fillna("0")
         try:
-            metadata = pd.read_csv(StringIO(r.text), nrows=4).iloc[:, 0]
+            metadata = pd.read_csv(StringIO(r.text), nrows=4).iloc[:, 0]  # type: ignore
         except Exception:
             _metadata = pd.read_csv(
-                StringIO(r.text), nrows=1, header=0
+                StringIO(r.text), nrows=1, header=0  # type: ignore
             ).columns.to_list()
             metadata["Fund Holdings as of"] = _metadata[1]
 

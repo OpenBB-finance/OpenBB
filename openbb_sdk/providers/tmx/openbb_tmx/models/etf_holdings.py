@@ -32,7 +32,7 @@ class TmxEtfHoldingsData(EtfHoldingsData):
         description="The value of the assets under management.",
         alias="number_of_shares",
     )
-    market_value: Optional[float | None] = Field(
+    market_value: Optional[float | str | None] = Field(
         description="The market value of the holding."
     )
     currency: Optional[str | None] = Field(description="The currency of the holding.")
@@ -72,7 +72,7 @@ class TmxEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-        results = {}
+        results = []
         etf = pd.DataFrame()
         etfs = get_all_etfs()
         etf = etfs[etfs["symbol"] == query.symbol.upper()]
@@ -95,7 +95,9 @@ class TmxEtfHoldingsFetcher(
                 "shareChange": "share_change",
             }
             top_holdings.rename(columns=_columns, inplace=True)
-            results = top_holdings.to_dict("records")
+            top_holdings["market_value"] = top_holdings["market_value"]
+            top_holdings["share_change"] = top_holdings["share_change"]
+            results = top_holdings.replace("NA", "").to_dict("records")
 
         return results
 

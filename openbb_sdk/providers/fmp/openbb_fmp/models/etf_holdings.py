@@ -90,7 +90,7 @@ class FMPEtfHoldingsFetcher(
         BASE_URL = "https://financialmodelingprep.com/api/v4/etf-holdings/"
 
         if isinstance(date, dateType) and date is not None:
-            date = datetime.strftime(date, "%Y-%m-%d")
+            date = datetime.strftime(date, "%Y-%m-%d")  # type: ignore
 
         dates_url = BASE_URL + f"portfolio-date?symbol={symbol}&apikey={api_key}"
 

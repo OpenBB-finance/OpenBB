@@ -198,7 +198,7 @@ class CLASS_etf(Container):
             Whether the ETF is actively trading. (provider: fmp)
         div_freq : Optional[Literal['monthly', 'annually', 'quarterly']]
             The dividend payment frequency. (provider: tmx)
-        sort_by : Optional[Literal['aum', 'return_1m', 'return_3m', 'return_6m', 'return_1y', 'return_3y', 'return_ytd', 'beta_1y', 'volume_avg_daily', 'management_fee', 'distribution_yield', 'pb_ratio', 'pe_ratio']]
+        sort_by : Optional[Literal['nav', 'return_1m', 'return_3m', 'return_6m', 'return_1y', 'return_3y', 'return_ytd', 'beta_1y', 'volume_avg_daily', 'management_fee', 'distribution_yield', 'pb_ratio', 'pe_ratio']]
             The column to sort by. (provider: tmx)
 
         Returns
@@ -235,7 +235,7 @@ class CLASS_etf(Container):
             The investment style of the ETF. (provider: blackrock, tmx)
         investment_strategy : Optional[str]
             The investment strategy of the ETF. (provider: blackrock)
-        aum : Union[float, NoneType, int]
+        nav : Union[float, NoneType, int]
             The value of the assets under management. (provider: blackrock, tmx)
         market_cap : Optional[float]
             The market cap of the ETF. (provider: fmp)
@@ -306,7 +306,7 @@ class CLASS_etf(Container):
                 description="\n            The scope of the query.\n\n            sector: The weighting by sector/industry of the ETF.\n            country: The weighting by country/region of the ETF.\n            "
             ),
         ] = "sector",
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """ETF Sector weighting.
@@ -322,17 +322,21 @@ class CLASS_etf(Container):
                     sector: The weighting by sector/industry of the ETF.
                     country: The weighting by country/region of the ETF.
 
-        provider : Optional[Literal['fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
+        country : Optional[Literal['america', 'canada']]
+            The country the ETF is registered in.  Symbol suffix with `.TO` can be used as a proxy for Canada. (provider: blackrock)
+        date : Optional[str]
+            The as-of date for the data. (provider: blackrock)
 
         Returns
         -------
         OBBject
             results : List[EtfSectors]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -346,27 +350,29 @@ class CLASS_etf(Container):
         symbol : Optional[str]
             The exchange ticker symbol for the ETF.
         energy : Optional[float]
-            Energy Sector Weight. (provider: fmp, tmx)
+            Energy Sector Weight
         materials : Optional[float]
-            Materials Sector Weight. (provider: fmp, tmx)
+            Materials Sector Weight.
         industrials : Optional[float]
-            Industrials Sector Weight. (provider: fmp, tmx)
+            Industrials Sector Weight.
         consumer_cyclical : Optional[float]
-            Consumer Cyclical Sector Weight. (provider: fmp, tmx)
+            Consumer Cyclical Sector Weight.
         consumer_defensive : Optional[float]
-            Consumer Defensive Sector Weight. (provider: fmp, tmx)
+            Consumer Defensive Sector Weight.
         financial_services : Optional[float]
-            Financial Services Sector Weight. (provider: fmp, tmx)
+            Financial Services Sector Weight.
         technology : Optional[float]
-            Technology Sector Weight. (provider: fmp, tmx)
+            Technology Sector Weight.
         health_care : Optional[float]
-            Health Care Sector Weight. (provider: fmp, tmx)
+            Health Care Sector Weight.
         communication_services : Optional[float]
-            Communication Services Sector Weight. (provider: fmp, tmx)
+            Communication Services Sector Weight.
         utilities : Optional[float]
-            Utilities Sector Weight. (provider: fmp, tmx)
+            Utilities Sector Weight.
         real_estate : Optional[float]
-            Real Estate Sector Weight. (provider: fmp, tmx)
+            Real Estate Sector Weight.
+        cash_or_derivatives : Optional[float]
+            Cash and/or derivatives. (provider: blackrock)
         other : Optional[float]
             Other Sector Weight. (provider: fmp, tmx)"""  # noqa: E501
 

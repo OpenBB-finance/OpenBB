@@ -59,7 +59,7 @@ COLUMNS_DICT = {
     "beta19y": "beta_19y",
     "beta20y": "beta_20y",
     "avgvol30days": "volume_avg_30d",
-    "aum": "aum",
+    "aum": "nav",
     "top10holdings": "holdings_top10",
     "top10holdingsummary": "holdings_top10_summary",
     "totalreturn6month": "return_6m",

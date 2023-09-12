@@ -213,6 +213,10 @@ class EtfSectors(OBBject):
         data = pd.DataFrame()
         if len(self.results) > 0:
             data = pd.DataFrame(self.dict()["results"]).set_index("symbol")
+
+        data = data.transpose()
+        if len(data.columns) == 1:
+            data = data.dropna()
         return data
 
     def to_dict(self) -> Dict:

@@ -85,7 +85,7 @@ class FMPEtfSearchFetcher(
         """Return the raw data from the FMP endpoint."""
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        etfs = get_available_etfs(api_key=api_key)
+        etfs = get_available_etfs(api_key=api_key)  # type: ignore
         if len(etfs) == 0:
             raise ValueError("No ETFs found")
         etfs = pd.DataFrame(etfs)

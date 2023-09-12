@@ -47,7 +47,7 @@ class BlackrockEtfSearchData(EtfSearchData):
     investment_strategy: Optional[str | None] = Field(
         description="The investment strategy of the ETF.", alias="aladdin_strategy"
     )
-    aum: Optional[float | None] = Field(
+    nav: Optional[float | None] = Field(
         description="The value of the assets under management.",
         alias="total_net_assets",
     )
@@ -86,12 +86,12 @@ class BlackrockEtfSearchFetcher(
             etfs = Canada.get_all_etfs().set_index("symbol")
 
         results = etfs[
-            etfs["fundName"].str.contains(query.query, case=False)
-            | etfs["aladdinSubAssetClass"].str.contains(query.query, case=False)
-            | etfs["aladdinAssetClass"].str.contains(query.query, case=False)
-            | etfs["aladdinRegion"].str.contains(query.query, case=False)
-            | etfs["aladdinCountry"].str.contains(query.query, case=False)
-            | etfs["aladdinMarketType"].str.contains(query.query, case=False)
+            etfs["fundName"].str.contains(query.query, case=False)  # type: ignore
+            | etfs["aladdinSubAssetClass"].str.contains(query.query, case=False)  # type: ignore
+            | etfs["aladdinAssetClass"].str.contains(query.query, case=False)  # type: ignore
+            | etfs["aladdinRegion"].str.contains(query.query, case=False)  # type: ignore
+            | etfs["aladdinCountry"].str.contains(query.query, case=False)  # type: ignore
+            | etfs["aladdinMarketType"].str.contains(query.query, case=False)  # type: ignore
         ]
 
         results.columns = [camel_to_snake(c) for c in results.columns]
