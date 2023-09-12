@@ -59,7 +59,8 @@ all = [
 ]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^6.2.2"
+pytest = "^7.0.0"
+pytest-subtests = "^0.11.0"
 
 [build-system]
 requires = ["poetry-core"]
