@@ -1,10 +1,10 @@
-import React from "react";
-import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import clsx from "clsx";
+import React from "react";
 import ChevronRightIcon from "../components/Icons/ChevronRight";
-import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed";
 import DarkBlueRadialGradient from "../components/Icons/RadialGradients/DarkBlue";
+import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed";
 
 export default function Home(): JSX.Element {
   return (
@@ -39,7 +39,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm",
                 )}
               >
                 See more
@@ -61,7 +61,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm",
                 )}
               >
                 See more
@@ -84,7 +84,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm",
                 )}
               >
                 See more
