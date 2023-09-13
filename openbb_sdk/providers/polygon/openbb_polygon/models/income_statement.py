@@ -16,7 +16,10 @@ from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
-    """Polygon Income Statement Query Parameters"""
+    """Polygon Income Statement Query Parameters
+
+    Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
+    """
 
     class Config:
         fields = {
