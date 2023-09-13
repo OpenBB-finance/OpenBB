@@ -11,7 +11,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, validator
 
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
@@ -22,6 +22,11 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
+
+    class Config:
+        fields = {
+            "limit": "page_size",
+        }
 
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
@@ -41,22 +46,6 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     interval_size: Optional[INTERVALS] = Field(
         default="60m", description=QUERY_DESCRIPTIONS.get("frequency", "")
     )
-    limit: Optional[NonNegativeInt] = Field(
-        default=300,
-        description=f"{QUERY_DESCRIPTIONS.get('limit', '')}",
-    )
-    next_page: Optional[str] = Field(
-        description="Token to get the next page of data from a previous API call."
-    )
-    all_pages: Optional[bool] = Field(
-        default=False,
-        description="Returns all pages of data from the API call at once.",
-    )
-
-    @validator("limit", pre=True)
-    def limit_check(cls, v):  # pylint: disable=E0213
-        """Set the limit bound to 300."""
-        return min(v, 300)
 
 
 class IntrinioStockHistoricalData(StockHistoricalData):
@@ -138,8 +127,7 @@ class IntrinioStockHistoricalFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbol", "all_pages"])
-        query_str = query_str.replace("limit", "page_size")
+        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
         url = (
             f"{base_url}/securities/{query.symbol}/prices/intervals"
             f"?{query_str}&api_key={api_key}"
@@ -147,31 +135,24 @@ class IntrinioStockHistoricalFetcher(
 
         data = get_data_one(url, **kwargs)
 
-        if query.all_pages:
-            all_data = data["intervals"]
-            next_page = data["next_page"]
+        next_page = data.get("next_page", None)
+        data = data.get("intervals", [])
 
-            while next_page:
-                query_str = get_querystring(
-                    query.dict(by_alias=True), ["symbol", "next_page", "all_pages"]
-                )
-                query_str = query_str.replace("limit", "page_size")
-                url = (
-                    f"{base_url}/securities/{query.symbol}/prices/intervals"
-                    f"?{query_str}&next_page={next_page}&api_key={api_key}"
-                )
+        while next_page:
+            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
+            url = (
+                f"{base_url}/securities/{query.symbol}/prices/intervals"
+                f"?{query_str}&next_page={next_page}&api_key={api_key}"
+            )
+            temp_data = get_data_one(url, **kwargs)
 
-                data = get_data_one(url, **kwargs)
-                all_data.extend(data.get("intervals", []))
+            next_page = temp_data.get("next_page", None)
+            data.extend(temp_data.get("intervals", []))
 
-                next_page = data.get("next_page", None)
-
-            return all_data
-
-        return data.get("intervals", [])
+        return data
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
 
-        return [IntrinioStockHistoricalData(**d) for d in data]
+        return [IntrinioStockHistoricalData.parse_obj(d) for d in data]

@@ -1,8 +1,11 @@
 # pylint: disable=W0212:protected-access
 import json
+from functools import wraps
 from pathlib import Path
+from sys import exc_info
 from typing import TYPE_CHECKING, Optional
 
+from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.hub.hub_session import HubSession
 from openbb_core.app.model.user_settings import UserSettings
@@ -29,6 +32,32 @@ class Account:
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    def _log_account_command(func):  # pylint: disable=E0213
+        @wraps(func)
+        def wrapped(self, *args, **kwargs):
+            try:
+                result = func(self, *args, **kwargs)  # pylint: disable=E1102
+            except Exception as e:
+                raise OpenBBError(e) from e
+            finally:
+                user_settings = self._base_app._command_runner.user_settings
+                system_settings = self._base_app._command_runner.system_settings
+                ls = LoggingService(
+                    user_settings=user_settings, system_settings=system_settings
+                )
+                ls.log(
+                    user_settings=user_settings,
+                    system_settings=system_settings,
+                    route=f"/account/{func.__name__}",  # pylint: disable=E1101
+                    func=func,
+                    kwargs={},  # don't want any credentials being logged by accident
+                    exec_info=exc_info(),
+                )
+
+            return result
+
+        return wrapped
+
     def _create_hub_service(
         self,
         email: Optional[str] = None,
@@ -51,6 +80,7 @@ class Account:
             hs.connect(email, password, pat)
         return hs
 
+    @_log_account_command
     def login(
         self,
         email: Optional[str] = None,
@@ -91,6 +121,7 @@ class Account:
 
         return self._base_app._command_runner.user_settings
 
+    @_log_account_command
     def save(self) -> UserSettings:
         """Save user settings.
 
@@ -109,6 +140,7 @@ class Account:
             hs.push(self._base_app._command_runner.user_settings)
         return self._base_app._command_runner.user_settings
 
+    @_log_account_command
     def refresh(self) -> UserSettings:
         """Refresh user settings.
 
@@ -130,6 +162,7 @@ class Account:
             self._base_app._command_runner.user_settings = updated
         return self._base_app._command_runner.user_settings
 
+    @_log_account_command
     def logout(self) -> UserSettings:
         """Logout from hub.
 

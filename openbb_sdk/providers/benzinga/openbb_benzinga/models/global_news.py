@@ -1,7 +1,6 @@
 """Benzinga Global News Fetcher."""
 
 
-from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -18,26 +17,35 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
 
-    pageSize: int = Field(
-        default=15, description="Number of results to return per page."
+    class Config:
+        """Pydantic alias config using fields dict."""
+
+        fields = {
+            "display": "displayOutput",
+            "limit": "pageSize",
+            "start_date": "dateFrom",
+            "end_date": "dateTo",
+            "updated_since": "updatedSince",
+            "published_since": "publishedSince",
+        }
+
+    display: Literal["headline", "summary", "full", "all"] = Field(
+        default="headline", description="Type of segments to return."
     )
-    displayOutput: Literal["headline", "summary", "full", "all"] = Field(
-        default="headline", description="Type of data to return."
-    )
-    date: Optional[datetime] = Field(
+    date: Optional[str] = Field(
         default=None, description="Date of the news to retrieve."
     )
-    dateFrom: Optional[datetime] = Field(
+    start_date: Optional[str] = Field(
         default=None, description="Start date of the news to retrieve."
     )
-    dateTo: Optional[datetime] = Field(
+    end_date: Optional[str] = Field(
         default=None, description="End date of the news to retrieve."
     )
-    updatedSince: Optional[int] = Field(
+    updated_since: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was updated.",
     )
-    publishedSince: Optional[int] = Field(
+    published_since: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was published.",
     )
@@ -96,8 +104,8 @@ class BenzingaGlobalNewsFetcher(
 
         base_url = "https://api.benzinga.com/api/v2/news"
         querystring = get_querystring(query.dict(by_alias=True), [])
-        request_url = f"{base_url}?{querystring}&token={api_key}"
-        data = get_data(request_url, **kwargs)
+        url = f"{base_url}?{querystring}&token={api_key}"
+        data = get_data(url, **kwargs)
 
         if len(data) == 0:
             raise RuntimeError("No news found")

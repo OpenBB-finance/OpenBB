@@ -2,19 +2,32 @@
 
 
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, NonNegativeInt, validator
 
 from openbb_provider.abstract.data import Data
-from openbb_provider.standard_models.base import (
-    FinancialStatementQueryParams,
-)
+from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class CashFlowStatementQueryParams(FinancialStatementQueryParams):
+class CashFlowStatementQueryParams(QueryParams):
     """Cash Flow Statement Query."""
+
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: NonNegativeInt = Field(
+        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class CashFlowStatementData(Data):
