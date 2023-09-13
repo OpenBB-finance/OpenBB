@@ -564,23 +564,24 @@ def extract_from_holdings(
                 "Location": "country",
             }
         )
-        _target = holdings[["name", "sector", "weight", "country"]]
-        _target.loc[:, "weight"] = _target["weight"].astype(float)
-        target = (
-            _target.groupby(to_extract)[["weight"]]
-            .sum()
-            .sort_values(by="weight", ascending=False)
-        )
-        target = target.rename(
-            index={
-                "Telecommunication Services": "Communication Services",
-                "Telecommunications": "Communication Services",
-                "Materials & Processing": "Materials",
-                "Producer Durables": "Industrials",
-                "-": "other",
-            }
-        )
-        for i in target.index:
-            data.update({i: target.loc[i]["weight"]})
+        if to_extract in holdings.columns.to_list():
+            _target = holdings[["name", to_extract, "weight"]]
+            _target.loc[:, "weight"] = _target["weight"].astype(float)
+            target = (
+                _target.groupby(to_extract)[["weight"]]
+                .sum()
+                .sort_values(by="weight", ascending=False)
+            )
+            target = target.rename(
+                index={
+                    "Telecommunication Services": "Communication Services",
+                    "Telecommunications": "Communication Services",
+                    "Materials & Processing": "Materials",
+                    "Producer Durables": "Industrials",
+                    "-": "other",
+                }
+            )
+            for i in target.index:
+                data.update({i: target.loc[i]["weight"]})
 
     return data
