@@ -1,6 +1,6 @@
 """The OpenBB Standardized Data Model."""
 
-from typing import Annotated, Dict
+from typing import Dict
 
 from pydantic import (
     BaseModel,
@@ -10,6 +10,7 @@ from pydantic import (
     model_validator,
 )
 from pydantic.functional_validators import BeforeValidator
+from typing_extensions import Annotated
 
 
 def check_int(v: int) -> int:

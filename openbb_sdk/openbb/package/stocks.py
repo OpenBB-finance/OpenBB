@@ -1,16 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import pydantic
-import pydantic.main
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 
 
 class CLASS_stocks(Container):
@@ -51,20 +48,17 @@ class CLASS_stocks(Container):
     @validate_arguments
     def info(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        provider: Union[Literal["cboe"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        symbol: Union[str, List[str]],
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[openbb_provider.standard_models.stock_info.StockInfoData]:
         """Get general price and performance metrics of a stock.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -74,7 +68,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockInfo]
                 Serializable results.
-            provider : Union[Literal['cboe'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -85,19 +79,19 @@ class CLASS_stocks(Container):
 
         StockInfo
         ---------
-        symbol : Optional[str]
+        symbol : str
             Symbol to get data for.
-        name : Optional[str]
+        name : str
             Name associated with the ticker symbol.
-        price : Optional[float]
+        price : float
             Last transaction price.
-        open : Optional[float]
+        open : float
             Opening price of the stock.
-        high : Optional[float]
+        high : float
             High price of the current trading day.
-        low : Optional[float]
+        low : float
             Low price of the current trading day.
-        close : Optional[float]
+        close : float
             Closing price of the most recent trading day.
         change : Optional[float]
             Change in price over the current trading period.
@@ -166,80 +160,70 @@ class CLASS_stocks(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        symbol: Union[str, List[str]],
+        start_date: Union[datetime.date, None, str],
+        end_date: Union[datetime.date, None, str],
         chart: bool = False,
-        provider: Union[
-            Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"],
-            None,
+        provider: Optional[
+            Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        **kwargs
+    ) -> OBBject[
+        List[openbb_provider.standard_models.stock_historical.StockHistoricalData]
+    ]:
         """Load stock data for a specific ticker.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
+        function_ : Literal['TIME_SERIES_INTRADAY', 'TIME_SERIES_DAILY', 'TIME_SERIES_WEEKLY', 'TIME_SERIES_MONTHLY', 'TIME_SERIES_DAILY_ADJUSTED', 'TIME_SERIES_WEEKLY_ADJUSTED', 'TIME_SERIES_MONTHLY_ADJUSTED']
+            The time series of your choice.  (provider: alpha_vantage)
         period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
             Period of the data to return. (provider: alpha_vantage, yfinance)
         interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             Data granularity. (provider: alpha_vantage, cboe, fmp, yfinance)
-        adjusted : Union[bool, NoneType]
+        adjusted : Optional[bool]
             Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon)
-        extended_hours : Union[bool, NoneType]
+        extended_hours : Optional[bool]
             Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
-        month : Union[str, NoneType]
+        month : Optional[str]
             Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
-        outputsize : Union[Literal['compact', 'full'], NoneType]
+        outputsize : Optional[Literal['compact', 'full']]
             Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter (see above) is not specified, or the full intraday data for a specific month in history if the month parameter is specified. (provider: alpha_vantage)
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+        timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        timezone : Union[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Tokyo', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu'], NoneType]
+        timezone : Optional[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu']]
             Returns trading times in this timezone. (provider: intrinio)
-        source : Union[Literal['realtime', 'delayed', 'nasdaq_basic'], NoneType]
+        source : Optional[Literal['realtime', 'delayed', 'nasdaq_basic']]
             The source of the data. (provider: intrinio)
-        start_time : Union[datetime.time, NoneType]
+        start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'. (provider: intrinio)
-        end_time : Union[datetime.time, NoneType]
+        end_time : Optional[datetime.time]
             Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
-        interval_size : Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h'], NoneType]
+        interval_size : Optional[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]
             The data time frequency. (provider: intrinio)
-        limit : Union[pydantic.types.NonNegativeInt, NoneType, pydantic.types.PositiveInt]
+        limit : Union[Annotated[int, Ge(ge=0)], NoneType, int]
             The number of data entries to return. (provider: intrinio, polygon)
-        next_page : Union[str, NoneType]
+        next_page : Optional[str]
             Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Union[bool, NoneType]
+        all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        multiplier : PositiveInt
+        multiplier : int
             Multiplier of the timespan. (provider: polygon)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -253,7 +237,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockHistorical]
                 Serializable results.
-            provider : Union[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -264,25 +248,25 @@ class CLASS_stocks(Container):
 
         StockHistorical
         ---------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
-        open : Optional[PositiveFloat]
+        open : float
             The open price of the symbol.
-        high : Optional[PositiveFloat]
+        high : float
             The high price of the symbol.
-        low : Optional[PositiveFloat]
+        low : float
             The low price of the symbol.
-        close : Optional[PositiveFloat]
+        close : float
             The close price of the symbol.
-        volume : Optional[NonNegativeInt]
+        volume : Union[float, int]
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
+        vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.
-        adjusted_close : Optional[PositiveFloat]
-            The adjusted close price of the symbol. (provider: alpha_vantage)
-        dividend_amount : Optional[NonNegativeFloat]
+        adj_close : Union[Annotated[float, Gt(gt=0)], None, float]
+            The adjusted close price of the symbol. (provider: alpha_vantage, fmp)
+        dividend_amount : Optional[Annotated[float, Ge(ge=0)]]
             Dividend amount paid for the corresponding date. (provider: alpha_vantage)
-        split_coefficient : Optional[NonNegativeFloat]
+        split_coefficient : Optional[Annotated[float, Ge(ge=0)]]
             Split coefficient for the corresponding date. (provider: alpha_vantage)
         calls_volume : Optional[float]
             Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
@@ -290,8 +274,6 @@ class CLASS_stocks(Container):
             Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         total_options_volume : Optional[float]
             Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -308,7 +290,7 @@ class CLASS_stocks(Container):
             The data time frequency. (provider: intrinio)
         average : Optional[float]
             Average trade price of an individual stock during the interval. (provider: intrinio)
-        transactions : Optional[PositiveInt]
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
@@ -333,29 +315,25 @@ class CLASS_stocks(Container):
     @validate_arguments
     def multiples(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: typing_extensions.Annotated[
-            Union[int, None],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
+        symbol: Union[str, List[str]],
+        limit: Optional[int],
         chart: bool = False,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject[
+        List[openbb_provider.standard_models.stock_multiples.StockMultiplesData]
+    ]:
         """Get valuation multiples for a stock ticker.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        limit : Union[int, NoneType]
+        limit : Optional[int]
             The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -365,7 +343,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockMultiples]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -517,25 +495,15 @@ class CLASS_stocks(Container):
     @validate_arguments
     def news(
         self,
-        symbols: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        page: typing_extensions.Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="Page of the stock news to be retrieved."
-            ),
-        ] = 0,
-        limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
-            OpenBBCustomParameter(description="Number of results to return per page."),
-        ] = 15,
+        symbols: str,
+        page: int,
+        limit: int,
         chart: bool = False,
-        provider: Union[
-            Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"], None
+        provider: Optional[
+            Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        **kwargs
+    ) -> OBBject[List[openbb_provider.standard_models.stock_news.StockNewsData]]:
         """Get news for one or more stock tickers.
 
         Parameters
@@ -544,63 +512,67 @@ class CLASS_stocks(Container):
             Symbol to get data for.
         page : int
             Page of the stock news to be retrieved.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : int
             Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
-        provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
+        page_size : int
+            Number of results to return per page. (provider: benzinga)
         display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
-        date : Union[datetime.datetime, NoneType]
+        date : Optional[datetime.datetime]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Union[datetime.datetime, NoneType]
+        date_from : Optional[datetime.datetime]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Union[datetime.datetime, NoneType]
+        date_to : Optional[datetime.datetime]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Union[int, NoneType]
+        updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Union[int, NoneType]
+        published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
+        tickers : Optional[str]
+            Tickers of the news to retrieve. (provider: benzinga)
         sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
             Order in which to sort the news. (provider: benzinga, polygon)
-        isin : Union[str, NoneType]
+        isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Union[str, NoneType]
+        cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        channels : Union[str, NoneType]
+        channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Union[str, NoneType]
+        topics : Optional[str]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Union[str, NoneType]
+        authors : Optional[str]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Union[str, NoneType]
+        content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        next_page : Union[str, NoneType]
+        next_page : Optional[str]
             Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Union[bool, NoneType]
+        all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
-        ticker_lt : Union[str, NoneType]
+        ticker_lt : Optional[str]
             Less than. (provider: polygon)
-        ticker_lte : Union[str, NoneType]
+        ticker_lte : Optional[str]
             Less than or equal. (provider: polygon)
-        ticker_gt : Union[str, NoneType]
+        ticker_gt : Optional[str]
             Greater than. (provider: polygon)
-        ticker_gte : Union[str, NoneType]
+        ticker_gte : Optional[str]
             Greater than or equal. (provider: polygon)
-        published_utc : Union[str, NoneType]
+        published_utc : Optional[str]
             Published date of the query. (provider: polygon)
-        published_utc_lt : Union[str, NoneType]
+        published_utc_lt : Optional[str]
             Less than. (provider: polygon)
-        published_utc_lte : Union[str, NoneType]
+        published_utc_lte : Optional[str]
             Less than or equal. (provider: polygon)
-        published_utc_gt : Union[str, NoneType]
+        published_utc_gt : Optional[str]
             Greater than. (provider: polygon)
-        published_utc_gte : Union[str, NoneType]
+        published_utc_gte : Optional[str]
             Greater than or equal. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Optional[Literal['asc', 'desc']]
             Sort order of the query. (provider: polygon)
 
         Returns
@@ -608,7 +580,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -619,15 +591,15 @@ class CLASS_stocks(Container):
 
         StockNews
         ---------
-        date : Optional[datetime]
+        date : datetime
             Published date of the news.
-        title : Optional[str]
+        title : str
             Title of the news.
         text : Optional[str]
             Text/body of the news.
-        url : Optional[str]
+        url : str
             URL of the news.
-        images : Optional[List[BenzingaImage]]
+        images : Optional[List[openbb_benzinga.utils.helpers.BenzingaImage]]
             Images associated with the news. (provider: benzinga)
         channels : Optional[List[str]]
             Channels associated with the news. (provider: benzinga)
@@ -653,7 +625,7 @@ class CLASS_stocks(Container):
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
-        publisher : Union[PolygonPublisher, NoneType, str]
+        publisher : Union[openbb_polygon.models.stock_news.PolygonPublisher, str]
             Publisher of the article. (provider: polygon, yfinance)
         tickers : Optional[List[str]]
             Tickers covered in the article. (provider: polygon)
@@ -661,7 +633,7 @@ class CLASS_stocks(Container):
             Unique identifier for the news article (provider: yfinance)
         type : Optional[str]
             Type of the news article (provider: yfinance)
-        thumbnail : Optional[Mapping[str, Any]]
+        thumbnail : Optional[Dict[str, Any]]
             Thumbnail related data to the ticker news article. (provider: yfinance)
         related_tickers : Optional[str]
             Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
@@ -693,20 +665,17 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        provider: Union[Literal["fmp", "intrinio"], None] = None,
-        **kwargs,
-    ) -> OBBject[BaseModel]:
+        symbol: Union[str, List[str]],
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        **kwargs
+    ) -> OBBject[List[openbb_provider.standard_models.stock_quote.StockQuoteData]]:
         """Load stock data for a specific ticker.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp', 'intrinio'], NoneType]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -718,7 +687,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockQuote]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio'], NoneType]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -753,7 +722,7 @@ class CLASS_stocks(Container):
             Market cap of the company. (provider: fmp)
         price_avg50 : Optional[float]
             50 days average price of the stock. (provider: fmp)
-        price_avg200 : Optional[float]
+        price_avg200 : Optional[int]
             200 days average price of the stock. (provider: fmp)
         volume : Optional[int]
             Volume of the stock in the current trading day. (provider: fmp)
@@ -832,16 +801,11 @@ class CLASS_stocks(Container):
     @validate_arguments
     def search(
         self,
-        query: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="Search query.")
-        ] = "",
-        ticker: typing_extensions.Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ] = False,
-        provider: Union[Literal["cboe"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        query: str,
+        ticker: bool,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject[List[openbb_provider.standard_models.stock_search.StockSearchData]]:
         """Search for a company or stock ticker.
 
         Parameters
@@ -850,7 +814,7 @@ class CLASS_stocks(Container):
             Search query.
         ticker : bool
             Whether to search by ticker symbol.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -860,7 +824,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockSearch]
                 Serializable results.
-            provider : Union[Literal['cboe'], NoneType]
+            provider : Optional[Literal['cboe']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -871,9 +835,9 @@ class CLASS_stocks(Container):
 
         StockSearch
         -----------
-        symbol : Optional[str]
+        symbol : str
             Symbol to get data for.
-        name : Optional[str]
+        name : str
             Name of the company.
         dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)

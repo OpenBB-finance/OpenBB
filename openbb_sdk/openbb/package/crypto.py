@@ -1,10 +1,9 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
@@ -22,54 +21,43 @@ class CLASS_crypto(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        symbol: Union[str, List[str]],
+        start_date: Union[datetime.date, str],
+        end_date: Union[datetime.date, str],
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
+        **kwargs
+    ) -> OBBject[
+        List[openbb_provider.standard_models.crypto_historical.CryptoHistoricalData]
+    ]:
         """Crypto Historical Price.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : date
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : date
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+        timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        limit : PositiveInt
+        limit : int
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-        multiplier : PositiveInt
+        multiplier : int
             Multiplier of the timespan. (provider: polygon)
-        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             Data granularity. (provider: yfinance)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -83,7 +71,7 @@ class CLASS_crypto(Container):
         OBBject
             results : List[CryptoHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -94,19 +82,19 @@ class CLASS_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
-        open : Optional[PositiveFloat]
+        open : float
             The open price of the symbol.
-        high : Optional[PositiveFloat]
+        high : float
             The high price of the symbol.
-        low : Optional[PositiveFloat]
+        low : float
             The low price of the symbol.
-        close : Optional[PositiveFloat]
+        close : float
             The close price of the symbol.
-        volume : Optional[PositiveFloat]
+        volume : float
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
+        vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
@@ -120,7 +108,7 @@ class CLASS_crypto(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change \\% in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 

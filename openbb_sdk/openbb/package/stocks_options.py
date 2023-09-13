@@ -1,9 +1,8 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
@@ -21,24 +20,23 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def chains(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        provider: Union[Literal["cboe", "intrinio"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        symbol: Union[str, List[str]],
+        provider: Optional[Literal["cboe", "intrinio"]] = None,
+        **kwargs
+    ) -> OBBject[
+        List[openbb_provider.standard_models.options_chains.OptionsChainsData]
+    ]:
         """Get the complete options chain for a ticker.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        provider : Union[Literal['cboe', 'intrinio'], NoneType]
+        provider : Optional[Literal['cboe', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Union[datetime.date, str, NoneType]
+        date : Union[str, datetime.date, NoneType]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns
@@ -46,7 +44,7 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['cboe', 'intrinio'], NoneType]
+            provider : Optional[Literal['cboe', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -57,21 +55,21 @@ class CLASS_stocks_options(Container):
 
         OptionsChains
         -------------
-        expiration : Optional[datetime]
+        expiration : datetime
             Expiration date of the contract.
-        strike : Optional[float]
+        strike : float
             Strike price of the contract.
-        option_type : Optional[str]
+        option_type : str
             Call or Put.
-        contract_symbol : Optional[str]
+        contract_symbol : str
             Contract symbol for the option.
-        bid : Optional[float]
+        bid : float
             Bid price of the contract.
-        ask : Optional[float]
+        ask : float
             Ask price of the contract.
-        open_interest : Optional[float]
+        open_interest : float
             Open interest on the contract.
-        volume : Optional[float]
+        volume : float
             Current trading volume on the contract.
         bid_size : Optional[int]
             Bid size for the option. (provider: cboe)

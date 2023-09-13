@@ -1,10 +1,9 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
@@ -23,26 +22,20 @@ class CLASS_futures(Container):
     @validate_arguments
     def curve(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
-            OpenBBCustomParameter(description="Historical date to search curve for."),
-        ] = None,
-        provider: Union[Literal["cboe", "yfinance"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        symbol: Union[str, List[str]],
+        date: Optional[datetime.date],
+        provider: Optional[Literal["cboe", "yfinance"]] = None,
+        **kwargs
+    ) -> OBBject[List[openbb_provider.standard_models.futures_curve.FuturesCurveData]]:
         """Futures Historical Price.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        date : Union[datetime.date, NoneType]
+        date : Optional[datetime.date]
             Historical date to search curve for.
-        provider : Union[Literal['cboe', 'yfinance'], NoneType]
+        provider : Optional[Literal['cboe', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -52,7 +45,7 @@ class CLASS_futures(Container):
         OBBject
             results : List[FuturesCurve]
                 Serializable results.
-            provider : Union[Literal['cboe', 'yfinance'], NoneType]
+            provider : Optional[Literal['cboe', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -63,9 +56,9 @@ class CLASS_futures(Container):
 
         FuturesCurve
         ------------
-        expiration : Optional[str]
+        expiration : str
             Futures expiration month.
-        price : Optional[float]
+        price : float
             The close price of the symbol.
         symbol : Optional[str]
             The trading symbol for the tenor of future. (provider: cboe)"""  # noqa: E501
@@ -89,48 +82,34 @@ class CLASS_futures(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        expiration: typing_extensions.Annotated[
-            Union[str, None],
-            OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
-        ] = None,
-        provider: Union[Literal["yfinance"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
+        symbol: Union[str, List[str]],
+        start_date: Union[datetime.date, None, str],
+        end_date: Union[datetime.date, None, str],
+        expiration: Optional[str],
+        provider: Optional[Literal["yfinance"]] = None,
+        **kwargs
+    ) -> OBBject[
+        List[openbb_provider.standard_models.futures_historical.FuturesHistoricalData]
+    ]:
         """Futures Historical Price.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        expiration : Union[str, NoneType]
+        expiration : Optional[str]
             Future expiry date with format YYYY-MM
-        provider : Union[Literal['yfinance'], NoneType]
+        provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is
             no default.
-        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
+        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             Data granularity. (provider: yfinance)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -144,7 +123,7 @@ class CLASS_futures(Container):
         OBBject
             results : List[FuturesHistorical]
                 Serializable results.
-            provider : Union[Literal['yfinance'], NoneType]
+            provider : Optional[Literal['yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -155,17 +134,17 @@ class CLASS_futures(Container):
 
         FuturesHistorical
         -----------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
-        open : Optional[float]
+        open : float
             The open price of the symbol.
-        high : Optional[float]
+        high : float
             The high price of the symbol.
-        low : Optional[float]
+        low : float
             The low price of the symbol.
-        close : Optional[float]
+        close : float
             The close price of the symbol.
-        volume : Optional[float]
+        volume : float
             The volume of the symbol."""  # noqa: E501
 
         inputs = filter_inputs(

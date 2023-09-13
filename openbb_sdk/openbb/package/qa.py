@@ -3,14 +3,13 @@
 from typing import List, Literal, Union
 
 import openbb_provider
-import openbb_qa.qa_models
 import pandas
-import pydantic
-import pydantic.types
+from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_qa(Container):
@@ -35,7 +34,7 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-    ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
+    ) -> OBBject[BaseModel]:
         """Capital Asset Pricing Model."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -53,8 +52,8 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        window: pydantic.types.PositiveInt,
-    ) -> OBBject[List]:
+        window: Annotated[int, Gt(gt=0)],
+    ) -> OBBject[list]:
         """Kurtosis.
 
         Parameters
@@ -88,7 +87,7 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-    ) -> OBBject[openbb_qa.qa_models.NormalityModel]:
+    ) -> OBBject[BaseModel]:
         """
         Normality Statistics.
 
@@ -128,7 +127,7 @@ class CLASS_qa(Container):
         target: str,
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
-    ) -> OBBject[List]:
+    ) -> OBBject[list]:
         """Omega Ratio.
 
         Parameters
@@ -165,9 +164,9 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        window: pydantic.types.PositiveInt,
-        quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
-    ) -> OBBject[List]:
+        window: Annotated[int, Gt(gt=0)],
+        quantile_pct: Annotated[float, Ge(ge=0)] = 0.5,
+    ) -> OBBject[list]:
         """Quantile."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -188,8 +187,8 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         rfr: float = 0.0,
-        window: pydantic.types.PositiveInt = 252,
-    ) -> OBBject[List]:
+        window: Annotated[int, Gt(gt=0)] = 252,
+    ) -> OBBject[list]:
         """Sharpe Ratio.
 
         Parameters
@@ -226,8 +225,8 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        window: pydantic.types.PositiveInt,
-    ) -> OBBject[List]:
+        window: Annotated[int, Gt(gt=0)],
+    ) -> OBBject[list]:
         """Skewness.
 
         Parameters
@@ -262,9 +261,9 @@ class CLASS_qa(Container):
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
         target_return: float = 0.0,
-        window: pydantic.types.PositiveInt = 252,
+        window: Annotated[int, Gt(gt=0)] = 252,
         adjusted: bool = False,
-    ) -> OBBject[List]:
+    ) -> OBBject[list]:
         """Sortino Ratio.
 
         For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
@@ -306,7 +305,7 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-    ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
+    ) -> OBBject[BaseModel]:
         """Summary.
 
         Parameters
@@ -337,9 +336,9 @@ class CLASS_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
-    ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
+    ) -> OBBject[BaseModel]:
         """Unit Root Test.
 
         Augmented Dickey-Fuller test for unit root.

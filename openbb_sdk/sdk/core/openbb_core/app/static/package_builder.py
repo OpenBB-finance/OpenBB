@@ -234,6 +234,7 @@ class ImportDefinition:
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         if sys.version_info < (3, 9):
             code += "\nimport typing_extensions"
         else:
@@ -388,8 +389,13 @@ class DocstringGenerator:
 
         for name, field in returns.items():
             try:
+                _type = field.annotation
+                if "BeforeValidator" in str(_type):
+                    is_optional = "Optional" in str(field.annotation)
+                    _type = "Optional[int]" if is_optional else "int"
+
                 field_type = (
-                    str(field.annotation)
+                    str(_type)
                     .replace("<class '", "")
                     .replace("'>", "")
                     .replace("typing.", "")
