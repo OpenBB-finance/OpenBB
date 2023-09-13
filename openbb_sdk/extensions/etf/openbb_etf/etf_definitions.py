@@ -217,6 +217,9 @@ class EtfSectors(OBBject):
         data = data.transpose()
         if len(data.columns) == 1:
             data = data.dropna()
+        for i in data.index:
+            if data.loc[i].unique().tolist()[0] is None:
+                data.drop(i, inplace=True)
         return data
 
     def to_dict(self) -> Dict:

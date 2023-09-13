@@ -1,6 +1,6 @@
 """Blackrock ETF Sectors fetcher."""
 
-from io import StringIO
+import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -11,11 +11,7 @@ from openbb_provider.standard_models.etf_sectors import (
 )
 from pydantic import Field
 
-from openbb_blackrock.models.etf_holdings import (
-    blackrock_america_holdings,
-    blackrock_canada_holdings,
-)
-from openbb_blackrock.utils.helpers import COUNTRIES, America, Canada
+from openbb_blackrock.utils.helpers import COUNTRIES, extract_from_holdings
 
 
 class BlackrockEtfSectorsQueryParams(EtfSectorsQueryParams):
@@ -71,78 +67,25 @@ class BlackrockEtfSectorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Blackrock endpoint."""
-        country = query.country
 
         symbols = (
             query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
         )
         results = {}
 
-        for symbol in symbols:
-            coutry = query.country  # noqa
+        def get_one(symbol):
             data = {}
-            if ".TO" in symbol or query.country == "canada":
-                symbol = symbol.replace(".TO", "")  # noqa
-                country = "canada"
-            _etfs = (
-                America.get_all_etfs()
-                if country == "america"
-                else Canada.get_all_etfs()
+            data = extract_from_holdings(
+                symbol,
+                to_extract="sector",
+                country=query.country,  # type: ignore
+                date=query.date,  # type: ignore
             )
-            if symbol in _etfs["symbol"].to_list():
-                r = (
-                    blackrock_america_holdings.get(
-                        url=America.generate_holdings_url(symbol, query.date),  # type: ignore
-                    )
-                    if country == "america"
-                    else blackrock_canada_holdings.get(
-                        url=Canada.generate_holdings_url(symbol, query.date),  # type: ignore
-                    )
-                )
-                if r.status_code != 200:
-                    raise RuntimeError(
-                        "Error with Blackrock endpoint ->" + str(r.status_code)
-                    )
+            if data != {}:
+                results.update({symbol: data})
 
-                indexed = pd.read_csv(StringIO(r.text), usecols=[0])
-                target = (
-                    "Ticker" if "Name" not in indexed.iloc[:, 0].to_list() else "Name"
-                )
-                idx = []
-                idx = indexed[indexed.iloc[:, 0] == target].index.tolist()
-                idx_value = idx[1] if len(idx) > 1 else idx[0]
-                _holdings = pd.read_csv(
-                    StringIO(r.text), header=idx_value, thousands=","
-                )
-                _holdings = _holdings.reset_index()
-                columns = _holdings.iloc[0, :].values.tolist()
-                _holdings.columns = columns
-                holdings = (
-                    _holdings.iloc[1:-1, :]
-                    if query.country == "canada"
-                    else _holdings.iloc[1:-2, :]
-                )
-                holdings = holdings.convert_dtypes().fillna("0")
-                _sectors = holdings[["Name", "Sector", "Weight (%)"]]
-                _sectors = _sectors.rename(
-                    columns={"Weight (%)": "weight", "Sector": "sector"}
-                )
-                _sectors["weight"] = _sectors["weight"].astype(float)
-                sectors = (
-                    _sectors.groupby("sector")[["weight"]]
-                    .sum()
-                    .sort_values(by="weight", ascending=False)
-                )
-                sectors = sectors.rename(
-                    index={
-                        "Telecommunication Services": "communication_services",
-                        "-": "other",
-                    }
-                )
-                for i in sectors.index:
-                    data.update({i: sectors.loc[i]["weight"]})
-                    if data != {}:
-                        results.update({symbol: data})
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(get_one, symbols)
 
         return (
             pd.DataFrame(results)

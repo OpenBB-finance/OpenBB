@@ -1,7 +1,8 @@
 """BlackRock ETF Data"""
 
 from datetime import timedelta
-from typing import Literal
+from io import StringIO
+from typing import Dict, Literal
 
 import pandas as pd
 import requests_cache
@@ -17,6 +18,31 @@ blackrock_canada_products = requests_cache.CachedSession(
     expire_after=timedelta(days=1),
     use_cache_dir=True,
 )
+
+blackrock_canada_holdings = requests_cache.CachedSession(
+    "OpenBB_Blackrock_Canada_Holdings",
+    expire_after=timedelta(days=1),
+    use_cache_dir=True,
+)
+
+blackrock_america_holdings = requests_cache.CachedSession(
+    "OpenBB_Blackrock_America_Holdings",
+    expire_after=timedelta(days=1),
+    use_cache_dir=True,
+)
+
+blackrock_canada_historical_holdings = requests_cache.CachedSession(
+    "OpenBB_Blackrock_Canada_Historical_Holdings",
+    expire_after=timedelta(days=30),
+    use_cache_dir=True,
+)
+
+blackrock_america_historical_holdings = requests_cache.CachedSession(
+    "OpenBB_Blackrock_America_Historical_Holdings",
+    expire_after=timedelta(days=30),
+    use_cache_dir=True,
+)
+
 
 COUNTRIES = Literal["america", "canada"]
 
@@ -457,15 +483,7 @@ class Canada:
 
     @staticmethod
     def generate_holdings_url(symbol: str, date: str = "") -> str:
-        """Generates the URL for the Blackrock Canada ETF holdings.
-
-        Parameters
-        ----------
-        symbol: str
-            The ETF symbol.
-        date: str
-            The as-of date for historical daily holdings.
-        """
+        """Generates the URL for the Blackrock Canada ETF holdings."""
 
         symbol = symbol.upper()
         date = date.replace("-", "") if date else ""
@@ -480,3 +498,89 @@ class Canada:
         url = url + f"&fileName={symbol}_holdings&dataType=fund"
 
         return url
+
+
+def extract_from_holdings(
+    symbol: str,
+    to_extract: Literal["sector", "country"] = "sector",
+    country: COUNTRIES = "america",
+    date: str = "",
+) -> Dict:
+    """Extracts target data from Blackrock ETF holdings data.  Supports: ['sector', 'country']."""
+
+    data = {}
+    if ".TO" in symbol or country == "canada":
+        symbol = symbol.replace(".TO", "")  # noqa
+        country = "canada"
+    _etfs = America.get_all_etfs() if country == "america" else Canada.get_all_etfs()
+    if symbol in _etfs["symbol"].to_list():
+        if not date:
+            r = (
+                blackrock_america_holdings.get(
+                    url=America.generate_holdings_url(symbol, date),  # type: ignore
+                )
+                if country == "america"
+                else blackrock_canada_holdings.get(
+                    url=Canada.generate_holdings_url(symbol, date),  # type: ignore
+                )
+            )
+        if date:
+            r = (
+                blackrock_america_historical_holdings.get(
+                    url=America.generate_holdings_url(symbol, date),  # type: ignore
+                )
+                if country == "america"
+                else blackrock_canada_historical_holdings.get(
+                    url=Canada.generate_holdings_url(symbol, date),  # type: ignore
+                )
+            )
+        if r.status_code != 200:  # type: ignore
+            raise RuntimeError(
+                "Error with Blackrock endpoint ->" + str(r.status_code)  # type: ignore
+            )
+
+        indexed = pd.read_csv(StringIO(r.text), usecols=[0])  # type: ignore
+        target = "Ticker" if "Name" not in indexed.iloc[:, 0].to_list() else "Name"
+        idx = []
+        idx = indexed[indexed.iloc[:, 0] == target].index.tolist()
+        idx_value = idx[1] if len(idx) > 1 else idx[0]
+        _holdings = pd.read_csv(
+            StringIO(r.text), header=idx_value, thousands=","  # type: ignore
+        )
+        _holdings = _holdings.reset_index()
+        columns = _holdings.iloc[0, :].values.tolist()
+        _holdings.columns = columns
+        holdings = (
+            _holdings.iloc[1:-1, :] if country == "canada" else _holdings.iloc[1:-2, :]
+        )
+        holdings = holdings.convert_dtypes().fillna("0")
+
+        holdings = holdings.rename(
+            columns={
+                "Name": "name",
+                "Weight (%)": "weight",
+                "Sector": "sector",
+                "Location of Risk": "country",
+                "Location": "country",
+            }
+        )
+        _target = holdings[["name", "sector", "weight", "country"]]
+        _target.loc[:, "weight"] = _target["weight"].astype(float)
+        target = (
+            _target.groupby(to_extract)[["weight"]]
+            .sum()
+            .sort_values(by="weight", ascending=False)
+        )
+        target = target.rename(
+            index={
+                "Telecommunication Services": "Communication Services",
+                "Telecommunications": "Communication Services",
+                "Materials & Processing": "Materials",
+                "Producer Durables": "Industrials",
+                "-": "other",
+            }
+        )
+        for i in target.index:
+            data.update({i: target.loc[i]["weight"]})
+
+    return data

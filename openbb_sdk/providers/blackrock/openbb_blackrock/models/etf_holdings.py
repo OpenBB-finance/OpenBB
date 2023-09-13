@@ -1,14 +1,10 @@
 """Blackrock ETF Holdings fetcher."""
 
-from datetime import (
-    date as dateType,
-    timedelta,
-)
+from datetime import date as dateType
 from io import StringIO
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
-import requests_cache
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_holdings import (
     EtfHoldingsData,
@@ -16,18 +12,14 @@ from openbb_provider.standard_models.etf_holdings import (
 )
 from pydantic import Field
 
-from openbb_blackrock.utils.helpers import COUNTRIES, America, Canada
-
-blackrock_canada_holdings = requests_cache.CachedSession(
-    "OpenBB_Blackrock_Canada_Holdings",
-    expire_after=timedelta(days=1),
-    use_cache_dir=True,
-)
-
-blackrock_america_holdings = requests_cache.CachedSession(
-    "OpenBB_Blackrock_America_Holdings",
-    expire_after=timedelta(days=1),
-    use_cache_dir=True,
+from openbb_blackrock.utils.helpers import (
+    COUNTRIES,
+    America,
+    Canada,
+    blackrock_america_historical_holdings,
+    blackrock_america_holdings,
+    blackrock_canada_historical_holdings,
+    blackrock_canada_holdings,
 )
 
 
@@ -176,7 +168,10 @@ class BlackrockEtfHoldingsFetcher(
                     "Use search(provider='blackrock', country='canada')"
                 )
             url = Canada.generate_holdings_url(query.symbol, query.date)  # type: ignore
-            r = blackrock_canada_holdings.get(url, timeout=10)
+            if not query.date:
+                r = blackrock_canada_holdings.get(url, timeout=10)
+            if query.date:
+                r = blackrock_canada_historical_holdings.get(url, timeout=10)
 
         if query.country == "america":
             symbols = America.get_all_etfs()["symbol"].to_list()
@@ -186,7 +181,10 @@ class BlackrockEtfHoldingsFetcher(
                     "Use search(provider='blackrock', country='america')"
                 )
             url = America.generate_holdings_url(query.symbol, query.date)  # type: ignore
-            r = blackrock_america_holdings.get(url, timeout=10)
+            if not query.date:
+                r = blackrock_america_holdings.get(url, timeout=10)
+            if query.date:
+                r = blackrock_america_historical_holdings.get(url, timeout=10)
 
         if r.status_code != 200:  # type: ignore
             raise RuntimeError(r.status_code)  # type: ignore
