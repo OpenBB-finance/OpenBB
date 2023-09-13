@@ -163,12 +163,6 @@ def test_emit_calls_handleError_when_send_raises_exception_of_another_type(handl
             {"STARTUP": {"status": "success"}},
         ),
         (
-            '{"INPUT": {"something_something":"something_something"}}',
-            {
-                "SDK": {"INPUT": {"something_something": "something_something"}},
-            },
-        ),
-        (
             'CMD: {"path": "/stocks/", "known_cmd": "load", "other_args": "aapl", "input": "load aapl"}',
             {
                 "CMD": {

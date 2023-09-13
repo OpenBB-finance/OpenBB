@@ -97,6 +97,8 @@ class OBBject(GenericModel, Generic[T], Tagged):
             res = self.results
 
             df = None
+
+            sort_columns = True
             if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
                 for r in res:
                     dict_of_df = {}
@@ -105,21 +107,25 @@ class OBBject(GenericModel, Generic[T], Tagged):
                             isinstance(nv, BaseModel) for nv in v
                         ):
                             dict_of_df[k] = basemodel_to_df(v, "date")
+                            sort_columns = False
                         else:
                             dict_of_df[k] = pd.DataFrame(v)
                     df = pd.concat(dict_of_df, axis=1)
+
             elif isinstance(res, list) and all(
                 isinstance(item, BaseModel) for item in res
             ):
                 df = basemodel_to_df(res, "date")
+                sort_columns = False
             else:
                 df = pd.DataFrame(res)
 
             if df is None:
                 raise OpenBBError("Unsupported data format.")
 
-            # Improve output so that all columns that are None are not returned
-            df.sort_index(axis=1, inplace=True)
+            # Drop columns that are all NaN, but don't rearrange columns
+            if sort_columns:
+                df.sort_index(axis=1, inplace=True)
             df = df.dropna(axis=1, how="all")
 
         except Exception as e:
@@ -150,10 +156,26 @@ class OBBject(GenericModel, Generic[T], Tagged):
         Dict[str, List]
             Dictionary of lists.
         """
+        if isinstance(self.results, dict) and all(
+            isinstance(v, dict) for v in self.results.values()
+        ):
+            results: Dict[str, List] = {}
+            for _, v in self.results.items():
+                for kk, vv in v.items():
+                    if kk not in results:
+                        results[kk] = []
+                    results[kk].append(vv)
+
+            return results
+
         df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
         for field in df.columns:
             results[field] = df[field].tolist()
+
+        # remove index from results
+        if "index" in results:
+            del results["index"]
 
         return results
 
