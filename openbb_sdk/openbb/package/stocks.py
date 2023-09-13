@@ -4,12 +4,11 @@ import datetime
 from typing import List, Literal, Optional, Union
 
 import pydantic
-import pydantic.main
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import validate_arguments
 from typing_extensions import Annotated
 
 
@@ -228,16 +227,12 @@ class CLASS_stocks(Container):
             Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
         interval_size : Optional[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]
             The data time frequency. (provider: intrinio)
-        limit : Union[pydantic.types.NonNegativeInt, NoneType, pydantic.types.PositiveInt]
-            The number of data entries to return. (provider: intrinio, polygon)
-        next_page : Optional[str]
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Optional[bool]
-            Returns all pages of data from the API call at once. (provider: intrinio)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
+        limit : PositiveInt
+            The number of data entries to return. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
         prepost : bool
@@ -533,16 +528,10 @@ class CLASS_stocks(Container):
         symbols: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        page: Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="Page of the stock news to be retrieved."
-            ),
-        ] = 0,
         limit: Annotated[
             Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="Number of results to return per page."),
-        ] = 15,
+        ] = 20,
         chart: bool = False,
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
@@ -555,8 +544,6 @@ class CLASS_stocks(Container):
         ----------
         symbols : str
             Symbol to get data for.
-        page : int
-            Page of the stock news to be retrieved.
         limit : Optional[pydantic.types.NonNegativeInt]
             Number of results to return per page.
         chart : bool
@@ -565,20 +552,20 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        display_output : Literal['headline', 'summary', 'full', 'all']
-            Type of data to return. (provider: benzinga)
-        date : Optional[datetime.datetime]
+        display : Literal['headline', 'summary', 'full', 'all']
+            Type of segments to return. (provider: benzinga)
+        date : Optional[str]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Optional[datetime.datetime]
+        start_date : Optional[str]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Optional[datetime.datetime]
+        end_date : Optional[str]
             End date of the news to retrieve. (provider: benzinga)
         updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
-            Order in which to sort the news. (provider: benzinga, polygon)
+        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
+            Order in which to sort the news. (provider: benzinga)
         isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Optional[str]
@@ -591,30 +578,10 @@ class CLASS_stocks(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        next_page : Optional[str]
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Optional[bool]
-            Returns all pages of data from the API call at once. (provider: intrinio)
-        ticker_lt : Optional[str]
-            Less than. (provider: polygon)
-        ticker_lte : Optional[str]
-            Less than or equal. (provider: polygon)
-        ticker_gt : Optional[str]
-            Greater than. (provider: polygon)
-        ticker_gte : Optional[str]
-            Greater than or equal. (provider: polygon)
         published_utc : Optional[str]
-            Published date of the query. (provider: polygon)
-        published_utc_lt : Optional[str]
-            Less than. (provider: polygon)
-        published_utc_lte : Optional[str]
-            Less than or equal. (provider: polygon)
-        published_utc_gt : Optional[str]
-            Greater than. (provider: polygon)
-        published_utc_gte : Optional[str]
-            Greater than or equal. (provider: polygon)
+            Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
         order : Optional[Literal['asc', 'desc']]
-            Sort order of the query. (provider: polygon)
+            Sort order of the articles. (provider: polygon)
 
         Returns
         -------
@@ -657,7 +624,7 @@ class CLASS_stocks(Container):
         site : Optional[str]
             Name of the news source. (provider: fmp)
         id : Optional[str]
-            Article ID. (provider: intrinio, polygon)
+            Intrinio ID for the article. (provider: intrinio); Article ID. (provider: polygon)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         author : Optional[str]
@@ -685,7 +652,6 @@ class CLASS_stocks(Container):
             },
             standard_params={
                 "symbols": symbols,
-                "page": page,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -712,7 +678,7 @@ class CLASS_stocks(Container):
         ] = None,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Load stock data for a specific ticker.
 
         Parameters
@@ -825,7 +791,11 @@ class CLASS_stocks(Container):
         market_center_code : Optional[str]
             Market center character code. (provider: intrinio)
         is_darkpool : Optional[bool]
-            Whether or not the current trade is from a darkpool. (provider: intrinio)"""  # noqa: E501
+            Whether or not the current trade is from a darkpool. (provider: intrinio)
+        messages : Optional[List[str]]
+            Messages associated with the endpoint. (provider: intrinio)
+        security : Optional[Mapping[str, Any]]
+            Security details related to the quote. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

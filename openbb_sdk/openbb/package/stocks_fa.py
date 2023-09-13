@@ -59,7 +59,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
@@ -73,7 +73,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Optional[pydantic.types.NonNegativeInt]
+        limit : NonNegativeInt
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -494,7 +494,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
@@ -508,7 +508,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Optional[pydantic.types.NonNegativeInt]
+        limit : NonNegativeInt
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -1297,7 +1297,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
@@ -1311,7 +1311,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Optional[pydantic.types.NonNegativeInt]
+        limit : NonNegativeInt
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -2552,7 +2552,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: Annotated[
-            Optional[pydantic.types.NonNegativeInt],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp"]] = None,
@@ -2566,7 +2566,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Optional[pydantic.types.NonNegativeInt]
+        limit : NonNegativeInt
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.

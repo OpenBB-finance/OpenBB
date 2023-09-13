@@ -22,10 +22,10 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: Annotated[
+        limit: Annotated[
             pydantic.types.NonNegativeInt,
-            OpenBBCustomParameter(description="Page of the global news."),
-        ] = 0,
+            OpenBBCustomParameter(description="Number of articles to return."),
+        ] = 20,
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -33,21 +33,19 @@ class CLASS_news(Container):
 
         Parameters
         ----------
-        page : NonNegativeInt
-            Page of the global news.
+        limit : NonNegativeInt
+            Number of articles to return.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        page_size : int
-            Number of results to return per page. (provider: benzinga)
-        display_output : Literal['headline', 'summary', 'full', 'all']
-            Type of data to return. (provider: benzinga)
-        date : Optional[datetime.datetime]
+        display : Literal['headline', 'summary', 'full', 'all']
+            Type of segments to return. (provider: benzinga)
+        date : Optional[str]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Optional[datetime.datetime]
+        start_date : Optional[str]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Optional[datetime.datetime]
+        end_date : Optional[str]
             End date of the news to retrieve. (provider: benzinga)
         updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
@@ -69,12 +67,6 @@ class CLASS_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        next_page : str
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        limit : Optional[int]
-            The number of data entries to return. (provider: intrinio)
-        all_pages : Optional[bool]
-            Returns all pages of data from the API call at once. (provider: intrinio)
 
         Returns
         -------
@@ -122,7 +114,7 @@ class CLASS_news(Container):
                 "provider": provider,
             },
             standard_params={
-                "page": page,
+                "limit": limit,
             },
             extra_params=kwargs,
         )

@@ -581,6 +581,11 @@ def extract_from_holdings(
                     "-": "other",
                 }
             )
+            target.index = (
+                target.index.str.replace("/", "")
+                .str.replace("non-_", "non_")
+                .str.replace("andor", "and")
+            )
             for i in target.index:
                 data.update({i: target.loc[i]["weight"]})
 
