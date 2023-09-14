@@ -12,6 +12,7 @@ from typing_extensions import Annotated
 
 class CLASS_etf(Container):
     """/etf
+    countries
     holdings
     search
     sectors
@@ -19,6 +20,67 @@ class CLASS_etf(Container):
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @validate_arguments
+    def countries(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="The exchange ticker symbol for the ETF."
+            ),
+        ],
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """ETF Country weighting.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            The exchange ticker symbol for the ETF.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfCountries]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        EtfCountries
+        ------------
+        symbol : Optional[str]
+            The exchange ticker symbol for the ETF.
+        country : Optional[str]
+            The country of the risk exposure.
+        weight : Optional[str]
+            The weight of the country in the ETF."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/etf/countries",
+            **inputs,
+        )
 
     @validate_arguments
     def holdings(
@@ -300,12 +362,6 @@ class CLASS_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        scope: Annotated[
-            Optional[Literal["sector", "country"]],
-            OpenBBCustomParameter(
-                description="\n            The scope of the query.\n\n            sector: The weighting by sector/industry of the ETF.\n            country: The weighting by country/region of the ETF.\n            "
-            ),
-        ] = "sector",
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
@@ -315,13 +371,6 @@ class CLASS_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             The exchange ticker symbol for the ETF.
-        scope : Optional[Literal['sector', 'country']]
-
-                    The scope of the query.
-
-                    sector: The weighting by sector/industry of the ETF.
-                    country: The weighting by country/region of the ETF.
-
         provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
@@ -382,7 +431,6 @@ class CLASS_etf(Container):
             },
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "scope": scope,
             },
             extra_params=kwargs,
         )

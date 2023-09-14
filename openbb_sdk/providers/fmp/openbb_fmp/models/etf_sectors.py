@@ -13,11 +13,11 @@ from pydantic import Field
 
 
 class FMPEtfSectorsQueryParams(EtfSectorsQueryParams):
-    """FMP ETF Info Query Params"""
+    """FMP ETF Sectors Query Params"""
 
 
 class FMPEtfSectorsData(EtfSectorsData):
-    """FMP ETF Info Data."""
+    """FMP ETF Sectors Data."""
 
     class Config:
         fields = {

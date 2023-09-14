@@ -1,6 +1,6 @@
 """ETF Sectors data model."""
 
-from typing import List, Literal, Optional, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
 
@@ -12,15 +12,6 @@ class EtfSectorsQueryParams(QueryParams):
     """ETF Sectors Query Params"""
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
-    scope: Optional[Literal["sector", "country"]] = Field(
-        description="""
-            The scope of the query.
-
-            sector: The weighting by sector/industry of the ETF.
-            country: The weighting by country/region of the ETF.
-            """,
-        default="sector",
-    )
 
     @validator("symbol", pre=True, check_fields=False, always=True)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):

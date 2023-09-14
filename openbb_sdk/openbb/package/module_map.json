@@ -31,6 +31,7 @@
     "economy_risk": "/economy/risk",
     "economy_sp500_multiples": "/economy/sp500_multiples",
     "etf": "/etf",
+    "etf_countries": "/etf/countries",
     "etf_holdings": "/etf/holdings",
     "etf_search": "/etf/search",
     "etf_sectors": "/etf/sectors",
