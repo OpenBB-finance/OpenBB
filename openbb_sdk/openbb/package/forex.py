@@ -42,7 +42,7 @@ class CLASS_forex(Container):
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Forex Intraday Price.
+        r"""Forex Intraday Price.
 
         Parameters
         ----------

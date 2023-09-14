@@ -51,10 +51,10 @@ class YFinanceCashFlowStatementFetcher(
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=True, pretty=False, freq=query.period
         )
-        data = [
-            {"date": str(key), "symbol": query.symbol, **value}
-            for key, value in data.items()
-        ]
+        data = [{"date": str(key), **value} for key, value in data.items()]
+        # To match standardization
+        for d in data:
+            d["Symbol"] = query.symbol
         data = json.loads(json.dumps(data))
 
         return data

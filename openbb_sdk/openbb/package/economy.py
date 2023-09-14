@@ -459,10 +459,6 @@ class CLASS_economy(Container):
         ---
         date : Optional[date]
             The date of the data.
-        realtime_start : Optional[date]
-            Date the data was updated.
-        realtime_end : Optional[date]
-            Date the data was updated.
         value : Optional[float]
             Value of the data."""  # noqa: E501
 
@@ -676,7 +672,7 @@ class CLASS_economy(Container):
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Get historical  levels for an index.
+        r"""Get historical  levels for an index.
 
         Parameters
         ----------

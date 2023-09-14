@@ -188,7 +188,7 @@ class CLASS_stocks(Container):
         ] = None,
         **kwargs
     ) -> OBBject[List]:
-        """Load stock data for a specific ticker.
+        r"""Load stock data for a specific ticker.
 
         Parameters
         ----------
