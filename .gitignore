@@ -80,3 +80,6 @@ lightning_logs/
 !openbb_sdk/install_all.sh
 openbb_sdk/sdk/core/tests/app/model/charts/test_chart_settings.py
 */mocked_path
+
+# CA certificates
+*.pem
