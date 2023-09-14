@@ -95,10 +95,10 @@ class FMPMajorIndicesHistoricalFetcher(
         )
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{query.interval}/%5E{url_params}"
+        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
 
         if query.interval == "1day":
-            url = f"{base_url}/historical-price-full/index/%5E{url_params}"
+            url = f"{base_url}/historical-price-full/index/{url_params}"
 
         return get_data_many(url, "historical", **kwargs)
 
