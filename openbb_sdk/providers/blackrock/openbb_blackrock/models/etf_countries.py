@@ -1,21 +1,21 @@
-"""Blackrock ETF Sectors fetcher."""
+"""Blackrock ETF Countries fetcher."""
 
 import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.etf_sectors import (
-    EtfSectorsData,
-    EtfSectorsQueryParams,
+from openbb_provider.standard_models.etf_countries import (
+    EtfCountriesData,
+    EtfCountriesQueryParams,
 )
 from pydantic import Field
 
 from openbb_blackrock.utils.helpers import COUNTRIES, extract_from_holdings
 
 
-class BlackrockEtfSectorsQueryParams(EtfSectorsQueryParams):
-    """Blackrock ETF Sectors Query Params"""
+class BlackrockEtfCountriesQueryParams(EtfCountriesQueryParams):
+    """Blackrock ETF Countries Query Params"""
 
     country: Optional[COUNTRIES] = Field(
         description="The country the ETF is registered in.  Symbol suffix with `.TO` can be used as a proxy for Canada.",
@@ -24,45 +24,26 @@ class BlackrockEtfSectorsQueryParams(EtfSectorsQueryParams):
     date: Optional[str] = Field(description="The as-of date for the data.")
 
 
-class BlackrockEtfSectorsData(EtfSectorsData):
-    """Blackrock ETF Sectors Data."""
-
-    class Config:
-        fields = {
-            "energy": "Energy",
-            "materials": "Basic Materials",
-            "industrials": "Industrials",
-            "consumer_cyclical": "Consumer Discretionary",
-            "consumer_defensive": "Consumer Staples",
-            "financial_services": "Financials",
-            "technology": "Information Technology",
-            "health_care": "Healthcare",
-            "communication_services": "Communication",
-            "utilities": "Utilities",
-            "real_estate": "Real Estate",
-        }
-
-    cash_or_derivatives: Optional[float] = Field(
-        description="Cash and/or derivatives.", alias="Cash and/or Derivatives"
-    )
+class BlackrockEtfCountriesData(EtfCountriesData):
+    """Blackrock ETF Countries Data."""
 
 
-class BlackrockEtfSectorsFetcher(
+class BlackrockEtfCountriesFetcher(
     Fetcher[
-        BlackrockEtfSectorsQueryParams,
-        List[BlackrockEtfSectorsData],
+        BlackrockEtfCountriesQueryParams,
+        List[BlackrockEtfCountriesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Blackrock endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BlackrockEtfSectorsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> BlackrockEtfCountriesQueryParams:
         """Transform the query."""
-        return BlackrockEtfSectorsQueryParams(**params)
+        return BlackrockEtfCountriesQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: BlackrockEtfSectorsQueryParams,
+        query: BlackrockEtfCountriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -77,7 +58,7 @@ class BlackrockEtfSectorsFetcher(
             data = {}
             data = extract_from_holdings(
                 symbol,
-                to_extract="sector",
+                to_extract="country",
                 country=query.country,  # type: ignore
                 date=query.date,  # type: ignore
             )
@@ -96,6 +77,6 @@ class BlackrockEtfSectorsFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BlackrockEtfSectorsData]:
+    def transform_data(data: List[Dict]) -> List[BlackrockEtfCountriesData]:
         """Return the transformed data."""
-        return [BlackrockEtfSectorsData(**d) for d in data]
+        return [BlackrockEtfCountriesData(**d) for d in data]

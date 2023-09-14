@@ -30,7 +30,7 @@ class CLASS_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["blackrock", "fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """ETF Country weighting.
@@ -39,17 +39,21 @@ class CLASS_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['blackrock', 'fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
+        country : Optional[Literal['america', 'canada']]
+            The country the ETF is registered in.  Symbol suffix with `.TO` can be used as a proxy for Canada. (provider: blackrock)
+        date : Optional[str]
+            The as-of date for the data. (provider: blackrock)
 
         Returns
         -------
         OBBject
             results : List[EtfCountries]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['blackrock', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -61,11 +65,7 @@ class CLASS_etf(Container):
         EtfCountries
         ------------
         symbol : Optional[str]
-            The exchange ticker symbol for the ETF.
-        country : Optional[str]
-            The country of the risk exposure.
-        weight : Optional[str]
-            The weight of the country in the ETF."""  # noqa: E501
+            The exchange ticker symbol for the ETF."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

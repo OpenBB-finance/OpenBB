@@ -567,11 +567,7 @@ def extract_from_holdings(
         if to_extract in holdings.columns.to_list():
             _target = holdings[["name", to_extract, "weight"]]
             _target.loc[:, "weight"] = _target["weight"].astype(float)
-            target = (
-                _target.groupby(to_extract)[["weight"]]
-                .sum()
-                .sort_values(by="weight", ascending=False)
-            )
+            target = _target.groupby(to_extract)[["weight"]].sum()
             target = target.rename(
                 index={
                     "Telecommunication Services": "Communication Services",
@@ -579,6 +575,7 @@ def extract_from_holdings(
                     "Materials & Processing": "Materials",
                     "Producer Durables": "Industrials",
                     "-": "other",
+                    "Korea (South)": "South Korea",
                 }
             )
             target.index = (

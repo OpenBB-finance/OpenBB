@@ -216,7 +216,7 @@ class EtfSectors(OBBject):
 
         data = data.transpose()
         if len(data.columns) == 1:
-            data = data.dropna()
+            data = data.dropna().sort_values(by=data.columns[0], ascending=False)
         for i in data.index:
             if data.loc[i].unique().tolist()[0] is None:
                 data.drop(i, inplace=True)
@@ -280,7 +280,7 @@ class EtfCountries(OBBject):
 
         data = data.transpose()
         if len(data.columns) == 1:
-            data = data.dropna()
+            data = data.dropna().sort_values(by=data.columns[0], ascending=False)
         for i in data.index:
             if data.loc[i].unique().tolist()[0] is None:
                 data.drop(i, inplace=True)
