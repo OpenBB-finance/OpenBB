@@ -2,5 +2,5 @@
 omit =
     env/*
     tests/*
-    */tests*
+    **/tests/**
 source = .
