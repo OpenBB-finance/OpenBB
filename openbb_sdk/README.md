@@ -82,7 +82,7 @@ from openbb import obb
 openbb.account.login(username="REPLACE_ME", password="REPLACE_ME")
 ```
 
-## Python usage
+## Python Usage
 
 Import and basic usage:
 
