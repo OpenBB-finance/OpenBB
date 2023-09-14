@@ -55,7 +55,7 @@ class SystemSettings(Tagged):
 
     @staticmethod
     def create_empty_json(path: Path) -> None:
-        path.write_text(json.dumps({}), encoding="utf-8", newline="\n")
+        path.write_text(json.dumps({}), encoding="utf-8")
 
     @model_validator(mode="after")
     @classmethod

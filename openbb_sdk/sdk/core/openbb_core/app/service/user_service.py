@@ -80,7 +80,7 @@ class UserService(metaclass=SingletonMeta):
             indent=4,
             sort_keys=True,
         )
-        path.write_text(user_settings_json, encoding="utf-8", newline="\n")
+        path.write_text(user_settings_json, encoding="utf-8")
 
     @classmethod
     def update_default(cls, user_settings: UserSettings) -> UserSettings:

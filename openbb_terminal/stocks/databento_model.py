@@ -8,7 +8,7 @@ from io import StringIO
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import requests
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
@@ -27,9 +27,7 @@ class DataBento(BaseModel):
     stype: str = "raw_symbol"
     start: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
     end: str = datetime.now().strftime("%Y-%m-%d")
-
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def get_historical_stock(self):
         """Gets historical EOD stock data from DataBento.  Currently, just NASDAQ is supported.
