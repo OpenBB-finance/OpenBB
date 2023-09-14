@@ -46,6 +46,6 @@ class Data(BaseModel):
         # set the alias dict values keys
         aliases = {orig: alias for alias, orig in cls.__alias_dict__.items()}
         if aliases:
-            return {alises.get(k, k): v for k, v in values.items()}
+            return {aliases.get(k, k): v for k, v in values.items()}
 
         return values
