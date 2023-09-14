@@ -2,11 +2,12 @@
 
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_ca(Container):
@@ -20,10 +21,13 @@ class CLASS_stocks_ca(Container):
     @validate_arguments
     def peers(
         self,
-        symbol: Union[str, List[str]],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[openbb_provider.standard_models.stock_peers.StockPeersData]:
+        **kwargs,
+    ) -> OBBject[BaseModel]:
         """Company peers.
 
         Parameters

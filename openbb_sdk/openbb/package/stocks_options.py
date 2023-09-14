@@ -2,11 +2,12 @@
 
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_options(Container):
@@ -20,12 +21,13 @@ class CLASS_stocks_options(Container):
     @validate_arguments
     def chains(
         self,
-        symbol: Union[str, List[str]],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["cboe", "intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.options_chains.OptionsChainsData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get the complete options chain for a ticker.
 
         Parameters

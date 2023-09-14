@@ -3,11 +3,12 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks(Container):
@@ -48,10 +49,13 @@ class CLASS_stocks(Container):
     @validate_arguments
     def info(
         self,
-        symbol: Union[str, List[str]],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[openbb_provider.standard_models.stock_info.StockInfoData]:
+        **kwargs,
+    ) -> OBBject[BaseModel]:
         """Get general price and performance metrics of a stock.
 
         Parameters
@@ -160,17 +164,28 @@ class CLASS_stocks(Container):
     @validate_arguments
     def load(
         self,
-        symbol: Union[str, List[str]],
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         chart: bool = False,
         provider: Optional[
             Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.stock_historical.StockHistoricalData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Load stock data for a specific ticker.
 
         Parameters
@@ -315,14 +330,18 @@ class CLASS_stocks(Container):
     @validate_arguments
     def multiples(
         self,
-        symbol: Union[str, List[str]],
-        limit: Optional[int],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.stock_multiples.StockMultiplesData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get valuation multiples for a stock ticker.
 
         Parameters
@@ -495,15 +514,25 @@ class CLASS_stocks(Container):
     @validate_arguments
     def news(
         self,
-        symbols: str,
-        page: int,
-        limit: int,
+        symbols: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        page: Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="Page of the stock news to be retrieved."
+            ),
+        ],
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="Number of results to return per page."),
+        ],
         chart: bool = False,
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.stock_news.StockNewsData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get news for one or more stock tickers.
 
         Parameters
@@ -665,10 +694,13 @@ class CLASS_stocks(Container):
     @validate_arguments
     def quote(
         self,
-        symbol: Union[str, List[str]],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.stock_quote.StockQuoteData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Load stock data for a specific ticker.
 
         Parameters
@@ -801,11 +833,14 @@ class CLASS_stocks(Container):
     @validate_arguments
     def search(
         self,
-        query: str,
-        ticker: bool,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")],
+        ticker: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.stock_search.StockSearchData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Search for a company or stock ticker.
 
         Parameters

@@ -128,7 +128,7 @@ class CLASS_stocks_dd(Container):
         page: Optional[int],
         limit: Optional[int],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[openbb_provider.standard_models.sec_filings.SECFilingsData]]:
         """SEC Filings.
 

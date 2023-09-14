@@ -3,11 +3,12 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_futures(Container):
@@ -22,11 +23,17 @@ class CLASS_futures(Container):
     @validate_arguments
     def curve(
         self,
-        symbol: Union[str, List[str]],
-        date: Optional[datetime.date],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(description="Historical date to search curve for."),
+        ],
         provider: Optional[Literal["cboe", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.futures_curve.FuturesCurveData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Futures Historical Price.
 
         Parameters
@@ -82,15 +89,29 @@ class CLASS_futures(Container):
     @validate_arguments
     def load(
         self,
-        symbol: Union[str, List[str]],
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
-        expiration: Optional[str],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        expiration: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
+        ],
         provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.futures_historical.FuturesHistoricalData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Futures Historical Price.
 
         Parameters

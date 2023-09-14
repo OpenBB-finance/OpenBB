@@ -3,11 +3,12 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_crypto(Container):
@@ -21,14 +22,25 @@ class CLASS_crypto(Container):
     @validate_arguments
     def load(
         self,
-        symbol: Union[str, List[str]],
-        start_date: Union[datetime.date, str],
-        end_date: Union[datetime.date, str],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.crypto_historical.CryptoHistoricalData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Crypto Historical Price.
 
         Parameters

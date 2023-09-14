@@ -1,12 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_news(Container):
@@ -20,10 +21,12 @@ class CLASS_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        page: int,
+        page: Annotated[
+            int, OpenBBCustomParameter(description="Page of the global news.")
+        ],
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.global_news.GlobalNewsData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Global News.
 
         Parameters

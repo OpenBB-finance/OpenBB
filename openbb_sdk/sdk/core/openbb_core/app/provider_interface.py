@@ -3,7 +3,6 @@ from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
-from openbb_provider import standard_models
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from openbb_provider.utils.helpers import to_snake_case
@@ -488,24 +487,11 @@ class ProviderInterface(metaclass=SingletonMeta):
                 populate_by_name=True,
             )
 
-            # we try to find the model in the standard models folder
-            # if we can't find it, we create a new model
-            if (
-                data_model := standard_models.DATA_MODELS.get(model_name, None)
-            ) is not None:
-                result[model_name] = create_model(  # type: ignore
-                    model_name,
-                    __config__=model_config,
-                    __module__=data_model.__module__,
-                    **fields_dict,  # type: ignore
-                )
-
-            else:
-                result[model_name] = create_model(  # type: ignore
-                    model_name,
-                    __config__=model_config,
-                    **fields_dict,  # type: ignore
-                )
+            result[model_name] = create_model(  # type: ignore
+                model_name,
+                __config__=model_config,
+                **fields_dict,  # type: ignore
+            )
 
         return result
 

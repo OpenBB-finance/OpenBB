@@ -3,11 +3,12 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_economy(Container):
@@ -27,9 +28,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def available_indices(
         self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.available_indices.AvailableIndicesData]
-    ]:
+    ) -> OBBject[list]:
         """Lists of available indices from a provider.
 
         Parameters
@@ -106,14 +105,15 @@ class CLASS_economy(Container):
     @validate_arguments
     def const(
         self,
-        index: Literal["nasdaq", "sp500", "dowjones"],
+        index: Annotated[
+            Literal["nasdaq", "sp500", "dowjones"],
+            OpenBBCustomParameter(
+                description="Index for which we want to fetch the constituents."
+            ),
+        ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[
-            openbb_provider.standard_models.major_indices_constituents.MajorIndicesConstituentsData
-        ]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get the constituents of an index.
 
         Parameters
@@ -176,67 +176,91 @@ class CLASS_economy(Container):
     @validate_arguments
     def cpi(
         self,
-        countries: List[
-            Literal[
-                "australia",
-                "austria",
-                "belgium",
-                "brazil",
-                "bulgaria",
-                "canada",
-                "chile",
-                "china",
-                "croatia",
-                "cyprus",
-                "czech_republic",
-                "denmark",
-                "estonia",
-                "euro_area",
-                "finland",
-                "france",
-                "germany",
-                "greece",
-                "hungary",
-                "iceland",
-                "india",
-                "indonesia",
-                "ireland",
-                "israel",
-                "italy",
-                "japan",
-                "korea",
-                "latvia",
-                "lithuania",
-                "luxembourg",
-                "malta",
-                "mexico",
-                "netherlands",
-                "new_zealand",
-                "norway",
-                "poland",
-                "portugal",
-                "romania",
-                "russian_federation",
-                "slovak_republic",
-                "slovakia",
-                "slovenia",
-                "south_africa",
-                "spain",
-                "sweden",
-                "switzerland",
-                "turkey",
-                "united_kingdom",
-                "united_states",
-            ]
+        countries: Annotated[
+            List[
+                Literal[
+                    "australia",
+                    "austria",
+                    "belgium",
+                    "brazil",
+                    "bulgaria",
+                    "canada",
+                    "chile",
+                    "china",
+                    "croatia",
+                    "cyprus",
+                    "czech_republic",
+                    "denmark",
+                    "estonia",
+                    "euro_area",
+                    "finland",
+                    "france",
+                    "germany",
+                    "greece",
+                    "hungary",
+                    "iceland",
+                    "india",
+                    "indonesia",
+                    "ireland",
+                    "israel",
+                    "italy",
+                    "japan",
+                    "korea",
+                    "latvia",
+                    "lithuania",
+                    "luxembourg",
+                    "malta",
+                    "mexico",
+                    "netherlands",
+                    "new_zealand",
+                    "norway",
+                    "poland",
+                    "portugal",
+                    "romania",
+                    "russian_federation",
+                    "slovak_republic",
+                    "slovakia",
+                    "slovenia",
+                    "south_africa",
+                    "spain",
+                    "sweden",
+                    "switzerland",
+                    "turkey",
+                    "united_kingdom",
+                    "united_states",
+                ]
+            ],
+            OpenBBCustomParameter(description="The country or countries to get data."),
         ],
-        units: Literal["growth_previous", "growth_same", "index_2015"],
-        frequency: Literal["monthly", "quarter", "annual"],
-        harmonized: bool,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        units: Annotated[
+            Literal["growth_previous", "growth_same", "index_2015"],
+            OpenBBCustomParameter(description="The data units."),
+        ],
+        frequency: Annotated[
+            Literal["monthly", "quarter", "annual"],
+            OpenBBCustomParameter(description="The data time frequency."),
+        ],
+        harmonized: Annotated[
+            bool,
+            OpenBBCustomParameter(
+                description="Whether you wish to obtain harmonized data."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.cpi.CPIData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """CPI.
 
         Parameters
@@ -306,16 +330,25 @@ class CLASS_economy(Container):
     @validate_arguments
     def european_index(
         self,
-        symbol: Union[str, List[str]],
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[
-            openbb_provider.standard_models.european_index_historical.EuropeanIndexHistoricalData
-        ]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get historical close values for select European indices.
 
         Parameters
@@ -382,14 +415,13 @@ class CLASS_economy(Container):
     @validate_arguments
     def european_index_constituents(
         self,
-        symbol: Union[str, List[str]],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[
-            openbb_provider.standard_models.european_index_constituents.EuropeanIndexConstituentsData
-        ]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get  current levels for constituents of select European indices.
 
         Parameters
@@ -466,16 +498,25 @@ class CLASS_economy(Container):
     @validate_arguments
     def index(
         self,
-        symbol: Union[str, List[str]],
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[
-            openbb_provider.standard_models.major_indices_historical.MajorIndicesHistoricalData
-        ]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get historical  levels for an index.
 
         Parameters
@@ -583,7 +624,7 @@ class CLASS_economy(Container):
     @validate_arguments
     def risk(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.risk_premium.RiskPremiumData]]:
+    ) -> OBBject[list]:
         """Market Risk Premium.
 
         Parameters

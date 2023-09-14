@@ -3,11 +3,12 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_forex(Container):
@@ -22,14 +23,25 @@ class CLASS_forex(Container):
     @validate_arguments
     def load(
         self,
-        symbol: Union[str, List[str]],
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.forex_historical.ForexHistoricalData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Forex Intraday Price.
 
         Parameters
@@ -131,7 +143,7 @@ class CLASS_forex(Container):
     @validate_arguments
     def pairs(
         self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.forex_pairs.ForexPairsData]]:
+    ) -> OBBject[list]:
         """Forex Available Pairs.
 
         Parameters

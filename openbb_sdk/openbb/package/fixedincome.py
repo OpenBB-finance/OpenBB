@@ -1,13 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
-import openbb_provider
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_fixedincome(Container):
@@ -29,11 +30,21 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ameribor(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.ameribor_rates.AMERIBORData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """
             Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
             short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
@@ -92,11 +103,21 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def estr(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.estr_rates.ESTRData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """
             The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
             the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
@@ -156,10 +177,20 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def fed(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[list]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -220,11 +251,21 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def iorb(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.iorb_rates.IORBData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """
             Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -347,11 +388,21 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def sofr(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.sofr_rates.SOFRData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get United States yield curve.
 
         Parameters
@@ -407,11 +458,21 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def sonia(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.sonia_rates.SONIAData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """
             SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
             transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
@@ -470,13 +531,21 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def treasury(
         self,
-        start_date: Union[datetime.date, None, str],
-        end_date: Union[datetime.date, None, str],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ],
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[
-        List[openbb_provider.standard_models.treasury_rates.TreasuryRatesData]
-    ]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get treasury rates.
 
         Parameters
@@ -552,11 +621,19 @@ class CLASS_fixedincome(Container):
     @validate_arguments
     def ycrv(
         self,
-        date: Optional[datetime.date],
-        inflation_adjusted: Optional[bool],
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(
+                description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
+            ),
+        ],
+        inflation_adjusted: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Get inflation adjusted rates."),
+        ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[List[openbb_provider.standard_models.us_yield_curve.USYieldCurveData]]:
+        **kwargs,
+    ) -> OBBject[list]:
         """Get United States yield curve.
 
         Parameters

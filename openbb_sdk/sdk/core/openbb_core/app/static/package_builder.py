@@ -24,12 +24,12 @@ from typing import (
 
 import pandas as pd
 from importlib_metadata import entry_points
-from openbb_provider import standard_models
 from pydantic.fields import FieldInfo
 from starlette.routing import BaseRoute
-from typing_extensions import _AnnotatedAlias
+from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.charting_service import ChartingService
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.env import Env
@@ -593,7 +593,18 @@ class MethodDefinition:
                 if param not in available_fields:
                     continue
 
-                new_value = value.replace(annotation=value.annotation)
+                description = (
+                    ProviderInterface()
+                    .map[model_name]["openbb"]["QueryParams"]["fields"][param]
+                    .description
+                )
+
+                new_value = value.replace(
+                    annotation=Annotated[
+                        value.annotation,
+                        OpenBBCustomParameter(description=description),
+                    ]
+                )
 
                 od[param] = new_value
 
@@ -625,15 +636,6 @@ class MethodDefinition:
             #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 result_type = "list" if "List" in str(return_type) else "BaseModel"
-                if (
-                    data_model := standard_models.DATA_MODELS.get(model_name, None)
-                ) is not None:
-                    result_type = f"{data_model.__module__}.{data_model.__name__}"
-                    if "List" in str(return_type):
-                        result_type = f"List[{result_type}]"
-
-                if "pydantic.main" in result_type:
-                    result_type = "BaseModel"
 
                 func_returns = f"OBBject[{result_type}]"
 
