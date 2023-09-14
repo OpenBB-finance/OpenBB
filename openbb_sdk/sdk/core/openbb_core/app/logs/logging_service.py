@@ -134,7 +134,7 @@ class LoggingService(metaclass=SingletonMeta):
 
         return handlers_manager
 
-    def _log_startup(self) -> None:
+    def _log_startup(self, route: Optional[str] = None) -> None:
         """
         Log startup information.
         """
@@ -156,6 +156,7 @@ class LoggingService(metaclass=SingletonMeta):
             "STARTUP: %s ",
             json.dumps(
                 {
+                    "route": route,
                     "PREFERENCES": self._user_settings.preferences,
                     "KEYS": check_credentials_defined(
                         self._user_settings.credentials.dict()
@@ -194,6 +195,8 @@ class LoggingService(metaclass=SingletonMeta):
             Callable representing the executed function.
         kwargs : Dict[str, Any]
             Keyword arguments passed to the function.
+        exec_info : Optional[Tuple[Type[BaseException], BaseException, Optional[TracebackType]]], optional
+            Exception information, by default None
         """
         self._user_settings = user_settings
         self._system_settings = system_settings
@@ -204,7 +207,7 @@ class LoggingService(metaclass=SingletonMeta):
         self._handlers_manager.update_handlers(self._logging_settings)
 
         if "login" in route:
-            self._log_startup()
+            self._log_startup(route)
         else:
             logger = logging.getLogger(__name__)
 
