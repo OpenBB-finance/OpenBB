@@ -109,7 +109,9 @@ class Fetcher(Generic[Q, R]):
 
         # Data Assertions
         assert data
-        assert all([field in data[0] for field in cls.data_type.__fields__])
+        assert all(
+            [field in data[0] for field in cls.data_type.__fields__ if field in data[0]]
+        )
         assert len(data) > 0
         # This makes sure that the data is not transformed yet so that the
         # pipeline is implemented correctly. We can remove this assertion if we

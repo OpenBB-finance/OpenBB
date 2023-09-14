@@ -4,7 +4,6 @@ from typing import Any, Dict, List
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import ModelField
 
 
@@ -73,7 +72,7 @@ def write_fetcher_unit_tests() -> None:
     available_providers = ["alpha_vantage", "benzinga"]
 
     test_template = """
-def test_{fetcher_name_snake}():
+def test_{fetcher_name}():
     params = {params}
     credentials = {credentials}
 
@@ -85,7 +84,7 @@ def test_{fetcher_name_snake}():
     provider_fetchers: Dict[str, Dict[str, str]] = {}
 
     for provider, fetcher_dict in fetchers.items():
-        path = os.path.join("..", f"{provider}", "tests", "fetcher_tests.py")
+        path = os.path.join("..", f"{provider}", "tests", "test_fetchers.py")
         generate_fetcher_unit_tests(path)
 
         for model_name, fetcher in fetcher_dict.items():
@@ -96,6 +95,13 @@ def test_{fetcher_name_snake}():
             if model_name not in provider_fetchers:
                 provider_fetchers[model_name] = {}
             provider_fetchers[model_name][fetcher_name] = path
+
+            # Check if the test is already in the file
+            with open(path) as f:
+                lines = f.readlines()
+                for line in lines:
+                    if fetcher_path in line and fetcher_name in line:
+                        return
 
             with open(path, "a") as f:
                 f.write(f"from {fetcher_path} import {fetcher_name}\n")
@@ -114,7 +120,6 @@ def test_{fetcher_name_snake}():
 
             with open(path, "a") as f:
                 test_code = test_template.format(
-                    fetcher_name_snake=to_snake_case(fetcher_name),
                     fetcher_name=fetcher_name,
                     params=test_params,
                     credentials={},
