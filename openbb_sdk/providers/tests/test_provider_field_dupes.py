@@ -112,6 +112,31 @@ def child_parent_map(map_: Dict, parents: Dict, module: object) -> None:
                 map_[cls.__name__].append({subclass.__name__: provider_fields})
 
 
+def get_path_components(path: str):
+    """Given a path, return a list of path components"""
+
+    path_components = []
+    head, tail = os.path.split(path)
+
+    while tail:
+        path_components.append(tail)
+        head, tail = os.path.split(head)
+
+    return path_components
+
+
+def build_provider_module_path(module_name: str, file_path: str):
+    """Given a module name and a file path, return the full path to the module"""
+
+    splited_path = get_path_components(file_path)
+    file = splited_path[0].split(".")[0]
+    models_dir = splited_path[1]
+    openbb_provider = splited_path[2]
+    provider = splited_path[3]
+
+    return f"{module_name}.{provider}.{openbb_provider}.{models_dir}.{file}"
+
+
 class ProviderFieldDupesTest(unittest.TestCase):
     """Test for common fields in the provider models that should be standard."""
 
@@ -148,15 +173,8 @@ class ProviderFieldDupesTest(unittest.TestCase):
         child_parent_dict = {}
 
         for file in provider_model_files:
-            splited_path = file.split("/")
-            mod = splited_path[-1].split(".")[0]
-            models_dir = splited_path[-2]
-            openbb_prov = splited_path[-3]
-            prov = splited_path[-4]
-
-            provider_module = importlib.import_module(
-                f"{providers.__name__}.{prov}.{openbb_prov}.{models_dir}.{mod}"
-            )
+            module_path = build_provider_module_path(providers.__name__, file)
+            provider_module = importlib.import_module(module_path)
 
             # query classes
             child_parent_map(child_parent_dict, standard_query_classes, provider_module)
@@ -179,9 +197,9 @@ class ProviderFieldDupesTest(unittest.TestCase):
                     fields.extend(list(provider_cls.values())[0])
 
                 seen = set()
-                dupes = [x for x in fields if x in seen or seen.add(x)]
+                dupes = (x for x in fields if x in seen or seen.add(x))
 
                 assert not dupes, (
-                    f"The following fields are duplicated and should be standardized: {dupes}.\n"
+                    f"The following fields are common among models and should be standardized: {dupes}.\n"
                     f"Standard model: {std_cls}, Provider models: {', '.join(provider_models)}\n"
                 )
