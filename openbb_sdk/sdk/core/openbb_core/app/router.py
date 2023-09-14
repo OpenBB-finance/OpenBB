@@ -216,6 +216,9 @@ class Router:
                 "response_model",
                 func.__annotations__["return"],  # type: ignore
             )
+            kwargs["response_model_by_alias"] = kwargs.get(
+                "response_model_by_alias", False
+            )
             kwargs["description"] = SignatureInspector.get_description(func)
             kwargs["responses"] = kwargs.get(
                 "responses",
