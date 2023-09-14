@@ -44,7 +44,7 @@ class Data(BaseModel):
     def _use_alias(cls, values):
         """Use alias for error locs."""
         # set the alias dict values keys
-        alises = {orig: alias for alias, orig in cls.__alias_dict__.items()}
+        aliases = {orig: alias for alias, orig in cls.__alias_dict__.items()}
         if alises:
             return {alises.get(k, k): v for k, v in values.items()}
 
