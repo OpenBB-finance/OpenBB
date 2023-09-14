@@ -35,7 +35,7 @@ class CLASS_news(Container):
         ----------
         page : NonNegativeInt
             Page of the global news.
-        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], NoneType]
+        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -43,37 +43,37 @@ class CLASS_news(Container):
             Number of results to return per page. (provider: benzinga)
         display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
-        date : Union[datetime.datetime, NoneType]
+        date : Union[datetime.datetime, None]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Union[datetime.datetime, NoneType]
+        date_from : Union[datetime.datetime, None]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Union[datetime.datetime, NoneType]
+        date_to : Union[datetime.datetime, None]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Union[int, NoneType]
+        updated_since : Union[int, None]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Union[int, NoneType]
+        published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType]
+        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'chann...
             Order in which to sort the news.  (provider: benzinga)
-        isin : Union[str, NoneType]
+        isin : Union[str, None]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Union[str, NoneType]
+        cusip : Union[str, None]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        tickers : Union[str, NoneType]
+        tickers : Union[str, None]
             Tickers of the news to retrieve. (provider: benzinga)
-        channels : Union[str, NoneType]
+        channels : Union[str, None]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Union[str, NoneType]
+        topics : Union[str, None]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Union[str, NoneType]
+        authors : Union[str, None]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Union[str, NoneType]
+        content_types : Union[str, None]
             Content types of the news to retrieve. (provider: benzinga)
         next_page : str
             Token to get the next page of data from a previous API call. (provider: intrinio)
-        limit : Union[int, NoneType]
+        limit : Union[int, None]
             The number of data entries to return. (provider: intrinio)
-        all_pages : Union[bool, NoneType]
+        all_pages : Union[bool, None]
             Returns all pages of data from the API call at once. (provider: intrinio)
 
         Returns

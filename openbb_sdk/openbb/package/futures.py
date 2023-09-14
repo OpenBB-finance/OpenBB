@@ -40,9 +40,9 @@ class CLASS_futures(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        date : Union[datetime.date, NoneType]
+        date : Union[datetime.date, None]
             Historical date to search curve for.
-        provider : Union[Literal['cboe', 'yfinance'], NoneType]
+        provider : Union[Literal['cboe', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -118,19 +118,19 @@ class CLASS_futures(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        expiration : Union[str, NoneType]
+        expiration : Union[str, None]
             Future expiry date with format YYYY-MM
-        provider : Union[Literal['yfinance'], NoneType]
+        provider : Union[Literal['yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is
             no default.
-        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], NoneType]
+        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d...
             Data granularity. (provider: yfinance)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y...
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
