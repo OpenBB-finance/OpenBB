@@ -7,7 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -27,7 +27,7 @@ class CLASS_fixedincome(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def ameribor(
         self,
         start_date: Annotated[
@@ -43,7 +43,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """
             Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
@@ -100,7 +100,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def estr(
         self,
         start_date: Annotated[
@@ -116,7 +116,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """
             The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
@@ -174,7 +174,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def fed(
         self,
         start_date: Annotated[
@@ -190,7 +190,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -248,7 +248,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def iorb(
         self,
         start_date: Annotated[
@@ -264,7 +264,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """
             Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
@@ -320,7 +320,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def projections(
         self, provider: Optional[Literal["fred"]] = None, **kwargs
     ) -> OBBject[list]:
@@ -385,7 +385,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def sofr(
         self,
         start_date: Annotated[
@@ -401,7 +401,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get United States yield curve.
 
@@ -455,7 +455,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def sonia(
         self,
         start_date: Annotated[
@@ -471,7 +471,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """
             SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
@@ -528,7 +528,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def treasury(
         self,
         start_date: Annotated[
@@ -544,7 +544,7 @@ class CLASS_fixedincome(Container):
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get treasury rates.
 
@@ -618,7 +618,7 @@ class CLASS_fixedincome(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def ycrv(
         self,
         date: Annotated[
@@ -632,7 +632,7 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get United States yield curve.
 

@@ -7,7 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -25,7 +25,7 @@ class CLASS_economy(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def available_indices(
         self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject[list]:
@@ -102,7 +102,7 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def const(
         self,
         index: Annotated[
@@ -112,7 +112,7 @@ class CLASS_economy(Container):
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get the constituents of an index.
 
@@ -173,7 +173,7 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def cpi(
         self,
         countries: Annotated[
@@ -259,7 +259,7 @@ class CLASS_economy(Container):
             ),
         ],
         provider: Optional[Literal["fred"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """CPI.
 
@@ -327,7 +327,7 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def european_index(
         self,
         symbol: Annotated[
@@ -347,7 +347,7 @@ class CLASS_economy(Container):
             ),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get historical close values for select European indices.
 
@@ -412,7 +412,7 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def european_index_constituents(
         self,
         symbol: Annotated[
@@ -420,7 +420,7 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get  current levels for constituents of select European indices.
 
@@ -495,7 +495,7 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def index(
         self,
         symbol: Annotated[
@@ -515,7 +515,7 @@ class CLASS_economy(Container):
             ),
         ],
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get historical  levels for an index.
 
@@ -621,7 +621,7 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def risk(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[list]:

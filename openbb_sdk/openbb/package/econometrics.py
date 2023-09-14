@@ -8,7 +8,7 @@ from annotated_types import Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import BaseModel, validate_call
 from typing_extensions import Annotated
 
 
@@ -33,7 +33,7 @@ class CLASS_econometrics(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def bgot(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -71,7 +71,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def coint(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -103,7 +103,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def corr(
         self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame]
     ) -> OBBject[list]:
@@ -129,7 +129,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def dwat(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -164,7 +164,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def granger(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -202,7 +202,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def ols(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -237,7 +237,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def ols_summary(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -272,7 +272,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelbols(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -307,7 +307,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelfd(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -342,7 +342,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelfmac(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -377,7 +377,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelols(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -412,7 +412,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelpols(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -447,7 +447,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelre(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -482,7 +482,7 @@ class CLASS_econometrics(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],

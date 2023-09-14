@@ -7,7 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import BaseModel, validate_call
 from typing_extensions import Annotated
 
 
@@ -46,7 +46,7 @@ class CLASS_stocks(Container):
 
         return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
 
-    @validate_arguments
+    @validate_call
     def info(
         self,
         symbol: Annotated[
@@ -54,7 +54,7 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Get general price and performance metrics of a stock.
 
@@ -161,7 +161,7 @@ class CLASS_stocks(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def load(
         self,
         symbol: Annotated[
@@ -184,7 +184,7 @@ class CLASS_stocks(Container):
         provider: Optional[
             Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Load stock data for a specific ticker.
 
@@ -327,7 +327,7 @@ class CLASS_stocks(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def multiples(
         self,
         symbol: Annotated[
@@ -340,7 +340,7 @@ class CLASS_stocks(Container):
         ],
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get valuation multiples for a stock ticker.
 
@@ -511,7 +511,7 @@ class CLASS_stocks(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def news(
         self,
         symbols: Annotated[
@@ -531,7 +531,7 @@ class CLASS_stocks(Container):
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get news for one or more stock tickers.
 
@@ -691,7 +691,7 @@ class CLASS_stocks(Container):
 
         return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
 
-    @validate_arguments
+    @validate_call
     def quote(
         self,
         symbol: Annotated[
@@ -699,7 +699,7 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Load stock data for a specific ticker.
 
@@ -830,7 +830,7 @@ class CLASS_stocks(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")],
@@ -839,7 +839,7 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Search for a company or stock ticker.
 

@@ -230,7 +230,7 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_arguments, BaseModel"
+        code += "\nfrom pydantic import validate_call, BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
@@ -660,7 +660,7 @@ class MethodDefinition:
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @validate_arguments{extra}"
+        code = f"\n    @validate_call{extra}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code

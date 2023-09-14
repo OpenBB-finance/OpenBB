@@ -8,7 +8,7 @@ from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -45,7 +45,7 @@ class CLASS_ta(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def ad(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -97,7 +97,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def adosc(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -150,7 +150,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def adx(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -204,7 +204,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def aroon(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -262,7 +262,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def atr(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -317,7 +317,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def bbands(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -388,7 +388,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def cci(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -432,7 +432,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def cg(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -478,7 +478,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def clenow(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -524,7 +524,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def cones(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -606,7 +606,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def demark(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -660,7 +660,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def donchian(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -715,7 +715,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def ema(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -775,7 +775,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def fib(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -822,7 +822,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def fisher(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -872,7 +872,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def hma(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -927,7 +927,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def ichimoku(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -977,7 +977,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def kc(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1035,7 +1035,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def macd(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1099,7 +1099,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def obv(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1149,7 +1149,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def rsi(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1209,7 +1209,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def sma(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1267,7 +1267,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def stoch(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1322,7 +1322,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def vwap(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1371,7 +1371,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def wma(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -1426,7 +1426,7 @@ class CLASS_ta(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def zlma(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],

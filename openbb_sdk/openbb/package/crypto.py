@@ -7,7 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -19,7 +19,7 @@ class CLASS_crypto(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def load(
         self,
         symbol: Annotated[
@@ -39,7 +39,7 @@ class CLASS_crypto(Container):
             ),
         ],
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Crypto Historical Price.
 

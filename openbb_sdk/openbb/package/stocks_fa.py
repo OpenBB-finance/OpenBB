@@ -8,7 +8,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import BaseModel, validate_call
 from typing_extensions import Annotated
 
 
@@ -46,7 +46,7 @@ class CLASS_stocks_fa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def balance(
         self,
         symbol: Annotated[
@@ -62,7 +62,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Balance Sheet.
 
@@ -265,7 +265,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def balance_growth(
         self,
         symbol: Annotated[
@@ -277,7 +277,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Balance Sheet Statement Growth.
 
@@ -409,7 +409,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def cal(
         self,
         start_date: Annotated[
@@ -425,7 +425,7 @@ class CLASS_stocks_fa(Container):
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Show Dividend Calendar for a given start and end dates.
 
@@ -489,7 +489,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def cash(
         self,
         symbol: Annotated[
@@ -505,7 +505,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Cash Flow Statement.
 
@@ -688,7 +688,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def cash_growth(
         self,
         symbol: Annotated[
@@ -700,7 +700,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Cash Flow Statement Growth.
 
@@ -814,7 +814,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def comp(
         self,
         symbol: Annotated[
@@ -822,7 +822,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Executive Compensation.
 
@@ -893,7 +893,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def comsplit(
         self,
         start_date: Annotated[
@@ -909,7 +909,7 @@ class CLASS_stocks_fa(Container):
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Stock Split Calendar.
 
@@ -967,7 +967,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def divs(
         self,
         symbol: Annotated[
@@ -975,7 +975,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Historical Dividends.
 
@@ -1034,7 +1034,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def earning(
         self,
         symbol: Annotated[
@@ -1046,7 +1046,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Earnings Calendar.
 
@@ -1112,7 +1112,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def emp(
         self,
         symbol: Annotated[
@@ -1120,7 +1120,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Number of Employees.
 
@@ -1183,7 +1183,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def est(
         self,
         symbol: Annotated[
@@ -1199,7 +1199,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Analyst Estimates.
 
@@ -1294,7 +1294,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def income(
         self,
         symbol: Annotated[
@@ -1310,7 +1310,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Income Statement.
 
@@ -1493,7 +1493,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def income_growth(
         self,
         symbol: Annotated[
@@ -1509,7 +1509,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Income Statement Growth.
 
@@ -1618,7 +1618,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def ins(
         self,
         symbol: Annotated[
@@ -1665,7 +1665,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Stock Insider Trading.
 
@@ -1752,7 +1752,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def ins_own(
         self,
         symbol: Annotated[
@@ -1768,7 +1768,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="A specific date to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Institutional Ownership.
 
@@ -1892,7 +1892,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def metrics(
         self,
         symbol: Annotated[
@@ -1908,7 +1908,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Key Metrics.
 
@@ -2081,7 +2081,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def mgmt(
         self,
         symbol: Annotated[
@@ -2089,7 +2089,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Key Executives.
 
@@ -2148,7 +2148,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def overview(
         self,
         symbol: Annotated[
@@ -2156,7 +2156,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Company Overview.
 
@@ -2273,7 +2273,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def own(
         self,
         symbol: Annotated[
@@ -2289,7 +2289,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Stock Ownership.
 
@@ -2418,7 +2418,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def pt(
         self,
         symbol: Annotated[
@@ -2426,7 +2426,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[BaseModel]:
         """Price Target Consensus.
 
@@ -2481,7 +2481,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def pta(
         self,
         symbol: Annotated[
@@ -2489,7 +2489,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Price Target.
 
@@ -2564,7 +2564,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def ratios(
         self,
         symbol: Annotated[
@@ -2580,7 +2580,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Extensive set of ratios over time.
 
@@ -2747,7 +2747,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def revgeo(
         self,
         symbol: Annotated[
@@ -2763,7 +2763,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Structure of the returned data."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Revenue Geographic.
 
@@ -2828,7 +2828,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def revseg(
         self,
         symbol: Annotated[
@@ -2844,7 +2844,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Structure of the returned data."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Revenue Business Line.
 
@@ -2899,7 +2899,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def shrs(
         self,
         symbol: Annotated[
@@ -2907,7 +2907,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Share Statistics.
 
@@ -2964,7 +2964,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def split(
         self,
         symbol: Annotated[
@@ -2972,7 +2972,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Historical Stock Splits.
 
@@ -3025,7 +3025,7 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def transcript(
         self,
         symbol: Annotated[
@@ -3043,7 +3043,7 @@ class CLASS_stocks_fa(Container):
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Earnings Call Transcript.
 

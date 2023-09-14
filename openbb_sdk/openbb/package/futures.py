@@ -7,7 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -20,7 +20,7 @@ class CLASS_futures(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def curve(
         self,
         symbol: Annotated[
@@ -32,7 +32,7 @@ class CLASS_futures(Container):
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ],
         provider: Optional[Literal["cboe", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Futures Historical Price.
 
@@ -86,7 +86,7 @@ class CLASS_futures(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def load(
         self,
         symbol: Annotated[
@@ -110,7 +110,7 @@ class CLASS_futures(Container):
             OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
         ],
         provider: Optional[Literal["yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Futures Historical Price.
 

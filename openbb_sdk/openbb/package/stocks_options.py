@@ -6,7 +6,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -18,7 +18,7 @@ class CLASS_stocks_options(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def chains(
         self,
         symbol: Annotated[
@@ -26,7 +26,7 @@ class CLASS_stocks_options(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe", "intrinio"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[list]:
         """Get the complete options chain for a ticker.
 

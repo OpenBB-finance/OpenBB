@@ -8,7 +8,7 @@ from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from pydantic import BaseModel, validate_call
 from typing_extensions import Annotated
 
 
@@ -29,7 +29,7 @@ class CLASS_qa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def capm(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -47,7 +47,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def kurtosis(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -82,7 +82,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def normality(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -120,7 +120,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -159,7 +159,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -181,7 +181,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def sh(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -220,7 +220,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def skew(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -255,7 +255,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def so(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -300,7 +300,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def summary(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
@@ -331,7 +331,7 @@ class CLASS_qa(Container):
             **inputs,
         )
 
-    @validate_arguments(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
