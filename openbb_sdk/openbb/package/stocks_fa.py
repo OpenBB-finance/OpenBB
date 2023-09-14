@@ -1,16 +1,16 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
 import pydantic
 import pydantic.main
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import BaseModel, validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_fa(Container):
@@ -50,19 +50,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet.
@@ -73,47 +73,43 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        type : Literal['reported', 'standardized']
-            Type of the statement to be fetched. (provider: intrinio)
-        year : Union[int, NoneType]
-            Year of the statement to be fetched. (provider: intrinio)
-        company_name : Union[str, NoneType]
+        company_name : Optional[str]
             Name of the company. (provider: polygon)
-        company_name_search : Union[str, NoneType]
+        company_name_search : Optional[str]
             Name of the company to search. (provider: polygon)
-        sic : Union[str, NoneType]
+        sic : Optional[str]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Union[datetime.date, NoneType]
+        filing_date : Optional[datetime.date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Union[datetime.date, NoneType]
+        filing_date_lt : Optional[datetime.date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Union[datetime.date, NoneType]
+        filing_date_lte : Optional[datetime.date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Union[datetime.date, NoneType]
+        filing_date_gt : Optional[datetime.date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Union[datetime.date, NoneType]
+        filing_date_gte : Optional[datetime.date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Union[datetime.date, NoneType]
+        period_of_report_date : Optional[datetime.date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Union[datetime.date, NoneType]
+        period_of_report_date_lt : Optional[datetime.date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Union[datetime.date, NoneType]
+        period_of_report_date_lte : Optional[datetime.date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Union[datetime.date, NoneType]
+        period_of_report_date_gt : Optional[datetime.date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Union[datetime.date, NoneType]
+        period_of_report_date_gte : Optional[datetime.date]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Union[bool, NoneType]
+        include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -121,7 +117,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheet]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -261,15 +257,15 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def balance_growth(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
@@ -280,7 +276,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -290,7 +286,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheetGrowth]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -405,19 +401,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cal(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
@@ -428,7 +424,7 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -438,7 +434,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[DividendCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -485,19 +481,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement.
@@ -508,47 +504,43 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        type : Literal['reported', 'standardized']
-            Type of the statement to be fetched. (provider: intrinio)
-        year : Union[int, NoneType]
-            Year of the statement to be fetched. (provider: intrinio)
-        company_name : Union[str, NoneType]
+        company_name : Optional[str]
             Name of the company. (provider: polygon)
-        company_name_search : Union[str, NoneType]
+        company_name_search : Optional[str]
             Name of the company to search. (provider: polygon)
-        sic : Union[str, NoneType]
+        sic : Optional[str]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Union[datetime.date, NoneType]
+        filing_date : Optional[datetime.date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Union[datetime.date, NoneType]
+        filing_date_lt : Optional[datetime.date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Union[datetime.date, NoneType]
+        filing_date_lte : Optional[datetime.date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Union[datetime.date, NoneType]
+        filing_date_gt : Optional[datetime.date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Union[datetime.date, NoneType]
+        filing_date_gte : Optional[datetime.date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Union[datetime.date, NoneType]
+        period_of_report_date : Optional[datetime.date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Union[datetime.date, NoneType]
+        period_of_report_date_lt : Optional[datetime.date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Union[datetime.date, NoneType]
+        period_of_report_date_lte : Optional[datetime.date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Union[datetime.date, NoneType]
+        period_of_report_date_gt : Optional[datetime.date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Union[datetime.date, NoneType]
+        period_of_report_date_gte : Optional[datetime.date]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Union[bool, NoneType]
+        include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -556,7 +548,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CashFlowStatement]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -682,15 +674,15 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def cash_growth(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Cash Flow Statement Growth.
@@ -701,7 +693,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -711,7 +703,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CashFlowStatementGrowth]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -808,11 +800,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def comp(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Executive Compensation.
@@ -821,7 +813,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -831,7 +823,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[ExecutiveCompensation]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -887,19 +879,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def comsplit(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Stock Split Calendar.
@@ -910,7 +902,7 @@ class CLASS_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, NoneType, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -920,7 +912,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[StockSplitCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -961,11 +953,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def divs(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Historical Dividends.
@@ -974,7 +966,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -984,7 +976,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[HistoricalDividends]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1028,15 +1020,15 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def earning(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Earnings Calendar.
@@ -1045,9 +1037,9 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        limit : Union[int, NoneType]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1057,7 +1049,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[EarningsCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1106,11 +1098,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def emp(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Number of Employees.
@@ -1119,7 +1111,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1129,7 +1121,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[HistoricalEmployees]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1177,19 +1169,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def est(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
-            Literal["quarter", "annual"],
+        period: Annotated[
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Analyst Estimates.
@@ -1198,11 +1190,11 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1212,7 +1204,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[AnalystEstimates]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1288,19 +1280,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Income Statement.
@@ -1311,47 +1303,43 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        type : Literal['reported', 'standardized']
-            Type of the statement to be fetched. (provider: intrinio)
-        year : Union[int, NoneType]
-            Year of the statement to be fetched. (provider: intrinio)
-        company_name : Union[str, NoneType]
+        company_name : Optional[str]
             Name of the company. (provider: polygon)
-        company_name_search : Union[str, NoneType]
+        company_name_search : Optional[str]
             Name of the company to search. (provider: polygon)
-        sic : Union[str, NoneType]
+        sic : Optional[str]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Union[datetime.date, NoneType]
+        filing_date : Optional[datetime.date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Union[datetime.date, NoneType]
+        filing_date_lt : Optional[datetime.date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Union[datetime.date, NoneType]
+        filing_date_lte : Optional[datetime.date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Union[datetime.date, NoneType]
+        filing_date_gt : Optional[datetime.date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Union[datetime.date, NoneType]
+        filing_date_gte : Optional[datetime.date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Union[datetime.date, NoneType]
+        period_of_report_date : Optional[datetime.date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Union[datetime.date, NoneType]
+        period_of_report_date_lt : Optional[datetime.date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Union[datetime.date, NoneType]
+        period_of_report_date_lte : Optional[datetime.date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Union[datetime.date, NoneType]
+        period_of_report_date_gt : Optional[datetime.date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Union[datetime.date, NoneType]
+        period_of_report_date_gte : Optional[datetime.date]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Union[bool, NoneType]
+        include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -1359,7 +1347,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[IncomeStatement]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1475,19 +1463,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def income_growth(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Income Statement Growth.
@@ -1500,7 +1488,7 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1510,7 +1498,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[IncomeStatementGrowth]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1600,12 +1588,12 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def ins(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        transactionType: typing_extensions.Annotated[
-            Union[
+        transactionType: Annotated[
+            Optional[
                 List[
                     Literal[
                         "A-Award",
@@ -1627,24 +1615,23 @@ class CLASS_stocks_fa(Container):
                         "X-InTheMoney",
                         "Z-Trust",
                     ]
-                ],
-                None,
+                ]
             ],
             OpenBBCustomParameter(description="Type of the transaction."),
         ] = ["P-Purchase"],
-        reportingCik: typing_extensions.Annotated[
-            Union[int, None],
+        reportingCik: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="CIK of the reporting owner."),
         ] = None,
-        companyCik: typing_extensions.Annotated[
-            Union[int, None],
+        companyCik: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="CIK of the company owner."),
         ] = None,
-        page: typing_extensions.Annotated[
-            Union[int, None],
+        page: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Stock Insider Trading.
@@ -1653,15 +1640,15 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], NoneType]
+        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
             Type of the transaction.
-        reportingCik : Union[int, NoneType]
+        reportingCik : Optional[int]
             CIK of the reporting owner.
-        companyCik : Union[int, NoneType]
+        companyCik : Optional[int]
             CIK of the company owner.
-        page : Union[int, NoneType]
+        page : Optional[int]
             Page number of the data to fetch.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1671,7 +1658,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[StockInsiderTrading]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1735,18 +1722,18 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def ins_own(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        include_current_quarter: typing_extensions.Annotated[
+        include_current_quarter: Annotated[
             bool, OpenBBCustomParameter(description="Include current quarter data.")
         ] = False,
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Institutional Ownership.
@@ -1757,9 +1744,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         include_current_quarter : bool
             Include current quarter data.
-        date : Union[datetime.date, NoneType]
+        date : Optional[datetime.date]
             A specific date to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1769,7 +1756,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[InstitutionalOwnership]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1874,19 +1861,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def metrics(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Key Metrics.
@@ -1897,9 +1884,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[int, NoneType]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1909,7 +1896,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[KeyMetrics]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2061,11 +2048,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def mgmt(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Key Executives.
@@ -2074,7 +2061,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2084,7 +2071,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[KeyExecutives]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2128,11 +2115,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def overview(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Company Overview.
@@ -2141,7 +2128,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2151,7 +2138,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CompanyOverview]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2253,19 +2240,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def own(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        page: typing_extensions.Annotated[
-            Union[int, None],
+        page: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Stock Ownership.
@@ -2274,11 +2261,11 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        date : Union[datetime.date, NoneType]
+        date : Optional[datetime.date]
             A specific date to get data for.
-        page : Union[int, NoneType]
+        page : Optional[int]
             Page number of the data to fetch.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2288,7 +2275,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[StockOwnership]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2398,11 +2385,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def pt(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
         """Price Target Consensus.
@@ -2411,7 +2398,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2421,7 +2408,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[PriceTargetConsensus]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2461,11 +2448,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def pta(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Price Target.
@@ -2474,7 +2461,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2486,7 +2473,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2544,19 +2531,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def ratios(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+        limit: Annotated[
+            Optional[pydantic.types.NonNegativeInt],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Extensive set of ratios over time.
@@ -2567,9 +2554,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : Optional[pydantic.types.NonNegativeInt]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2579,7 +2566,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[FinancialRatios]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2725,19 +2712,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def revgeo(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
-            Literal["quarter", "annual"],
+        period: Annotated[
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        structure: typing_extensions.Annotated[
+        structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Revenue Geographic.
@@ -2746,11 +2733,11 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2760,7 +2747,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[RevenueGeographic]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2806,19 +2793,19 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def revseg(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
-            Literal["quarter", "annual"],
+        period: Annotated[
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        structure: typing_extensions.Annotated[
+        structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Revenue Business Line.
@@ -2827,11 +2814,11 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2841,7 +2828,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[RevenueBusinessLine]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2877,11 +2864,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def shrs(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Share Statistics.
@@ -2890,7 +2877,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2900,7 +2887,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[ShareStatistics]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2942,11 +2929,11 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def split(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Historical Stock Splits.
@@ -2955,7 +2942,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2965,7 +2952,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[HistoricalStockSplits]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3003,21 +2990,21 @@ class CLASS_stocks_fa(Container):
     @validate_arguments
     def transcript(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        year: typing_extensions.Annotated[
+        year: Annotated[
             int,
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
-        quarter: typing_extensions.Annotated[
+        quarter: Annotated[
             Literal[1, 2, 3, 4],
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),
         ] = 1,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Earnings Call Transcript.
@@ -3030,7 +3017,7 @@ class CLASS_stocks_fa(Container):
             Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
             Quarter of the earnings call transcript.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3040,7 +3027,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[EarningsCallTranscript]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
