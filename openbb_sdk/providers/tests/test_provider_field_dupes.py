@@ -55,7 +55,7 @@ def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
 
 def get_subclasses(
     python_files: List[str], package_name: str, cls: Type
-) -> Dict[str, Type]:
+) -> Dict[Type, List[str]]:
     """
     Given a list of python files, and a class, return a dictionary of
     subclasses of that class that are defined in those files.
@@ -113,6 +113,8 @@ def child_parent_map(map_: Dict, parents: Dict, module: object) -> None:
 
 
 class ProviderFieldDupesTest(unittest.TestCase):
+    """Test for common fields in the provider models that should be standard."""
+
     def test_provider_field_dupes(self):
         """
         This function checks for duplicate fields in the provider models
