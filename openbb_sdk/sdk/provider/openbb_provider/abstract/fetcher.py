@@ -79,7 +79,7 @@ class Fetcher(Generic[Q, R]):
         return data
 
     @classmethod
-    def test_fetcher(
+    def test(
         cls,
         test_params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,

@@ -78,7 +78,7 @@ def test_{fetcher_name_snake}():
     credentials = {credentials}
 
     fetcher = {fetcher_name}()
-    result = fetcher.test_fetcher(params, credentials)
+    result = fetcher.test(params, credentials)
     assert result is True
 """
     fetchers = get_provider_fetchers(available_providers=available_providers)
