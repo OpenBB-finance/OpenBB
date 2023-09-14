@@ -137,6 +137,24 @@ def build_provider_module_path(module_name: str, file_path: str):
     return f"{module_name}.{provider}.{openbb_provider}.{models_dir}.{file}"
 
 
+def match_provider_and_fields(
+    providers_w_fields: List[Dict[str, List[str]]], duplicated_fields: List[str]
+) -> List[str]:
+    """
+    Given a list of providers with fields and duplicated fields,
+    return a list of matching "Provider:'dup_field'".
+    """
+    matching_provider_fields = []
+
+    for item in providers_w_fields:
+        for model, fields in item.items():
+            for f in duplicated_fields:
+                if f in fields:
+                    matching_provider_fields.append(f"{model}:'{f}'")
+
+    return matching_provider_fields
+
+
 class ProviderFieldDupesTest(unittest.TestCase):
     """Test for common fields in the provider models that should be standard."""
 
@@ -197,9 +215,16 @@ class ProviderFieldDupesTest(unittest.TestCase):
                     fields.extend(list(provider_cls.values())[0])
 
                 seen = set()
-                dupes = (x for x in fields if x in seen or seen.add(x))
+                dupes = [x for x in fields if x in seen or seen.add(x)]
+
+                dupes_str = ", ".join([f"'{x}'" for x in set(dupes)])
+                provider_str = (
+                    ", ".join(match_provider_and_fields(providers_w_fields, set(dupes)))
+                    if dupes
+                    else ""
+                )
 
                 assert not dupes, (
-                    f"The following fields are common among models and should be standardized: {dupes}.\n"
-                    f"Standard model: {std_cls}, Provider models: {', '.join(provider_models)}\n"
+                    f"The following fields are common among models and should be standardized: {dupes_str}.\n"
+                    f"Standard model: {std_cls}, Provider models: {provider_str}\n"
                 )
