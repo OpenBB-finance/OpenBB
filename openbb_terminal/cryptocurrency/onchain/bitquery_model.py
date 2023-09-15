@@ -816,4 +816,7 @@ def get_spread_for_crypto_pair(
     return df
 
 
-POSSIBLE_CRYPTOS = list(get_erc20_tokens()["symbol"].unique())
+@log_start_end(log=logger)
+def get_possible_crypto_symbols():
+    """Get possible crypto symbols."""
+    return list(get_erc20_tokens()["symbol"].unique())
