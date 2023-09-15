@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2022-FY/reported_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAOK6BGUAA7RYbW/bNhD+K4KwDx0gt3qhbMn75LkvC5YmRuo23YbBoMVzTESmVJIy4gYB9jf2
+        9/ZLdpTfE7adJjcIYIu8E5/ndPfcyfeuhLKQGthkxgUVGae5cvt/3Lt3U5lPNL1x+/du/eEOqZoP
+        BDMfrz5VfElzEFoN9JBKueLi5gPNK3A9V9AFbMwdKpiTmS+w90CTKc3xLGPFYMo1rlQCP/pupRhe
+        0KnSkma4MEM44LkK3aF2CDx0KfXc7UcPnrusj+yHUZd0/frvuY8GfAFC8UIgE1Hl+YNno/OWylvQ
+        dJrDO8gqyTUHNaykRIh7EnsjR+2sWhEIrQRIN06aEhhkWVFhPK8gA4wtYrwA/YTB1sqROzPPEaBb
+        kYisJJIgIU1JnIklwi3k6gIOQG9X2wab2HCStHmyXBQCz2Cwj/XTXPkAghXSEYXo1LYHEW/HIrax
+        iMIeaZwyl3oOcqAU6Kfw6z0nWy87tDZqBbtrTZIgDKPGmW5HPC40zU+JuGdDHEQx8eNTqAsmUfb9
+        BSaxkgj9pDmJkSxKkHo1Qiwapd/IfomO+qhYt1aeUxq7WvNha9lea1JrDYdB0GuR/bZHsS4AU74n
+        TKnAt8GPCQmb6/0Xka8L4dTI7a026EWbPGoM/THgU4Dct9PwQBvjsBc3zvZtpxzRlanHL3fScm1w
+        BDyTwJoht/bQLgmCxsDrxD3ndMpz+xRzLO353rIlBWt77foJaUxhWPfXTF9zPR9WSheLPaPVEz4v
+        YQa4xLDD4pxQtX0S1v7aS1EzG7NYIG4zQ48oSuLBLLzbwORZ77QBbO2saZo0BnxeiJsxyMVLmD6d
+        HM2GgwWpW6K1d9UgaK6AX8vx42HgdDlub6dx1DLaVhk/UcCtHTNN0jhtqyz/rW2eLPihtXmSNCDN
+        Y/91Ek876OlIWPtoQJLAD1qweIz9dHjtLdXHCbLx4G50j+tF/TuBYEbkubjBY47wHxitfy94ZNaG
+        S2Tj0pBAId7pIrtVZyLLK4bIBgxRoKeRec7OxJCWHB/BMaNCOMq41ZTozgP1n7MOF062dvKcHxAO
+        /gW4I50aYd+JfQ/fpD1cdtScSsDAVHqO78Ofgf3kYMPqkp6XdJP65niZksgjYbw15kpV2B3NZlFp
+        pfELwvawXaoSMs2XkK9aBtbe+klCGmvMFb7+cAHsFZUCUSocs6pFlVMNDPs8z/hBmW5tHdgYv3h2
+        YI7aWdv/2JKbdR7oRH73//xEswVXyyQmRilhbjyXgPmEY855oRS+Tl3OxvTuaNbcsSrW09uhq8Nr
+        3xfPcvRuS9c6TXSwQfuNn2VdKPMiZyCVeVnUq8cyVWfoxuKfv/6uXxR122S0Thix3+21aRMoWN+m
+        c6C6dbl9F3qJVZC/9Y7zp+fOKsGoEVYUJ6TIGR6Ha5Pl3XXJlngqSoMGYzDJCmbAbWBO1BxAT3bb
+        aDrjKqP5ZIWVZxqz6RKbJZxneWFu/fo3tNOr0twIpcY4s/UhUk8YXq2ReS4Itrl2zZ06ftoJSX1G
+        jkV9sBV1/KTjR+Mw7PukTyKjlL+jIVcTUxsKw6VlhdGqSuPEHrsG0Rj98D8mz3tpz7iaOqJitYsH
+        Xk8uPnbffL404Hl2i9M51t9gdH5QjWWZg4P1iks5cFz55fr96Ncr/+3o8n3y+s3Hn8dRaghk/BY3
+        zSOJQj9II/fh4eFfAAAA//8DAOCWqnRjFwAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 15 Sep 2023 20:13:22 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -47,7 +47,7 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "Portugal",
-                "countries": ["Portugal", "Spain"],
+                "countries": ["portugal", "spain"],
             }
             if field_name in example_dict:
                 test_params[field_name] = example_dict[field_name]
@@ -141,7 +141,17 @@ def test_{fetcher_name}(credentials=test_credentials):
             if "crypto" in fetcher_name.lower() and "symbol" in test_params:
                 test_params["symbol"] = "BTC/USD"
             if "indices" in fetcher_name.lower() and "symbol" in test_params:
-                test_params["symbol"] = "SPY"
+                test_params["symbol"] = "DJI"
+            if "future" in fetcher_name.lower() and "symbol" in test_params:
+                test_params["symbol"] = "ES"
+            if (
+                "european" in fetcher_name.lower()
+                and "symbol" in test_params
+                and "index" in fetcher_name.lower()
+            ):
+                test_params["symbol"] = "BUKBUS"
+            if "european" in fetcher_name.lower() and "symbol" in test_params:
+                test_params["symbol"] = "BUKBUS"
 
             with open(path, "a") as f:
                 test_code = test_template.format(

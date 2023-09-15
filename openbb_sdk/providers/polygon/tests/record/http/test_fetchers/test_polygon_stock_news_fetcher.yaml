@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/reference/news?apiKey=MOCK_API_KEY&limit=15&page=0&ticker=AAPL%2CMSFT
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/wTAMQqEMBAF0Lv8OsXu7BoxV7DwACIyJl8QbMxMKvHuvhuV1k43pHkJMFdvhoRp
+        REDl1Wi+HgUJErOUv3Sb7hKZGT/lS6VKTxX9DXjeAAAA///oz3XITAAAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '100'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 15 Sep 2023 20:00:40 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Item-Count:
+      - '0'
+      X-Request-Id:
+      - 26c2d425baf26ece60d1eaea27ea2a39
+    status:
+      code: 200
+      message: OK
+version: 1

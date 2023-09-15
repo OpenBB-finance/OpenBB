@@ -4,7 +4,7 @@ from typing import Dict, Tuple
 
 test_credentials: Dict[str, Tuple[str, str]] = {
     "benzinga": ("token", "MOCK_TOKEN"),
-    "alpha_vantage": ("api_key", "MOCK_API_KEY"),
+    "alpha_vantage": ("apikey", "MOCK_API_KEY"),
     "fmp": ("apikey", "MOCK_API_KEY"),
     "polygon": ("apiKey", "MOCK_API_KEY"),
     "quandl": ("api_key", "MOCK_API_KEY"),

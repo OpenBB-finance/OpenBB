@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5ESPY?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=1663214400&period2=1694750400
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^SPY","exchangeName":"CBO","instrumentType":"INDEX","firstTradeDate":null,"regularMarketTime":1522152004,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":0.0,"chartPreviousClose":0.0,"priceHint":4,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1694764800,"end":1694784600,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1694784600,"end":1694808000,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1694808000,"end":1694822400,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d"]},"indicators":{"quote":[{}],"adjclose":[{}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '694'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Fri, 15 Sep 2023 19:23:38 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '3'
+      x-request-id:
+      - e86ed613-af01-4147-937b-717581096ace
+      x-yahoo-request-id:
+      - 14dmoblig9bpq
+      y-rid:
+      - 14dmoblig9bpq
+    status:
+      code: 200
+      message: OK
+version: 1

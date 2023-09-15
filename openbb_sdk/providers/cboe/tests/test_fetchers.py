@@ -1,0 +1,130 @@
+import pytest
+from openbb import obb
+from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
+from openbb_cboe.models.european_index_constituents import (
+    CboeEuropeanIndexConstituentsFetcher,
+)
+from openbb_cboe.models.european_index_historical import (
+    CboeEuropeanIndexHistoricalFetcher,
+)
+from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
+from openbb_cboe.models.index_search import CboeIndexSearchFetcher
+from openbb_cboe.models.index_snapshots import CboeIndexSnapshotsFetcher
+from openbb_cboe.models.major_indices_historical import (
+    CboeMajorIndicesHistoricalFetcher,
+)
+from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
+from openbb_cboe.models.stock_historical import CboeStockHistoricalFetcher
+from openbb_cboe.models.stock_info import CboeStockInfoFetcher
+from openbb_cboe.models.stock_search import CboeStockSearchFetcher
+
+test_credentials = obb.user.credentials.__dict__
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            None,
+        ],
+    }
+
+
+@pytest.mark.record_http
+def test_cboe_stock_search_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = CboeStockSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_options_chains_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = CboeOptionsChainsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_stock_historical_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = CboeStockHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_stock_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = CboeStockInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_futures_curve_fetcher(credentials=test_credentials):
+    params = {"symbol": "VX"}
+
+    fetcher = CboeFuturesCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_available_indices_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = CboeAvailableIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_european_index_constituents_fetcher(credentials=test_credentials):
+    params = {"symbol": "BUKBUS"}
+
+    fetcher = CboeEuropeanIndexConstituentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_european_index_historical_fetcher(credentials=test_credentials):
+    params = {"symbol": "BUKBUS"}
+
+    fetcher = CboeEuropeanIndexHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_major_indices_historical_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAVE10RP"}
+
+    fetcher = CboeMajorIndicesHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_index_search_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = CboeIndexSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_cboe_index_snapshots_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = CboeIndexSnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None

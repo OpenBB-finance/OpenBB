@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/quote/AAPL?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA11RsU7DMBTc+xVRVqhlO36O3S0qA0gVFIFYKgaTWmlE4kRxEqgQ/46dxrQweLm7
+        d+/debeIoi/3oii2x/qtqeJVFGfZdhNfn1Cjaj1hbVvp6M7kKDBtV+aeIilDkMxgflCm0Haru1yb
+        XhVesMSICwF/FB4miJIZ3KvjpvmYzBIk6Bm9LYvDBHPEZLA4atUFQgpEkwt8tqEMkXSGa9W9636t
+        WkfQlAqecMFSQchlkGwsAPtJAQgDiH8cxRPJXVQB4Q79+Rsmvs+ebrLH0M3YVMPUG8dMgJDhFDUW
+        L4GClIIkSQjbtNqEpOfteiybwa6rxp6qBpSysL213gVJHtReQiWiYdzVYUpT2MyYZjC5rt2X+Fsp
+        psmS4CWFZ4JXIFcYI4zxlXs4JLAH1Wn7MPS2V2bvXPx64AkjUgKEo/uy1k5Qt1M5kgkMEoTjvhev
+        P3BZQZJbAgAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 15 Sep 2023 19:26:02 GMT
+      ETag:
+      - W/"25b-YqZJbHNo2BW9lxpo4p2iJz+/FH0"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
