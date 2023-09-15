@@ -1,8 +1,8 @@
 import json
 from dataclasses import make_dataclass
+from typing import Optional
 
 from pydantic.dataclasses import dataclass as pydanticdataclass
-from typing import Optional
 
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.models.base_model import BaseModel
