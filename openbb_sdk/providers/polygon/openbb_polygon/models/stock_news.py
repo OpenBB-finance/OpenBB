@@ -63,11 +63,13 @@ class PolygonStockNewsData(StockNewsData):
         "date": "published_utc",
     }
 
-    amp_url: Optional[str] = Field(description="AMP URL.")
-    author: Optional[str] = Field(description="Author of the article.")
+    amp_url: Optional[str] = Field(default=None, description="AMP URL.")
+    author: Optional[str] = Field(default=None, description="Author of the article.")
     id: str = Field(description="Article ID.")
-    image_url: Optional[str] = Field(description="Image URL.")
-    keywords: Optional[List[str]] = Field(description="Keywords in the article")
+    image_url: Optional[str] = Field(default=None, description="Image URL.")
+    keywords: Optional[List[str]] = Field(
+        default=None, description="Keywords in the article"
+    )
     publisher: PolygonPublisher = Field(description="Publisher of the article.")
     tickers: List[str] = Field(description="Tickers covered in the article.")
 
@@ -91,7 +93,7 @@ class PolygonStockNewsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
-        querystring = get_querystring(query.model_dump(), [])
+        querystring = get_querystring(query.model_dump(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 

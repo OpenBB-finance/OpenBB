@@ -57,12 +57,12 @@ class PolygonStockHistoricalData(StockHistoricalData):
         "close": "c",
         "volume": "v",
         "vwap": "vw",
-        "transactions": "n",
     }
 
     transactions: Optional[PositiveInt] = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
+        alias="n",
     )
 
     @field_validator("t", mode="before", check_fields=False)

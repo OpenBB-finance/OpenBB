@@ -18,9 +18,8 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
 
-    pageSize: int = Field(
-        default=15, description="Number of results to return per page."
-    )
+    __alias_dict__ = {"symbols": "tickers", "limit": "pageSize"}
+
     displayOutput: Literal["headline", "summary", "full", "all"] = Field(
         default="headline", description="Type of data to return."
     )
@@ -59,9 +58,7 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     cusip: Optional[str] = Field(
         default=None, description="The CUSIP of the news to retrieve."
     )
-    tickers: Optional[str] = Field(
-        default=None, description="Tickers of the news to retrieve."
-    )
+
     channels: Optional[str] = Field(
         default=None, description="Channels of the news to retrieve."
     )
@@ -95,7 +92,7 @@ class BenzingaGlobalNewsFetcher(
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
-        querystring = get_querystring(query.model_dump(), [])
+        querystring = get_querystring(query.model_dump(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
         data = get_data(request_url, **kwargs)
 

@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Literal, Optional
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import StockNewsQueryParams
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import AliasChoices, Field
+from pydantic import Field
 
 from openbb_benzinga.utils.helpers import BenzingaStockNewsData, get_data
 
@@ -18,11 +18,7 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
 
-    pageSize: int = Field(
-        default=15,
-        description="Number of results to return per page.",
-        alias=AliasChoices("limit", "page_size"),
-    )
+    __alias_dict__ = {"symbols": "tickers", "limit": "pageSize"}
 
     displayOutput: Literal["headline", "summary", "full", "all"] = Field(
         default="headline", description="Type of data to return."
@@ -44,9 +40,7 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
         default=None,
         description="Number of seconds since the news was published.",
     )
-    tickers: Optional[str] = Field(
-        default=None, description="Tickers of the news to retrieve.", alias="symbols"
-    )
+
     sort: Optional[
         Literal[
             "published_at",
@@ -98,7 +92,7 @@ class BenzingaStockNewsFetcher(
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
-        querystring = get_querystring(query.model_dump(), [])
+        querystring = get_querystring(query.model_dump(by_alias=True), [])
         request_url = f"{base_url}?{querystring}&token={api_key}"
         data = get_data(request_url, **kwargs)
 

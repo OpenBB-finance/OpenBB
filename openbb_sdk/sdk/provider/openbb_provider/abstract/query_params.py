@@ -16,3 +16,13 @@ class QueryParams(BaseModel):
     model_config = ConfigDict(
         extra="allow", populate_by_name=True, alias_generator=alias_generators.to_snake
     )
+
+    def model_dump(self, *args, **kwargs):
+        by_alias = kwargs.pop("by_alias", False)
+        original = super().model_dump(*args, **kwargs)
+        if by_alias:
+            return {
+                self.__alias_dict__.get(key, key): value
+                for key, value in original.items()
+            }
+        return original

@@ -36,13 +36,16 @@ class BenzingaStockNewsData(StockNewsData):
 
     images: List[BenzingaImage] = Field(description="Images associated with the news.")
     channels: Optional[List[str]] = Field(
-        description="Channels associated with the news.", default_factory=list
+        description="Channels associated with the news.",
+        default=None,
     )
     stocks: Optional[List[str]] = Field(
-        description="Stocks associated with the news.", default_factory=list
+        description="Stocks associated with the news.",
+        default=None,
     )
     tags: Optional[List[str]] = Field(
-        description="Tags associated with the news.", default_factory=list
+        description="Tags associated with the news.",
+        default=None,
     )
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
 
