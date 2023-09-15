@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, NonNegativeFloat, validator
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -32,8 +32,8 @@ class EarningsCalendarData(Data):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    eps: Optional[NonNegativeFloat] = Field(description="EPS of the earnings calendar.")
-    eps_estimated: Optional[NonNegativeFloat] = Field(
+    eps: Optional[float] = Field(description="EPS of the earnings calendar.")
+    eps_estimated: Optional[float] = Field(
         description="Estimated EPS of the earnings calendar."
     )
     time: str = Field(description="Time of the earnings calendar.")
