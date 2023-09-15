@@ -35,11 +35,11 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     )
     updatedSince: Optional[int] = Field(
         default=None,
-        description="Number of seconds since the news was updated.",
+        description="Last updated Unix timestamp (UTC) to pull and sort by.",
     )
     publishedSince: Optional[int] = Field(
         default=None,
-        description="Number of seconds since the news was published.",
+        description="Last published Unix timestamp (UTC) to pull and sort by.",
     )
     sort: Optional[
         Literal[
@@ -99,7 +99,7 @@ class BenzingaGlobalNewsFetcher(
 
         query.sort = query.sort+":desc" if query.sort in ["id", "created", "updated"] else query.sort
         querystring = get_querystring(query.dict(by_alias=True), [])
-        
+
         url = f"{base_url}?{querystring}&token={api_key}"
         data = get_data(url, **kwargs)
 
