@@ -1,4 +1,3 @@
-import fnmatch
 import glob
 import importlib
 import inspect
@@ -6,10 +5,10 @@ import os
 import unittest
 from typing import Dict, List, Type
 
-import providers
 from openbb_provider import standard_models
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.registry import RegistryLoader
 
 
 def get_module(file_path: str, package_name: str):
@@ -125,18 +124,6 @@ def get_path_components(path: str):
     return path_components
 
 
-def build_provider_module_path(module_name: str, file_path: str):
-    """Given a module name and a file path, return the full path to the module"""
-
-    splited_path = get_path_components(file_path)
-    file = splited_path[0].split(".")[0]
-    models_dir = splited_path[1]
-    openbb_provider = splited_path[2]
-    provider = splited_path[3]
-
-    return f"{module_name}.{provider}.{openbb_provider}.{models_dir}.{file}"
-
-
 def match_provider_and_fields(
     providers_w_fields: List[Dict[str, List[str]]], duplicated_fields: List[str]
 ) -> List[str]:
@@ -153,6 +140,16 @@ def match_provider_and_fields(
                     matching_provider_fields.append(f"{model}:'{f}'")
 
     return matching_provider_fields
+
+
+def get_provider_modules():
+    """Get provider modules."""
+    registry = RegistryLoader.from_extensions()
+    modules = []
+    for _, provider in registry.providers.items():
+        for _, fetcher in provider.fetcher_dict.items():
+            modules.append(fetcher.__module__)
+    return modules
 
 
 class ProviderFieldDupesTest(unittest.TestCase):
@@ -176,23 +173,12 @@ class ProviderFieldDupesTest(unittest.TestCase):
             standard_models_files, standard_models.__name__, Data
         )
 
-        provider_model_files = []
-        providers_path = providers.__path__[0]
-
-        # Walk through the directory tree
-        for root, _, files in os.walk(providers_path):
-            if "models" not in root:
-                continue
-
-            # Use fnmatch to find .py files
-            for filename in fnmatch.filter(files, "*.py"):
-                provider_model_files.append(os.path.join(root, filename))
+        provider_modules = get_provider_modules()
 
         child_parent_dict = {}
 
-        for file in provider_model_files:
-            module_path = build_provider_module_path(providers.__name__, file)
-            provider_module = importlib.import_module(module_path)
+        for module in provider_modules:
+            provider_module = importlib.import_module(module)
 
             # query classes
             child_parent_map(child_parent_dict, standard_query_classes, provider_module)
