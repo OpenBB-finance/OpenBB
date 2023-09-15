@@ -334,9 +334,12 @@ class DocstringGenerator:
     ) -> str:
         """Create the docstring for model."""
 
-        def format_type(type_: str) -> str:
+        def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings"""
-            type_str = str(type_)[:83] + ("..." if len(str(type_)) > 83 else "")
+            type_str = str(type_)
+            if char_limit:
+                type_str = type_str[:char_limit]
+                type_str += "..." if len(str(type_)) > char_limit else ""
             type_str = type_str.replace("NoneType", "None")
             return type_str
 
@@ -369,7 +372,7 @@ class DocstringGenerator:
                 type_ = ""
                 description = ""
 
-            type_str = format_type(type_)
+            type_str = format_type(type_, char_limit=79)
             docstring += f"{param_name} : {type_str}\n"
             docstring += f"    {description}\n"
 

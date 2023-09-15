@@ -60,7 +60,7 @@ class CLASS_fixedincome(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month...
+        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
             Period of AMERIBOR rate. (provider: fred)
 
         Returns
@@ -134,7 +134,7 @@ class CLASS_fixedincome(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'numb...
+        parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
             Period of ESTR rate. (provider: fred)
 
         Returns
@@ -208,7 +208,7 @@ class CLASS_fixedincome(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biwee...
+        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
             Period of FED rate. (provider: fred)
 
         Returns
@@ -488,7 +488,7 @@ class CLASS_fixedincome(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percent...
+        parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
             Period of SONIA rate. (provider: fred)
 
         Returns

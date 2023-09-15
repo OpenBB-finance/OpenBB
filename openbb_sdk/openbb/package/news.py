@@ -53,7 +53,7 @@ class CLASS_news(Container):
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'chann...
+        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], None]
             Order in which to sort the news.  (provider: benzinga)
         isin : Union[str, None]
             The ISIN of the news to retrieve. (provider: benzinga)

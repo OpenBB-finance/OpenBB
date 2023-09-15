@@ -147,7 +147,7 @@ class CLASS_stocks_dd(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        type : Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10-D',...
+        type : Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10...
             Type of the SEC filing form.
         page : Union[int, None]
             Page number of the results.
