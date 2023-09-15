@@ -6,6 +6,8 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_provider.abstract.fetcher import Fetcher
 from pydantic.fields import ModelField
 
+from openbb_sdk.providers.utils.credentials_schema import test_credentials
+
 
 def get_provider_fetchers(
     available_providers: List[str],
@@ -29,7 +31,7 @@ def generate_fetcher_unit_tests(path: str) -> None:
     """Generate the fetcher unit tests in the provider test folders."""
     if not os.path.exists(path):
         with open(path, "w") as f:
-            f.write("import pytest\n\n")
+            f.write("import pytest\nfrom openbb import obb\n")
 
 
 def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
@@ -44,6 +46,8 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
                 "symbols": ["AAPL", "MSFT"],
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "country": "Portugal",
+                "countries": ["Portugal", "Spain"],
             }
             if field_name in example_dict:
                 test_params[field_name] = example_dict[field_name]
@@ -62,19 +66,38 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
     return test_params
 
 
+def write_test_credentials(path: str, provider: str) -> None:
+    """Write the mocked credentials to the provider test folders."""
+    credentials: Dict[str, str] = test_credentials.get(provider, {})
+
+    template = """
+test_credentials = obb.user.credentials.__dict__
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {{
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+         {credentials_str},
+        ],
+    }}
+
+"""
+    with open(path, "a") as f:
+        f.write(template.format(credentials_str=str(credentials)))
+
+
 def write_fetcher_unit_tests() -> None:
     """Write the fetcher unit tests to the provider test folders."""
     provider_interface = ProviderInterface()
     available_providers = provider_interface.available_providers
     provider_interface_map = provider_interface.map
 
-    # for testing we will only send in two providers
-    available_providers = ["alpha_vantage", "benzinga"]
-
     test_template = """
-def test_{fetcher_name}():
+@pytest.mark.record_http
+def test_{fetcher_name}(credentials=test_credentials):
     params = {params}
-    credentials = {credentials}
 
     fetcher = {fetcher_name}()
     result = fetcher.test(params, credentials)
@@ -108,7 +131,6 @@ def test_{fetcher_name}():
 
     for model_name, fetcher_dict in provider_fetchers.items():
         for fetcher_name, path in fetcher_dict.items():
-            # Add logic here to grab the necessary standardized params and credentials
             test_params = get_test_params(
                 param_fields=provider_interface_map[model_name]["openbb"][
                     "QueryParams"
@@ -117,6 +139,10 @@ def test_{fetcher_name}():
 
             if "forex" in fetcher_name.lower() and "symbol" in test_params:
                 test_params["symbol"] = "EUR/USD"
+            if "crypto" in fetcher_name.lower() and "symbol" in test_params:
+                test_params["symbol"] = "BTC/USD"
+            if "indices" in fetcher_name.lower() and "symbol" in test_params:
+                test_params["symbol"] = "SPY"
 
             with open(path, "a") as f:
                 test_code = test_template.format(
@@ -125,4 +151,4 @@ def test_{fetcher_name}():
                     credentials={},
                 )
                 f.write(test_code)
-                f.write("\n")
+                f.write("\n\n")
