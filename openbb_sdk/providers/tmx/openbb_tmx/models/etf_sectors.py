@@ -14,11 +14,11 @@ from openbb_tmx.utils.helpers import get_all_etfs
 
 
 class TmxEtfSectorsQueryParams(EtfSectorsQueryParams):
-    """TMX ETF Info Query Params"""
+    """TMX ETF Sectors Query Params"""
 
 
 class TmxEtfSectorsData(EtfSectorsData):
-    """TMX ETF Info Data."""
+    """TMX ETF Sectors Data."""
 
     class Config:
         fields = {

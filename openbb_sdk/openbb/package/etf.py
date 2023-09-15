@@ -30,7 +30,7 @@ class CLASS_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["blackrock", "fmp"]] = None,
+        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """ETF Country weighting.
@@ -39,7 +39,7 @@ class CLASS_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['blackrock', 'fmp']]
+        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
@@ -53,7 +53,7 @@ class CLASS_etf(Container):
         OBBject
             results : List[EtfCountries]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'fmp']]
+            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
