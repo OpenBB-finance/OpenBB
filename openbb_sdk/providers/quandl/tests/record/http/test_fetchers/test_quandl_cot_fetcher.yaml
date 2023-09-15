@@ -576,7 +576,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 15 Sep 2023 20:12:11 GMT
+      - Fri, 15 Sep 2023 20:25:03 GMT
       ETag:
       - W/"5eeac6687ca2a1ddb8444714e36a59c3"
       Pragma:
@@ -586,10 +586,10 @@ interactions:
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=awUPGwRbRhGeNNW5WGCooZa6BGUAAAAAQUIPAAAAAAAUTAcYlf8m3FgQfMZoiyyt;
+      - visid_incap_2170999=hszYCHipTbSy0sw9xSTAe5+9BGUAAAAAQUIPAAAAAAC6bkJ7X1EirpMZZypNhRII;
         expires=Sat, 14 Sep 2024 06:57:55 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=qi+jc0zXblG7GVh7Kj7S7QAAAAAULJ039vzDMJs7xmBWfs7O; path=/; Domain=.nasdaq.com
-      - incap_ses_1539_2170999=l8pKNZjQLXYm1ai52KBbFZu6BGUAAAAABptWN28aUBfj9hBKvUZzzA==;
+      - nlbi_2170999=6tG+ANIZEjf+DM4tKj7S7QAAAABISKp4UvpjvUmCkmCOq9of; path=/; Domain=.nasdaq.com
+      - incap_ses_1539_2170999=nTiaGGjRgD9V4q252KBbFZ+9BGUAAAAAyBidkrzzOGpVfaIbNbXw0Q==;
         path=/; Domain=.nasdaq.com
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -600,16 +600,16 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Iinfo:
-      - 14-140449822-140449905 NNNY CT(1 1 0) RT(1694808727766 174) q(0 0 0 2) r(32
-        32) U2
+      - 14-140605531-140605562 NNNY CT(1 8 0) RT(1694809499989 189) q(0 0 0 -1) r(33
+        33) U2
       X-RateLimit-Limit:
       - '50000'
       X-RateLimit-Remaining:
-      - '49998'
+      - '49996'
       X-Request-Id:
-      - 9b3f6af9-4825-4dfd-9e91-2154bfd6f095
+      - e43de9d2-17fd-4a03-848c-8d9451943de2
       X-Runtime:
-      - '0.182548'
+      - '0.193255'
       X-XSS-Protection:
       - 1; mode=block
     status:
