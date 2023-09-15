@@ -6,6 +6,8 @@ interactions:
       - gzip, deflate, br
       Connection:
       - keep-alive
+      User-Agent:
+      - python-requests/2.31.0
       accept:
       - application/json
       request-source:
@@ -13,7 +15,7 @@ interactions:
       request-source-version:
       - 3.7.0
       x-api-token:
-      - RkHzt3RB7csDkG-arx_q
+      - MOCK_API_TOKEN
     method: GET
     uri: https://data.nasdaq.com/api/v3/datasets/CFTC/13874P_FO_L_ALL/data?order=asc
   response:
@@ -576,7 +578,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 15 Sep 2023 20:25:03 GMT
+      - Fri, 15 Sep 2023 20:33:15 GMT
       ETag:
       - W/"5eeac6687ca2a1ddb8444714e36a59c3"
       Pragma:
@@ -586,10 +588,10 @@ interactions:
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=hszYCHipTbSy0sw9xSTAe5+9BGUAAAAAQUIPAAAAAAC6bkJ7X1EirpMZZypNhRII;
-        expires=Sat, 14 Sep 2024 06:57:55 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=6tG+ANIZEjf+DM4tKj7S7QAAAABISKp4UvpjvUmCkmCOq9of; path=/; Domain=.nasdaq.com
-      - incap_ses_1539_2170999=nTiaGGjRgD9V4q252KBbFZ+9BGUAAAAAyBidkrzzOGpVfaIbNbXw0Q==;
+      - visid_incap_2170999=KhSGWjloRGOrWq1dUoB3bYu/BGUAAAAAQUIPAAAAAADYGj+VQD+n5SW03MHmWWt3;
+        expires=Sat, 14 Sep 2024 06:57:59 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=iklJO8Cl0Q+BzCldKj7S7QAAAABD1r5IVsD9DOeP5vwFZCqK; path=/; Domain=.nasdaq.com
+      - incap_ses_1539_2170999=DSoiHfRL8S3PCLG52KBbFYu/BGUAAAAAj96ZPTA7c/HAa0/ngFz5qw==;
         path=/; Domain=.nasdaq.com
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -600,16 +602,16 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Iinfo:
-      - 14-140605531-140605562 NNNY CT(1 8 0) RT(1694809499989 189) q(0 0 0 -1) r(33
-        33) U2
+      - 3-13316846-13316860 NNNY CT(0 1 0) RT(1694809994644 160) q(0 0 0 -1) r(2 2)
+        U2
       X-RateLimit-Limit:
       - '50000'
       X-RateLimit-Remaining:
-      - '49996'
+      - '49990'
       X-Request-Id:
-      - e43de9d2-17fd-4a03-848c-8d9451943de2
+      - 8bd6400d-9cac-49fa-8f90-8a5e54e6a19f
       X-Runtime:
-      - '0.193255'
+      - '0.173675'
       X-XSS-Protection:
       - 1; mode=block
     status:

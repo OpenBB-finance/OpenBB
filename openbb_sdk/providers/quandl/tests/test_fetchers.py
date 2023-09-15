@@ -10,10 +10,7 @@ test_credentials = obb.user.credentials.__dict__
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [
-            ("api_key", "MOCK_API_KEY"),
-        ],
+        "filter_headers": [("x-api-token", "MOCK_API_TOKEN")],
     }
 
 
