@@ -1,0 +1,110 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?display_output=headline&page=0&pageSize=15&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":34614973,\"author\":\"Benzinga Neuro\",\"created\":\"Fri,
+        15 Sep 2023 09:21:35 -0400\",\"updated\":\"Fri, 15 Sep 2023 09:21:36 -0400\",\"title\":\"Think
+        Twice Before Buying A Pixel Watch \u2014 Users Claim Google Is Denying Screen
+        Replacement\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34614973/think-twice-before-buying-a-pixel-watch-users-claim-google-is-denying-screen-replacement\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Pixel_Watch_Photo_by_Yasin_Hasan_on_Shutterstock_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Pixel_Watch_Photo_by_Yasin_Hasan_on_Shutterstock_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Pixel_Watch_Photo_by_Yasin_Hasan_on_Shutterstock_1.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"}],\"tags\":[{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"Google\"},{\"name\":\"Pixel Watch\"}]},{\"id\":34613471,\"author\":\"Rounak
+        Jain\",\"created\":\"Fri, 15 Sep 2023 08:36:31 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 08:36:32 -0400\",\"title\":\"Deal Of The Day: Get The Power Of
+        16-inch MacBook With M1 Max Chip At A $1,700 Discount\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34613471/deal-of-the-day-get-the-power-of-16-inch-macbook-with-m1-max-chip-at-a-1-700-discount\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Macbook_pro_16.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Macbook_pro_16.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Macbook_pro_16.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"MacBook\"},{\"name\":\"Tech Deals\"}]},{\"id\":34612540,\"author\":\"Rounak
+        Jain\",\"created\":\"Fri, 15 Sep 2023 08:19:10 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 08:19:11 -0400\",\"title\":\"Does The iPhone 15 Pro Have A 'Discoloration'
+        Issue? First Hands-On Photos Suggest It Is A Fingerprint Magnet\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34612540/does-the-iphone-15-pro-have-a-discoloration-issue-first-hands-on-photos-suggest-it-is-a-fingerprint\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_7.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_7.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_7.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15\"}]},{\"id\":34612488,\"author\":\"Mohit
+        Manghnani\",\"created\":\"Fri, 15 Sep 2023 08:14:55 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 08:14:57 -0400\",\"title\":\"Microsoft's Challenging Week: Legal
+        Scrutiny in EU, Teams Outages, and Security Enhancements for Windows 11\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34612488/microsofts-challenging-week-legal-scrutiny-in-eu-teams-outages-and-security-enhancements-for-windows\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/msft.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/msft.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/msft.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"AI Generated\"},{\"name\":\"Ultima
+        Insights\"}]},{\"id\":34609080,\"author\":\"Anusuya Lahiri\",\"created\":\"Fri,
+        15 Sep 2023 07:51:12 -0400\",\"updated\":\"Fri, 15 Sep 2023 07:51:13 -0400\",\"title\":\"Salesforce
+        Embarks on Hiring Spree, Adding 3,300 New Faces to Drive Growth\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34609080/salesforce-embarks-on-hiring-spree-adding-3-300-new-faces-to-drive-growth\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/salesforce_logo.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/salesforce_logo.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/salesforce_logo.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Management\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"CRM\"},{\"name\":\"MSFT\"},{\"name\":\"SNOW\"},{\"name\":\"TWLO\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34610390,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Fri, 15 Sep 2023 07:21:28 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 07:42:32 -0400\",\"title\":\"Apple Silently Hikes Battery Replacement
+        Cost For Certain Watch Models\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34610390/apple-silently-hikes-battery-replacement-cost-for-certain-watch-models\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_Watch_Series_9_and_Ultra_2_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_Watch_Series_9_and_Ultra_2_0.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_Watch_Series_9_and_Ultra_2_0.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple
+        Watch\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer Tech\"},{\"name\":\"gadgets\"}]},{\"id\":34609402,\"author\":\"Rounak
+        Jain\",\"created\":\"Fri, 15 Sep 2023 06:44:25 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 06:44:26 -0400\",\"title\":\"'Child Sexual Abuse Is Stored On
+        iCloud. Apple Allows It': Anti-Apple Posters Emerge In Front Of Apple Park\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34609402/child-sexual-abuse-is-stored-on-icloud-apple-allows-it-anti-apple-posters-emerge-in-front-of-apple-p\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_Logo.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_Logo.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_Logo.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Cybersecurity\"},{\"name\":\"iPhone\"},{\"name\":\"privacy\"}]},{\"id\":34607134,\"author\":\"Ananya
+        Gairola\",\"created\":\"Fri, 15 Sep 2023 05:48:36 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 05:48:37 -0400\",\"title\":\"Beware: Your iPhone 15 Could Permanently
+        Fry If Charged With The Wrong USB-C Charger\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34607134/beware-your-iphone-15-could-permanently-fry-if-charged-with-the-wrong-usb-c-charger\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple-iPhone-15-lineup-AirPods-Pro-2nd-generation-USB-C-connection-230912_big.jpg.large_2x.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple-iPhone-15-lineup-AirPods-Pro-2nd-generation-USB-C-connection-230912_big.jpg.large_2x.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple-iPhone-15-lineup-AirPods-Pro-2nd-generation-USB-C-connection-230912_big.jpg.large_2x.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone 15\"},{\"name\":\"Lightning port\"},{\"name\":\"USB-C
+        ports\"}]},{\"id\":34604471,\"author\":\"Anusuya Lahiri\",\"created\":\"Fri,
+        15 Sep 2023 05:38:27 -0400\",\"updated\":\"Fri, 15 Sep 2023 05:38:28 -0400\",\"title\":\"ASML
+        Stock Drops As Key Supplier TSMC Reportedly Postpone Deliveries Amidst Industry
+        Demand Concerns\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34604471/asml-stock-drops-as-key-supplier-tsmc-reportedly-postpone-deliveries-amidst-industry-demand-conc\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/asml_2.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/asml_2.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/asml_2.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"ASML\"},{\"name\":\"NVDA\"},{\"name\":\"TSM\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"Eurasia\"}]},{\"id\":34606269,\"author\":\"Rounak
+        Jain\",\"created\":\"Fri, 15 Sep 2023 05:10:31 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 05:10:32 -0400\",\"title\":\"Want To Upgrade To The iPhone 15
+        or 15 Pro From iPhone 14? Here Are The Trade-In Prices Apple Is Offering\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34606269/want-to-upgrade-to-the-iphone-15-or-15-pro-from-iphone-14-here-are-the-trade-in-prices-apple-is-offe\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"T\"},{\"name\":\"TMUS\"},{\"name\":\"VZ\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 14\"},{\"name\":\"iPhone
+        15\"}]},{\"id\":34605247,\"author\":\"Ananya Gairola\",\"created\":\"Fri,
+        15 Sep 2023 04:37:31 -0400\",\"updated\":\"Fri, 15 Sep 2023 04:37:32 -0400\",\"title\":\"Oracle's
+        Larry Ellison And Microsoft's Satya Nadella Bridge Decades-Long Rivalry\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34605247/oracles-larry-ellison-and-microsofts-satya-nadella-bridge-decades-long-rivalry\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/larry_ellison_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/larry_ellison_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/larry_ellison_1.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"MSFT\"},{\"name\":\"ORCL\"}],\"tags\":[{\"name\":\"Azure\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Larry Ellison\"},{\"name\":\"Microsoft\"},{\"name\":\"Oracle\"},{\"name\":\"People
+        In Tech\"},{\"name\":\"Satya Nadella\"},{\"name\":\"Software &amp; Apps\"},{\"name\":\"Windows
+        NT\"}]},{\"id\":34598094,\"author\":\"Ananya Gairola\",\"created\":\"Fri,
+        15 Sep 2023 00:11:20 -0400\",\"updated\":\"Fri, 15 Sep 2023 00:11:21 -0400\",\"title\":\"Why
+        Is Apple's Tech Support Reportedly Keeping Quiet About iPhone 12 Radiation?\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34598094/why-is-apples-tech-support-reportedly-keeping-quiet-about-iphone-12-radiation\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_12.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_12.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_12.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone 12\"},{\"name\":\"iPhone 15 launch\"}]},{\"id\":34570896,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Thu, 14 Sep 2023 15:21:58 -0400\",\"updated\":\"Thu,
+        14 Sep 2023 15:21:59 -0400\",\"title\":\"Algorithm vs. Data: Google's Antitrust
+        Trial Defines the Battle for Online Dominance\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/government/23/09/34570896/algorithm-vs-data-googles-antitrust-trial-defines-the-battle-for-online-dominance\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/14/google_ads.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/14/google_ads.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/14/google_ads.png\"}],\"channels\":[{\"name\":\"Government\"},{\"name\":\"News\"},{\"name\":\"Regulations\"},{\"name\":\"Legal\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34587531,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Thu, 14 Sep 2023 13:26:09 -0400\",\"updated\":\"Thu,
+        14 Sep 2023 13:35:23 -0400\",\"title\":\"What's Going On With ARM Holdings
+        Stock Thursday?\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34587531/whats-going-on-with-arm-holdings-stock-thursday\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/14/arm-evaluation-system.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/14/arm-evaluation-system.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/14/arm-evaluation-system.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"IPOs\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"ARM\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"NVDA\"},{\"name\":\"SFTBF\"},{\"name\":\"SFTBY\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34589749,\"author\":\"Benzinga
+        Insights\",\"created\":\"Thu, 14 Sep 2023 13:35:17 -0400\",\"updated\":\"Thu,
+        14 Sep 2023 13:35:18 -0400\",\"title\":\"10 Information Technology Stocks
+        Whale Activity In Today's Session\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34589749/10-information-technology-stocks-whale-activity-in-todays-session\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_4.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_4.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_4.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AMD\"},{\"name\":\"CRM\"},{\"name\":\"CRWD\"},{\"name\":\"CSCO\"},{\"name\":\"INTC\"},{\"name\":\"MARA\"},{\"name\":\"MSFT\"},{\"name\":\"MU\"},{\"name\":\"NVDA\"},{\"name\":\"ORCL\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 15 Sep 2023 13:41:24 GMT
+      ETag:
+      - RhnqO3weleOQgX093LbLpt9cjPAZBNeEboyTvgXYgvg=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 7fbfed9453edeb4b5dca9173a3f5f8dc.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - jwY-c47kYHl9goGnX_8rWledkBPWOxCeA7RAL6AHoEVOzgNNjoBRIA==
+      X-Amz-Cf-Pop:
+      - ZAG50-C1
+      X-Bz-Request-Id:
+      - 192.168.155.192-8443-33-34751444-68-1694785284.773
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '42'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

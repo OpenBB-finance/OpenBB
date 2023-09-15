@@ -43,7 +43,7 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
         elif field.required and not field.default:
             example_dict = {
                 "symbol": "AAPL",
-                "symbols": ["AAPL", "MSFT"],
+                "symbols": "AAPL,MSFT",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "Portugal",
@@ -82,7 +82,6 @@ def vcr_config():
          {credentials_str},
         ],
     }}
-
 """
     with open(path, "a") as f:
         f.write(template.format(credentials_str=str(credentials)))
@@ -101,7 +100,7 @@ def test_{fetcher_name}(credentials=test_credentials):
 
     fetcher = {fetcher_name}()
     result = fetcher.test(params, credentials)
-    assert result is True
+    assert result is None
 """
     fetchers = get_provider_fetchers(available_providers=available_providers)
     provider_fetchers: Dict[str, Dict[str, str]] = {}

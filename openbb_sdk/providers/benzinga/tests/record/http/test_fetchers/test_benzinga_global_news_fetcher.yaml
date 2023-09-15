@@ -1,0 +1,116 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?display_output=headline&page=0&page_size=15&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":34614580,\"author\":\"Khyathi Dalal\",\"created\":\"Fri, 15
+        Sep 2023 09:34:57 -0400\",\"updated\":\"Fri, 15 Sep 2023 09:36:43 -0400\",\"title\":\"Paxos
+        Reveals PayPal Stable Coin PYUSD Is Backed By Treasury And Cash Reserves\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34614580/paxos-reveals-paypal-stable-coin-pyusd-is-backed-by-treasury-and-cash-reserves\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/untitled_design80.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/untitled_design80.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/untitled_design80.jpg\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"Fintech\"},{\"name\":\"News\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"PYPL\"}],\"tags\":[{\"name\":\"Bitcoin\"},{\"name\":\"PayPal\"},{\"name\":\"pyusd\"}]},{\"id\":34615277,\"author\":\"Mehab
+        Qureshi\",\"created\":\"Fri, 15 Sep 2023 09:29:56 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:29:57 -0400\",\"title\":\"Here's How Much You Should Invest
+        In Shiba Inu Today For A $1M Payday If SHIB Hits 1 Cent?\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34615277/heres-how-much-you-should-invest-in-shiba-inu-today-for-a-1m-payday-if-shib-hits-1-cent\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Shiba_Inu_Photo_by_Dennis_Diatel_on_Shutterstock_31.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Shiba_Inu_Photo_by_Dennis_Diatel_on_Shutterstock_31.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Shiba_Inu_Photo_by_Dennis_Diatel_on_Shutterstock_31.jpeg\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"News\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"$SHIB\"}],\"tags\":[{\"name\":\"Shib
+        whales\"},{\"name\":\"Shiba Inu\"}]},{\"id\":34614973,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Fri, 15 Sep 2023 09:21:35 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:21:36 -0400\",\"title\":\"Think Twice Before Buying A Pixel
+        Watch \u2014 Users Claim Google Is Denying Screen Replacement\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34614973/think-twice-before-buying-a-pixel-watch-users-claim-google-is-denying-screen-replacement\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Pixel_Watch_Photo_by_Yasin_Hasan_on_Shutterstock_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Pixel_Watch_Photo_by_Yasin_Hasan_on_Shutterstock_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Pixel_Watch_Photo_by_Yasin_Hasan_on_Shutterstock_1.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"}],\"tags\":[{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"Google\"},{\"name\":\"Pixel Watch\"}]},{\"id\":34613464,\"author\":\"Vandana
+        Singh\",\"created\":\"Fri, 15 Sep 2023 09:20:09 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:20:09 -0400\",\"title\":\"RTX/Saudi Defense Firm's Failed Arms
+        Megadeal - Blame Emergence Of China, Russia Links\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/government/23/09/34613464/rtxsaudi-defense-firms-failed-arms-megadeal-blame-emergence-of-china-russia-links\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/raytheon-wikimedia.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/raytheon-wikimedia.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/raytheon-wikimedia.jpg\"}],\"channels\":[{\"name\":\"Government\"},{\"name\":\"Large
+        Cap\"},{\"name\":\"News\"},{\"name\":\"Contracts\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"RTX\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34594523,\"author\":\"Joana
+        Scopel\",\"created\":\"Fri, 15 Sep 2023 09:17:37 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:17:38 -0400\",\"title\":\"THC Mushroom Gummies To AI Cannabis
+        Chatbots: Elevate Your Brand With Latest Innovations At This Conference\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34594523/thc-mushroom-gummies-to-ai-cannabis-chatbots-elevate-your-brand-with-latest-innovations-at-this-\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/14/ashley_artist_legacy_-14.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/14/ashley_artist_legacy_-14.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/14/ashley_artist_legacy_-14.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Small Cap\"},{\"name\":\"Events\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"ACB\"},{\"name\":\"CBDW\"},{\"name\":\"MRMD\"},{\"name\":\"OVATF\"},{\"name\":\"PLNHF\"},{\"name\":\"CSE:OVAT\"},{\"name\":\"TSX:ACB\"},{\"name\":\"CSE:MRMD\"}],\"tags\":[{\"name\":\"1606
+        Corp.\"},{\"name\":\"Ashley Macias\"},{\"name\":\"Aurora Cannabis Inc.\"},{\"name\":\"Benzinga
+        Cannabis Capital Conference\"},{\"name\":\"CCC\"},{\"name\":\"CCC Chicago\"},{\"name\":\"Chris
+        Ostrowski\"},{\"name\":\"Dutchie\"},{\"name\":\"Flowhub Holdings\_Inc.\"},{\"name\":\"Honour\"},{\"name\":\"House
+        of Puff\"},{\"name\":\"Hyphae Wellness\"},{\"name\":\"Jon Lowen\"},{\"name\":\"Kristina
+        Lopez Adduci\"},{\"name\":\"Kurt Kaufmann\"},{\"name\":\"Kyle Sherman\"},{\"name\":\"MariMed
+        Inc.\"},{\"name\":\"New Cannabis Products\"},{\"name\":\"Ovation Science Inc.\"},{\"name\":\"Querkle\"},{\"name\":\"Seed
+        Talent\"},{\"name\":\"Surfside\"},{\"name\":\"Timeless Vapes\"}]},{\"id\":34614597,\"author\":\"Akanksha
+        Bakshi\",\"created\":\"Fri, 15 Sep 2023 09:16:50 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:16:50 -0400\",\"title\":\"Yum China Leverages Technology To
+        Expand Stores Without Adding More Staff: Report\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34614597/yum-china-leverages-technology-to-expand-stores-without-adding-more-staff-report\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/yumc.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/yumc.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/yumc.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"YUMC\"}],\"tags\":[{\"name\":\"Briefs\"},{\"name\":\"Eurasia\"}]},{\"id\":34613694,\"author\":\"Vandana
+        Singh\",\"created\":\"Fri, 15 Sep 2023 09:13:49 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:13:49 -0400\",\"title\":\"Goldman Sachs Offers Unique Investment
+        Opportunity For Affluent Investors: Own a Slice Of Private Sports Team\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34613694/goldman-sachs-offers-unique-investment-opportunity-for-affluent-investors-own-a-slice-of-private-spo\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/dollar_sharon-photo_by_sharon_mccutcheon_on_unsplash-.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/dollar_sharon-photo_by_sharon_mccutcheon_on_unsplash-.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/dollar_sharon-photo_by_sharon_mccutcheon_on_unsplash-.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"GS\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34611331,\"author\":\"Jelena
+        Martinovic\",\"created\":\"Fri, 15 Sep 2023 09:13:20 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:13:20 -0400\",\"title\":\"Get Ready To Roll: Old Pal Debuts
+        In New York With Classic Flavors, Here's Where To Find It\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34611331/get-ready-to-roll-old-pal-debuts-in-new-york-with-classic-flavors-heres-where-to-find-it\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/budding-h3pwuqxpp_0-unsplash17.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/budding-h3pwuqxpp_0-unsplash17.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/budding-h3pwuqxpp_0-unsplash17.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Retail
+        Sales\"},{\"name\":\"Markets\"}],\"stocks\":[],\"tags\":[{\"name\":\"Dave
+        Vautrin\"},{\"name\":\"New York Cannabis\"},{\"name\":\"Old Pal\"},{\"name\":\"premium\"},{\"name\":\"PURA\"},{\"name\":\"Rusty
+        Wilenkin\"}]},{\"id\":34611240,\"author\":\"Vandana Singh\",\"created\":\"Fri,
+        15 Sep 2023 09:11:18 -0400\",\"updated\":\"Fri, 15 Sep 2023 09:11:19 -0400\",\"title\":\"Third
+        Largest US Bank Citigroup In Layoff Talks After Management Restructure\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34611240/third-largest-us-bank-citigroup-in-layoff-talks-after-management-restructure\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/citibank.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/citibank.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/citibank.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"C\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34614698,\"author\":\"Mohit
+        Manghnani\",\"created\":\"Fri, 15 Sep 2023 09:08:10 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:08:12 -0400\",\"title\":\"Disney's Mixed Bag: Economic Upside
+        in Inflation, Declining TV Viewership, and Marvel VFX Workers Unionize\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34614698/disneys-mixed-bag-economic-upside-in-inflation-declining-tv-viewership-and-marvel-vfx-workers-unioni\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/dis_1.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/dis_1.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/dis_1.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"}],\"stocks\":[{\"name\":\"DIS\"}],\"tags\":[{\"name\":\"AI Generated\"},{\"name\":\"Ultima
+        Insights\"}]},{\"id\":34602719,\"author\":\"Jelena Martinovic\",\"created\":\"Fri,
+        15 Sep 2023 09:02:35 -0400\",\"updated\":\"Fri, 15 Sep 2023 09:02:37 -0400\",\"title\":\"Cannabis
+        Industry Changes As Marijuana Rescheduling Looms\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34602719/cannabis-industry-changes-as-marijuana-rescheduling-looms\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/15/cannabis_deals_geralt_lindsayfox_pixabay12.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/15/cannabis_deals_geralt_lindsayfox_pixabay12.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/15/cannabis_deals_geralt_lindsayfox_pixabay12.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"Government\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Regulations\"},{\"name\":\"Entrepreneurship\"},{\"name\":\"Movers
+        & Shakers\"},{\"name\":\"Small Cap\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"ACB\"},{\"name\":\"CNTMF\"},{\"name\":\"CPMD\"},{\"name\":\"CWBHF\"},{\"name\":\"HERTF\"},{\"name\":\"JAZZ\"},{\"name\":\"KAVL\"},{\"name\":\"OILFF\"},{\"name\":\"SMG\"},{\"name\":\"UNRV\"},{\"name\":\"VFF\"},{\"name\":\"TSXV:ZYUS\"},{\"name\":\"TSXV:SNYB\"},{\"name\":\"CSE:TIUM\"},{\"name\":\"TSX:ACB\"},{\"name\":\"TSXV:CANB\"},{\"name\":\"CSE:CANN\"},{\"name\":\"CSE:OILS\"},{\"name\":\"TSX:CWEB\"}],\"tags\":[{\"name\":\"appointments\"},{\"name\":\"CCC\"},{\"name\":\"CEO\"},{\"name\":\"executives\"},{\"name\":\"Fluent\"},{\"name\":\"High
+        Times\"},{\"name\":\"KCSA Strategic Communications\"},{\"name\":\"marijuana
+        legalization\"},{\"name\":\"Nova Farms\"},{\"name\":\"Pure Sunfarms\"}]},{\"id\":34614434,\"author\":\"Benzinga
+        Insights\",\"created\":\"Fri, 15 Sep 2023 09:02:02 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:02:06 -0400\",\"title\":\"What 10 Analyst Ratings Have To Say
+        About KeyCorp\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34614434/what-10-analyst-ratings-have-to-say-about-keycorp\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_3.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"KEY\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34614361,\"author\":\"Benzinga
+        Insights\",\"created\":\"Fri, 15 Sep 2023 09:01:34 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:01:39 -0400\",\"title\":\"What 10 Analyst Ratings Have To Say
+        About Trane Technologies\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34614361/what-10-analyst-ratings-have-to-say-about-trane-technologies\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_2.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"TT\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34614287,\"author\":\"Benzinga
+        Insights\",\"created\":\"Fri, 15 Sep 2023 09:01:10 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:01:12 -0400\",\"title\":\"What 9 Analyst Ratings Have To Say
+        About Five9\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34614287/what-9-analyst-ratings-have-to-say-about-five9\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"FIVN\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34614233,\"author\":\"Benzinga
+        Insights\",\"created\":\"Fri, 15 Sep 2023 09:00:47 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 09:00:49 -0400\",\"title\":\"11 Analysts Have This to Say About
+        Lam Research\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34614233/11-analysts-have-this-to-say-about-lam-research\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_4.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_4.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_4.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"LRCX\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 15 Sep 2023 13:41:24 GMT
+      ETag:
+      - G0wrvvQnNRS1knrAdBMtkYok5ddSKb0IoiZ2EvWMBTU=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 b8c21c40c485a68c7663b93787f93464.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - nw5AJsuUWHY1mMSSkH5NlXoJ4eqRTYJfD-YsJ7u7_t0Nl_LIV4592Q==
+      X-Amz-Cf-Pop:
+      - ZAG50-C1
+      X-Bz-Request-Id:
+      - 192.168.155.192-8443-33-34752149-76-1694785284.505
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '38'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1
