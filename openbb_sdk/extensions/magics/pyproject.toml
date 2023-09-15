@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "openbb-magics"
+version = "0.1.0a1"
+description = "Magic Functions for OpenBB in Jupyter"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_magics" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
+IPython = "^8.11.0"
+openbb-core = "^0.1.0a0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -22,6 +22,7 @@ openbb-forex = "^0.1.0a0"
 openbb-fixedincome = "^0.1.0a0"
 openbb-news = "^0.1.0a0"
 openbb-stocks = "^0.1.0a0"
+openbb-magics = "^0.1.0a0"
 
 # Community dependencies
 openbb-alpha-vantage = { version="^0.1.0a0", optional=true }
