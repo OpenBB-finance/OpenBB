@@ -1,6 +1,7 @@
 """Benzinga Global News Fetcher."""
 
 
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -17,50 +18,42 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "display": "displayOutput",
-            "limit": "pageSize",
-            "start_date": "dateFrom",
-            "end_date": "dateTo",
-            "updated_since": "updatedSince",
-            "published_since": "publishedSince",
-        }
-
-    display: Literal["headline", "summary", "full", "all"] = Field(
-        default="headline", description="Type of segments to return."
+    pageSize: int = Field(
+        default=15, description="Number of results to return per page."
     )
-    date: Optional[str] = Field(
+    displayOutput: Literal["headline", "abstract", "full"] = Field(
+        default="full", description="Type of data to return."
+    )
+    date: Optional[datetime] = Field(
         default=None, description="Date of the news to retrieve."
     )
-    start_date: Optional[str] = Field(
+    dateFrom: Optional[datetime] = Field(
         default=None, description="Start date of the news to retrieve."
     )
-    end_date: Optional[str] = Field(
+    dateTo: Optional[datetime] = Field(
         default=None, description="End date of the news to retrieve."
     )
-    updated_since: Optional[int] = Field(
+    updatedSince: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was updated.",
     )
-    published_since: Optional[int] = Field(
+    publishedSince: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was published.",
     )
     sort: Optional[
         Literal[
-            "published_at",
-            "updated_at",
-            "title",
-            "author",
-            "channel",
-            "ticker",
-            "topic",
-            "content_type",
+            "id",
+            "created",
+            "updated",
+            "id:asc",
+            "id:desc",
+            "created:asc",
+            "created:desc",
+            "updated:asc",
+            "updated:desc",
         ]
-    ] = Field(default=None, description="Order in which to sort the news. ")
+    ] = Field(default="created:desc", description="Key to sort the news by.")
     isin: Optional[str] = Field(
         default=None, description="The ISIN of the news to retrieve."
     )
@@ -103,7 +96,10 @@ class BenzingaGlobalNewsFetcher(
         api_key = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
+
+        query.sort = query.sort+":desc" if query.sort in ["id", "created", "updated"] else query.sort
         querystring = get_querystring(query.dict(by_alias=True), [])
+        
         url = f"{base_url}?{querystring}&token={api_key}"
         data = get_data(url, **kwargs)
 
