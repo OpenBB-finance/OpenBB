@@ -8,14 +8,8 @@ from IPython.display import display
 
 
 def has_assign(code: str) -> bool:
-    """Check if code does variable assignment"""
-    parsed_code = ast.parse(code)
-    for node in ast.walk(parsed_code):
-        if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name):
-                    return True
-    return False
+    """Check if code does variable or attribute assignment"""
+    return any(isinstance(node, ast.Assign) for node in ast.walk(ast.parse(code)))
 
 
 def register_magics():
