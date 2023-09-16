@@ -30,14 +30,13 @@ def register_magics():
 
         namespace = get_ipython().user_ns
         lines = list(filter(None, cell.split("\n")))
-        method = ".to_dataframe()"
 
         for n, nb_line in enumerate(lines):
             line_code = nb_line.strip().replace(" ", "")
             func = eval if not has_assign(nb_line) and n == len(lines) - 1 else exec
             try:
-                output = func(line_code + method, namespace)
-            except Exception:
+                output = func(line_code + ".to_dataframe()", namespace)
+            except (SyntaxError, AttributeError):
                 output = func(line_code, namespace)
 
         # We only display the last line
@@ -45,6 +44,7 @@ def register_magics():
             display(output)
 
     # Other magics...
+
 
 with contextlib.suppress(AttributeError):
     register_magics()
