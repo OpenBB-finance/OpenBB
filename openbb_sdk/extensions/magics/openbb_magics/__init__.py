@@ -9,15 +9,12 @@ from IPython.display import display
 
 def has_assign(code: str) -> bool:
     """Check if code does variable assignment"""
-    try:
-        parsed_code = ast.parse(code)
-        for node in ast.walk(parsed_code):
-            if isinstance(node, ast.Assign):
-                for target in node.targets:
-                    if isinstance(target, ast.Name):
-                        return True
-    except SyntaxError:
-        pass
+    parsed_code = ast.parse(code)
+    for node in ast.walk(parsed_code):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    return True
     return False
 
 
