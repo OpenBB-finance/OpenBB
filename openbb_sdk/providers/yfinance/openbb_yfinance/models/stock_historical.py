@@ -39,7 +39,7 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
 class YFinanceStockHistoricalData(StockHistoricalData):
     """YFinance Stock End of Day Data."""
 
-    @validator("Date", pre=True, check_fields=False)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
@@ -97,11 +97,11 @@ class YFinanceStockHistoricalFetcher(
                 actions=False,
                 raise_errors=True,
             )
-
-        data = data.reset_index()
+        data = data.reset_index().rename(columns={"Datetime": "Date"}, errors="ignore")
         data["Date"] = (
             data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
+
         data.columns = data.columns.str.lower()
         return data.to_dict("records")
 

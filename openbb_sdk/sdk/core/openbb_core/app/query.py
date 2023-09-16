@@ -46,7 +46,7 @@ class Query:
 
         for k, v in original.items():
             f = fields[k]
-            providers = f.title.split(", ") if hasattr(f, "title") else []
+            providers = f.title.split(",") if hasattr(f, "title") else []
             if v != f.default:
                 if provider_name in providers:
                     filtered[k] = v

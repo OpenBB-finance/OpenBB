@@ -40,7 +40,7 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     """YFinance Futures End of Day Data."""
 
-    @field_validator("Date", mode="before", check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
@@ -112,10 +112,12 @@ class YFinanceFuturesHistoricalFetcher(
                 raise_errors=True,
             )
 
-        data = data.reset_index()
+        data = data.reset_index().rename(columns={"Datetime": "Date"}, errors="ignore")
         data["Date"] = (
             data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
+
+        data.columns = data.columns.str.lower()
         return data.to_dict("records")
 
     @staticmethod
