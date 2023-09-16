@@ -44,6 +44,7 @@ def register_magics():
         if output is not None:
             display(output)
 
+    # Other magics...
 
 with contextlib.suppress(AttributeError):
     register_magics()
