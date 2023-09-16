@@ -33,6 +33,9 @@ def register_magics():
 
         for n, nb_line in enumerate(lines):
             line_code = nb_line.strip().replace(" ", "")
+            if line_code.startswith("#"):
+                output = None
+                continue
             func = eval if not has_assign(nb_line) and n == len(lines) - 1 else exec
             try:
                 output = func(line_code + ".to_dataframe()", namespace)
