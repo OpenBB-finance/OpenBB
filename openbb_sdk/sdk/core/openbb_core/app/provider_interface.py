@@ -241,7 +241,10 @@ class ProviderInterface(metaclass=SingletonMeta):
             # We need to use query if we want the field description to show up in the
             # swagger, it's a fastapi limitation
             default = Query(
-                default=default, title=provider_name, description=description
+                default=default,
+                title=provider_name,
+                description=description,
+                alias=field.alias or None,
             )
         elif provider_name:
             default: FieldInfo = Field(

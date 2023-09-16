@@ -2,11 +2,11 @@
 
 
 from datetime import date, datetime
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.standard_models.base import BaseSymbol
 
@@ -35,8 +35,9 @@ TRANSACTION_TYPES = Literal[
 class StockInsiderTradingQueryParams(QueryParams, BaseSymbol):
     """Stock Insider Trading Query."""
 
-    transactionType: Optional[List[TRANSACTION_TYPES]] = Field(
-        default=["P-Purchase"], description="Type of the transaction."
+    transactionType: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
+        default=["P-Purchase"],
+        description="Type of the transaction.",
     )
     reportingCik: Optional[int] = Field(
         default=None, description="CIK of the reporting owner."
@@ -47,6 +48,14 @@ class StockInsiderTradingQueryParams(QueryParams, BaseSymbol):
     page: Optional[int] = Field(
         default=0, description="Page number of the data to fetch."
     )
+
+    @model_validator(mode="after")
+    @classmethod
+    def validate_transaction_type(cls, values: "StockInsiderTradingQueryParams"):
+        """Validate the transaction type."""
+        if isinstance(values.transactionType, list):
+            values.transactionType = ",".join(values.transactionType)
+        return values
 
 
 class StockInsiderTradingData(Data, BaseSymbol):
@@ -64,7 +73,7 @@ class StockInsiderTradingData(Data, BaseSymbol):
     transaction_type: str = Field(
         description="Transaction type of the stock insider trading."
     )
-    securities_owned: int = Field(
+    securities_owned: StrictInt = Field(
         description="Securities owned of the stock insider trading."
     )
     company_cik: int = Field(description="Company CIK of the stock insider trading.")

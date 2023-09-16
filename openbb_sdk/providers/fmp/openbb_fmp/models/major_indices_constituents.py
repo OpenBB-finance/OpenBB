@@ -26,9 +26,7 @@ class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams
 class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
     """FMP Major Indices Constituents data."""
 
-    __alias_dict__ = {
-        "headquarter": "headQuarter",
-    }
+    __alias_dict__ = {"headquarter": "headQuarter"}
 
     @field_validator("dateFirstAdded", mode="before", check_fields=False)
     @classmethod

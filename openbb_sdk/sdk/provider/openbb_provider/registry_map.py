@@ -92,10 +92,9 @@ class RegistryMap:
                 }
 
                 in_return_map = return_map.get(model_name, return_type)
-                if union_return_map.get(model_name, None) is None and (
-                    get_origin(return_type) != list
-                    and get_origin(in_return_map) == list
-                ):
+                if union_return_map.get(model_name, None) is None and get_origin(
+                    return_type
+                ) != get_origin(in_return_map):
                     union_return_map[model_name] = Union[in_return_map, return_type]
 
                 return_map[model_name] = return_type

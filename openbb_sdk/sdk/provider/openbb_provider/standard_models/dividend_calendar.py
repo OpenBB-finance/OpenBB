@@ -35,15 +35,15 @@ class DividendCalendarData(Data, BaseSymbol):
     dividend: Optional[float] = Field(
         default=None, description="Dividend amount in the calendar."
     )
-    record_date: dateType = Field(
+    record_date: Optional[dateType] = Field(
         default=None,
         description="Record date of the dividend in the calendar.",
     )
-    payment_date: dateType = Field(
+    payment_date: Optional[dateType] = Field(
         default=None,
         description="Payment date of the dividend in the calendar.",
     )
-    declaration_date: dateType = Field(
+    declaration_date: Optional[dateType] = Field(
         default=None,
         description="Declaration date of the dividend in the calendar.",
     )

@@ -102,6 +102,7 @@ class YFinanceStockHistoricalFetcher(
         data["Date"] = (
             data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
         )
+        data.columns = data.columns.str.lower()
         return data.to_dict("records")
 
     @staticmethod
