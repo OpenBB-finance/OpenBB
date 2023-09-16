@@ -75,7 +75,7 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, None]
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None...
+        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -510,7 +510,7 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, None]
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None...
+        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1313,7 +1313,7 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : Union[pydantic.types.NonNegativeInt, None]
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None...
+        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.

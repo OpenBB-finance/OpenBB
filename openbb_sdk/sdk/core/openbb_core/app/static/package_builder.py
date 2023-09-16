@@ -337,10 +337,11 @@ class DocstringGenerator:
         def format_type(type_: str, char_limit: Optional[int] = None) -> str:
             """Format type in docstrings"""
             type_str = str(type_)
-            if char_limit:
-                type_str = type_str[:char_limit]
-                type_str += "..." if len(str(type_)) > char_limit else ""
             type_str = type_str.replace("NoneType", "None")
+            if char_limit:
+                type_str = type_str[:char_limit] + (
+                    "..." if len(str(type_str)) > char_limit else ""
+                )
             return type_str
 
         standard_dict = params["standard"].__dataclass_fields__
