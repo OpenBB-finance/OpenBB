@@ -7,7 +7,7 @@ from IPython.core.magic import register_cell_magic
 from IPython.display import display
 
 
-def has_assign(code: str):
+def has_assign(code: str) -> bool:
     """Check if code does variable assignment"""
     try:
         parsed_code = ast.parse(code)
