@@ -1,33 +1,47 @@
-from IPython.core.magic import register_cell_magic, needs_local_scope
+import ast
+import contextlib
+from typing import List
+
+from IPython import get_ipython
+from IPython.core.magic import register_cell_magic
+from IPython.display import display
+
+
+def has_assign(code: str):
+    """Check if code does variable assignment"""
+    try:
+        parsed_code = ast.parse(code)
+        for node in ast.walk(parsed_code):
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name):
+                        return True
+    except SyntaxError:
+        pass
+    return False
 
 
 def register_todf_magic():
     @register_cell_magic
-    def todf(line, cell):
+    def todf(_, cell: List[str]):
+        """Apply to_dataframe method to OBBject"""
 
-        lines = list(filter(None, cell.split("\n")))
-        # Get the nb namespace
         namespace = get_ipython().user_ns
+        lines = list(filter(None, cell.split("\n")))
+        method = ".to_dataframe()"
 
-        for nb_line in lines:
-            if "=" not in nb_line:
-                # If I have a line in a nb that doesnt assign, do nothing.
-                # Can check if the last line doesnt assign and then return, but this is just an idea
-                continue
+        for n, nb_line in enumerate(lines):
+            line_code = nb_line.strip().replace(" ", "")
+            func = eval if not has_assign(nb_line) and n == len(lines) - 1 else exec
             try:
-                # if my line is df = obb.stocks.load("AAPL"), we change to evaluate
-                # df = {}.to_dataframe()
-                to_eval = nb_line.strip().replace(" ", "")
-                exec(to_eval + ".to_dataframe()", namespace)
+                output = func(line_code + method, namespace)
             except Exception:
-                # If this is not dataframable or something else goes wrong, lets assign the
-                # OBBject.  We can do better handling if desired
-                exec(to_eval, namespace)
+                output = func(line_code, namespace)
+
+        # We only display the last line
+        if output is not None:
+            display(output)
 
 
-try:
-    # This will only work if we can reach IPython.
-    ipython = get_ipython()
+with contextlib.suppress(AttributeError):
     register_todf_magic()
-except NameError:
-    pass  # Not in IPython environment
