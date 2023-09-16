@@ -13,6 +13,7 @@ from openbb_core.app.router import Router
 from openbb_etf.etf_definitions import (
     EtfCountries,
     EtfHoldings,
+    EtfInfo,
     EtfSearch,
     EtfSectors,
     Results,
@@ -91,7 +92,11 @@ def info(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:
+) -> EtfInfo:
     """ETF Info."""
 
-    return OBBject(results=Query(**locals()).execute())
+    data = Results(OBBject(results=Query(**locals()).execute()), "EtfInfo")
+    results = EtfInfo.parse_obj(data.__dict__)
+    results.results = data.results  # type: ignore
+
+    return results

@@ -48,7 +48,7 @@ class FMPEtfInfoData(EtfInfoData):
         description="The average daily volume of the ETF."
     )
     sectors: Optional[List[Dict]] = Field(
-        description="The sector weightings of the ETF holdings."
+        description="The sector weightings of the ETF holdings.", alias="sectorsList"
     )
     website: Optional[str] = Field(description="The website of the ETF.")
     description: Optional[str] = Field(description="The description of the ETF.")
