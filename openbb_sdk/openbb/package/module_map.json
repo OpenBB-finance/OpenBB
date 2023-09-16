@@ -33,6 +33,7 @@
     "etf": "/etf",
     "etf_countries": "/etf/countries",
     "etf_holdings": "/etf/holdings",
+    "etf_info": "/etf/info",
     "etf_search": "/etf/search",
     "etf_sectors": "/etf/sectors",
     "fixedincome": "/fixedincome",

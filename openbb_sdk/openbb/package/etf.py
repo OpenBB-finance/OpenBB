@@ -14,6 +14,7 @@ class CLASS_etf(Container):
     """/etf
     countries
     holdings
+    info
     search
     sectors
     """
@@ -230,6 +231,95 @@ class CLASS_etf(Container):
 
         return self._command_runner.run(
             "/etf/holdings",
+            **inputs,
+        )
+
+    @validate_arguments
+    def info(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="The exchange ticker symbol for the ETF."
+            ),
+        ],
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """ETF Info.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            The exchange ticker symbol for the ETF.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfInfo]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        EtfInfo
+        -------
+        symbol : Optional[str]
+            The exchange ticker symbol for the ETF.
+        inception_date : Optional[str]
+            Inception date of the ETF.
+        name : Optional[str]
+            Name of the ETF.
+        issuer : Optional[str]
+            The issuer of the ETF. (provider: fmp)
+        asset_class : Optional[str]
+            The asset class of the ETF. (provider: fmp)
+        currency : Optional[str]
+            The currency of the ETF. (provider: fmp)
+        country : Optional[str]
+            The country where the ETF is domiciled. (provider: fmp)
+        cusip : Optional[str]
+            The CUSIP number of the ETF. (provider: fmp)
+        isin : Optional[str]
+            The ISIN number of the ETF. (provider: fmp)
+        holdings_count : Optional[int]
+            The number of holdings of the ETF. (provider: fmp)
+        nav : Optional[float]
+            The NAV of the ETF. (provider: fmp)
+        aum : Optional[int]
+            The AUM of the ETF. (provider: fmp)
+        expense_ratio : Optional[float]
+            The expense ratio of the ETF. (provider: fmp)
+        avg_volume : Optional[float]
+            The average daily volume of the ETF. (provider: fmp)
+        sectors : Optional[List[Dict]]
+            The sector weightings of the ETF holdings. (provider: fmp)
+        website : Optional[str]
+            The website of the ETF. (provider: fmp)
+        description : Optional[str]
+            The description of the ETF. (provider: fmp)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/etf/info",
             **inputs,
         )
 

@@ -83,3 +83,15 @@ def countries(
     results.results = data.results  # type: ignore
 
     return results
+
+
+@router.command(model="EtfInfo")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """ETF Info."""
+
+    return OBBject(results=Query(**locals()).execute())
