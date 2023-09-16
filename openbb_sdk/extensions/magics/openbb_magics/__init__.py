@@ -21,7 +21,9 @@ def has_assign(code: str) -> bool:
     return False
 
 
-def register_todf_magic():
+def register_magics():
+    """Register magic methods"""
+
     @register_cell_magic
     def todf(_, cell: List[str]):
         """Apply to_dataframe method to OBBject"""
@@ -44,4 +46,4 @@ def register_todf_magic():
 
 
 with contextlib.suppress(AttributeError):
-    register_todf_magic()
+    register_magics()
