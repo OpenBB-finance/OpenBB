@@ -76,9 +76,9 @@ class IntrinioStockNewsFetcher(
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
-        base_url = "https://api-v2.intrinio.com"
+        base_url = "https://api-v2.intrinio.com/companies"
         query_str = get_querystring(query.dict(by_alias=True), ["symbols"])
-        url = f"{base_url}/companies/{query.symbols}/news?{query_str}&api_key={api_key}"
+        url = f"{base_url}/{query.symbols}/news?{query_str}&api_key={api_key}"
 
         return get_data_many(url, "news", **kwargs)
 
