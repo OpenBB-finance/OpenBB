@@ -16,7 +16,7 @@ def register_magics():
     """Register magic methods"""
 
     @register_cell_magic
-    def todf(_, cell: List[str]):
+    def df(_, cell: List[str]):
         """Apply to_dataframe method to OBBject"""
 
         namespace = get_ipython().user_ns
@@ -38,6 +38,27 @@ def register_magics():
             display(output)
 
     # Other magics...
+    @register_cell_magic
+    def dict(_, cell: List[str]):
+        """Apply to_dataframe method to OBBject"""
+
+        namespace = get_ipython().user_ns
+        lines = list(filter(None, cell.split("\n")))
+
+        for n, nb_line in enumerate(lines):
+            line_code = nb_line.strip().replace(" ", "")
+            if line_code.startswith("#"):
+                output = None
+                continue
+            func = eval if not has_assign(nb_line) and n == len(lines) - 1 else exec
+            try:
+                output = func(line_code + ".to_dict()", namespace)
+            except (SyntaxError, AttributeError):
+                output = func(line_code, namespace)
+
+        # We only display the last line
+        if output is not None:
+            display(output)
 
 
 with contextlib.suppress(AttributeError):
