@@ -620,7 +620,7 @@ def display_candle(
             weekly,
             monthly,
         )
-        data = process_candle(data)
+    #    data = process_candle(data)  #TODO: Remove all instances of process_candle
 
     if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
         data = find_trendline(data, "OC_High", "high")
@@ -656,6 +656,7 @@ def display_candle(
     return fig.show(external=external_axes)
 
 
+# TODO: Remove all instances of process_candle
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     """Process DataFrame into candle style plot.
 
@@ -679,12 +680,13 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
     df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
 
-    df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
-    df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
+    # df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
+    # df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
 
     return df_data
 
 
+# TODO: Improve the calculation and move to  TA Indicators
 def find_trendline(
     df_data: pd.DataFrame, y_key: str, high_low: str = "high"
 ) -> pd.DataFrame:
@@ -734,6 +736,7 @@ def find_trendline(
     return df_data
 
 
+# TODO: Make this a real command that works with every source.
 def additional_info_about_ticker(ticker: str) -> str:
     """Get information about trading the ticker.
 
