@@ -8,7 +8,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_call
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -56,14 +57,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Balance Sheet.
 
         Parameters
@@ -275,10 +276,10 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 10,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Balance Sheet Statement Growth.
 
         Parameters
@@ -417,16 +418,16 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Show Dividend Calendar for a given start and end dates.
 
         Parameters
@@ -466,11 +467,11 @@ class CLASS_stocks_fa(Container):
             Adjusted dividend on a date in the calendar.
         dividend : Optional[float]
             Dividend amount in the calendar.
-        record_date : date
+        record_date : Optional[date]
             Record date of the dividend in the calendar.
-        payment_date : date
+        payment_date : Optional[date]
             Payment date of the dividend in the calendar.
-        declaration_date : date
+        declaration_date : Optional[date]
             Declaration date of the dividend in the calendar."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -499,14 +500,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Cash Flow Statement.
 
         Parameters
@@ -698,10 +699,10 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 10,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Cash Flow Statement Growth.
 
         Parameters
@@ -822,8 +823,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Executive Compensation.
 
         Parameters
@@ -901,16 +902,16 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Stock Split Calendar.
 
         Parameters
@@ -975,8 +976,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Historical Dividends.
 
         Parameters
@@ -1044,10 +1045,10 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 50,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Earnings Calendar.
 
         Parameters
@@ -1091,7 +1092,7 @@ class CLASS_stocks_fa(Container):
             Revenue of the earnings calendar.
         revenue_estimated : Optional[float]
             Estimated revenue of the earnings calendar.
-        updated_from_date : date
+        updated_from_date : Optional[date]
             Updated from date of the earnings calendar.
         fiscal_date_ending : date
             Fiscal date ending of the earnings calendar."""  # noqa: E501
@@ -1120,8 +1121,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Number of Employees.
 
         Parameters
@@ -1193,14 +1194,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 30,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Analyst Estimates.
 
         Parameters
@@ -1304,14 +1305,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Income Statement.
 
         Parameters
@@ -1403,7 +1404,7 @@ class CLASS_stocks_fa(Container):
             Research and development expenses.
         general_and_administrative_expenses : Optional[int]
             General and administrative expenses.
-        selling_and_marketing_expenses : float
+        selling_and_marketing_expenses : Optional[float]
             Selling and marketing expenses.
         selling_general_and_administrative_expenses : Optional[int]
             Selling, general and administrative expenses.
@@ -1503,14 +1504,14 @@ class CLASS_stocks_fa(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 10,
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Income Statement Growth.
 
         Parameters
@@ -1626,7 +1627,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         transactionType: Annotated[
-            Optional[
+            Union[
                 List[
                     Literal[
                         "A-Award",
@@ -1648,32 +1649,34 @@ class CLASS_stocks_fa(Container):
                         "X-InTheMoney",
                         "Z-Trust",
                     ]
-                ]
+                ],
+                str,
+                None,
             ],
             OpenBBCustomParameter(description="Type of the transaction."),
-        ],
+        ] = ["P-Purchase"],
         reportingCik: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="CIK of the reporting owner."),
-        ],
+        ] = None,
         companyCik: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="CIK of the company owner."),
-        ],
+        ] = None,
         page: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
-        ],
+        ] = 0,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Stock Insider Trading.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
-        transactionType : Optional[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']]]
+        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], str, NoneType]
             Type of the transaction.
         reportingCik : Optional[int]
             CIK of the reporting owner.
@@ -1762,14 +1765,14 @@ class CLASS_stocks_fa(Container):
         include_current_quarter: Annotated[
             Optional[bool],
             OpenBBCustomParameter(description="Include current quarter data."),
-        ],
+        ] = False,
         date: Annotated[
             Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
-        ],
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Institutional Ownership.
 
         Parameters
@@ -1803,7 +1806,7 @@ class CLASS_stocks_fa(Container):
         ----------------------
         symbol : str
             Symbol to get data for.
-        cik : str
+        cik : Optional[str]
             CIK of the company.
         date : date
             The date of the data.
@@ -1813,11 +1816,11 @@ class CLASS_stocks_fa(Container):
             Number of investors holding the stock in the last quarter.
         investors_holding_change : int
             Change in the number of investors holding the stock.
-        number_of_13f_shares : int
+        number_of_13f_shares : Optional[int]
             Number of 13F shares.
-        last_number_of_13f_shares : int
+        last_number_of_13f_shares : Optional[int]
             Number of 13F shares in the last quarter.
-        number_of_13f_shares_change : int
+        number_of_13f_shares_change : Optional[int]
             Change in the number of 13F shares.
         total_invested : float
             Total amount invested.
@@ -1902,14 +1905,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 100,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Key Metrics.
 
         Parameters
@@ -2089,8 +2092,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Key Executives.
 
         Parameters
@@ -2156,8 +2159,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        **kwargs,
+    ) -> OBBject[Data]:
         """Company Overview.
 
         Parameters
@@ -2172,7 +2175,7 @@ class CLASS_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : List[CompanyOverview]
+            results : CompanyOverview
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2283,14 +2286,14 @@ class CLASS_stocks_fa(Container):
         date: Annotated[
             Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
-        ],
+        ] = None,
         page: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
-        ],
+        ] = 0,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Stock Ownership.
 
         Parameters
@@ -2426,8 +2429,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        **kwargs,
+    ) -> OBBject[Data]:
         """Price Target Consensus.
 
         Parameters
@@ -2442,7 +2445,7 @@ class CLASS_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : List[PriceTargetConsensus]
+            results : PriceTargetConsensus
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2489,8 +2492,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Price Target.
 
         Parameters
@@ -2574,14 +2577,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 12,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Extensive set of ratios over time.
 
         Parameters
@@ -2757,14 +2760,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
-        ],
+        ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Revenue Geographic.
 
         Parameters
@@ -2838,14 +2841,14 @@ class CLASS_stocks_fa(Container):
         period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
-        ],
+        ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
-        ],
+        ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Revenue Business Line.
 
         Parameters
@@ -2907,8 +2910,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Share Statistics.
 
         Parameters
@@ -2972,8 +2975,8 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Historical Stock Splits.
 
         Parameters
@@ -3041,10 +3044,10 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),
-        ],
+        ] = 1,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Earnings Call Transcript.
 
         Parameters

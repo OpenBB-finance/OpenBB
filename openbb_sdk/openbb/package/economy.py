@@ -7,6 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -28,7 +29,7 @@ class CLASS_economy(Container):
     @validate_call
     def available_indices(
         self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Lists of available indices from a provider.
 
         Parameters
@@ -110,10 +111,10 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(
                 description="Index for which we want to fetch the constituents."
             ),
-        ],
+        ] = "dowjones",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get the constituents of an index.
 
         Parameters
@@ -147,15 +148,15 @@ class CLASS_economy(Container):
             Name of the constituent company in the index.
         sector : str
             Sector the constituent company in the index belongs to.
-        sub_sector : str
+        sub_sector : Optional[str]
             Sub-sector the constituent company in the index belongs to.
-        headquarter : str
+        headquarter : Optional[str]
             Location of the headquarter of the constituent company in the index.
-        date_first_added : Union[date, str]
+        date_first_added : Optional[Union[date, str]]
             Date the constituent company was added to the index.
         cik : int
             Central Index Key of the constituent company in the index.
-        founded : Union[date, str]
+        founded : Optional[Union[date, str]]
             Founding year of the constituent company in the index."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -235,32 +236,32 @@ class CLASS_economy(Container):
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
             OpenBBCustomParameter(description="The data units."),
-        ],
+        ] = "growth_same",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(description="The data time frequency."),
-        ],
+        ] = "monthly",
         harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
             ),
-        ],
+        ] = False,
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """CPI.
 
         Parameters
@@ -339,16 +340,16 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get historical close values for select European indices.
 
         Parameters
@@ -420,8 +421,8 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get  current levels for constituents of select European indices.
 
         Parameters
@@ -507,16 +508,16 @@ class CLASS_economy(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["cboe", "fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get historical  levels for an index.
 
         Parameters
@@ -531,7 +532,7 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+        interval : Optional[Union[Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
             Data granularity. (provider: cboe, fmp, yfinance)
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
@@ -624,7 +625,7 @@ class CLASS_economy(Container):
     @validate_call
     def risk(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Market Risk Premium.
 
         Parameters
@@ -652,7 +653,7 @@ class CLASS_economy(Container):
         -----------
         country : str
             Market country.
-        continent : str
+        continent : Optional[str]
             Continent of the country.
         total_equity_risk_premium : float
             Total equity risk premium for the country.

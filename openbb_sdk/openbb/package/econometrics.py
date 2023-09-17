@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import Dict, List, Literal, Union
 
-import openbb_provider
 import pandas
 from annotated_types import Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_call
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -36,11 +36,11 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def bgot(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
         lags: Annotated[int, Gt(gt=0)] = 1,
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Data]:
         """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
         Parameters
@@ -73,10 +73,8 @@ class CLASS_econometrics(Container):
 
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def coint(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        columns: List[str],
-    ) -> OBBject[BaseModel]:
+        self, data: Union[List[Data], pandas.DataFrame], columns: List[str]
+    ) -> OBBject[Data]:
         """Show co-integration between two timeseries using the two step Engle-Granger test.
 
         Parameters
@@ -104,9 +102,7 @@ class CLASS_econometrics(Container):
         )
 
     @validate_call(config=dict(arbitrary_types_allowed=True))
-    def corr(
-        self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame]
-    ) -> OBBject[list]:
+    def corr(self, data: Union[List[Data], pandas.DataFrame]) -> OBBject[List[Data]]:
         """Get the corrlelation matrix of an input dataset.
 
         Parameters
@@ -132,10 +128,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def dwat(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Perform Durbin-Watson test for autocorrelation
 
         Parameters
@@ -167,11 +163,11 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def granger(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_column: str,
         lag: Annotated[int, Gt(gt=0)] = 3,
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Data]:
         """Perform Granger causality test to determine if X "causes" y.
 
         Parameters
@@ -205,10 +201,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def ols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Perform OLS regression.  This returns the model and results objects from statsmodels.
 
         Parameters
@@ -240,10 +236,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def ols_summary(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Data]:
         """Perform OLS regression.  This returns the summary object from statsmodels.
 
         Parameters
@@ -275,10 +271,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelbols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Perform a Between estimator regression on panel data
 
         Parameters
@@ -310,10 +306,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelfd(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Perform a first-difference estimate for panel data
 
         Parameters
@@ -345,10 +341,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelfmac(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Fama-MacBeth estimator for panel data
 
         Parameters
@@ -380,10 +376,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """One- and two-way fixed effects estimator for panel data
 
         Parameters
@@ -415,10 +411,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelpols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Perform a Pooled coefficvient estimator regression on panel data
 
         Parameters
@@ -450,10 +446,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def panelre(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Dict]:
         """Perform One-way Random Effects model for panel data
 
         Parameters
@@ -485,10 +481,10 @@ class CLASS_econometrics(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         column: str,
         regression: Literal["c", "ct", "ctt"] = "c",
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Data]:
         """Perform Augmented Dickey-Fuller unit root test.
 
         Parameters

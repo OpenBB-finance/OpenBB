@@ -6,7 +6,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_call
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -26,8 +27,8 @@ class CLASS_stocks_ca(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        **kwargs,
+    ) -> OBBject[Data]:
         """Company peers.
 
         Parameters
@@ -42,7 +43,7 @@ class CLASS_stocks_ca(Container):
         Returns
         -------
         OBBject
-            results : List[StockPeers]
+            results : StockPeers
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

@@ -7,7 +7,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_call
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -54,8 +55,8 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[BaseModel]:
+        **kwargs,
+    ) -> OBBject[Data]:
         """Get general price and performance metrics of a stock.
 
         Parameters
@@ -70,7 +71,7 @@ class CLASS_stocks(Container):
         Returns
         -------
         OBBject
-            results : List[StockInfo]
+            results : StockInfo
                 Serializable results.
             provider : Optional[Literal['cboe']]
                 Provider name.
@@ -173,19 +174,19 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         chart: bool = False,
         provider: Optional[
             Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Load stock data for a specific ticker.
 
         Parameters
@@ -204,9 +205,9 @@ class CLASS_stocks(Container):
             no default.
         function_ : Literal['TIME_SERIES_INTRADAY', 'TIME_SERIES_DAILY', 'TIME_SERIES_WEEKLY', 'TIME_SERIES_MONTHLY', 'TIME_SERIES_DAILY_ADJUSTED', 'TIME_SERIES_WEEKLY_ADJUSTED', 'TIME_SERIES_MONTHLY_ADJUSTED']
             The time series of your choice.  (provider: alpha_vantage)
-        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], NoneType]
+        period : Optional[Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
             Period of the data to return. (provider: alpha_vantage, yfinance)
-        interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], NoneType, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '60min'], Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
             Data granularity. (provider: alpha_vantage, cboe, fmp, yfinance)
         adjusted : Optional[bool]
             Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon)
@@ -228,7 +229,7 @@ class CLASS_stocks(Container):
             Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
         interval_size : Optional[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]
             The data time frequency. (provider: intrinio)
-        limit : Union[Annotated[int, Ge(ge=0)], NoneType, int]
+        limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
             The number of data entries to return. (provider: intrinio, polygon)
         next_page : Optional[str]
             Token to get the next page of data from a previous API call. (provider: intrinio)
@@ -277,7 +278,7 @@ class CLASS_stocks(Container):
             The volume of the symbol.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.
-        adj_close : Union[Annotated[float, Gt(gt=0)], None, float]
+        adj_close : Optional[Union[Annotated[float, Gt(gt=0)], float]]
             The adjusted close price of the symbol. (provider: alpha_vantage, fmp)
         dividend_amount : Optional[Annotated[float, Ge(ge=0)]]
             Dividend amount paid for the corresponding date. (provider: alpha_vantage)
@@ -337,11 +338,11 @@ class CLASS_stocks(Container):
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get valuation multiples for a stock ticker.
 
         Parameters
@@ -522,17 +523,17 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(
                 description="Page of the stock news to be retrieved."
             ),
-        ],
+        ] = 0,
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="Number of results to return per page."),
-        ],
+        ] = 15,
         chart: bool = False,
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get news for one or more stock tickers.
 
         Parameters
@@ -549,8 +550,6 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        page_size : int
-            Number of results to return per page. (provider: benzinga)
         display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
@@ -563,9 +562,7 @@ class CLASS_stocks(Container):
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
-        tickers : Optional[str]
-            Tickers of the news to retrieve. (provider: benzinga)
-        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], NoneType, str]
+        sort : Optional[Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], str]]
             Order in which to sort the news. (provider: benzinga, polygon)
         isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
@@ -654,7 +651,7 @@ class CLASS_stocks(Container):
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
-        publisher : Union[openbb_polygon.models.stock_news.PolygonPublisher, str]
+        publisher : Optional[Union[openbb_polygon.models.stock_news.PolygonPublisher, str]]
             Publisher of the article. (provider: polygon, yfinance)
         tickers : Optional[List[str]]
             Tickers covered in the article. (provider: polygon)
@@ -699,8 +696,8 @@ class CLASS_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[Union[List[Data], Data]]:
         """Load stock data for a specific ticker.
 
         Parameters
@@ -717,7 +714,7 @@ class CLASS_stocks(Container):
         Returns
         -------
         OBBject
-            results : List[StockQuote]
+            results : Union[List[StockQuote], StockQuote]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -833,14 +830,14 @@ class CLASS_stocks(Container):
     @validate_call
     def search(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")],
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         ticker: Annotated[
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ],
+        ] = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Search for a company or stock ticker.
 
         Parameters

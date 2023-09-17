@@ -6,6 +6,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -26,8 +27,8 @@ class CLASS_stocks_options(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe", "intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Get the complete options chain for a ticker.
 
         Parameters
@@ -38,7 +39,7 @@ class CLASS_stocks_options(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Union[str, datetime.date, NoneType]
+        date : Optional[Union[datetime.date, str]]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns

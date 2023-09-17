@@ -7,6 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -32,16 +33,16 @@ class CLASS_forex(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Forex Intraday Price.
 
         Parameters
@@ -143,7 +144,7 @@ class CLASS_forex(Container):
     @validate_call
     def pairs(
         self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Forex Available Pairs.
 
         Parameters

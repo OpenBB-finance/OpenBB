@@ -1,12 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -35,16 +36,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """
             Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
             short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
@@ -108,16 +109,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """
             The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
             the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
@@ -182,16 +183,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -256,16 +257,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """
             Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -323,7 +324,7 @@ class CLASS_fixedincome(Container):
     @validate_call
     def projections(
         self, provider: Optional[Literal["fred"]] = None, **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -393,16 +394,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
         Parameters
@@ -463,16 +464,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """
             SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
             transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
@@ -536,16 +537,16 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Get treasury rates.
 
         Parameters
@@ -626,14 +627,14 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(
                 description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
             ),
-        ],
+        ] = None,
         inflation_adjusted: Annotated[
             Optional[bool],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
-        ],
+        ] = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
         Parameters

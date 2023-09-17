@@ -5,7 +5,6 @@ import inspect
 import shutil
 import subprocess
 import sys
-from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
@@ -25,6 +24,7 @@ from typing import (
 import pandas as pd
 from importlib_metadata import entry_points
 from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
@@ -241,6 +241,10 @@ class ImportDefinition:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
+        code += "\nfrom openbb_provider.abstract.data import Data"
+        if path.startswith("/qa"):
+            code += "\nfrom openbb_qa.qa_models import "
+            code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -303,14 +307,14 @@ class DocstringGenerator:
     provider_interface = ProviderInterface()
 
     @staticmethod
-    def get_OBBject_description(model_name: str, providers: Optional[str]) -> str:
+    def get_OBBject_description(results_type: str, providers: Optional[str]) -> str:
         """Get the command output description."""
 
         available_providers = providers or "Optional[PROVIDERS]"
 
         obbject_description = (
             "OBBject\n"
-            f"    results : List[{model_name}]\n"
+            f"    results : {results_type}\n"
             "        Serializable results.\n"
             f"    provider : {available_providers}\n"
             "        Provider name.\n"
@@ -327,11 +331,12 @@ class DocstringGenerator:
     @classmethod
     def generate_model_docstring(
         cls,
+        func: Callable,
         model_name: str,
         summary: str,
         explicit_params: dict,
         params: dict,
-        returns: dict,
+        returns: Dict[str, FieldInfo],
     ) -> str:
         """Create the docstring for model."""
 
@@ -374,6 +379,10 @@ class DocstringGenerator:
         for param_name, param in extra_dict.items():
             p_type = param.type
             type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+
+            if "NoneType" in str(type_):
+                type_ = f"Optional[{type_}]".replace(", NoneType", "")
+
             docstring += f"{param_name} : {type_}\n"
             docstring += f"    {param.default.description}\n"
 
@@ -381,7 +390,9 @@ class DocstringGenerator:
         docstring += "\nReturns\n-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
-        docstring += cls.get_OBBject_description(model_name, available_providers)
+
+        results_type = func.__annotations__["return"].results_type_repr()
+        docstring += cls.get_OBBject_description(results_type, available_providers)
 
         # Schema
         underline = "-" * len(model_name)
@@ -390,8 +401,8 @@ class DocstringGenerator:
         for name, field in returns.items():
             try:
                 _type = field.annotation
+                is_optional = not field.is_required()
                 if "BeforeValidator" in str(_type):
-                    is_optional = "Optional" in str(field.annotation)
                     _type = "Optional[int]" if is_optional else "int"
 
                 field_type = (
@@ -403,7 +414,12 @@ class DocstringGenerator:
                     .replace("datetime.datetime", "datetime")
                     .replace("datetime.date", "date")
                     .replace("NoneType", "None")
-                    .replace("None, str]", "str]")
+                    .replace(", None", "")
+                )
+                field_type = (
+                    f"Optional[{field_type}]"
+                    if is_optional and "Optional" not in str(_type)
+                    else field_type
                 )
             except TypeError:
                 # Fallback to the annotation if the repr fails
@@ -432,6 +448,7 @@ class DocstringGenerator:
                 returns = return_schema.model_fields
 
                 func.__doc__ = cls.generate_model_docstring(
+                    func=func,
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
@@ -474,12 +491,12 @@ class MethodDefinition:
     @staticmethod
     def get_default(field: FieldInfo):
         """Get the default value of the field."""
-        field_default = getattr(field, "get_default", lambda: MISSING)()
-        if field_default is None or field_default is MISSING:
+        field_default = getattr(field, "get_default", lambda: PydanticUndefined)()
+        if field_default is None or field_default is PydanticUndefined:
             return Parameter.empty
 
         default_default = getattr(field_default, "default", None)
-        if default_default is MISSING or default_default is Ellipsis:
+        if default_default is None or default_default is PydanticUndefined:
             return Parameter.empty
 
         return default_default
@@ -583,27 +600,24 @@ class MethodDefinition:
     ):
         """Add the field description to the param signature."""
         if model_name:
-            available_fields = (
-                ProviderInterface()
-                .map[model_name]["openbb"]["QueryParams"]["fields"]
-                .keys()
-            )
+            available_fields: Dict[str, FieldInfo] = ProviderInterface().map[
+                model_name
+            ]["openbb"]["QueryParams"]["fields"]
 
             for param, value in od.items():
                 if param not in available_fields:
                     continue
 
-                description = (
-                    ProviderInterface()
-                    .map[model_name]["openbb"]["QueryParams"]["fields"][param]
-                    .description
-                )
+                field = available_fields[param]
 
                 new_value = value.replace(
                     annotation=Annotated[
                         value.annotation,
-                        OpenBBCustomParameter(description=description),
-                    ]
+                        OpenBBCustomParameter(description=field.description),
+                    ],
+                    default=field.default
+                    if field.default is not PydanticUndefined
+                    else Parameter.empty,
                 )
 
                 od[param] = new_value
@@ -616,6 +630,7 @@ class MethodDefinition:
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
+        func_params = func_params.replace("openbb_provider.abstract.data.Data", "Data")
 
         return func_params
 
@@ -635,9 +650,9 @@ class MethodDefinition:
             #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
             #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
-                result_type = "list" if "List" in str(return_type) else "BaseModel"
-
-                func_returns = f"OBBject[{result_type}]"
+                func_returns = return_type.__qualname__
+                if model_name:
+                    func_returns = func_returns.replace(model_name, "Data")
 
         return func_returns
 
@@ -744,6 +759,7 @@ class MethodDefinition:
         code += cls.build_command_method_doc(
             func=func, formatted_params=formatted_params, model_name=model_name
         )
+
         code += cls.build_command_method_implementation(path=path, func=func)
 
         return code

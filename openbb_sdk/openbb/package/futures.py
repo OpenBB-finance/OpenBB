@@ -7,6 +7,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -30,10 +31,10 @@ class CLASS_futures(Container):
         date: Annotated[
             Optional[datetime.date],
             OpenBBCustomParameter(description="Historical date to search curve for."),
-        ],
+        ] = None,
         provider: Optional[Literal["cboe", "yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Futures Historical Price.
 
         Parameters
@@ -98,20 +99,20 @@ class CLASS_futures(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ],
+        ] = None,
         expiration: Annotated[
             Optional[str],
             OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
-        ],
+        ] = None,
         provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Futures Historical Price.
 
         Parameters

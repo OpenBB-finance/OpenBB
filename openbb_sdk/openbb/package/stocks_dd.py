@@ -6,6 +6,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -131,18 +132,18 @@ class CLASS_stocks_dd(Container):
                 ]
             ],
             OpenBBCustomParameter(description="Type of the SEC filing form."),
-        ],
+        ] = None,
         page: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="Page number of the results."),
-        ],
+        ] = 0,
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ],
+        ] = 100,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """SEC Filings.
 
         Parameters

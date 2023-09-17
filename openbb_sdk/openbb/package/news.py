@@ -1,11 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_call
 from typing_extensions import Annotated
 
@@ -23,10 +24,10 @@ class CLASS_news(Container):
         self,
         page: Annotated[
             int, OpenBBCustomParameter(description="Page of the global news.")
-        ],
+        ] = 0,
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[list]:
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Global News.
 
         Parameters
@@ -37,8 +38,6 @@ class CLASS_news(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        page_size : int
-            Number of results to return per page. (provider: benzinga)
         display_output : Literal['headline', 'summary', 'full', 'all']
             Type of data to return. (provider: benzinga)
         date : Optional[datetime.datetime]
@@ -57,8 +56,6 @@ class CLASS_news(Container):
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        tickers : Optional[str]
-            Tickers of the news to retrieve. (provider: benzinga)
         channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
         topics : Optional[str]

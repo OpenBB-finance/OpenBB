@@ -2,13 +2,20 @@
 
 from typing import List, Literal, Union
 
-import openbb_provider
 import pandas
 from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_call
+from openbb_provider.abstract.data import Data
+from openbb_qa.qa_models import (
+    CAPMModel,
+    NormalityModel,
+    OmegaModel,
+    SummaryModel,
+    UnitRootModel,
+)
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -31,10 +38,8 @@ class CLASS_qa(Container):
 
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def capm(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-    ) -> OBBject[BaseModel]:
+        self, data: Union[List[Data], pandas.DataFrame], target: str
+    ) -> OBBject[CAPMModel]:
         """Capital Asset Pricing Model."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -50,10 +55,10 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def kurtosis(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         window: Annotated[int, Gt(gt=0)],
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Kurtosis.
 
         Parameters
@@ -84,10 +89,8 @@ class CLASS_qa(Container):
 
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def normality(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-    ) -> OBBject[BaseModel]:
+        self, data: Union[List[Data], pandas.DataFrame], target: str
+    ) -> OBBject[NormalityModel]:
         """
         Normality Statistics.
 
@@ -123,11 +126,11 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
-    ) -> OBBject[list]:
+    ) -> OBBject[List[OmegaModel]]:
         """Omega Ratio.
 
         Parameters
@@ -162,11 +165,11 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         window: Annotated[int, Gt(gt=0)],
         quantile_pct: Annotated[float, Ge(ge=0)] = 0.5,
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Quantile."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -184,11 +187,11 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def sh(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         rfr: float = 0.0,
         window: Annotated[int, Gt(gt=0)] = 252,
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Sharpe Ratio.
 
         Parameters
@@ -223,10 +226,10 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def skew(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         window: Annotated[int, Gt(gt=0)],
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Skewness.
 
         Parameters
@@ -258,12 +261,12 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def so(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         target_return: float = 0.0,
         window: Annotated[int, Gt(gt=0)] = 252,
         adjusted: bool = False,
-    ) -> OBBject[list]:
+    ) -> OBBject[List[Data]]:
         """Sortino Ratio.
 
         For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
@@ -302,10 +305,8 @@ class CLASS_qa(Container):
 
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def summary(
-        self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
-        target: str,
-    ) -> OBBject[BaseModel]:
+        self, data: Union[List[Data], pandas.DataFrame], target: str
+    ) -> OBBject[SummaryModel]:
         """Summary.
 
         Parameters
@@ -334,11 +335,11 @@ class CLASS_qa(Container):
     @validate_call(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[List[Data], pandas.DataFrame],
         target: str,
         fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[UnitRootModel]:
         """Unit Root Test.
 
         Augmented Dickey-Fuller test for unit root.
