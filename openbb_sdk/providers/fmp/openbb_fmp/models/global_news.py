@@ -60,18 +60,19 @@ class FMPGlobalNewsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v4"
+
         pages = math.ceil(query.limit / 20)
-        all_data = []
+        data = []
 
         for page in range(pages):
             url = f"{base_url}/general_news?page={page}&apikey={api_key}"
-            data = get_data_many(url, **kwargs)
-            all_data.extend(data)
+            response = get_data_many(url, **kwargs)
+            data.extend(response)
 
-        all_data = sorted(all_data, key=lambda x: x["publishedDate"], reverse=True)
-        all_data = all_data[: query.limit]
+        data = sorted(data, key=lambda x: x["publishedDate"], reverse=True)
+        data = data[: query.limit]
 
-        return all_data
+        return data
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPGlobalNewsData]:

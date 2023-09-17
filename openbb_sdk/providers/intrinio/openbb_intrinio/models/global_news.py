@@ -9,7 +9,6 @@ from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
     GlobalNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, validator
 
 from openbb_intrinio.utils.helpers import get_data_many
@@ -20,13 +19,6 @@ class IntrinioGlobalNewsQueryParams(GlobalNewsQueryParams):
 
     Source: https://docs.intrinio.com/documentation/web_api/get_all_company_news_v2
     """
-
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "limit": "page_size",
-        }
 
 
 class IntrinioGlobalNewsData(GlobalNewsData):
@@ -76,8 +68,7 @@ class IntrinioGlobalNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.dict(by_alias=True), [])
-        url = f"{base_url}/companies/news?{query_str}&api_key={api_key}"
+        url = f"{base_url}/companies/news?page_size={query.limit}&api_key={api_key}"
 
         return get_data_many(url, "news", **kwargs)
 
