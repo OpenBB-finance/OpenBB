@@ -1,46 +1,28 @@
+"""Test if providers and fetchers are covered by tests."""
 import os
-
 import unittest
 from importlib import import_module
-
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.registry import RegistryLoader
 from typing import Dict
 
+from openbb_provider.abstract.provider import Provider
+from openbb_provider.registry import RegistryLoader
 
-# TODO : this should be imported from utils
-def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
-    """Get the fetchers from the provider registry."""
-    registry = RegistryLoader.from_extensions()
-    provider_fetcher_map: Dict[str, Dict[str, Fetcher]] = {}
-    for provider_name, provider_cls in registry.providers.items():
-        provider_fetcher_map[provider_name] = {}
-        for fetcher_name, fetcher_cls in provider_cls.fetcher_dict.items():
-            provider_fetcher_map[provider_name][fetcher_name] = fetcher_cls
-    return provider_fetcher_map
+from providers.tests.utils.unit_test_generator import (
+    check_pattern_in_file,
+    get_provider_fetchers,
+)
 
 
-# TODO : this should be imported from utils
-def check_pattern_in_file(file_path: str, pattern: str) -> bool:
-    """Check if a pattern is in a file."""
-    with open(file_path) as f:
-        lines = f.readlines()
-        for line in lines:
-            if pattern in line:
-                return True
-    return False
-
-
-def get_providers():
+def get_providers() -> Dict[str, Provider]:
     """Get the providers from the provider registry."""
-    providers = {}
+    providers: Dict[str, Provider] = {}
     registry = RegistryLoader.from_extensions()
     for provider_name, provider_cls in registry.providers.items():
         providers[provider_name] = provider_cls
     return providers
 
 
-def get_provider_test_files(provider):
+def get_provider_test_files(provider: Provider):
     """Given a provider, return the path to the test file."""
     fetchers_dict = provider.fetcher_dict
     fetcher_module_name = fetchers_dict[list(fetchers_dict.keys())[0]].__module__
@@ -54,10 +36,10 @@ def get_provider_test_files(provider):
 
 
 class ProviderFetcherTest(unittest.TestCase):
-    """Tests for providers and fetchers"""
+    """Tests for providers and fetchers."""
 
     def test_provider_w_tests(self):
-        """Test the provider fetchers - ensure all providers have tests"""
+        """Test the provider fetchers and ensure all providers have tests."""
         providers = get_providers()
 
         for provider_name, provider_cls in providers.items():

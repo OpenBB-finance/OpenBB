@@ -2,12 +2,13 @@
 import os
 from typing import Any, Dict, Tuple
 
-from credentials_schema import test_credentials
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import ModelField
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
+
+from providers.tests.utils.credentials_schema import test_credentials
 
 
 def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
