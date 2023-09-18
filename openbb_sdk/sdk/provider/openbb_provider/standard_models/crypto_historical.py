@@ -1,7 +1,7 @@
 """Crypto aggregate end of day price data model."""
 
 
-from datetime import date, datetime
+from datetime import date as dateType, datetime
 from typing import List, Optional, Set, Union
 
 from pydantic import Field, PositiveFloat, validator
@@ -15,11 +15,11 @@ class CryptoHistoricalQueryParams(QueryParams):
     """Crypto end of day Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    start_date: Optional[date] = Field(
+    start_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[date] = Field(
+    end_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
@@ -35,7 +35,7 @@ class CryptoHistoricalQueryParams(QueryParams):
 class CryptoHistoricalData(Data):
     """Crypto end of day price Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))

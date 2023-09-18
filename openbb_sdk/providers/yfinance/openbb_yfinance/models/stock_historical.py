@@ -55,14 +55,6 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
 class YFinanceStockHistoricalData(StockHistoricalData):
     """YFinance Stock End of Day Data."""
 
-    @validator("Date", pre=True, check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            return datetime.strptime(v, "%Y-%m-%d").date()
-
 
 class YFinanceStockHistoricalFetcher(
     Fetcher[
