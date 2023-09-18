@@ -102,7 +102,10 @@ def write_fetcher_unit_tests() -> None:
 
     for provider, fetcher_dict in fetchers.items():
         path = os.path.join(
-            "..", f"{provider}", "tests", f"test_{provider}_fetchers.py"
+            "providers",
+            f"{provider}",
+            "tests",
+            f"test_{provider}_fetchers.py",
         )
         generate_fetcher_unit_tests(path)
 
@@ -115,10 +118,10 @@ def write_fetcher_unit_tests() -> None:
                 provider_fetchers[model_name] = {}
             provider_fetchers[model_name][fetcher_name] = path
 
-            pattern = f"from {fetcher_path} import {fetcher_name}"
+            pattern = f"from {fetcher_path}"
             if not check_pattern_in_file(path, pattern):
                 with open(path, "a") as f:
-                    f.write(f"{pattern}\n")
+                    f.write(f"{pattern} import {fetcher_name}\n")
 
         pattern = "vcr_config"
         if not check_pattern_in_file(path, pattern):
@@ -173,3 +176,7 @@ def test_{fetcher_name_snake}(credentials=test_credentials):
                 )
                 f.write(test_code)
                 f.write("\n\n")
+
+
+if __name__ == "__main__":
+    write_fetcher_unit_tests()
