@@ -243,7 +243,7 @@ class CLASS_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """ETF Info.
@@ -252,7 +252,7 @@ class CLASS_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -262,7 +262,7 @@ class CLASS_etf(Container):
         OBBject
             results : List[EtfInfo]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -280,11 +280,11 @@ class CLASS_etf(Container):
         name : Optional[str]
             Name of the ETF.
         issuer : Optional[str]
-            The issuer of the ETF. (provider: fmp)
+            The issuer of the ETF. (provider: fmp, tmx)
         asset_class : Optional[str]
             The asset class of the ETF. (provider: fmp)
         currency : Optional[str]
-            The currency of the ETF. (provider: fmp)
+            The currency of the ETF. (provider: fmp, tmx)
         country : Optional[str]
             The country where the ETF is domiciled. (provider: fmp)
         cusip : Optional[str]
@@ -294,19 +294,59 @@ class CLASS_etf(Container):
         holdings_count : Optional[int]
             The number of holdings of the ETF. (provider: fmp)
         nav : Optional[float]
-            The NAV of the ETF. (provider: fmp)
+            The NAV of the ETF. (provider: fmp, tmx)
         aum : Optional[int]
             The AUM of the ETF. (provider: fmp)
         expense_ratio : Optional[float]
             The expense ratio of the ETF. (provider: fmp)
-        avg_volume : Optional[float]
-            The average daily volume of the ETF. (provider: fmp)
+        avg_volume : Union[float, NoneType, int]
+            The average daily volume of the ETF. (provider: fmp, tmx)
         sectors : Optional[List[Dict]]
-            The sector weightings of the ETF holdings. (provider: fmp)
+            The sector weightings of the ETF holdings. (provider: fmp, tmx)
         website : Optional[str]
-            The website of the ETF. (provider: fmp)
+            The website of the ETF. (provider: fmp, tmx)
         description : Optional[str]
-            The description of the ETF. (provider: fmp)"""  # noqa: E501
+            The description of the ETF. (provider: fmp, tmx)
+        investment_style : Optional[str]
+            The investment style of the ETF. (provider: tmx)
+        esg : Optional[str]
+            Whether the ETF qualifies as an ESG fund. (provider: tmx)
+        unit_price : Optional[float]
+            The unit price of the ETF. (provider: tmx)
+        close : Optional[float]
+            The closing price of the ETF. (provider: tmx)
+        prev_close : Optional[float]
+            The previous closing price of the ETF. (provider: tmx)
+        return_1m : Optional[float]
+            The one-month return of the ETF. (provider: tmx)
+        return_3m : Optional[float]
+            The three-month return of the ETF. (provider: tmx)
+        return_6m : Optional[float]
+            The six-month return of the ETF. (provider: tmx)
+        return_ytd : Optional[float]
+            The year-to-date return of the ETF. (provider: tmx)
+        return_1y : Optional[float]
+            The one-year return of the ETF. (provider: tmx)
+        beta : Optional[float]
+            The 1-year beta of the ETF. (provider: tmx)
+        avg_volume_30d : Optional[int]
+            The 30-day average volume of the ETF. (provider: tmx)
+        pe_ratio : Optional[float]
+            The price-to-earnings ratio of the ETF. (provider: tmx)
+        pb_ratio : Optional[float]
+            The price-to-book ratio of the ETF. (provider: tmx)
+        management_fee : Optional[float]
+            The management fee of the ETF. (provider: tmx)
+        mer : Optional[float]
+            The management expense ratio of the ETF. (provider: tmx)
+        distribution_yield : Optional[float]
+            The distribution yield of the ETF. (provider: tmx)
+        dividend_frequency : Optional[str]
+            The dividend payment frequency of the ETF. (provider: tmx)
+        regions : Optional[List[Dict]]
+            The region weightings of the ETF holdings. (provider: tmx)
+        holdings_top10 : Optional[List[Dict]]
+            The top 10 holdings of the ETF. (provider: tmx)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

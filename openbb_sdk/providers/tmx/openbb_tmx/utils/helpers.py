@@ -109,4 +109,11 @@ def get_all_etfs() -> pd.DataFrame:
         ]
     )
 
+    etfs = etfs.replace("-", None).convert_dtypes()
+
+    for i in etfs.index:
+        etfs.loc[i, "fund_family"] = etfs.loc[i, "additional_data"]["fundfamilyen"]
+        etfs.loc[i, "website"] = etfs.loc[i, "additional_data"]["websitefactsheeten"]
+        etfs.loc[i, "mer"] = etfs.loc[i, "additional_data"]["mer"]
+
     return etfs.replace("-", None).convert_dtypes()
