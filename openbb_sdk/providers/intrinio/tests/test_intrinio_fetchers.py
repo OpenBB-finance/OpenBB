@@ -43,7 +43,7 @@ def test_intrinio_forex_pairs_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_stock_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbols": "AAPL"}
 
     fetcher = IntrinioStockNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -70,7 +70,7 @@ def test_intrinio_stock_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "date": "2023-09-15"}
 
     fetcher = IntrinioOptionsChainsFetcher()
     result = fetcher.test(params, credentials)

@@ -97,7 +97,7 @@ class IntrinioStockQuoteData(StockQuoteData):
 class IntrinioStockQuoteFetcher(
     Fetcher[
         IntrinioStockQuoteQueryParams,
-        List[IntrinioStockQuoteData],
+        IntrinioStockQuoteData,
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -124,5 +124,4 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_data(data: Dict) -> IntrinioStockQuoteData:
         """Return the transformed data."""
-
         return IntrinioStockQuoteData.parse_obj(data)

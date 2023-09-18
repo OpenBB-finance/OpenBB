@@ -1,10 +1,6 @@
 """Intrinio Options Chains fetcher."""
 
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_many
@@ -23,7 +19,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
 
-    date: Optional[dateType] = Field(
+    date: Optional[str] = Field(
         description="Date for which the options chains are returned."
     )
 
