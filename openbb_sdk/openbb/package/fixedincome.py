@@ -44,7 +44,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """
             Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
@@ -117,7 +117,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """
             The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
@@ -191,7 +191,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -265,7 +265,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """
             Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
@@ -402,7 +402,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
@@ -472,7 +472,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """
             SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
@@ -545,7 +545,7 @@ class CLASS_fixedincome(Container):
             ),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """Get treasury rates.
 
@@ -633,7 +633,7 @@ class CLASS_fixedincome(Container):
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
         provider: Optional[Literal["fred"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 

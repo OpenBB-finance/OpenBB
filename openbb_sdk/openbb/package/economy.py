@@ -299,13 +299,13 @@ class CLASS_economy(Container):
 
         CPI
         ---
-        date : date
+        date : Optional[date]
             The date of the data.
-        realtime_start : date
+        realtime_start : Optional[date]
             Date the data was updated.
-        realtime_end : date
+        realtime_end : Optional[date]
             Date the data was updated.
-        value : float
+        value : Optional[float]
             Value of the data."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -655,9 +655,9 @@ class CLASS_economy(Container):
             Market country.
         continent : Optional[str]
             Continent of the country.
-        total_equity_risk_premium : float
+        total_equity_risk_premium : Optional[Annotated[float, Gt(gt=0)]]
             Total equity risk premium for the country.
-        country_risk_premium : float
+        country_risk_premium : Optional[Annotated[float, Ge(ge=0)]]
             Country-specific risk premium."""  # noqa: E501
 
         inputs = filter_inputs(

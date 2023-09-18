@@ -159,7 +159,7 @@ class CLASS_forex(Container):
             A specific date to get data for. (provider: polygon)
         search : Optional[str]
             Search for terms within the ticker and/or company name. (provider: polygon)
-        active : Optional[Literal[True, False]]
+        active : Optional[bool]
             Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)
         order : Optional[Literal['asc', 'desc']]
             Order data by ascending or descending. (provider: polygon)

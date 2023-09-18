@@ -34,7 +34,7 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
         default="",
         description="Search for terms within the ticker and/or company name.",
     )
-    active: Optional[Literal[True, False]] = Field(
+    active: Optional[bool] = Field(
         default=True,
         description="Specify if the tickers returned should be actively traded on the queried date.",
     )

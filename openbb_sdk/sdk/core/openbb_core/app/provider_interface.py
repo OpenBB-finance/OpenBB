@@ -414,7 +414,13 @@ class ProviderInterface(metaclass=SingletonMeta):
 
             result[model_name] = make_dataclass(  # type: ignore
                 cls_name=model_name,
-                fields=[("provider", Literal[tuple(choices)])],  # type: ignore
+                fields=[
+                    (
+                        "provider",
+                        Literal[tuple(choices)],  # type: ignore
+                        ... if len(choices) > 1 else choices[0],
+                    )
+                ],
                 bases=(ProviderChoices,),
             )
 
