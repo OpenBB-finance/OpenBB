@@ -4,14 +4,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.index_snapshots import (
-    IndexSnapshotsData,
-    IndexSnapshotsQueryParams,
-)
-from openbb_provider.utils.helpers import make_request
-from pydantic import Field
-
 from openbb_cboe.utils.helpers import (
     EUR_INDEX_COLUMNS,
     US_INDEX_COLUMNS,
@@ -19,6 +11,13 @@ from openbb_cboe.utils.helpers import (
     get_cboe_directory,
     get_cboe_index_directory,
 )
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.standard_models.index_snapshots import (
+    IndexSnapshotsData,
+    IndexSnapshotsQueryParams,
+)
+from openbb_provider.utils.helpers import make_request
+from pydantic import Field
 
 
 class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):

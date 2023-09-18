@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import EUR_INDEX_CONSTITUENTS_COLUMNS, Europe
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.european_index_constituents import (
     EuropeanIndexConstituentsData,
@@ -11,8 +12,6 @@ from openbb_provider.standard_models.european_index_constituents import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import EUR_INDEX_CONSTITUENTS_COLUMNS, Europe
 
 
 class CboeEuropeanIndexConstituentsQueryParams(EuropeanIndexConstituentsQueryParams):

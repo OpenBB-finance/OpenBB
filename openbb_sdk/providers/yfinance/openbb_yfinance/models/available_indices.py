@@ -8,9 +8,8 @@ from openbb_provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
-from pydantic import Field
-
 from openbb_yfinance.utils.references import INDICES
+from pydantic import Field
 
 
 class YFinanceAvailableIndicesQueryParams(AvailableIndicesQueryParams):

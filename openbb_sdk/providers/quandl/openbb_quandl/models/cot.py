@@ -12,9 +12,8 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.helpers import to_snake_case
-from pydantic import Field, validator
-
 from openbb_quandl.utils.series_ids import CFTC
+from pydantic import Field, validator
 
 
 class QuandlCotQueryParams(QueryParams):

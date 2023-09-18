@@ -106,7 +106,9 @@ def test_{fetcher_name}(credentials=test_credentials):
     provider_fetchers: Dict[str, Dict[str, str]] = {}
 
     for provider, fetcher_dict in fetchers.items():
-        path = os.path.join("..", f"{provider}", "tests", "test_fetchers.py")
+        path = os.path.join(
+            "..", f"{provider}", "tests", f"test_{provider}_fetchers.py"
+        )
         generate_fetcher_unit_tests(path)
 
         for model_name, fetcher in fetcher_dict.items():
