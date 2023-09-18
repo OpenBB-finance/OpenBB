@@ -1,17 +1,20 @@
 """Intrinio Options Chains fetcher."""
 
-from datetime import datetime, timedelta, date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+    timedelta,
+)
 from typing import Any, Dict, List, Optional
 
+from openbb_intrinio.utils.helpers import get_data_many
+from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
 from pydantic import Field, validator
-
-from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
-from openbb_intrinio.utils.helpers import get_data_many
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -46,9 +49,7 @@ class IntrinioOptionsChainsFetcher(
     """Perform TET for the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> IntrinioOptionsChainsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
         """Transform the query."""
         transform_params = params
 
@@ -85,11 +86,7 @@ class IntrinioOptionsChainsFetcher(
                 f"date={query.date}&api_key={api_key}"
             )
             response = get_data_many(url, "chain", **kwargs)
-            response = [
-                {
-                    **item["option"], **item["prices"]
-                } for item in response
-            ]
+            response = [{**item["option"], **item["prices"]} for item in response]
             data.extend(response)
 
         return data

@@ -1,7 +1,7 @@
 """Options Chains data model."""
 
 from datetime import date as dateType
-from typing import List, Set, Union, Optional
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
 

@@ -11,11 +11,10 @@ from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pandas import to_datetime
-from pydantic import Field, validator
-
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INDICES, INTERVALS, PERIODS
+from pandas import to_datetime
+from pydantic import Field, validator
 
 
 class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):

@@ -5,7 +5,7 @@ import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_benzinga.utils.helpers import BenzingaStockNewsData, get_data
+from openbb_benzinga.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
@@ -13,8 +13,6 @@ from openbb_provider.standard_models.global_news import (
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, validator
-
-from openbb_benzinga.utils.helpers import get_data
 
 
 class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):

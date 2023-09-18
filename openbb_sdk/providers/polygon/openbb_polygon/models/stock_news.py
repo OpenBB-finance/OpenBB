@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many, get_date_condition
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
@@ -11,8 +11,6 @@ from openbb_provider.standard_models.stock_news import (
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import BaseModel, Field, validator
-
-from openbb_polygon.utils.helpers import get_data_many, get_date_condition
 
 
 class PolygonStockNewsQueryParams(StockNewsQueryParams):
