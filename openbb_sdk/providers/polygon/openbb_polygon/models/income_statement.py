@@ -1,13 +1,12 @@
 from typing import Any, Dict, List, Optional
 
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 from openbb_provider.abstract.data import StrictInt
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import IncomeStatementData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
-
-from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 
 
 class PolygonIncomeStatementQueryParams(PolygonFundamentalQueryParams):

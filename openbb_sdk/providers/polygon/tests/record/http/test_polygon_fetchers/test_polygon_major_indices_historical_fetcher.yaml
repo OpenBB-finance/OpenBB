@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/I:DJI/range/1/day/2022-09-18/2023-09-18?adjusted=True&apiKey=MOCK_API_KEY&limit=49999&sort=desc
+  response:
+    body:
+      string: '{"status":"NOT_AUTHORIZED","request_id":"6ae2797c0c80256b8881b9e8305b15b0","message":"You
+        are not entitled to this data. Please upgrade your plan at https://polygon.io/pricing"}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '177'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Sep 2023 10:01:18 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      X-Request-Id:
+      - 6ae2797c0c80256b8881b9e8305b15b0
+    status:
+      code: 403
+      message: Forbidden
+version: 1

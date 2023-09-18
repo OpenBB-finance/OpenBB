@@ -11,7 +11,6 @@ from typing import Any, Literal, Optional, Union
 import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
-
 from openbb_yfinance.utils.references import MONTHS
 
 

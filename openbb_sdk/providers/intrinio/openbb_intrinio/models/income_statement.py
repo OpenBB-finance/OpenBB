@@ -4,14 +4,13 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
 from pydantic import Field
-
-from openbb_intrinio.utils.helpers import get_data_one
 
 
 class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):

@@ -7,7 +7,6 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
-
 from openbb_yfinance.utils.helpers import get_futures_curve
 
 

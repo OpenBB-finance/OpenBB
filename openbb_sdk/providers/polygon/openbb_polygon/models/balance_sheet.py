@@ -1,12 +1,11 @@
 from typing import Any, Dict, List, Optional
 
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.balance_sheet import BalanceSheetData
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import field_validator
-
-from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 
 
 class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):

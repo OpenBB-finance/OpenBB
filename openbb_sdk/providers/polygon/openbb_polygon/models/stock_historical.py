@@ -7,6 +7,7 @@ from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -18,8 +19,6 @@ from pydantic import (
     PositiveInt,
     field_validator,
 )
-
-from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):

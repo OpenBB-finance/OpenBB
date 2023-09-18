@@ -4,6 +4,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from openbb_intrinio.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
@@ -11,8 +12,6 @@ from openbb_provider.standard_models.stock_news import (
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, validator
-
-from openbb_intrinio.utils.helpers import get_data_many
 
 
 class IntrinioStockNewsQueryParams(StockNewsQueryParams):

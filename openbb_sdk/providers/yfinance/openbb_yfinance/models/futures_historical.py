@@ -11,11 +11,10 @@ from openbb_provider.standard_models.futures_historical import (
     FuturesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, field_validator
-from yfinance import Ticker
-
 from openbb_yfinance.utils.helpers import get_futures_data
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
+from pydantic import Field, field_validator
+from yfinance import Ticker
 
 
 class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):

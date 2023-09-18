@@ -2,4 +2,6 @@
 omit =
     env/*
     tests/*
+    **/tests/**
+    **/package/**
 source = .
