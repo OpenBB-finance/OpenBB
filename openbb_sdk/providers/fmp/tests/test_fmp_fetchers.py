@@ -60,7 +60,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_fmp_crypto_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "BTC/USD"}
+    params = {"symbol": "BTCUSD"}
 
     fetcher = FMPCryptoHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -69,7 +69,7 @@ def test_fmp_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_forex_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "EUR/USD"}
+    params = {"symbol": "EURUSD"}
 
     fetcher = FMPForexHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -78,7 +78,7 @@ def test_fmp_forex_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_major_indices_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "DJI"}
+    params = {"symbol": "^DJI"}
 
     fetcher = FMPMajorIndicesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -285,7 +285,7 @@ def test_fmp_earnings_calendar_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_earnings_call_transcript_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "year": 1}
+    params = {"symbol": "AAPL", "year": 2020}
 
     fetcher = FMPEarningsCallTranscriptFetcher()
     result = fetcher.test(params, credentials)

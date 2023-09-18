@@ -12,7 +12,7 @@ interactions:
     uri: https://financialmodelingprep.com/api/v4/institutional-ownership/institutional-holders/symbol-ownership-percent?apikey=MOCK_API_KEY&page=0&symbol=AAPL
   response:
     body:
-      string: "{\n  \"timestamp\": \"2023-09-18T09:48:47.398+0000\",\n  \"status\":
+      string: "{\n  \"timestamp\": \"2023-09-18T20:11:42.408+0000\",\n  \"status\":
         400,\n  \"error\": \"Bad Request\",\n  \"message\": \"Required String parameter
         'date' is not present\",\n  \"path\": \"/api/v4/institutional-ownership/institutional-holders/symbol-ownership-percent\"\n}"
     headers:
@@ -34,9 +34,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 18 Sep 2023 09:48:47 GMT
+      - Mon, 18 Sep 2023 20:11:42 GMT
       ETag:
-      - W/"f8-y8gzNYh50Ojd9ML6KS5lKiHIJsA"
+      - W/"f8-2rv7kU80nPEXpfBvrOo1Lkj4Etk"
       Server:
       - nginx/1.18.0 (Ubuntu)
       X-Frame-Options:
