@@ -3,7 +3,7 @@
 In order to automatically generate unit tests for the providers you can run the following command:
 
 ```bash
-python openbb_sdk/providers/utils/unit_test_generator.py
+python openbb_sdk/providers/tests/utils/unit_test_generator.py
 ```
 
 > Note that you should be running this file from the root of the repository.
