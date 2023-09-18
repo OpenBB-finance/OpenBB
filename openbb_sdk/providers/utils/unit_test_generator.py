@@ -1,13 +1,12 @@
 """The unit test generator for the fetchers."""
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, Tuple
 
 from credentials_schema import test_credentials
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import ModelField
-
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 
 
@@ -19,24 +18,6 @@ def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
         for fetcher_name, fetcher_cls in provider_cls.fetcher_dict.items():
             provider_fetcher_map[provider_name][fetcher_name] = fetcher_cls
     return provider_fetcher_map
-
-
-# def get_provider_fetchers(
-#     available_providers: List[str],
-# ) -> Dict[str, Dict[str, Fetcher]]:
-#     """Return a list of all fetchers in the provider."""
-#     fetchers: Dict[str, Dict[str, Fetcher]] = {}
-
-#     for provider in available_providers:
-#         provider_loaded = __import__(f"openbb_{provider}")
-#         provider_variable = getattr(provider_loaded, f"{provider}_provider")
-#         fetcher_dict = provider_variable.fetcher_dict
-#         for fetcher_name, fetcher_class in fetcher_dict.items():
-#             if provider not in fetchers:
-#                 fetchers[provider] = {}
-#             fetchers[provider][fetcher_name] = fetcher_class
-
-#     return fetchers
 
 
 def generate_fetcher_unit_tests(path: str) -> None:
@@ -65,9 +46,6 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
             }
             if field_name in example_dict:
                 test_params[field_name] = example_dict[field_name]
-
-            # TODO: This should be refactored to handle edge cases better
-            # For example, the Forex symbol will fail as it would be AAPL.
             elif field.type_ == str:
                 test_params[field_name] = "test"
             elif field.type_ == int:
@@ -135,19 +113,11 @@ def write_fetcher_unit_tests() -> None:
                 provider_fetchers[model_name] = {}
             provider_fetchers[model_name][fetcher_name] = path
 
-            # Check if the test is already in the file
-            # with open(path) as f:
-            #     lines = f.readlines()
-            #     for line in lines:
-            #         if fetcher_path in line and fetcher_name in line:
-            #             return
-
             pattern = f"from {fetcher_path} import {fetcher_name}"
             if not check_pattern_in_file(path, pattern):
                 with open(path, "a") as f:
                     f.write(f"{pattern}\n")
 
-        # here we add the credentials and vcr config
         pattern = "vcr_config"
         if not check_pattern_in_file(path, pattern):
             write_test_credentials(path, provider)
