@@ -7,10 +7,12 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import ModelField
+
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 
 
 def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
+    """Get the fetchers from the provider registry."""
     registry = RegistryLoader.from_extensions()
     provider_fetcher_map: Dict[str, Dict[str, Fetcher]] = {}
     for provider_name, provider_cls in registry.providers.items():
@@ -82,6 +84,7 @@ def vcr_config():
 
 
 def check_pattern_in_file(file_path: str, pattern: str) -> bool:
+    """Check if a pattern is in a file."""
     with open(file_path) as f:
         lines = f.readlines()
         for line in lines:
