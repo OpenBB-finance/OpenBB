@@ -86,7 +86,6 @@ class IntrinioOptionsChainsFetcher(
                 f"date={query.date}&api_key={api_key}"
             )
             response = get_data_many(url, "chain", **kwargs)
-            response = [{**item["option"], **item["prices"]} for item in response]
             data.extend(response)
 
         return data
@@ -94,4 +93,5 @@ class IntrinioOptionsChainsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
+        data = [{**item["option"], **item["prices"]} for item in data]
         return [IntrinioOptionsChainsData(**d) for d in data]
