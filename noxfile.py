@@ -1,6 +1,6 @@
 import nox
 
-test_locations = ["openbb_sdk/sdk/core/tests", "openbb_sdk/providers/tests"]
+test_locations = ["openbb_sdk/sdk/core/tests", "openbb_sdk/providers"]
 
 
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
