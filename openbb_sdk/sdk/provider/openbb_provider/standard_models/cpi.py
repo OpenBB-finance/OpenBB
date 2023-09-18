@@ -91,14 +91,16 @@ class CPIQueryParams(QueryParams):
 class CPIData(Data):
     """CPI data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    realtime_start: dateType = Field(
-        description="Date the data was updated."
-    )  # TODO: What is this?
-    realtime_end: dateType = Field(
-        description="Date the data was updated."
-    )  # TODO: What is this?
-    value: float = Field(description="Value of the data.")
+    date: Optional[dateType] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date")
+    )
+    realtime_start: Optional[dateType] = Field(
+        default=None, description="Date the data was updated."
+    )
+    realtime_end: Optional[dateType] = Field(
+        default=None, description="Date the data was updated."
+    )
+    value: Optional[float] = Field(default=None, description="Value of the data.")
 
     @field_validator("value", mode="before")
     @classmethod
