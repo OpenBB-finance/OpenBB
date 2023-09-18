@@ -2,11 +2,11 @@
 import os
 from typing import Any, Dict, List
 
-from openbb_core.app.provider_interface import ProviderInterface
+from credentials_schema import test_credentials
 from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import ModelField
-
-from openbb_sdk.providers.utils.credentials_schema import test_credentials
+from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 
 
 def get_provider_fetchers(
@@ -95,16 +95,10 @@ def write_fetcher_unit_tests() -> None:
     available_providers = provider_interface.available_providers
     provider_interface_map = provider_interface.map
 
-    test_template = """
-@pytest.mark.record_http
-def test_{fetcher_name}(credentials=test_credentials):
-    params = {params}
+    # TODO: Check why the available_providers isn't working
+    # but it works when you write it manually
 
-    fetcher = {fetcher_name}()
-    result = fetcher.test(params, credentials)
-    assert result is None
-"""
-    fetchers = get_provider_fetchers(available_providers=available_providers)
+    fetchers = get_provider_fetchers(available_providers)
     provider_fetchers: Dict[str, Dict[str, str]] = {}
 
     for provider, fetcher_dict in fetchers.items():
@@ -132,8 +126,22 @@ def test_{fetcher_name}(credentials=test_credentials):
             with open(path, "a") as f:
                 f.write(f"from {fetcher_path} import {fetcher_name}\n")
 
+        # here we add the credentials and vcr config
+        write_test_credentials(path, provider)
+
+    test_template = """
+@pytest.mark.record_http
+def test_{fetcher_name_snake}(credentials=test_credentials):
+    params = {params}
+
+    fetcher = {fetcher_name}()
+    result = fetcher.test(params, credentials)
+    assert result is None
+"""
+
     for model_name, fetcher_dict in provider_fetchers.items():
         for fetcher_name, path in fetcher_dict.items():
+            # Add logic here to grab the necessary standardized params and credentials
             test_params = get_test_params(
                 param_fields=provider_interface_map[model_name]["openbb"][
                     "QueryParams"
@@ -159,6 +167,7 @@ def test_{fetcher_name}(credentials=test_credentials):
 
             with open(path, "a") as f:
                 test_code = test_template.format(
+                    fetcher_name_snake=to_snake_case(fetcher_name),
                     fetcher_name=fetcher_name,
                     params=test_params,
                     credentials={},
