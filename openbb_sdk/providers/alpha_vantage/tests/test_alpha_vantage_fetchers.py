@@ -1,8 +1,8 @@
 import pytest
-from openbb import obb
 from openbb_alpha_vantage.models.stock_historical import AVStockHistoricalFetcher
+from openbb_core.app.service.user_service import UserService
 
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")

@@ -1,5 +1,5 @@
 import pytest
-from openbb import obb
+from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
@@ -10,7 +10,7 @@ from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetch
 from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")

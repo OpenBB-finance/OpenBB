@@ -1,9 +1,9 @@
 import pytest
-from openbb import obb
 from openbb_benzinga.models.global_news import BenzingaGlobalNewsFetcher
 from openbb_benzinga.models.stock_news import BenzingaStockNewsFetcher
+from openbb_core.app.service.user_service import UserService
 
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")

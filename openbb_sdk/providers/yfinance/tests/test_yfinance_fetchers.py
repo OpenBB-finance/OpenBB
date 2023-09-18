@@ -1,5 +1,5 @@
 import pytest
-from openbb import obb
+from openbb_core.app.service.user_service import UserService
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
@@ -14,7 +14,7 @@ from openbb_yfinance.models.major_indices_historical import (
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
 
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")

@@ -1,5 +1,5 @@
 import pytest
-from openbb import obb
+from openbb_core.app.service.user_service import UserService
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
@@ -45,7 +45,7 @@ from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")

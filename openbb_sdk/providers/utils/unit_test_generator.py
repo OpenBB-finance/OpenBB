@@ -31,7 +31,9 @@ def generate_fetcher_unit_tests(path: str) -> None:
     """Generate the fetcher unit tests in the provider test folders."""
     if not os.path.exists(path):
         with open(path, "w") as f:
-            f.write("import pytest\nfrom openbb import obb\n")
+            f.write(
+                "import pytest\nfrom openbb_core.app.service.user_service import UserService\n"
+            )
 
 
 def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
@@ -71,7 +73,7 @@ def write_test_credentials(path: str, provider: str) -> None:
     credentials: Dict[str, str] = test_credentials.get(provider, {})
 
     template = """
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")

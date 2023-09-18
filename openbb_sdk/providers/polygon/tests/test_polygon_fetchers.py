@@ -1,5 +1,5 @@
 import pytest
-from openbb import obb
+from openbb_core.app.service.user_service import UserService
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
@@ -12,7 +12,7 @@ from openbb_polygon.models.major_indices_historical import (
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
-test_credentials = obb.user.credentials.__dict__
+test_credentials = UserService().default_user_settings.credentials.dict()
 
 
 @pytest.fixture(scope="module")
