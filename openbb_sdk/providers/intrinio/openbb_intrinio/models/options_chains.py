@@ -1,37 +1,17 @@
 """Intrinio Options Chains fetcher."""
 
-import concurrent.futures
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
-from typing import Any, Dict, List, Optional, Union
+from datetime import datetime, timedelta, date as dateType
+from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
 
-from openbb_intrinio.utils.helpers import Options
-
-TICKER_EXCEPTIONS = [
-    "SPX",
-    "XSP",
-    "XEO",
-    "NDX",
-    "XND",
-    "VIX",
-    "RUT",
-    "MRUT",
-    "DJX",
-    "XAU",
-    "OEX",
-]
+from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
+from openbb_intrinio.utils.helpers import get_data_many
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -41,8 +21,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     """
 
     date: Optional[dateType] = Field(
-        description="Date for which the options chains are returned.",
-        default="",
+        description="Date for which the options chains are returned."
     )
 
 
@@ -51,48 +30,11 @@ class IntrinioOptionsChainsData(OptionsChainsData):
 
     class Config:
         fields = {
-            "bid": "close_bid",
-            "ask": "close_ask",
+            "contract_symbol": "code",
+            "symbol": "ticker",
         }
 
-    mark: Optional[float] = Field(
-        description="The mid-price between the latest bid-ask spread."
-    )
-    open_bid: Optional[float] = Field(
-        description="The opening bid price for the option that day."
-    )
-    open_ask: Optional[float] = Field(
-        description="The opening ask price for the option that day."
-    )
-    bid_low: Optional[float] = Field(
-        description="The lowest bid price for the option that day."
-    )
-    ask_low: Optional[float] = Field(
-        description="The lowest ask price for the option that day."
-    )
-    bid_high: Optional[float] = Field(
-        description="The highest bid price for the option that day."
-    )
-    ask_high: Optional[float] = Field(
-        description="The highest ask price for the option that day."
-    )
-    open: Optional[float] = Field(description="Opening price of the option.")
-    high: Optional[float] = Field(description="High price of the option.")
-    low: Optional[float] = Field(description="Low price of the option.")
-    close: Optional[float] = Field(description="Close price for the option that day.")
-    implied_volatility: Optional[float] = Field(
-        description="Implied volatility of the option."
-    )
-    delta: Optional[float] = Field(description="Delta of the option.")
-    gamma: Optional[float] = Field(description="Gamma of the option.")
-    vega: Optional[float] = Field(description="Vega of the option.")
-    theta: Optional[float] = Field(description="Theta of the option.")
-    eod_date: Optional[dateType] = Field(
-        description="Historical date for which the options chains data is from.",
-    )
-    dte: Optional[int] = Field(description="Days to expiration for the option.")
-
-    @validator("expiration", pre=True, check_fields=False)
+    @validator("expiration", "date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
         return datetime.strptime(v, "%Y-%m-%d")
@@ -101,168 +43,20 @@ class IntrinioOptionsChainsData(OptionsChainsData):
 class IntrinioOptionsChainsFetcher(
     Fetcher[IntrinioOptionsChainsQueryParams, List[IntrinioOptionsChainsData]]
 ):
-    """Transform the query, extract and transform the data from the Intrinio endpoints"""
+    """Perform TET for the Intrinio endpoints."""
 
     @staticmethod
-    def generate_url(symbol, expiration, date, api_key):
-        return f"https://api-v2.intrinio.com/options/chain/{symbol}/{expiration}/eod?date={date}&api_key={api_key}"
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> IntrinioOptionsChainsQueryParams:
+        """Transform the query."""
+        transform_params = params
 
-    @staticmethod
-    def download_json_files(urls):
-        results = []  # List to store the downloaded JSON data
+        now = datetime.now().date()
+        if params.get("date") is None:
+            transform_params["date"] = now - timedelta(days=1)
 
-        def download_single_file(url):
-            response = make_request(url)
-            json_data = response.json()
-            results.append(json_data["chain"])
-
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(download_single_file, urls)
-
-        return results
-
-    @staticmethod
-    def get_historical_chain_with_greeks(
-        symbol: str, date: Optional[Union[str, dateType]] = "", api_key: str = ""
-    ):
-        symbol = symbol.upper()
-        SYMBOLS = Options.get_options_tickers(api_key)
-        if symbol not in SYMBOLS:
-            raise RuntimeError(f"{symbol}", "is not supported by Intrinio.")
-
-        if not date:
-            date = datetime.now().strftime("%Y-%m-%d")
-
-        # If the symbol is an index, it needs to be preceded with, $.
-        if symbol in TICKER_EXCEPTIONS:
-            symbol = "$" + symbol
-
-        expirations = Options.get_options_expirations(
-            symbol=symbol, api_key=api_key, after=date
-        )
-        urls = []
-
-        for expiration in expirations:
-            urls.append(
-                IntrinioOptionsChainsFetcher.generate_url(
-                    symbol, expiration, date, api_key
-                )
-            )
-
-        results = IntrinioOptionsChainsFetcher.download_json_files(urls)
-
-        # Error handling for when data from the current date is not available yet.
-        if len(results) == 0:
-            date = pd.to_datetime(date) + timedelta(days=-1)
-            for expiration in expirations:
-                urls.append(
-                    IntrinioOptionsChainsFetcher.generate_url(
-                        symbol, expiration, date, api_key
-                    )
-                )
-            results = IntrinioOptionsChainsFetcher.download_json_files(urls)
-
-        df = pd.DataFrame()
-        results_range = range(0, len(results))
-        for i in results_range:
-            chains = results[i]
-
-            contract_symbol: List[str] = []
-            expiry: List[str] = []
-            strikes: List[float] = []
-            option_type: List[str] = []
-            close: List[float] = []
-            close_bid: List[float] = []
-            close_ask: List[float] = []
-            volume: List[int] = []
-            open: List[float] = []
-            open_bid: List[float] = []
-            open_ask: List[float] = []
-            open_interest: List[int] = []
-            high: List[float] = []
-            low: List[float] = []
-            mark: List[float] = []
-            ask_high: List[float] = []
-            ask_low: List[float] = []
-            bid_high: List[float] = []
-            bid_low: List[float] = []
-            implied_volatility: List[float] = []
-            delta: List[float] = []
-            gamma: List[float] = []
-            theta: List[float] = []
-            vega: List[float] = []
-            eod_date: List[str] = []
-
-            for item in chains:
-                contract_symbol.append(item["option"]["code"])
-                expiry.append(item["option"]["expiration"])
-                strikes.append(item["option"]["strike"])
-                option_type.append(item["option"]["type"])
-                close.append(item["prices"]["close"])
-                close_bid.append(item["prices"]["close_bid"])
-                close_ask.append(item["prices"]["close_ask"])
-                volume.append(item["prices"]["volume"])
-                open.append(item["prices"]["open"])
-                open_bid.append(item["prices"]["open_bid"])
-                open_ask.append(item["prices"]["open_ask"])
-                open_interest.append(item["prices"]["open_interest"])
-                high.append(item["prices"]["high"])
-                low.append(item["prices"]["low"])
-                mark.append(item["prices"]["mark"])
-                ask_high.append(item["prices"]["ask_high"])
-                ask_low.append(item["prices"]["ask_low"])
-                bid_high.append(item["prices"]["bid_high"])
-                bid_low.append(item["prices"]["bid_low"])
-                implied_volatility.append(item["prices"]["implied_volatility"])
-                delta.append(item["prices"]["delta"])
-                gamma.append(item["prices"]["gamma"])
-                theta.append(item["prices"]["theta"])
-                vega.append(item["prices"]["vega"])
-                eod_date.append(item["prices"]["date"])
-
-            data = pd.DataFrame()
-            data["contract_symbol"] = contract_symbol
-            data["expiration"] = expiry
-            data["strike"] = strikes
-            data["option_type"] = option_type
-            data["close"] = close
-            data["close_bid"] = close_bid
-            data["close_ask"] = close_ask
-            data["volume"] = volume
-            data["open"] = open
-            data["open_bid"] = open_bid
-            data["open_ask"] = open_ask
-            data["open_interest"] = open_interest
-            data["high"] = high
-            data["low"] = low
-            data["mark"] = mark
-            data["bid_high"] = bid_high
-            data["ask_high"] = ask_high
-            data["bid_low"] = bid_low
-            data["ask_low"] = ask_low
-            data["implied_volatility"] = implied_volatility
-            data["delta"] = delta
-            data["gamma"] = gamma
-            data["theta"] = theta
-            data["vega"] = vega
-            data["eod_date"] = eod_date
-
-            data = data.set_index(["expiration", "strike", "option_type"]).sort_index()
-
-            df = pd.concat([df, data])
-
-        df = df.sort_index().reset_index()
-        now = pd.DatetimeIndex(df["eod_date"])
-        temp = pd.DatetimeIndex(df["expiration"])
-        temp_ = (temp - now).days
-        df["dte"] = temp_
-
-        return df
-
-    @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
-        """Transform the query"""
-        return IntrinioOptionsChainsQueryParams(**params)
+        return IntrinioOptionsChainsQueryParams(**transform_params)
 
     @staticmethod
     def extract_data(
@@ -271,13 +65,34 @@ class IntrinioOptionsChainsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        data = IntrinioOptionsChainsFetcher.get_historical_chain_with_greeks(
-            symbol=query.symbol, date=query.date, api_key=api_key  # type: ignore
-        )
+        base_url = "https://api-v2.intrinio.com/options"
 
-        return data.to_dict("records")
+        if query.symbol in TICKER_EXCEPTIONS:
+            query.symbol = f"${query.symbol}"
+
+        url = (
+            f"{base_url}/expirations/{query.symbol}/eod?"
+            f"after={query.date}&api_key={api_key}"
+        )
+        expirations = get_data_many(url, "expirations", **kwargs)
+
+        data = []
+
+        for expiration in expirations:
+            url = (
+                f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
+                f"date={query.date}&api_key={api_key}"
+            )
+            response = get_data_many(url, "chain", **kwargs)
+            response = [
+                {
+                    **item["option"], **item["prices"]
+                } for item in response
+            ]
+            data.extend(response)
+
+        return data
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioOptionsChainsData]:
