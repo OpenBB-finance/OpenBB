@@ -5,6 +5,11 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import (
+    TICKER_EXCEPTIONS,
+    get_cboe_directory,
+    get_cboe_index_directory,
+)
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
@@ -12,12 +17,6 @@ from openbb_provider.standard_models.options_chains import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_cboe_directory,
-    get_cboe_index_directory,
-)
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):

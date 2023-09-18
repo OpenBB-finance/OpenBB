@@ -5,11 +5,10 @@ from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.base import FinancialStatementQueryParams
 from openbb_provider.standard_models.financial_ratios import FinancialRatiosData
-
-from openbb_fmp.utils.helpers import get_data_many
 
 PeriodType = Literal["annual", "quarter"]
 

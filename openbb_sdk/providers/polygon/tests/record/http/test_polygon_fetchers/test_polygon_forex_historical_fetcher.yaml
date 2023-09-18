@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/C:EUR/USD/range/1/day/2022-09-18/2023-09-18?adjusted=True&apiKey=MOCK_API_KEY&limit=49999&sort=desc
+  response:
+    body:
+      string: 404 page not found
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '18'
+      Content-Type:
+      - text/plain
+      Date:
+      - Mon, 18 Sep 2023 10:01:21 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      X-Request-Id:
+      - b09f48903b21f7e99542f69092cd2c70
+    status:
+      code: 404
+      message: Not Found
+version: 1

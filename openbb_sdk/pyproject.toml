@@ -24,10 +24,10 @@ openbb-news = "^0.1.0a0"
 openbb-stocks = "^0.1.0a0"
 
 # Community dependencies
-openbb-alpha-vantage = { version="^0.1.0a0", optional=true }
-openbb-cboe = { version="^0.1.0a0", optional=true }
-openbb-quandl = { version="^0.1.0a0", optional=true }
-openbb-yfinance = { version="^0.1.0a0", optional=true }
+openbb-alpha-vantage = { version = "^0.1.0a0", optional = true }
+openbb-cboe = { version = "^0.1.0a0", optional = true }
+openbb-quandl = { version = "^0.1.0a0", optional = true }
+openbb-yfinance = { version = "^0.1.0a0", optional = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true }
 openbb-futures = { path = "./extensions/futures", optional = true }
@@ -55,12 +55,13 @@ all = [
     "openbb-futures",
     "openbb-qa",
     "openbb-ta",
-    "openbb-econometrics"
+    "openbb-econometrics",
 ]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0.0"
 pytest-subtests = "^0.11.0"
+pytest-recorder = "^0.2.3"
 
 [build-system]
 requires = ["poetry-core"]

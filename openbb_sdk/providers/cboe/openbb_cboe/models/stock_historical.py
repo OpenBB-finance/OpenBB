@@ -4,6 +4,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import (
+    TICKER_EXCEPTIONS,
+    get_cboe_directory,
+    get_cboe_index_directory,
+    get_ticker_info,
+)
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -11,13 +17,6 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_cboe_directory,
-    get_cboe_index_directory,
-    get_ticker_info,
-)
 
 
 class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):

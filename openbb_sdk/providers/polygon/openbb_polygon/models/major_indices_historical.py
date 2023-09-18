@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalData,
@@ -12,8 +13,6 @@ from openbb_provider.standard_models.major_indices_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
-
-from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):

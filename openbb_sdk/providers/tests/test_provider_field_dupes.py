@@ -1,3 +1,4 @@
+"""Test for common fields in the provider models that should be standard."""
 import glob
 import importlib
 import inspect
@@ -55,7 +56,8 @@ def get_subclasses_w_keys(module: object, cls: Type) -> Dict[Type, List[str]]:
 def get_subclasses(
     python_files: List[str], package_name: str, cls: Type
 ) -> Dict[Type, List[str]]:
-    """
+    """Get the subclasses of a class defined in a list of python files.
+
     Given a list of python files, and a class, return a dictionary of
     subclasses of that class that are defined in those files.
 
@@ -112,8 +114,7 @@ def child_parent_map(map_: Dict, parents: Dict, module: object) -> None:
 
 
 def get_path_components(path: str):
-    """Given a path, return a list of path components"""
-
+    """Given a path, return a list of path components."""
     path_components = []
     head, tail = os.path.split(path)
 
@@ -127,7 +128,8 @@ def get_path_components(path: str):
 def match_provider_and_fields(
     providers_w_fields: List[Dict[str, List[str]]], duplicated_fields: List[str]
 ) -> List[str]:
-    """
+    """Get the provider and fields that match the duplicated fields.
+
     Given a list of providers with fields and duplicated fields,
     return a list of matching "Provider:'dup_field'".
     """
@@ -156,11 +158,11 @@ class ProviderFieldDupesTest(unittest.TestCase):
     """Test for common fields in the provider models that should be standard."""
 
     def test_provider_field_dupes(self):
-        """
+        """Check for duplicate fields in the provider models.
+
         This function checks for duplicate fields in the provider models
         and identifies the fields that should be standardized.
         """
-
         standard_models_directory = os.path.dirname(standard_models.__file__)
         standard_models_files = glob.glob(
             os.path.join(standard_models_directory, "*.py")
