@@ -14,7 +14,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INDICES, INTERVALS, PERIODS
 from pandas import to_datetime
-from pydantic import Field, validator
+from pydantic import Field
 
 
 class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):

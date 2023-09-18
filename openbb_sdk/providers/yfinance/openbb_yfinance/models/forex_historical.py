@@ -13,7 +13,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pandas import to_datetime
-from pydantic import Field, validator
+from pydantic import Field
 
 
 class YFinanceForexHistoricalQueryParams(ForexHistoricalQueryParams):
@@ -43,8 +43,13 @@ class YFinanceForexHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceForexHistoricalQueryParams:
         """Transform the query."""
-
-        return YFinanceForexHistoricalQueryParams(**params)
+        transformed_params = params
+        transformed_params["symbol"] = (
+            f"{transformed_params['symbol'].upper()}=X"
+            if "=X" not in transformed_params["symbol"].upper()
+            else transformed_params["symbol"].upper()
+        )
+        return YFinanceForexHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -53,13 +58,6 @@ class YFinanceForexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the yfinance endpoint."""
-
-        query.symbol = (
-            f"{query.symbol.upper()}=X"
-            if "=X" not in query.symbol.upper()
-            else query.symbol.upper()
-        )
-
         data = yf_download(
             query.symbol,
             start=query.start_date,

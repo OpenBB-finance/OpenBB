@@ -9,103 +9,94 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?period1=1483138800&period2=1695081600&symbol=AAPL&type=quarterlyTreasurySharesNumber%2CquarterlyPreferredSharesNumber%2CquarterlyOrdinarySharesNumber%2CquarterlyShareIssued%2CquarterlyNetDebt%2CquarterlyTotalDebt%2CquarterlyTangibleBookValue%2CquarterlyInvestedCapital%2CquarterlyWorkingCapital%2CquarterlyNetTangibleAssets%2CquarterlyCapitalLeaseObligations%2CquarterlyCommonStockEquity%2CquarterlyPreferredStockEquity%2CquarterlyTotalCapitalization%2CquarterlyTotalEquityGrossMinorityInterest%2CquarterlyMinorityInterest%2CquarterlyStockholdersEquity%2CquarterlyOtherEquityInterest%2CquarterlyGainsLossesNotAffectingRetainedEarnings%2CquarterlyOtherEquityAdjustments%2CquarterlyFixedAssetsRevaluationReserve%2CquarterlyForeignCurrencyTranslationAdjustments%2CquarterlyMinimumPensionLiabilities%2CquarterlyUnrealizedGainLoss%2CquarterlyTreasuryStock%2CquarterlyRetainedEarnings%2CquarterlyAdditionalPaidInCapital%2CquarterlyCapitalStock%2CquarterlyOtherCapitalStock%2CquarterlyCommonStock%2CquarterlyPreferredStock%2CquarterlyTotalPartnershipCapital%2CquarterlyGeneralPartnershipCapital%2CquarterlyLimitedPartnershipCapital%2CquarterlyTotalLiabilitiesNetMinorityInterest%2CquarterlyTotalNonCurrentLiabilitiesNetMinorityInterest%2CquarterlyOtherNonCurrentLiabilities%2CquarterlyLiabilitiesHeldforSaleNonCurrent%2CquarterlyRestrictedCommonStock%2CquarterlyPreferredSecuritiesOutsideStockEquity%2CquarterlyDerivativeProductLiabilities%2CquarterlyEmployeeBenefits%2CquarterlyNonCurrentPensionAndOtherPostretirementBenefitPlans%2CquarterlyNonCurrentAccruedExpenses%2CquarterlyDuetoRelatedPartiesNonCurrent%2CquarterlyTradeandOtherPayablesNonCurrent%2CquarterlyNonCurrentDeferredLiabilities%2CquarterlyNonCurrentDeferredRevenue%2CquarterlyNonCurrentDeferredTaxesLiabilities%2CquarterlyLongTermDebtAndCapitalLeaseObligation%2CquarterlyLongTermCapitalLeaseObligation%2CquarterlyLongTermDebt%2CquarterlyLongTermProvisions%2CquarterlyCurrentLiabilities%2CquarterlyOtherCurrentLiabilities%2CquarterlyCurrentDeferredLiabilities%2CquarterlyCurrentDeferredRevenue%2CquarterlyCurrentDeferredTaxesLiabilities%2CquarterlyCurrentDebtAndCapitalLeaseObligation%2CquarterlyCurrentCapitalLeaseObligation%2CquarterlyCurrentDebt%2CquarterlyOtherCurrentBorrowings%2CquarterlyLineOfCredit%2CquarterlyCommercialPaper%2CquarterlyCurrentNotesPayable%2CquarterlyPensionandOtherPostRetirementBenefitPlansCurrent%2CquarterlyCurrentProvisions%2CquarterlyPayablesAndAccruedExpenses%2CquarterlyCurrentAccruedExpenses%2CquarterlyInterestPayable%2CquarterlyPayables%2CquarterlyOtherPayable%2CquarterlyDuetoRelatedPartiesCurrent%2CquarterlyDividendsPayable%2CquarterlyTotalTaxPayable%2CquarterlyIncomeTaxPayable%2CquarterlyAccountsPayable%2CquarterlyTotalAssets%2CquarterlyTotalNonCurrentAssets%2CquarterlyOtherNonCurrentAssets%2CquarterlyDefinedPensionBenefit%2CquarterlyNonCurrentPrepaidAssets%2CquarterlyNonCurrentDeferredAssets%2CquarterlyNonCurrentDeferredTaxesAssets%2CquarterlyDuefromRelatedPartiesNonCurrent%2CquarterlyNonCurrentNoteReceivables%2CquarterlyNonCurrentAccountsReceivable%2CquarterlyFinancialAssets%2CquarterlyInvestmentsAndAdvances%2CquarterlyOtherInvestments%2CquarterlyInvestmentinFinancialAssets%2CquarterlyHeldToMaturitySecurities%2CquarterlyAvailableForSaleSecurities%2CquarterlyFinancialAssetsDesignatedasFairValueThroughProfitorLossTotal%2CquarterlyTradingSecurities%2CquarterlyLongTermEquityInvestment%2CquarterlyInvestmentsinJointVenturesatCost%2CquarterlyInvestmentsInOtherVenturesUnderEquityMethod%2CquarterlyInvestmentsinAssociatesatCost%2CquarterlyInvestmentsinSubsidiariesatCost%2CquarterlyInvestmentProperties%2CquarterlyGoodwillAndOtherIntangibleAssets%2CquarterlyOtherIntangibleAssets%2CquarterlyGoodwill%2CquarterlyNetPPE%2CquarterlyAccumulatedDepreciation%2CquarterlyGrossPPE%2CquarterlyLeases%2CquarterlyConstructionInProgress%2CquarterlyOtherProperties%2CquarterlyMachineryFurnitureEquipment%2CquarterlyBuildingsAndImprovements%2CquarterlyLandAndImprovements%2CquarterlyProperties%2CquarterlyCurrentAssets%2CquarterlyOtherCurrentAssets%2CquarterlyHedgingAssetsCurrent%2CquarterlyAssetsHeldForSaleCurrent%2CquarterlyCurrentDeferredAssets%2CquarterlyCurrentDeferredTaxesAssets%2CquarterlyRestrictedCash%2CquarterlyPrepaidAssets%2CquarterlyInventory%2CquarterlyInventoriesAdjustmentsAllowances%2CquarterlyOtherInventories%2CquarterlyFinishedGoods%2CquarterlyWorkInProcess%2CquarterlyRawMaterials%2CquarterlyReceivables%2CquarterlyReceivablesAdjustmentsAllowances%2CquarterlyOtherReceivables%2CquarterlyDuefromRelatedPartiesCurrent%2CquarterlyTaxesReceivable%2CquarterlyAccruedInterestReceivable%2CquarterlyNotesReceivable%2CquarterlyLoansReceivable%2CquarterlyAccountsReceivable%2CquarterlyAllowanceForDoubtfulAccountsReceivable%2CquarterlyGrossAccountsReceivable%2CquarterlyCashCashEquivalentsAndShortTermInvestments%2CquarterlyOtherShortTermInvestments%2CquarterlyCashAndCashEquivalents%2CquarterlyCashEquivalents%2CquarterlyCashFinancial
+    uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?period1=1483138800&period2=1695081600&symbol=AAPL&type=annualTreasurySharesNumber%2CannualPreferredSharesNumber%2CannualOrdinarySharesNumber%2CannualShareIssued%2CannualNetDebt%2CannualTotalDebt%2CannualTangibleBookValue%2CannualInvestedCapital%2CannualWorkingCapital%2CannualNetTangibleAssets%2CannualCapitalLeaseObligations%2CannualCommonStockEquity%2CannualPreferredStockEquity%2CannualTotalCapitalization%2CannualTotalEquityGrossMinorityInterest%2CannualMinorityInterest%2CannualStockholdersEquity%2CannualOtherEquityInterest%2CannualGainsLossesNotAffectingRetainedEarnings%2CannualOtherEquityAdjustments%2CannualFixedAssetsRevaluationReserve%2CannualForeignCurrencyTranslationAdjustments%2CannualMinimumPensionLiabilities%2CannualUnrealizedGainLoss%2CannualTreasuryStock%2CannualRetainedEarnings%2CannualAdditionalPaidInCapital%2CannualCapitalStock%2CannualOtherCapitalStock%2CannualCommonStock%2CannualPreferredStock%2CannualTotalPartnershipCapital%2CannualGeneralPartnershipCapital%2CannualLimitedPartnershipCapital%2CannualTotalLiabilitiesNetMinorityInterest%2CannualTotalNonCurrentLiabilitiesNetMinorityInterest%2CannualOtherNonCurrentLiabilities%2CannualLiabilitiesHeldforSaleNonCurrent%2CannualRestrictedCommonStock%2CannualPreferredSecuritiesOutsideStockEquity%2CannualDerivativeProductLiabilities%2CannualEmployeeBenefits%2CannualNonCurrentPensionAndOtherPostretirementBenefitPlans%2CannualNonCurrentAccruedExpenses%2CannualDuetoRelatedPartiesNonCurrent%2CannualTradeandOtherPayablesNonCurrent%2CannualNonCurrentDeferredLiabilities%2CannualNonCurrentDeferredRevenue%2CannualNonCurrentDeferredTaxesLiabilities%2CannualLongTermDebtAndCapitalLeaseObligation%2CannualLongTermCapitalLeaseObligation%2CannualLongTermDebt%2CannualLongTermProvisions%2CannualCurrentLiabilities%2CannualOtherCurrentLiabilities%2CannualCurrentDeferredLiabilities%2CannualCurrentDeferredRevenue%2CannualCurrentDeferredTaxesLiabilities%2CannualCurrentDebtAndCapitalLeaseObligation%2CannualCurrentCapitalLeaseObligation%2CannualCurrentDebt%2CannualOtherCurrentBorrowings%2CannualLineOfCredit%2CannualCommercialPaper%2CannualCurrentNotesPayable%2CannualPensionandOtherPostRetirementBenefitPlansCurrent%2CannualCurrentProvisions%2CannualPayablesAndAccruedExpenses%2CannualCurrentAccruedExpenses%2CannualInterestPayable%2CannualPayables%2CannualOtherPayable%2CannualDuetoRelatedPartiesCurrent%2CannualDividendsPayable%2CannualTotalTaxPayable%2CannualIncomeTaxPayable%2CannualAccountsPayable%2CannualTotalAssets%2CannualTotalNonCurrentAssets%2CannualOtherNonCurrentAssets%2CannualDefinedPensionBenefit%2CannualNonCurrentPrepaidAssets%2CannualNonCurrentDeferredAssets%2CannualNonCurrentDeferredTaxesAssets%2CannualDuefromRelatedPartiesNonCurrent%2CannualNonCurrentNoteReceivables%2CannualNonCurrentAccountsReceivable%2CannualFinancialAssets%2CannualInvestmentsAndAdvances%2CannualOtherInvestments%2CannualInvestmentinFinancialAssets%2CannualHeldToMaturitySecurities%2CannualAvailableForSaleSecurities%2CannualFinancialAssetsDesignatedasFairValueThroughProfitorLossTotal%2CannualTradingSecurities%2CannualLongTermEquityInvestment%2CannualInvestmentsinJointVenturesatCost%2CannualInvestmentsInOtherVenturesUnderEquityMethod%2CannualInvestmentsinAssociatesatCost%2CannualInvestmentsinSubsidiariesatCost%2CannualInvestmentProperties%2CannualGoodwillAndOtherIntangibleAssets%2CannualOtherIntangibleAssets%2CannualGoodwill%2CannualNetPPE%2CannualAccumulatedDepreciation%2CannualGrossPPE%2CannualLeases%2CannualConstructionInProgress%2CannualOtherProperties%2CannualMachineryFurnitureEquipment%2CannualBuildingsAndImprovements%2CannualLandAndImprovements%2CannualProperties%2CannualCurrentAssets%2CannualOtherCurrentAssets%2CannualHedgingAssetsCurrent%2CannualAssetsHeldForSaleCurrent%2CannualCurrentDeferredAssets%2CannualCurrentDeferredTaxesAssets%2CannualRestrictedCash%2CannualPrepaidAssets%2CannualInventory%2CannualInventoriesAdjustmentsAllowances%2CannualOtherInventories%2CannualFinishedGoods%2CannualWorkInProcess%2CannualRawMaterials%2CannualReceivables%2CannualReceivablesAdjustmentsAllowances%2CannualOtherReceivables%2CannualDuefromRelatedPartiesCurrent%2CannualTaxesReceivable%2CannualAccruedInterestReceivable%2CannualNotesReceivable%2CannualLoansReceivable%2CannualAccountsReceivable%2CannualAllowanceForDoubtfulAccountsReceivable%2CannualGrossAccountsReceivable%2CannualCashCashEquivalentsAndShortTermInvestments%2CannualOtherShortTermInvestments%2CannualCashAndCashEquivalents%2CannualCashEquivalents%2CannualCashFinancial
   response:
     body:
       string: !!binary |
-        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
+        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
+        8GZjr5p69dn2A+Eviqaj+aFdeMpSb1e3y/re2le2slfl5L/lfbkqdxAq26xvytt55uANWOi7oi3v
+        7EVTLzaX7fzn9/AAWDDy/QqfNmBlFnb+E+FYXedzP1su6+9FdTkZYi9zwUwdigwn82fer1I81l0r
+        eVldH053KmV2tT5/2/g74w8C0tyV3bU2gyy3cIvNOojt59DUoC7mHMOB4P+yy8VV3XwpltZr+59v
+        9qfbk7b2rclsIA8vudye6Ru7Lq+rbuFi/a4om15afb1p6s31DZwdmJy66bRQ/0jM+/D7+3Le8+Cp
+        kP+qy6r9N3y9aWYKkcOhPYVXcILl+gZkYl0vpv4u/lA9QQJ5HaWTzESnwmZftP+yi2swMtvzm0fE
+        8+qyXtnZVjYUQf1fNOsT7eYdnVdAd7gqJluorV5/mN1Rd/KlLRvbsXZ3a18si2rmKfXP3dOv7/IO
+        7tdqMfsx3Mqgeb+NqqHZ9uvwi51d8bNmU9Z5tSmX3T3Zvb3vfHULF5SdIxa7u+Fr/aFou8v2fval
+        6xi686on0t7Q/V4t9mr0g21v6sVTTOiXzTcQWmXRCaVZFvQ3IHRDQMjXYPTaBnQkPDr9k3fdTH/0
+        kGtxHqeQXtE5imnvM+wPfLLiqOynq9dgycr5D8XOk3r74xbs0nTfuvgOVAatXyznysbZUu9d+WOv
+        eD/bO5Ah/dUIV51t7iabHLC6FZBia5t3VnieeqGUwU+/qRwFs/3bzpx7p0Hvndn2YrZ0HkjMyUQC
+        0LOFiXMhUHiC7+rGgj5+vYtGgm9VrZc9A+bHF7an0l0c77ZOxUxl0AAlN0GV06wl9voR/gUQtG5O
+        Xlab5fLnz/8HDKJfXuKwAAA=
     headers:
       Age:
       - '0'
@@ -132,7 +123,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 18 Sep 2023 09:59:03 GMT
+      - Mon, 18 Sep 2023 19:36:57 GMT
       server:
       - ATS
       vary:
@@ -140,13 +131,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '49'
+      - '39'
       x-request-id:
-      - ffb17445-004c-488a-97fa-33e89b26b2d9
+      - 47c2ca8a-0666-44c1-9a31-ebe597efac13
       x-yahoo-request-id:
-      - 11s3mq5igg7r7
+      - 0dqarhhigh9mp
       y-rid:
-      - 11s3mq5igg7r7
+      - 0dqarhhigh9mp
     status:
       code: 200
       message: OK

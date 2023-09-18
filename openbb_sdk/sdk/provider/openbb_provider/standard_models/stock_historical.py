@@ -36,7 +36,9 @@ class StockHistoricalQueryParams(QueryParams):
 class StockHistoricalData(Data):
     """Stock end of day price Data."""
 
-    date: Union[dateType, datetime] = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+    )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))

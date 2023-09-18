@@ -1,7 +1,10 @@
 """Forex aggregate end of day price data model."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import List, Optional, Set, Union
 
 from pydantic import Field, NonNegativeFloat, PositiveFloat, validator
@@ -35,7 +38,9 @@ class ForexHistoricalQueryParams(QueryParams):
 class ForexHistoricalData(Data):
     """Forex end of day price Data."""
 
-    date: Union[dateType, datetime] = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+    )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
