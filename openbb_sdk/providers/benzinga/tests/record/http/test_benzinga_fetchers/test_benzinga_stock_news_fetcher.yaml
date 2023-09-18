@@ -1,0 +1,119 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?display_output=headline&page=0&pageSize=15&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":34676529,\"author\":\"Ananya Gairola\",\"created\":\"Mon,
+        18 Sep 2023 04:19:33 -0400\",\"updated\":\"Mon, 18 Sep 2023 04:19:33 -0400\",\"title\":\"Apple's
+        iPhone 15 Pro Sales Decline While Pro Max Rockets: Ming-Chi Kuo's Insights\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34676529/apples-iphone-15-pro-sales-decline-while-pro-max-rockets-ming-chi-kuos-insights\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_11.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_11.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_11.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone 15 Pro\"},{\"name\":\"iPhone 15 Pro Max\"},{\"name\":\"Ming-Chi
+        Kuo\"},{\"name\":\"Tim Cook\"},{\"name\":\"Titanium\"}]},{\"id\":34675716,\"author\":\"Rounak
+        Jain\",\"created\":\"Mon, 18 Sep 2023 03:48:32 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 03:48:33 -0400\",\"title\":\"Forget PlayStation And Xbox, Apple
+        Thinks The iPhone 15 Pro Will Be 'The Best Game Console'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34675716/forget-playstation-and-xbox-apple-thinks-the-iphone-15-pro-will-be-the-best-game-console\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_iPhone_gaming.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_iPhone_gaming.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_iPhone_gaming.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"MSFT\"},{\"name\":\"QCOM\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15
+        Pro\"},{\"name\":\"Microsoft\"},{\"name\":\"Sony PlayStation\"},{\"name\":\"xbox\"}]},{\"id\":34674672,\"author\":\"Ananya
+        Gairola\",\"created\":\"Mon, 18 Sep 2023 03:06:09 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 03:06:09 -0400\",\"title\":\"Elon Musk Is Working On Integrating
+        iMessage, WhatsApp And Signal In One 'Magical Kayak'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34674672/elon-musk-is-working-on-integrating-imessage-whatsapp-and-signal-in-one-magical-kayak\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Elon_Musk_82.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Elon_Musk_82.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Elon_Musk_82.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
+        Media\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"META\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Digital markets Act\"},{\"name\":\"Elon Musk\"},{\"name\":\"iMessage\"},{\"name\":\"Meta\"},{\"name\":\"Software
+        &amp; Apps\"},{\"name\":\"X\"}]},{\"id\":34671801,\"author\":\"Ananya Gairola\",\"created\":\"Mon,
+        18 Sep 2023 01:02:57 -0400\",\"updated\":\"Mon, 18 Sep 2023 01:02:58 -0400\",\"title\":\"Tim
+        Cook Defends Apple's Stance: Why Cupertino Won't Abandon Elon Musk's X Amid
+        ADL Controversy\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34671801/tim-cook-defends-apples-stance-why-cupertino-wont-abandon-elon-musks-x-amid-adl-controversy\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Tim_Cook_1_Photo_by_Laura_Hutton_on_Shutterstock_8.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Tim_Cook_1_Photo_by_Laura_Hutton_on_Shutterstock_8.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Tim_Cook_1_Photo_by_Laura_Hutton_on_Shutterstock_8.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
+        Media\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"ADL\"},{\"name\":\"Anti-Defamation
+        League\"},{\"name\":\"antisemitism\"},{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Elon Musk\"},{\"name\":\"People In Tech\"},{\"name\":\"Tim
+        Cook\"},{\"name\":\"twitter\"},{\"name\":\"X\"}]},{\"id\":34659452,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Sun, 17 Sep 2023 10:00:00 -0400\",\"updated\":\"Sun,
+        17 Sep 2023 21:38:19 -0400\",\"title\":\"iPhone 15 Launch, New Macbook Pro,
+        New Apple Accessories: Top Stories Of The Week From The Appleverse\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34659452/iphone-15-launch-new-macbook-pro-new-apple-accessories-top-stories-of-the-week-from-the-appleverse\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_9.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_9.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_9.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"DISH\"},{\"name\":\"T\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"iPhone
+        15\"},{\"name\":\"MacBook\"}]},{\"id\":34669662,\"author\":\"Shanthi Rexaline\",\"created\":\"Sun,
+        17 Sep 2023 20:18:22 -0400\",\"updated\":\"Sun, 17 Sep 2023 20:18:22 -0400\",\"title\":\"Why
+        Gurman Thinks Apple Can Come Out On Top This Holiday Quarter And Reverse Sales
+        Slide\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34669662/why-gurman-thinks-apple-can-come-out-on-top-this-holiday-quarter-and-reverse-sales-slide\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple,Store,Sign,,Hong,Kong,,August,15,2017,:,Apple.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple,Store,Sign,,Hong,Kong,,August,15,2017,:,Apple.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple,Store,Sign,,Hong,Kong,,August,15,2017,:,Apple.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Mark Gurman\"}]},{\"id\":34663507,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Sun, 17 Sep 2023 14:13:26 -0400\",\"updated\":\"Sun,
+        17 Sep 2023 14:13:27 -0400\",\"title\":\"Foxconn Plans To Double Workforce,
+        Investment In India Within A Year\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34663507/foxconn-plans-to-double-workforce-investment-in-india-within-a-year\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/17/foxconn.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/17/foxconn.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/17/foxconn.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Global\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"AI-Generated\"},{\"name\":\"benzinga
+        neuro\"},{\"name\":\"foxconn\"},{\"name\":\"India\"}]},{\"id\":34659111,\"author\":\"Bibhu
+        Pattnaik\",\"created\":\"Sun, 17 Sep 2023 12:43:10 -0400\",\"updated\":\"Sun,
+        17 Sep 2023 12:43:11 -0400\",\"title\":\"Is Apple Losing Its Spark? Recent
+        Sales Figures Suggest So.\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34659111/is-apple-losing-its-spark-recent-sales-figures-suggest-so\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/17/apple.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/17/apple.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/17/apple.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"iPhone\"}]},{\"id\":34659019,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Sun, 17 Sep 2023 09:01:11 -0400\",\"updated\":\"Sun,
+        17 Sep 2023 09:01:11 -0400\",\"title\":\"Elon Musk's Caution For OpenAI, Google's
+        Gemini AI, Musk And Zuckerberg's Truce: Top AI Stories This Week\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34659019/elon-musks-caution-for-openai-googles-gemini-ai-musk-and-zuckerbergs-truce-top-ai-stories-this-week\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/elon_musk_ai4_31.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/elon_musk_ai4_31.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/elon_musk_ai4_31.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"GOOGL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"Elon Musk\"},{\"name\":\"Google\"},{\"name\":\"Mark
+        Zuckerberg\"},{\"name\":\"Meta\"},{\"name\":\"Microsoft\"}]},{\"id\":34649642,\"author\":\"Ananya
+        Gairola\",\"created\":\"Sat, 16 Sep 2023 08:52:17 -0400\",\"updated\":\"Sat,
+        16 Sep 2023 16:01:10 -0400\",\"title\":\"Why Picking An iPhone 15 Pro Max
+        Color Was 'A Hard Decision' For Tim Cook\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34649642/why-picking-an-iphone-15-pro-max-color-was-a-hard-decision-for-tim-cook\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Tim_Cook_Photo_by_Laura_Hutton_on_Shutterstock_3.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Tim_Cook_Photo_by_Laura_Hutton_on_Shutterstock_3.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Tim_Cook_Photo_by_Laura_Hutton_on_Shutterstock_3.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone 15 launch\"},{\"name\":\"iPhone 15 Pro Max\"},{\"name\":\"People
+        In Tech\"},{\"name\":\"Tim Cook\"},{\"name\":\"Titanium\"},{\"name\":\"twitter\"},{\"name\":\"X\"}]},{\"id\":34609402,\"author\":\"Rounak
+        Jain\",\"created\":\"Fri, 15 Sep 2023 06:44:18 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 17:20:10 -0400\",\"title\":\"'Child Sexual Abuse Is Stored On
+        iCloud. Apple Allows It': Anti-Apple Posters Emerge In Front Of Apple Park\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34609402/child-sexual-abuse-is-stored-on-icloud-apple-allows-it-anti-apple-posters-emerge-in-front-of-apple-p\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_Logo.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_Logo.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_Logo.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Cybersecurity\"},{\"name\":\"iPhone\"},{\"name\":\"privacy\"}]},{\"id\":34626195,\"author\":\"Upwallstreet\",\"created\":\"Fri,
+        15 Sep 2023 14:28:06 -0400\",\"updated\":\"Fri, 15 Sep 2023 14:28:56 -0400\",\"title\":\"Alibaba
+        Makes A Big AI Leap As Technology Continues To Evolve From Being A Useful
+        Tool To A Genuine Game Changer\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/23/09/34626195/alibaba-makes-a-big-ai-leap-as-technology-continues-to-evolve-from-being-a-useful-tool-to-a-genuine\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/medium-shot-woman-wearing-vr-glasses.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/medium-shot-woman-wearing-vr-glasses.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/medium-shot-woman-wearing-vr-glasses.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"BABA\"},{\"name\":\"META\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"contributors\"},{\"name\":\"Qwen-VL\"}]},{\"id\":34624326,\"author\":\"Benzinga
+        Insights\",\"created\":\"Fri, 15 Sep 2023 13:35:17 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 13:35:18 -0400\",\"title\":\"10 Information Technology Stocks
+        Whale Activity In Today's Session\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34624326/10-information-technology-stocks-whale-activity-in-todays-session\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_4.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_4.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_4.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"AVGO\"},{\"name\":\"CSCO\"},{\"name\":\"INTC\"},{\"name\":\"KLAC\"},{\"name\":\"MCHP\"},{\"name\":\"MSFT\"},{\"name\":\"MU\"},{\"name\":\"NVDA\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]},{\"id\":34619237,\"author\":\"The
+        Arora Report\",\"created\":\"Fri, 15 Sep 2023 11:06:39 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 11:09:15 -0400\",\"title\":\"AI, ARM IPO, And $3.4 Trillion Option
+        Expiration Suck Fear Out Of The Stock Market \u2013 Be Cautious\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/23/09/34619237/ai-arm-ipo-and-3-4-trillion-option-expiration-suck-fear-out-of-the-stock-market-be-cautious\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/maxim-hopman-fixlqxahcfk-unsplash_4_2.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/maxim-hopman-fixlqxahcfk-unsplash_4_2.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/maxim-hopman-fixlqxahcfk-unsplash_4_2.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"Cryptocurrency\"},{\"name\":\"Economics\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"ARM\"},{\"name\":\"GLD\"},{\"name\":\"GOOG\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"QQQ\"},{\"name\":\"SLV\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"},{\"name\":\"USO\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"China\"},{\"name\":\"contributors\"},{\"name\":\"Expert
+        Ideas\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"VIX\"}]},{\"id\":34618735,\"author\":\"Benzinga
+        Insights\",\"created\":\"Fri, 15 Sep 2023 11:00:44 -0400\",\"updated\":\"Fri,
+        15 Sep 2023 11:00:48 -0400\",\"title\":\"Benzinga's Top Ratings Upgrades,
+        Downgrades For September 15, 2023\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/upgrades/23/09/34618735/benzingas-top-ratings-upgrades-downgrades-for-september-15-2023\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Upgrades\"},{\"name\":\"Downgrades\"},{\"name\":\"Initiation\"},{\"name\":\"Intraday
+        Update\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"ACLS\"},{\"name\":\"AMAT\"},{\"name\":\"APLS\"},{\"name\":\"ARM\"},{\"name\":\"AXS\"},{\"name\":\"BG\"},{\"name\":\"CARG\"},{\"name\":\"CARS\"},{\"name\":\"CAVA\"},{\"name\":\"CELH\"},{\"name\":\"CIFR\"},{\"name\":\"CRM\"},{\"name\":\"CRWD\"},{\"name\":\"CUZ\"},{\"name\":\"CWST\"},{\"name\":\"DASH\"},{\"name\":\"DE\"},{\"name\":\"DOCU\"},{\"name\":\"EL\"},{\"name\":\"EMR\"},{\"name\":\"EXFY\"},{\"name\":\"FAST\"},{\"name\":\"J\"},{\"name\":\"KEY\"},{\"name\":\"KEYS\"},{\"name\":\"KFY\"},{\"name\":\"KLAC\"},{\"name\":\"LNN\"},{\"name\":\"LRCX\"},{\"name\":\"MLM\"},{\"name\":\"MMM\"},{\"name\":\"MOR\"},{\"name\":\"MSFT\"},{\"name\":\"NEWR\"},{\"name\":\"NOW\"},{\"name\":\"OPAL\"},{\"name\":\"ORCL\"},{\"name\":\"PAGS\"},{\"name\":\"PLTR\"},{\"name\":\"PTCT\"},{\"name\":\"REGN\"},{\"name\":\"SHAK\"},{\"name\":\"SNOW\"},{\"name\":\"STAA\"},{\"name\":\"TFC\"},{\"name\":\"TKO\"},{\"name\":\"TT\"},{\"name\":\"TWLO\"},{\"name\":\"U\"},{\"name\":\"VNO\"},{\"name\":\"WM\"},{\"name\":\"ZM\"}],\"tags\":[{\"name\":\"BZI-Ratings\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Sep 2023 10:00:55 GMT
+      ETag:
+      - l6OIQXGn9suwjxVh0UIeA9DieX1uI6d3vnh9-J6gqSM=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 e25359babcc045566ea407b8f6ab0b64.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - CQ0hQ54ECjYOd7-NHobGFs_R5H5YWZkFDY_RmCc_e0jVf2Sk3FoiqQ==
+      X-Amz-Cf-Pop:
+      - ZAG50-C1
+      X-Bz-Request-Id:
+      - 192.168.240.19-8000-38-1068925-7-1695031255.465
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '1'
+      X-Kong-Upstream-Latency:
+      - '29'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,8 +1,6 @@
 """CBOE provider module."""
 
 
-from openbb_provider.abstract.provider import Provider
-
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
 from openbb_cboe.models.european_index_constituents import (
     CboeEuropeanIndexConstituentsFetcher,
@@ -20,6 +18,7 @@ from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
 from openbb_cboe.models.stock_historical import CboeStockHistoricalFetcher
 from openbb_cboe.models.stock_info import CboeStockInfoFetcher
 from openbb_cboe.models.stock_search import CboeStockSearchFetcher
+from openbb_provider.abstract.provider import Provider
 
 cboe_provider = Provider(
     name="cboe",

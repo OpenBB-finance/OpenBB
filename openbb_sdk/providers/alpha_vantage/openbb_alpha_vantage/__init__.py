@@ -1,7 +1,6 @@
 """Alpha Vantage Provider module."""
-from openbb_provider.abstract.provider import Provider
-
 from openbb_alpha_vantage.models.stock_historical import AVStockHistoricalFetcher
+from openbb_provider.abstract.provider import Provider
 
 alpha_vantage_provider = Provider(
     name="alpha_vantage",

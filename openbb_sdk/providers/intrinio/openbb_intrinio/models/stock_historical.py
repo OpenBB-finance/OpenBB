@@ -4,6 +4,8 @@ from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -12,9 +14,6 @@ from openbb_provider.standard_models.stock_historical import (
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, validator
-
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
 
 
 class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):

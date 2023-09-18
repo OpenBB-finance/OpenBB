@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?display_output=headline&page=0&page_size=15&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":34680506,\"author\":\"Shanthi Rexaline\",\"created\":\"Mon,
+        18 Sep 2023 05:47:18 -0400\",\"updated\":\"Mon, 18 Sep 2023 05:47:19 -0400\",\"title\":\"El-Erian
+        Says Bargaining Power Shifts To Workers As Labor Strikes Rise To 23-Year High:
+        'Surprised It Took So Long'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34680506/el-erian-says-bargaining-power-shifts-to-workers-as-labor-strikes-rise-to-23-year-high-surprised-it\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Photo_by_International_Monetary_Fund_on_Flickr_13.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Photo_by_International_Monetary_Fund_on_Flickr_13.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Photo_by_International_Monetary_Fund_on_Flickr_13.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Economics\"},{\"name\":\"Federal Reserve\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"TIP\"}],\"tags\":[{\"name\":\"Inflation\"},{\"name\":\"interest
+        rate\"},{\"name\":\"Mohamed El-Erian\"},{\"name\":\"UAW\"}]},{\"id\":34679744,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Mon, 18 Sep 2023 05:27:06 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 05:27:07 -0400\",\"title\":\"Only A Third Of Voters Think Biden
+        Would Complete A Second Term If Re-Elected In 2024: Polls\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34679744/only-a-third-of-voters-think-biden-would-complete-a-second-term-if-re-elected-in-2024-polls\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/JoeBiden.Shutterstock_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/JoeBiden.Shutterstock_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/JoeBiden.Shutterstock_2.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"General\"}],\"stocks\":[],\"tags\":[{\"name\":\"Donald
+        Trump\"},{\"name\":\"Joe Biden\"}]},{\"id\":34677355,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Mon, 18 Sep 2023 04:54:20 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 04:54:21 -0400\",\"title\":\"Antony Blinken To Meet Chinese Vice
+        President At UN Assembly Amid Escalating Tensions Between US And China\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34677355/antony-blinken-to-meet-chinese-vice-president-at-un-assembly-amid-escalating-tensions-between-us-and\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/US_CHINA_Photo_by_Khanthachai_C_on_Shutterstock.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/US_CHINA_Photo_by_Khanthachai_C_on_Shutterstock.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/US_CHINA_Photo_by_Khanthachai_C_on_Shutterstock.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"Global\"},{\"name\":\"General\"}],\"stocks\":[],\"tags\":[{\"name\":\"Antony
+        Blinken\"},{\"name\":\"China-US relations\"},{\"name\":\"Han Zheng\"}]},{\"id\":34677342,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Mon, 18 Sep 2023 04:52:29 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 04:52:29 -0400\",\"title\":\"Xi Jinping's Security Crusade Empowers
+        Ordinary Citizens To Uncover Foreign Spies\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34677342/xi-jinpings-security-crusade-empowers-ordinary-citizens-to-uncover-foreign-spies\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Xi_Jinping_4.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Xi_Jinping_4.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Xi_Jinping_4.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"Global\"},{\"name\":\"General\"}],\"stocks\":[],\"tags\":[{\"name\":\"Anti-Spy\"},{\"name\":\"China\"},{\"name\":\"China-US
+        relations\"}]},{\"id\":34677102,\"author\":\"Anan Ashraf\",\"created\":\"Mon,
+        18 Sep 2023 04:38:33 -0400\",\"updated\":\"Mon, 18 Sep 2023 04:38:33 -0400\",\"title\":\"Ford
+        Faces UAW Strike In US, Now It May Have To Contend With Another In Canada\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34677102/ford-faces-uaw-strike-in-us-now-it-may-have-to-contend-with-another-in-canada\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Ford,_Shutterstock_11.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Ford,_Shutterstock_11.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Ford,_Shutterstock_11.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"F\"},{\"name\":\"GM\"},{\"name\":\"STLA\"}],\"tags\":[{\"name\":\"electric
+        vehicles\"},{\"name\":\"EVs\"},{\"name\":\"mobility\"}]},{\"id\":34676568,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Mon, 18 Sep 2023 04:28:20 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 04:28:21 -0400\",\"title\":\"Elizabeth Warren's Digital Asset
+        Anti-Money Laundering Act Gets Support From Both Sides Of The Aisle\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34676568/elizabeth-warrens-digital-asset-anti-money-laundering-act-gets-support-from-both-sides-of-\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Elizabeth_Warren_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Elizabeth_Warren_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Elizabeth_Warren_2.jpeg\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"News\"},{\"name\":\"Regulations\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"$BTC\"}],\"tags\":[{\"name\":\"Elizabeth
+        Warren\"}]},{\"id\":34676567,\"author\":\"Navdeep Yadav\",\"created\":\"Mon,
+        18 Sep 2023 04:27:53 -0400\",\"updated\":\"Mon, 18 Sep 2023 04:27:53 -0400\",\"title\":\"Trump
+        Praises Russian President Backing His Ukraine Peace Plan: 'That Means What
+        I'm Saying Is Right'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34676567/trump-praises-russian-president-backing-his-ukraine-peace-plan-that-means-what-im-saying-is-right\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Trump_47.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Trump_47.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Trump_47.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"General\"}],\"stocks\":[],\"tags\":[{\"name\":\"Donald
+        Trump\"},{\"name\":\"Russian President\"},{\"name\":\"Ukraine Peace Plan\"},{\"name\":\"Vladimir
+        Putin\"}]},{\"id\":34676539,\"author\":\"Shanthi Rexaline\",\"created\":\"Mon,
+        18 Sep 2023 04:22:33 -0400\",\"updated\":\"Mon, 18 Sep 2023 04:22:56 -0400\",\"title\":\"Tesla
+        Investor Ross Gerber Touts One More Incentive To Buy EVs: 'Saudis Are  Gouging
+        ICE Drivers'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/analyst-color/23/09/34676539/tesla-investor-ross-gerber-touts-one-more-incentive-to-buy-evs-saudis-are-gouging-i\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Kettleman,City,,Ca,-,Jan,29,,2022:,Many,Cars,Charging_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Kettleman,City,,Ca,-,Jan,29,,2022:,Many,Cars,Charging_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Kettleman,City,,Ca,-,Jan,29,,2022:,Many,Cars,Charging_2.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Color\"},{\"name\":\"Asia\"},{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Commodities\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"KARS\"},{\"name\":\"TSLA\"}],\"tags\":[{\"name\":\"electric
+        vehicles\"},{\"name\":\"Eurasia\"},{\"name\":\"EVs\"},{\"name\":\"Expert Ideas\"},{\"name\":\"Gerber
+        Kawasaki Wealth and Investment Management\"},{\"name\":\"mobility\"},{\"name\":\"Ross
+        Gerber\"}]},{\"id\":34676529,\"author\":\"Ananya Gairola\",\"created\":\"Mon,
+        18 Sep 2023 04:19:33 -0400\",\"updated\":\"Mon, 18 Sep 2023 04:19:33 -0400\",\"title\":\"Apple's
+        iPhone 15 Pro Sales Decline While Pro Max Rockets: Ming-Chi Kuo's Insights\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34676529/apples-iphone-15-pro-sales-decline-while-pro-max-rockets-ming-chi-kuos-insights\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_11.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_11.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_11.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone 15 Pro\"},{\"name\":\"iPhone 15 Pro Max\"},{\"name\":\"Ming-Chi
+        Kuo\"},{\"name\":\"Tim Cook\"},{\"name\":\"Titanium\"}]},{\"id\":34670241,\"author\":\"Shanthi
+        Rexaline\",\"created\":\"Sun, 17 Sep 2023 20:57:49 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 03:50:05 -0400\",\"title\":\"Analyst Slams Robert Kennedy Jr.'s
+        Fracking Ban Idea, Warns Of Oil Spiking To Over $200: 'Nothing Will Make Russia,
+        Iran And China Happier'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34670241/analyst-slams-robert-kennedy-jr-s-fracking-ban-idea-warns-of-oil-spiking-to-over-200-nothing-will-ma\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Democratic,Presidential,Candidate,Robert,F.,Kennedy,Jr.,Discusses,Immigration,Issues_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Democratic,Presidential,Candidate,Robert,F.,Kennedy,Jr.,Discusses,Immigration,Issues_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Democratic,Presidential,Candidate,Robert,F.,Kennedy,Jr.,Discusses,Immigration,Issues_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Commodities\"},{\"name\":\"Politics\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Markets\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"USO\"}],\"tags\":[{\"name\":\"Anas
+        Alhajji\"},{\"name\":\"Robert Kennedy Jr.\"}]},{\"id\":34675716,\"author\":\"Rounak
+        Jain\",\"created\":\"Mon, 18 Sep 2023 03:48:32 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 03:48:33 -0400\",\"title\":\"Forget PlayStation And Xbox, Apple
+        Thinks The iPhone 15 Pro Will Be 'The Best Game Console'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34675716/forget-playstation-and-xbox-apple-thinks-the-iphone-15-pro-will-be-the-best-game-console\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_iPhone_gaming.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_iPhone_gaming.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_iPhone_gaming.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"MSFT\"},{\"name\":\"QCOM\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15
+        Pro\"},{\"name\":\"Microsoft\"},{\"name\":\"Sony PlayStation\"},{\"name\":\"xbox\"}]},{\"id\":34675706,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Mon, 18 Sep 2023 03:45:07 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 03:45:07 -0400\",\"title\":\"Debbie Dingell Does Not Want Biden
+        'At The Negotiating Table' Amid UAW Strike\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34675706/debbie-dingell-does-not-want-biden-at-the-negotiating-table-amid-uaw-strike\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/UAW_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/UAW_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/UAW_2.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"Tech\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"F\"},{\"name\":\"GM\"},{\"name\":\"STLA\"}],\"tags\":[{\"name\":\"Debbie
+        Dingell\"},{\"name\":\"Joe Biden\"},{\"name\":\"mobility\"},{\"name\":\"UAW
+        Strike\"}]},{\"id\":34675002,\"author\":\"Mehab Qureshi\",\"created\":\"Mon,
+        18 Sep 2023 03:22:02 -0400\",\"updated\":\"Mon, 18 Sep 2023 03:22:03 -0400\",\"title\":\"After
+        Biden, Now Trump Gets Slammed By Dogecoin Co-Creator \u2014 Tells Elon Musk,
+        Free Speech Suppression 'Starts With T And Ends With Rump'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34675002/after-biden-now-trump-gets-slammed-by-dogecoin-co-creator-tells-elon-musk-free-speech-supp\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Dogecoin._Photo_by_Vitalii_Stock_on_Shutterstock_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Dogecoin._Photo_by_Vitalii_Stock_on_Shutterstock_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Dogecoin._Photo_by_Vitalii_Stock_on_Shutterstock_18.jpeg\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"News\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"$DOGE\"}],\"tags\":[{\"name\":\"dogecoin\"},{\"name\":\"Donald
+        Trump\"},{\"name\":\"Elon Musk\"},{\"name\":\"Joe Biden\"},{\"name\":\"Mark
+        Cuban\"}]},{\"id\":34674672,\"author\":\"Ananya Gairola\",\"created\":\"Mon,
+        18 Sep 2023 03:06:09 -0400\",\"updated\":\"Mon, 18 Sep 2023 03:06:09 -0400\",\"title\":\"Elon
+        Musk Is Working On Integrating iMessage, WhatsApp And Signal In One 'Magical
+        Kayak'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34674672/elon-musk-is-working-on-integrating-imessage-whatsapp-and-signal-in-one-magical-kayak\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Elon_Musk_82.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Elon_Musk_82.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Elon_Musk_82.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
+        Media\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"META\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Digital markets Act\"},{\"name\":\"Elon Musk\"},{\"name\":\"iMessage\"},{\"name\":\"Meta\"},{\"name\":\"Software
+        &amp; Apps\"},{\"name\":\"X\"}]},{\"id\":34674146,\"author\":\"Navdeep Yadav\",\"created\":\"Mon,
+        18 Sep 2023 02:58:46 -0400\",\"updated\":\"Mon, 18 Sep 2023 02:58:47 -0400\",\"title\":\"'Chaos,
+        Dysfunction And Extremism': Democratic Congressman Hakeem Jeffries Says House
+        GOP 'In Middle Of A Civil War'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34674146/chaos-dysfunction-and-extremism-democratic-congressman-hakeem-jeffries-says-house-gop-in-middle-of-a\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Hakeem_Jeffries.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Hakeem_Jeffries.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Hakeem_Jeffries.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"General\"}],\"stocks\":[],\"tags\":[{\"name\":\"GOP\"},{\"name\":\"Hakeem
+        Jeffries\"},{\"name\":\"House Republicans\"},{\"name\":\"Republican Party\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 18 Sep 2023 10:00:55 GMT
+      ETag:
+      - SFgJDuU-cch0gJxYbMZGMpNvsb6e9BhJhd_i4aB24Z8=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 7ec84fa8ea386135e27faa4bc393caba.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 0PWnGZ5zJgqK6Lnxlt-fMZ6Wa6ZLjMbi8_tGNbuCivDTNNNdq6MEyQ==
+      X-Amz-Cf-Pop:
+      - ZAG50-C1
+      X-Bz-Request-Id:
+      - 192.168.240.19-8000-38-1058477-73-1695031255.196
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '29'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

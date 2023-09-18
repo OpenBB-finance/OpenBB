@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/crypto/BTC/USD?apikey=MOCK_API_KEY&from=2022-09-18&to=2023-09-18
+  response:
+    body:
+      string: "{\n  \"timestamp\": \"2023-09-18T09:48:33.989+0000\",\n  \"status\":
+        404,\n  \"error\": \"Not Found\",\n  \"message\": \"No message available\",\n
+        \ \"path\": \"/api/v3/historical-price-full/crypto/BTC/USD\"\n}"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '185'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 18 Sep 2023 09:48:33 GMT
+      ETag:
+      - W/"b9-y6mrk3lFxK683uv78JWESu4jSx8"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 404
+      message: Not Found
+version: 1

@@ -4,6 +4,8 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cash_flow import (
     CashFlowStatementData,

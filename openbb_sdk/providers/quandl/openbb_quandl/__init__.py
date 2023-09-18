@@ -1,6 +1,5 @@
 """quandl provider module."""
 from openbb_provider.abstract.provider import Provider
-
 from openbb_quandl.models.cot import QuandlCotFetcher
 from openbb_quandl.models.cot_search import QuandlCotSearchFetcher
 from openbb_quandl.models.sp500_multiples import QuandlSP500MultiplesFetcher

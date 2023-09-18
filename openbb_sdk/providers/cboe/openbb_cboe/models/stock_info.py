@@ -5,19 +5,18 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_info import (
-    StockInfoData,
-    StockInfoQueryParams,
-)
-from pydantic import Field
-
 from openbb_cboe.utils.helpers import (
     get_cboe_directory,
     get_cboe_index_directory,
     get_ticker_info,
     get_ticker_iv,
 )
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.standard_models.stock_info import (
+    StockInfoData,
+    StockInfoQueryParams,
+)
+from pydantic import Field
 
 
 class CboeStockInfoQueryParams(StockInfoQueryParams):

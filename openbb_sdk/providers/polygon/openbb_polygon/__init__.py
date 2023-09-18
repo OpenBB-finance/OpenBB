@@ -1,6 +1,4 @@
 """Polygon provider module."""
-from openbb_provider.abstract.provider import Provider
-
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
@@ -12,6 +10,7 @@ from openbb_polygon.models.major_indices_historical import (
 )
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
+from openbb_provider.abstract.provider import Provider
 
 polygon_provider = Provider(
     name="polygon",

@@ -5,6 +5,7 @@ import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_benzinga.utils.helpers import BenzingaStockNewsData, get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
