@@ -109,26 +109,50 @@ class Fetcher(Generic[Q, R]):
 
         # Data Assertions
         assert data
-        assert all(
-            [field in data[0] for field in cls.data_type.__fields__ if field in data[0]]
-        )
+        is_list = type(data) == list
+        if is_list:
+            assert all(
+                [
+                    field in data[0]
+                    for field in cls.data_type.__fields__
+                    if field in data[0]
+                ]
+            )
+            # This makes sure that the data is not transformed yet so that the
+            # pipeline is implemented correctly. We can remove this assertion if we
+            # want to be less strict.
+            assert issubclass(type(data[0]), cls.data_type) is False
+        else:
+            assert all(
+                [field in data for field in cls.data_type.__fields__ if field in data]
+            )
+            assert issubclass(type(data), cls.data_type) is False
+
         assert len(data) > 0
-        # This makes sure that the data is not transformed yet so that the
-        # pipeline is implemented correctly. We can remove this assertion if we
-        # want to be less strict.
-        assert issubclass(type(data[0]), cls.data_type) is False
 
         # Transformed Data Assertions
         assert transformed_data
-        assert all(
-            [
-                field in transformed_data[0].__dict__  # type: ignore
-                for field in cls.return_type.__args__[0].__fields__
-            ]
-        )
-        assert len(transformed_data) > 0  # type: ignore
-        assert issubclass(type(transformed_data[0]), cls.data_type)  # type: ignore
-        assert issubclass(
-            type(transformed_data[0]),  # type: ignore
-            cls.return_type.__args__[0],
-        )
+
+        is_list = type(transformed_data) == list
+        if is_list:
+            assert len(transformed_data) > 0  # type: ignore
+            assert all(
+                [
+                    field in transformed_data[0].__dict__  # type: ignore
+                    for field in cls.return_type.__args__[0].__fields__
+                ]
+            )
+            assert issubclass(type(transformed_data[0]), cls.data_type)  # type: ignore
+            assert issubclass(
+                type(transformed_data[0]),  # type: ignore
+                cls.return_type.__args__[0],
+            )
+        else:
+            assert all(
+                [
+                    field in transformed_data.__dict__
+                    for field in cls.return_type.__fields__
+                ]
+            )
+            assert issubclass(type(transformed_data), cls.data_type)
+            assert issubclass(type(transformed_data), cls.return_type)

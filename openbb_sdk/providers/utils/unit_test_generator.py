@@ -7,7 +7,6 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import ModelField
-
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 
 
