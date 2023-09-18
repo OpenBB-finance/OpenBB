@@ -176,19 +176,19 @@ class CboeMajorIndicesHistoricalFetcher(
 
         if query.interval == "1m":
             data_list = r.json()["data"]
-            date: list[datetime] = []
-            open: list[float] = []
-            high: list[float] = []
-            low: list[float] = []
-            close: list[float] = []
-            volume: list[float] = []
-            calls_volume: list[float] = []
-            puts_volume: list[float] = []
-            total_options_volume: list[float] = []
+            date: List[datetime] = []
+            open_: List[float] = []
+            high: List[float] = []
+            low: List[float] = []
+            close: List[float] = []
+            volume: List[float] = []
+            calls_volume: List[float] = []
+            puts_volume: List[float] = []
+            total_options_volume: List[float] = []
 
             for i in range(0, len(data_list)):
                 date.append(data_list[i]["datetime"])
-                open.append(data_list[i]["price"]["open"])
+                open_.append(data_list[i]["price"]["open"])
                 high.append(data_list[i]["price"]["high"])
                 low.append(data_list[i]["price"]["low"])
                 close.append(data_list[i]["price"]["close"])
@@ -200,7 +200,7 @@ class CboeMajorIndicesHistoricalFetcher(
                 )
             data = pd.DataFrame()
             data["date"] = pd.to_datetime(date)
-            data["open"] = open
+            data["open"] = open_
             data["high"] = high
             data["low"] = low
             data["close"] = close
