@@ -47,7 +47,10 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        return datetime.strptime(v, "%Y-%m-%d")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeMajorIndicesHistoricalFetcher(
@@ -78,10 +81,9 @@ class CboeMajorIndicesHistoricalFetcher(
         data = pd.DataFrame()
         if "^" in query.symbol:
             query.symbol = query.symbol.replace("^", "")
-        if query.symbol == "NDX" and query.interval == "1d":
-            raise RuntimeError(
-                "NDX time series data is only supported when `interval='1m'`."
-            )
+        query.interval = (
+            "1m" if query.symbol == "NDX" and query.interval == "1d" else query.interval
+        )
 
         now = datetime.now()
         query.start_date = (
