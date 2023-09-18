@@ -926,6 +926,10 @@ class OpenBBFigure(go.Figure):
         """
         df_volume = df_volume.apply(lambda x: f"{x:.1f}")
         df_volume = pd.to_numeric(df_volume.astype(float))
+
+        if isinstance(df_volume, pd.Series):
+            df_volume = df_volume.to_frame()
+
         volume_ticks = int(df_volume.max().max())
         round_digits = -3
         first_val = round(volume_ticks * 0.20, round_digits)
