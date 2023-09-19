@@ -1,56 +1,76 @@
-# Table of contents
+[![Downloads](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
+[![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBBTerminal)
 
-- [Table of contents](#table-of-contents)
-  - [Pre-requisites](#pre-requisites)
-  - [Installation](#installation)
-  - [API keys](#api-keys)
-    - [1. From local file](#1-from-local-file)
-    - [2. From runtime](#2-from-runtime)
-    - [3. From OpenBB Hub](#3-from-openbb-hub)
-  - [Python Usage](#python-usage)
-  - [API Usage](#api-usage)
-  - [Docker](#docker)
-  - [Development](#development)
-    - [Import time](#import-time)
+| OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
+|:--:|
+| ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png) |
+| Check our website at [openbb.co](www.openbb.co) |
 
-## Pre-requisites
 
-To install and use the SDK you need:
+## OpenBB Platform Overview
 
-- A fresh virtual environment
-- Python 3.8 or higher
-- API keys for the APIs you want to use
+OpenBB Platform provides a convenient way to access raw financial data from multiple data providers. The package comes with a ready to use REST API. This allows developers from any language to easily create applications on top of OpenBB Platform.
 
-For development you need:
-
-- Poetry 1.5.1 or higher
-- ruff 0.0.256
-- mypy 1.4.1
-- black
 
 ## Installation
 
-To install the SDK in a virtual environment from the repo root run:
+The command below provides access to the core functionalities behind the [OpenBB Platform](https://my.openbb.co/app/sdk).
 
 ```bash
-pip install ./openbb_sdk
+pip install openbb
 ```
 
-This will install the SDK and all its dependencies into the site-packages directory of the virtual environment.
+> Note: While we are in pre-release mode you need to specify the version, e.g. `pip install openbb==4.0.0a0`
+
+If you wish to install extensions that expand the core functionalities, you can do so by specifying the extension name or use `all` to install all.
+
+```bash
+pip install openbb[all]==4.0.0a0
+``````
+
+## REST API
+
+OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
+
+```bash
+uvicorn openbb_core.api.rest_api:app
+```
+
+Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.
 
 ## API keys
 
-To use your API keys you need to configure them. Here are the 3 options on how to do it:
+To fullly leverage the OpenBB Platform you need to configure some API keys. Here are the 3 options on how to do it:
 
-1. From local file
+1. From OpenBB Hub
 2. At runtime
-3. From OpenBB Hub
+3. From local file
 
-### 1. From local file
+### 1. From OpenBB Hub
 
-You can specify the keys in the `~/.openbb_sdk/user_settings.json` file.
+You can also load your the keys from the OpenBB Hub. Get your personal access token at https://my.openbb.co/app/sdk/pat.
 
-Create this file using the following template and replace the values with your keys:
+```python
+>>> from openbb import obb
+>>> openbb.account.login(pat="OPENBB_PAT")
+```
+
+### 2. At runtime
+
+```python
+>>> from openbb import obb
+>>> obb.user.credentials.fmp_api_key = "REPLACE_ME"
+>>> obb.user.credentials.polygon_api_key = "REPLACE_ME"
+
+>>> # Persist changes in ~/.openbb_sdk/user_settings.json
+>>> obb.account.save()
+```
+
+### 3. From local file
+
+You can specify the keys directly in the `~/.openbb_sdk/user_settings.json` file.
+
+Populate this file with the following template and replace the values with your keys:
 
 ```json
 {
@@ -61,96 +81,4 @@ Create this file using the following template and replace the values with your k
     "fred_api_key": "REPLACE_ME"
   }
 }
-```
-
-### 2. From runtime
-
-You can also specify your keys at runtime:
-
-```python
-from openbb import obb
-obb.user.credentials.fmp_api_key = "REPLACE_ME"
-obb.user.credentials.polygon_api_key = "REPLACE_ME"
-```
-
-### 3. From OpenBB Hub
-
-You can also load your the keys from the OpenBB Hub.
-
-```python
-from openbb import obb
-openbb.account.login(username="REPLACE_ME", password="REPLACE_ME")
-```
-
-## Python Usage
-
-Import and basic usage:
-
-```python
-from openbb import obb
-aapl = obb.stocks.load("AAPL")
-df = aapl.to_dataframe()
-df.head()
-```
-
-## API Usage
-
-Launch the API with:
-
-```bash
-uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
-```
-
-Navigate to <http://0.0.0.0:8000/docs> to see the swagger API documentation.
-
-Authorize with the developer credentials: openbb/openbb
-
-## Docker
-
-You can use the API through Docker.
-
-To build the image, from the repo root run:
-
-```bash
-docker build -f build/docker/api.dockerfile -t openbb-sdk:latest .
-```
-
-To run this newly-built image:
-
-```bash
-docker run --rm -p8000:8000 -v ~/.openbb_sdk:/root/.openbb_sdk openbb-sdk:latest
-```
-
-This will mount the local `~/.openbb_sdk` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
-
-## Development
-
-From the root of the OpenBB Terminal repo, run:
-
-`poetry install -C ./openbb_sdk`
-
-When developing a specific extension `cd` into the extension directory and run:
-
-`pip install -U -e .`
-
-While we're still developing, it is often required to reinstall extensions:
-
-```python
-python -c "import openbb; openbb.build()"
-```
-
-You need to do this every time you install or uninstall a new extension or to reinstall all extensions.
-
-### Import time
-
-We aim to have a short import time. To measure that we use `tuna`.
-
-- https://pypi.org/project/tuna/
-
-To visualize the import time breakdown by module, run the following commands from `openbb_sdk` directory:
-
-```bash
-pip install tuna
-python -X importtime openbb/__init__.py 2> import.log
-tuna import.log
 ```
