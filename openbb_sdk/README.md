@@ -20,13 +20,17 @@ The command below provides access to the core functionalities behind the [OpenBB
 pip install openbb
 ```
 
-> Note: While we are in pre-release mode you need to specify the version, e.g. `pip install openbb==4.0.0a0`
-
-If you wish to install extensions that expand the core functionalities, you can do so by specifying the extension name or use `all` to install all.
+To install extensions that expand the core functionalities, you can do so by specifying the extension name or use `all` to install all.
 
 ```bash
-pip install openbb[all]==4.0.0a0
+# Install charting extension
+pip install openbb[charting]
+
+# Install all available extensions
+pip install openbb[all]
 ``````
+
+> Note: While we are in pre-release mode you need to specify the version, e.g. `pip install openbb==4.0.0a0` or `pip install openbb[all]==4.0.0a0`
 
 ## REST API
 
