@@ -38,46 +38,70 @@ class Metadata(BaseModel):
         for arg, arg_val in v.items():
             new_arg_val = None
 
+            # Data
             if isclass(type(arg_val)) and issubclass(type(arg_val), Data):
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
                     "columns": list(arg_val.dict().keys()),
                 }
 
+            # List[Data]
             if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
+                columns = [list(d.dict().keys()) for d in arg_val]
+                columns = (item for sublist in columns for item in sublist)  # flatten
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": list(arg_val[0].__fields__.keys()),
+                    "columns": list(columns),
                 }
 
+            # DataFrame
             elif isinstance(arg_val, pd.DataFrame):
+                columns = (
+                    list(arg_val.index.names) + arg_val.columns.tolist()
+                    if any(index is not None for index in list(arg_val.index.names))
+                    else arg_val.columns.tolist()
+                )
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
-                    "columns": list(arg_val.index.names) + arg_val.columns.tolist(),
+                    "columns": columns,
                 }
 
+            # List[DataFrame]
             elif isinstance(arg_val, list) and issubclass(
                 type(arg_val[0]), pd.DataFrame
             ):
-                columns = [list(df.index.names) + df.columns.tolist() for df in arg_val]
+                columns = [
+                    list(df.index.names) + df.columns.tolist()
+                    if any(index is not None for index in list(df.index.names))
+                    else df.columns.tolist()
+                    for df in arg_val
+                ]
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
                     "columns": columns,
                 }
 
+            # Series
             elif isinstance(arg_val, pd.Series):
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
                     "columns": list(arg_val.index.names) + [arg_val.name],
                 }
 
+            # List[Series]
             elif isinstance(arg_val, list) and isinstance(arg_val[0], pd.Series):
-                columns = [list(s.index.names) + [s.name] for s in arg_val]
+                columns = [
+                    list(serie.index.names) + [serie.name]
+                    if any(index is not None for index in list(serie.index.names))
+                    else serie.name
+                    for serie in arg_val
+                ]
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
                     "columns": columns,
                 }
 
+            # ndarray
             elif isinstance(arg_val, np.ndarray):
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
