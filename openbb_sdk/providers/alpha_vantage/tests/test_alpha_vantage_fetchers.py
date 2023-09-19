@@ -16,6 +16,7 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+@pytest.mark.skip(reason="This is a premium endpoint.")
 def test_av_stock_historical_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 

@@ -55,10 +55,10 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
 class CboeMajorIndicesHistoricalFetcher(
     Fetcher[
         CboeMajorIndicesHistoricalQueryParams,
-        CboeMajorIndicesHistoricalData,
+        List[CboeMajorIndicesHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(

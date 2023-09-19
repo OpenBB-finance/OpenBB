@@ -45,10 +45,7 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeEuropeanIndexHistoricalFetcher(
@@ -57,14 +54,13 @@ class CboeEuropeanIndexHistoricalFetcher(
         List[CboeEuropeanIndexHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> CboeEuropeanIndexHistoricalQueryParams:
         """Transform the query."""
-
         return CboeEuropeanIndexHistoricalQueryParams(**params)
 
     @staticmethod
@@ -73,8 +69,7 @@ class CboeEuropeanIndexHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
-
+        """Return the raw data from the CBOE endpoint."""
         data = pd.DataFrame()
         query.symbol = query.symbol.upper()
         SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
@@ -131,6 +126,5 @@ class CboeEuropeanIndexHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexHistoricalData]:
-        """Transform the data to the standard format"""
-
+        """Transform the data to the standard format."""
         return [CboeEuropeanIndexHistoricalData.parse_obj(d) for d in data]
