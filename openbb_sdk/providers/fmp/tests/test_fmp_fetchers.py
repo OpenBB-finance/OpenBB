@@ -303,7 +303,7 @@ def test_fmp_historical_stock_splits_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_stock_split_calendar_fetcher(credentials=test_credentials):
-    params = {}
+    params = {"start_date": "2023-01-01", "end_date": "2023-01-10"}
 
     fetcher = FMPStockSplitCalendarFetcher()
     result = fetcher.test(params, credentials)

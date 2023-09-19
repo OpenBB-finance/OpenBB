@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from dateutil.relativedelta import relativedelta
 from openbb_cboe.utils.helpers import Europe
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.european_index_historical import (
@@ -61,7 +62,23 @@ class CboeEuropeanIndexHistoricalFetcher(
         params: Dict[str, Any]
     ) -> CboeEuropeanIndexHistoricalQueryParams:
         """Transform the query."""
-        return CboeEuropeanIndexHistoricalQueryParams(**params)
+        now = datetime.now().date()
+        transformed_params = params
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
+
+        return CboeEuropeanIndexHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
