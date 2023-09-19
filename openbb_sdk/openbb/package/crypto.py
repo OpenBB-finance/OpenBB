@@ -47,15 +47,15 @@ class CLASS_crypto(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+        timeseries : Union[pydantic.types.NonNegativeInt, None]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)

@@ -48,11 +48,11 @@ class CLASS_forex(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], NoneType]
+        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -144,23 +144,23 @@ class CLASS_forex(Container):
 
         Parameters
         ----------
-        provider : Union[Literal['fmp', 'intrinio', 'polygon'], NoneType]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        symbol : Union[str, NoneType]
+        symbol : Union[str, None]
             Symbol of the pair to search. (provider: polygon)
-        date : Union[datetime.date, NoneType]
+        date : Union[datetime.date, None]
             A specific date to get data for. (provider: polygon)
-        search : Union[str, NoneType]
+        search : Union[str, None]
             Search for terms within the ticker and/or company name. (provider: polygon)
-        active : Union[Literal[True, False], NoneType]
+        active : Union[Literal[True, False], None]
             Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Union[Literal['asc', 'desc'], None]
             Order data by ascending or descending. (provider: polygon)
-        sort : Union[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc'], NoneType]
+        sort : Union[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc'], None]
             Sort field used for ordering. (provider: polygon)
-        limit : Union[pydantic.types.PositiveInt, NoneType]
+        limit : Union[pydantic.types.PositiveInt, None]
             The number of data entries to return. (provider: polygon)
 
         Returns

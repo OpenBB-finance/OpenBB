@@ -47,9 +47,9 @@ class CLASS_news(Container):
             Start date of the news to retrieve. (provider: benzinga)
         end_date : Union[str, NoneType]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Union[int, NoneType]
+        updated_since : Union[int, None]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Union[int, NoneType]
+        published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
         sort : Union[Literal['id', 'created', 'updated'], NoneType]
             Key to sort the news by. (provider: benzinga)
@@ -57,15 +57,15 @@ class CLASS_news(Container):
             Order to sort the news by. (provider: benzinga)
         isin : Union[str, NoneType]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Union[str, NoneType]
+        cusip : Union[str, None]
             The CUSIP of the news to retrieve. (provider: benzinga)
         channels : Union[str, NoneType]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Union[str, NoneType]
+        topics : Union[str, None]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Union[str, NoneType]
+        authors : Union[str, None]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Union[str, NoneType]
+        content_types : Union[str, None]
             Content types of the news to retrieve. (provider: benzinga)
 
         Returns
