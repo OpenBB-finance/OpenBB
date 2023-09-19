@@ -65,9 +65,17 @@ class FMPTreasuryRatesFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - timedelta(90)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                transformed_params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                transformed_params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return FMPTreasuryRatesQueryParams(**transformed_params)
 

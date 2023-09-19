@@ -52,9 +52,9 @@ class PolygonStockHistoricalData(StockHistoricalData):
             "low": "l",
             "close": "c",
             "volume": "v",
+            "vwap": "vw",
         }
 
-    vwap: Optional[float] = Field(description="The volume weighted average price.")
     transactions: Optional[PositiveInt] = Field(
         description="Number of transactions for the symbol in the time period.",
         alias="n",
@@ -77,9 +77,18 @@ class PolygonStockHistoricalFetcher(
         transformed_params = params
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
+
         return PolygonStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
@@ -90,33 +99,48 @@ class PolygonStockHistoricalFetcher(
     ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        data: list = []
+        data: List = []
 
         def multiple_symbols(
             symbol: str, data: List[PolygonStockHistoricalData]
         ) -> None:
-            request_url = (
+            results: List = []
+
+            url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
-            results = get_data(request_url, **kwargs).get("results", [])
+            response = get_data(url, **kwargs)
+
+            next_url = response.get("next_url", None)
+            results = response.get("results", [])
+
+            while next_url:
+                url = f"{next_url}&apiKey={api_key}"
+                response = get_data(url, **kwargs)
+                next_url = response.get("next_url", None)
+                results.extend(response.get("results", []))
 
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
 
-            return data.extend(
-                [PolygonStockHistoricalData.parse_obj(d) for d in results]
-            )
+            # return data.extend(
+            #     [PolygonStockHistoricalData.parse_obj(d) for d in results]
+            # )
+            # extend the data without using the Pydantic model
+            data.extend(results)
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
-
-        data.sort(key=lambda x: x.date)
 
         return data
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        return [PolygonStockHistoricalData.parse_obj(d) for d in data]
+        transformed_data: List[PolygonStockHistoricalData] = [
+            PolygonStockHistoricalData.parse_obj(d) for d in data
+        ]
+        transformed_data.sort(key=lambda x: x.date)
+        return transformed_data

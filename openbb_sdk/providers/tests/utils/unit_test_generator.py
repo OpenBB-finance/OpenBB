@@ -44,6 +44,7 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "Portugal",
+                "date": "2023-01-01",
                 "countries": ["portugal", "spain"],
             }
             if field_name in example_dict:
@@ -57,6 +58,14 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
             elif field.type_ == bool:
                 test_params[field_name] = True
 
+        # This makes sure that the unit test are reproducible by fixing the date
+        elif not field.required and field_name in ["start_date", "end_date", "date"]:
+            if field_name == "start_date":
+                test_params[field_name] = "2023-01-01"
+            elif field_name == "end_date":
+                test_params[field_name] = "2023-06-06"
+            elif field_name == "date":
+                test_params[field_name] = "2023-01-01"
     return test_params
 
 

@@ -1,18 +1,77 @@
-from typing import Any, Dict, List, Optional
+"""Polygon Balance Sheet Statement Fetcher"""
+
+
+from datetime import date
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.balance_sheet import BalanceSheetData
+from openbb_provider.standard_models.balance_sheet import (
+    BalanceSheetData,
+    BalanceSheetQueryParams,
+)
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import validator
+from pydantic import Field, validator
 
 
-class PolygonBalanceSheetQueryParams(PolygonFundamentalQueryParams):
+class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
     """Polygon Fundamental QueryParams.
 
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """
+
+    class Config:
+        fields = {
+            "symbol": "ticker",
+            "period": "timeframe",
+        }
+
+    company_name: Optional[str] = Field(description="Name of the company.")
+    company_name_search: Optional[str] = Field(
+        description="Name of the company to search."
+    )
+    sic: Optional[str] = Field(
+        description="The Standard Industrial Classification (SIC) of the company."
+    )
+    filing_date: Optional[date] = Field(
+        description="Filing date of the financial statement."
+    )
+    filing_date_lt: Optional[date] = Field(
+        description="Filing date less than the given date."
+    )
+    filing_date_lte: Optional[date] = Field(
+        description="Filing date less than or equal to the given date.",
+    )
+    filing_date_gt: Optional[date] = Field(
+        description="Filing date greater than the given date.",
+    )
+    filing_date_gte: Optional[date] = Field(
+        description="Filing date greater than or equal to the given date.",
+    )
+    period_of_report_date: Optional[date] = Field(
+        description="Period of report date of the financial statement."
+    )
+    period_of_report_date_lt: Optional[date] = Field(
+        description="Period of report date less than the given date.",
+    )
+    period_of_report_date_lte: Optional[date] = Field(
+        description="Period of report date less than or equal to the given date.",
+    )
+    period_of_report_date_gt: Optional[date] = Field(
+        description="Period of report date greater than the given date.",
+    )
+    period_of_report_date_gte: Optional[date] = Field(
+        description="Period of report date greater than or equal to the given date.",
+    )
+    include_sources: Optional[bool] = Field(
+        description="Whether to include the sources of the financial statement."
+    )
+    order: Optional[Literal["asc", "desc"]] = Field(
+        description="Order of the financial statement."
+    )
+    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
+        description="Sort of the financial statement."
+    )
 
 
 class PolygonBalanceSheetData(BalanceSheetData):

@@ -13,7 +13,7 @@ interactions:
   response:
     body:
       string: "[\n  {\n    \"symbol\": \"AAPL\",\n    \"targetHigh\": 240,\n    \"targetLow\":
-        110,\n    \"targetConsensus\": 188.09,\n    \"targetMedian\": 195\n  }\n]"
+        110,\n    \"targetConsensus\": 189.18,\n    \"targetMedian\": 195\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -33,9 +33,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 18 Sep 2023 09:48:48 GMT
+      - Tue, 19 Sep 2023 11:13:30 GMT
       ETag:
-      - W/"85-UvL+zBXcm3Tqll0XQjOfVLpvM7M"
+      - W/"85-MMRo6eJuj/J+yVk/93Sv2itXKsk"
       Server:
       - nginx/1.18.0 (Ubuntu)
       X-Frame-Options:

@@ -35,11 +35,11 @@ class FMPForexHistoricalData(ForexHistoricalData):
         alias="change",
     )
     changePercent: float = Field(
-        description=r"Change \% in the price of the symbol.", alias="change_percent"
+        description=r"Change % in the price of the symbol.", alias="change_percent"
     )
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
+        description=r"Change % in the price of the symbol over a period of time.",
         alias="change_over_time",
     )
 
@@ -65,9 +65,17 @@ class FMPForexHistoricalFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return FMPForexHistoricalQueryParams(**transformed_params)
 

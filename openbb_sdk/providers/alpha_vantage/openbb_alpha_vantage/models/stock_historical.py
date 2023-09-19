@@ -74,7 +74,6 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     @root_validator
     def setup_function(cls, values):  # pylint: disable=E0213
         """Set the function based on the period."""
-
         functions_based_on_period = {
             "intraday": "TIME_SERIES_INTRADAY",
             "daily": "TIME_SERIES_DAILY",
@@ -86,9 +85,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
 
     @root_validator
     def adjusted_function_validate(cls, values):  # pylint: disable=E0213
-        """
-        Validate that the function is adjusted if the `adjusted` parameter is set to True.
-        """
+        """Validate that the function is adjusted if the `adjusted` parameter is set to True."""
 
         function = values["_function"]
         adjusted = values.get("adjusted", None)
@@ -100,7 +97,8 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
 
     @root_validator
     def on_functions_validate(cls, values):  # pylint: disable=E0213
-        """
+        """Validate the fields.
+
         Validate that the functions used on custom extra Field attributes
         `available_on_functions` and `required_on_functions` are valid functions.
         """
@@ -130,7 +128,8 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
 
     @root_validator
     def on_functions_criteria_validate(cls, values):  # pylint: disable=E0213
-        """
+        """Validate the fields.
+
         Validate that the fields are set to None if the function is not available
         and that the required fields are not None if the function is required.
         """
@@ -199,7 +198,6 @@ class AVStockHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> AVStockHistoricalQueryParams:
         """Transform the query."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -218,7 +216,6 @@ class AVStockHistoricalFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the Alpha Vantage endpoint."""
-
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
 
         query_dict = query.dict()
@@ -243,5 +240,4 @@ class AVStockHistoricalFetcher(
         data: dict,
     ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
-
         return [AVStockHistoricalData.parse_obj(d) for d in data]

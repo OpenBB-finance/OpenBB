@@ -66,16 +66,10 @@ class CLASS_forex(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        interval : Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'], None]
+        interval : Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
             Data granularity. (provider: yfinance)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], None]
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
             Period of the data to return. (provider: yfinance)
-        prepost : bool
-            Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
-        back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
 
         Returns
         -------
@@ -93,7 +87,7 @@ class CLASS_forex(Container):
 
         ForexHistorical
         ---------------
-        date : Optional[datetime]
+        date : Union[date, datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -114,11 +108,11 @@ class CLASS_forex(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         n : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
