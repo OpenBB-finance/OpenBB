@@ -243,7 +243,7 @@ class CLASS_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """ETF Info.
@@ -252,17 +252,19 @@ class CLASS_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
+        country : Literal['america', 'canada']
+            The country the ETF is registered in. '.TO' acts as a proxy to 'canada'. (provider: blackrock)
 
         Returns
         -------
         OBBject
             results : List[EtfInfo]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -279,14 +281,24 @@ class CLASS_etf(Container):
             Inception date of the ETF.
         name : Optional[str]
             Name of the ETF.
+        asset_class : Optional[str]
+            The asset class of the ETF. (provider: blackrock, fmp)
+        sub_asset_class : Optional[str]
+            The sub-asset class of the ETF. (provider: blackrock)
+        country : Optional[str]
+            The country the ETF is registered in. (provider: blackrock); The country where the ETF is domiciled. (provider: fmp)
+        region : Optional[str]
+            The region of the ETF. (provider: blackrock)
+        investment_style : Optional[str]
+            The investment style of the ETF. (provider: blackrock, tmx)
+        yield_ttm : Optional[float]
+            The TTM yield of the ETF. (provider: blackrock)
+        aum : Union[float, NoneType, int]
+            The value of the assets under management. (provider: blackrock); The AUM of the ETF. (provider: fmp); The AUM of the ETF. (provider: tmx)
         issuer : Optional[str]
             The issuer of the ETF. (provider: fmp, tmx)
-        asset_class : Optional[str]
-            The asset class of the ETF. (provider: fmp)
         currency : Optional[str]
             The currency of the ETF. (provider: fmp, tmx)
-        country : Optional[str]
-            The country where the ETF is domiciled. (provider: fmp)
         cusip : Optional[str]
             The CUSIP number of the ETF. (provider: fmp)
         isin : Optional[str]
@@ -294,9 +306,7 @@ class CLASS_etf(Container):
         holdings_count : Optional[int]
             The number of holdings of the ETF. (provider: fmp)
         nav : Optional[float]
-            The NAV of the ETF. (provider: fmp, tmx)
-        aum : Optional[int]
-            The AUM of the ETF. (provider: fmp)
+            The NAV of the ETF. (provider: fmp)
         expense_ratio : Optional[float]
             The expense ratio of the ETF. (provider: fmp)
         avg_volume : Union[float, NoneType, int]
@@ -307,8 +317,6 @@ class CLASS_etf(Container):
             The website of the ETF. (provider: fmp, tmx)
         description : Optional[str]
             The description of the ETF. (provider: fmp, tmx)
-        investment_style : Optional[str]
-            The investment style of the ETF. (provider: tmx)
         esg : Optional[str]
             Whether the ETF qualifies as an ESG fund. (provider: tmx)
         unit_price : Optional[float]
@@ -327,8 +335,6 @@ class CLASS_etf(Container):
             The year-to-date return of the ETF. (provider: tmx)
         return_1y : Optional[float]
             The one-year return of the ETF. (provider: tmx)
-        beta : Optional[float]
-            The 1-year beta of the ETF. (provider: tmx)
         avg_volume_30d : Optional[int]
             The 30-day average volume of the ETF. (provider: tmx)
         pe_ratio : Optional[float]

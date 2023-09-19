@@ -50,7 +50,7 @@ class TmxEtfInfoData(EtfInfoData):
     avg_volume_30d: Optional[int] = Field(
         description="The 30-day average volume of the ETF.", alias="volume_avg_30d"
     )
-    nav: Optional[float] = Field(description="The NAV of the ETF.")
+    aum: Optional[float] = Field(description="The AUM of the ETF.")
     pe_ratio: Optional[float] = Field(
         description="The price-to-earnings ratio of the ETF."
     )
@@ -123,7 +123,7 @@ class TmxEtfInfoFetcher(
             "return_1y",
             "volume_avg_daily",
             "volume_avg_30d",
-            "nav",
+            "aum",
             "pe_ratio",
             "pb_ratio",
             "management_fee",
