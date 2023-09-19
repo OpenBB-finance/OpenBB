@@ -52,11 +52,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -126,11 +126,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -200,11 +200,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -274,11 +274,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -332,7 +332,7 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -407,11 +407,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -480,11 +480,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -550,11 +550,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -638,11 +638,11 @@ class CLASS_fixedincome(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, NoneType]
+        date : Union[datetime.date, None]
             Date to get Yield Curve data.  Defaults to the most recent FRED entry.
-        inflation_adjusted : Union[bool, NoneType]
+        inflation_adjusted : Union[bool, None]
             Get inflation adjusted rates.
-        provider : Union[Literal['fred'], NoneType]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
