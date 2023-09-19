@@ -32,7 +32,6 @@ def test_quandl_cot_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
 def test_quandl_cot_search_fetcher(credentials=test_credentials):
     params = {}
 
