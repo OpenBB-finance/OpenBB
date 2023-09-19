@@ -7,6 +7,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_pairs import (
     ForexPairsData,
@@ -14,8 +15,6 @@ from openbb_provider.standard_models.forex_pairs import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
-
-from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonForexPairsQueryParams(ForexPairsQueryParams):
@@ -101,9 +100,17 @@ class PolygonForexPairsFetcher(
     def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
         """Transform the query parameters. Ticker is set if symbol is provided."""
         transform_params = params
+        now = datetime.now().date()
         transform_params["symbol"] = (
             f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
         )
+        if params.get("date") is None:
+            transform_params["start_date"] = now
+        else:
+            transform_params["date"] = datetime.strptime(
+                params["date"], "%Y-%m-%d"
+            ).date()
+
         return PolygonForexPairsQueryParams(**transform_params)
 
     @staticmethod

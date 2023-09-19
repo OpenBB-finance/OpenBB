@@ -1,17 +1,16 @@
 """FMP Stock Splits Calendar fetcher."""
 
 
-from datetime import date
+from datetime import date, datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_splits import (
     StockSplitCalendarData,
     StockSplitCalendarQueryParams,
 )
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPStockSplitCalendarQueryParams(StockSplitCalendarQueryParams):
@@ -41,9 +40,17 @@ class FMPStockSplitCalendarFetcher(
         now = date.today()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return FMPStockSplitCalendarQueryParams(**transformed_params)
 

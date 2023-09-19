@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -11,8 +12,6 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -40,14 +39,14 @@ class FMPStockHistoricalData(StockHistoricalData):
         description="Change in the price of the symbol from the previous day."
     )
     changePercent: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol."
+        description=r"Change % in the price of the symbol."
     )
     vwap: Optional[float] = Field(
         description="Volume Weighted Average Price of the symbol."
     )
     label: Optional[str] = Field(description="Human readable format of the date.")
     changeOverTime: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol over a period of time."
+        description=r"Change % in the price of the symbol over a period of time."
     )
 
     @validator("date", pre=True, check_fields=False)
@@ -75,9 +74,17 @@ class FMPStockHistoricalFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return FMPStockHistoricalQueryParams(**transformed_params)
 

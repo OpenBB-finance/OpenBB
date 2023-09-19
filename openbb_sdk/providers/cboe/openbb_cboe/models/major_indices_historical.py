@@ -4,6 +4,11 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import (
+    TICKER_EXCEPTIONS,
+    get_cboe_index_directory,
+    get_ticker_info,
+)
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalData,
@@ -11,12 +16,6 @@ from openbb_provider.standard_models.major_indices_historical import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_cboe_index_directory,
-    get_ticker_info,
-)
 
 
 class CboeMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
@@ -26,7 +25,7 @@ class CboeMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     """
 
     interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Data granularity.",
+        description="Use interval, 1m, for intraday prices during the most recent trading period.",
         default="1d",
     )
 
@@ -46,11 +45,15 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            return datetime.strptime(v, "%Y-%m-%d")
+        """Return formatted datetime string."""
+        if isinstance(v, str):
+            try:
+                dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+                return dt.strftime("%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                dt = datetime.strptime(v, "%Y-%m-%d")
+                return dt.strftime("%Y-%m-%d")
+        return v
 
 
 class CboeMajorIndicesHistoricalFetcher(
@@ -175,7 +178,7 @@ class CboeMajorIndicesHistoricalFetcher(
         if query.interval == "1m":
             data_list = r.json()["data"]
             date: List[datetime] = []
-            open: List[float] = []
+            open_: List[float] = []
             high: List[float] = []
             low: List[float] = []
             close: List[float] = []
@@ -184,22 +187,23 @@ class CboeMajorIndicesHistoricalFetcher(
             puts_volume: List[float] = []
             total_options_volume: List[float] = []
 
-            for i in enumerate(data_list):
-                date.append(data_list[i[0]]["datetime"])
-                open.append(data_list[i[0]]["price"]["open"])
-                high.append(data_list[i[0]]["price"]["high"])
-                low.append(data_list[i[0]]["price"]["low"])
-                close.append(data_list[i[0]]["price"]["close"])
-                volume.append(data_list[i[0]]["volume"]["stock_volume"])
-                calls_volume.append(data_list[i[0]]["volume"]["calls_volume"])
-                puts_volume.append(data_list[i[0]]["volume"]["puts_volume"])
+            for i in range(0, len(data_list)):
+                date.append(data_list[i]["datetime"])
+                open_.append(data_list[i]["price"]["open"])
+                high.append(data_list[i]["price"]["high"])
+                low.append(data_list[i]["price"]["low"])
+                close.append(data_list[i]["price"]["close"])
+                volume.append(data_list[i]["volume"]["stock_volume"])
+                calls_volume.append(data_list[i]["volume"]["calls_volume"])
+                puts_volume.append(data_list[i]["volume"]["puts_volume"])
                 total_options_volume.append(
-                    data_list[i[0]]["volume"]["total_options_volume"]
+                    data_list[i]["volume"]["total_options_volume"]
                 )
-
             data = pd.DataFrame()
+            date = [d.replace("T", " ") for d in date]
+            date = [datetime.strptime(d, "%Y-%m-%d %H:%M:%S") for d in date]
             data["date"] = pd.to_datetime(date)
-            data["open"] = open
+            data["open"] = open_
             data["high"] = high
             data["low"] = low
             data["close"] = close

@@ -14,7 +14,6 @@ from openbb_core.app.router import Router
 from pydantic import BaseModel
 
 from openbb_stocks.ca.ca_router import router as ca_router
-from openbb_stocks.dd.dd_router import router as dd_router
 from openbb_stocks.fa.fa_router import router as fa_router
 from openbb_stocks.options.options_router import router as options_router
 
@@ -27,7 +26,6 @@ from openbb_stocks.options.options_router import router as options_router
 router = Router(prefix="")
 router.include_router(fa_router)
 router.include_router(ca_router)
-router.include_router(dd_router)
 router.include_router(options_router)
 
 # router.include_router(dps_router)

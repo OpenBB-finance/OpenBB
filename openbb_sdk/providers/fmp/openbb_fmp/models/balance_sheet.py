@@ -7,14 +7,13 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
 from pydantic import Field, validator
-
-from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -58,8 +57,8 @@ class FMPBalanceSheetData(BalanceSheetData):
     total_debt: Optional[int] = Field(description="Total debt")
     net_debt: Optional[int] = Field(description="Net debt")
 
-    link: str = Field(description="Link to the statement.")
-    final_link: str = Field(description="Link to the final statement.")
+    link: Optional[str] = Field(description="Link to the statement.")
+    final_link: Optional[str] = Field(description="Link to the final statement.")
 
     @validator("filing_date", pre=True, check_fields=False)
     def filing_date_validate(cls, v):  # pylint: disable=no-self-argument

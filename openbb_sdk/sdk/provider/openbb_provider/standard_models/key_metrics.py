@@ -2,19 +2,19 @@
 
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class KeyMetricsQueryParams(QueryParams, BaseSymbol):
+class KeyMetricsQueryParams(QueryParams):
     """Key Metrics Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     period: Literal["annual", "quarter"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
@@ -22,10 +22,18 @@ class KeyMetricsQueryParams(QueryParams, BaseSymbol):
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
-class KeyMetricsData(Data, BaseSymbol):
+
+class KeyMetricsData(Data):
     """Key Metrics Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period of the data.")
     revenue_per_share: Optional[float] = Field(description="Revenue per share")
@@ -131,3 +139,10 @@ class KeyMetricsData(Data, BaseSymbol):
     capex_per_share: Optional[float] = Field(
         description="Capital expenditures per share"
     )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

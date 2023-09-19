@@ -4,14 +4,13 @@ from datetime import time
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.index_search import (
     IndexSearchData,
     IndexSearchQueryParams,
 )
 from pydantic import Field
-
-from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 
 
 class CboeIndexSearchQueryParams(IndexSearchQueryParams):
@@ -65,12 +64,11 @@ class CboeIndexSearchFetcher(
         List[CboeIndexSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeIndexSearchQueryParams:
-        """Transform the query"""
-
+        """Transform the query."""
         return CboeIndexSearchQueryParams(**params)
 
     @staticmethod
@@ -79,8 +77,7 @@ class CboeIndexSearchFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
-
+        """Return the raw data from the CBOE endpoint."""
         symbols = pd.DataFrame()
         if query.europe is True:
             symbols = pd.DataFrame(Europe.list_indices())
@@ -95,5 +92,5 @@ class CboeIndexSearchFetcher(
 
     @staticmethod
     def transform_data(data: dict) -> List[CboeIndexSearchData]:
-        """Transform the data to the standard format"""
+        """Transform the data to the standard format."""
         return [CboeIndexSearchData.parse_obj(d) for d in data]

@@ -1,5 +1,8 @@
 """yfinance Futures End of Day fetcher."""
+# ruff: noqa: SIM105
+
 import warnings
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -7,7 +10,6 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
-
 from openbb_yfinance.utils.helpers import get_futures_curve
 
 
@@ -37,7 +39,20 @@ class YFinanceFuturesCurveFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
         """Transform the query."""
-        return YFinanceFuturesCurveQueryParams(**params)
+        transformed_params = params
+
+        now = datetime.now().date()
+        if params.get("date") is None:
+            transformed_params["date"] = now
+        else:
+            try:
+                transformed_params["date"] = datetime.strptime(
+                    params["date"], "%Y-%m-%d"
+                ).date()
+            except TypeError:
+                pass
+
+        return YFinanceFuturesCurveQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

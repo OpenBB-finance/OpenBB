@@ -4,14 +4,13 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
 from pydantic import validator
-
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):
@@ -66,9 +65,17 @@ class FMPTreasuryRatesFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - timedelta(90)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                transformed_params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                transformed_params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return FMPTreasuryRatesQueryParams(**transformed_params)
 

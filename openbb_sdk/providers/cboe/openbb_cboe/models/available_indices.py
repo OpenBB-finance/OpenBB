@@ -3,14 +3,13 @@
 from datetime import time
 from typing import Any, Dict, List, Optional
 
+from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
 from pydantic import Field
-
-from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
 
 
 class CboeAvailableIndicesQueryParams(AvailableIndicesQueryParams):
@@ -79,7 +78,7 @@ class CboeAvailableIndicesFetcher(
         List[CboeAvailableIndicesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeAvailableIndicesQueryParams:

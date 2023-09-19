@@ -3,14 +3,13 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )
 from pydantic import Field
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
@@ -25,11 +24,6 @@ class FMPAvailableIndicesData(AvailableIndicesData):
 
     class Config:
         """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "stock_exchange": "stockExchange",
-            "exchange_short_name": "exchangeShortName",
-        }
 
     stock_exchange: str = Field(
         description="Stock exchange where the index is listed.", alias="stockExchange"

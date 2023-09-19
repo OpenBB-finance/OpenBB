@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.forex_historical import (
     ForexHistoricalData,
@@ -12,8 +13,6 @@ from openbb_provider.standard_models.forex_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, validator
-
-from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonForexHistoricalQueryParams(ForexHistoricalQueryParams):
@@ -72,9 +71,17 @@ class PolygonForexHistoricalFetcher(
         transformed_params = params
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return PolygonForexHistoricalQueryParams(**transformed_params)
 

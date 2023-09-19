@@ -39,6 +39,7 @@ class CLASS_stocks_fa(Container):
     ratios
     revgeo
     revseg
+    sec
     shrs
     split
     transcript
@@ -59,7 +60,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
@@ -73,47 +74,47 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Union[int, NoneType]
+        year : Union[int, None]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Union[str, NoneType]
+        company_name : Union[str, None]
             Name of the company. (provider: polygon)
-        company_name_search : Union[str, NoneType]
+        company_name_search : Union[str, None]
             Name of the company to search. (provider: polygon)
-        sic : Union[str, NoneType]
+        sic : Union[str, None]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Union[datetime.date, NoneType]
+        filing_date : Union[datetime.date, None]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Union[datetime.date, NoneType]
+        filing_date_lt : Union[datetime.date, None]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Union[datetime.date, NoneType]
+        filing_date_lte : Union[datetime.date, None]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Union[datetime.date, NoneType]
+        filing_date_gt : Union[datetime.date, None]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Union[datetime.date, NoneType]
+        filing_date_gte : Union[datetime.date, None]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Union[datetime.date, NoneType]
+        period_of_report_date : Union[datetime.date, None]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Union[datetime.date, NoneType]
+        period_of_report_date_lt : Union[datetime.date, None]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Union[datetime.date, NoneType]
+        period_of_report_date_lte : Union[datetime.date, None]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Union[datetime.date, NoneType]
+        period_of_report_date_gt : Union[datetime.date, None]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Union[datetime.date, NoneType]
+        period_of_report_date_gte : Union[datetime.date, None]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Union[bool, NoneType]
+        include_sources : Union[bool, None]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Union[Literal['asc', 'desc'], None]
             Order of the financial statement. (provider: polygon)
-        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], None]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -138,7 +139,7 @@ class CLASS_stocks_fa(Container):
             Date of the fetched statement.
         period : Optional[str]
             Reporting period of the statement.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
@@ -280,7 +281,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -424,11 +425,11 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -494,7 +495,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
@@ -508,47 +509,47 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Union[int, NoneType]
+        year : Union[int, None]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Union[str, NoneType]
+        company_name : Union[str, None]
             Name of the company. (provider: polygon)
-        company_name_search : Union[str, NoneType]
+        company_name_search : Union[str, None]
             Name of the company to search. (provider: polygon)
-        sic : Union[str, NoneType]
+        sic : Union[str, None]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Union[datetime.date, NoneType]
+        filing_date : Union[datetime.date, None]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Union[datetime.date, NoneType]
+        filing_date_lt : Union[datetime.date, None]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Union[datetime.date, NoneType]
+        filing_date_lte : Union[datetime.date, None]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Union[datetime.date, NoneType]
+        filing_date_gt : Union[datetime.date, None]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Union[datetime.date, NoneType]
+        filing_date_gte : Union[datetime.date, None]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Union[datetime.date, NoneType]
+        period_of_report_date : Union[datetime.date, None]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Union[datetime.date, NoneType]
+        period_of_report_date_lt : Union[datetime.date, None]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Union[datetime.date, NoneType]
+        period_of_report_date_lte : Union[datetime.date, None]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Union[datetime.date, NoneType]
+        period_of_report_date_gt : Union[datetime.date, None]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Union[datetime.date, NoneType]
+        period_of_report_date_gte : Union[datetime.date, None]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Union[bool, NoneType]
+        include_sources : Union[bool, None]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Union[Literal['asc', 'desc'], None]
             Order of the financial statement. (provider: polygon)
-        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], None]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -573,7 +574,7 @@ class CLASS_stocks_fa(Container):
             Date of the fetched statement.
         period : Optional[str]
             Reporting period of the statement.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         net_income : Optional[int]
             Net income.
@@ -701,7 +702,7 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -821,7 +822,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -906,11 +907,11 @@ class CLASS_stocks_fa(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, NoneType, str]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, NoneType, str]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -974,7 +975,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1045,9 +1046,9 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        limit : Union[int, NoneType]
+        limit : Union[int, None]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1072,9 +1073,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         date : Optional[date]
             The date of the data.
-        eps : Optional[NonNegativeFloat]
+        eps : Optional[float]
             EPS of the earnings calendar.
-        eps_estimated : Optional[NonNegativeFloat]
+        eps_estimated : Optional[float]
             Estimated EPS of the earnings calendar.
         time : Optional[str]
             Time of the earnings calendar.
@@ -1119,7 +1120,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1202,7 +1203,7 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1297,7 +1298,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
@@ -1311,47 +1312,47 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], NoneType]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Union[int, NoneType]
+        year : Union[int, None]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Union[str, NoneType]
+        company_name : Union[str, None]
             Name of the company. (provider: polygon)
-        company_name_search : Union[str, NoneType]
+        company_name_search : Union[str, None]
             Name of the company to search. (provider: polygon)
-        sic : Union[str, NoneType]
+        sic : Union[str, None]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Union[datetime.date, NoneType]
+        filing_date : Union[datetime.date, None]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Union[datetime.date, NoneType]
+        filing_date_lt : Union[datetime.date, None]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Union[datetime.date, NoneType]
+        filing_date_lte : Union[datetime.date, None]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Union[datetime.date, NoneType]
+        filing_date_gt : Union[datetime.date, None]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Union[datetime.date, NoneType]
+        filing_date_gte : Union[datetime.date, None]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Union[datetime.date, NoneType]
+        period_of_report_date : Union[datetime.date, None]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Union[datetime.date, NoneType]
+        period_of_report_date_lt : Union[datetime.date, None]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Union[datetime.date, NoneType]
+        period_of_report_date_lte : Union[datetime.date, None]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Union[datetime.date, NoneType]
+        period_of_report_date_gt : Union[datetime.date, None]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Union[datetime.date, NoneType]
+        period_of_report_date_gte : Union[datetime.date, None]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Union[bool, NoneType]
+        include_sources : Union[bool, None]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Union[Literal['asc', 'desc'], None]
             Order of the financial statement. (provider: polygon)
-        sort : Union[Literal['filing_date', 'period_of_report_date'], NoneType]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], None]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -1500,7 +1501,7 @@ class CLASS_stocks_fa(Container):
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1653,15 +1654,15 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], NoneType]
+        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', ...
             Type of the transaction.
-        reportingCik : Union[int, NoneType]
+        reportingCik : Union[int, None]
             CIK of the reporting owner.
-        companyCik : Union[int, NoneType]
+        companyCik : Union[int, None]
             CIK of the company owner.
-        page : Union[int, NoneType]
+        page : Union[int, None]
             Page number of the data to fetch.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1757,9 +1758,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         include_current_quarter : bool
             Include current quarter data.
-        date : Union[datetime.date, NoneType]
+        date : Union[datetime.date, None]
             A specific date to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1897,9 +1898,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[int, NoneType]
+        limit : Union[int, None]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2074,7 +2075,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2141,7 +2142,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2274,11 +2275,11 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        date : Union[datetime.date, NoneType]
+        date : Union[datetime.date, None]
             A specific date to get data for.
-        page : Union[int, NoneType]
+        page : Union[int, None]
             Page number of the data to fetch.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2411,7 +2412,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2474,7 +2475,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2553,7 +2554,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            Union[pydantic.types.NonNegativeInt, None],
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Union[Literal["fmp"], None] = None,
@@ -2567,9 +2568,9 @@ class CLASS_stocks_fa(Container):
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2750,7 +2751,7 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2831,7 +2832,7 @@ class CLASS_stocks_fa(Container):
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2875,6 +2876,198 @@ class CLASS_stocks_fa(Container):
         )
 
     @validate_arguments
+    def sec(
+        self,
+        symbol: typing_extensions.Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        type: typing_extensions.Annotated[
+            Union[
+                Literal[
+                    "1",
+                    "1-A",
+                    "1-E",
+                    "1-K",
+                    "1-N",
+                    "1-SA",
+                    "1-U",
+                    "1-Z",
+                    "10",
+                    "10-D",
+                    "10-K",
+                    "10-M",
+                    "10-Q",
+                    "11-K",
+                    "12b-25",
+                    "13F",
+                    "13H",
+                    "144",
+                    "15",
+                    "15F",
+                    "17-H",
+                    "18",
+                    "18-K",
+                    "19b-4",
+                    "19b-4(e)",
+                    "19b-7",
+                    "2-E",
+                    "20-F",
+                    "24F-2",
+                    "25",
+                    "3",
+                    "4",
+                    "40-F",
+                    "5",
+                    "6-K",
+                    "7-M",
+                    "8-A",
+                    "8-K",
+                    "8-M",
+                    "9-M",
+                    "ABS-15G",
+                    "ABS-EE",
+                    "ABS DD-15E",
+                    "ADV",
+                    "ADV-E",
+                    "ADV-H",
+                    "ADV-NR",
+                    "ADV-W",
+                    "ATS",
+                    "ATS-N",
+                    "ATS-R",
+                    "BD",
+                    "BD-N",
+                    "BDW",
+                    "C",
+                    "CA-1",
+                    "CB",
+                    "CFPORTAL",
+                    "CRS",
+                    "CUSTODY",
+                    "D",
+                    "F-1",
+                    "F-10",
+                    "F-3",
+                    "F-4",
+                    "F-6",
+                    "F-7",
+                    "F-8",
+                    "F-80",
+                    "F-N",
+                    "F-X",
+                    "ID",
+                    "MA",
+                    "MA-I",
+                    "MA-NR",
+                    "MA-W",
+                    "MSD",
+                    "MSDW",
+                    "N-14",
+                    "N-17D-1",
+                    "N-17f-1",
+                    "N-17f-2",
+                    "N-18f-1",
+                    "N-1A",
+                    "N-2",
+                    "N-23c-3",
+                    "N-27D-1",
+                    "N-3",
+                    "N-4",
+                    "N-5",
+                    "N-54A",
+                    "N-54C",
+                    "N-6",
+                    "N-6EI-1",
+                    "N-6F",
+                    "N-8A",
+                    "N-8B-2",
+                    "N-8B-4",
+                    "N-8F",
+                    "N-CEN",
+                ],
+                None,
+            ],
+            OpenBBCustomParameter(description="Type of the SEC filing form."),
+        ] = None,
+        page: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="Page number of the results."),
+        ] = 0,
+        limit: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """SEC Filings.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for.
+        type : Union[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-...
+            Type of the SEC filing form.
+        page : Union[int, None]
+            Page number of the results.
+        limit : Union[int, None]
+            The number of data entries to return.
+        provider : Union[Literal['fmp'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SECFilings]
+                Serializable results.
+            provider : Union[Literal['fmp'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        SECFilings
+        ----------
+        symbol : Optional[str]
+            Symbol to get data for.
+        filling_date : Optional[datetime]
+            Filling date of the SEC filing.
+        accepted_date : Optional[datetime]
+            Accepted date of the SEC filing.
+        cik : Optional[str]
+            CIK of the SEC filing.
+        type : Optional[str]
+            Type of the SEC filing.
+        link : Optional[str]
+            Link of the SEC filing.
+        final_link : Optional[str]
+            Final link of the SEC filing."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "type": type,
+                "page": page,
+                "limit": limit,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/stocks/fa/sec",
+            **inputs,
+        )
+
+    @validate_arguments
     def shrs(
         self,
         symbol: typing_extensions.Annotated[
@@ -2890,7 +3083,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2955,7 +3148,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3030,7 +3223,7 @@ class CLASS_stocks_fa(Container):
             Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
             Quarter of the earnings call transcript.
-        provider : Union[Literal['fmp'], NoneType]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.

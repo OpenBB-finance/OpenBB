@@ -5,14 +5,13 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.dividend_calendar import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )
 from pydantic import validator
-
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
 
 
 class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
@@ -65,9 +64,17 @@ class FMPDividendCalendarFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
 
         return FMPDividendCalendarQueryParams(**transformed_params)
 

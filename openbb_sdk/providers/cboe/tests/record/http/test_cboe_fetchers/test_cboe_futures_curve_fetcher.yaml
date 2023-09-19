@@ -1,0 +1,206 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.cboe.com/us/futures/market_statistics/settlement/csv
+  response:
+    body:
+      string: ''
+    headers:
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 80948465d8771c61-DEL
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Tue, 19 Sep 2023 20:18:19 GMT
+      Link:
+      - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
+      Location:
+      - https://www.cboe.com/us/futures/market_statistics/settlement/csv/
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.cboe.com/us/futures/market_statistics/settlement/csv/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3SUy27bMBBF9wXyD/0AiuZjho9lgjZ2UqgI0MRwskvTLAy0cWG4QPv3HZKiNFSs
+        jTbn8s7M5VB3x8OPPy8n8e3fr++Hn+Lz39/74/Npf3j7+On59CrujvuX14sP253Y7lYPVhhlbKdi
+        Z5TQIBXqOEAbG+wTdgYHCmq1HahWnYJEgx+p5lRroVGa8WzDQmLoTahHLccGE/aTMax2lepO6ZZy
+        pumkkzbGarx6qtDkYZ0MDm2F15AgkGWnaVQvA0Rd4bpC02maNEjtwmi7qdBm2yCdqui2IsimkeKt
+        6EtF2BmTkM2nemL98rUUvBhfwYshFLwYQ8GLQRS8EMXN1eZRpE+zFTQYWOktcsHs/oCmawxYfwN3
+        qjFggWdBmj8LbtYifeYtGJAWG8GsBRJ4z/msBYM0ZWMwa8FQxhThZX+lRfqMF1g6iIAoI3LBtukg
+        gosSDBfsmhbIwUsELig95nsqJUIeYhJcTzeVHUBLr7hg3QxBDlZC0+RmWt8s8E6qxuF2WuIkcG4u
+        GLfcUZVzgr4KfHHw9JxzD/dJcN/+RpyIGJQ0kQv4tqcStC+ouIBdJr2W6NDNSvCNd+cEbOfpxdAU
+        flaCrUMu4a00jQP/EeA5Afsd5CmCGYKqgn5Kkp4lCeY9fJ2SzCUiVgebBPZdDuByD/8BAAD//0Io
+        QPeFmTGaCehugKYHAAAAAP//AwD+BfW/cQYAAA==
+    headers:
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 8094846b0d661c61-DEL
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename=FuturesSettlements_2023-09-19.csv
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/csv
+      Date:
+      - Tue, 19 Sep 2023 20:18:20 GMT
+      Last-Modified:
+      - Tue, 19 Sep 2023 18:44:30 GMT
+      Link:
+      - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.cboe.com/us/futures/market_statistics/settlement/csv
+  response:
+    body:
+      string: ''
+    headers:
+      Age:
+      - '1'
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 80948470dabe1c61-DEL
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Tue, 19 Sep 2023 20:18:20 GMT
+      Link:
+      - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
+      Location:
+      - https://www.cboe.com/us/futures/market_statistics/settlement/csv/
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.cboe.com/us/futures/market_statistics/settlement/csv/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3SUy27bMBBF9wXyD/0AiuZjho9lgjZ2UqgI0MRwskvTLAy0cWG4QPv3HZKiNFSs
+        jTbn8s7M5VB3x8OPPy8n8e3fr++Hn+Lz39/74/Npf3j7+On59CrujvuX14sP253Y7lYPVhhlbKdi
+        Z5TQIBXqOEAbG+wTdgYHCmq1HahWnYJEgx+p5lRroVGa8WzDQmLoTahHLccGE/aTMax2lepO6ZZy
+        pumkkzbGarx6qtDkYZ0MDm2F15AgkGWnaVQvA0Rd4bpC02maNEjtwmi7qdBm2yCdqui2IsimkeKt
+        6EtF2BmTkM2nemL98rUUvBhfwYshFLwYQ8GLQRS8EMXN1eZRpE+zFTQYWOktcsHs/oCmawxYfwN3
+        qjFggWdBmj8LbtYifeYtGJAWG8GsBRJ4z/msBYM0ZWMwa8FQxhThZX+lRfqMF1g6iIAoI3LBtukg
+        gosSDBfsmhbIwUsELig95nsqJUIeYhJcTzeVHUBLr7hg3QxBDlZC0+RmWt8s8E6qxuF2WuIkcG4u
+        GLfcUZVzgr4KfHHw9JxzD/dJcN/+RpyIGJQ0kQv4tqcStC+ouIBdJr2W6NDNSvCNd+cEbOfpxdAU
+        flaCrUMu4a00jQP/EeA5Afsd5CmCGYKqgn5Kkp4lCeY9fJ2SzCUiVgebBPZdDuByD/8BAAD//0Io
+        QPeFmTGaCehugKYHAAAAAP//AwD+BfW/cQYAAA==
+    headers:
+      Age:
+      - '0'
+      CF-Cache-Status:
+      - HIT
+      CF-RAY:
+      - 809484711aea1c61-DEL
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename=FuturesSettlements_2023-09-19.csv
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/csv
+      Date:
+      - Tue, 19 Sep 2023 20:18:20 GMT
+      Last-Modified:
+      - Tue, 19 Sep 2023 18:44:30 GMT
+      Link:
+      - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

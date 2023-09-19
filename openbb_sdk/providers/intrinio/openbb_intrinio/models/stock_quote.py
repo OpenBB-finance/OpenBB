@@ -1,17 +1,16 @@
 """Intrinio Stock Quote fetcher."""
 
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
+from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import SOURCES
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_quote import (
     StockQuoteData,
     StockQuoteQueryParams,
 )
 from pydantic import Field, validator
-
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_intrinio.utils.references import SOURCES
 
 
 class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
@@ -78,6 +77,12 @@ class IntrinioStockQuoteData(StockQuoteData):
     is_darkpool: Optional[bool] = Field(
         description="Whether or not the current trade is from a darkpool."
     )
+    messages: Optional[List[str]] = Field(
+        description="Messages associated with the endpoint."
+    )
+    security: Optional[Dict[str, Any]] = Field(
+        description="Security details related to the quote."
+    )
 
     @validator("last_time", "updated_on", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -119,7 +124,4 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_data(data: Dict) -> IntrinioStockQuoteData:
         """Return the transformed data."""
-        del data["messages"]
-        del data["security"]
-
-        return IntrinioStockQuoteData(**data)
+        return IntrinioStockQuoteData.parse_obj(data)

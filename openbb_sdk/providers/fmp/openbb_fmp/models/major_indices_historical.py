@@ -4,6 +4,8 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.relativedelta import relativedelta
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalData,
@@ -11,8 +13,6 @@ from openbb_provider.standard_models.major_indices_historical import (
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt, validator
-
-from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
@@ -45,14 +45,14 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         default=None,
     )
     change_percent: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol.",
+        description=r"Change % in the price of the symbol.",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
     change_over_time: Optional[float] = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
+        description=r"Change % in the price of the symbol over a period of time.",
         default=None,
     )
 
@@ -76,7 +76,24 @@ class FMPMajorIndicesHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesHistoricalQueryParams:
         """Transform the query params."""
-        return FMPMajorIndicesHistoricalQueryParams(**params)
+        transformed_params = params
+
+        now = datetime.now().date()
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
+
+        return FMPMajorIndicesHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -95,10 +112,10 @@ class FMPMajorIndicesHistoricalFetcher(
         )
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{query.interval}/%5E{url_params}"
+        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
 
         if query.interval == "1day":
-            url = f"{base_url}/historical-price-full/index/%5E{url_params}"
+            url = f"{base_url}/historical-price-full/index/{url_params}"
 
         return get_data_many(url, "historical", **kwargs)
 

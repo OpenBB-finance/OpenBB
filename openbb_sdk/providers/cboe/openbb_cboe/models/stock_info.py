@@ -5,19 +5,18 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_info import (
-    StockInfoData,
-    StockInfoQueryParams,
-)
-from pydantic import Field
-
 from openbb_cboe.utils.helpers import (
     get_cboe_directory,
     get_cboe_index_directory,
     get_ticker_info,
     get_ticker_iv,
 )
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.standard_models.stock_info import (
+    StockInfoData,
+    StockInfoQueryParams,
+)
+from pydantic import Field
 
 
 class CboeStockInfoQueryParams(StockInfoQueryParams):
@@ -93,7 +92,7 @@ class CboeStockInfoFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockInfoQueryParams:
-        """Transform the query"""
+        """Transform the query."""
         return CboeStockInfoQueryParams(**params)
 
     @staticmethod
@@ -102,7 +101,7 @@ class CboeStockInfoFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
+        """Return the raw data from the CBOE endpoint."""
         results = []
         query.symbol = query.symbol.upper()
         symbols = (
@@ -136,5 +135,5 @@ class CboeStockInfoFetcher(
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeStockInfoData]:
-        """Transform the data to the standard format"""
+        """Transform the data to the standard format."""
         return [CboeStockInfoData.parse_obj(d) for d in data]

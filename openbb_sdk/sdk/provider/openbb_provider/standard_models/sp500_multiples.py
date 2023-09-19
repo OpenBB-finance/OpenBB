@@ -1,4 +1,4 @@
-"""SP500 Multiples Data model."""
+"""SP500 Multiples  data model."""
 
 from typing import Literal, Optional
 

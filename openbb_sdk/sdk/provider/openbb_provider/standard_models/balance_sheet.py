@@ -2,27 +2,41 @@
 
 
 from datetime import date as dateType
-from typing import Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, NonNegativeInt, validator
 
 from openbb_provider.abstract.data import Data
-from openbb_provider.standard_models.base import (
-    BaseSymbol,
-    FinancialStatementQueryParams,
-)
+from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class BalanceSheetQueryParams(FinancialStatementQueryParams):
+class BalanceSheetQueryParams(QueryParams):
     """Balance Sheet query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: NonNegativeInt = Field(
+        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
 
-class BalanceSheetData(Data, BaseSymbol):
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
+
+
+class BalanceSheetData(Data):
     """Balance Sheet Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description="Date of the fetched statement.")
     period: Optional[str] = Field(description="Reporting period of the statement.")
-    cik: Optional[int] = Field(description="Central Index Key (CIK) of the company.")
+    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
 
     cash_and_cash_equivalents: Optional[int] = Field(
         description="Cash and cash equivalents"
@@ -106,3 +120,10 @@ class BalanceSheetData(Data, BaseSymbol):
     total_liabilities_and_total_equity: Optional[int] = Field(
         description="Total liabilities and total equity"
     )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

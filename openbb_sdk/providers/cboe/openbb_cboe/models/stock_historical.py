@@ -5,6 +5,12 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_cboe.utils.helpers import (
+    TICKER_EXCEPTIONS,
+    get_cboe_directory,
+    get_cboe_index_directory,
+    get_ticker_info,
+)
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -12,13 +18,6 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, validator
-
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_cboe_directory,
-    get_cboe_index_directory,
-    get_ticker_info,
-)
 
 
 class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -48,11 +47,15 @@ class CboeStockHistoricalData(StockHistoricalData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            return datetime.strptime(v, "%Y-%m-%d")
+        """Return formatted datetime string."""
+        if isinstance(v, str):
+            try:
+                dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+                return dt.strftime("%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                dt = datetime.strptime(v, "%Y-%m-%d")
+                return dt.strftime("%Y-%m-%d")
+        return v
 
 
 class CboeStockHistoricalFetcher(
@@ -177,7 +180,7 @@ class CboeStockHistoricalFetcher(
                     (data.index >= pd.to_datetime(start_date, format="%Y-%m-%d"))
                     & (data.index <= pd.to_datetime(end_date, format="%Y-%m-%d"))
                 ]
-                data.index = data.index.astype(str)
+                data.index = data.index.strftime("%Y-%m-%d")
             if query.interval == "1m":
                 data_list = r.json()["data"]
                 date: list[datetime] = []
@@ -203,7 +206,9 @@ class CboeStockHistoricalFetcher(
                         data_list[i]["volume"]["total_options_volume"]
                     )
                 data = pd.DataFrame()
-                data["date"] = pd.to_datetime(date)
+                date = [d.replace("T", " ") for d in date]
+                date = [datetime.strptime(d, "%Y-%m-%d %H:%M:%S") for d in date]
+                data["date"] = date
                 data["open"] = open
                 data["high"] = high
                 data["low"] = low
@@ -213,7 +218,7 @@ class CboeStockHistoricalFetcher(
                 data["puts_volume"] = puts_volume
                 data["total_options_volume"] = total_options_volume
                 data = data.set_index("date").sort_index()
-                data.index = data.index.astype(str)
+                data.index = data.index.strftime("%Y-%m-%d %H:%M:%S")
                 data = data[data["open"] > 0]
 
             data["volume"] = round(data["volume"].astype("int64"))
@@ -238,5 +243,5 @@ class CboeStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeStockHistoricalData]:
-        """Transform the data to the standard format"""
-        return [CboeStockHistoricalData.parse_obj(d) for d in data]
+        """Transform the data to the standard format."""
+        return [CboeStockHistoricalData(**d) for d in data]

@@ -8,7 +8,6 @@ from openbb_provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
     SP500MultiplesQueryParams,
 )
-
 from openbb_quandl.utils.series_ids import SP500MULTIPLES
 
 
@@ -21,7 +20,7 @@ class QuandlSP500MultiplesData(SP500MultiplesData):
 
 
 class QuandlSP500MultiplesFetcher(
-    Fetcher[SP500MultiplesQueryParams, SP500MultiplesData]
+    Fetcher[QuandlSP500MultiplesQueryParams, List[QuandlSP500MultiplesData]]
 ):
     """Quandl SP500 Multiples Fetcher."""
 
@@ -34,9 +33,8 @@ class QuandlSP500MultiplesFetcher(
         query: QuandlSP500MultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> List[QuandlSP500MultiplesData]:
-        """Gets the raw Quandl Data."""
-
+    ) -> List[Dict]:
+        """Get the raw Quandl Data."""
         api_key = credentials.get("quandl_api_key") if credentials else ""
 
         if "Year" in query.series_name:
