@@ -75,7 +75,24 @@ class FMPMajorIndicesHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesHistoricalQueryParams:
         """Transform the query params."""
-        return FMPMajorIndicesHistoricalQueryParams(**params)
+        transformed_params = params
+
+        now = datetime.now().date()
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            transformed_params["start_date"] = datetime.strptime(
+                params["start_date"], "%Y-%m-%d"
+            ).date()
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        else:
+            transformed_params["end_date"] = datetime.strptime(
+                params["end_date"], "%Y-%m-%d"
+            ).date()
+
+        return FMPMajorIndicesHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
