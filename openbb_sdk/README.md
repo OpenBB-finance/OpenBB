@@ -44,7 +44,7 @@ Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for addition
 
 ## API keys
 
-To fully leverage the OpenBB Platform you need to configure some API keys. Here are the 3 options on how to do it:
+To fully leverage the OpenBB Platform you need to configure some API keys to connect with data providers. Here are the 3 options on how to do it:
 
 1. From OpenBB Hub
 2. At runtime
