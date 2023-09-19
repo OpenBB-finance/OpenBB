@@ -109,7 +109,7 @@ class Fetcher(Generic[Q, R]):
 
         # Data Assertions
         assert data
-        is_list = type(data) == list
+        is_list = isinstance(data, list)
         if is_list:
             assert all(
                 [
@@ -133,7 +133,7 @@ class Fetcher(Generic[Q, R]):
         # Transformed Data Assertions
         assert transformed_data
 
-        is_list = type(transformed_data) == list
+        is_list = isinstance(transformed_data, list)
         if is_list:
             assert len(transformed_data) > 0  # type: ignore
             assert all(
