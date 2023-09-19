@@ -9,7 +9,7 @@
 
 ## OpenBB Platform Overview
 
-OpenBB Platform provides a convenient way to access raw financial data from multiple data providers. The package comes with a ready to use REST API. This allows developers from any language to easily create applications on top of OpenBB Platform.
+The OpenBB Platform provides a convenient way to access raw financial data from multiple data providers. The package comes with a ready to use REST API. This allows developers from any language to easily create applications on top of OpenBB Platform.
 
 
 ## Installation
@@ -30,7 +30,7 @@ pip install openbb[all]==4.0.0a0
 
 ## REST API
 
-OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
+The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
 
 ```bash
 uvicorn openbb_core.api.rest_api:app
@@ -40,7 +40,7 @@ Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for addition
 
 ## API keys
 
-To fullly leverage the OpenBB Platform you need to configure some API keys. Here are the 3 options on how to do it:
+To fully leverage the OpenBB Platform you need to configure some API keys. Here are the 3 options on how to do it:
 
 1. From OpenBB Hub
 2. At runtime
