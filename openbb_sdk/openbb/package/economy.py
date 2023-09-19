@@ -278,7 +278,7 @@ class CLASS_economy(Container):
         ] = "",
         provider: Union[Literal["quandl"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Fuzzy search and list of curated Commitment of Traders Reports series information.
 
         Parameters
@@ -725,7 +725,7 @@ class CLASS_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : Optional[datetime]
+        date : Union[date, datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -1063,7 +1063,7 @@ class CLASS_economy(Container):
         ] = None,
         provider: Union[Literal["quandl"], None] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[List]:
         """Historical S&P 500 multiples and Shiller PE ratios.
 
         Parameters

@@ -4,12 +4,13 @@ import datetime
 from typing import List, Literal, Union
 
 import pydantic
+import pydantic.main
 import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 
 class CLASS_stocks(Container):
@@ -266,7 +267,7 @@ class CLASS_stocks(Container):
 
         StockHistorical
         ---------------
-        date : Optional[datetime]
+        date : Union[date, datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -672,7 +673,7 @@ class CLASS_stocks(Container):
         ] = None,
         provider: Union[Literal["fmp", "intrinio"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[BaseModel]:
         """Load stock data for a specific ticker.
 
         Parameters
