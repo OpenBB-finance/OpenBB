@@ -36,7 +36,7 @@ def test_polygon_stock_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_major_indices_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "DJI"}
+    params = {"symbol": "NDX"}
 
     fetcher = PolygonMajorIndicesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -45,7 +45,7 @@ def test_polygon_major_indices_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_stock_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbols": "AAPL"}
 
     fetcher = PolygonStockNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -81,7 +81,7 @@ def test_polygon_cash_flow_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "BTC/USD"}
+    params = {"symbol": "BTCUSD"}
 
     fetcher = PolygonCryptoHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -90,7 +90,7 @@ def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_forex_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "EUR/USD"}
+    params = {"symbol": "EURUSD"}
 
     fetcher = PolygonForexHistoricalFetcher()
     result = fetcher.test(params, credentials)

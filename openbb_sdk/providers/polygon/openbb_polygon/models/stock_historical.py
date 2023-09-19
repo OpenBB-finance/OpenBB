@@ -117,17 +117,21 @@ class PolygonStockHistoricalFetcher(
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
 
-            return data.extend(
-                [PolygonStockHistoricalData.parse_obj(d) for d in results]
-            )
+            # return data.extend(
+            #     [PolygonStockHistoricalData.parse_obj(d) for d in results]
+            # )
+            # extend the data without using the Pydantic model
+            data.extend(results)
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
-
-        data.sort(key=lambda x: x.date)
 
         return data
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        return [PolygonStockHistoricalData.parse_obj(d) for d in data]
+        transformed_data: List[PolygonStockHistoricalData] = [
+            PolygonStockHistoricalData.parse_obj(d) for d in data
+        ]
+        transformed_data.sort(key=lambda x: x.date)
+        return transformed_data
