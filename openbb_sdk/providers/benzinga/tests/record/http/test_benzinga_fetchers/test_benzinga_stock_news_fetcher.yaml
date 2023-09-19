@@ -9,79 +9,1365 @@ interactions:
       accept:
       - application/json
     method: GET
-    uri: https://api.benzinga.com/api/v2/news?display_output=headline&page=0&pageSize=15&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
   response:
     body:
-      string: "[{\"id\":34676529,\"author\":\"Ananya Gairola\",\"created\":\"Mon,
-        18 Sep 2023 04:19:33 -0400\",\"updated\":\"Mon, 18 Sep 2023 04:19:33 -0400\",\"title\":\"Apple's
-        iPhone 15 Pro Sales Decline While Pro Max Rockets: Ming-Chi Kuo's Insights\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34676529/apples-iphone-15-pro-sales-decline-while-pro-max-rockets-ming-chi-kuos-insights\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_11.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_11.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_11.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
-        Tech\"},{\"name\":\"iPhone 15 Pro\"},{\"name\":\"iPhone 15 Pro Max\"},{\"name\":\"Ming-Chi
-        Kuo\"},{\"name\":\"Tim Cook\"},{\"name\":\"Titanium\"}]},{\"id\":34675716,\"author\":\"Rounak
-        Jain\",\"created\":\"Mon, 18 Sep 2023 03:48:32 -0400\",\"updated\":\"Mon,
-        18 Sep 2023 03:48:33 -0400\",\"title\":\"Forget PlayStation And Xbox, Apple
-        Thinks The iPhone 15 Pro Will Be 'The Best Game Console'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34675716/forget-playstation-and-xbox-apple-thinks-the-iphone-15-pro-will-be-the-best-game-console\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_iPhone_gaming.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_iPhone_gaming.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_iPhone_gaming.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"MSFT\"},{\"name\":\"QCOM\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
-        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15
-        Pro\"},{\"name\":\"Microsoft\"},{\"name\":\"Sony PlayStation\"},{\"name\":\"xbox\"}]},{\"id\":34674672,\"author\":\"Ananya
-        Gairola\",\"created\":\"Mon, 18 Sep 2023 03:06:09 -0400\",\"updated\":\"Mon,
-        18 Sep 2023 03:06:09 -0400\",\"title\":\"Elon Musk Is Working On Integrating
-        iMessage, WhatsApp And Signal In One 'Magical Kayak'\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34674672/elon-musk-is-working-on-integrating-imessage-whatsapp-and-signal-in-one-magical-kayak\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Elon_Musk_82.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Elon_Musk_82.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Elon_Musk_82.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
-        Media\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"META\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Consumer
-        Tech\"},{\"name\":\"Digital markets Act\"},{\"name\":\"Elon Musk\"},{\"name\":\"iMessage\"},{\"name\":\"Meta\"},{\"name\":\"Software
-        &amp; Apps\"},{\"name\":\"X\"}]},{\"id\":34671801,\"author\":\"Ananya Gairola\",\"created\":\"Mon,
-        18 Sep 2023 01:02:57 -0400\",\"updated\":\"Mon, 18 Sep 2023 01:02:58 -0400\",\"title\":\"Tim
-        Cook Defends Apple's Stance: Why Cupertino Won't Abandon Elon Musk's X Amid
-        ADL Controversy\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34671801/tim-cook-defends-apples-stance-why-cupertino-wont-abandon-elon-musks-x-amid-adl-controversy\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Tim_Cook_1_Photo_by_Laura_Hutton_on_Shutterstock_8.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Tim_Cook_1_Photo_by_Laura_Hutton_on_Shutterstock_8.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Tim_Cook_1_Photo_by_Laura_Hutton_on_Shutterstock_8.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Social
-        Media\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"ADL\"},{\"name\":\"Anti-Defamation
-        League\"},{\"name\":\"antisemitism\"},{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
-        Tech\"},{\"name\":\"Elon Musk\"},{\"name\":\"People In Tech\"},{\"name\":\"Tim
-        Cook\"},{\"name\":\"twitter\"},{\"name\":\"X\"}]},{\"id\":34659452,\"author\":\"Benzinga
-        Neuro\",\"created\":\"Sun, 17 Sep 2023 10:00:00 -0400\",\"updated\":\"Sun,
-        17 Sep 2023 21:38:19 -0400\",\"title\":\"iPhone 15 Launch, New Macbook Pro,
-        New Apple Accessories: Top Stories Of The Week From The Appleverse\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34659452/iphone-15-launch-new-macbook-pro-new-apple-accessories-top-stories-of-the-week-from-the-appleverse\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_9.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_9.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_9.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"DISH\"},{\"name\":\"T\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"iPhone
-        15\"},{\"name\":\"MacBook\"}]},{\"id\":34669662,\"author\":\"Shanthi Rexaline\",\"created\":\"Sun,
-        17 Sep 2023 20:18:22 -0400\",\"updated\":\"Sun, 17 Sep 2023 20:18:22 -0400\",\"title\":\"Why
-        Gurman Thinks Apple Can Come Out On Top This Holiday Quarter And Reverse Sales
-        Slide\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34669662/why-gurman-thinks-apple-can-come-out-on-top-this-holiday-quarter-and-reverse-sales-slide\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple,Store,Sign,,Hong,Kong,,August,15,2017,:,Apple.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple,Store,Sign,,Hong,Kong,,August,15,2017,:,Apple.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple,Store,Sign,,Hong,Kong,,August,15,2017,:,Apple.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Top
-        Stories\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Consumer
-        Tech\"},{\"name\":\"Mark Gurman\"}]},{\"id\":34663507,\"author\":\"Benzinga
-        Neuro\",\"created\":\"Sun, 17 Sep 2023 14:13:26 -0400\",\"updated\":\"Sun,
-        17 Sep 2023 14:13:27 -0400\",\"title\":\"Foxconn Plans To Double Workforce,
-        Investment In India Within A Year\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34663507/foxconn-plans-to-double-workforce-investment-in-india-within-a-year\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/17/foxconn.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/17/foxconn.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/17/foxconn.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Global\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"AI-Generated\"},{\"name\":\"benzinga
-        neuro\"},{\"name\":\"foxconn\"},{\"name\":\"India\"}]},{\"id\":34659111,\"author\":\"Bibhu
-        Pattnaik\",\"created\":\"Sun, 17 Sep 2023 12:43:10 -0400\",\"updated\":\"Sun,
-        17 Sep 2023 12:43:11 -0400\",\"title\":\"Is Apple Losing Its Spark? Recent
-        Sales Figures Suggest So.\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34659111/is-apple-losing-its-spark-recent-sales-figures-suggest-so\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/17/apple.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/17/apple.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/17/apple.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
-        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"iPhone\"}]},{\"id\":34659019,\"author\":\"Benzinga
-        Neuro\",\"created\":\"Sun, 17 Sep 2023 09:01:11 -0400\",\"updated\":\"Sun,
-        17 Sep 2023 09:01:11 -0400\",\"title\":\"Elon Musk's Caution For OpenAI, Google's
-        Gemini AI, Musk And Zuckerberg's Truce: Top AI Stories This Week\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34659019/elon-musks-caution-for-openai-googles-gemini-ai-musk-and-zuckerbergs-truce-top-ai-stories-this-week\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/elon_musk_ai4_31.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/elon_musk_ai4_31.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/elon_musk_ai4_31.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"GOOGL\"},{\"name\":\"META\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
-        intelligence\"},{\"name\":\"Elon Musk\"},{\"name\":\"Google\"},{\"name\":\"Mark
-        Zuckerberg\"},{\"name\":\"Meta\"},{\"name\":\"Microsoft\"}]},{\"id\":34649642,\"author\":\"Ananya
-        Gairola\",\"created\":\"Sat, 16 Sep 2023 08:52:17 -0400\",\"updated\":\"Sat,
-        16 Sep 2023 16:01:10 -0400\",\"title\":\"Why Picking An iPhone 15 Pro Max
-        Color Was 'A Hard Decision' For Tim Cook\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34649642/why-picking-an-iphone-15-pro-max-color-was-a-hard-decision-for-tim-cook\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Tim_Cook_Photo_by_Laura_Hutton_on_Shutterstock_3.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Tim_Cook_Photo_by_Laura_Hutton_on_Shutterstock_3.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Tim_Cook_Photo_by_Laura_Hutton_on_Shutterstock_3.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Appleverse\"},{\"name\":\"Consumer
-        Tech\"},{\"name\":\"iPhone 15 launch\"},{\"name\":\"iPhone 15 Pro Max\"},{\"name\":\"People
-        In Tech\"},{\"name\":\"Tim Cook\"},{\"name\":\"Titanium\"},{\"name\":\"twitter\"},{\"name\":\"X\"}]},{\"id\":34609402,\"author\":\"Rounak
-        Jain\",\"created\":\"Fri, 15 Sep 2023 06:44:18 -0400\",\"updated\":\"Fri,
-        15 Sep 2023 17:20:10 -0400\",\"title\":\"'Child Sexual Abuse Is Stored On
-        iCloud. Apple Allows It': Anti-Apple Posters Emerge In Front Of Apple Park\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/news/23/09/34609402/child-sexual-abuse-is-stored-on-icloud-apple-allows-it-anti-apple-posters-emerge-in-front-of-apple-p\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_Logo.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_Logo.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_Logo.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
-        Tech\"},{\"name\":\"Cybersecurity\"},{\"name\":\"iPhone\"},{\"name\":\"privacy\"}]},{\"id\":34626195,\"author\":\"Upwallstreet\",\"created\":\"Fri,
-        15 Sep 2023 14:28:06 -0400\",\"updated\":\"Fri, 15 Sep 2023 14:28:56 -0400\",\"title\":\"Alibaba
-        Makes A Big AI Leap As Technology Continues To Evolve From Being A Useful
-        Tool To A Genuine Game Changer\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/23/09/34626195/alibaba-makes-a-big-ai-leap-as-technology-continues-to-evolve-from-being-a-useful-tool-to-a-genuine\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/medium-shot-woman-wearing-vr-glasses.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/medium-shot-woman-wearing-vr-glasses.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/medium-shot-woman-wearing-vr-glasses.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"BABA\"},{\"name\":\"META\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"artificial
-        intelligence\"},{\"name\":\"contributors\"},{\"name\":\"Qwen-VL\"}]},{\"id\":34624326,\"author\":\"Benzinga
-        Insights\",\"created\":\"Fri, 15 Sep 2023 13:35:17 -0400\",\"updated\":\"Fri,
-        15 Sep 2023 13:35:18 -0400\",\"title\":\"10 Information Technology Stocks
-        Whale Activity In Today's Session\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34624326/10-information-technology-stocks-whale-activity-in-todays-session\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_4.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_4.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_4.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"AVGO\"},{\"name\":\"CSCO\"},{\"name\":\"INTC\"},{\"name\":\"KLAC\"},{\"name\":\"MCHP\"},{\"name\":\"MSFT\"},{\"name\":\"MU\"},{\"name\":\"NVDA\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]},{\"id\":34619237,\"author\":\"The
-        Arora Report\",\"created\":\"Fri, 15 Sep 2023 11:06:39 -0400\",\"updated\":\"Fri,
-        15 Sep 2023 11:09:15 -0400\",\"title\":\"AI, ARM IPO, And $3.4 Trillion Option
-        Expiration Suck Fear Out Of The Stock Market \u2013 Be Cautious\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/23/09/34619237/ai-arm-ipo-and-3-4-trillion-option-expiration-suck-fear-out-of-the-stock-market-be-cautious\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/maxim-hopman-fixlqxahcfk-unsplash_4_2.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/maxim-hopman-fixlqxahcfk-unsplash_4_2.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/maxim-hopman-fixlqxahcfk-unsplash_4_2.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"Cryptocurrency\"},{\"name\":\"Economics\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"ARM\"},{\"name\":\"GLD\"},{\"name\":\"GOOG\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"QQQ\"},{\"name\":\"SLV\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"},{\"name\":\"USO\"}],\"tags\":[{\"name\":\"artificial
-        intelligence\"},{\"name\":\"China\"},{\"name\":\"contributors\"},{\"name\":\"Expert
-        Ideas\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"VIX\"}]},{\"id\":34618735,\"author\":\"Benzinga
-        Insights\",\"created\":\"Fri, 15 Sep 2023 11:00:44 -0400\",\"updated\":\"Fri,
-        15 Sep 2023 11:00:48 -0400\",\"title\":\"Benzinga's Top Ratings Upgrades,
-        Downgrades For September 15, 2023\",\"teaser\":\"\",\"body\":\"\",\"url\":\"https://www.benzinga.com/analyst-ratings/upgrades/23/09/34618735/benzingas-top-ratings-upgrades-downgrades-for-september-15-2023\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Upgrades\"},{\"name\":\"Downgrades\"},{\"name\":\"Initiation\"},{\"name\":\"Intraday
-        Update\"},{\"name\":\"Analyst Ratings\"}],\"stocks\":[{\"name\":\"ACLS\"},{\"name\":\"AMAT\"},{\"name\":\"APLS\"},{\"name\":\"ARM\"},{\"name\":\"AXS\"},{\"name\":\"BG\"},{\"name\":\"CARG\"},{\"name\":\"CARS\"},{\"name\":\"CAVA\"},{\"name\":\"CELH\"},{\"name\":\"CIFR\"},{\"name\":\"CRM\"},{\"name\":\"CRWD\"},{\"name\":\"CUZ\"},{\"name\":\"CWST\"},{\"name\":\"DASH\"},{\"name\":\"DE\"},{\"name\":\"DOCU\"},{\"name\":\"EL\"},{\"name\":\"EMR\"},{\"name\":\"EXFY\"},{\"name\":\"FAST\"},{\"name\":\"J\"},{\"name\":\"KEY\"},{\"name\":\"KEYS\"},{\"name\":\"KFY\"},{\"name\":\"KLAC\"},{\"name\":\"LNN\"},{\"name\":\"LRCX\"},{\"name\":\"MLM\"},{\"name\":\"MMM\"},{\"name\":\"MOR\"},{\"name\":\"MSFT\"},{\"name\":\"NEWR\"},{\"name\":\"NOW\"},{\"name\":\"OPAL\"},{\"name\":\"ORCL\"},{\"name\":\"PAGS\"},{\"name\":\"PLTR\"},{\"name\":\"PTCT\"},{\"name\":\"REGN\"},{\"name\":\"SHAK\"},{\"name\":\"SNOW\"},{\"name\":\"STAA\"},{\"name\":\"TFC\"},{\"name\":\"TKO\"},{\"name\":\"TT\"},{\"name\":\"TWLO\"},{\"name\":\"U\"},{\"name\":\"VNO\"},{\"name\":\"WM\"},{\"name\":\"ZM\"}],\"tags\":[{\"name\":\"BZI-Ratings\"}]}]\n"
+      string: "[{\"id\":34718698,\"author\":\"Shanthi Rexaline\",\"created\":\"Tue,
+        19 Sep 2023 05:28:05 -0400\",\"updated\":\"Tue, 19 Sep 2023 05:28:06 -0400\",\"title\":\"Amazon
+        Poaches Microsoft's Product Chief Ahead Of Its Annual Devices Event: Report\",\"teaser\":\"After
+        Microsoft&#39;s Panos Panay confirmed his departure, a report suggests he
+        has joined Amazon to take care of the devices division.\",\"body\":\"<p>After
+        <strong>Microsoft Corp.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        Chief Product Officer <strong>Panos Panay </strong>confirmed that he is leaving
+        the <a href=\\\"https://www.benzinga.com/quote/MSFT\\\">software giant,</a>
+        a  Bloomberg report said he is shifting base to <strong>Amazon, Inc. </strong>(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>).</p>\\n\\n\\n\\n<p><strong>What
+        Happened: </strong>Panay said in a post on X, formerly Twitter, &#8220;After
+        19 incredible years at Microsoft, I&#8217;ve decided to turn the page and
+        write the next chapter.&#8221;</p>\\n\\n\\n\\n<p>&#8220;I'm forever grateful
+        for my time at Microsoft and the amazing people I had the honor to make products
+        with.&#8221;</p>\\n\\n\\n\\n<p>Panay&#8217;s LinkedIn profile, however, does
+        not reflect the departure. From April 2018 to date, he served as chief product
+        officer and led Windows development and Microsoft&#8217;s Surface line. The
+        move appears to be abrupt. Panay <a href=\\\"https://twitter.com/panos_panay/status/1696184684303315420?s=20\\\">said</a>
+        in late August that he was &#8220;pumped to be in NYC on September 21 talking
+        AI innovation from Microsoft!&#8221;</p>\\n\\n\\n\\n<p>Yusuf Mehdi, Microsoft&#8217;s
+        consumer chief marketing officer, has reportedly taken over from Panay.</p>\\n\\n\\n\\n<p><em>See
+        Also: <a href=\\\"https://www.benzinga.com/money/tech-stocks\\\">Best Technology
+        Stocks Right Now</a></em></p>\\n\\n\\n\\n<p><strong>Switch Over To Amazon?
+        \ </strong>Bloomberg has since then <a href=\\\"https://www.bloomberg.com/news/articles/2023-09-18/amazon-is-poised-to-hire-departing-microsoft-product-chief?sref=9hGJlFio#xj4y7vzkg\\\">reported,</a>
+        citing people familiar with the matter, that Amazon has hired Panay to run
+        the division responsible for Alexa and the Echo smart speakers.</p>\\n\\n\\n\\n<p>According
+        to people familiar with the situation, Amazon.com Inc. is hiring Microsoft
+        Corp.'s product chief to run the division responsible for Alexa and the Echo
+        smart speakers.</p>\\n\\n\\n\\n<p>Amazon&#8217;s hardware chief, <strong>Dave
+        Limp,</strong> a veteran at the company, <a href=\\\"https://www.aboutamazon.com/news/company-news/svp-dave-limp-to-retire-from-amazon\\\">confirmed</a>
+        last month that he plans to retire from the company before the end of the
+        year.</p>\\n\\n\\n\\n<p>The development assumes importance as Amazon is scheduled
+        to hold its new Devices &amp; Services, which is scheduled to start at 11
+        a.m. EDT on Wednesday. &#8220;The immediate departure [Panay&#8217;s] from
+        Microsoft could imply Amazon will use that showcase to promote their major
+        hire, which is a massive win for the struggling group,&#8221; said Bloomberg&#8217;s
+        Mark Gurman in a post on X.</p>\\n\\n\\n\\n<p>In premarket trading on Tuesday,
+        Microsoft edged up 0.12% at $329.46\_and Amazon rose 0.07% to $140.08, according
+        to <a href=\\\"https://benzinga.grsm.io/lxquj26b2sag\\\">Benzinga Pro data.</a></p>\\n\\n\\n\\n<p><em>Photo
+        by Volodymyr Kyrylyuk on Shutterstock</em></p>\\n\\n\\n\\n<p><em>Read Next:
+        <a href=\\\"https://www.benzinga.com/news/earnings/23/08/33540149/fund-manager-who-offloaded-amazon-stock-in-july-goes-long-again-ahead-of-q2-results-such-a-high-app\\\">Fund
+        Manager Who Offloaded Amazon Stock In July Goes Long Again Ahead Of Q2 Results:
+        &#8216;Such A High Appetite Right Now To &#8230;&#8217;</a></em></p>\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34718698/amazon-poaches-microsofts-product-chief-ahead-of-its-annual-devices-event-report\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Microsoft._Photo_by_Volodymyr_Kyrylyuk_on_Shutterstock_13.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Microsoft._Photo_by_Volodymyr_Kyrylyuk_on_Shutterstock_13.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Microsoft._Photo_by_Volodymyr_Kyrylyuk_on_Shutterstock_13.jpeg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Management\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"Dave
+        Limp\"},{\"name\":\"Mark Gurman\"},{\"name\":\"Microsoft\"},{\"name\":\"Panos
+        Panay\"},{\"name\":\"People In Tech\"}]},{\"id\":34718635,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Tue, 19 Sep 2023 05:23:14 -0400\",\"updated\":\"Tue,
+        19 Sep 2023 05:23:30 -0400\",\"title\":\"Apple's Stock Poised For Over 20%
+        Gain, Says Goldman On Strong iPhone 15 Demand\",\"teaser\":\" \",\"body\":\"<p>The
+        recently launched iPhone 15 series is seeing robust demand, outstripping supply,
+        according to&nbsp;<strong>Goldman Sachs</strong>. This trend has prompted
+        the firm to predict a more than 20% upside for&nbsp;<strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        shares, CNBC <a href=\\\"https://www.cnbc.com/2023/09/18/goldman-says-iphone-demand-outpacing-supply-sees-more-than-20percent-upside-for-apple-shares.html\\\">reported</a>.</p>\\n\\n\\n\\n<p>Apple&#8217;s
+        new iPhone 15 range was launched last Tuesday and opened for pre-orders on
+        Friday across over&nbsp;40 regions. The devices will&nbsp;be available from
+        Sep. 22 and will expand to an additional 21 markets on Sep. 29.</p>\\n\\n\\n\\n<p>Goldman
+        Sachs noted a delay of more than eight weeks for selected phones in certain
+        regions, indicating a supply-demand imbalance. The firm maintains a buy rating
+        on Apple shares with a price target of $216, suggesting a 23.4% upside from
+        Friday&#8217;s close.</p>\\n\\n\\n\\n<p><em>See Also:&nbsp;<a href=\\\"https://www.benzinga.com/markets/equities/23/09/34669662/why-gurman-thinks-apple-can-come-out-on-top-this-holiday-quarter-and-reverse-sales-slide?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Why Gurman Thinks Apple
+        Can Come Out On Top This Holiday Quarter And Reverse Sales Slide</a></em></p>\\n\\n\\n\\n<p>Analyst
+        <strong>Michael Ng </strong>expressed optimism about the long&nbsp;lead times
+        for the iPhone&nbsp;15 Pro and Pro Max, seeing it as a sign of strong consumer
+        demand. However, he pointed out potential supply chain constraints that might
+        impact supply.</p>\\n\\n\\n\\n<p>Ng also highlighted carrier promotions in
+        the U.S. for the iPhone 15 series, which could incentivize consumers to upgrade
+        to new phones. He did caution that the best deals often require pricier plans.</p>\\n\\n\\n\\n<p>Mainland
+        China is seeing\_some of the longest lead\_times, particularly\_for the iPhone
+        15 Pro\_and Pro Max.</p>\\n\\n\\n\\n<p><em>Read Next: This former Google engineer
+        thought real estate investing was too expensive and time-consuming, so he
+        created a better approach. Thousands of investors are now using his platform
+        to buy shares of investment&nbsp;<a href=\\\"https://www.benzinga.com/real-estate/23/07/33236824/this-former-google-engineer-built-a-platform-that-lets-you-buy-shares-of-single-family-rentals-with\\\">properties
+        for truly passive income.</a></em></p>\\n\\n\\n\\n<p><em>Image Source &#8211;
+        Apple</em></p>\\n\\n\\n\\n<div style=\\\"font-family: 'Lato', sans-serif\\\">\\n
+        \   <div>\\n        <hr style=\\\"border: 0;height: 5px;background: #225aa9\\\">\\n
+        \       <div style=\\\"background-color: #f5f5f5;background-position: center;background-size:
+        cover;justify-content: center\\\"></div>\\n        <p style=\\\"font-family:
+        sans-serif;padding-top: 20px\\\">\\n            Engineered by <span style=\\\"font-weight:
+        bold;text-decoration: none;color: #225aa9;font-size: 1rem\\\">Benzinga Neuro</span>,
+        Edited by <span style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">\\n                <u>Pooja Rajkumari</u>\\n            </span>\\n
+        \       </p>\\n        <hr style=\\\"border: 0;height: 1px;background: #225aa9\\\">\\n
+        \       <p style=\\\"font-family: sans-serif;padding-top: 20px\\\">\\n            The
+        GPT-4 Benzinga Neuro content generation system exploits the extensive Benzinga
+        Ecosystem, including native data, APIs, and more to create comprehensive and
+        timely stories for you.\\n            <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration:
+        none\\\">Learn more.</a>\\n        </p>\\n        <hr style=\\\"border: 0;height:
+        5px;background: #225aa9\\\">\\n    </div>\\n</div>\",\"url\":\"https://www.benzinga.com/news/23/09/34718635/apples-stock-poised-for-over-20-gain-says-goldman-on-strong-iphone-15-demand\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x_1.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Analyst
+        Ratings\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Goldman Sachs\"},{\"name\":\"iPhone 15 Pro\"},{\"name\":\"iPhone15\"}]},{\"id\":34715755,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Tue, 19 Sep 2023 03:23:30 -0400\",\"updated\":\"Tue,
+        19 Sep 2023 04:01:36 -0400\",\"title\":\"Foxconn's Huawei Unit Workers Are
+        Cashing Bigger Paychecks Than iPhone Assemblers\",\"teaser\":\"The report
+        states that Foxconn&#39;s FIH unit oversees Huawei smartphone production and
+        has been offering better compensation to the new workers in Shenzhen&#39;s
+        Longhua district.\",\"body\":\"<p>In a surprising twist,&nbsp;<strong>Foxconn
+        Technology Group</strong>&nbsp;has reportedly been offering its workers at
+        the <strong>Huawei Technologies</strong> handset production unit higher wages
+        than their counterparts in <strong>iPhone</strong> manufacturing, according
+        to the&nbsp;<a href=\\\"https://www.scmp.com/tech/big-tech/article/3234562/foxconn-offers-higher-hourly-rates-workers-shenzhen-its-huawei-production-unit-its-iphone-operation\\\">South
+        China Morning Post</a>.</p>\\n\\n\\n\\n<p><strong>What Happened</strong></p>\\n\\n\\n\\n<p>The
+        report states that Foxconn&#8217;s FIH unit oversees Huawei smartphone production
+        and has been offering new workers in Shenzhen&#8217;s Longhua district an
+        hourly rate of 26 yuan (US$3.60). In contrast, Foxconn&#8217;s iPhone-manufacturing
+        unit, the Integrated&nbsp;Digital Product Business Group (iDPBG),&nbsp;offers
+        a rate of 21 yuan (US$2.88).</p>\\n\\n\\n\\n<p>This wage increase coincides&nbsp;with
+        both <strong>Apple</strong> <strong>Inc</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) and Huawei&#8217;s
+        recent launch of new 5G handsets in China, the world&#8217;s largest smartphone
+        market. Even though iPhone 15 production commenced at Foxconn&#8217;s&nbsp;Indian
+        factory last month, most of the iPhone 15 series will still be produced in
+        China.</p>\\n\\n\\n\\n<p><em>See Also:&nbsp;<a href=\\\"https://www.benzinga.com/general/education/23/09/34704049/if-you-invested-in-apple-stock-instead-of-buying-iphones-each-year-heres-how-much-youd-have-tod?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">If You Invested In Apple
+        Stock Instead Of Buying iPhones Each Year, Here&#8217;s How Much You&#8217;d
+        Have Today</a></em></p>\\n\\n\\n\\n<p><strong>Why It Matters</strong></p>\\n\\n\\n\\n<p>Apple&#8217;s
+        strategy to decentralize its supply chain from China and <a href=\\\"https://in.benzinga.com/content/33539282/apple-plans-to-produce-20-of-all-iphone-15-units-in-india-report\\\">invest
+        heavily in India&#8217;s production</a> was reported earlier. The move was
+        seen as a response to the COVID-19 outbreak and subsequent riots at Apple&#8217;s
+        largest Chinese factory. Apple aims to manufacture 15 million iPhone 15 units
+        in India this year.</p>\\n\\n\\n\\n<p>However, despite these efforts, <a href=\\\"https://www.benzinga.com/news/23/09/34536811/iphone-15-costs-more-in-china-and-india-compared-to-us-despite-local-manufacturing-and-assembly\\\">iPhone
+        15 prices in China, Japan, and India were higher</a> than many other countries,
+        despite local manufacturing and assembly.</p>\\n\\n\\n\\n<p>Moreover, Apple&#8217;s
+        latest smartphone lineup has seen differing consumer demand trends. According
+        to&nbsp;<a href=\\\"https://www.benzinga.com/news/23/09/34676529/apples-iphone-15-pro-sales-decline-while-pro-max-rockets-ming-chi-kuos-insights\\\">analyst
+        Ming-Chi Kuo</a>, the iPhone 15 Pro faces decreased demand, while the Pro
+        Max model shows remarkable sales performance. This shift in demand might have
+        contributed to the wage discrepancy between the Huawei and iPhone production
+        units at Foxconn.</p>\\n\\n\\n\\n<p><em>Photo by duan zhi xiang</em></p>\\n\\n\\n\\n<p><em>Read
+        Next: Americans alone spend $100 billion on nicotine products per year. One
+        startup has synthesized a medicine that eliminates the need to smoke in up
+        to 95% of tested smokers. It's called Rexis Biotech and you can invest in
+        it&nbsp;<a href=\\\"https://www.benzinga.com/alternative-investments/listing/rexis-biotech\\\">before
+        the product's public release.</a></em></p>\\n\\n\\n\\n<!--Actual content-->\\n
+        \   <div style=\\\"font-family: 'Lato', sans-serif\\\">\\n      <hr style=\\\"border:
+        0;height: 5px;background: #225aa9\\\">\\n      <div style=\\\"background-color:
+        #f5f5f5;background-position: center;background-size: cover;justify-content:
+        center\\\"></div>\\n      <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n        Engineered by\\n        <span style=\\\"font-weight: bold;text-decoration:
+        none;color: #225aa9;font-size: 1rem\\\">Benzinga Neuro</span>, Edited by\\n
+        \       <span style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">\\n          <u><a href=\\\"None\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\"
+        style=\\\"color: #225aa9;text-decoration: none\\\">\\n              Sudhanshu
+        Singh</a></u>\\n        </span>\\n      </p>\\n      <hr style=\\\"border:
+        0;height: 1px;background: #225aa9\\\">\\n      <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n        The GPT-4-based Benzinga Neuro content generation system
+        exploits the\\n        extensive Benzinga Ecosystem, including native data,
+        APIs, and more to\\n        create comprehensive and timely stories for you.\\n
+        \       <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\" target=\\\"_blank\\\"
+        rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration: none\\\">Learn
+        more.</a>\\n      </p>\\n      <hr style=\\\"border: 0;height: 5px;background:
+        #225aa9\\\">\\n    </div>\\n    <!--Actual content end-->\",\"url\":\"https://www.benzinga.com/23/09/34715755/foxconns-huawei-unit-workers-are-cashing-bigger-paychecks-than-iphone-assemblers\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Foxconn_employees_working_on_the_production_line_in_Shenzen._Photo_by__duan_zhi_xiang_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Foxconn_employees_working_on_the_production_line_in_Shenzen._Photo_by__duan_zhi_xiang_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Foxconn_employees_working_on_the_production_line_in_Shenzen._Photo_by__duan_zhi_xiang_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Appleverse\"},{\"name\":\"Chinese\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"foxconn\"},{\"name\":\"Huawei\"}]},{\"id\":34714254,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Tue, 19 Sep 2023 02:19:05 -0400\",\"updated\":\"Tue,
+        19 Sep 2023 02:19:06 -0400\",\"title\":\"'Tim Cook Gets It': Elon Musk Praises
+        Apple CEO For Defending X Amid Controversy With ADL\",\"teaser\":\" \",\"body\":\"<p><strong>Elon
+        Musk,</strong> the owner of X (formerly Twitter), expressed his approval of&nbsp;<strong>Apple
+        Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        CEO <strong>Tim Cook&#8217;s </strong>defense for continuing to advertise
+        on X, amid allegations from the Anti-Defamation League (ADL). </p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: Musk tweeted, &#8220;Tim Cook gets it&#8221; in response
+        to Cook&#8217;s comments during an interview with CBS News.</p>\\n\\n\\n\\n<p>Cook,
+        in the interview, said, \\\"It's something we constantly ask ourselves. Twitter
+        is an important property. I like the concept that it's there for discourse,
+        and there is a town square.&#8221;</p>\\n\\n\\n\\n<p>However, further along
+        in the interview, he also condemned anti-semitism, something that Musk-owned
+        X has been accused of propagating recently. </p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Tim Cook gets it</p>&mdash; Elon Musk (@elonmusk)
+        <a href=\\\"https://twitter.com/elonmusk/status/1703861074603413525?ref_src=twsrc%5Etfw\\\">September
+        18, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><em>See Also:&nbsp;<a
+        href=\\\"https://www.benzinga.com/news/23/09/34674672/elon-musk-is-working-on-integrating-imessage-whatsapp-and-signal-in-one-magical-kayak?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Elon Musk Is Working
+        On Integrating iMessage, WhatsApp And Signal In One &#8216;Magical Kayak&#8217;</a></em></p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: This comes in the backdrop of&nbsp;<a href=\\\"https://www.benzinga.com/news/23/09/34671801/tim-cook-defends-apples-stance-why-cupertino-wont-abandon-elon-musks-x-amid-adl-controversy\\\">controversy
+        surrounding Apple</a>&#8216;s decision to continue advertising on X, despite
+        criticism from the Anti-Defamation League. Cook emphasized the platform&#8217;s
+        role in fostering discourse, likening it to a &#8220;town square&#8221;, while
+        also acknowledging certain aspects that he did not favor.</p>\\n\\n\\n\\n<p><em>Read
+        Next: Fine art investing isn't a multi-millionaire exclusive anymore. You
+        can partially own curated pieces worth tens of millions today. Click&nbsp;<a
+        href=\\\"https://www.benzinga.com/alternative-investments/collectibles\\\">here
+        to explore Benzinga's selection.</a></em></p>\\n\\n\\n\\n<p><em>Image Credits
+        &#8211; Shutterstock</em></p>\\n\\n\\n\\n<div style=\\\"font-family: 'Lato',
+        sans-serif\\\">\\n    <div>\\n        <hr style=\\\"border: 0;height: 5px;background:
+        #225aa9\\\">\\n        <div style=\\\"background-color: #f5f5f5;background-position:
+        center;background-size: cover;justify-content: center\\\"></div>\\n        <p
+        style=\\\"font-family: sans-serif;padding-top: 20px\\\">\\n            Engineered
+        by <span style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">Benzinga Neuro</span>, Edited by <span style=\\\"font-weight: bold;text-decoration:
+        none;color: #225aa9;font-size: 1rem\\\">\\n                <u>Pooja Rajkumari</u>\\n
+        \           </span>\\n        </p>\\n        <hr style=\\\"border: 0;height:
+        1px;background: #225aa9\\\">\\n        <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n            The GPT-4 Benzinga Neuro content generation system
+        exploits the extensive Benzinga Ecosystem, including native data, APIs, and
+        more to create comprehensive and timely stories for you.\\n            <a
+        href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\" target=\\\"_blank\\\"
+        rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration: none\\\">Learn
+        more.</a>\\n        </p>\\n        <hr style=\\\"border: 0;height: 5px;background:
+        #225aa9\\\">\\n    </div>\\n</div>\",\"url\":\"https://www.benzinga.com/news/23/09/34714254/tim-cook-gets-it-elon-musk-praises-apple-ceo-for-defending-x-amid-controversy-with-adl\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Elon_Musk_84.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Elon_Musk_84.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Elon_Musk_84.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"advertising\"},{\"name\":\"Elon
+        Musk\"},{\"name\":\"Tim Cook\"},{\"name\":\"X\"}]},{\"id\":34713039,\"author\":\"Ananya
+        Gairola\",\"created\":\"Tue, 19 Sep 2023 01:15:46 -0400\",\"updated\":\"Tue,
+        19 Sep 2023 01:15:47 -0400\",\"title\":\"Inaccurate Apple Products Reviews
+        Could Be A Marketing Gimmick, Says This Tech Guru\",\"teaser\":\"Tech journalist
+        Mark Gurman raises concerns about discrepancies in advanced Apple product
+        reviews, suggesting they might be a marketing ploy to influence consumer perceptions
+        and drive purchases.\",\"body\":\"<p>On social media like&nbsp;<strong>Elon
+        Musk&#8217;s X</strong>, formerly&nbsp;<strong>Twitter</strong>, tech enthusiasts
+        have raised questions regarding the accuracy of some&nbsp;<strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        product reviews, prompting a closer examination of whether these discrepancies
+        serve as a subtle marketing tactic.</p>\\n\\n\\n\\n<p><strong>What Happened:</strong>&nbsp;On
+        Monday, popular tech analyst&nbsp;<strong>Mark Gurman</strong>&nbsp;shed light
+        on the issue, noting an increasing number of inaccuracies in advanced Apple
+        product reviews.&nbsp;</p>\\n\\n\\n\\n<p>Gurman said, &#8220;It feels like
+        the number of inaccuracies (which are irrelevant as long as the coverage is
+        positive) in advanced Apple product reviews increases annually.&#8221;&nbsp;</p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34671801/tim-cook-defends-apples-stance-why-cupertino-wont-abandon-elon-musks-x-amid-adl-controversy\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Tim Cook Defends Apple&#8217;s Stance:
+        Why Cupertino Won&#8217;t Abandon Elon Musk&#8217;s X Amid ADL Controversy</em></a></p>\\n\\n\\n\\n<p>One
+        example Gurman highlighted was a review of the&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/news/23/09/34501760/apple-iphone-15-new-watch-carbon-neutral-products-everything-apple-just-announced\\\"
+        rel=\\\"noreferrer noopener\\\">AirPods with a USB-C connection</a>.&nbsp;</p>\\n\\n\\n\\n<p>The
+        review praised features like increased battery life and the inclusion of extra
+        ear tips, despite neither being new additions. Gurman suggested that positive
+        but inaccurate reviews might have been strategically crafted to influence
+        consumer perceptions and drive sales.</p>\\n\\n\\n\\n<p>In the comment section,
+        netizens echoed skepticism. Some users commented that these tactics were classic
+        marketing strategies, encouraging consumers to purchase products they may
+        already own or find unnecessary.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">For instance, one AirPods USB-C review (something
+        that is probably unnecessary) I watched today praises its increased battery
+        life and inclusion of extra ear tips. Neither are new features, but someone
+        will buy them because of that video. That's a win. <a href=\\\"https://t.co/KrvvLoPvFj\\\">https://t.co/KrvvLoPvFj</a></p>&mdash;
+        Mark Gurman (@markgurman) <a href=\\\"https://twitter.com/markgurman/status/1703948185537024434?ref_src=twsrc%5Etfw\\\">September
+        19, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><strong>Why
+        It&#8217;s Important:&nbsp;</strong>Last week, Apple launched a USB-C port
+        for AirPods along with its latest smartphone lineup, the <strong>iPhone 15</strong>
+        series. However, the USB-C charging case for the AirPods Pro 2 is&nbsp;<a
+        href=\\\"https://www.benzinga.com/news/23/09/34567976/want-airpods-pro-with-usb-c-prepare-to-pay-249-as-apple-skips-the-usb-c-charging-case\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">not available as a standalone
+        purchase</a>.</p>\\n\\n\\n\\n<p>Simply put, existing owners of the AirPods
+        Pro 2 won&#8217;t be able to change their charging case for the USB-C version.
+        They&#8217;ll have to pay $249 to get an entirely new pair.&nbsp;</p>\\n\\n\\n\\n<p><a
+        href=\\\"https://www.benzinga.com/news/23/09/34501760/apple-iphone-15-new-watch-carbon-neutral-products-everything-apple-just-announced\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">The latest AirPods Pro</a>\_has
+        a USB-C charging case and can tap into 20-bit, 48 kHz Lossless Audio with
+        ultra-low latency when\_<a href=\\\"https://www.benzinga.com/news/23/06/32730028/how-does-apples-vision-pro-compare-with-metas-quest-3\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">paired with the Vision
+        Pro</a>. But this feature\_<a href=\\\"https://www.benzinga.com/news/23/09/34567298/your-second-generation-airpods-pro-might-now-be-outdated-how-vision-pro-audio-upgrade-changes-everyt\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">won&#8217;t extend to
+        the existing</a>\_second-generation AirPods Pro despite sharing the same H2
+        chip.</p>\\n\\n\\n\\n<p><em>Image Courtesy: Apple Inc.</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/topic/consumer-tech\\\" rel=\\\"noreferrer
+        noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34676529/apples-iphone-15-pro-sales-decline-while-pro-max-rockets-ming-chi-kuos-insights\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Apple&#8217;s iPhone 15 Pro Sales Decline
+        While Pro Max Rockets: Ming-Chi Kuo&#8217;s Insights</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34713039/inaccurate-apple-products-reviews-could-be-a-marketing-gimmick-says-this-tech-guru\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple-iPhone-15-lineup-AirPods-Pro-2nd-generation-USB-C-connection-230912_big.jpg.large_2x_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple-iPhone-15-lineup-AirPods-Pro-2nd-generation-USB-C-connection-230912_big.jpg.large_2x_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple-iPhone-15-lineup-AirPods-Pro-2nd-generation-USB-C-connection-230912_big.jpg.large_2x_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"AirPods
+        Pro 2\"},{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"Mark Gurman\"},{\"name\":\"USB-C\"},{\"name\":\"vision
+        pro\"}]},{\"id\":34705531,\"author\":\"Chris Katje\",\"created\":\"Mon, 18
+        Sep 2023 19:20:34 -0400\",\"updated\":\"Mon, 18 Sep 2023 19:20:34 -0400\",\"title\":\"Apple
+        Offering Apple Card Users Incentive For Electric Vehicle Charging: Here Are
+        The Details\",\"teaser\":\"While there has been speculation that technology
+        giant Apple Inc (NASDAQ: AAPL) will release an electric vehicle, the company
+        has not delivered on this initiative.\",\"body\":\"<p>While there has been
+        speculation that technology giant <strong>Apple Inc </strong>(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) will release
+        an electric vehicle, the company has not delivered<a href=\\\"https://www.benzinga.com/topic/apple-car\\\">
+        on this initiative.</a></p>\\r\\n\\r\\n<p>That doesn&rsquo;t stop Apple from
+        offering a new incentive for consumers who have an electric vehicle of their
+        own.</p>\\r\\n\\r\\n<p><strong>What Happened:</strong> Apple <a href=\\\"https://www.benzinga.com/markets/equities/23/08/33998332/if-you-invested-1-000-in-apple-stock-when-apple-card-was-launched-4-years-ago-heres-how-much-you\\\">released
+        the Apple Card</a> in 2019 and it has become a staple for the company&rsquo;s
+        consumers with high-yield savings accounts and rewards.</p>\\r\\n\\r\\n<p>The
+        card has also been the subject of news in 2023 with partner <strong>Goldman
+        Sachs Group</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GS#NYSE\\\">GS</a>)
+        <a href=\\\"https://www.benzinga.com/news/23/07/33089502/goldman-eyeing-exit-from-apple-card-partnership-report-says-heres-what-that-means-for-the-financial\\\">rumored
+        to be looking </a>to move on from the venture.</p>\\r\\n\\r\\n<p>Holders of
+        the Apple Card have a new promotion that will pay them 10% cash back on electric
+        vehicle charging. As shared by <a href=\\\"https://www.macrumors.com/2023/09/15/apple-card-gas-promo/\\\">MacRumors</a>,
+        the new promotion from Apple Card is good for up to $6,000 worth of electric
+        vehicle charging, representing a total reward of up to $600.</p>\\r\\n\\r\\n<p>Under
+        the <a href=\\\"https://offers.applecard.apple/travel10percent\\\">promotion</a>,
+        Apple Card users can also get 10% cash back for gas purchases.</p>\\r\\n\\r\\n<p>The
+        purchases can be done with Apple Pay, a virtual card number in apps or using
+        the physical Apple Card.&nbsp;<strong>The promotion runs through Oct.&nbsp;5,
+        2023.</strong></p>\\r\\n\\r\\n<p>After Oct. 5, Apple Card users can earn 3%
+        by using Apple Pay at Exxon or Mobil gas stations.</p>\\r\\n\\r\\n<p><em>Related
+        Link:<a href=\\\"https://www.benzinga.com/news/23/07/33426380/tim-cook-runs-apple-but-once-got-denied-for-the-apple-card-heres-the-bizarre-story\\\">
+        Tim Cook Runs Apple But Once Got Denied For The Apple Card: Here&#39;s The
+        Bizarre Story</a></em></p>\\r\\n\\r\\n<p><strong>Why It&rsquo;s Important:
+        </strong>Apple regularly <a href=\\\"https://www.benzinga.com/news/23/08/34018144/apple-card-launches-limited-offer-of-5-daily-cashback-upto-20k-on-dining-and-travel\\\">launches
+        promotions </a>pertaining to its cash-back offerings for Apple Card holders.</p>\\r\\n\\r\\n<p>The
+        newest incentive rewards vehicle drivers, including those with electric vehicles.</p>\\r\\n\\r\\n<p>The
+        state of California<a href=\\\"https://www.benzinga.com/news/23/08/33882593/california-adds-2-000-ev-credit-for-residents-heres-how-much-you-can-save-now\\\">
+        recently announced additional incentives</a> for owners of electric vehicles,
+        with an EV Charge Card&nbsp;issued to qualified users to offer free charging
+        for up to a certain amount.</p>\\r\\n\\r\\n<p><em>Read Next: <a href=\\\"https://www.benzinga.com/trading-ideas/long-ideas/23/09/34499256/how-to-earn-500-a-month-from-apple-stock-just-in-time-for-new-products\\\">How
+        To Earn $500 A Month From Apple Stock</a></em></p>\\r\\n\\r\\n<p><em><strong>You
+        don&#39;t want to miss the latest in Fintech! Be sure to attend Benzinga&#39;s
+        Fintech Deal Day and Awards, Nov. 13 in New York City. <a href=\\\"https://www.benzinga.com/events/fintech-awards/\\\">Click
+        here </a>for information and tickets!</strong></em></p>\\r\\n\\r\\n<p><em>Photo:
+        Shutterstock</em></p>\\r\\n\\r\\n<p><br />\\r\\n&nbsp;</p>\\r\\n\",\"url\":\"https://www.benzinga.com/fintech/23/09/34705531/apple-offering-apple-card-users-incentive-for-electric-vehicle-charging-here-are-the-details\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/18/applecard.shutterstock_1350112757.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/18/applecard.shutterstock_1350112757.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/18/applecard.shutterstock_1350112757.jpg\"}],\"channels\":[{\"name\":\"Fintech\"},{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GS\"}],\"tags\":[{\"name\":\"Apple
+        Card\"},{\"name\":\"Apple Pay\"},{\"name\":\"credit card rewards\"},{\"name\":\"credit
+        cards\"},{\"name\":\"electric vehicles\"},{\"name\":\"EVs\"}]},{\"id\":34704049,\"author\":\"Chris
+        Katje\",\"created\":\"Mon, 18 Sep 2023 18:50:56 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 19:00:53 -0400\",\"title\":\"If You Invested In Apple Stock Instead
+        Of Buying iPhones Each Year, Here's How Much You'd Have Today\",\"teaser\":\"Technology
+        giant Apple Inc (NASDAQ: AAPL) recently shared details of its highly anticipated
+        iPhone 15, which is set for a launch later this month.\",\"body\":\"<p>Technology
+        giant <strong>Apple Inc </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        recently shared details of its highly anticipated iPhone 15, which is set
+        for a <a href=\\\"https://www.benzinga.com/news/23/09/34501760/apple-iphone-15-new-watch-carbon-neutral-products-everything-apple-just-announced\\\">launch
+        later this month.</a></p>\\r\\n\\r\\n<p>This marks the latest iPhone to be
+        released in the smartphone series from the company that dates back to 2007.</p>\\r\\n\\r\\n<p>Here&rsquo;s
+        a look at the history of the iPhone and how an investment in Apple stock could
+        have done as opposed to buying a new iPhone each year.</p>\\r\\n\\r\\n<p><strong>What
+        Happened: </strong>Apple <a href=\\\"https://www.benzinga.com/general/education/23/08/33576807/if-you-invested-1-000-in-apple-stock-when-the-iphone-was-unveiled-heres-how-much-youd-have-toda\\\">unveiled
+        the iPhone</a> on Jan. 9, 2007, at its Macworld event. Then CEO <strong>Steve
+        Jobs</strong> highlighted the smartphone&#39;s function of being three combined
+        products: a mobile phone, a widescreen iPod and internet communications.</p>\\r\\n\\r\\n<p>&ldquo;iPhone
+        is a revolutionary and magical product that is literally five years ahead
+        of any other mobile phone,&rdquo; Jobs said at the time. &ldquo;We are all
+        born with the ultimate pointing device &mdash; our fingers &mdash; and iPhone
+        uses them to create the most revolutionary user interface since the mouse.&rdquo;</p>\\r\\n\\r\\n<p>It
+        was announced the iPhone would be released in June 2007 in the U.S., in late
+        2007 in Europe, and in 2008 in Asia. The iPhone was given price tags of $499
+        and $599 in the U.S.</p>\\r\\n\\r\\n<p>&ldquo;Apple ignited the personal computer
+        revolution in the 1970s with the Apple II and reinvented the personal computer
+        in the 1980s with the Macintosh,&rdquo; the company said.</p>\\r\\n\\r\\n<p>A
+        post on Twitter recently generated reactions after it was unveiled that investing
+        in Apple stock instead of buying the iPhone each year could have made&nbsp;you
+        a millionaire.</p>\\r\\n\\r\\n<p>A <a href=\\\"https://twitter.com/sumitkbehal/status/1701661608349687950\\\">post
+        </a>on Twitter, now known as X, by <strong>Sumit Behal </strong>said it calculated
+        the return for investors.</p>\\r\\n\\r\\n<p><strong>&ldquo;If you had bought
+        Apple shares worth of every new iPhone model on Apple event day from 2007,
+        you would have converted 17,000 dollars to 367 million dollars. Tim Cook will
+        never tell you about this,&rdquo; Behal tweeted.</strong></p>\\r\\n\\r\\n<p>The
+        tweet and math were pretty far out there as it calculated the return if you
+        were a fortune teller and knew how many iPhones were going to be released
+        in the future and what their retail prices would be to put that amount into
+        Apple stock.</p>\\r\\n\\r\\n<p>Benzinga previously shared the return of a
+        <a href=\\\"https://www.benzinga.com/general/education/23/08/33576807/if-you-invested-1-000-in-apple-stock-when-the-iphone-was-unveiled-heres-how-much-youd-have-toda\\\">$1,000
+        investment in Apple</a> at the time the iPhone was announced turning into
+        a hypothetical profit of more than&nbsp;$50,000 and a return of over 5,000%.</p>\\r\\n\\r\\n<p>While
+        Benzinga is known for its share of if you invested $1,000 in stock hypothetical
+        stories over the years,&nbsp;this article is attempting to&nbsp;paint a clearer
+        picture of how investing in Apple stock over buying each new iPhone model
+        would have turned out.</p>\\r\\n\\r\\n<p><em>Related Link: <a href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/23/09/34506430/apple-has-flex-the-muscles-moment-with-iphone-15-expects-mini-supercycle-to-propel-\\\">Apple
+        Has &#39;Flex The Muscles&#39; Moment With iPhone 15, Analysts Expect Mini
+        Supercycle&nbsp;</a></em></p>\\r\\n\\r\\n<p><strong>Investing in Apple Stock
+        over iPhones: </strong>Apple released the first iPhone in 2007 and has released
+        a new model every year since that time, with some years having multiple releases
+        and new updates.</p>\\r\\n\\r\\n<p>For the purpose of this exercise, one new
+        iPhone model was considered for each year. Stock prices are the opening price
+        for each iPhone release date and are split adjusted for a 7-for-1 split in
+        2014 and a 4-for-1 split in 2020. Dividends are not factored into the starting
+        price or return.</p>\\r\\n\\r\\n<p>The release dates and starting prices for
+        the iPhone models come from <a href=\\\"https://www.bankmycell.com/blog/iphone-evolution-timeline-chart\\\">Bankmycell</a>.</p>\\r\\n\\r\\n<p>Here&rsquo;s
+        a look at the returns for the iPhones with their release date, starting price,
+        Apple stock price at the time, number of shares that could have been purchased
+        and current value based on Apple shares at $178.19.</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li><strong>iPhone,
+        June 29, 2007, $499, Apple $4.37 per share, 114.19 shares, $20,338.61</strong></li>\\r\\n\\t<li><strong>iPhone
+        3G, July 11, 2008, $599, Apple $6.27 per share, 95.53 shares, $17,022.49</strong></li>\\r\\n\\t<li><strong>iPhone
+        3GS, June 19, 2009, $599, Apple $4.93 per share, 121.50 shares, $21,650.09</strong></li>\\r\\n\\t<li><strong>iPhone
+        4, June 24, 2010, $599, Apple $9.68 per share, 61.88 shares, $11,026.40</strong></li>\\r\\n\\t<li><strong>iPhone
+        4S, Oct. 14, 2011, $649, Apple $14.89 per share, 43.59 shares, $7,767.30</strong></li>\\r\\n\\t<li><strong>iPhone
+        5, Sept. 21, 2012, $649, Apple $25.09 per share, 25.87 shares, $4,609.78</strong></li>\\r\\n\\t<li><strong>iPhone
+        5S, Sept. 20, 2013, $649, Apple $17.07 per share, 38.02 shares, $6,774.78</strong></li>\\r\\n\\t<li><strong>iPhone
+        6, Sept. 19, 2014, $649, Apple $25.57 per share, 25.38 shares, $4,522.46</strong></li>\\r\\n\\t<li><strong>iPhone
+        6S, Sept. 25, 2015, $649, Apple $28.34 per share, 22.90 shares, $4,080.55</strong></li>\\r\\n\\t<li><strong>iPhone
+        7, Sept. 16, 2016, $649, Apple $28.78 per share, 22.55 shares, $4,018.18</strong></li>\\r\\n\\t<li><strong>iPhone
+        8/X, Sept. 22, 2017, $999, Apple $37.88 per share, 26.37 shares, $4,698.87</strong></li>\\r\\n\\t<li><strong>iPhone
+        XS, Sept. 21, 2018, $1,099, Apple $55.19 per share, 19.91 shares, $3,547.96</strong></li>\\r\\n\\t<li><strong>iPhone
+        11, Sept. 20, 2019, $1,099, Apple $55.35 per share, 19.86 shares, $3,538.85</strong></li>\\r\\n\\t<li><strong>iPhone
+        12, Oct. 23, 2020, $999, Apple $116.39 per share, 8.58 shares, $1,528.87</strong></li>\\r\\n\\t<li><strong>iPhone
+        13, Sept. 24, 2021, $1,099, Apple $145.66 per share, 7.54 shares, $1,343.55</strong></li>\\r\\n\\t<li><strong>iPhone
+        14, Sept. 16, 2022, $1,099, Apple $151.21 per share, 7.27 shares, $1,295.44</strong></li>\\r\\n</ul>\\r\\n\\r\\n<p>As
+        you can see from the chart above, each year investing in Apple stock instead
+        of buying an iPhone would have generated a better return for investors, including
+        the release of iPhone 14 last year.</p>\\r\\n\\r\\n<p><strong>Adding it all
+        up, a person would spend $12,584 to buy a new iPhone model each year since
+        2007. If that same amount was put into Apple stock each year on the day of
+        the new phone release, an investor would have $117,764.18 today.</strong></p>\\r\\n\\r\\n<p>This
+        represents a profit of $105,180.18 and a return of 835.8% over the past 16
+        years.</p>\\r\\n\\r\\n<p>While you wouldn&rsquo;t be a millionaire doing the
+        strategy of investing in Apple stock over the iPhone using this method, it
+        represents an impressive return.</p>\\r\\n\\r\\n<p><em>Read Next: <a href=\\\"https://www.benzinga.com/trading-ideas/long-ideas/23/09/34499256/how-to-earn-500-a-month-from-apple-stock-just-in-time-for-new-products\\\">How
+        To Earn $500 A Month From Apple Stock Just In Time For New Products&nbsp;</a><br
+        />\\r\\nPhoto: Shutterstock</em><br />\\r\\n&nbsp;</p>\\r\\n\",\"url\":\"https://www.benzinga.com/general/education/23/09/34704049/if-you-invested-in-apple-stock-instead-of-buying-iphones-each-year-heres-how-much-youd-have-tod\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/18/shutterstock_1777482842.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/18/shutterstock_1777482842.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/18/shutterstock_1777482842.jpg\"}],\"channels\":[{\"name\":\"Education\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"if
+        you invested 1000 catalyst\"},{\"name\":\"investing in stock over product\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone
+        14\"},{\"name\":\"iPhone 15\"},{\"name\":\"Steve Jobs\"},{\"name\":\"tweet\"}]},{\"id\":34700637,\"author\":\"Piero
+        Cingari\",\"created\":\"Mon, 18 Sep 2023 15:06:58 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 15:06:59 -0400\",\"title\":\"Is $100 Oil On The Horizon? Industry
+        Experts Say Yes, Here's Why\",\"teaser\":\" \",\"body\":\"<p>As crude oil
+        prices surge, experts are starting to bet on a barrel of oil hitting <a href=\\\"https://www.benzinga.com/topic/economics\\\">the
+        coveted $100 mark. </a></p>\\n\\n\\n\\n<p>Price premiums for physical oil
+        barrels are skyrocketing across the globe, with supplies from various regions,
+        including the Middle East, Azerbaijan, and Russia, commanding higher prices
+        as refiners scramble to meet the rising diesel demand. </p>\\n\\n\\n\\n<h2
+        class=\\\"wp-block-heading\\\"><strong>Oil Markets Defying Gravity</strong></h2>\\n\\n\\n\\n<p>Even
+        with crude oil currently in the mid-$90s, many investment funds remain underinvested
+        in the oil sector, leaving room for prices to climb higher. </p>\\n\\n\\n\\n<p>In
+        an interview with <a href=\\\"https://www.bloomberg.com/news/articles/2023-09-18/surging-physical-oil-market-brings-100-crude-back-in-sight?srnd=premium-europe&amp;sref=TBDibEcD\\\">Bloomberg</a>
+        Monday morning, <strong>Chevron Corp. </strong>(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/CVX#NYSE\\\">CVX</a>) CEO <strong>Mike
+        Wirth</strong>  expressed confidence in oil reaching $100 a barrel, adding
+        weight to the bullish outlook.</p>\\n\\n\\n\\n<p>The price of Brent Crude
+        has risen by over 30% since its low point in March. With consumption hitting
+        record highs and production cuts in Saudi Arabia and Russia tightening supplies,
+        refiners are snapping up barrels to meet fuel production needs.</p>\\n\\n\\n\\n<p><strong>Amrita
+        Sen</strong>, head of research&nbsp;at Energy Aspects, highlighted that the
+        fundamentals are currently extremely strong.&nbsp;While Sen doesn&#8217;t
+        predict a sustained average above $100, she acknowledges the potential for
+        oil to briefly touch this milestone.</p>\\n\\n\\n\\n<p>Examples abound in
+        the physical markets, with Azerbaijani Azeri Light crude trading near $100
+        a barrel due to high profits in converting crude to diesel. Similarly, Russian
+        barrels, once trading at a discount, are now commanding premiums in Asia.
+        </p>\\n\\n\\n\\n<p><em>Read also:</em> <em><a href=\\\"https://www.benzinga.com/etfs/sector-etfs/23/09/34698289/oil-rally-fuels-energy-sectors-outperformance-over-tech-challenges-2023-ai-dominance\\\">Oil
+        Rally Fuels Energy Sector&#8217;s Outperformance Over Tech, Challenges 2023
+        AI Dominance</a></em></p>\\n\\n\\n\\n<p><em>Chart: Major Oil Benchmarks Trade
+        Above $90 A Barrel</em></p>\\n\\n\\n\\n<figure class=\\\"wp-block-image size-large\\\"><img
+        decoding=\\\"async\\\" loading=\\\"lazy\\\" width=\\\"1024\\\" height=\\\"819\\\"
+        src=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18140942/BRENT_2023-09-18_20-09-35_343b9-1024x819.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-108199\\\" srcset=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18140942/BRENT_2023-09-18_20-09-35_343b9-1024x819.png
+        1024w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18140942/BRENT_2023-09-18_20-09-35_343b9-300x240.png
+        300w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18140942/BRENT_2023-09-18_20-09-35_343b9-768x614.png
+        768w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18140942/BRENT_2023-09-18_20-09-35_343b9.png
+        1351w\\\" sizes=\\\"(max-width: 1024px) 100vw, 1024px\\\" /></figure>\\n\\n\\n\\n<p>Over
+        the last three months, energy stocks represented by the <strong>Energy Select
+        Sector SPDR Fund</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/XLE#NYSE\\\">XLE</a>)
+        have outperformed the <strong>Technology Select Sector SPDR Fund</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/XLK#NYSE\\\">XLK</a>)
+        by a significant margin of 20%. A similar relative performance has been achieved
+        by the largest U.S. oil corporation, <strong>Exxon Mobil Corp. </strong>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/XOM#NYSE\\\">XOM</a>),
+        against <strong>Apple Inc</strong>. (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NYSE\\\">AAPL</a>).</p>\\n\\n\\n\\n<p>Even
+        some of the most bearish market analysts are conceding the possibility of
+        a $100 barrel, particularly in light of the ongoing political risks in oil-producing
+        countries&nbsp;such as Libya and Nigeria.</p>\\n\\n\\n\\n<p>Despite the surge,
+        some bearish analysts believe oil could temporarily breach $100. However,
+        they expect supply growth from countries outside the OPEC+ alliance, such
+        as the U.S., Guyana, and Brazil, to ease the tight market conditions.</p>\\n\\n\\n\\n<h2
+        class=\\\"wp-block-heading\\\"><strong>Impact On Consuming Nations</strong></h2>\\n\\n\\n\\n<p>Rising
+        oil prices are now shifting the focus to the impact on consuming nations.
+        The Reserve Bank of India has warned that crude oil above $90 a barrel poses
+        a new risk to global financial stability.</p>\\n\\n\\n\\n<p>While Brent Crude
+        hasn&#8217;t yet hit $100 this year, refined fuel prices, like gasoline and
+        diesel, have remained above that level for months.</p>\\n\\n\\n\\n<p>Now read:
+        <em><a href=\\\"https://www.benzinga.com/economics/macro-economic-events/23/09/34649992/fomc-meeting-preview-what-will-the-federal-reserves-next-move-be\\\">FOMC
+        Meeting Preview: What Will The Federal Reserve&#8217;s Next Move Be?</a></em></p>\\n\\n\\n\\n<p><em>This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors. </em></p>\\n\\n\\n\\n<p><em>Photo: Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/news/large-cap/23/09/34700637/is-100-oil-on-the-horizon-industry-experts-say-yes-heres-why\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/oil_chart_shutter.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/oil_chart_shutter.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/oil_chart_shutter.jpeg\"}],\"channels\":[{\"name\":\"Large
+        Cap\"},{\"name\":\"Macro Economic Events\"},{\"name\":\"Sector ETFs\"},{\"name\":\"New
+        ETFs\"},{\"name\":\"Commodities\"},{\"name\":\"Economics\"},{\"name\":\"Tech\"},{\"name\":\"ETFs\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"CVX\"},{\"name\":\"XLE\"},{\"name\":\"XLK\"},{\"name\":\"XOM\"}],\"tags\":[{\"name\":\"crude\"},{\"name\":\"Oil\"},{\"name\":\"oil
+        prices\"},{\"name\":\"WTI\"},{\"name\":\"WTI Crude\"}]},{\"id\":34699310,\"author\":\"Franca
+        Quarneti\",\"created\":\"Mon, 18 Sep 2023 14:43:11 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 14:43:12 -0400\",\"title\":\"Microsoft's Cloud Gaming Aspirations
+        Revealed In Internal Email Leak\",\"teaser\":\"Internal emails from the FTC
+        v. Microsoft Corp\_(NASDAQ: MSFT) case revealed\_Microsoft planned\_to stream
+        PC games over the cloud.\",\"body\":\"<p>Internal emails from the FTC v. <strong>Microsoft
+        Corp</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        case revealed&nbsp;Microsoft planned&nbsp;to stream <a href=\\\"https://www.benzinga.com/news/23/06/32708514/sony-to-leverage-ai-in-its-quest-for-cloud-gaming-but-ceo-kenichiro-yoshida-expresses-concerns\\\">PC
+        games over the cloud.</a></p>\\r\\n\\r\\n<p>While Xbox Cloud Gaming currently
+        streams Xbox titles, Microsoft aimed to use its Azure servers to enable the
+        streaming of native PC games, The Verge<a href=\\\"https://www.theverge.com/2023/9/18/23878376/microsoft-xbox-cloud-gaming-pc-games-streaming-ftc-documents\\\">
+        reported.</a></p>\\r\\n\\r\\n<p><em>See Also:&nbsp;<a href=\\\"https://www.benzinga.com/news/23/06/32708514/sony-to-leverage-ai-in-its-quest-for-cloud-gaming-but-ceo-kenichiro-yoshida-expresses-concerns\\\">Netflix
+        Explored Cloud Gaming To Boost Growth: Report</a></em></p>\\r\\n\\r\\n<p>Microsoft
+        CEO<strong> Satya Nadella </strong>discussed this in a July 2021 email with
+        Xbox chief<strong> Phil Spencer</strong>, expressing concern about <strong>Alphabet
+        Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)-owned
+        Google&#39;s&nbsp;Stadia&nbsp;potential advantage in cloud gaming.</p>\\r\\n\\r\\n<p>&quot;Seems
+        like they will have a leg up because their stuff is more generic Linux VMs
+        + Network... But I am assuming we will do the same for Game Pass PC &mdash;&nbsp;right?,&quot;
+        Nadella wrote.</p>\\r\\n\\r\\n<p>Spencer responded, confirming Microsoft&#39;s
+        efforts to create an Azure solution for streaming PC games and mentioning
+        the possibility of offering a white-label cloud gaming service.</p>\\r\\n\\r\\n<p>&quot;Google
+        has the ability to reuse their Linux cloud hardware and yes as we stream PC
+        native games from an Azure GPU SKU we would have more re-use scenarios to
+        recoup costs,&quot; Spencer wrote.</p>\\r\\n\\r\\n<p>Microsoft was actively
+        working on this project in July 2021.</p>\\r\\n\\r\\n<p>Although there were
+        delays and changes in Microsoft&#39;s cloud gaming plans over the past year,
+        hints about bringing PC games to Xbox Cloud Gaming emerged, including a partnership
+        with British mobile network EE.</p>\\r\\n\\r\\n<p>Microsoft also began testing
+        mouse and keyboard support for Xbox Cloud Gaming, but initially only for Xbox
+        console games.</p>\\r\\n\\r\\n<p>In the same email chain, Spencer shared his
+        thoughts on <strong>Google Stadia</strong>, speculating that Google might
+        shift Stadia towards a Google Cloud service and abandon its first-party consumer
+        gaming service.</p>\\r\\n\\r\\n<p>&quot;Google is a massive and aggressive
+        competitor but honestly I&rsquo;ve been surprised by their lack of progress
+        with Stadia. To date, our #1 competitor here is really nVidia with GeForce
+        Now. But we keep our eye on both Google and <strong>Amazon.com, Inc.</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        with Luna (also struggling),&quot; Xbox&#39;s head added.</p>\\r\\n\\r\\n<p>In
+        the end, Google did announce the shutdown of Stadia in January 2023, nearly
+        a year after Spencer&#39;s email.</p>\\r\\n\\r\\n<p><em>Read Next:&nbsp;<a
+        href=\\\"https://www.benzinga.com/general/gaming/23/06/32879342/sony-announces-cloud-streaming-trials-for-ps5-games-catering-to-playstation-plus-premium-members\\\">Sony
+        Announces Cloud Streaming Trials For PS5 Games, Catering To PlayStation Plus
+        Premium Members</a></em></p>\\r\\n\\r\\n<p><em>Photo:&nbsp;<a href=\\\"https://www.shutterstock.com/es/g/DiegoThomazini\\\">Diego
+        Thomazini</a>&nbsp;on Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/general/gaming/23/09/34699310/microsofts-cloud-gaming-aspirations-revealed-in-internal-email-leak\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/18/shutterstock_2219742445.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/18/shutterstock_2219742445.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/18/shutterstock_2219742445.jpg\"}],\"channels\":[{\"name\":\"Gaming\"},{\"name\":\"News\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"cloud\"},{\"name\":\"Google\"},{\"name\":\"Google
+        Stadia\"},{\"name\":\"PC games\"},{\"name\":\"Phil Spencer\"},{\"name\":\"Satya
+        Nadella\"},{\"name\":\"Stadia\"},{\"name\":\"xbox\"}]},{\"id\":34700220,\"author\":\"The
+        Arora Report\",\"created\":\"Mon, 18 Sep 2023 14:38:35 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 14:40:29 -0400\",\"title\":\"Investors Pay Attention: Saudi Arabia
+        And Russia Making Fight Against Inflation Difficult\",\"teaser\":\"To gain
+        an edge, this is what you need to know today.\\n\\n\",\"body\":\"<p><em>To
+        gain an edge, this is what you need to know today.</em></p>\\r\\n\\r\\n<p><img
+        alt=\\\"\\\" src=\\\"https://thearorareport.com/wp-content/uploads/2023/09/2023-09-18_08h14_02.png\\\"
+        style=\\\"height:354px; width:624px\\\" /></p>\\r\\n\\r\\n<h3><strong>Difficult
+        Fight Against Inflation</strong></h3>\\r\\n\\r\\n<p>Please&nbsp;<a href=\\\"https://thearorareport.com/stock-market-chart-analysis-oil-prices-cl_f-mc-09182023\\\">click
+        here</a>&nbsp;for a chart of oil futures that represent West Texas Intermediate.</p>\\r\\n\\r\\n<p>Note
+        the following:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>The chart is of West Texas
+        Intermediate crude (WTI).&nbsp;WTI, as tracked by the United States Oil Fund
+        ETF (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/USO#NYSE\\\">USO</a>)
+        is the standard for the&nbsp;U.S.&nbsp;Brent crude.&nbsp;Brent is trading
+        about $3 above WTI.&nbsp;$100 price for Brent is the magnet for traders.</li>\\r\\n\\t<li>The
+        chart shows a steep trendline.</li>\\r\\n\\t<li>The main reason for the rise
+        in oil price shown on the chart is that Saudi Arabia, in cooperation with
+        Russia and other OPEC+ members, have successfully reduced the supply.</li>\\r\\n\\t<li>The
+        latest government stimulus in China may increase demand for oil in China.&nbsp;This
+        is adding to the bullishness.</li>\\r\\n\\t<li>Resilient&nbsp;U.S. economic
+        data and American consumers&rsquo; willingness to spend is adding to the upward
+        pressure on oil.&nbsp;In the past when gasoline prices rose, consumers would
+        cut back on other discretionary purchases.&nbsp;However, this time is proving
+        to be different so far. Rising gas prices are not having a negative impact
+        on other discretionary purchases by American consumers.&nbsp;The American
+        consumer has become used to excessive spending.&nbsp;Right now, lower income
+        consumers can still borrow and higher income consumers still have savings.</li>\\r\\n\\t<li>Also
+        contributing to higher oil prices is general risk-on sentiment generated by
+        higher stock prices and house prices holding up in spite of higher interest
+        rates.</li>\\r\\n\\t<li>The fear is that Saudi Arabia and Russia may want
+        to tighten the screws on the West by trying to run up oil prices to $120 -
+        $130.</li>\\r\\n\\t<li>For more guidance, refer to world renown oil ratings
+        from The Arora Report. You can see the oil ratings from the top menu in the
+        Real Time Feeds. These ratings are based on the following:\\r\\n\\t<ul>\\r\\n\\t\\t<li>Geopolitics</li>\\r\\n\\t\\t<li>Sentiment</li>\\r\\n\\t\\t<li>Fund
+        Flows</li>\\r\\n\\t\\t<li>Supply</li>\\r\\n\\t\\t<li>Demand</li>\\r\\n\\t\\t<li>Inventories</li>\\r\\n\\t\\t<li>Positioning</li>\\r\\n\\t\\t<li>Technicals</li>\\r\\n\\t\\t<li>Risk
+        Appetite</li>\\r\\n\\t\\t<li>Economic Indicators</li>\\r\\n\\t\\t<li>Currencies</li>\\r\\n\\t</ul>\\r\\n\\t</li>\\r\\n\\t<li>FOMC,
+        Bank of England, and Bank of Japan meetings are ahead this week.</li>\\r\\n\\t<li>Rising
+        oil prices are making the job of fighting inflation difficult for the Fed
+        and the Bank of England.</li>\\r\\n\\t<li>Japan imports almost all of the
+        oil it uses.&nbsp;Rising oil prices may force the Bank of Japan to change
+        its loose monetary policy.&nbsp;<strong>In The Arora Report analysis, if the
+        Bank of Japan changes its loose monetary policy, it will have a negative impact
+        on stocks in the&nbsp;U.S.&nbsp;The reason is that there is a lot of money
+        that has been borrowed in Japan at low interest rates and then invested in
+        the&nbsp;U.S. stock market.&nbsp;&nbsp;</strong></li>\\r\\n\\t<li>A&nbsp;concern
+        is also developing about a potential government shutdown.</li>\\r\\n\\t<li>On
+        the positive side, early indications are that preorders for iPhone 15 are
+        better than expected.&nbsp;This is good news because <strong>Apple Inc</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        is the largest stock and carries heavy weight in the indexes.</li>\\r\\n\\t<li>After
+        the successful&nbsp;IPO&nbsp;of <strong>Arm Holdings PLC - ADR</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ARM#NASDAQ\\\">ARM</a>),
+        excitement is building for IPOs of <strong>Instacart</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/CART#NASDAQ\\\">CART</a>) and&nbsp;<strong>Klaviyo
+        Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/KVYO#NASDAQ\\\">KVYO</a>).&nbsp;As
+        a full disclosure, ZYX Buy from The Arora Report has signals on both&nbsp;CART&nbsp;and
+        KVYO.</li>\\r\\n\\t<li>Saudi Arabia and Turkey are vying for the next <strong>Tesla
+        Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>)
+        factory.&nbsp;Saudi Arabia is sweetening the deal with an offer of rights
+        to purchase particular EV metals.&nbsp;Elon Musk is also scheduled to meet
+        with the Israeli Prime Minister on Monday.&nbsp;Musk had previously indicated
+        that the location for the next Tesla factory would be chosen by the end of
+        the year.</li>\\r\\n\\t<li><strong>In The Arora Report analysis, Saudi Arabia
+        and other oil rich Middle Eastern countries are using their oil riches to
+        expand into growing areas such as EVs and AI.&nbsp;We are considering continuous
+        coverage of Saudi Arabia and other Middle Eastern countries in ZYX Emerging
+        by The Arora Report.&nbsp;</strong></li>\\r\\n\\t<li>As an actionable item,
+        the sum total of the foregoing is in the protection band, which strikes the
+        optimum balance between various crosscurrents.&nbsp;Please scroll down to
+        see the protection band.</li>\\r\\n</ul>\\r\\n\\r\\n<h3><strong>Magnificent
+        Seven Money Flows</strong></h3>\\r\\n\\r\\n<p>In the early trade, money flows
+        are positive in Apple and <strong>Alphabet Inc Class C</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are negative in <strong>Amazon.com, Inc.</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>),
+        <strong>NVIDIA Corp </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        <strong>Microsoft Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        <strong>Meta Platforms Inc </strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>),
+        and Tesla.</p>\\r\\n\\r\\n<p>In the early trade, money flows are mixed in
+        <strong>SPDR S&amp;P 500 ETF Trust</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>) and <strong>Invesco
+        QQQ Trust Series 1</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/QQQ#NASDAQ\\\">QQQ</a>).</p>\\r\\n\\r\\n<h3><strong>Momo
+        Crowd And Smart Money In Stocks</strong></h3>\\r\\n\\r\\n<p>The momo crowd
+        is buying stocks in the early trade.&nbsp;Smart money is <strong>&#128274;&nbsp;</strong>in
+        the early trade.&nbsp;<strong>To see the locked content, <a href=\\\"https://thearorareport.com/sub\\\">please
+        click here to start a free trial</a>.</strong></p>\\r\\n\\r\\n<h3><strong>Gold</strong></h3>\\r\\n\\r\\n<p>The
+        momo crowd is buying gold in the early trade.&nbsp;Smart money is <strong>&#128274;&nbsp;</strong>in
+        the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see gold and silver
+        ratings.</p>\\r\\n\\r\\n<p>The most popular ETF for gold is <strong>SPDR Gold
+        Trust </strong>(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GLD#NYSE\\\">GLD</a>).
+        The most popular ETF for silver is <strong>iShares Silver Trust </strong>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SLV#NYSE\\\">SLV</a>).&nbsp;</p>\\r\\n\\r\\n<h3><strong>Oil</strong></h3>\\r\\n\\r\\n<p>The
+        momo crowd is buying oil in the early trade.&nbsp;Smart money is <strong>&#128274;&nbsp;</strong>in
+        the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see oil ratings.</p>\\r\\n\\r\\n<p>The
+        most popular ETF for oil is <strong>United States Oil ETF</strong>.</p>\\r\\n\\r\\n<h3><strong>Bitcoin</strong></h3>\\r\\n\\r\\n<p><strong>Bitcoin</strong>
+        (CRYPTO: <a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/quote/btc/usd\\\">BTC</a>)
+        is seeing aggressive buying and is now about $27,000.&nbsp;The buying is due
+        to speculation that the Fed will not raise interest rates.</p>\\r\\n\\r\\n<h3><strong>Markets</strong></h3>\\r\\n\\r\\n<p>Our
+        very, very short-term early stock market indicator is <strong>&#128274;</strong>.&nbsp;This
+        indicator, with a great track record, is popular among long term investors
+        to stay in tune with the market and among short term traders to independently
+        undertake quick trades.</p>\\r\\n\\r\\n<h3><strong>Protection Band And What
+        To Do Now</strong></h3>\\r\\n\\r\\n<p>It is important for investors to look
+        ahead and not in the rearview mirror.</p>\\r\\n\\r\\n<p>Consider continuing
+        to hold good, very long term, existing positions. Based on individual risk
+        preference, consider holding <strong>&#128274;</strong> in cash or Treasury
+        bills or allocated to short-term tactical trades; and short to medium-term
+        hedges of <strong>&#128274;</strong>, and short term hedges of <strong>&#128274;</strong>.
+        This is a good way to protect yourself and participate in the upside at the
+        same time.</p>\\r\\n\\r\\n<p>You can determine your protection bands by adding
+        cash to hedges. The high band of the protection is appropriate for those who
+        are older or conservative. The low band of the protection is appropriate for
+        those who are younger or aggressive.&nbsp;If you do not hedge, the total cash
+        level should be more than stated above but significantly less than cash plus
+        hedges.</p>\\r\\n\\r\\n<p><strong>It is worth reminding that you cannot take
+        advantage of new upcoming opportunities if you are not holding enough cash.&nbsp;</strong>When
+        adjusting hedge levels, consider adjusting partial stop quantities for stock
+        positions (non ETF); consider using wider stops on remaining quantities and
+        also allowing more room for high beta stocks.&nbsp;High beta stocks are the
+        ones that move more than the market.</p>\\r\\n\\r\\n<h3><strong>Traditional
+        60/40 Portfolio</strong></h3>\\r\\n\\r\\n<p>Probability based risk reward
+        adjusted for inflation does not favor long duration strategic bond allocation
+        at this time.</p>\\r\\n\\r\\n<p>Those who want to stick to traditional 60%
+        allocation to stocks and 40% to bonds may consider focusing on only high quality
+        bonds and bonds of five year duration or less.&nbsp;Those willing to bring
+        sophistication to their investing may consider using bond ETFs as tactical
+        positions and not strategic positions at this time.</p>\\r\\n\\r\\n<p><strong>The
+        Arora Report is known for its accurate calls.&nbsp;The Arora Report correctly
+        called the 2008 financial crash, the start of a mega bull market in 2009,
+        the COVID crash, the post-COVID bull market, and the 2022 bear market.&nbsp;
+        Please click here to sign up for a free forever <a href=\\\"https://thearorareport.com/generate-wealth-newsletter\\\">Generate
+        Wealth Newsletter</a>. </strong></p>\\r\\n \",\"url\":\"https://www.benzinga.com/23/09/34700220/investors-pay-attention-saudi-arabia-and-russia-making-fight-against-inflation-difficult\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/finance-800x360_2.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/finance-800x360_2.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/finance-800x360_2.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"Cryptocurrency\"},{\"name\":\"Government\"},{\"name\":\"Federal
+        Reserve\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"ARM\"},{\"name\":\"CART\"},{\"name\":\"GLD\"},{\"name\":\"GOOG\"},{\"name\":\"KVYO\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"QQQ\"},{\"name\":\"SLV\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"},{\"name\":\"USO\"}],\"tags\":[{\"name\":\"banks\"},{\"name\":\"contributors\"},{\"name\":\"Expert
+        Ideas\"},{\"name\":\"Gold\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"Oil\"},{\"name\":\"Russia\"},{\"name\":\"Saudi
+        Arabia\"}]},{\"id\":34699840,\"author\":\"Daniel Anderson\",\"created\":\"Mon,
+        18 Sep 2023 14:10:03 -0400\",\"updated\":\"Mon, 18 Sep 2023 14:12:24 -0400\",\"title\":\"Tired
+        Of The Wall Street Drama? Here's How To Unlock Better Returns & Lower Risk\",\"teaser\":\"There&#39;s
+        no denying it.\\n\\nThe stock market is the\_greatest\_engine of passive wealth
+        creation in the world.\\n\\nBut that doesn&#39;t mean it&#39;s a smooth ride.\\n\\nIf
+        you&#39;ve ever found yourself:\",\"body\":\"<p>There&#39;s no denying it.</p>\\r\\n\\r\\n<p>The
+        stock market is the&nbsp;<em><strong>greatest&nbsp;</strong></em>engine of
+        passive wealth creation in the world.</p>\\r\\n\\r\\n<p>But that doesn&#39;t
+        mean it&#39;s a smooth ride.</p>\\r\\n\\r\\n<p>If you&#39;ve ever found yourself:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>Wide-eyed
+        as NVIDIA Corp (NASDAQ:&nbsp;NVDA) soars and Walgreens Boots Alliance Inc&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/WBA#NASDAQ\\\">WBA</a>)
+        comes crashing down</li>\\r\\n\\t<li>Breaking into a nervous sweat while watching
+        CNBC report on Apple Inc. (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        earnings</li>\\r\\n\\t<li>Or wondering if there&#39;s a less nerve-wracking
+        way to grow your hard-earned money...</li>\\r\\n</ul>\\r\\n\\r\\n<p>You&#39;re
+        not alone.</p>\\r\\n\\r\\n<p>It&#39;s one of the key reasons retail investors
+        flock to <a href=\\\"https://www.tickernerd.com/resources/best-investment-newsletters/\\\">investment
+        newsletters</a> in search of the next up-and-coming stock.</p>\\r\\n\\r\\n<p>But
+        let&#39;s face it: Investing in the stock market can sometimes feel like a
+        roller coaster you never signed up for. The highs are thrilling, but the lows?
+        Well, they can keep you up at night.</p>\\r\\n\\r\\n<p>Luckily, there&#39;s
+        a way to smooth out those ups and downs while potentially getting even&nbsp;<strong><em>better</em></strong><strong>&nbsp;</strong>returns.</p>\\r\\n\\r\\n<p>Introducing:
+        Alternative investments</p>\\r\\n\\r\\n<p>&quot;Alts&quot; include investments
+        like private equity, real estate, commodities, art, fine wine, and more.</p>\\r\\n\\r\\n<p>And
+        J.P. Morgan Asset Management recently found that including a mix of 30% alternatives
+        would have resulted in&nbsp;<strong>better risk/return outcomes&nbsp;</strong>when
+        compared to portfolios with allocations of:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>40%
+        stocks and 60% bonds</li>\\r\\n\\t<li>60% stocks and 40% bonds</li>\\r\\n\\t<li>80%
+        stocks and 20% bonds</li>\\r\\n</ul>\\r\\n\\r\\n<p>The takeaway is clear.</p>\\r\\n\\r\\n<p>Decreasing
+        exposure to traditional stock and bond markets, and instead allocating some
+        funds to alts, can produce more &quot;bang for your buck.&quot;</p>\\r\\n\\r\\n<p>In
+        essence, there are 3&nbsp;reasons to buy alts:</p>\\r\\n\\r\\n<p>1. Diversification</p>\\r\\n\\r\\n<p>2.
+        Risk management</p>\\r\\n\\r\\n<p>3. Improved risk-adjusted returns</p>\\r\\n\\r\\n<p>But
+        of course, <a href=\\\"https://themoneymaniac.com/best-alternative-investments\\\">alternative
+        investments</a> aren&#39;t without their risks. After all,&nbsp;no investment
+        is a magic money tree. If you consider investing in one of these alts, be
+        cautious of the following:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>Less regulation</li>\\r\\n\\t<li>Less
+        liquidity</li>\\r\\n\\t<li>Less transparency</li>\\r\\n\\t<li>Higher fees
+        and commissions</li>\\r\\n\\t<li>Limited price discovery</li>\\r\\n</ul>\\r\\n\\r\\n<p>However,
+        the longer your investment time horizon, the&nbsp;more these risks can potentially
+        be mitigated.</p>\\r\\n\\r\\n<p>For most retail investors, completely replacing
+        traditional stocks and bonds with alts isn&#39;t the goal. Instead, consider
+        them as an additional tool in your investment toolkit, a way to enhance and
+        diversify your portfolio.</p>\\r\\n\\r\\n<p>Many of the world&#39;s wealthiest
+        investors and institutions have been using alternative investments to their
+        advantage for years. It&#39;s not about abandoning the stock market, but about
+        leveraging other opportunities to achieve a broader, more resilient portfolio.</p>\\r\\n\\r\\n<p>So
+        remember, the stock market isn&#39;t the only game in town.&nbsp;By integrating
+        alternative investments into your strategy, you stand a chance at smoother
+        sailing, diversified risks, and potentially even greater returns.</p>\\r\\n\",\"url\":\"https://www.benzinga.com/23/09/34699840/tired-of-the-wall-street-drama-heres-how-to-unlock-better-returns-lower-risk\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/real-estate-investing-alts.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/real-estate-investing-alts.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/real-estate-investing-alts.jpg\"}],\"channels\":[{\"name\":\"Markets\"},{\"name\":\"Personal
+        Finance\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"WBA\"}],\"tags\":[{\"name\":\"Alternative
+        investments\"},{\"name\":\"contributors\"},{\"name\":\"diversification\"},{\"name\":\"Expert
+        Ideas\"}]},{\"id\":34699276,\"author\":\"Benzinga Insights\",\"created\":\"Mon,
+        18 Sep 2023 13:35:16 -0400\",\"updated\":\"Mon, 18 Sep 2023 13:35:16 -0400\",\"title\":\"10
+        Information Technology Stocks With Whale Alerts In Today's Session\",\"teaser\":\"
+        \",\"body\":\"<p>This whale alert can help traders discover the next big trading
+        opportunities.</p>\\n<p>Whales are entities with large sums of money and we
+        track their transactions here at Benzinga on our options activity scanner.</p>\\n<p>Traders
+        will search for circumstances when the market estimation of an option diverges
+        heavily from its normal worth. High amounts of trading activity could push
+        option prices to exaggerated or underestimated levels. </p>\\n<p>Below are
+        some instances of options activity happening in the Information Technology
+        sector:  <table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>NVDA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>09/22/23</td>\\n<td>$450.00</td>\\n<td>$37.4K</td>\\n<td>6.9K</td>\\n<td>34.9K</td>\\n</tr>\\n<tr>\\n<td>AAPL</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>09/29/23</td>\\n<td>$180.00</td>\\n<td>$71.0K</td>\\n<td>11.3K</td>\\n<td>24.0K</td>\\n</tr>\\n<tr>\\n<td>AMD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>09/22/23</td>\\n<td>$102.00</td>\\n<td>$45.5K</td>\\n<td>3.0K</td>\\n<td>21.8K</td>\\n</tr>\\n<tr>\\n<td>MSFT</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>09/22/23</td>\\n<td>$330.00</td>\\n<td>$29.5K</td>\\n<td>2.0K</td>\\n<td>6.9K</td>\\n</tr>\\n<tr>\\n<td>ADI</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>11/17/23</td>\\n<td>$195.00</td>\\n<td>$795.3K</td>\\n<td>64</td>\\n<td>4.2K</td>\\n</tr>\\n<tr>\\n<td>CSCO</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$55.00</td>\\n<td>$61.3K</td>\\n<td>10.7K</td>\\n<td>1.9K</td>\\n</tr>\\n<tr>\\n<td>MARA</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$10.00</td>\\n<td>$75.2K</td>\\n<td>3.5K</td>\\n<td>1.8K</td>\\n</tr>\\n<tr>\\n<td>ENTG</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>11/17/23</td>\\n<td>$90.00</td>\\n<td>$121.0K</td>\\n<td>7.2K</td>\\n<td>1.1K</td>\\n</tr>\\n<tr>\\n<td>AVGO</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>09/22/23</td>\\n<td>$860.00</td>\\n<td>$119.4K</td>\\n<td>1.0K</td>\\n<td>721</td>\\n</tr>\\n<tr>\\n<td>ORCL</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>09/29/23</td>\\n<td>$113.00</td>\\n<td>$27.2K</td>\\n<td>2.2K</td>\\n<td>660</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h2>Explanation</h2>\\n<p>These
+        itemized elaborations have been created using the accompanying table.  </p>\\n<p>\u2022
+        \ For <strong>NVDA</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        we notice a <strong>call</strong> option <strong>trade</strong> that happens
+        to be <strong>bearish</strong>, expiring in 4 day(s) on <strong>September
+        22, 2023</strong>. This event was a transfer of <strong>100</strong> contract(s)
+        at a <strong>$450.00</strong> strike. The total cost received by the writing
+        party (or parties) was <strong>$37.4K</strong>, with a price of <strong>$374.0</strong>
+        per contract. There were <strong>6995</strong> open contracts at this strike
+        prior to today, and today <strong>34997</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  For <strong>AAPL</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>), we notice
+        a <strong>call</strong> option <strong>sweep</strong> that happens to be <strong>bullish</strong>,
+        expiring in 11 day(s) on <strong>September 29, 2023</strong>. This event was
+        a transfer of <strong>305</strong> contract(s) at a <strong>$180.00</strong>
+        strike. This particular call needed to be split into 3 different trades to
+        become filled. The total cost received by the writing party (or parties) was
+        <strong>$71.0K</strong>, with a price of <strong>$233.0</strong> per contract.
+        There were <strong>11320</strong> open contracts at this strike prior to today,
+        and today <strong>24052</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
+        \ For <strong>AMD</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>),
+        we notice a <strong>call</strong> option <strong>trade</strong> that happens
+        to be <strong>bullish</strong>, expiring in 4 day(s) on <strong>September
+        22, 2023</strong>. This event was a transfer of <strong>200</strong> contract(s)
+        at a <strong>$102.00</strong> strike. The total cost received by the writing
+        party (or parties) was <strong>$45.5K</strong>, with a price of <strong>$228.0</strong>
+        per contract. There were <strong>3094</strong> open contracts at this strike
+        prior to today, and today <strong>21855</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  For <strong>MSFT</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>), we notice
+        a <strong>call</strong> option <strong>trade</strong> that happens to be <strong>bearish</strong>,
+        expiring in 4 day(s) on <strong>September 22, 2023</strong>. This event was
+        a transfer of <strong>106</strong> contract(s) at a <strong>$330.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$29.5K</strong>,
+        with a price of <strong>$279.0</strong> per contract. There were <strong>2075</strong>
+        open contracts at this strike prior to today, and today <strong>6918</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>ADI</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ADI#NASDAQ\\\">ADI</a>),
+        we observe a <strong>call</strong> option <strong>trade</strong> with <strong>bearish</strong>
+        sentiment. It expires in 60 day(s) on <strong>November 17, 2023</strong>.
+        Parties traded <strong>4186</strong> contract(s) at a <strong>$195.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$795.3K</strong>,
+        with a price of <strong>$190.0</strong> per contract. There were <strong>64</strong>
+        open contracts at this strike prior to today, and today <strong>4200</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>CSCO</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CSCO#NASDAQ\\\">CSCO</a>),
+        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 32 day(s) on <strong>October 20, 2023</strong>. Parties
+        traded <strong>1252</strong> contract(s) at a <strong>$55.00</strong> strike.
+        This particular put needed to be split into 36 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$61.3K</strong>,
+        with a price of <strong>$49.0</strong> per contract. There were <strong>10796</strong>
+        open contracts at this strike prior to today, and today <strong>1913</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>MARA</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MARA#NASDAQ\\\">MARA</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 32 day(s) on <strong>October 20, 2023</strong>. Parties
+        traded <strong>800</strong> contract(s) at a <strong>$10.00</strong> strike.
+        This particular call needed to be split into 12 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$75.2K</strong>,
+        with a price of <strong>$94.0</strong> per contract. There were <strong>3566</strong>
+        open contracts at this strike prior to today, and today <strong>1801</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>ENTG</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ENTG#NASDAQ\\\">ENTG</a>),
+        we observe a <strong>put</strong> option <strong>trade</strong> with <strong>bullish</strong>
+        sentiment. It expires in 60 day(s) on <strong>November 17, 2023</strong>.
+        Parties traded <strong>275</strong> contract(s) at a <strong>$90.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$121.0K</strong>,
+        with a price of <strong>$440.0</strong> per contract. There were <strong>7277</strong>
+        open contracts at this strike prior to today, and today <strong>1103</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>AVGO</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AVGO#NASDAQ\\\">AVGO</a>),
+        we observe a <strong>call</strong> option <strong>trade</strong> with <strong>bullish</strong>
+        sentiment. It expires in 4 day(s) on <strong>September 22, 2023</strong>.
+        Parties traded <strong>199</strong> contract(s) at a <strong>$860.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$119.4K</strong>,
+        with a price of <strong>$600.0</strong> per contract. There were <strong>1064</strong>
+        open contracts at this strike prior to today, and today <strong>721</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>ORCL</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ORCL#NYSE\\\">ORCL</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 11 day(s) on <strong>September 29, 2023</strong>.
+        Parties traded <strong>169</strong> contract(s) at a <strong>$113.00</strong>
+        strike. This particular call needed to be split into 11 different trades to
+        become filled. The total cost received by the writing party (or parties) was
+        <strong>$27.2K</strong>, with a price of <strong>$161.0</strong> per contract.
+        There were <strong>2232</strong> open contracts at this strike prior to today,
+        and today <strong>660</strong> contract(s) were bought and sold. </p>\\n<p><strong>Options
+        Alert Terminology</strong><br />\\n - <strong>Call Contracts:</strong> The
+        right to buy shares as indicated in the contract.<br />\\n - <strong>Put Contracts:</strong>
+        The right to sell shares as indicated in the contract.<br />\\n - <strong>Expiration
+        Date:</strong> When the contract expires. One must act on the contract by
+        this date if one wants to use it.<br />\\n - <strong>Premium/Option Price:</strong>
+        The price of the contract.  </p>\\n<p>For more information, visit our <em><a
+        href=\\\"https://pro.benzinga.com/blog/how-to-understand-option-alerts/\\\">Guide
+        to Understanding Options Alerts</a></em> or read <a href=\\\"https://www.benzinga.com/markets/options\\\">more
+        about unusual options activity</a>.  </p>\\n<p>This article was generated
+        by Benzinga's automated content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34699276/10-information-technology-stocks-with-whale-alerts-in-todays-session\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_0.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"ADI\"},{\"name\":\"AMD\"},{\"name\":\"AVGO\"},{\"name\":\"CSCO\"},{\"name\":\"ENTG\"},{\"name\":\"MARA\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"ORCL\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]},{\"id\":34697571,\"author\":\"Franca
+        Quarneti\",\"created\":\"Mon, 18 Sep 2023 12:52:20 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 12:52:21 -0400\",\"title\":\"Microsoft's Xbox Game Pass Achieves
+        30M Member Milestone After Unveiling New Lineup\",\"teaser\":\"Microsoft Corporation&#39;s
+        (NASDAQ: MSFT) Xbox Game Pass now boasts over 30 million members.\",\"body\":\"<p><strong>Microsoft
+        Corporation</strong>&#39;s (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        Xbox Game Pass now boasts over <a href=\\\"https://www.benzinga.com/general/gaming/23/08/34154005/sony-announces-playstation-plus-price-hike-following-xbox-game-pass-subscription-rise\\\">30
+        million members</a>.</p>\\r\\n\\r\\n<p>That&#39;s according to Xbox&#39;s
+        senior director of global brand and integrated marketing Craig McNary&#39;s
+        LinkedIn profile.</p>\\r\\n\\r\\n<p>&quot;Launched and grew Xbox Game Pass,
+        the world&rsquo;s #1 gaming subscription service, to over 30M members through
+        measured full-funnel campaigns, GTM planning, SKU expansion to PC, iOS, and
+        Android, and partnerships with Alienware, EA Play, Spotify, and Disney+ to
+        drive off console growth and deliver over 1B in customer lifetime value,&quot;
+        McNary&#39;s job description says, as spotted by Insider Gaming.</p>\\r\\n\\r\\n<p><em>See
+        Also:&nbsp;<a href=\\\"https://www.benzinga.com/general/gaming/23/08/34095605/microsoft-drops-1-game-pass-trial-as-starfield-release-nears\\\">Microsoft
+        Drops $1 Game Pass Trial As &#39;Starfield&#39; Release Nears</a></em></p>\\r\\n\\r\\n<p>It
+        remains uncertain whether this figure includes members who transitioned from
+        Xbox Live Gold to Xbox Game Pass Core subscriptions recently.</p>\\r\\n\\r\\n<p>Recently,
+        Microsoft unveiled the lineup of games for Xbox Game Pass Core, which replaces
+        Xbox Live Gold, starting from Sept. 14.</p>\\r\\n\\r\\n<p>This service offers
+        access to 36 games for Xbox Series X/S and Xbox One, including titles from
+        Microsoft&#39;s studios, Bethesda, and third-party games.</p>\\r\\n\\r\\n<p>Xbox
+        Game Pass Core membership, priced at $10 a month or $60 annually, also includes
+        online multiplayer, discounts, and Free Play Days promotions, with periodic
+        library updates. Other Game Pass memberships also provide access to this full
+        library.</p>\\r\\n\\r\\n<p><em>Read Next:&nbsp;<a href=\\\"https://www.benzinga.com/general/gaming/23/09/34545377/xbox-game-pass-core-delivers-36-games-including-halo-fallout-and-more\\\">Xbox
+        Game Pass Core Delivers 36 Games, Including Halo, Fallout</a></em></p>\\r\\n\\r\\n<p><em>Image
+        credits: Issaro prakalung on Shutterstock and logo on Wikipedia.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/general/gaming/23/09/34697571/microsofts-xbox-game-pass-achieves-30m-member-milestone-after-unveiling-new-lineup\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/18/xbox_game_pass_pc_issaro_prakalung_on_shutterstock_and_logo_on_wikipedia.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/18/xbox_game_pass_pc_issaro_prakalung_on_shutterstock_and_logo_on_wikipedia.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/18/xbox_game_pass_pc_issaro_prakalung_on_shutterstock_and_logo_on_wikipedia.jpg\"}],\"channels\":[{\"name\":\"Gaming\"},{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"gaming
+        industry\"},{\"name\":\"video games\"},{\"name\":\"xbox\"},{\"name\":\"Xbox
+        Game Pass\"}]},{\"id\":34698289,\"author\":\"Piero Cingari\",\"created\":\"Mon,
+        18 Sep 2023 12:46:17 -0400\",\"updated\":\"Mon, 18 Sep 2023 13:30:34 -0400\",\"title\":\"Oil
+        Rally Fuels Energy Sector's Outperformance Over Tech, Challenges 2023 AI Dominance\",\"teaser\":\"
+        \",\"body\":\"<p>Energy stocks have remarkably outperformed their tech counterparts
+        over the past three months. The driving force behind this surge? <a href=\\\"https://www.benzinga.com/news/large-cap/23/09/34616977/oil-rockets-past-90-as-supply-crunch-meets-surging-demand-which-energy-stocks-are-poised-to-profit\\\">A
+        resounding oil rally.</a></p>\\n\\n\\n\\n<p>WTI-graded crude oil has experienced
+        a remarkable ascent of over 30% since mid-June. </p>\\n\\n\\n\\n<p>This dramatic
+        increase can be attributed to a combination of factors, including supply constraints
+        resulting from production cuts by Saudi Arabia and Russia, as well as a robust
+        U.S. economy that has sustained demand for oil.</p>\\n\\n\\n\\n<p>During the
+        first semester, the Nasdaq 100 index, represented by the<strong> Invesco QQQ
+        Trust</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/QQQ#NASDAQ\\\">QQQ</a>),
+        exhibited a staggering 39% increase, marking the best first half of the year
+        since the inception of the index. </p>\\n\\n\\n\\n<p>Much of this surge was
+        fueled by the artificial intelligence (AI) boom, which catapulted tech stocks
+        to new heights, defying the interest rate gravity. </p>\\n\\n\\n\\n<p>Nonetheless,
+        during the last three months, the tech-dominated index has displayed a flat
+        performance, suggesting a stalemate in the previously prominent AI-fueled
+        surge that defined the earlier market landscape. In contrast, energy stocks,
+        as monitored through <strong>the Energy Select Sector SPDR Fund</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/XLE#NYSE\\\">XLE</a>),
+        have experienced significant upward momentum, rising by 19%.</p>\\n\\n\\n\\n<p>The
+        largest energy stock \u2014 <strong>Exxon Mobil Corp. </strong>(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/XOM#NYSE\\\">XOM</a>) \u2014 showcased
+        a similar outperformance over the largest tech stock \u2014 <strong>Apple
+        Inc. </strong>(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NYSE\\\">AAPL</a>)
+        \u2014 over the same time period. </p>\\n\\n\\n\\n<p>This interaction between
+        the energy and tech sectors could potentially signal a reversal of the trend
+        dynamics that were in play earlier this year.</p>\\n\\n\\n\\n<p><em>Chart:
+        XLE Vs. XLK, Exxon Vs. Apple Last 3 Months</em></p>\\n\\n\\n\\n<figure class=\\\"wp-block-image
+        size-large\\\"><img decoding=\\\"async\\\" loading=\\\"lazy\\\" width=\\\"1024\\\"
+        height=\\\"528\\\" src=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18120004/XLE_XLK_2023-09-18_17-08-16_3f737-1024x528.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-108171\\\" srcset=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18120004/XLE_XLK_2023-09-18_17-08-16_3f737-1024x528.png
+        1024w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18120004/XLE_XLK_2023-09-18_17-08-16_3f737-300x155.png
+        300w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18120004/XLE_XLK_2023-09-18_17-08-16_3f737-768x396.png
+        768w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18120004/XLE_XLK_2023-09-18_17-08-16_3f737-1536x792.png
+        1536w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/18120004/XLE_XLK_2023-09-18_17-08-16_3f737.png
+        1920w\\\" sizes=\\\"(max-width: 1024px) 100vw, 1024px\\\" /></figure>\\n\\n\\n\\n<h2
+        class=\\\"wp-block-heading\\\">Oil To Beat AI?</h2>\\n\\n\\n\\n<p>In this
+        three-month period, AI-related exchange-traded funds (ETFs) have closely mirrored
+        the performance of the broader tech sector, offering little to no hedge against
+        the shifting market trends. </p>\\n\\n\\n\\n<p>The <strong>Global X Artificial
+        Intelligence &amp; Technology ETF</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AIQ#NASDAQ\\\">AIQ</a>) has experienced
+        minimal movement, remaining relatively flat. On the other hand, the <strong>First
+        Trust Nasdaq Artificial Intelligence and Robotics ETF</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ROBT#NASDAQ\\\">ROBT</a>)
+        has declined by 8.7%.</p>\\n\\n\\n\\n<p>In stark contrast, oil-related ETFs
+        have seen substantial rallies. The <strong>VanEck Oil Services ETF</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/OIH#NYSE\\\">OIH</a>)
+        has surged by an impressive 30%, and the <strong>SPDR S&amp;P Oil &amp; Gas
+        Exploration &amp; Production</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/XOP#NYSE\\\">XOP</a>)
+        is up by a robust 18%.</p>\\n\\n\\n\\n<p>Year-to-date performances are still
+        giving tech the lead, but what if oil prices hit $100 a barrel soon?</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-table is-style-stripes\\\"><table><thead><tr><th>Ticker</th><th>Name</th><th>Total
+        Return (1M)</th><th>Total Return (3M)</th><th>Total Return (YTD)</th><th>P/E
+        (NTM)</th></tr></thead><tbody><tr><td>OIH</td><td><strong>VanEck ETF Trust
+        &#8211; VanEck Oil Services ETF</strong></td><td>6.40%</td><td>30.43%</td><td>18.53%</td><td>14.9x</td></tr><tr><td>XOP</td><td><strong>SPDR
+        Series Trust &#8211; SPDR S&amp;P Oil &amp; Gas Exploration &amp; Production
+        ETF</strong></td><td>1.52%</td><td>18.31%</td><td>12.13%</td><td>9.0x</td></tr><tr><td>XLE</td><td><strong>The
+        Select Sector SPDR Trust &#8211; The Energy Select Sector SPDR Fund</strong></td><td>3.94%</td><td>17.17%</td><td>7.57%</td><td>12.2x</td></tr><tr><td>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CRAK#NYSE\\\">CRAK</a>)</td><td><strong>VanEck
+        ETF Trust &#8211; VanEck Oil Refiners ETF</strong></td><td>7.58%</td><td>15.10%</td><td>14.58%</td><td>7.5x</td></tr><tr><td>QQQ</td><td><strong>Invesco
+        QQQ Trust, Series 1</strong></td><td>3.68%</td><td>1.06%</td><td>39.85%</td><td>24.7x</td></tr><tr><td>AIQ</td><td><strong>Global
+        X Funds &#8211; Global X Artificial Intelligence &amp; Technology ETF</strong></td><td>4.09%</td><td>-1.09%</td><td>39.31%</td><td>23.0x</td></tr><tr><td>XLK</td><td><strong>The
+        Select Sector SPDR Trust &#8211; The Technology Select Sector SPDR Fund</strong></td><td>2.84%</td><td>-1.84%</td><td>36.92%</td><td>25.2x</td></tr><tr><td>ROBT</td><td><strong>First
+        Trust Exchange-Traded Fund VI &#8211; First Trust Nasdaq Artificial Intelligence&#8230;</strong></td><td>1.49%</td><td>-10.25%</td><td>17.27%</td><td>26.3x</td></tr><tr><td>(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BOTZ#NYSE\\\">BOTZ</a>)</td><td><strong>Global
+        X Funds &#8211; Global X Robotics &amp; Artificial Intelligence ETF</strong></td><td>0.40%</td><td>-13.59%</td><td>24.43%</td><td>32.8x</td></tr></tbody></table></figure>\\n\\n\\n\\n<p></p>\",\"url\":\"https://www.benzinga.com/etfs/sector-etfs/23/09/34698289/oil-rally-fuels-energy-sectors-outperformance-over-tech-challenges-2023-ai-dominance\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/oil_prices_ai2_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/oil_prices_ai2_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/oil_prices_ai2_1.jpeg\"}],\"channels\":[{\"name\":\"Sector
+        ETFs\"},{\"name\":\"Broad U.S. Equity ETFs\"},{\"name\":\"New ETFs\"},{\"name\":\"ETFs\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AIQ\"},{\"name\":\"BOTZ\"},{\"name\":\"CRAK\"},{\"name\":\"OIH\"},{\"name\":\"QQQ\"},{\"name\":\"ROBT\"},{\"name\":\"XLE\"},{\"name\":\"XOM\"},{\"name\":\"XOP\"}],\"tags\":[{\"name\":\"AI\"},{\"name\":\"ai
+        etfs\"},{\"name\":\"artificial intelligence\"},{\"name\":\"Commodities\"},{\"name\":\"energy\"},{\"name\":\"oil
+        ETFs\"},{\"name\":\"oil price\"},{\"name\":\"tech\"},{\"name\":\"tech ETFs\"},{\"name\":\"WTI\"}]},{\"id\":34695878,\"author\":\"Upwallstreet\",\"created\":\"Mon,
+        18 Sep 2023 11:19:02 -0400\",\"updated\":\"Mon, 18 Sep 2023 11:21:58 -0400\",\"title\":\"Banks
+        Unite To Combat Big Tech Under Their Turf\",\"teaser\":\"As Apple Inc (NASDAQ:
+        AAPL) and Alphabet (NASDAQ: GOOG)(NASDAQ: GOOGL)-owned Google penetrated into
+        financial service and realized significant gains with mobile wallets, America&amp;rs\",\"body\":\"<p>As
+        Apple Inc (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        and Alphabet (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)-owned
+        Google penetrated into financial service and realized significant gains with
+        mobile wallets, America&rsquo;s biggest banks have joined their efforts to
+        defend their turf. Namely, JPMorgan Chase &amp; Co. (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/JPM#NYSE\\\">JPM</a>), Bank of America
+        Corporation (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BAC#NYSE\\\">BAC</a>)
+        and Wells Fargo &amp; Company (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/WFC#NYSE\\\">WFC</a>),
+        among others, will be launching a mobile wallet that will connect to credit
+        and debit card accounts of 150 million customers.</p>\\r\\n\\r\\n<h3>Fintech
+        Partnerships Have Been In The Air For A&nbsp;While Now&hellip;</h3>\\r\\n\\r\\n<p>Fintech
+        has been taking a bite out of traditional banking. In April, Apple continued
+        its iBanking revolution that began with Apple Pay by joining forces with The
+        Goldman Sachs Group Inc (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GS#NYSE\\\">GS</a>)
+        to release its Apple Card high-yield savings account. Goldman Sachs is known
+        for embracing technological development to meet the needs of its tech-savvy
+        customers. But, even other offline banks entered the fintech game.</p>\\r\\n\\r\\n<p>For
+        example, JPMorgan has struck deals with both Apple and Amazon.com Inc (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        that will fuel the two tech titans to expand their banking footprints. Amazon
+        also got the help of Citigroup Inc (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/C#NYSE\\\">C</a>)
+        with its instalment payment offering.</p>\\r\\n\\r\\n<h3>Big Banks&rsquo;
+        Mobile Wallet</h3>\\r\\n\\r\\n<p>Named Paze, the banks&rsquo; soon to be launched
+        digital wallet will be operated by Early Warning Services. This bank consortium
+        group already runs the payments app Zelle which became the largest-peer-to-peer
+        payment app pretty quickly since its launch in 2017 so no wonder that big
+        banks are hoping that the same formula will help replicate this success. Last
+        year, payments over Zelle increased almost 30% to&nbsp;$629 billion while
+        PayPal Holdings Inc (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PYPL#NASDAQ\\\">PYPL</a>)-owned
+        Venmo&rsquo;s score was only $244 million and PayPal acquired Venmo back in
+        2013, four years after its inception. Even PayPal got pressured by Apple&rsquo;s
+        entry into digital payments and is undergoing a business turnaround. Venmo
+        has long been seen as the source of long-term growth for PayPal but it still
+        didn&#39;t get to a point of becoming a&nbsp;significant revenue contributor.
+        Despite the digital payments platform&#39;s&nbsp;pioneering&nbsp;journey,
+        PayPal management&rsquo;s guided for lackluster&nbsp;gross profit growth.</p>\\r\\n\\r\\n<h3>Fintech
+        Partnerships Are Here To Stay</h3>\\r\\n\\r\\n<p>Paze shows that rivaling
+        banks are willing to work together and to use the expertise of tech firm to
+        stop Apple, Google and most recently, X, whose goal is to offer banking services.
+        Although Financial Times quoted a market research study that merely 6% of
+        global purchases was made by Apple Pay, the number of users skyrocketed in
+        five years, going from 60 million to now exceeding 500 million and that is
+        making banks nervous.&nbsp;</p>\\r\\n\\r\\n<p>Yet, fintech partnership are
+        not favored by regulators whose concern is that such unions expose the U.S.
+        banking system to non-trustworthy players.&nbsp;</p>\\r\\n\\r\\n<h3>Putting
+        The Genie Back In The Bottle Is An Unlikely Scenario</h3>\\r\\n\\r\\n<p>Big
+        Tech is certainly giving Big Banks a run for their money as Apple, Amazon
+        and Google are poised to challenge the power that banks have enjoyed for a
+        very long time and the mobile wallet is now the biggest battleground in this
+        tussle. Many believe that banks are not able to put the Apple, Amazon and
+        Google genie back in the bottle as the history of the industry is filled with
+        advancements that ultimately became industry standards.&nbsp;</p>\\r\\n\\r\\n<p><em>DISCLAIMER:
+        This content is for informational purposes only. It is not intended as investing
+        advice.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/23/09/34695878/banks-unite-to-combat-big-tech-under-their-turf\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/person-paying-with-nfc-technology-restaurant.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/person-paying-with-nfc-technology-restaurant.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/person-paying-with-nfc-technology-restaurant.jpg\"}],\"channels\":[{\"name\":\"Fintech\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"BAC\"},{\"name\":\"C\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"GS\"},{\"name\":\"JPM\"},{\"name\":\"PYPL\"},{\"name\":\"WFC\"}],\"tags\":[{\"name\":\"banks\"},{\"name\":\"contributors\"},{\"name\":\"Paze\"}]},{\"id\":34692109,\"author\":\"Vandana
+        Singh\",\"created\":\"Mon, 18 Sep 2023 10:26:27 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 10:26:28 -0400\",\"title\":\"Single Bitcoin In 2021 Was Enough
+        To Purchase A Tesla Model Y, Softbank Explores Investing In OpenAI, Ford Faces
+        UAW Strike In US, Canada: Today's Top Stories\",\"teaser\":\"Benzinga\",\"body\":\"<p><strong><u>Benzinga</u></strong></p>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/09/34673225/a-single-bitcoin-in-2021-was-enough-to-purchase-a-tesla-model-y-easily-heres-what-else-it-\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>A Single Bitcoin In 2021 Was Enough To Purchase
+        A Tesla Model Y Easily, Here&#39;s What Else It Could Have Bought Through
+        The Years</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>In November 2021, when&nbsp;<strong>Bitcoin&nbsp;</strong>(BTC/USD)
+        reached its all-time high of $67,617.02, the most valuable purchase that could
+        have been made with a single BTC was the 2021&nbsp;<strong>Tesla&nbsp;</strong>(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>)&nbsp;<strong>Model
+        Y,</strong>&nbsp;priced at $62,190.00.&nbsp;</li>\\r\\n\\t<li>According to
+        research from Coingecko, in 2014, when 1 BTC was worth $465.00, purchasing
+        a car would have been out of reach.</li>\\r\\n\\t<li>2017 marked the year
+        when 1 BTC was enough to purchase a new car, specifically the 2017 Honda HR-V,
+        which won accolades in the subcompact SUV category. Fast forward to November
+        2021, and 1 BTC could have bought the 2021 Tesla Model Y.</li>\\r\\n</ul>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/09/34675002/after-biden-now-trump-gets-slammed-by-dogecoin-co-creator-tells-elon-musk-free-speech-supp\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>After Biden, Now Trump Gets Slammed By Dogecoin
+        Co-Creator &mdash; Tells Elon Musk, Free Speech Suppression &#39;Starts With
+        T And Ends With Rump&#39;</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li><strong>Billy
+        Markus</strong>, the co-creator of&nbsp;<strong>Dogecoin&nbsp;</strong>(DOGE/USD)
+        and popularly referred to as&nbsp;<strong>Shibetoshi Nakamoto</strong>, took
+        a jab at former President&nbsp;<strong>Donald Trump&nbsp;</strong>for his
+        alleged impact on free speech.&nbsp;</li>\\r\\n\\t<li>The conversation started
+        after tech mogul&nbsp;<strong>Elon Musk&nbsp;</strong>voiced his concerns
+        about the transformation of legacy media into entities suppressing speech.
+        &quot;How did most of the legacy media go from superheroes of free speech
+        to supervillains of speech suppression?&quot;</li>\\r\\n</ul>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/23/09/34673717/apple-analyst-says-iphone-15-pro-pro-max-preorders-strong-out-of-the-gates-increasi\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Apple Analyst Says iPhone 15 Pro, Pro Max Preorders
+        Strong Out Of The Gates, Increasing Confidence In Estimates For Holiday Quarter</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li><strong>Apple
+        Inc&nbsp;</strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        launched the next iteration of its iPhones last week, and early reception
+        to the device has been positive, according to Wedbush analyst&nbsp;<strong>Daniel
+        Ives.</strong></li>\\r\\n\\t<li>Ives has an Outperform rating for Apple shares
+        and a $240 price target.</li>\\r\\n\\t<li>The iPhone 15 preorders, which began
+        on Friday, were tracking much stronger than consensus estimates, Ives said
+        in a note. Preorders were up roughly 10-12% from the preorders for the iPhone
+        14, he said, citing Wedbush&#39;s analysis.</li>\\r\\n</ul>\\r\\n\\r\\n<p><strong>&#39;Apple
+        GPT&#39; To 10-year Special Apple Watch And Bigger iPhones, 2024 Could Be
+        A Blockbuster Year For Apple</strong></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li><strong>Apple
+        Inc&nbsp;</strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        has a slew of major announcements lined up for 2024, including &quot;<strong>Apple
+        GPT</strong>,&quot; 10-year anniversary special&nbsp;<strong>Apple Watch Series
+        X</strong>, and bigger iPhones.</li>\\r\\n\\t<li>While 2023 has been an average
+        year for Apple when it comes to product launches, Bloomberg columnist&nbsp;<strong>Mark
+        Gurman</strong>&nbsp;says that Apple has a slew of new product launches and
+        it also plans to enter the generative AI race with &quot;Apple GPT&quot; along
+        with a new large language model.</li>\\r\\n</ul>\\r\\n\\r\\n<p><a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/news/23/09/34677102/ford-faces-uaw-strike-in-us-now-it-may-have-to-contend-with-another-in-canada\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Ford Faces UAW Strike In US, Now It May Have
+        To Contend With Another In Canada</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>As
+        Detroit-based automaker&nbsp;<strong>Ford Motor Co&nbsp;</strong>(NYSE:&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/stock/f#NYSE\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">F</a>) continues to reel under the impact of the&nbsp;<strong>United
+        Auto Workers&nbsp;</strong>(UAW) union&#39;s strike in the U.S., Canada&#39;s
+        Unifor union is gearing up for a strike against it.</li>\\r\\n\\t<li>Unifor
+        said on Sunday that despite negotiations, the union has not reached a tentative
+        agreement with Ford. A strike would commence if the company fails to reach
+        an agreement by Sept. 18, 11: 59 p.m.</li>\\r\\n</ul>\\r\\n\\r\\n<p><a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/markets/equities/23/09/34688842/starbucks-promotes-molly-liu-to-co-ceo-of-china-business\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Starbucks Promotes Molly Liu To Co-CEO Of China
+        Business</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>Coffee giant&nbsp;<strong>Starbucks
+        Corp&nbsp;</strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SBUX#NASDAQ\\\">SBUX</a>)
+        has promoted Molly Liu to executive vice president and co-chief executive
+        officer of Starbucks China, effective October 2, 2023.</li>\\r\\n\\t<li>Liu
+        has served as Starbucks China&#39;s chief operating officer since 2021 and
+        had previously served as the company&#39;s vice president of Digital Ventures.</li>\\r\\n\\t<li>As
+        head of the Digital Ventures organization, she set the foundation for the
+        company&#39;s digital flywheel in the market with the launch of &#39;Starbucks
+        Delivers&#39; and &#39;Starbucks Now&#39; digital ordering services, which
+        constituted 48% of total China sales in Q3 FY23.</li>\\r\\n</ul>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34690906/kkr-acquires-singtels-regional-data-centre-unit-for-807m\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>KKR Acquires SingTel&#39;s Regional Data Centre
+        Unit For $807M</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>Investment firm&nbsp;<strong>KKR
+        &amp; Co Inc</strong>&nbsp;KKR has signed a definitive agreement under which
+        a fund managed by KKR will commit up to S$1.1 billion ($800 million) for a
+        20% stake in&nbsp;<strong>Singtel&#39;s</strong>&nbsp;regional data center
+        business.&nbsp;</li>\\r\\n\\t<li>The investment is a part of KKR&#39;s Asia
+        infrastructure strategy. It puts the enterprise value of Singtel&#39;s overall
+        regional data center business at S$5.5 billion.</li>\\r\\n\\t<li>KKR will
+        have the option to increase its stake to 25% by 2027 at the pre-agreed valuation.</li>\\r\\n</ul>\\r\\n\\r\\n<p>&nbsp;</p>\\r\\n\\r\\n<p><strong><u>Reuters</u></strong></p>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34687278/chevrons-strike-impacted-australian-gas-facility-resumes-complete-production\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Chevron&#39;s Strike-Impacted Australian Gas
+        Facility Resumes Complete Production</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li><strong>Chevron
+        Corp&#39;s</strong>&nbsp;CVX Wheatstone liquefied natural gas (LNG) facility
+        in Western Australia has resumed full production, which was previously affected
+        by a fault last week, resulting in a roughly 20% reduction in production.</li>\\r\\n\\t<li>Wheatstone,
+        in conjunction with the nearby Gorgon facility, collectively contributes to
+        around 7% of the global LNG supply.&nbsp;</li>\\r\\n\\t<li>Chevron emphasized
+        that the fault and the ongoing strikes did not impact the scheduled deliveries,
+        a fact supported by shipping data on LSEG Eikon, which showed no disruptions
+        to Wheatstone&#39;s exports.</li>\\r\\n</ul>\\r\\n\\r\\n<p><a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/government/23/09/34681677/chinas-embattled-property-developer-evergrande-falls-in-deeper-pit-police-detains-wealth-management\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>China&#39;s Embattled Property Developer Evergrande
+        Falls In Deeper Pit: Police Detains Wealth Management Staff</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>Following<strong>&nbsp;China
+        Evergrande Group&#39;s</strong>&nbsp;(OTC:&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/stock/egrnf#OTC\\\" style=\\\"color:#4a6ee0;
+        background:transparent; margin-top:0pt; margin-bottom:0pt\\\" target=\\\"_blank\\\">EGRNF</a>)
+        inability to repay investors, Chinese authorities have taken certain employees
+        from the company&#39;s wealth management division into custody.&nbsp;</li>\\r\\n\\t<li>This
+        marks the initiation of the first criminal investigation against the beleaguered
+        property developer since a colossal debt crisis struck it in late 2021.</li>\\r\\n\\t<li>The
+        detentions of its official indicate a potential new investigation that could
+        further compound the company&#39;s existing problems.</li>\\r\\n</ul>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/general/biotech/23/09/34689054/quality-control-issues-at-novo-nordisks-clayton-plant-key-site-for-weight-loss-diabetes-drug-prod\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Quality Control Issues at Novo Nordisk&#39;s
+        Clayton Plant - Key Site for Weight-Loss, Diabetes Drug Production</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>The
+        FDA has reportedly issued a report detailing quality control lapses at&nbsp;<strong>Novo
+        Nordisk A/S&#39;s</strong>&nbsp;(NYSE:&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/stock/nvo#NYSE\\\" style=\\\"color:#4a6ee0;
+        background:transparent; margin-top:0pt; margin-bottom:0pt\\\" target=\\\"_blank\\\">NVO</a>)
+        Clayton, North Carolina plant. Clayton is a major site for the company&#39;s
+        production of its active pharmaceutical ingredients, including semaglutide,
+        which is used in its hugely popular weight-loss drug Wegovy and type 2 diabetes
+        drug Ozempic.</li>\\r\\n\\t<li>Novo Nordisk has hired U.S. private contract
+        manufacturer&nbsp;<strong>PCI Pharma Services</strong>&nbsp;to handle the
+        assembly and packaging of Wegovy as it races to boost output of the weight-loss
+        drug to meet demand.</li>\\r\\n</ul>\\r\\n\\r\\n<p>&nbsp;</p>\\r\\n\\r\\n<p><strong><u>Financial
+        Times</u></strong></p>\\r\\n\\r\\n<p><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34682813/softbanks-masayoshi-son-is-chatgpt-heavy-user-explores-investing-in-openai-after-bumper-arm-ipo\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Softbank&#39;s Masayoshi Son Is ChatGPT&#39;
+        Heavy User&#39; - Explores Investing In OpenAI After Bumper Arm IPO</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>Following
+        the booming stock market debut of&nbsp;<strong>SoftBank Group Corp&#39;s</strong>&nbsp;(OTC:&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/stock/sftbf#OTC\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">SFTBF</a>) (OTC:&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/stock/sftby#OTC\\\" style=\\\"color:#4a6ee0;
+        background:transparent; margin-top:0pt; margin-bottom:0pt\\\" target=\\\"_blank\\\">SFTBY</a>)&nbsp;<strong>Arm
+        Holding Plc</strong>&nbsp;ARM, the Japanese multinational conglomerate is
+        exploring the possibility of investing in OpenAI.</li>\\r\\n\\t<li>According
+        to sources, SoftBank is also contemplating substantial investments in direct
+        competitors of OpenAI.&nbsp;</li>\\r\\n\\t<li>SoftBank has already begun collaborating
+        with OpenAI in the Japanese market, allowing local companies to develop intelligent
+        chatbots.&nbsp;</li>\\r\\n</ul>\\r\\n\\r\\n<p>&nbsp;</p>\\r\\n\\r\\n<p><strong><u>Bloomberg</u></strong></p>\\r\\n\\r\\n<p><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/09/34681674/alibaba-plans-2b-investment-in-turkey-report\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><strong>Alibaba Plans $2B Investment In Turkey</strong></a></p>\\r\\n\\r\\n<ul>\\r\\n\\t<li><strong>Alibaba
+        Group Holding Ltd</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BABA#NYSE\\\">BABA</a>)
+        reportedly plans a $2 billion investment in Turkey after a meeting between
+        the Chief Executive Officer, Michael Evans, and Turkey President Recep Tayyip
+        Erdogan.</li>\\r\\n\\t<li>The company has already invested about $1.4 billion
+        in Turkey through its e-commerce marketplace,&nbsp;<strong>Trendyol.</strong></li>\\r\\n\\t<li>He
+        added that Alibaba has a lot of confidence that Turkey can become one of the
+        leading e-export countries.</li>\\r\\n</ul>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34692109/single-bitcoin-in-2021-was-enough-to-purchase-a-tesla-model-y-softbank-explores-investing-\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/18/bitcoin-2008262_1920.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/18/bitcoin-2008262_1920.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/18/bitcoin-2008262_1920.jpg\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Top Stories\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"BABA\"},{\"name\":\"EGRNF\"},{\"name\":\"F\"},{\"name\":\"NVO\"},{\"name\":\"SBUX\"},{\"name\":\"SFTBF\"},{\"name\":\"SFTBY\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"}],\"tags\":[]},{\"id\":34692433,\"author\":\"Rounak
+        Jain\",\"created\":\"Mon, 18 Sep 2023 10:12:59 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 10:12:59 -0400\",\"title\":\"Microsoft Thought Sony's PlayStation
+        Price Hike Was An Opportunity To Win Fans\",\"teaser\":\"While Microsoft was
+        expecting a PlayStation price hike, its plans to counter were simply not to
+        announce a similar Xbox price hike.\",\"body\":\"<p><strong>Microsoft Corp.'s
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)</strong>
+        immediate response internally to Sony's PlayStation price hike was not one
+        of announcing a similar Xbox price hike \u2013 in fact, Microsoft executives
+        considered it an opportunity to win fans instead of losing by being a follower.</p>\\n\\n\\n\\n<p><strong>What
+        Happened:</strong> The ongoing <a href=\\\"https://www.benzinga.com/news/23/06/33054736/satya-nadella-wants-to-ditch-console-exclusives-but-sonys-iron-grip-on-them-is-keeping-him-trapped\\\">FTC
+        vs Microsoft case</a> has unearthed new internal communication at Microsoft,
+        revealing that while the Windows maker was expecting a PlayStation price hike,
+        its plans to counter were simply not to announce a similar Xbox price hike.</p>\\n\\n\\n\\n<p><em>See
+        Also: </em><a href=\\\"https://www.benzinga.com/news/23/09/34682856/apple-to-start-rolling-out-ios-17-update-today-how-to-download-top-features-and-more\\\"><em>Apple
+        To Start Rolling Out iOS 17 Update Today: How To Download, Top Features And
+        More</em></a></p>\\n\\n\\n\\n<p>Ami Silverman, the head of Microsoft's consumer
+        sales and marketing, said, \\\"we know this could be our time to win fans
+        vs lose being a follower\\\", according to internal emails <a href=\\\"https://www.theverge.com/2023/9/18/23878386/microsoft-sony-ps5-playstation-reaction-price-increase-internal-emails\\\">seen</a>
+        by The Verge.</p>\\n\\n\\n\\n<p>Back in August 2022, Sony <a href=\\\"https://blog.playstation.com/2022/08/25/ps5-price-to-increase-in-select-markets-due-to-global-economic-environment-including-high-inflation-rates/\\\">announced</a>
+        a price hike across several key markets. The company blamed it on the \\\"global
+        economic environment, including high inflation rates.\\\"</p>\\n\\n\\n\\n<p>However,
+        Microsoft decided not to hike Xbox prices because the company's gaming console
+        lagged behind PlayStation in sales.</p>\\n\\n\\n\\n<p>In fact, Microsoft explicitly
+        admitted to this prior to the FTC hearing. \\\"Xbox has lost the console wars,
+        and its rivals are positioned to continue to dominate, including by leveraging
+        exclusive content,\\\" said Microsoft.</p>\\n\\n\\n\\n<p><strong>Behind In
+        Performance:</strong> Xbox lagged behind the PlayStation 5 in terms of sales
+        and performance.</p>\\n\\n\\n\\n<p>Microsoft's internal discussions revealed
+        several key parameters like SSD performance, optimizations for developers
+        in terms of higher throughput, and more.</p>\\n\\n\\n\\n<p>Silverman agreed
+        with Phil Spencer, Microsoft's head of games, that they need to keep Xbox
+        gamer-focused. However, the reasoning suggested a wider mood across the company
+        that the PlayStation was at a clear advantage.</p>\\n\\n\\n\\n<p>\\\"All good
+        points, let's be gamer obsessed here as we have not gotten out of the woods,\\\"
+        Silverman said.</p>\\n\\n\\n\\n<p><em>Photo by Mr.Mikla on Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by </em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"><em>following
+        this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read Next: </em><a href=\\\"https://www.benzinga.com/news/23/09/34689210/get-the-iphone-15-pro-with-a-discount-of-up-to-1-000-and-a-free-apple-ipad-worth-460\\\"><em>Get
+        The iPhone 15 Pro With A Discount Of Up To $1,000 And A Free Apple iPad Worth
+        $460</em></a></p>\",\"url\":\"https://www.benzinga.com/general/gaming/23/09/34692433/microsoft-thought-sonys-playstation-price-hike-was-an-opportunity-to-win-fans\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Playstation_5_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Playstation_5_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Playstation_5_0.jpeg\"}],\"channels\":[{\"name\":\"Gaming\"},{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"gaming\"},{\"name\":\"Microsoft\"},{\"name\":\"PlayStation\"},{\"name\":\"Sony\"},{\"name\":\"xbox\"}]},{\"id\":34691563,\"author\":\"Mando
+        Trading\",\"created\":\"Mon, 18 Sep 2023 09:45:19 -0400\",\"updated\":\"Mon,
+        18 Sep 2023 09:50:14 -0400\",\"title\":\"FOMC And Jerome Powell On Wednesday!
+        Get Prepared For The Upcoming Week With Markets With Mando!\",\"teaser\":\"Take
+        a screen shot of wherever you are reading this article, whether it is on Benzinga,
+        Webull or TOS, and tag @Mandotrading and @Benzinga in the tweet for a FREE
+        membership to my daily newsletter, Markets with Mando!\_\\n\\n\",\"body\":\"<p>Take
+        a screen shot of wherever you are reading this article, whether it is on Benzinga,
+        Webull or TOS, and tag @Mandotrading and @Benzinga in the tweet for a FREE
+        membership to my daily newsletter, Markets with Mando!&nbsp;</p>\\r\\n\\r\\n<p><img
+        src=\\\"https://public-files.gumroad.com/fh7axvt67nhlw6sz5ytlyr29zgil\\\"
+        style=\\\"height:442px; width:624px\\\" /></p>\\r\\n\\r\\n<p>ES Weekly - Nothing
+        too crazy last week, despite both CPI and PPI data coming in. Noteworthy that
+        the market refused to break the previous week high. Inside week heading into
+        FOMC on Wednesday... Can lead to explosive price action. Not expecting much
+        for this week prior to that.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/jlq7cb73ot0bgzzzogffu5syt8xh\\\"
+        style=\\\"height:440px; width:624px\\\" /></p>\\r\\n\\r\\n<p>NQ Weekly - Price
+        remained inside previous bearish imbalance from March 2022, but like ES, refused
+        to take out the previous weekly high. Small support level at 15200 and liquidity
+        resting at 14804. Not expecting much until Wednesday.</p>\\r\\n\\r\\n<p><img
+        src=\\\"https://public-files.gumroad.com/jisb7rb8hwn8pcjoodke9vqgyrk6\\\"
+        style=\\\"height:441px; width:624px\\\" /></p>\\r\\n\\r\\n<p>9 straight weeks
+        of green for the dollar. Next upside target for me is at 105.88, which I think
+        could be the short term top for this run. If you don&#39;t look at DXY, check
+        out my YouTube video on it. To me, the dollar is the best indicator you can
+        use.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/d3ifwfjn5e5ralyodoju0y2kzli1\\\"
+        style=\\\"height:396px; width:624px\\\" /></p>\\r\\n\\r\\n<p>A perfect rejection
+        of a daily bearish volume imbalance sends ES down hard on Friday. Price did
+        hold inside the bullish imbalance from August. Currently in discount, I would
+        favor a move below 4483, to take liquidity, and from there potential upside.
+        Bears shift the tides on a move below 4414.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/i2wr7li2f1ktcv9womb199lvzeso\\\"
+        style=\\\"height:396px; width:624px\\\" /></p>\\r\\n\\r\\n<p>NQ rejected a
+        bearish volume imbalance on the daily, sending price back down to equilibrium
+        of the range, perfect setup for an FOMC week... 15132 would be the lowest
+        bullish imbalance in discount, an area bulls are going to need to hold.</p>\\r\\n\\r\\n<p><img
+        src=\\\"https://public-files.gumroad.com/a7niy281yug134hqcbvola6m9mcs\\\"
+        style=\\\"height:442px; width:624px\\\" /></p>\\r\\n\\r\\n<p>SPY (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)
+        - Meltdown! Yet to take out swing low liquidity at 442.64. If the range is
+        set here, I&#39;d favor a bounce to start the week, getting into the bearish
+        imbalance at the .70 to .79 range.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/3ijgcfyjnsj8qwqgojrhnmebp11v\\\"
+        style=\\\"height:440px; width:624px\\\" /></p>\\r\\n\\r\\n<p>AAPL (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        - Relative equal highs at 177.49 and lows at 173.55. Not really interested
+        in AAPL until one of those levels are taken out.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/sot51ofygzfhmbw812xf18ynprcg\\\"
+        style=\\\"height:441px; width:624px\\\" /></p>\\r\\n\\r\\n<p>TSLA&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>)
+        swept swing high and dumped hard Friday. Retraced back into a discount bearish
+        imbalance before fading to a new low. A move above the most recent swing high
+        would be pretty bullish for TSLA, but until then market structure remains
+        bearish.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/kcdzq9ql1760sdonllu9onxfa8hw\\\"
+        style=\\\"height:442px; width:624px\\\" /></p>\\r\\n\\r\\n<p>GOOGL (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)
+        - Held up well on Friday in relation to many other names. Market structure
+        remains bullish until swing low at 136.24 is swept. Want to see how price
+        reacts to the current imbalance price closed inside on Friday.</p>\\r\\n\\r\\n<p><img
+        src=\\\"https://public-files.gumroad.com/nkhcz02dkvldlm7rogfi4s9sd02a\\\"
+        style=\\\"height:442px; width:624px\\\" /></p>\\r\\n\\r\\n<p>Big fade on AMZN&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        on Friday, but like GOOGL, market structure remains bullish. Bears don&#39;t
+        take over unless swing low at 138.50 is taken out for me. Bulls want to see
+        that liquidity at the 140.01 low swept and an immediate bounce from there.
+        That would be the perfect golden pocket bounce, as it did the first time around.</p>\\r\\n\\r\\n<p><img
+        src=\\\"https://public-files.gumroad.com/goo07zpf1sgiceiklhu3y6djqbae\\\"
+        style=\\\"height:441px; width:624px\\\" /></p>\\r\\n\\r\\n<p>NVDA (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>)
+        took a beating last week, down quite a bit from highs from a few weeks ago.
+        It is a very cluttered range here, and not a name I am too interested in at
+        this time.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/ib513g53u7s1d8bkmymdwpggn92o\\\"
+        style=\\\"height:440px; width:624px\\\" /></p>\\r\\n\\r\\n<p>Absolutely textbook
+        move on AMD (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>).
+        Swing low taken out, retracement into discount bearish imbalance, and rejection
+        and meltdown. 2 Standard Deviations completes at 100.43. Large range sets
+        the stage for big bounces, worth keeping in mind.</p>\\r\\n\\r\\n<p><img src=\\\"https://public-files.gumroad.com/v4thut635442m9h2fafs35s01py1\\\"
+        style=\\\"height:442px; width:624px\\\" /></p>\\r\\n\\r\\n<p>MSFT (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        swept swing low on Friday after a huge meltdown. Large range here, with 50%
+        of the range being at 334.50.</p>\\r\\n\\r\\n<p><strong>If you&#39;d like
+        to&nbsp;join a trading&nbsp;community to&nbsp;learn how to chart, make your
+        own trading decisions and no longer rely on alerts from others,&nbsp;check
+        out Galaxy Trading!&nbsp;Click the link below and&nbsp;use code &#39;MANDO&quot;
+        for 33% off.&nbsp;</strong></p>\\r\\n\\r\\n<p><a href=\\\"https://whop.com/galaxy-trading\\\"
+        target=\\\"_blank\\\">Sign Up Here!</a></p>\\r\\n\\r\\n<p>NEW YOUTUBE VIDEO
+        IS LIVE!&nbsp;</p>\\r\\n\\r\\n<p>&#39;The Importance of Mastering a Setup.&quot;&nbsp;</p>\\r\\n\\r\\n<p><a
+        href=\\\"http://youtube.com/@mandotrading\\\" target=\\\"_blank\\\">Educational
+        YouTube Channel</a></p>\\r\\n\\r\\n<p>Follow me on Twitter,&nbsp;Instagram
+        and TikTok&nbsp;@MandoTrading for more content!</p>\\r\\n\\r\\n<p><em><strong>This
+        newsletter is a collection of my thoughts and is intended for educational
+        purposes only. Nothing posted above is&nbsp;ever to&nbsp;be construed as financial
+        advice.</strong></em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/23/09/34691563/fomc-and-jerome-powell-on-wednesday-get-prepared-for-the-upcoming-week-with-markets-with-mando\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/screen_shot_2023-09-06_at_11.45.27_pm.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/screen_shot_2023-09-06_at_11.45.27_pm.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/screen_shot_2023-09-06_at_11.45.27_pm.png\"}],\"channels\":[{\"name\":\"Federal
+        Reserve\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"AMZN\"},{\"name\":\"GOOGL\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"TSLA\"},{\"name\":\"SPY\"}],\"tags\":[{\"name\":\"contributors\"},{\"name\":\"Expert
+        Ideas\"},{\"name\":\"FOMC\"},{\"name\":\"Jerome Powell\"},{\"name\":\"S&P
+        500\"}]},{\"id\":34689210,\"author\":\"Rounak Jain\",\"created\":\"Mon, 18
+        Sep 2023 09:04:46 -0400\",\"updated\":\"Mon, 18 Sep 2023 09:04:47 -0400\",\"title\":\"Get
+        The iPhone 15 Pro With A Discount Of Up To $1,000 And A Free Apple iPad Worth
+        $460\",\"teaser\":\"Apple iPhone 15 Pro can be yours for free thanks to this
+        Verizon deal that offers a trade-in discount of $1,000, along with a free
+        iPad.\",\"body\":\"<p><strong>Apple Inc.'s (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) </strong><a
+        href=\\\"https://www.benzinga.com/news/23/09/34501203/apple-iphone-15-series-with-usb-c-tetraprism-camera-announced-check-price-and-availability-details\\\"><strong>iPhone
+        15 Pro</strong></a> is now available at an eye-watering discount of up to
+        $1,000 thanks to a trade-in program that <strong>Verizon Communications Inc.
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/VZ#NYSE\\\">VZ</a>)</strong>
+        is running right now.</p>\\n\\n\\n\\n<p><strong>What Is The Deal:</strong>
+        The <a href=\\\"https://www.benzinga.com/news/23/09/34501203/apple-iphone-15-series-with-usb-c-tetraprism-camera-announced-check-price-and-availability-details\\\">Apple
+        iPhone 15 Pro</a> can be yours for free thanks to this Verizon <a href=\\\"https://www.verizon.com/smartphones/apple-iphone-15-pro/\\\">deal</a>
+        that offers a trade-in discount of up to $1,000. The iPhone 15 Pro's retail
+        price starts at $999, so this makes the phone essentially free.</p>\\n\\n\\n\\n<p><em>See
+        Also: </em><a href=\\\"https://www.benzinga.com/news/23/09/34606269/want-to-upgrade-to-the-iphone-15-or-15-pro-from-iphone-14-here-are-the-trade-in-prices-apple-is-offe\\\"><em>Want
+        To Upgrade To The iPhone 15 or 15 Pro From iPhone 14? Here Are The Trade-In
+        Prices Apple Is Offering</em></a></p>\\n\\n\\n\\n<p>In addition, Verizon offers
+        two options \u2013 you can get either the Apple Watch SE (2022) worth $300
+        or the Apple iPad (9th generation) worth $460 for free.</p>\\n\\n\\n\\n<p>This
+        brings the overall savings to $1,460, and you get the iPhone 15 Pro and an
+        Apple iPad (9th generation) for free.</p>\\n\\n\\n\\n<p>Verizon will credit
+        the $1,000 trade-in discount in the form of monthly credits over 36 months.</p>\\n\\n\\n\\n<p>The
+        iPhone 15 Pro is available on <a href=\\\"https://www.benzinga.com/news/23/09/34581977/how-to-preorder-apples-iphone-15-price-where-to-order-and-everything-you-need-to-know\\\">pre-order</a>
+        in all four colors on Verizon, with storage starting at 128GB and going all
+        the way up to 1TB.</p>\\n\\n\\n\\n<p><strong>iPhone 15 Pro Features:</strong>
+        The iPhone 15 Pro was launched during Apple's Sept. 12 Wonderlust event. One
+        of the highlights includes the <a href=\\\"https://www.benzinga.com/news/23/09/34575663/iphone-15-pros-a17-pro-chipset-is-a-monster-and-is-already-faster-than-samsungs-2024-flagship\\\">A17
+        Pro chipset</a>, something that Apple says makes the iPhone 15 Pro \\\"<a
+        href=\\\"https://www.benzinga.com/news/23/09/34675716/forget-playstation-and-xbox-apple-thinks-the-iphone-15-pro-will-be-the-best-game-console\\\">the
+        best game console</a>\\\".</p>\\n\\n\\n\\n<p>The iPhone 15 Pro sports a 6.1-inch
+        Super Retina XDR OLED display and has a titanium alloy design, which is also
+        used on the Mars rover Perseverance.</p>\\n\\n\\n\\n<p>Apple has stuck with
+        its triple camera setup \u2013 the iPhone 15 Pro has a 48MP primary camera,
+        two 12MP cameras, and a 3D LiDAR scanner. The front has the Dynamic Island,
+        which also houses the 12MP selfie camera.</p>\\n\\n\\n\\n<p>Lastly, Apple
+        has finally given in and added the much-anticipated USB-C port to the iPhone
+        15 series. The iPhone 15 Pro supports 5G, Wi-Fi 6, Bluetooth 5.3, and has
+        a 3,274mAh battery with 15W wired and 7.5W wireless charging.</p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga's Consumer Tech coverage by </em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"><em>following
+        this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read Next: </em><a href=\\\"https://www.benzinga.com/news/23/09/34682856/apple-to-start-rolling-out-ios-17-update-today-how-to-download-top-features-and-more\\\"><em>Apple
+        To Start Rolling Out iOS 17 Update Today: How To Download, Top Features And
+        More</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34689210/get-the-iphone-15-pro-with-a-discount-of-up-to-1-000-and-a-free-apple-ipad-worth-460\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-hero-230912_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-hero-230912_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-hero-230912_1.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"VZ\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15\"},{\"name\":\"Tech
+        Deals\"},{\"name\":\"Verizon\"}]},{\"id\":34682856,\"author\":\"Rounak Jain\",\"created\":\"Mon,
+        18 Sep 2023 06:52:09 -0400\",\"updated\":\"Mon, 18 Sep 2023 06:52:09 -0400\",\"title\":\"Apple
+        To Start Rolling Out iOS 17 Update Today: How To Download, Top Features And
+        More\",\"teaser\":\"iOS 17 will roll out to six generations of iPhones, starting
+        from iPhone XS to iPhone 14. Here&#39;s how you can download the iOS 17 update.\",\"body\":\"<p><strong>Apple
+        Inc. (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)</strong>
+        will start rolling out the <a href=\\\"https://www.benzinga.com/news/23/09/34571530/time-to-upgrade-to-a-new-iphone-ios-17-update-drops-support-for-these-iphones\\\"><strong>iOS
+        17</strong> update</a> to six generations of iPhone starting Monday (Sept.
+        18), with a slew of new features like live voicemail, stickers in messages,
+        and more.</p>\\n\\n\\n\\n<p><strong>What Happened:</strong> The iOS 17 update
+        will roll out to all iPhones, starting from the <strong>iPhone XS</strong>
+        all the way up to the <strong>iPhone 14</strong> series. All in all, <a href=\\\"https://www.benzinga.com/news/23/09/34571530/time-to-upgrade-to-a-new-iphone-ios-17-update-drops-support-for-these-iphones\\\">seven
+        generations of iPhones</a>, including the newly launched <a href=\\\"https://www.benzinga.com/news/23/09/34501203/apple-iphone-15-series-with-usb-c-tetraprism-camera-announced-check-price-and-availability-details\\\"><strong>iPhone
+        15</strong></a> series, will run iOS 17.</p>\\n\\n\\n\\n<p><em>See Also: </em><a
+        href=\\\"https://www.benzinga.com/news/23/09/34616140/upgrading-to-iphone-15-heres-how-to-transfer-your-photos-apps-and-other-data\\\"><em>Upgrading
+        To iPhone 15? Here's How To Transfer Your Photos, Apps, And Other Data</em></a></p>\\n\\n\\n\\n<p>While
+        Apple has been beta testing the iOS 17 update for several weeks now, the general
+        release of iOS 17 will begin today (Sept. 18).</p>\\n\\n\\n\\n<p>General release
+        means the iOS 17 update is now ready for all eligible iPhones. You can either
+        wait for the update pop-up to appear on your iPhone or install it manually
+        if you cannot wait for Apple.</p>\\n\\n\\n\\n<h2 class=\\\"wp-block-heading\\\"><strong>How
+        To Download And Install iOS 17</strong></h2>\\n\\n\\n\\n<p>Now, if you don't
+        want to wait for Apple to roll out the iOS 17 update for you, you can get
+        ahead in the queue by manually checking for updates.</p>\\n\\n\\n\\n<p>Here's
+        how to download and install the iOS 17 update:</p>\\n\\n\\n\\n<ul>\\n<li>Open
+        the <strong>Settings</strong> app and navigate to <strong>General &gt; Software
+        Update</strong>.</li>\\n\\n\\n\\n<li>Now, if you have the <strong>Upgrade
+        to iOS 17</strong> button at the bottom, tap it and follow the on-screen instructions.</li>\\n\\n\\n\\n<li>Otherwise,
+        your iPhone will automatically refresh and check for updates.</li>\\n\\n\\n\\n<li>You
+        will now see a <strong>Download and Install</strong> button. Tap it.</li>\\n\\n\\n\\n<li>If
+        you have a passcode, enter it and agree to Apple's terms.</li>\\n</ul>\\n\\n\\n\\n<p>The
+        iOS 17 update will now start downloading. You will be notified once the download
+        is completed.</p>\\n\\n\\n\\n<p>While the update will not delete your data,
+        it is recommended to have a backup in place just in case something goes wrong.</p>\\n\\n\\n\\n<h2
+        class=\\\"wp-block-heading\\\"><strong>Top iOS 17 Features</strong></h2>\\n\\n\\n\\n<p><strong>Live
+        Voicemail:</strong> Your iPhone will now show a live transcription of voicemails,
+        and you can pick up the call while the caller leaves a message.</p>\\n\\n\\n\\n<p><strong>AirDrop
+        Improvements:</strong> AirDrop transfers will now continue over the internet
+        if you go out of range during a transfer.</p>\\n\\n\\n\\n<p><strong>Stickers
+        In Messages:</strong> You can <a href=\\\"https://www.benzinga.com/news/23/08/34042723/how-to-turn-your-photos-into-stickers-in-ios-17\\\">turn
+        your photos into stickers</a> and use them in iMessage directly.</p>\\n\\n\\n\\n<p><strong>Live
+        Location Improvements:</strong> When live location is turned on for a contact,
+        you can now view their location details under their name in Find My Friends.</p>\\n\\n\\n\\n<p><strong>Enhanced
+        Autofill:</strong> Autofill improvements mean information such as names and
+        addresses are populated even faster.</p>\\n\\n\\n\\n<p><strong>Journal:</strong>
+        A new Journal app lets you write down your experiences and thoughts. It will
+        also give you suggestions and writing prompts to get you started.</p>\\n\\n\\n\\n<p><em>Photo
+        by Poetra.RH on Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check out more of
+        Benzinga's Consumer Tech coverage by </em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"><em>following
+        this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read Next: </em><a href=\\\"https://www.benzinga.com/news/23/09/34606269/want-to-upgrade-to-the-iphone-15-or-15-pro-from-iphone-14-here-are-the-trade-in-prices-apple-is-offe\\\"><em>Want
+        To Upgrade To The iPhone 15 or 15 Pro From iPhone 14? Here Are The Trade-In
+        Prices Apple Is Offering</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34682856/apple-to-start-rolling-out-ios-17-update-today-how-to-download-top-features-and-more\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_iOS17_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_iOS17_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_iOS17_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iOS\"},{\"name\":\"iOS 17\"},{\"name\":\"Software &amp;
+        Apps\"},{\"name\":\"Tech Hacks\"}]}]\n"
     headers:
       Cache-Control:
       - max-age=3, must-revalidate
@@ -90,27 +1376,27 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 18 Sep 2023 10:00:55 GMT
+      - Tue, 19 Sep 2023 10:14:07 GMT
       ETag:
-      - l6OIQXGn9suwjxVh0UIeA9DieX1uI6d3vnh9-J6gqSM=
+      - nZDsOfLaNGqjKeUp-rcrQPq-1FTwhVns_KLthohKMHw=
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept,Accept-Encoding
       Via:
-      - kong/2.8.3, 1.1 e25359babcc045566ea407b8f6ab0b64.cloudfront.net (CloudFront)
+      - kong/2.8.3, 1.1 eaa5b4468d4ba37bc9733291d72738ec.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - CQ0hQ54ECjYOd7-NHobGFs_R5H5YWZkFDY_RmCc_e0jVf2Sk3FoiqQ==
+      - kx9D6j9HO84lmkSuSybpxcoUsWcHiIC6umCis4uH2dWDoBCUfHXFrg==
       X-Amz-Cf-Pop:
       - ZAG50-C1
       X-Bz-Request-Id:
-      - 192.168.240.19-8000-38-1068925-7-1695031255.465
+      - 192.168.240.19-8000-38-32430093-78-1695118447.522
       X-Cache:
       - Miss from cloudfront
       X-Kong-Proxy-Latency:
-      - '1'
+      - '0'
       X-Kong-Upstream-Latency:
-      - '29'
+      - '43'
       X-Powered-By:
       - Pentium
     status:
