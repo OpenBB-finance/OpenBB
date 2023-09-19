@@ -25,7 +25,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_intrinio_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "start_date": "2023-01-23", "end_date": "2023-05-23"}
 
     fetcher = IntrinioStockHistoricalFetcher()
     result = fetcher.test(params, credentials)
