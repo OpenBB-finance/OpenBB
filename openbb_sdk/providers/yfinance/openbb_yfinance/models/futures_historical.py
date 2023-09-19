@@ -1,4 +1,5 @@
 """yfinance Futures End of Day fetcher."""
+# ruff: noqa: SIM105
 
 
 from datetime import datetime
@@ -62,12 +63,25 @@ class YFinanceFuturesHistoricalFetcher(
             now = datetime.now().date()
             if params.get("start_date") is None:
                 transformed_params["start_date"] = now - relativedelta(years=1)
+            else:
+                try:
+                    transformed_params["start_date"] = datetime.strptime(
+                        params["start_date"], "%Y-%m-%d"
+                    ).date()
+                except TypeError:
+                    pass
 
             if params.get("end_date") is None:
                 transformed_params["end_date"] = now
-            return YFinanceFuturesHistoricalQueryParams(**transformed_params)
+            else:
+                try:
+                    transformed_params["end_date"] = datetime.strptime(
+                        params["end_date"], "%Y-%m-%d"
+                    ).date()
+                except TypeError:
+                    pass
 
-        return YFinanceFuturesHistoricalQueryParams(**params)
+        return YFinanceFuturesHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(

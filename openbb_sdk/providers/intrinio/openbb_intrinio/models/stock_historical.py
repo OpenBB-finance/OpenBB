@@ -97,7 +97,6 @@ class IntrinioStockHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioStockHistoricalQueryParams:
         """Transform the query params."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -130,7 +129,6 @@ class IntrinioStockHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
@@ -161,5 +159,4 @@ class IntrinioStockHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
-
         return [IntrinioStockHistoricalData.parse_obj(d) for d in data]

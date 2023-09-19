@@ -1,9 +1,11 @@
 """yfinance Crypto End of Day fetcher."""
+# ruff: noqa: SIM105
 
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
@@ -43,6 +45,28 @@ class YFinanceCryptoHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCryptoHistoricalQueryParams:
         """Transform the query."""
+        transformed_params = params
+        now = datetime.now().date()
+
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - relativedelta(years=1)
+        else:
+            try:
+                transformed_params["start_date"] = datetime.strptime(
+                    transformed_params["start_date"], "%Y-%m-%d"
+                ).date()
+            except TypeError:
+                pass
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+        else:
+            try:
+                transformed_params["end_date"] = datetime.strptime(
+                    transformed_params["end_date"], "%Y-%m-%d"
+                ).date()
+            except TypeError:
+                pass
 
         return YFinanceCryptoHistoricalQueryParams(**params)
 
@@ -53,7 +77,6 @@ class YFinanceCryptoHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the yfinance endpoint."""
-
         if "-" not in query.symbol:
             position = len(query.symbol) - 3
             query.symbol = query.symbol[:position] + "-" + query.symbol[position:]
@@ -68,19 +91,22 @@ class YFinanceCryptoHistoricalFetcher(
             actions=False,
         )
 
-        query.end_date = (
-            datetime.now().date() if query.end_date is None else query.end_date
-        )
         days = (
             1
             if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
             else 0
         )
 
-        if query.start_date is not None:
-            data["date"] = to_datetime(data["date"])
+        if query.start_date:
             data.set_index("date", inplace=True)
-            data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
+            data.index = to_datetime(data.index).date
+            data = data[
+                (data.index >= query.start_date - timedelta(days=days))
+                & (data.index <= query.end_date)
+            ]
+
+        data.reset_index(inplace=True)
+        data.rename(columns={"index": "date"}, inplace=True)
 
         return data.to_dict("records")
 
