@@ -1,7 +1,10 @@
 """FMP Stock Ownership fetcher."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many, most_recent_quarter

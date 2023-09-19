@@ -10,6 +10,7 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
+
 class StockOwnershipQueryParams(QueryParams):
     """Stock ownership Query."""
 
