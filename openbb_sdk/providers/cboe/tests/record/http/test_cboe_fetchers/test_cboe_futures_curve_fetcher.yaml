@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -15,15 +15,15 @@ interactions:
       string: ''
     headers:
       CF-Cache-Status:
-      - MISS
+      - EXPIRED
       CF-RAY:
-      - 80913cce09713a6c-FRA
+      - 80948465d8771c61-DEL
       Connection:
       - keep-alive
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 19 Sep 2023 10:45:09 GMT
+      - Tue, 19 Sep 2023 20:18:19 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
       Location:
@@ -47,7 +47,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -55,35 +55,35 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3SUz04DIRDG7ya+gw/AsjAMLBzbaP+ZTZqoTfVWaw9N1JqmJvr2DlC6sHEvXH4f
-        wzffzO7yeHj73p7Yw+/H6+Gd3f187Y+b0/7weXO7Oe3Y8rjf7q6vVmu2WtdPioEAVQlXgWASuXCN
-        PEPlCtx43OgzRFGvzlCKSiCTmouOypxK6SmI9GiOrEfGSpNuqhyD7mOs1wnLSsgezqGku4ZrwMRe
-        EoPQq+Gu67WeoIdIJStJnTYELSQ4TRAqSZ1argxcbs4SVKGs5RZVyqFeJIihrOMAF3afmK4APMOQ
-        UEusHR5MxIMRRjwUQ6SDQUQ8GEXEA2HMx7Nn5o9iL6gv9N51LuhNkARoC0FmMAhotTDnWeSBGy6C
-        g/mU+aPvAJDi0bmg5wDoAch5zwBxXRboOQDDDQ1v1I4l88dlfNGBQ625z6ATrAoHDg2NH3LBurBA
-        FWiILhdEj2FM8YmG26LCpBtUqIDADeaCadEEVcCwgp1g1m1vEDQUdCFYdCvsBcb0BZcdN/TKf4I2
-        CZpYodHhHzNqH73gUeYfAm06BaW4VLkg/xQMc9oKDhTUHwAAAP//bJRdDsAgCINvtCwS/DnEdv/j
-        rBgMlfn+xZZKCYDLYB6wb3ozQL9tEhVR7x64EfUEUCfQKIzZkgTty5RocpXtBT4UegLoWswpevEk
-        F/BE1KgtgOzhjainxND1ghggv6gR1BAGclAonpt0II+Jz9olsknfqA8AAP//AwBSQXM8swYAAA==
+        H4sIAAAAAAAAA3SUy27bMBBF9wXyD/0AiuZjho9lgjZ2UqgI0MRwskvTLAy0cWG4QPv3HZKiNFSs
+        jTbn8s7M5VB3x8OPPy8n8e3fr++Hn+Lz39/74/Npf3j7+On59CrujvuX14sP253Y7lYPVhhlbKdi
+        Z5TQIBXqOEAbG+wTdgYHCmq1HahWnYJEgx+p5lRroVGa8WzDQmLoTahHLccGE/aTMax2lepO6ZZy
+        pumkkzbGarx6qtDkYZ0MDm2F15AgkGWnaVQvA0Rd4bpC02maNEjtwmi7qdBm2yCdqui2IsimkeKt
+        6EtF2BmTkM2nemL98rUUvBhfwYshFLwYQ8GLQRS8EMXN1eZRpE+zFTQYWOktcsHs/oCmawxYfwN3
+        qjFggWdBmj8LbtYifeYtGJAWG8GsBRJ4z/msBYM0ZWMwa8FQxhThZX+lRfqMF1g6iIAoI3LBtukg
+        gosSDBfsmhbIwUsELig95nsqJUIeYhJcTzeVHUBLr7hg3QxBDlZC0+RmWt8s8E6qxuF2WuIkcG4u
+        GLfcUZVzgr4KfHHw9JxzD/dJcN/+RpyIGJQ0kQv4tqcStC+ouIBdJr2W6NDNSvCNd+cEbOfpxdAU
+        flaCrUMu4a00jQP/EeA5Afsd5CmCGYKqgn5Kkp4lCeY9fJ2SzCUiVgebBPZdDuByD/8BAAD//0Io
+        QPeFmTGaCehugKYHAAAAAP//AwD+BfW/cQYAAA==
     headers:
       CF-Cache-Status:
-      - MISS
+      - EXPIRED
       CF-RAY:
-      - 80913cd09ca33a6c-FRA
+      - 8094846b0d661c61-DEL
       Cache-Control:
       - max-age=30
       Connection:
       - keep-alive
       Content-Disposition:
-      - attachment; filename=FuturesSettlements_2023-09-18.csv
+      - attachment; filename=FuturesSettlements_2023-09-19.csv
       Content-Encoding:
       - gzip
       Content-Type:
       - text/csv
       Date:
-      - Tue, 19 Sep 2023 10:45:10 GMT
+      - Tue, 19 Sep 2023 20:18:20 GMT
       Last-Modified:
-      - Tue, 19 Sep 2023 10:45:10 GMT
+      - Tue, 19 Sep 2023 18:44:30 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
       Server:
@@ -105,7 +105,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -114,16 +114,18 @@ interactions:
     body:
       string: ''
     headers:
+      Age:
+      - '1'
       CF-Cache-Status:
-      - MISS
+      - HIT
       CF-RAY:
-      - 80913cd3f8cf2c41-FRA
+      - 80948470dabe1c61-DEL
       Connection:
       - keep-alive
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 19 Sep 2023 10:45:10 GMT
+      - Tue, 19 Sep 2023 20:18:20 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
       Location:
@@ -147,7 +149,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -155,35 +157,37 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3TSwU4DIRAG4LuJ7+ADAMsMA8sebdS2mk2aGJvWW609NFFrmjXRt3dgS8uS7IXL
-        N8DMD4vj4f1n24nnv8+3w4e4//3eHzfd/vB1c7fpdmJx3G9311fLlViuqhcjUKORupGoBZDSTQ0n
-        NM2A68C1PSHpanlC0FKTAKv0RSFXgKCo06U5+UDOg0s7Tc5oS6ZqlRikhoJzBN7rlEVK9poM46xO
-        NZdZqwcKSHykBJ60ZvSYcJoQJfCkXhmH552zhCYe65Unk3KoHhNSPLZRiGd7SmYlYjCKCbVs7fjD
-        9DwaYc9jMfQ6GkTPo1H0PBLGfDJbi7AM/gXPRaF3mxcUL8gF5AcFWYOxgL8W5Z5FHt0pHTuYT0VY
-        yg6QOB6bFxQdIF+AuRcNsNvhAUUH6JTjx7ttJyDCcn6+voOGrFUhg38AAAD//2yUzQ7CMAyDXwhV
-        W3/S9cgFENI4TYj3fxLcrKNO2f1T4jp2O/A2CkoUnN8z8DESMAFHLAzsGvVM+4rsFjPh1g+lE6J3
-        Ehm4m0dgQtQIduDR06tAhtEGePYIV0BkBH4ZF2w5A9YDyPuEnPSPua5bBbaZi4Ckw6jg5sAAV0Eu
-        JS2T84UBLkPVgLyliQG6dl0hsNpq4EbIGUCdQKPwzDysoLzoihycNxP4o0hnAP0W+orFNycPYO1W
-        o7YARg2vbrWuKOmYECoQ/qyGUSUwMBqF4jWRDRifiWPZFaPIlqgvAAAA//8DAFJBczyzBgAA
+        H4sIAAAAAAAAA3SUy27bMBBF9wXyD/0AiuZjho9lgjZ2UqgI0MRwskvTLAy0cWG4QPv3HZKiNFSs
+        jTbn8s7M5VB3x8OPPy8n8e3fr++Hn+Lz39/74/Npf3j7+On59CrujvuX14sP253Y7lYPVhhlbKdi
+        Z5TQIBXqOEAbG+wTdgYHCmq1HahWnYJEgx+p5lRroVGa8WzDQmLoTahHLccGE/aTMax2lepO6ZZy
+        pumkkzbGarx6qtDkYZ0MDm2F15AgkGWnaVQvA0Rd4bpC02maNEjtwmi7qdBm2yCdqui2IsimkeKt
+        6EtF2BmTkM2nemL98rUUvBhfwYshFLwYQ8GLQRS8EMXN1eZRpE+zFTQYWOktcsHs/oCmawxYfwN3
+        qjFggWdBmj8LbtYifeYtGJAWG8GsBRJ4z/msBYM0ZWMwa8FQxhThZX+lRfqMF1g6iIAoI3LBtukg
+        gosSDBfsmhbIwUsELig95nsqJUIeYhJcTzeVHUBLr7hg3QxBDlZC0+RmWt8s8E6qxuF2WuIkcG4u
+        GLfcUZVzgr4KfHHw9JxzD/dJcN/+RpyIGJQ0kQv4tqcStC+ouIBdJr2W6NDNSvCNd+cEbOfpxdAU
+        flaCrUMu4a00jQP/EeA5Afsd5CmCGYKqgn5Kkp4lCeY9fJ2SzCUiVgebBPZdDuByD/8BAAD//0Io
+        QPeFmTGaCehugKYHAAAAAP//AwD+BfW/cQYAAA==
     headers:
+      Age:
+      - '0'
       CF-Cache-Status:
-      - MISS
+      - HIT
       CF-RAY:
-      - 80913cd69c722c41-FRA
+      - 809484711aea1c61-DEL
       Cache-Control:
       - max-age=30
       Connection:
       - keep-alive
       Content-Disposition:
-      - attachment; filename=FuturesSettlements_2023-09-18.csv
+      - attachment; filename=FuturesSettlements_2023-09-19.csv
       Content-Encoding:
       - gzip
       Content-Type:
       - text/csv
       Date:
-      - Tue, 19 Sep 2023 10:45:11 GMT
+      - Tue, 19 Sep 2023 20:18:20 GMT
       Last-Modified:
-      - Tue, 19 Sep 2023 10:45:11 GMT
+      - Tue, 19 Sep 2023 18:44:30 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
       Server:

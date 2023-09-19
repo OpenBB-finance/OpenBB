@@ -99,7 +99,7 @@ def test_polygon_forex_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_forex_pairs_fetcher(credentials=test_credentials):
-    params = {}
+    params = {"date": "2023-01-01"}
 
     fetcher = PolygonForexPairsFetcher()
     result = fetcher.test(params, credentials)
