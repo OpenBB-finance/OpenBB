@@ -32,15 +32,23 @@ pip install openbb[all]
 
 > Note: While we are in pre-release mode you need to specify the version, e.g. `pip install openbb==4.0.0a0` or `pip install openbb[all]==4.0.0a0`
 
-## REST API
+## Python
 
-The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
+```python
+>>> from openbb import obb
+>>> output = obb.stocks.load("AAPL")
+>>> df = output.to_dataframe()
+>>> df.head()
+              open    high     low  ...  change_percent             label  change_over_time
+date                                ...
+2022-09-19  149.31  154.56  149.10  ...         3.46000  September 19, 22          0.034600
+2022-09-20  153.40  158.08  153.08  ...         2.28000  September 20, 22          0.022800
+2022-09-21  157.34  158.74  153.60  ...        -2.30000  September 21, 22         -0.023000
+2022-09-22  152.38  154.47  150.91  ...         0.23625  September 22, 22          0.002363
+2022-09-23  151.19  151.47  148.56  ...        -0.50268  September 23, 22         -0.005027
 
-```bash
-uvicorn openbb_core.api.rest_api:app
+[5 rows x 12 columns]
 ```
-
-Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.
 
 ## API keys
 
@@ -86,3 +94,13 @@ Populate this file with the following template and replace the values with your 
   }
 }
 ```
+
+## REST API
+
+The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
+
+```bash
+uvicorn openbb_core.api.rest_api:app
+```
+
+Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.
