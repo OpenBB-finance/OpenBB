@@ -240,7 +240,7 @@ def test_fmp_stock_insider_trading_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_stock_ownership_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "date": "2023-01-01"}
+    params = {"symbol": "AAPL", "date": "2022-12-31"}
 
     fetcher = FMPStockOwnershipFetcher()
     result = fetcher.test(params, credentials)

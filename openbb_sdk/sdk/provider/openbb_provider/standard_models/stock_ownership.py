@@ -1,10 +1,7 @@
 """Stock owner data model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
@@ -12,23 +9,6 @@ from pydantic import Field, validator
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
-
-
-def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
-    """Get the most recent quarter date."""
-    base = min(base, dateType.today())  # This prevents dates from being in the future
-    exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
-    for exact in exacts:
-        if base.month == exact[0] and base.day == exact[1]:
-            return base
-    if base.month < 4:
-        return dateType(base.year - 1, 12, 31)
-    if base.month < 7:
-        return dateType(base.year, 3, 31)
-    if base.month < 10:
-        return dateType(base.year, 6, 30)
-    return dateType(base.year, 9, 30)
-
 
 class StockOwnershipQueryParams(QueryParams):
     """Stock ownership Query."""
@@ -38,16 +18,6 @@ class StockOwnershipQueryParams(QueryParams):
     page: Optional[int] = Field(
         default=0, description="Page number of the data to fetch."
     )
-
-    @validator("date", pre=True, check_fields=False)
-    def time_validate(cls, v: str):  # pylint: disable=E021
-        """Validate the date."""
-        if v is None:
-            v = dateType.today()
-        if isinstance(v, str):
-            base = datetime.strptime(v, "%Y-%m-%d").date()
-            return most_recent_quarter(base)
-        return most_recent_quarter(v)
 
     @validator("symbol", pre=True, check_fields=False, always=True)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
