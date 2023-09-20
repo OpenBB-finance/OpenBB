@@ -147,7 +147,7 @@ Update your system settings by modifying the `.openbb_sdk/system_settings.json` 
 
 ```{json}
 {
-    "dbms_uri": null
+    "test_mode": true
 }
 ```
 
@@ -163,7 +163,7 @@ output = obb.stocks.load(
     start_date="2023-01-01",
     provider="fmp",
     chart=True
-    )
+)
 ```
 
 ### 4.1.1. OBBject
@@ -369,18 +369,18 @@ In fact, the static version makes use of this feature to run each command. Take 
 >>> from openbb_core.app.command_runner import CommandRunner
 >>> runner = CommandRunner()
 >>> output = runner.run(
-             "/stocks/load",
-             provider_choices={
-                 "provider": "fmp",
-             },
-             standard_params={
-                 "symbol": "TSLA",
-                 "start_date": "2023-07-01",
-                 "end_date": "2023-07-25",
-             },
-             extra_params={},
-             chart=True,
-         )
+    "/stocks/load",
+    provider_choices={
+        "provider": "fmp",
+    },
+    standard_params={
+        "symbol": "TSLA",
+        "start_date": "2023-07-01",
+        "end_date": "2023-07-25",
+    },
+    extra_params={},
+    chart=True,
+)
 >>> output
 OBBject
 

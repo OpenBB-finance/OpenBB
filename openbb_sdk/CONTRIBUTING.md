@@ -25,6 +25,9 @@
       - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
       - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
   - [Environment and dependencies](#environment-and-dependencies)
+  - [Python package](#python-package)
+    - [Overview](#overview)
+    - [Import time](#import-time)
 
 ## Get started contributing with a template
 
@@ -490,8 +493,8 @@ script that generates the package code is triggered. It detects if there are new
 extensions installed in the environment and rebuilds the package code accordingly. If
 new extensions are not found it just uses the current package version.
 
-When you are developing chances are you want to manually trigger the package rebuild. You
-can do that with:
+When you are developing chances are you want to manually trigger the package rebuild.
+You can do that with:
 
 ```python
 python -c "import openbb; openbb.build()"
