@@ -93,11 +93,27 @@ def test_check_and_get_charting_extension_name(
             assert result == expected_result
 
 
-@pytest.mark.skip(reason="function needs review")
-def test_check_charting_extension_installed():
+@patch("openbb_core.app.charting_service.entry_points")
+@pytest.mark.parametrize(
+    "charting_extension, expected_result",
+    [
+        ("mock_extension", True),  # Extension exists
+        ("another_extension", False),  # Extension doesn't exist
+    ],
+)
+def test_check_charting_extension_installed(
+    mock_entry_points, charting_extension, expected_result
+):
+    class MockEntryPoint:
+        def __init__(self, name):
+            self.name = name
+
     sys = SystemSettings()
     user = UserSettings()
     cm = ChartingService(user_settings=user, system_settings=sys)
 
-    assert cm._check_charting_extension_installed("openbb_charting") is True
-    assert cm._check_charting_extension_installed("openbb_core_extension_2") is False
+    mock_entry_points.return_value = [MockEntryPoint("mock_extension")]
+
+    # Call the function and assert the result
+    result = cm._check_charting_extension_installed(charting_extension)
+    assert result == expected_result
