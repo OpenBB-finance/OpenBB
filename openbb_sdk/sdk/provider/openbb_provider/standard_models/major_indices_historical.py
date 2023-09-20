@@ -36,7 +36,7 @@ class MajorIndicesHistoricalQueryParams(QueryParams):
 class MajorIndicesHistoricalData(Data):
     """Major Indices end of day price data."""
 
-    date: Union[dateType, datetime] = Field(
+    date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
     )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))

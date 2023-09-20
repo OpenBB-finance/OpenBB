@@ -38,7 +38,7 @@ class CryptoHistoricalQueryParams(QueryParams):
 class CryptoHistoricalData(Data):
     """Crypto end of day price Data."""
 
-    date: Union[dateType, datetime] = Field(
+    date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
     )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
