@@ -6,7 +6,7 @@ from typing import Any, Dict, Tuple
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
-from pydantic.fields import ModelField
+from pydantic.fields import FieldInfo
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 
 from providers.tests.utils.credentials_schema import test_credentials
@@ -32,13 +32,13 @@ def generate_fetcher_unit_tests(path: str) -> None:
             )
 
 
-def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
+def get_test_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
     """Get the test params for the fetcher based on the requires standard params."""
     test_params: Dict[str, Any] = {}
     for field_name, field in param_fields.items():
-        if field.required and field.default:
+        if field.is_required() and field.default:
             test_params[field_name] = field.default
-        elif field.required and not field.default:
+        elif field.is_required() and not field.default:
             example_dict = {
                 "symbol": "AAPL",
                 "symbols": "AAPL,MSFT",
@@ -50,17 +50,21 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
             }
             if field_name in example_dict:
                 test_params[field_name] = example_dict[field_name]
-            elif field.type_ == str:
+            elif field.annotation == str:
                 test_params[field_name] = "test"
-            elif field.type_ == int:
+            elif field.annotation == int:
                 test_params[field_name] = 1
-            elif field.type_ == float:
+            elif field.annotation == float:
                 test_params[field_name] = 1.0
-            elif field.type_ == bool:
+            elif field.annotation == bool:
                 test_params[field_name] = True
 
         # This makes sure that the unit test are reproducible by fixing the date
-        elif not field.required and field_name in ["start_date", "end_date", "date"]:
+        elif not field.is_required() and field_name in [
+            "start_date",
+            "end_date",
+            "date",
+        ]:
             if field_name == "start_date":
                 test_params[field_name] = date(2023, 1, 1)
             elif field_name == "end_date":
