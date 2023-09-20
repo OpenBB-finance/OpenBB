@@ -67,4 +67,4 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-        return [FMPExecutiveCompensationData.parse_obj(d) for d in data]
+        return [FMPExecutiveCompensationData.model_validate(d) for d in data]

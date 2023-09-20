@@ -109,5 +109,6 @@ class PolygonCryptoHistoricalFetcher(
     @staticmethod
     def transform_data(data: dict) -> List[PolygonCryptoHistoricalData]:
         return [
-            PolygonCryptoHistoricalData.parse_obj(d) for d in data.get("results", [])
+            PolygonCryptoHistoricalData.model_validate(d)
+            for d in data.get("results", [])
         ]

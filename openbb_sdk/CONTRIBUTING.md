@@ -290,7 +290,7 @@ class <ProviderName>StockEODFetcher(
     ) -> List[<ProviderName>StockEODData]:
         """Transform the data to the standard format."""
 
-        return [<ProviderName>StockEODData.parse_obj(**d) for d in data]
+        return [<ProviderName>StockEODData.model_validate(d) for d in data]
 
 ```
 

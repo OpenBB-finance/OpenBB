@@ -125,4 +125,4 @@ class FMPStockMultiplesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockMultiplesData]:
         """Return the transformed data."""
-        return [FMPStockMultiplesData.parse_obj(d) for d in data]
+        return [FMPStockMultiplesData.model_validate(d) for d in data]

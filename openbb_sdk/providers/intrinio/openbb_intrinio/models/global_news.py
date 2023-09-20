@@ -69,4 +69,4 @@ class IntrinioGlobalNewsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioGlobalNewsData]:
         """Return the transformed data."""
 
-        return [IntrinioGlobalNewsData.parse_obj(d) for d in data]
+        return [IntrinioGlobalNewsData.model_validate(d) for d in data]

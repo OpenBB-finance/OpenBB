@@ -70,4 +70,4 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEarningsCalendarData]:
         """Return the transformed data."""
-        return [FMPEarningsCalendarData.parse_obj(d) for d in data]
+        return [FMPEarningsCalendarData.model_validate(d) for d in data]

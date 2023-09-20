@@ -66,4 +66,4 @@ class FMPForexPairsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPForexPairsData]:
         """Return the transformed data."""
-        return [FMPForexPairsData.parse_obj(d) for d in data]
+        return [FMPForexPairsData.model_validate(d) for d in data]

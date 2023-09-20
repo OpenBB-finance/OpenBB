@@ -74,4 +74,4 @@ class IntrinioStockNewsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioStockNewsData]:
         """Return the transformed data."""
 
-        return [IntrinioStockNewsData.parse_obj(d) for d in data]
+        return [IntrinioStockNewsData.model_validate(d) for d in data]

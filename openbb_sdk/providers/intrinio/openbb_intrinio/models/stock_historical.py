@@ -151,4 +151,4 @@ class IntrinioStockHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
-        return [IntrinioStockHistoricalData.parse_obj(d) for d in data]
+        return [IntrinioStockHistoricalData.model_validate(d) for d in data]

@@ -121,4 +121,4 @@ class FMPBalanceSheetFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPBalanceSheetData]:
         """Return the transformed data."""
-        return [FMPBalanceSheetData.parse_obj(d) for d in data]
+        return [FMPBalanceSheetData.model_validate(d) for d in data]

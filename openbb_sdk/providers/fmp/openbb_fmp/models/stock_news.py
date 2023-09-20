@@ -75,4 +75,4 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockNewsData]:
         """Return the transformed data."""
-        return [FMPStockNewsData.parse_obj(d) for d in data]
+        return [FMPStockNewsData.model_validate(d) for d in data]

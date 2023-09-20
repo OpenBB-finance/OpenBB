@@ -66,4 +66,4 @@ class CboeFuturesCurveFetcher(
     def transform_data(
         data: dict,
     ) -> List[CboeFuturesCurveData]:
-        return [CboeFuturesCurveData.parse_obj(d) for d in data]
+        return [CboeFuturesCurveData.model_validate(d) for d in data]

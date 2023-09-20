@@ -53,4 +53,4 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPAnalystEstimatesData]:
         """Return the transformed data."""
-        return [FMPAnalystEstimatesData.parse_obj(d) for d in data]
+        return [FMPAnalystEstimatesData.model_validate(d) for d in data]

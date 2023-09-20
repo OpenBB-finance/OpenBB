@@ -68,4 +68,4 @@ class FMPCompanyOverviewFetcher(
         data: Dict,
     ) -> FMPCompanyOverviewData:
         """Return the transformed data."""
-        return FMPCompanyOverviewData.parse_obj(data)
+        return FMPCompanyOverviewData.model_validate(data)

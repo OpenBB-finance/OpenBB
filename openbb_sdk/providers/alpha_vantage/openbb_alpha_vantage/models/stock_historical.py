@@ -273,4 +273,4 @@ class AVStockHistoricalFetcher(
         data: dict,
     ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
-        return [AVStockHistoricalData.parse_obj(d) for d in data]
+        return [AVStockHistoricalData.model_validate(d) for d in data]

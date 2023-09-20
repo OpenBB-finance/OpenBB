@@ -74,4 +74,4 @@ class FMPPriceTargetFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPPriceTargetData]:
         """Return the transformed data."""
-        return [FMPPriceTargetData.parse_obj(d) for d in data]
+        return [FMPPriceTargetData.model_validate(d) for d in data]

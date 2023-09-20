@@ -162,4 +162,4 @@ class CboeOptionsChainsFetcher(
         data: dict,
     ) -> List[CboeOptionsChainsData]:
         """Transform the data to the standard format"""
-        return [CboeOptionsChainsData.parse_obj(d) for d in data]
+        return [CboeOptionsChainsData.model_validate(d) for d in data]

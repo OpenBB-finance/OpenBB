@@ -133,4 +133,4 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     def transform_data(data: dict) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
-        return [CboeIndexSnapshotsData.parse_obj(d) for d in data]
+        return [CboeIndexSnapshotsData.model_validate(d) for d in data]

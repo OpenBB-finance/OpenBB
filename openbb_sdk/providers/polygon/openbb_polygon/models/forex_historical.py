@@ -106,5 +106,6 @@ class PolygonForexHistoricalFetcher(
     @staticmethod
     def transform_data(data: dict) -> List[PolygonForexHistoricalData]:
         return [
-            PolygonForexHistoricalData.parse_obj(d) for d in data.get("results", [])
+            PolygonForexHistoricalData.model_validate(d)
+            for d in data.get("results", [])
         ]

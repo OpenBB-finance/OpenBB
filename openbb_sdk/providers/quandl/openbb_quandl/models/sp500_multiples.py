@@ -32,7 +32,7 @@ class QuandlSP500MultiplesFetcher(
     def extract_data(
         query: QuandlSP500MultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[Dict]:
         """Get the raw Quandl Data."""
         api_key = credentials.get("quandl_api_key") if credentials else ""
@@ -64,4 +64,4 @@ class QuandlSP500MultiplesFetcher(
         data: List[Dict],
     ) -> List[QuandlSP500MultiplesData]:
         """Parse data into the QuandlSP500MultiplesData format."""
-        return [QuandlSP500MultiplesData.parse_obj(d) for d in data]
+        return [QuandlSP500MultiplesData.model_validate(d) for d in data]

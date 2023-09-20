@@ -101,4 +101,4 @@ class FMPCryptoHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPCryptoHistoricalData]:
         """Return the transformed data."""
-        return [FMPCryptoHistoricalData.parse_obj(d) for d in data]
+        return [FMPCryptoHistoricalData.model_validate(d) for d in data]

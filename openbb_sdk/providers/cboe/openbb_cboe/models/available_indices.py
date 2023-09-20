@@ -99,4 +99,4 @@ class CboeAvailableIndicesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeAvailableIndicesData]:
         """Transform the data to the standard format."""
-        return [CboeAvailableIndicesData.parse_obj(d) for d in data]
+        return [CboeAvailableIndicesData.model_validate(d) for d in data]

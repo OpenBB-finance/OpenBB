@@ -115,4 +115,4 @@ class FMPMajorIndicesHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMajorIndicesHistoricalData]:
         """Return the transformed data."""
-        return [FMPMajorIndicesHistoricalData.parse_obj(d) for d in data]
+        return [FMPMajorIndicesHistoricalData.model_validate(d) for d in data]

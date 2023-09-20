@@ -68,7 +68,7 @@ class SystemService(metaclass=SingletonMeta):
             system_settings_dict.update(kwargs)
             system_settings = SystemSettings.model_validate(system_settings_dict)
         else:
-            system_settings = SystemSettings.parse_obj(kwargs)
+            system_settings = SystemSettings.model_validate(kwargs)
 
         return system_settings
 

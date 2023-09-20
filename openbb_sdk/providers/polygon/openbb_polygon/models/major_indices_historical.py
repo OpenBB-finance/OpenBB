@@ -110,6 +110,6 @@ class PolygonMajorIndicesHistoricalFetcher(
         data: dict,
     ) -> List[PolygonMajorIndicesHistoricalData]:
         return [
-            PolygonMajorIndicesHistoricalData.parse_obj(d)
+            PolygonMajorIndicesHistoricalData.model_validate(d)
             for d in data.get("results", [])
         ]

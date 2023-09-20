@@ -165,4 +165,4 @@ class PolygonForexPairsFetcher(
         data: List[dict],
     ) -> List[PolygonForexPairsData]:
         """Transform the data into a list of PolygonForexPairsData."""
-        return [PolygonForexPairsData.parse_obj(d) for d in data]
+        return [PolygonForexPairsData.model_validate(d) for d in data]

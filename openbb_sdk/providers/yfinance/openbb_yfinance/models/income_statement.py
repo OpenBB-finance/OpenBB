@@ -63,4 +63,4 @@ class YFinanceIncomeStatementFetcher(
     def transform_data(
         data: List[Dict],
     ) -> List[YFinanceIncomeStatementData]:
-        return [YFinanceIncomeStatementData.parse_obj(d) for d in data]
+        return [YFinanceIncomeStatementData.model_validate(d) for d in data]

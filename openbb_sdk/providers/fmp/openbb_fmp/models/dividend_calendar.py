@@ -93,4 +93,4 @@ class FMPDividendCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPDividendCalendarData]:
         """Return the transformed data."""
-        return [FMPDividendCalendarData.parse_obj(d) for d in data]
+        return [FMPDividendCalendarData.model_validate(d) for d in data]

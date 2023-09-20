@@ -223,4 +223,4 @@ class CboeMajorIndicesHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeMajorIndicesHistoricalData]:
         """Transform the data to the standard format."""
-        return [CboeMajorIndicesHistoricalData.parse_obj(d) for d in data]
+        return [CboeMajorIndicesHistoricalData.model_validate(d) for d in data]

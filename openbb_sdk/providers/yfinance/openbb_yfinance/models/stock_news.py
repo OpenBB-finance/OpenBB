@@ -72,4 +72,4 @@ class YFinanceStockNewsFetcher(
     def transform_data(
         data: List[Dict],
     ) -> List[YFinanceStockNewsData]:
-        return [YFinanceStockNewsData.parse_obj(d) for d in data]
+        return [YFinanceStockNewsData.model_validate(d) for d in data]

@@ -115,4 +115,4 @@ class CboeEuropeanIndexConstituentsFetcher(
     def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexConstituentsData]:
         """Transform the data to the standard format"""
 
-        return [CboeEuropeanIndexConstituentsData.parse_obj(d) for d in data]
+        return [CboeEuropeanIndexConstituentsData.model_validate(d) for d in data]
