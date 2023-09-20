@@ -10,6 +10,11 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
+from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
+from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
+from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
+from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
@@ -94,5 +99,10 @@ fmp_provider = Provider(
         "DividendCalendar": FMPDividendCalendarFetcher,
         "StockQuote": FMPStockQuoteFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
+        "EtfSearch": FMPEtfSearchFetcher,
+        "EtfHoldings": FMPEtfHoldingsFetcher,
+        "EtfSectors": FMPEtfSectorsFetcher,
+        "EtfCountries": FMPEtfCountriesFetcher,
+        "EtfInfo": FMPEtfInfoFetcher,
     },
 )

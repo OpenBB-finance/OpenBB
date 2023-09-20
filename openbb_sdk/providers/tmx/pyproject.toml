@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "openbb-tmx"
+version = "0.1.0"
+description = "TMX extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_tmx" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests-cache = "^1.1.0"
+pandas-market-calendars = ">=3.2"
+openbb-core = { path = "../../sdk/core" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+tmx = "openbb_tmx:tmx_provider"

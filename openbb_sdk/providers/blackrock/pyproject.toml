@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-blackrock"
+version = "0.1.0"
+description = "Blackrock extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_blackrock" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests-cache = "^1.1.0"
+openbb-core = { path = "../../sdk/core" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+blackrock = "openbb_blackrock:blackrock_provider"
