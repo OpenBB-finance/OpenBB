@@ -69,4 +69,4 @@ class IntrinioForexPairsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioForexPairsData]:
         """Return the transformed data."""
 
-        return [IntrinioForexPairsData(**d) for d in data]
+        return [IntrinioForexPairsData.parse_obj(d) for d in data]
