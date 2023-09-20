@@ -2,13 +2,14 @@
 
 from typing import List, Literal, Union
 
-import openbb_provider
+import numpy
 import pandas
 import pydantic
 import pydantic.types
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_arguments
 
 
@@ -48,7 +49,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ad(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         offset: int = 0,
     ) -> OBBject[List]:
@@ -100,7 +111,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def adosc(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         fast: pydantic.types.PositiveInt = 3,
         slow: pydantic.types.PositiveInt = 10,
@@ -153,7 +174,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def adx(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: int = 50,
         scalar: float = 100.0,
@@ -207,7 +238,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def aroon(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: int = 25,
         scalar: int = 100,
@@ -266,7 +307,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def atr(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         mamode: Literal["rma", "ema", "sma", "wma"] = "rma",
@@ -321,7 +372,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def bbands(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 50,
@@ -392,7 +453,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def cci(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         scalar: pydantic.types.PositiveFloat = 0.015,
@@ -436,7 +507,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def cg(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
     ) -> OBBject[List]:
@@ -482,7 +563,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def clenow(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         target: str = "adj_close",
         period: pydantic.types.PositiveInt = 90,
@@ -528,7 +619,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def cones(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         lower_q: float = 0.25,
         upper_q: float = 0.75,
@@ -610,7 +711,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def demark(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         target: str = "close",
         show_all: bool = False,
@@ -664,7 +775,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def donchian(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         lower_length: pydantic.types.PositiveInt = 20,
         upper_length: pydantic.types.PositiveInt = 20,
@@ -719,7 +840,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ema(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 50,
@@ -779,7 +910,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def fib(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
         period: pydantic.types.PositiveInt = 120,
@@ -826,7 +967,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def fisher(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: pydantic.types.PositiveInt = 14,
         signal: pydantic.types.PositiveInt = 1,
@@ -876,7 +1027,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def hma(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 50,
@@ -931,7 +1092,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ichimoku(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         conversion: pydantic.types.PositiveInt = 9,
         base: pydantic.types.PositiveInt = 26,
@@ -981,7 +1152,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def kc(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         length: pydantic.types.PositiveInt = 20,
         scalar: pydantic.types.PositiveFloat = 20,
@@ -1039,7 +1220,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def macd(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         fast: int = 12,
@@ -1103,7 +1294,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def obv(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         offset: int = 0,
     ) -> OBBject[List]:
@@ -1153,7 +1354,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def rsi(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 14,
@@ -1213,7 +1424,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def sma(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 50,
@@ -1271,7 +1492,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def stoch(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         fast_k_period: pydantic.types.NonNegativeInt = 14,
         slow_d_period: pydantic.types.NonNegativeInt = 3,
@@ -1326,7 +1557,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def vwap(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         index: str = "date",
         anchor: str = "D",
         offset: int = 0,
@@ -1375,7 +1616,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def wma(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 50,
@@ -1430,7 +1681,17 @@ class CLASS_ta(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def zlma(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str = "close",
         index: str = "date",
         length: int = 50,

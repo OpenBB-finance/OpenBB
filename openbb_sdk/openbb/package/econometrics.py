@@ -2,6 +2,7 @@
 
 from typing import Dict, List, Literal, Union
 
+import numpy
 import openbb_provider
 import openbb_provider.abstract.data
 import pandas
@@ -10,6 +11,7 @@ import pydantic.types
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_arguments
 
 
@@ -37,7 +39,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def bgot(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
         lags: pydantic.types.PositiveInt = 1,
@@ -75,7 +87,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def coint(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         columns: List[str],
     ) -> OBBject[openbb_provider.abstract.data.Data]:
         """Show co-integration between two timeseries using the two step Engle-Granger test.
@@ -106,7 +128,18 @@ class CLASS_econometrics(Container):
 
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def corr(
-        self, data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame]
+        self,
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
     ) -> OBBject[List]:
         """Get the corrlelation matrix of an input dataset.
 
@@ -133,7 +166,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def dwat(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -168,7 +211,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def granger(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_column: str,
         lag: pydantic.types.PositiveInt = 3,
@@ -206,7 +259,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -241,7 +304,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def ols_summary(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[openbb_provider.abstract.data.Data]:
@@ -276,7 +349,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def panelbols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -311,7 +394,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def panelfd(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -346,7 +439,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def panelfmac(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -381,7 +484,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def panelols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -416,7 +529,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def panelpols(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -451,7 +574,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def panelre(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
@@ -486,7 +619,17 @@ class CLASS_econometrics(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         column: str,
         regression: Literal["c", "ct", "ctt"] = "c",
     ) -> OBBject[openbb_provider.abstract.data.Data]:

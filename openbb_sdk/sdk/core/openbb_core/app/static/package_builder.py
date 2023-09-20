@@ -20,19 +20,35 @@ from typing import (
     Union,
     get_args,
     get_type_hints,
+    TypeVar,
 )
 
 import pandas as pd
+import numpy as np
 from importlib_metadata import entry_points
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
+from openbb_provider.abstract.data import Data
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.env import Env
+
+
+DataProcessingSupportedTypes = TypeVar(
+    "DataProcessingSupportedTypes",
+    list,
+    dict,
+    pd.DataFrame,
+    List[pd.DataFrame],
+    pd.Series,
+    List[pd.Series],
+    np.ndarray,
+    Data,
+)
 
 
 class Console:
@@ -228,6 +244,7 @@ class ImportDefinition:
         # TODO: Find a better way to handle this. This is a temporary solution.
         code += "\nimport openbb_provider"
         code += "\nimport pandas"
+        code += "\nimport numpy"
         code += "\nimport datetime"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import validate_arguments, BaseModel"
@@ -239,7 +256,8 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
+        code += "\nfrom openbb_core.app.static.filters import filter_inputs"
+        code += "\nfrom openbb_provider.abstract.data import Data"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -510,7 +528,7 @@ class MethodDefinition:
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
             "symbol": List[str],
-            "data": pd.DataFrame,
+            "data": DataProcessingSupportedTypes,
             "start_date": str,
             "end_date": str,
             "provider": None,
@@ -555,11 +573,16 @@ class MethodDefinition:
                     )
             else:
                 new_type = TYPE_EXPANSION.get(name, ...)
-                updated_type = (
-                    param.annotation
-                    if new_type is ...
-                    else Union[param.annotation, new_type]
-                )
+
+                if hasattr(new_type, "__constraints__"):
+                    types = new_type.__constraints__ + (param.annotation,)
+                    updated_type = Union[types]  # type: ignore
+                else:
+                    updated_type = (
+                        param.annotation
+                        if new_type is ...
+                        else Union[param.annotation, new_type]
+                    )
 
                 formatted[name] = Parameter(
                     name=name,
@@ -608,6 +631,8 @@ class MethodDefinition:
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
+        func_params = func_params.replace("pandas.core.series.Series", "pandas.Series")
+        func_params = func_params.replace("openbb_provider.abstract.data.Data", "Data")
 
         return func_params
 

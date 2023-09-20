@@ -2,7 +2,7 @@
 
 from typing import List, Literal, Union
 
-import openbb_provider
+import numpy
 import openbb_qa.qa_models
 import pandas
 import pydantic
@@ -10,6 +10,7 @@ import pydantic.types
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
+from openbb_provider.abstract.data import Data
 from pydantic import validate_arguments
 
 
@@ -33,7 +34,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def capm(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
     ) -> OBBject[openbb_qa.qa_models.CAPMModel]:
         """Capital Asset Pricing Model."""  # noqa: E501
@@ -51,7 +62,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def kurtosis(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         window: pydantic.types.PositiveInt,
     ) -> OBBject[List]:
@@ -86,7 +107,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def normality(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
     ) -> OBBject[openbb_qa.qa_models.NormalityModel]:
         """
@@ -124,7 +155,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
@@ -163,7 +204,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         window: pydantic.types.PositiveInt,
         quantile_pct: pydantic.types.NonNegativeFloat = 0.5,
@@ -185,7 +236,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def sh(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         rfr: float = 0.0,
         window: pydantic.types.PositiveInt = 252,
@@ -224,7 +285,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def skew(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         window: pydantic.types.PositiveInt,
     ) -> OBBject[List]:
@@ -259,7 +330,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def so(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         target_return: float = 0.0,
         window: pydantic.types.PositiveInt = 252,
@@ -304,7 +385,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def summary(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
     ) -> OBBject[openbb_qa.qa_models.SummaryModel]:
         """Summary.
@@ -335,7 +426,17 @@ class CLASS_qa(Container):
     @validate_arguments(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
-        data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
+        data: Union[
+            list,
+            dict,
+            pandas.DataFrame,
+            List[pandas.DataFrame],
+            pandas.Series,
+            List[pandas.Series],
+            numpy.ndarray,
+            Data,
+            List[Data],
+        ],
         target: str,
         fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
