@@ -24,6 +24,7 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
         default="reported", description="Type of the statement to be fetched."
     )
     year: Optional[int] = Field(
+        default=None,
         description="Year of the statement to be fetched.",
     )
 

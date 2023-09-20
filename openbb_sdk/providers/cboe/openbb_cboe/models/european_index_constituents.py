@@ -29,22 +29,28 @@ class CboeEuropeanIndexConstituentsData(EuropeanIndexConstituentsData):
     Current trading day price data for all constituents of the CBOE European Index.
     """
 
-    prev_close: Optional[float] = Field(description="Previous closing  price.")
-    change: Optional[float] = Field(description="Change in price.")
+    prev_close: Optional[float] = Field(
+        default=None, description="Previous closing  price."
+    )
+    change: Optional[float] = Field(default=None, description="Change in price.")
     change_percent: Optional[float] = Field(
-        description="Change in price as a percentage."
+        default=None, description="Change in price as a percentage."
     )
     tick: Optional[str] = Field(
-        description="Whether the last sale was an up or down tick."
+        default=None, description="Whether the last sale was an up or down tick."
     )
     last_trade_timestamp: Optional[datetime] = Field(
-        description="Last trade timestamp for the symbol."
+        default=None, description="Last trade timestamp for the symbol."
     )
-    exchange_id: Optional[int] = Field(description="The Exchange ID number.")
+    exchange_id: Optional[int] = Field(
+        default=None, description="The Exchange ID number."
+    )
     seqno: Optional[int] = Field(
-        description="Sequence number of the last trade on the tape."
+        default=None, description="Sequence number of the last trade on the tape."
     )
-    asset_type: Optional[str] = Field(description="Type of asset.", alias="type")
+    asset_type: Optional[str] = Field(
+        default=None, description="Type of asset.", alias="type"
+    )
 
     @validator("last_trade_timestamp", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

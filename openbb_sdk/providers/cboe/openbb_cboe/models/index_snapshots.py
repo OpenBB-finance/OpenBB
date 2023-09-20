@@ -31,10 +31,11 @@ class CboeIndexSnapshotsData(IndexSnapshotsData):
     """CBOE Company Search Data."""
 
     isin: Optional[str] = Field(
-        description="ISIN code for the index. Valid only for European indices."
+        default=None,
+        description="ISIN code for the index. Valid only for European indices.",
     )
     last_trade_timestamp: Optional[datetime] = Field(
-        description="Last trade timestamp for the index."
+        default=None, description="Last trade timestamp for the index."
     )
 
 

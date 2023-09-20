@@ -34,10 +34,12 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
         default="realtime", description="The source of the data."
     )
     start_time: Optional[time] = Field(
-        description="Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'."
+        default=None,
+        description="Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'.",
     )
     end_time: Optional[time] = Field(
-        description="Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'."
+        default=None,
+        description="Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'.",
     )
     interval_size: Optional[INTERVALS] = Field(
         default="60m", description=QUERY_DESCRIPTIONS.get("frequency", "")

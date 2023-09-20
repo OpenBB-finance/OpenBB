@@ -33,7 +33,9 @@ class KeyMetricsQueryParams(QueryParams):
 class KeyMetricsData(Data):
     """Key Metrics Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period of the data.")
     revenue_per_share: Optional[float] = Field(

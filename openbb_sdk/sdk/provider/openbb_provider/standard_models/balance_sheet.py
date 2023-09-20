@@ -36,7 +36,9 @@ class BalanceSheetQueryParams(QueryParams):
 class BalanceSheetData(Data):
     """Balance Sheet Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description="Date of the fetched statement.")
     cik: Optional[str] = Field(
         default=None, description="Central Index Key (CIK) of the company."

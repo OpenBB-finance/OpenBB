@@ -73,11 +73,13 @@ class FMPBalanceSheetData(BalanceSheetData):
         default=None, description="Deferred Tax Liabilities Non Current"
     )
     capital_lease_obligations: Optional[StrictInt] = Field(
-        description="Capital lease obligations"
+        default=None, description="Capital lease obligations"
     )
-    total_investments: Optional[StrictInt] = Field(description="Total investments")
-    total_debt: Optional[StrictInt] = Field(description="Total debt")
-    net_debt: Optional[StrictInt] = Field(description="Net debt")
+    total_investments: Optional[StrictInt] = Field(
+        default=None, description="Total investments"
+    )
+    total_debt: Optional[StrictInt] = Field(default=None, description="Total debt")
+    net_debt: Optional[StrictInt] = Field(default=None, description="Net debt")
 
     total_debt: Optional[StrictInt] = Field(default=None, description="Total Debt")
     net_debt: Optional[StrictInt] = Field(default=None, description="Net Debt")

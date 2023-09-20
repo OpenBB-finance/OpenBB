@@ -29,7 +29,7 @@ class CboeStockSearchData(StockSearchData):
         alias="DPM Name",
     )
     post_station: Optional[str] = Field(
-        description="Post and station location on the CBOE trading floor."
+        default=None, description="Post and station location on the CBOE trading floor."
     )
 
 

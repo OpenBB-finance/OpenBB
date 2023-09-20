@@ -2,7 +2,7 @@
 
 
 from datetime import date as dateType
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
 
@@ -28,7 +28,9 @@ class CashFlowStatementGrowthQueryParams(QueryParams):
 class CashFlowStatementGrowthData(Data):
     """Cash Flow Statement Growth Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period the statement is returned for.")
     growth_net_income: float = Field(description="Growth rate of net income.")

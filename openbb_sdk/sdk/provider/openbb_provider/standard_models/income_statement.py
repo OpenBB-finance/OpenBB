@@ -33,7 +33,9 @@ class IncomeStatementQueryParams(QueryParams):
 class IncomeStatementData(Data):
     """Income Statement Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description="Date of the income statement.")
     period: Optional[str] = Field(
         default=None, description="Period of the income statement."

@@ -30,7 +30,7 @@ class YFinanceStockNewsData(StockNewsData):
     publisher: str = Field(description="Publisher of the news article")
     type: str = Field(description="Type of the news article")
     thumbnail: Optional[List] = Field(
-        description="Thumbnail related data to the ticker news article."
+        default=None, description="Thumbnail related data to the ticker news article."
     )
     relatedTickers: str = Field(description="Tickers related to the news article.")
 
