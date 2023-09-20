@@ -68,7 +68,7 @@ class OBBject(Tagged, Generic[T]):
     def results_type_repr(cls, params: Optional[Any] = None) -> str:
         """Return the results type name."""
         type_ = params[0] if params else cls.model_fields["results"].annotation
-        name = type_.__name__
+        name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
         if "typing." in str(type_):
             unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
             name = sub(
