@@ -68,9 +68,7 @@ class IntrinioFredHistoricalFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(
-            query.model_dump(by_alias=True), ["symbol", "all_pages"]
-        )
+        query_str = get_querystring(query.model_dump(), ["symbol", "all_pages"])
         query_str = query_str.replace("limit", "page_size")
         url = (
             f"{base_url}/indices/economic/${query.symbol.replace('$', '')}/historical_data/level"
@@ -106,5 +104,4 @@ class IntrinioFredHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioFredHistoricalData]:
         """Return the transformed data."""
-
-        return [IntrinioFredHistoricalData(**d) for d in data]
+        return [IntrinioFredHistoricalData.model_validate(d) for d in data]
