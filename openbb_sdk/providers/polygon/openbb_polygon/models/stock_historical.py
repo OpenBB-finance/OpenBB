@@ -14,7 +14,7 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, validator
+from pydantic import Field, PositiveInt
 
 
 class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -59,10 +59,6 @@ class PolygonStockHistoricalData(StockHistoricalData):
         description="Number of transactions for the symbol in the time period.",
         alias="n",
     )
-
-    @validator("t", pre=True, check_fields=False)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonStockHistoricalFetcher(
@@ -118,10 +114,11 @@ class PolygonStockHistoricalFetcher(
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
 
-            # return data.extend(
-            #     [PolygonStockHistoricalData.parse_obj(d) for d in results]
-            # )
-            # extend the data without using the Pydantic model
+            for r in results:
+                r["t"] = datetime.fromtimestamp(r["t"] / 1000)
+                if query.timespan not in ["minute", "hour"]:
+                    r["t"] = r["t"].date()
+
             data.extend(results)
 
         with ThreadPoolExecutor() as executor:
@@ -131,8 +128,6 @@ class PolygonStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        transformed_data: List[PolygonStockHistoricalData] = [
-            PolygonStockHistoricalData.parse_obj(d) for d in data
-        ]
+        transformed_data = [PolygonStockHistoricalData.parse_obj(d) for d in data]
         transformed_data.sort(key=lambda x: x.date)
         return transformed_data

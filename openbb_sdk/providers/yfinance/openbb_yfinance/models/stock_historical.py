@@ -13,8 +13,8 @@ from openbb_provider.standard_models.stock_historical import (
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
-from pandas import to_datetime
-from pydantic import Field
+from pandas import Timestamp, to_datetime
+from pydantic import Field, validator
 
 
 class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -55,6 +55,13 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
 
 class YFinanceStockHistoricalData(StockHistoricalData):
     """YFinance Stock End of Day Data."""
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        if isinstance(v, Timestamp):
+            return v.to_pydatetime()
+        return v
 
 
 class YFinanceStockHistoricalFetcher(
@@ -126,10 +133,14 @@ class YFinanceStockHistoricalFetcher(
 
         if query.start_date:
             data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index).date
+            data.index = to_datetime(data.index)
+
+            start_date_dt = datetime.combine(query.start_date, datetime.min.time())
+            end_date_dt = datetime.combine(query.end_date, datetime.min.time())
+
             data = data[
-                (data.index >= query.start_date - timedelta(days=days))
-                & (data.index <= query.end_date)
+                (data.index >= start_date_dt - timedelta(days=days))
+                & (data.index <= end_date_dt)
             ]
 
         data.reset_index(inplace=True)
@@ -142,4 +153,5 @@ class YFinanceStockHistoricalFetcher(
         data: List[Dict],
     ) -> List[YFinanceStockHistoricalData]:
         """Transform the data to the standard format."""
+
         return [YFinanceStockHistoricalData.parse_obj(d) for d in data]
