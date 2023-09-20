@@ -58,12 +58,23 @@ class PackageBuilder:
         self.verbose = verbose
         self.console = Console(verbose)
 
+    def clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
+        if modules:
+            for module in modules:
+                module_path = self.directory / "package" / f"{module}.py"
+                if module_path.exists():
+                    module_path.unlink()
+        else:
+            shutil.rmtree(self.directory / "package", ignore_errors=True)
+
     def build(
         self,
         modules: Optional[Union[str, List[str]]] = None,
     ) -> None:
         """Build the extensions for the SDK."""
         self.console.log("\nBuilding extensions package...\n")
+
+        self.clean_package(modules)
 
         self.save_extension_map()
         self.save_module_map()
