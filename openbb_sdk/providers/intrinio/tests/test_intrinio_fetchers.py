@@ -5,6 +5,7 @@ from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
+from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
@@ -106,5 +107,14 @@ def test_intrinio_income_statement_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioIncomeStatementFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_fred_historical_fetcher(credentials=test_credentials):
+    params = {"symbol": "GDP"}
+
+    fetcher = IntrinioFredHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

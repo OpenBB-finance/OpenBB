@@ -1,9 +1,7 @@
 """Fred Index Historical data model."""
 
 
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
 from pydantic import Field, PositiveFloat, field_validator

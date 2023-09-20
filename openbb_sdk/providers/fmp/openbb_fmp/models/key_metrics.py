@@ -63,7 +63,11 @@ class FMPKeyMetricsFetcher(
 
         def multiple_symbols(symbol: str, data: List[Dict]) -> None:
             url = create_url(
-                3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
+                3,
+                f"key-metrics/{symbol}",
+                api_key,
+                query,
+                exclude=["symbol", "with_ttm"],
             )
             ttm_url = url.replace("key-metrics", "key-metrics-ttm")
             if query.with_ttm and (metrics_ttm := get_data_one(ttm_url, **kwargs)):

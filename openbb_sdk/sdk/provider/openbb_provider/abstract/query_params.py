@@ -18,9 +18,9 @@ class QueryParams(BaseModel):
     )
 
     def model_dump(self, *args, **kwargs):
-        by_alias = kwargs.pop("by_alias", False)
+        kwargs.pop("by_alias", False)
         original = super().model_dump(*args, **kwargs)
-        if by_alias:
+        if self.__alias_dict__:
             return {
                 self.__alias_dict__.get(key, key): value
                 for key, value in original.items()
