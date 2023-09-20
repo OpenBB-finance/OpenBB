@@ -196,8 +196,6 @@ class CboeMajorIndicesHistoricalFetcher(
                     data_list[i]["volume"]["total_options_volume"]
                 )
             data = pd.DataFrame()
-            date = [d.replace("T", " ") for d in date]
-            date = [datetime.strptime(d, "%Y-%m-%d %H:%M:%S") for d in date]
             data["date"] = pd.to_datetime(date)
             data["open"] = open_
             data["high"] = high
