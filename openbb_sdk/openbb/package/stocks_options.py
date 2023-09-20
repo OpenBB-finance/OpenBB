@@ -25,7 +25,7 @@ class CLASS_stocks_options(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Union[Literal["cboe", "intrinio"], None] = None,
+        provider: Union[Literal["intrinio"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Get the complete options chain for a ticker.
@@ -34,9 +34,9 @@ class CLASS_stocks_options(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Union[Literal['cboe', 'intrinio'], None]
+        provider : Union[Literal['intrinio'], None]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
         date : Union[str, None]
             Date for which the options chains are returned. (provider: intrinio)
@@ -46,7 +46,7 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['cboe', 'intrinio'], NoneType]
+            provider : Union[Literal['intrinio'], NoneType]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -108,29 +108,7 @@ class CLASS_stocks_options(Container):
         theta : Optional[float]
             Theta of the option.
         vega : Optional[float]
-            Vega of the option.
-        bid_size : Optional[int]
-            Bid size for the option. (provider: cboe)
-        ask_size : Optional[int]
-            Ask size for the option. (provider: cboe)
-        theoretical : Optional[float]
-            Theoretical value of the option. (provider: cboe)
-        last_trade_price : Optional[float]
-            Last trade price of the option. (provider: cboe)
-        tick : Optional[str]
-            Whether the last tick was up or down in price. (provider: cboe)
-        prev_close : Optional[float]
-            Previous closing price of the option. (provider: cboe)
-        change : Optional[float]
-            Change in  price of the option. (provider: cboe)
-        change_percent : Optional[float]
-            Change, in percent, of the option. (provider: cboe)
-        rho : Optional[float]
-            Rho of the option. (provider: cboe)
-        last_trade_timestamp : Optional[datetime]
-            Last trade timestamp of the option. (provider: cboe)
-        dte : Optional[int]
-            Days to expiration for the option. (provider: cboe)"""  # noqa: E501
+            Vega of the option."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
