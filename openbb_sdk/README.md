@@ -20,7 +20,7 @@ The command below provides access to the core functionalities behind the [OpenBB
 pip install openbb
 ```
 
-To install extensions that expand the core functionalities, you can do so by specifying the extension name or use `all` to install all.
+To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
 ```bash
 # Install charting extension
