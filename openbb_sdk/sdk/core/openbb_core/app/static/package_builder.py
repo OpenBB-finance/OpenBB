@@ -331,6 +331,7 @@ class DocstringGenerator:
             "    metadata: Optional[Metadata]\n"
             "        Metadata info about the command execution.\n"
         )
+        obbject_description = obbject_description.replace("NoneType", "None")
 
         return obbject_description
 
@@ -633,10 +634,6 @@ class MethodDefinition:
             item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
                 func_returns = f"OBBject[{item_type.__name__}]"
-            # elif get_origin(item_type) == list:
-            #     inner_type = get_args(item_type)[0]
-            #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-            #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 inner_type_name = (
                     item_type.__name__

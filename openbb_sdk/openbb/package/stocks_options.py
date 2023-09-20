@@ -46,7 +46,7 @@ class CLASS_stocks_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['intrinio'], NoneType]
+            provider : Union[Literal['intrinio'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

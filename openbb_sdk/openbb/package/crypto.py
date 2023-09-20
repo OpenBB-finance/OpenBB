@@ -73,7 +73,7 @@ class CLASS_crypto(Container):
         OBBject
             results : List[CryptoHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon'], NoneType]
+            provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

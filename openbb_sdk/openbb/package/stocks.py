@@ -105,7 +105,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon'], NoneType]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -201,7 +201,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockMultiples]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -410,7 +410,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon'], NoneType]
+            provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -510,7 +510,7 @@ class CLASS_stocks(Container):
         OBBject
             results : List[StockQuote]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio'], NoneType]
+            provider : Union[Literal['fmp', 'intrinio'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

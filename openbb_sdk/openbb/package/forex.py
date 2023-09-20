@@ -72,7 +72,7 @@ class CLASS_forex(Container):
         OBBject
             results : List[ForexHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon'], NoneType]
+            provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -164,7 +164,7 @@ class CLASS_forex(Container):
         OBBject
             results : List[ForexPairs]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon'], NoneType]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
