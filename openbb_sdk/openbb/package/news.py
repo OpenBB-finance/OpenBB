@@ -35,31 +35,31 @@ class CLASS_news(Container):
         ----------
         limit : NonNegativeInt
             Number of articles to return.
-        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], NoneType]
+        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Union[str, NoneType]
+        date : Union[str, None]
             Date of the news to retrieve. (provider: benzinga)
-        start_date : Union[str, NoneType]
+        start_date : Union[str, None]
             Start date of the news to retrieve. (provider: benzinga)
-        end_date : Union[str, NoneType]
+        end_date : Union[str, None]
             End date of the news to retrieve. (provider: benzinga)
         updated_since : Union[int, None]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['id', 'created', 'updated'], NoneType]
+        sort : Union[Literal['id', 'created', 'updated'], None]
             Key to sort the news by. (provider: benzinga)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Union[Literal['asc', 'desc'], None]
             Order to sort the news by. (provider: benzinga)
-        isin : Union[str, NoneType]
+        isin : Union[str, None]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Union[str, None]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        channels : Union[str, NoneType]
+        channels : Union[str, None]
             Channels of the news to retrieve. (provider: benzinga)
         topics : Union[str, None]
             Topics of the news to retrieve. (provider: benzinga)

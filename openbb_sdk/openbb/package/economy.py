@@ -186,7 +186,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        provider : Union[Literal['quandl'], NoneType]
+        provider : Union[Literal['quandl'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'quandl' if there is
             no default.
@@ -197,7 +197,7 @@ class CLASS_economy(Container):
                     Certain symbols, such as "ES=F", or exact names are also valid.
                     Default report is: S&P 500 Consolidated (CME))
                      (provider: quandl)
-        data_type : Union[Literal['F', 'FO', 'CITS'], NoneType]
+        data_type : Union[Literal['F', 'FO', 'CITS'], None]
 
                     The type of data to reuturn. Default is "FO".
 
@@ -207,9 +207,9 @@ class CLASS_economy(Container):
 
                     CITS = Commodity Index Trader Supplemental. Only valid for commodities.
                  (provider: quandl)
-        legacy_format : Union[bool, NoneType]
+        legacy_format : Union[bool, None]
             Returns the legacy format of report. Default is False. (provider: quandl)
-        report_type : Union[Literal['ALL', 'CHG', 'OLD', 'OTR'], NoneType]
+        report_type : Union[Literal['ALL', 'CHG', 'OLD', 'OTR'], None]
 
                     The type of report to return. Default is "ALL".
 
@@ -221,7 +221,7 @@ class CLASS_economy(Container):
 
                         OTR = Other Crop Years
                  (provider: quandl)
-        measure : Union[Literal['CR', 'NT', 'OI', 'CHG'], NoneType]
+        measure : Union[Literal['CR', 'NT', 'OI', 'CHG'], None]
 
                     The measure to return. Default is None.
 
@@ -233,11 +233,11 @@ class CLASS_economy(Container):
 
                     CHG = Change in Positions. Only valid when data_type is "CITS".
                  (provider: quandl)
-        start_date : Union[datetime.date, NoneType]
+        start_date : Union[datetime.date, None]
             The start date of the time series. Defaults to all. (provider: quandl)
-        end_date : Union[datetime.date, NoneType]
+        end_date : Union[datetime.date, None]
             The end date of the time series. Defaults to the most recent data. (provider: quandl)
-        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], NoneType]
+        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], None]
             Transform the data as w/w difference, percent change, cumulative, or normalize. (provider: quandl)
 
         Returns
@@ -285,7 +285,7 @@ class CLASS_economy(Container):
         ----------
         query : str
             Search query.
-        provider : Union[Literal['quandl'], NoneType]
+        provider : Union[Literal['quandl'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'quandl' if there is
             no default.
@@ -688,9 +688,9 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+        interval : Union[Literal['1d', '1m'], None, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe); Data granularity. (provider: fmp); Data granularity. (provider: yfinance)
-        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
+        timeseries : Union[pydantic.types.NonNegativeInt, None]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
@@ -795,7 +795,7 @@ class CLASS_economy(Container):
             Search query.
         symbol : Union[bool, List[str]]
             Whether to search by ticker symbol.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Union[Literal['cboe'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -877,9 +877,9 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        region : Union[Literal['US', 'EU'], NoneType]
+        region : Union[Literal['US', 'EU'], None]
             The region to return. Currently supports US and EU.
-        provider : Union[Literal['cboe'], NoneType]
+        provider : Union[Literal['cboe'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -1068,17 +1068,17 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Ratio by Year', 'PE Ratio by Month', 'Dividend by Year', 'Dividend by Month', 'Dividend Growth by Quarter', 'Dividend Growth by Year', 'Dividend Yield by Year', 'Dividend Yield by Month', 'Earnings by Year', 'Earnings by Month', 'Earnings Growth by Year', 'Earnings Growth by Quarter', 'Real Earnings Growth by Year', 'Real Earnings Growth by Quarter', 'Earnings Yield by Year', 'Earnings Yield by Month', 'Real Price by Year', 'Real Price by Month', 'Inflation Adjusted Price by Year', 'Inflation Adjusted Price by Month', 'Sales by Year', 'Sales by Quarter', 'Sales Growth by Year', 'Sales Growth by Quarter', 'Real Sales by Year', 'Real Sales by Quarter', 'Real Sales Growth by Year', 'Real Sales Growth by Quarter', 'Price to Sales Ratio by Year', 'Price to Sales Ratio by Quarter', 'Price to Book Value Ratio by Year', 'Price to Book Value Ratio by Quarter', 'Book Value per Share by Year', 'Book Value per Share by Quarter']
+        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Rat...
             The name of the series. Defaults to 'PE Ratio by Month'.
-        start_date : Union[str, NoneType]
+        start_date : Union[str, None]
             The start date of the time series. Format: YYYY-MM-DD
-        end_date : Union[str, NoneType]
+        end_date : Union[str, None]
             The end date of the time series. Format: YYYY-MM-DD
-        collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'], NoneType]
+        collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'...
             Collapse the frequency of the time series.
-        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], NoneType]
+        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], None]
             The transformation of the time series.
-        provider : Union[Literal['quandl'], NoneType]
+        provider : Union[Literal['quandl'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'quandl' if there is
             no default.

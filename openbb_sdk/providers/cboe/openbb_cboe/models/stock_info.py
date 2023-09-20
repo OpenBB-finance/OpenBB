@@ -1,6 +1,6 @@
 """CBOE Stock Info fetcher."""
 
-
+import concurrent.futures
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -92,7 +92,7 @@ class CboeStockInfoFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeStockInfoQueryParams:
-        """Transform the query"""
+        """Transform the query."""
         return CboeStockInfoQueryParams(**params)
 
     @staticmethod
@@ -100,30 +100,40 @@ class CboeStockInfoFetcher(
         query: CboeStockInfoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
-        """Return the raw data from the CBOE endpoint"""
-
-        query.symbol = query.symbol.upper().replace("^", "")
+    ) -> List[Dict]:
+        """Return the raw data from the CBOE endpoint."""
+        results = []
+        query.symbol = query.symbol.upper()
+        symbols = (
+            query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
+        )
         INDEXES = get_cboe_index_directory().index.to_list()
         SYMBOLS = get_cboe_directory()
 
-        if query.symbol not in SYMBOLS.index and query.symbol not in INDEXES:
-            raise RuntimeError(
-                f"The symbol, {query.symbol}, was not found in the CBOE directory."
-            )
+        def get_one(symbol):
+            data = pd.Series(dtype="object")
+            if symbol in SYMBOLS.index or symbol in INDEXES:
+                _info = pd.Series(get_ticker_info(symbol))
+                _iv = pd.Series(get_ticker_iv(symbol))
+                data = (
+                    pd.DataFrame(pd.concat([_info, _iv]))
+                    .transpose()
+                    .drop(columns="seqno")
+                    .iloc[0]
+                )
 
-        _info = pd.Series(get_ticker_info(query.symbol))
-        _iv = pd.Series(get_ticker_iv(query.symbol))
-        data = (
-            pd.DataFrame(pd.concat([_info, _iv]))
-            .transpose()
-            .drop(columns="seqno")
-            .iloc[0]
+                results.append(data.to_dict())
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(get_one, symbols)
+
+        return (
+            pd.DataFrame.from_records(results)
+            .sort_values(by="symbol")
+            .to_dict("records")
         )
 
-        return data.to_dict()
-
     @staticmethod
-    def transform_data(data: dict) -> List[CboeStockInfoData]:
-        """Transform the data to the standard format"""
-        return [CboeStockInfoData.parse_obj(data)]
+    def transform_data(data: List[Dict]) -> List[CboeStockInfoData]:
+        """Transform the data to the standard format."""
+        return [CboeStockInfoData.parse_obj(d) for d in data]

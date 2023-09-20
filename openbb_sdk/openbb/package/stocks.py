@@ -539,7 +539,7 @@ class CLASS_stocks(Container):
         ----------
         symbols : str
             Comma separated list of symbols.
-        limit : Union[pydantic.types.NonNegativeInt, NoneType]
+        limit : Union[pydantic.types.NonNegativeInt, None]
             Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -549,21 +549,21 @@ class CLASS_stocks(Container):
             no default.
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Union[str, NoneType]
+        date : Union[str, None]
             Date of the news to retrieve. (provider: benzinga)
-        start_date : Union[str, NoneType]
+        start_date : Union[str, None]
             Start date of the news to retrieve. (provider: benzinga)
-        end_date : Union[str, NoneType]
+        end_date : Union[str, None]
             End date of the news to retrieve. (provider: benzinga)
         updated_since : Union[int, None]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['id', 'created', 'updated'], NoneType]
+        sort : Union[Literal['id', 'created', 'updated'], None]
             Key to sort the news by. (provider: benzinga)
-        order : Union[Literal['asc', 'desc'], NoneType]
+        order : Union[Literal['asc', 'desc'], None]
             Order to sort the news by. (provider: benzinga); Sort order of the articles. (provider: polygon)
-        isin : Union[str, NoneType]
+        isin : Union[str, None]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Union[str, None]
             The CUSIP of the news to retrieve. (provider: benzinga)
@@ -575,7 +575,7 @@ class CLASS_stocks(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Union[str, None]
             Content types of the news to retrieve. (provider: benzinga)
-        published_utc : Union[str, NoneType]
+        published_utc : Union[str, None]
             Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
 
         Returns
@@ -680,7 +680,7 @@ class CLASS_stocks(Container):
         ----------
         symbol : Union[str, List[str]]
             Comma separated list of symbols.
-        provider : Union[Literal['fmp', 'intrinio'], NoneType]
+        provider : Union[Literal['fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.

@@ -45,11 +45,15 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            return datetime.strptime(v, "%Y-%m-%d")
+        """Return formatted datetime string."""
+        if isinstance(v, str):
+            try:
+                dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+                return dt.strftime("%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                dt = datetime.strptime(v, "%Y-%m-%d")
+                return dt.strftime("%Y-%m-%d")
+        return v
 
 
 class CboeMajorIndicesHistoricalFetcher(
@@ -73,18 +77,16 @@ class CboeMajorIndicesHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
-
+        """Return the raw data from the CBOE endpoint."""
         # Synbol directories are cached for seven days and are used for error handling and URL generation.
         INDEXES = get_cboe_index_directory().index.to_list()
         query.symbol = query.symbol.upper()
         data = pd.DataFrame()
         if "^" in query.symbol:
             query.symbol = query.symbol.replace("^", "")
-        if query.symbol == "NDX" and query.interval == "1d":
-            raise RuntimeError(
-                "NDX time series data is only supported when `interval='1m'`."
-            )
+        query.interval = (
+            "1m" if query.symbol == "NDX" and query.interval == "1d" else query.interval
+        )
 
         now = datetime.now()
         query.start_date = (
@@ -198,6 +200,8 @@ class CboeMajorIndicesHistoricalFetcher(
                     data_list[i]["volume"]["total_options_volume"]
                 )
             data = pd.DataFrame()
+            date = [d.replace("T", " ") for d in date]
+            date = [datetime.strptime(d, "%Y-%m-%d %H:%M:%S") for d in date]
             data["date"] = pd.to_datetime(date)
             data["open"] = open_
             data["high"] = high
@@ -215,5 +219,5 @@ class CboeMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeMajorIndicesHistoricalData]:
-        """Transform the data to the standard format"""
+        """Transform the data to the standard format."""
         return [CboeMajorIndicesHistoricalData.parse_obj(d) for d in data]

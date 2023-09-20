@@ -38,7 +38,7 @@ class CLASS_stocks_options(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Union[str, NoneType]
+        date : Union[str, None]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns
