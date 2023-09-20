@@ -1,9 +1,10 @@
-from openbb_core.app.model.metadata import Metadata
 from datetime import datetime
-from openbb_provider.abstract.data import Data
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 import pytest
+from openbb_core.app.model.metadata import Metadata
+from openbb_provider.abstract.data import Data
 
 
 def test_Metadata():
@@ -38,6 +39,15 @@ def test_fields():
         ),
         (
             {"data_list": [Data(open=123, close=456), Data(volume=789)]},
+            {
+                "data_list": {
+                    "type": "List[Data]",
+                    "columns": ["open", "close", "volume"],
+                }
+            },
+        ),
+        (
+            {"data_list": [Data(open=123, close=456), Data(open=321, volume=789)]},
             {
                 "data_list": {
                     "type": "List[Data]",
