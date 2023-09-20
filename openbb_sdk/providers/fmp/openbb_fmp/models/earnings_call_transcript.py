@@ -72,4 +72,4 @@ class FMPEarningsCallTranscriptFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEarningsCallTranscriptData]:
         """Return the transformed data."""
-        return [FMPEarningsCallTranscriptData(**d) for d in data]
+        return [FMPEarningsCallTranscriptData.parse_obj(d) for d in data]

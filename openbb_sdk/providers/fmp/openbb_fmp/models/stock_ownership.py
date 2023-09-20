@@ -70,6 +70,6 @@ class FMPStockOwnershipFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockOwnershipData]:
         """Return the transformed data."""
-        own = [FMPStockOwnershipData(**d) for d in data]
+        own = [FMPStockOwnershipData.parse_obj(d) for d in data]
         own.sort(key=lambda x: x.filing_date, reverse=True)
         return own

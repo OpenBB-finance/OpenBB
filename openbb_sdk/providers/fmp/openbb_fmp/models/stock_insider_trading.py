@@ -56,4 +56,4 @@ class FMPStockInsiderTradingFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
-        return [FMPStockInsiderTradingData(**d) for d in data]
+        return [FMPStockInsiderTradingData.parse_obj(d) for d in data]

@@ -125,4 +125,4 @@ class FMPStockQuoteFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockQuoteData]:
         """Return the transformed data."""
-        return [FMPStockQuoteData(**d) for d in data]
+        return [FMPStockQuoteData.parse_obj(d) for d in data]

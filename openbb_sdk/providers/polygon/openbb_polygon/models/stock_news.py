@@ -101,4 +101,4 @@ class PolygonStockNewsFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonStockNewsData]:
-        return [PolygonStockNewsData(**d) for d in data]
+        return [PolygonStockNewsData.parse_obj(d) for d in data]

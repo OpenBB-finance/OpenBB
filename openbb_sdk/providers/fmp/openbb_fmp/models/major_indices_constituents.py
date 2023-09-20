@@ -80,4 +80,4 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMajorIndicesConstituentsData]:
         """Return the raw data from the FMP endpoint."""
-        return [FMPMajorIndicesConstituentsData(**d) for d in data]
+        return [FMPMajorIndicesConstituentsData.parse_obj(d) for d in data]

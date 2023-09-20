@@ -65,4 +65,4 @@ class FMPInstitutionalOwnershipFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPInstitutionalOwnershipData]:
         """Return the transformed data."""
-        return [FMPInstitutionalOwnershipData(**d) for d in data]
+        return [FMPInstitutionalOwnershipData.parse_obj(d) for d in data]

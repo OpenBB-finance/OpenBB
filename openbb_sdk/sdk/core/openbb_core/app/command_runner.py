@@ -365,12 +365,16 @@ class StaticCommandRunner:
         duration = perf_counter_ns() - start_ns
 
         if execution_context.user_settings.preferences.metadata:
-            obbject.metadata = Metadata(
-                arguments=kwargs,
-                duration=duration,
-                route=route,
-                timestamp=timestamp,
-            )
+            try:
+                obbject.metadata = Metadata(
+                    arguments=kwargs,
+                    duration=duration,
+                    route=route,
+                    timestamp=timestamp,
+                )
+            except Exception as e:
+                if Env().DEBUG_MODE:
+                    raise OpenBBError(e) from e
 
         return obbject
 

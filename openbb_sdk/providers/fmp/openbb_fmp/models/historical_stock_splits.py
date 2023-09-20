@@ -61,4 +61,4 @@ class FMPHistoricalStockSplitsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPHistoricalStockSplitsData]:
         """Return the transformed data."""
-        return [FMPHistoricalStockSplitsData(**d) for d in data]
+        return [FMPHistoricalStockSplitsData.parse_obj(d) for d in data]

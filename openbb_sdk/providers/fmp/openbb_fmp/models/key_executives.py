@@ -60,4 +60,4 @@ class FMPKeyExecutivesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPKeyExecutivesData]:
         """Return the transformed data."""
-        return [FMPKeyExecutivesData(**d) for d in data]
+        return [FMPKeyExecutivesData.parse_obj(d) for d in data]
