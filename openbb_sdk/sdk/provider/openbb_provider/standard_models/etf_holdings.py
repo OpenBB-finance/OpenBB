@@ -12,5 +12,6 @@ class EtfHoldingsQueryParams(QueryParams):
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
 
+
 class EtfHoldingsData(Data):
     """ETF Holdings Data."""

@@ -25,4 +25,3 @@ class EtfCountriesData(Data):
     """ETF Countries Data."""
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
-
