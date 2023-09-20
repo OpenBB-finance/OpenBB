@@ -17,26 +17,25 @@ from typing import (
     Optional,
     OrderedDict,
     Type,
+    TypeVar,
     Union,
     get_args,
     get_type_hints,
-    TypeVar,
 )
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from importlib_metadata import entry_points
+from openbb_provider.abstract.data import Data
 from pydantic.fields import ModelField
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
-from openbb_provider.abstract.data import Data
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.env import Env
-
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
