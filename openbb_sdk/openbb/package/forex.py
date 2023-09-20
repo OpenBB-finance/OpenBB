@@ -88,7 +88,7 @@ class CLASS_forex(Container):
 
         ForexHistorical
         ---------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price of the symbol.
@@ -113,7 +113,7 @@ class CLASS_forex(Container):
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501

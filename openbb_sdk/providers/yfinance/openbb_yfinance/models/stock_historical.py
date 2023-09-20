@@ -23,8 +23,8 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     prepost: bool = Field(

@@ -43,7 +43,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         default="TIME_SERIES_DAILY",
         alias="function",
     )
-    period: Literal["intraday", "daily", "weekly", "monthly"] = Field(
+    period: Optional[Literal["intraday", "daily", "weekly", "monthly"]] = Field(
         default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     interval: Optional[Literal["1min", "5min", "15min", "30min", "60min"]] = Field(

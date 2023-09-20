@@ -24,8 +24,8 @@ class YFinanceForexHistoricalQueryParams(ForexHistoricalQueryParams):
     Source: https://finance.yahoo.com/currencies/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
 

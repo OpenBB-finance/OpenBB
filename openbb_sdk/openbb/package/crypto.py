@@ -28,13 +28,13 @@ class CLASS_crypto(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
-            Union[datetime.date, str],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
-            Union[datetime.date, str],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
@@ -48,9 +48,9 @@ class CLASS_crypto(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : date
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : date
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -89,7 +89,7 @@ class CLASS_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price of the symbol.
@@ -114,7 +114,7 @@ class CLASS_crypto(Container):
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501

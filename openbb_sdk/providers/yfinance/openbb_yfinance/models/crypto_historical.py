@@ -24,8 +24,8 @@ class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://finance.yahoo.com/crypto/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
 

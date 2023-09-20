@@ -12,7 +12,7 @@ from openbb_provider.standard_models.global_news import (
     GlobalNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
@@ -84,27 +84,46 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
 class BenzingaGlobalNewsData(GlobalNewsData):
     """Benzinga Global News Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
 
-        fields = {
-            "date": "created",
-            "text": "body",
-        }
-
-    image: List[Dict[str, str]] = Field(description="Images associated with the news.")
     id: str = Field(description="ID of the news.")
-    author: str = Field(description="Author of the news.")
-    updated: datetime = Field(description="Updated date of the news.")
-    teaser: Optional[str] = Field(description="Teaser of the news.")
-    channels: str = Field(description="Channels associated with the news.")
-    stocks: str = Field(description="Stocks associated with the news.")
-    tags: str = Field(description="Tags associated with the news.")
+    author: Optional[str] = Field(default=None, description="Author of the news.")
+    teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
+    images: Optional[List[Dict[str, str]]] = Field(
+        default=None, description="Images associated with the news."
+    )
+    channels: Optional[str] = Field(
+        default=None,
+        description="Channels associated with the news.",
+    )
+    stocks: Optional[str] = Field(
+        description="Stocks associated with the news.",
+        default=None,
+    )
+    tags: Optional[str] = Field(
+        description="Tags associated with the news.",
+        default=None,
+    )
+    updated: Optional[datetime] = Field(
+        default=None, escription="Updated date of the news."
+    )
 
-    @validator("date", "updated", pre=True, check_fields=False)
+    @field_validator("date", "updated", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
+
+    @field_validator("stocks", "channels", "tags", mode="before", check_fields=False)
+    def list_validate(cls, v):  # pylint: disable=E0213
+        """Return the list as a string."""
+        return ",".join(
+            [item.get("name", None) for item in v if item.get("name", None)]
+        )
+
+    @field_validator("id", mode="before", check_fields=False)
+    def id_validate(cls, v):  # pylint: disable=E0213
+        """Return the id as a string."""
+        return str(v)
 
 
 class BenzingaGlobalNewsFetcher(
@@ -143,20 +162,6 @@ class BenzingaGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: Dict,
+        data: List[dict],
     ) -> List[BenzingaGlobalNewsData]:
-        data = [
-            {
-                **item,
-                "channels": ",".join(
-                    [channel["name"] for channel in item.get("channels", None)]
-                ),
-                "stocks": ",".join(
-                    [stock["name"] for stock in item.get("stocks", None)]
-                ),
-                "tags": ",".join([tag["name"] for tag in item.get("tags", None)]),
-            }
-            for item in data
-        ]
-
-        return [BenzingaGlobalNewsData.parse_obj(d) for d in data]
+        return [BenzingaGlobalNewsData.model_validate(item) for item in data]

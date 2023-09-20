@@ -22,9 +22,9 @@ class CLASS_news(Container):
     @validate_call
     def globalnews(
         self,
-        page: Annotated[
-            int, OpenBBCustomParameter(description="Page of the global news.")
-        ] = 0,
+        limit: Annotated[
+            int, OpenBBCustomParameter(description="Number of articles to return.")
+        ] = 20,
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs,
     ) -> OBBject[List[Data]]:
@@ -32,26 +32,28 @@ class CLASS_news(Container):
 
         Parameters
         ----------
-        page : int
-            Page of the global news.
+        limit : int
+            Number of articles to return.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        display_output : Literal['headline', 'summary', 'full', 'all']
-            Type of data to return. (provider: benzinga)
-        date : Optional[datetime.datetime]
+        display : Literal['headline', 'abstract', 'full']
+            Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
+        date : Optional[str]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Optional[datetime.datetime]
+        start_date : Optional[str]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Optional[datetime.datetime]
+        end_date : Optional[str]
             End date of the news to retrieve. (provider: benzinga)
         updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Optional[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type']]
-            Order in which to sort the news.  (provider: benzinga)
+        sort : Optional[Literal['id', 'created', 'updated']]
+            Key to sort the news by. (provider: benzinga)
+        order : Optional[Literal['asc', 'desc']]
+            Order to sort the news by. (provider: benzinga)
         isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Optional[str]
@@ -64,12 +66,6 @@ class CLASS_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        next_page : str
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        limit : Optional[int]
-            The number of data entries to return. (provider: intrinio)
-        all_pages : Optional[bool]
-            Returns all pages of data from the API call at once. (provider: intrinio)
 
         Returns
         -------
@@ -95,28 +91,26 @@ class CLASS_news(Container):
             Image URL of the news.
         text : Optional[str]
             Text/body of the news.
-        url : str
+        url : Optional[str]
             URL of the news.
-        images : Optional[List[openbb_benzinga.utils.helpers.BenzingaImage]]
-            Images associated with the news. (provider: benzinga)
-        channels : Optional[List[str]]
-            Channels associated with the news. (provider: benzinga)
-        stocks : Optional[List[str]]
-            Stocks associated with the news. (provider: benzinga)
-        tags : Optional[List[str]]
-            Tags associated with the news. (provider: benzinga)
+        id : Optional[str]
+            ID of the news. (provider: benzinga); Article ID. (provider: intrinio)
+        author : Optional[str]
+            Author of the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
+        images : Optional[List[Dict[str, str]]]
+            Images associated with the news. (provider: benzinga)
         channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
         tags : Optional[str]
             Tags associated with the news. (provider: benzinga)
+        updated : Optional[datetime]
+            None
         site : Optional[str]
             Site of the news. (provider: fmp)
-        id : Optional[str]
-            Article ID. (provider: intrinio)
         company : Optional[Dict[str, Any]]
             Company details related to the news article. (provider: intrinio)"""  # noqa: E501
 

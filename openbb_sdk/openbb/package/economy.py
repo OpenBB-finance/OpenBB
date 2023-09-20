@@ -21,6 +21,7 @@ class CLASS_economy(Container):
     cpi
     european_index
     european_index_constituents
+    fred_index
     index
     index_search
     index_snapshots
@@ -176,6 +177,160 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/const",
+            **inputs,
+        )
+
+    @validate_call
+    def cot(
+        self, provider: Optional[Literal["quandl"]] = None, **kwargs
+    ) -> OBBject[List[Data]]:
+        """Lookup Commitment of Traders Reports by series ID.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['quandl']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+        code : str
+
+                    CFTC series code.  Use search_cot() to find the code.
+                    Codes not listed in the curated list, but are published by on the Nasdaq Data Link website, are valid.
+                    Certain symbols, such as "ES=F", or exact names are also valid.
+                    Default report is: S&P 500 Consolidated (CME))
+                     (provider: quandl)
+        data_type : Optional[Literal['F', 'FO', 'CITS']]
+
+                    The type of data to reuturn. Default is "FO".
+
+                    F = Futures only
+
+                    FO = Futures and Options
+
+                    CITS = Commodity Index Trader Supplemental. Only valid for commodities.
+                 (provider: quandl)
+        legacy_format : Optional[bool]
+            Returns the legacy format of report. Default is False. (provider: quandl)
+        report_type : Optional[Literal['ALL', 'CHG', 'OLD', 'OTR']]
+
+                    The type of report to return. Default is "ALL".
+
+                        ALL = All
+
+                        CHG = Change in Positions
+
+                        OLD = Old Crop Years
+
+                        OTR = Other Crop Years
+                 (provider: quandl)
+        measure : Optional[Literal['CR', 'NT', 'OI', 'CHG']]
+
+                    The measure to return. Default is None.
+
+                    CR = Concentration Ratios
+
+                    NT = Number of Traders
+
+                    OI = Percent of Open Interest
+
+                    CHG = Change in Positions. Only valid when data_type is "CITS".
+                 (provider: quandl)
+        start_date : Optional[datetime.date]
+            The start date of the time series. Defaults to all. (provider: quandl)
+        end_date : Optional[datetime.date]
+            The end date of the time series. Defaults to the most recent data. (provider: quandl)
+        transform : Optional[Literal['diff', 'rdiff', 'cumul', 'normalize']]
+            Transform the data as w/w difference, percent change, cumulative, or normalize. (provider: quandl)
+
+        Returns
+        -------
+        OBBject
+            results : List[COT]
+                Serializable results.
+            provider : Optional[Literal['quandl']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        COT
+        ---"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={},
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/cot",
+            **inputs,
+        )
+
+    @validate_call
+    def cot_search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        provider: Optional[Literal["quandl"]] = None,
+        **kwargs,
+    ) -> OBBject[Data]:
+        """Fuzzy search and list of curated Commitment of Traders Reports series information.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        provider : Optional[Literal['quandl']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : COTSearch
+                Serializable results.
+            provider : Optional[Literal['quandl']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        COTSearch
+        ---------
+        code : str
+            CFTC Code of the report.
+        name : str
+            Name of the underlying asset.
+        category : Optional[str]
+            Category of the underlying asset.
+        subcategory : Optional[str]
+            Subcategory of the underlying asset.
+        units : Optional[str]
+            The units for one contract.
+        symbol : Optional[str]
+            Trading symbol representing the underlying asset."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/cot_search",
             **inputs,
         )
 
@@ -498,6 +653,92 @@ class CLASS_economy(Container):
         )
 
     @validate_call
+    def fred_index(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
+        provider: Optional[Literal["intrinio"]] = None,
+        **kwargs,
+    ) -> OBBject[List[Data]]:
+        """Fred Historical.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
+        limit : Optional[int]
+            The number of data entries to return.
+        provider : Optional[Literal['intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+        next_page : Optional[str]
+            Token to get the next page of data from a previous API call. (provider: intrinio)
+        all_pages : Optional[bool]
+            Returns all pages of data from the API call at once. (provider: intrinio)
+
+        Returns
+        -------
+        OBBject
+            results : List[FredHistorical]
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        FredHistorical
+        --------------
+        date : date
+            The date of the data.
+        value : Optional[Annotated[float, Gt(gt=0)]]
+            Value of the index."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "start_date": start_date,
+                "end_date": end_date,
+                "limit": limit,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/fred_index",
+            **inputs,
+        )
+
+    @validate_call
     def index(
         self,
         symbol: Annotated[
@@ -534,7 +775,7 @@ class CLASS_economy(Container):
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
         interval : Optional[Union[Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Data granularity. (provider: cboe, fmp, yfinance)
+            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe); Data granularity. (provider: fmp); Data granularity. (provider: yfinance)
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -570,7 +811,7 @@ class CLASS_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price of the symbol.
@@ -599,7 +840,7 @@ class CLASS_economy(Container):
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -618,6 +859,172 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/index",
+            **inputs,
+        )
+
+    @validate_call
+    def index_search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        symbol: Annotated[
+            Union[bool, List[str]],
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs,
+    ) -> OBBject[List[Data]]:
+        """Search for indices.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        symbol : bool
+            Whether to search by ticker symbol.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        europe : bool
+            Filter for European indices. False for US indices. (provider: cboe)
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSearch]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSearch
+        -----------
+        symbol : str
+            Symbol of the index.
+        name : str
+            Name of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        region : Optional[str]
+            Region for the index. Valid only for European indices (provider: cboe)
+        description : Optional[str]
+            Description for the index. (provider: cboe)
+        data_delay : Optional[int]
+            Data delay for the index. Valid only for US indices. (provider: cboe)
+        currency : Optional[str]
+            Currency for the index. (provider: cboe)
+        time_zone : Optional[str]
+            Time zone for the index. Valid only for US indices. (provider: cboe)
+        open_time : Optional[datetime.time]
+            Opening time for the index. Valid only for US indices. (provider: cboe)
+        close_time : Optional[datetime.time]
+            Closing time for the index. Valid only for US indices. (provider: cboe)
+        tick_days : Optional[str]
+            The trading days for the index. Valid only for US indices. (provider: cboe)
+        tick_frequency : Optional[str]
+            Tick frequency for the index. Valid only for US indices. (provider: cboe)
+        tick_period : Optional[str]
+            Tick period for the index. Valid only for US indices. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_search",
+            **inputs,
+        )
+
+    @validate_call
+    def index_snapshots(
+        self,
+        region: Annotated[
+            Optional[Literal["US", "EU"]],
+            OpenBBCustomParameter(
+                description="The region to return. Currently supports US and EU."
+            ),
+        ] = "US",
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs,
+    ) -> OBBject[List[Data]]:
+        """Get current  levels for all indices from a provider.
+
+        Parameters
+        ----------
+        region : Optional[Literal['US', 'EU']]
+            The region to return. Currently supports US and EU.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSnapshots]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSnapshots
+        --------------
+        symbol : str
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        currency : Optional[str]
+            Currency of the index.
+        price : Optional[float]
+            Current price of the index.
+        open : Optional[float]
+            Opening price of the index.
+        high : Optional[float]
+            Highest price of the index.
+        low : Optional[float]
+            Lowest price of the index.
+        close : Optional[float]
+            Closing price of the index.
+        prev_close : Optional[float]
+            Previous closing price of the index.
+        change : Optional[float]
+            Change of the index.
+        change_percent : Optional[float]
+            Change percent of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the index. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "region": region,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_snapshots",
             **inputs,
         )
 
@@ -672,10 +1079,10 @@ class CLASS_economy(Container):
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def sp500_multiples(
         self,
-        series_name: typing_extensions.Annotated[
+        series_name: Annotated[
             Literal[
                 "Shiller PE Ratio by Month",
                 "Shiller PE Ratio by Year",
@@ -718,46 +1125,46 @@ class CLASS_economy(Container):
                 description="The name of the series. Defaults to 'PE Ratio by Month'."
             ),
         ] = "PE Ratio by Month",
-        start_date: typing_extensions.Annotated[
-            Union[str, None],
+        start_date: Annotated[
+            Optional[str],
             OpenBBCustomParameter(
                 description="The start date of the time series. Format: YYYY-MM-DD"
             ),
         ] = "",
-        end_date: typing_extensions.Annotated[
-            Union[str, None],
+        end_date: Annotated[
+            Optional[str],
             OpenBBCustomParameter(
                 description="The end date of the time series. Format: YYYY-MM-DD"
             ),
         ] = "",
-        collapse: typing_extensions.Annotated[
-            Union[Literal["daily", "weekly", "monthly", "quarterly", "annual"], None],
+        collapse: Annotated[
+            Optional[Literal["daily", "weekly", "monthly", "quarterly", "annual"]],
             OpenBBCustomParameter(
                 description="Collapse the frequency of the time series."
             ),
         ] = "monthly",
-        transform: typing_extensions.Annotated[
-            Union[Literal["diff", "rdiff", "cumul", "normalize"], None],
+        transform: Annotated[
+            Optional[Literal["diff", "rdiff", "cumul", "normalize"]],
             OpenBBCustomParameter(description="The transformation of the time series."),
         ] = None,
-        provider: Union[Literal["quandl"], None] = None,
+        provider: Optional[Literal["quandl"]] = None,
         **kwargs,
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Historical S&P 500 multiples and Shiller PE ratios.
 
         Parameters
         ----------
         series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Rat...
             The name of the series. Defaults to 'PE Ratio by Month'.
-        start_date : Union[str, None]
+        start_date : Optional[str]
             The start date of the time series. Format: YYYY-MM-DD
-        end_date : Union[str, None]
+        end_date : Optional[str]
             The end date of the time series. Format: YYYY-MM-DD
-        collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'...
+        collapse : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annu...
             Collapse the frequency of the time series.
-        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], None]
+        transform : Optional[Literal['diff', 'rdiff', 'cumul', 'normalize']]
             The transformation of the time series.
-        provider : Union[Literal['quandl'], None]
+        provider : Optional[Literal['quandl']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'quandl' if there is
             no default.
@@ -767,7 +1174,7 @@ class CLASS_economy(Container):
         OBBject
             results : List[SP500Multiples]
                 Serializable results.
-            provider : Union[Literal['quandl'], NoneType]
+            provider : Optional[Literal['quandl']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -778,9 +1185,9 @@ class CLASS_economy(Container):
 
         SP500Multiples
         --------------
-        date : Optional[str]
+        date : str
             The date data for the time series.
-        value : Optional[float]
+        value : float
             The data value for the time series."""  # noqa: E501
 
         inputs = filter_inputs(

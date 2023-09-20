@@ -25,8 +25,8 @@ class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParam
     Source: https://finance.yahoo.com/world-indices
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     prepost: bool = Field(default=True, description="Include Pre and Post market data.")

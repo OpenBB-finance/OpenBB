@@ -66,7 +66,7 @@ class CLASS_futures(Container):
         ------------
         expiration : str
             Futures expiration month.
-        price : float
+        price : Optional[float]
             The close price of the symbol.
         symbol : Optional[str]
             The trading symbol for the tenor of future. (provider: cboe)"""  # noqa: E501

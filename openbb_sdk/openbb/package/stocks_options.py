@@ -39,7 +39,7 @@ class CLASS_stocks_options(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Optional[Union[datetime.date, str]]
+        date : Optional[str]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns
@@ -58,21 +58,25 @@ class CLASS_stocks_options(Container):
 
         OptionsChains
         -------------
-        expiration : datetime
+        contract_symbol : str
+            Contract symbol for the option.
+        symbol : str
+            Underlying symbol for the option.
+        expiration : date
             Expiration date of the contract.
         strike : float
             Strike price of the contract.
-        option_type : str
+        type : str
             Call or Put.
-        contract_symbol : str
-            Contract symbol for the option.
-        bid : float
-            Bid price of the contract.
-        ask : float
-            Ask price of the contract.
-        open_interest : float
-            Open interest on the contract.
-        volume : float
+        date : date
+            Date for which the options chains are returned.
+        close : Optional[float]
+            Close price for the option that day.
+        close_bid : Optional[float]
+            The closing bid price for the option that day.
+        close_ask : Optional[float]
+            The closing ask price for the option that day.
+        volume : Optional[float]
             Current trading volume on the contract.
         open : Optional[float]
             Opening price of the option.
