@@ -54,4 +54,4 @@ class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, QuandlCotSearchData])
     def transform_data(
         data: List[Dict],
     ) -> QuandlCotSearchData:
-        return QuandlCotSearchData.parse_obj(data[0])
+        return [QuandlCotSearchData(**d) for d in data]
