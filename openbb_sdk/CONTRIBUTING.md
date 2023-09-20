@@ -25,6 +25,9 @@
       - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
       - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
   - [Environment and dependencies](#environment-and-dependencies)
+  - [Python package](#python-package)
+    - [Overview](#overview)
+    - [Import time](#import-time)
 
 ## Get started contributing with a template
 
@@ -475,3 +478,39 @@ Run `./install_all.sh` for Linux/mac or `install_all.bat` for Windows.
 </details>
 
 > In order to install any other custom extension or provider, you'd follow the exact same steps as above.
+
+## Python package
+
+### Overview
+
+One of the interfaces we provide to users is the `openbb` python package.
+
+The code you will find in this package is generated from a script and it is just a
+wrapper around the `openbb-core` and any installed extensions.
+
+When the user runs `import openbb`, `from openbb import sdk` or other variants, the
+script that generates the package code is triggered. It detects if there are new openbb
+extensions installed in the environment and rebuilds the package code accordingly. If
+new extensions are not found it just uses the current package version.
+
+When you are developing chances are you want to manually trigger the package rebuild.
+You can do that with:
+
+```python
+python -c "import openbb; openbb.build()"
+```
+
+### Import time
+
+We aim to have a short import time for the package. To measure that we use `tuna`.
+
+- https://pypi.org/project/tuna/
+
+To visualize the import time breakdown by module and find potential bottlenecks, run the
+following commands from `openbb_sdk` directory:
+
+```bash
+pip install tuna
+python -X importtime openbb/__init__.py 2> import.log
+tuna import.log
+```

@@ -24,7 +24,8 @@
   - [4.2 Dynamic version](#42-dynamic-version)
   - [5. REST API](#5-rest-api)
     - [5.1 HTTPS](#51-https)
-    - [5.2 Test users](#52-test-users)
+    - [5.2 Docker](#52-docker)
+    - [5.3 Test users](#53-test-users)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -146,7 +147,7 @@ Update your system settings by modifying the `.openbb_sdk/system_settings.json` 
 
 ```{json}
 {
-    "dbms_uri": null
+    "test_mode": true
 }
 ```
 
@@ -162,7 +163,7 @@ output = obb.stocks.load(
     start_date="2023-01-01",
     provider="fmp",
     chart=True
-    )
+)
 ```
 
 ### 4.1.1. OBBject
@@ -368,18 +369,18 @@ In fact, the static version makes use of this feature to run each command. Take 
 >>> from openbb_core.app.command_runner import CommandRunner
 >>> runner = CommandRunner()
 >>> output = runner.run(
-             "/stocks/load",
-             provider_choices={
-                 "provider": "fmp",
-             },
-             standard_params={
-                 "symbol": "TSLA",
-                 "start_date": "2023-07-01",
-                 "end_date": "2023-07-25",
-             },
-             extra_params={},
-             chart=True,
-         )
+    "/stocks/load",
+    provider_choices={
+        "provider": "fmp",
+    },
+    standard_params={
+        "symbol": "TSLA",
+        "start_date": "2023-07-01",
+        "end_date": "2023-07-25",
+    },
+    extra_params={},
+    chart=True,
+)
 >>> output
 OBBject
 
@@ -438,7 +439,27 @@ If you want to run your FastAPI app over HTTPS locally you can use [mkcert](http
 
     Your app will be available at https://127.0.0.1:8000/
 
-### 5.2 Test users
+### 5.2 Docker
+
+You can use the API through Docker.
+
+We provide a `.dockerfile`` in OpenBB [repo](https://github.com/OpenBB-finance/OpenBBTerminal).
+
+To build the image, you can run the following command from the repo root:
+
+```bash
+docker build -f build/docker/api.dockerfile -t openbb-sdk:latest .
+```
+
+To run this newly-built image:
+
+```bash
+docker run --rm -p 8000:8000 -v ~/.openbb_sdk:/root/.openbb_sdk openbb-sdk:latest
+```
+
+This will mount the local `~/.openbb_sdk` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
+
+### 5.3 Test users
 
 There are 2 default users for testing purpose:
 
