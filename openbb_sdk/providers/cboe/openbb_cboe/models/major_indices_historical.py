@@ -45,15 +45,11 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime string."""
-        if isinstance(v, str):
-            try:
-                dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-                return dt.strftime("%Y-%m-%d %H:%M:%S")
-            except ValueError:
-                dt = datetime.strptime(v, "%Y-%m-%d")
-                return dt.strftime("%Y-%m-%d")
-        return v
+        """Return datetime object from string."""
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeMajorIndicesHistoricalFetcher(
