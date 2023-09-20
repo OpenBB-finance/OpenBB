@@ -27,8 +27,7 @@ class Metadata(BaseModel):
     @validator("arguments")
     @classmethod
     def scale_arguments(cls, v):
-        """
-        Scale arguments.
+        """Scale arguments.
         This function is meant to limit the size of the input arguments of a command.
         If the type is one of the following: `Data`, `List[Data]`, `DataFrame`, `List[DataFrame]`,
         `Series`, `List[Series]` or `ndarray`, the value of the argument is swapped by a dictionary
