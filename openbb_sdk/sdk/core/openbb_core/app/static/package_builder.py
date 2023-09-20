@@ -331,12 +331,12 @@ class DocstringGenerator:
     @classmethod
     def generate_model_docstring(
         cls,
-        func: Callable,
         model_name: str,
         summary: str,
         explicit_params: dict,
         params: dict,
         returns: Dict[str, FieldInfo],
+        results_type: str,
     ) -> str:
         """Create the docstring for model."""
 
@@ -402,7 +402,6 @@ class DocstringGenerator:
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
-        results_type = func.__annotations__["return"].results_type_repr()
         docstring += cls.get_OBBject_description(results_type, available_providers)
 
         # Schema
@@ -459,12 +458,12 @@ class DocstringGenerator:
                 returns = return_schema.model_fields
 
                 func.__doc__ = cls.generate_model_docstring(
-                    func=func,
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
                     params=params,
                     returns=returns,
+                    results_type=func.__annotations__["return"].results_type_repr(),
                 )
 
         return func

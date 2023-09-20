@@ -33,7 +33,9 @@ class CashFlowStatementQueryParams(QueryParams):
 class CashFlowStatementData(Data):
     """Cash Flow Statement Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description="Date of the fetched statement.")
     period: Optional[str] = Field(
         default=None, description="Reporting period of the statement."

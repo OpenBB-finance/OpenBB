@@ -24,7 +24,7 @@ class IntrinioForexPairsData(ForexPairsData):
 
     __alias_dict__ = {"name": "code"}
 
-    code: str = Field(description="Code of the currency pair.")
+    code: str = Field(description="Code of the currency pair.", alias="name")
     base_currency: str = Field(
         description="ISO 4217 currency code of the base currency."
     )

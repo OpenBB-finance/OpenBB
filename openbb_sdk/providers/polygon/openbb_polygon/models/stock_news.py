@@ -22,7 +22,8 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     __alias_dict__ = {"symbols": "ticker"}
 
     published_utc: Optional[str] = Field(
-        description="Date query to fetch articles. Supports operators <, <=, >, >="
+        default=None,
+        description="Date query to fetch articles. Supports operators <, <=, >, >=",
     )
     order: Optional[Literal["asc", "desc"]] = Field(
         default="desc", description="Sort order of the articles."

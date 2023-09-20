@@ -36,7 +36,7 @@ class IntrinioStockQuoteData(StockQuoteData):
 
     last_price: float = Field(description="Price of the last trade.")
     last_time: datetime = Field(
-        description="Date and Time when the last trade occurred."
+        description="Date and Time when the last trade occurred.", alias="date"
     )
     last_size: int = Field(description="Size of the last trade.")
     bid_price: float = Field(description="Price of the top bid order.")
@@ -47,8 +47,12 @@ class IntrinioStockQuoteData(StockQuoteData):
     close_price: Optional[float] = Field(
         default=None, description="Closing price for the trading day (IEX source only)."
     )
-    high_price: float = Field(description="High Price for the trading day.")
-    low_price: float = Field(description="Low Price for the trading day.")
+    high_price: float = Field(
+        description="High Price for the trading day.", alias="day_high"
+    )
+    low_price: float = Field(
+        description="Low Price for the trading day.", alias="day_low"
+    )
     exchange_volume: Optional[int] = Field(
         default=None,
         description="Number of shares exchanged during the trading day on the exchange.",
@@ -126,4 +130,5 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_data(data: Dict) -> IntrinioStockQuoteData:
         """Return the transformed data."""
+        print(data)
         return IntrinioStockQuoteData.model_validate(data)

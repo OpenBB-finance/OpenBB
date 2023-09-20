@@ -494,7 +494,7 @@ def test_generate_model_docstring(docstring_generator):
     pi = docstring_generator.provider_interface
     params = pi.params[model_name]
     return_schema = pi.return_schema[model_name]
-    returns = return_schema.__fields__
+    returns = return_schema.model_fields
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -508,6 +508,7 @@ def test_generate_model_docstring(docstring_generator):
         explicit_params=explicit_dict,
         params=params,
         returns=returns,
+        results_type="List[GlobalNews]",
     )
 
     assert docstring
