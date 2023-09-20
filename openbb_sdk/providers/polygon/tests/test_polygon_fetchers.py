@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
@@ -27,7 +29,11 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_polygon_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = PolygonStockHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -36,7 +42,11 @@ def test_polygon_stock_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_major_indices_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "NDX", "start_date": "2023-01-01", "end_date": "2023-05-10"}
+    params = {
+        "symbol": "NDX",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 5, 10),
+    }
 
     fetcher = PolygonMajorIndicesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -81,7 +91,11 @@ def test_polygon_cash_flow_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "BTCUSD", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "BTCUSD",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = PolygonCryptoHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -90,7 +104,11 @@ def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_forex_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "EURUSD",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = PolygonForexHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -99,7 +117,7 @@ def test_polygon_forex_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_forex_pairs_fetcher(credentials=test_credentials):
-    params = {"date": "2023-01-01"}
+    params = {"date": date(2023, 1, 1)}
 
     fetcher = PolygonForexPairsFetcher()
     result = fetcher.test(params, credentials)

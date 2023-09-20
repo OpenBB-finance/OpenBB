@@ -44,13 +44,6 @@ class YFinanceFuturesCurveFetcher(
         now = datetime.now().date()
         if params.get("date") is None:
             transformed_params["date"] = now
-        else:
-            try:
-                transformed_params["date"] = datetime.strptime(
-                    params["date"], "%Y-%m-%d"
-                ).date()
-            except TypeError:
-                pass
 
         return YFinanceFuturesCurveQueryParams(**transformed_params)
 

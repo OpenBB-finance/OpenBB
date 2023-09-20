@@ -1,3 +1,4 @@
+from datetime import date
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
@@ -25,7 +26,11 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_intrinio_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "start_date": "2023-01-23", "end_date": "2023-05-23"}
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 23),
+        "end_date": date(2023, 5, 23),
+    }
 
     fetcher = IntrinioStockHistoricalFetcher()
     result = fetcher.test(params, credentials)

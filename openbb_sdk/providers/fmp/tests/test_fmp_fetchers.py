@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
@@ -60,7 +62,11 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_fmp_crypto_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "BTCUSD", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "BTCUSD",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = FMPCryptoHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -69,7 +75,11 @@ def test_fmp_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_forex_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "EURUSD",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = FMPForexHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -78,7 +88,11 @@ def test_fmp_forex_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_major_indices_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "^DJI", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "^DJI",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = FMPMajorIndicesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -87,7 +101,11 @@ def test_fmp_major_indices_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = FMPStockHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -240,7 +258,7 @@ def test_fmp_stock_insider_trading_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_stock_ownership_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "date": "2022-12-31"}
+    params = {"symbol": "AAPL", "date": date(2022, 12, 31)}
 
     fetcher = FMPStockOwnershipFetcher()
     result = fetcher.test(params, credentials)
@@ -303,7 +321,7 @@ def test_fmp_historical_stock_splits_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_stock_split_calendar_fetcher(credentials=test_credentials):
-    params = {"start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 1, 10)}
 
     fetcher = FMPStockSplitCalendarFetcher()
     result = fetcher.test(params, credentials)
@@ -339,7 +357,7 @@ def test_fmpsec_filings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_treasury_rates_fetcher(credentials=test_credentials):
-    params = {"start_date": "2023-01-01", "end_date": "2023-05-10"}
+    params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 5, 10)}
 
     fetcher = FMPTreasuryRatesFetcher()
     result = fetcher.test(params, credentials)
@@ -411,7 +429,7 @@ def test_fmp_major_indices_constituents_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_dividend_calendar_fetcher(credentials=test_credentials):
-    params = {"start_date": "2023-01-01", "end_date": "2023-05-10"}
+    params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 5, 10)}
 
     fetcher = FMPDividendCalendarFetcher()
     result = fetcher.test(params, credentials)
