@@ -63,4 +63,4 @@ class FMPStockSplitCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockSplitCalendarData]:
         """Return the transformed data."""
-        return [FMPStockSplitCalendarData(**d) for d in data]
+        return [FMPStockSplitCalendarData.parse_obj(d) for d in data]
