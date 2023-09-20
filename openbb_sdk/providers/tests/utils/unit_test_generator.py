@@ -1,6 +1,6 @@
 """The unit test generator for the fetchers."""
-from datetime import date
 import os
+from datetime import date
 from typing import Any, Dict, Tuple
 
 from openbb_provider.abstract.fetcher import Fetcher
