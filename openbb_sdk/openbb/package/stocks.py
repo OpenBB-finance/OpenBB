@@ -267,7 +267,7 @@ class CLASS_stocks(Container):
 
         StockHistorical
         ---------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
