@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, PositiveFloat, validator
+from pydantic import Field, NonNegativeFloat, PositiveFloat, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -45,5 +45,5 @@ class CryptoHistoricalData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: NonNegativeFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
     vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))

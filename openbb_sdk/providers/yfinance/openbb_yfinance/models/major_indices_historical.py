@@ -112,12 +112,9 @@ class YFinanceMajorIndicesHistoricalFetcher(
         )
 
         if query.start_date:
+            data["date"] = to_datetime(data["date"])
             data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index).date
-            data = data[
-                (data.index >= query.start_date - timedelta(days=days))
-                & (data.index <= query.end_date)
-            ]
+            data = data.loc[query.start_date : (query.end_date + timedelta(days=days))]
 
         data.reset_index(inplace=True)
         data.rename(columns={"index": "date"}, inplace=True)
