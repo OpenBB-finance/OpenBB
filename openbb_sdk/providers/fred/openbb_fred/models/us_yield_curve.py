@@ -42,7 +42,7 @@ class FREDYieldCurveFetcher(
         query: FREDYieldCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
-    ) -> list:
+    ) -> List[Dict]:
         api_key = credentials.get("fred_api_key") if credentials else ""
         date = query.date
         if query.inflation_adjusted:
@@ -82,5 +82,5 @@ class FREDYieldCurveFetcher(
         return yield_curve_data
 
     @staticmethod
-    def transform_data(data: list) -> List[Dict[str, List[FREDYieldCurveData]]]:
+    def transform_data(data: List[Dict]) -> List[FREDYieldCurveData]:
         return [FREDYieldCurveData(**x) for x in data]

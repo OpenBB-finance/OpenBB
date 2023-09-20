@@ -1,14 +1,18 @@
 """Benzinga Stock News Fetcher."""
 
 
+import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_benzinga.utils.helpers import BenzingaStockNewsData, get_data
+from openbb_benzinga.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import StockNewsQueryParams
+from openbb_provider.standard_models.stock_news import (
+    StockNewsData,
+    StockNewsQueryParams,
+)
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field
+from pydantic import Field, validator
 
 
 class BenzingaStockNewsQueryParams(StockNewsQueryParams):
@@ -18,40 +22,49 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     """
 
     class Config:
-        fields = {"symbols": "tickers", "limit": "pageSize"}
+        """Pydantic alias config using fields dict."""
 
-    displayOutput: Literal["headline", "summary", "full", "all"] = Field(
-        default="headline", description="Type of data to return."
+        fields = {
+            "symbols": "tickers",
+            "display": "displayOutput",
+            "limit": "pageSize",
+            "start_date": "dateFrom",
+            "end_date": "dateTo",
+            "updated_since": "updatedSince",
+            "published_since": "publishedSince",
+        }
+
+    display: Literal["headline", "abstract", "full"] = Field(
+        default="full",
+        description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
     )
-    date: Optional[datetime] = Field(
+    date: Optional[str] = Field(
         default=None, description="Date of the news to retrieve."
     )
-    dateFrom: Optional[datetime] = Field(
+    start_date: Optional[str] = Field(
         default=None, description="Start date of the news to retrieve."
     )
-    dateTo: Optional[datetime] = Field(
+    end_date: Optional[str] = Field(
         default=None, description="End date of the news to retrieve."
     )
-    updatedSince: Optional[int] = Field(
+    updated_since: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was updated.",
     )
-    publishedSince: Optional[int] = Field(
+    published_since: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was published.",
     )
     sort: Optional[
         Literal[
-            "published_at",
-            "updated_at",
-            "title",
-            "author",
-            "channel",
-            "ticker",
-            "topic",
-            "content_type",
+            "id",
+            "created",
+            "updated",
         ]
-    ] = Field(default=None, description="Order in which to sort the news.")
+    ] = Field(default="created", description="Key to sort the news by.")
+    order: Optional[Literal["asc", "desc"]] = Field(
+        default="desc", description="Order to sort the news by."
+    )
     isin: Optional[str] = Field(
         default=None, description="The ISIN of the news to retrieve."
     )
@@ -72,6 +85,32 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     )
 
 
+class BenzingaStockNewsData(StockNewsData):
+    """Benzinga Stock News Data."""
+
+    class Config:
+        """Pydantic alias config using fields dict."""
+
+        fields = {
+            "date": "created",
+            "text": "body",
+        }
+
+    image: List[Dict[str, str]] = Field(description="Images associated with the news.")
+    id: str = Field(description="ID of the news.")
+    author: str = Field(description="Author of the news.")
+    updated: datetime = Field(description="Updated date of the news.")
+    teaser: Optional[str] = Field(description="Teaser of the news.")
+    channels: str = Field(description="Channels associated with the news.")
+    stocks: str = Field(description="Stocks associated with the news.")
+    tags: str = Field(description="Tags associated with the news.")
+
+    @validator("date", "updated", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
+
+
 class BenzingaStockNewsFetcher(
     Fetcher[
         BenzingaStockNewsQueryParams,
@@ -87,21 +126,42 @@ class BenzingaStockNewsFetcher(
         query: BenzingaStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
-        api_key = credentials.get("benzinga_api_key") if credentials else ""
+    ) -> Dict:
+        token = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
-        querystring = get_querystring(query.dict(by_alias=True), [])
-        request_url = f"{base_url}?{querystring}&token={api_key}"
-        data = get_data(request_url, **kwargs)
 
-        if len(data) == 0:
-            raise RuntimeError("No news found")
+        query.sort = f"{query.sort}:{query.order}"
+        querystring = get_querystring(query.dict(by_alias=True), ["order"])
+
+        pages = math.ceil(query.limit / 100)
+        data = []
+
+        for page in range(pages):
+            url = f"{base_url}?{querystring}&page={page}&token={token}"
+            response = get_data(url, **kwargs)
+            data.extend(response)
+
+        data = data[: query.limit]
 
         return data
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: Dict,
     ) -> List[BenzingaStockNewsData]:
-        return [BenzingaStockNewsData.from_dict(d) for d in data]
+        data = [
+            {
+                **item,
+                "channels": ",".join(
+                    [channel["name"] for channel in item.get("channels", None)]
+                ),
+                "stocks": ",".join(
+                    [stock["name"] for stock in item.get("stocks", None)]
+                ),
+                "tags": ",".join([tag["name"] for tag in item.get("tags", None)]),
+            }
+            for item in data
+        ]
+
+        return [BenzingaStockNewsData.parse_obj(d) for d in data]

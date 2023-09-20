@@ -8,18 +8,23 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from pydantic import BaseModel, validate_arguments
 
 
 class CLASS_economy(Container):
     """/economy
     available_indices
     const
+    cot
+    cot_search
     cpi
     european_index
     european_index_constituents
     index
+    index_search
+    index_snapshots
     risk
+    sp500_multiples
     """
 
     def __repr__(self) -> str:
@@ -174,6 +179,162 @@ class CLASS_economy(Container):
         )
 
     @validate_arguments
+    def cot(
+        self, provider: Union[Literal["quandl"], None] = None, **kwargs
+    ) -> OBBject[List]:
+        """Lookup Commitment of Traders Reports by series ID.
+
+        Parameters
+        ----------
+        provider : Union[Literal['quandl'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+        code : str
+
+                    CFTC series code.  Use search_cot() to find the code.
+                    Codes not listed in the curated list, but are published by on the Nasdaq Data Link website, are valid.
+                    Certain symbols, such as "ES=F", or exact names are also valid.
+                    Default report is: S&P 500 Consolidated (CME))
+                     (provider: quandl)
+        data_type : Union[Literal['F', 'FO', 'CITS'], NoneType]
+
+                    The type of data to reuturn. Default is "FO".
+
+                    F = Futures only
+
+                    FO = Futures and Options
+
+                    CITS = Commodity Index Trader Supplemental. Only valid for commodities.
+                 (provider: quandl)
+        legacy_format : Union[bool, NoneType]
+            Returns the legacy format of report. Default is False. (provider: quandl)
+        report_type : Union[Literal['ALL', 'CHG', 'OLD', 'OTR'], NoneType]
+
+                    The type of report to return. Default is "ALL".
+
+                        ALL = All
+
+                        CHG = Change in Positions
+
+                        OLD = Old Crop Years
+
+                        OTR = Other Crop Years
+                 (provider: quandl)
+        measure : Union[Literal['CR', 'NT', 'OI', 'CHG'], NoneType]
+
+                    The measure to return. Default is None.
+
+                    CR = Concentration Ratios
+
+                    NT = Number of Traders
+
+                    OI = Percent of Open Interest
+
+                    CHG = Change in Positions. Only valid when data_type is "CITS".
+                 (provider: quandl)
+        start_date : Union[datetime.date, NoneType]
+            The start date of the time series. Defaults to all. (provider: quandl)
+        end_date : Union[datetime.date, NoneType]
+            The end date of the time series. Defaults to the most recent data. (provider: quandl)
+        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], NoneType]
+            Transform the data as w/w difference, percent change, cumulative, or normalize. (provider: quandl)
+
+        Returns
+        -------
+        OBBject
+            results : List[COT]
+                Serializable results.
+            provider : Union[Literal['quandl'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        COT
+        ---"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={},
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/cot",
+            **inputs,
+        )
+
+    @validate_arguments
+    def cot_search(
+        self,
+        query: typing_extensions.Annotated[
+            str, OpenBBCustomParameter(description="Search query.")
+        ] = "",
+        provider: Union[Literal["quandl"], None] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
+        """Fuzzy search and list of curated Commitment of Traders Reports series information.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        provider : Union[Literal['quandl'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[COTSearch]
+                Serializable results.
+            provider : Union[Literal['quandl'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        COTSearch
+        ---------
+        code : Optional[str]
+            CFTC Code of the report.
+        name : Optional[str]
+            Name of the underlying asset.
+        category : Optional[str]
+            Category of the underlying asset.
+        subcategory : Optional[str]
+            Subcategory of the underlying asset.
+        units : Optional[str]
+            The units for one contract.
+        symbol : Optional[str]
+            Trading symbol representing the underlying asset."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/cot_search",
+            **inputs,
+        )
+
+    @validate_arguments
     def cpi(
         self,
         countries: typing_extensions.Annotated[
@@ -300,12 +461,8 @@ class CLASS_economy(Container):
         ---
         date : Optional[date]
             The date of the data.
-        realtime_start : Optional[date]
-            Date the data was updated.
-        realtime_end : Optional[date]
-            Date the data was updated.
         value : Optional[float]
-            Value of the data."""  # noqa: E501
+            CPI value on the date."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -531,9 +688,9 @@ class CLASS_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        interval : Union[Literal['1d', '1m'], None, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
-            Data granularity. (provider: cboe, fmp, yfinance)
-        timeseries : Union[pydantic.types.NonNegativeInt, None]
+        interval : Union[Literal['1d', '1m'], NoneType, Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe); Data granularity. (provider: fmp); Data granularity. (provider: yfinance)
+        timeseries : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of days to look back. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
@@ -545,14 +702,12 @@ class CLASS_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
-        period : Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], None]
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
-        back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+        rounding : bool
+            Round prices to two decimals? (provider: yfinance)
 
         Returns
         -------
@@ -570,7 +725,7 @@ class CLASS_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : Optional[datetime]
+        date : Union[date, datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -595,11 +750,11 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -616,6 +771,174 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/index",
+            **inputs,
+        )
+
+    @validate_arguments
+    def index_search(
+        self,
+        query: typing_extensions.Annotated[
+            str, OpenBBCustomParameter(description="Search query.")
+        ] = "",
+        symbol: typing_extensions.Annotated[
+            Union[bool, List[str]],
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        provider: Union[Literal["cboe"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Search for indices.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        symbol : Union[bool, List[str]]
+            Whether to search by ticker symbol.
+        provider : Union[Literal['cboe'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        europe : bool
+            Filter for European indices. False for US indices. (provider: cboe)
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSearch]
+                Serializable results.
+            provider : Union[Literal['cboe'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSearch
+        -----------
+        symbol : Optional[str]
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        region : Optional[str]
+            Region for the index. Valid only for European indices (provider: cboe)
+        description : Optional[str]
+            Description for the index. (provider: cboe)
+        data_delay : Optional[int]
+            Data delay for the index. Valid only for US indices. (provider: cboe)
+        currency : Optional[str]
+            Currency for the index. (provider: cboe)
+        time_zone : Optional[str]
+            Time zone for the index. Valid only for US indices. (provider: cboe)
+        open_time : Optional[time]
+            Opening time for the index. Valid only for US indices. (provider: cboe)
+        close_time : Optional[time]
+            Closing time for the index. Valid only for US indices. (provider: cboe)
+        tick_days : Optional[str]
+            The trading days for the index. Valid only for US indices. (provider: cboe)
+        tick_frequency : Optional[str]
+            Tick frequency for the index. Valid only for US indices. (provider: cboe)
+        tick_period : Optional[str]
+            Tick period for the index. Valid only for US indices. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_search",
+            **inputs,
+        )
+
+    @validate_arguments
+    def index_snapshots(
+        self,
+        region: typing_extensions.Annotated[
+            Union[Literal["US", "EU"], None],
+            OpenBBCustomParameter(
+                description="The region to return. Currently supports US and EU."
+            ),
+        ] = "US",
+        provider: Union[Literal["cboe"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Get current  levels for all indices from a provider.
+
+        Parameters
+        ----------
+        region : Union[Literal['US', 'EU'], NoneType]
+            The region to return. Currently supports US and EU.
+        provider : Union[Literal['cboe'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSnapshots]
+                Serializable results.
+            provider : Union[Literal['cboe'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        IndexSnapshots
+        --------------
+        symbol : Optional[str]
+            Symbol of the index.
+        name : Optional[str]
+            Name of the index.
+        currency : Optional[str]
+            Currency of the index.
+        price : Optional[float]
+            Current price of the index.
+        open : Optional[float]
+            Opening price of the index.
+        high : Optional[float]
+            Highest price of the index.
+        low : Optional[float]
+            Lowest price of the index.
+        close : Optional[float]
+            Closing price of the index.
+        prev_close : Optional[float]
+            Previous closing price of the index.
+        change : Optional[float]
+            Change of the index.
+        change_percent : Optional[float]
+            Change percent of the index.
+        isin : Optional[str]
+            ISIN code for the index. Valid only for European indices. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the index. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "region": region,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/index_snapshots",
             **inputs,
         )
 
@@ -667,5 +990,135 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/risk",
+            **inputs,
+        )
+
+    @validate_arguments
+    def sp500_multiples(
+        self,
+        series_name: typing_extensions.Annotated[
+            Literal[
+                "Shiller PE Ratio by Month",
+                "Shiller PE Ratio by Year",
+                "PE Ratio by Year",
+                "PE Ratio by Month",
+                "Dividend by Year",
+                "Dividend by Month",
+                "Dividend Growth by Quarter",
+                "Dividend Growth by Year",
+                "Dividend Yield by Year",
+                "Dividend Yield by Month",
+                "Earnings by Year",
+                "Earnings by Month",
+                "Earnings Growth by Year",
+                "Earnings Growth by Quarter",
+                "Real Earnings Growth by Year",
+                "Real Earnings Growth by Quarter",
+                "Earnings Yield by Year",
+                "Earnings Yield by Month",
+                "Real Price by Year",
+                "Real Price by Month",
+                "Inflation Adjusted Price by Year",
+                "Inflation Adjusted Price by Month",
+                "Sales by Year",
+                "Sales by Quarter",
+                "Sales Growth by Year",
+                "Sales Growth by Quarter",
+                "Real Sales by Year",
+                "Real Sales by Quarter",
+                "Real Sales Growth by Year",
+                "Real Sales Growth by Quarter",
+                "Price to Sales Ratio by Year",
+                "Price to Sales Ratio by Quarter",
+                "Price to Book Value Ratio by Year",
+                "Price to Book Value Ratio by Quarter",
+                "Book Value per Share by Year",
+                "Book Value per Share by Quarter",
+            ],
+            OpenBBCustomParameter(
+                description="The name of the series. Defaults to 'PE Ratio by Month'."
+            ),
+        ] = "PE Ratio by Month",
+        start_date: typing_extensions.Annotated[
+            Union[str, None],
+            OpenBBCustomParameter(
+                description="The start date of the time series. Format: YYYY-MM-DD"
+            ),
+        ] = "",
+        end_date: typing_extensions.Annotated[
+            Union[str, None],
+            OpenBBCustomParameter(
+                description="The end date of the time series. Format: YYYY-MM-DD"
+            ),
+        ] = "",
+        collapse: typing_extensions.Annotated[
+            Union[Literal["daily", "weekly", "monthly", "quarterly", "annual"], None],
+            OpenBBCustomParameter(
+                description="Collapse the frequency of the time series."
+            ),
+        ] = "monthly",
+        transform: typing_extensions.Annotated[
+            Union[Literal["diff", "rdiff", "cumul", "normalize"], None],
+            OpenBBCustomParameter(description="The transformation of the time series."),
+        ] = None,
+        provider: Union[Literal["quandl"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
+        """Historical S&P 500 multiples and Shiller PE ratios.
+
+        Parameters
+        ----------
+        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Ratio by Year', 'PE Ratio by Month', 'Dividend by Year', 'Dividend by Month', 'Dividend Growth by Quarter', 'Dividend Growth by Year', 'Dividend Yield by Year', 'Dividend Yield by Month', 'Earnings by Year', 'Earnings by Month', 'Earnings Growth by Year', 'Earnings Growth by Quarter', 'Real Earnings Growth by Year', 'Real Earnings Growth by Quarter', 'Earnings Yield by Year', 'Earnings Yield by Month', 'Real Price by Year', 'Real Price by Month', 'Inflation Adjusted Price by Year', 'Inflation Adjusted Price by Month', 'Sales by Year', 'Sales by Quarter', 'Sales Growth by Year', 'Sales Growth by Quarter', 'Real Sales by Year', 'Real Sales by Quarter', 'Real Sales Growth by Year', 'Real Sales Growth by Quarter', 'Price to Sales Ratio by Year', 'Price to Sales Ratio by Quarter', 'Price to Book Value Ratio by Year', 'Price to Book Value Ratio by Quarter', 'Book Value per Share by Year', 'Book Value per Share by Quarter']
+            The name of the series. Defaults to 'PE Ratio by Month'.
+        start_date : Union[str, NoneType]
+            The start date of the time series. Format: YYYY-MM-DD
+        end_date : Union[str, NoneType]
+            The end date of the time series. Format: YYYY-MM-DD
+        collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'], NoneType]
+            Collapse the frequency of the time series.
+        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], NoneType]
+            The transformation of the time series.
+        provider : Union[Literal['quandl'], NoneType]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SP500Multiples]
+                Serializable results.
+            provider : Union[Literal['quandl'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        SP500Multiples
+        --------------
+        date : Optional[str]
+            The date data for the time series.
+        value : Optional[float]
+            The data value for the time series."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "series_name": series_name,
+                "start_date": start_date,
+                "end_date": end_date,
+                "collapse": collapse,
+                "transform": transform,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/sp500_multiples",
             **inputs,
         )

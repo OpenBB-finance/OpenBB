@@ -2,24 +2,33 @@
 
 
 from datetime import date as dateType
+from typing import List, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class BalanceSheetGrowthQueryParams(QueryParams, BaseSymbol):
+class BalanceSheetGrowthQueryParams(QueryParams):
     """Balance Sheet Statement Growth Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
-class BalanceSheetGrowthData(Data, BaseSymbol):
+
+class BalanceSheetGrowthData(Data):
     """Balance Sheet Statement Growth Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Reporting period.")
     growth_cash_and_cash_equivalents: float = Field(
@@ -115,3 +124,10 @@ class BalanceSheetGrowthData(Data, BaseSymbol):
     )
     growth_total_debt: float = Field(description="Growth rate of total debt.")
     growth_net_debt: float = Field(description="Growth rate of net debt.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

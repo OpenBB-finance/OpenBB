@@ -1,27 +1,25 @@
 """Stock Quote data model."""
 
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 
 
-class StockQuoteQueryParams(QueryParams, BaseSymbol):
-    """Stock Quote query model.
-
-    Parameter
-    ---------
-    symbol: str
-        The symbol of the company.
-    symbols: str
-        Comma separated list of symbols.
-    """
+class StockQuoteQueryParams(QueryParams):
+    """Stock Quote query model."""
 
     symbol: str = Field(default=None, description="Comma separated list of symbols.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class StockQuoteData(Data):

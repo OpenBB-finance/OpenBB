@@ -16,7 +16,6 @@ from pydantic import BaseModel, validate_arguments
 class CLASS_stocks(Container):
     """/stocks
     /ca
-    /dd
     /fa
     info
     load
@@ -35,12 +34,6 @@ class CLASS_stocks(Container):
         from . import stocks_ca
 
         return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
-
-    @property
-    def dd(self):  # route = "/stocks/dd"
-        from . import stocks_dd
-
-        return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
@@ -205,7 +198,7 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
-        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'], None]
+        period : Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Period of the data to return. (provider: alpha_vantage, yfinance)
         interval : Union[Literal['1min', '5min', '15min', '30min', '60min'], None, Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
             Data granularity. (provider: alpha_vantage, cboe, fmp, yfinance)
@@ -229,24 +222,34 @@ class CLASS_stocks(Container):
             Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
         interval_size : Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h'], None]
             The data time frequency. (provider: intrinio)
-        limit : Union[pydantic.types.NonNegativeInt, None, pydantic.types.PositiveInt]
-            The number of data entries to return. (provider: intrinio, polygon)
-        next_page : Union[str, None]
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Union[bool, None]
-            Returns all pages of data from the API call at once. (provider: intrinio)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
+        limit : PositiveInt
+            The number of data entries to return. (provider: polygon)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
+        actions : bool
+            Include actions. (provider: yfinance)
+        auto_adjust : bool
+            Adjust all OHLC data automatically. (provider: yfinance)
         back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+            Attempt to adjust all the data automatically. (provider: yfinance)
+        progress : bool
+            Show progress bar. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+        rounding : bool
+            Round to two decimal places? (provider: yfinance)
+        repair : bool
+            Detect currency unit 100x mixups and attempt repair. (provider: yfinance)
+        keepna : bool
+            Keep NaN rows returned by Yahoo? (provider: yfinance)
+        group_by : Literal['ticker', 'column']
+            Group by ticker or column. (provider: yfinance)
 
         Returns
         -------
@@ -264,7 +267,7 @@ class CLASS_stocks(Container):
 
         StockHistorical
         ---------------
-        date : Optional[datetime]
+        date : Union[date, datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -297,11 +300,11 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]
@@ -518,18 +521,12 @@ class CLASS_stocks(Container):
     def news(
         self,
         symbols: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str, OpenBBCustomParameter(description="Comma separated list of symbols.")
         ],
-        page: typing_extensions.Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="Page of the stock news to be retrieved."
-            ),
-        ] = 0,
         limit: typing_extensions.Annotated[
             Union[pydantic.types.NonNegativeInt, None],
             OpenBBCustomParameter(description="Number of results to return per page."),
-        ] = 15,
+        ] = 20,
         chart: bool = False,
         provider: Union[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"], None
@@ -541,10 +538,8 @@ class CLASS_stocks(Container):
         Parameters
         ----------
         symbols : str
-            Symbol to get data for.
-        page : int
-            Page of the stock news to be retrieved.
-        limit : Union[pydantic.types.NonNegativeInt, None]
+            Comma separated list of symbols.
+        limit : Union[pydantic.types.NonNegativeInt, NoneType]
             Number of results to return per page.
         chart : bool
             Whether to create a chart or not, by default False.
@@ -552,21 +547,23 @@ class CLASS_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        display_output : Literal['headline', 'summary', 'full', 'all']
-            Type of data to return. (provider: benzinga)
-        date : Union[datetime.datetime, None]
+        display : Literal['headline', 'abstract', 'full']
+            Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
+        date : Union[str, NoneType]
             Date of the news to retrieve. (provider: benzinga)
-        date_from : Union[datetime.datetime, None]
+        start_date : Union[str, NoneType]
             Start date of the news to retrieve. (provider: benzinga)
-        date_to : Union[datetime.datetime, None]
+        end_date : Union[str, NoneType]
             End date of the news to retrieve. (provider: benzinga)
         updated_since : Union[int, None]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['published_at', 'updated_at', 'title', 'author', 'channel', 'ticker', 'topic', 'content_type'], None, str]
-            Order in which to sort the news. (provider: benzinga, polygon)
-        isin : Union[str, None]
+        sort : Union[Literal['id', 'created', 'updated'], NoneType]
+            Key to sort the news by. (provider: benzinga)
+        order : Union[Literal['asc', 'desc'], NoneType]
+            Order to sort the news by. (provider: benzinga); Sort order of the articles. (provider: polygon)
+        isin : Union[str, NoneType]
             The ISIN of the news to retrieve. (provider: benzinga)
         cusip : Union[str, None]
             The CUSIP of the news to retrieve. (provider: benzinga)
@@ -578,30 +575,8 @@ class CLASS_stocks(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Union[str, None]
             Content types of the news to retrieve. (provider: benzinga)
-        next_page : Union[str, None]
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Union[bool, None]
-            Returns all pages of data from the API call at once. (provider: intrinio)
-        ticker_lt : Union[str, None]
-            Less than. (provider: polygon)
-        ticker_lte : Union[str, None]
-            Less than or equal. (provider: polygon)
-        ticker_gt : Union[str, None]
-            Greater than. (provider: polygon)
-        ticker_gte : Union[str, None]
-            Greater than or equal. (provider: polygon)
-        published_utc : Union[str, None]
-            Published date of the query. (provider: polygon)
-        published_utc_lt : Union[str, None]
-            Less than. (provider: polygon)
-        published_utc_lte : Union[str, None]
-            Less than or equal. (provider: polygon)
-        published_utc_gt : Union[str, None]
-            Greater than. (provider: polygon)
-        published_utc_gte : Union[str, None]
-            Greater than or equal. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], None]
-            Sort order of the query. (provider: polygon)
+        published_utc : Union[str, NoneType]
+            Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
 
         Returns
         -------
@@ -623,32 +598,32 @@ class CLASS_stocks(Container):
             Published date of the news.
         title : Optional[str]
             Title of the news.
+        image : Optional[str]
+            Image URL of the news.
         text : Optional[str]
             Text/body of the news.
         url : Optional[str]
             URL of the news.
-        images : Optional[List[BenzingaImage]]
-            Images associated with the news. (provider: benzinga)
-        channels : Optional[List[str]]
-            Channels associated with the news. (provider: benzinga)
-        stocks : Optional[List[str]]
-            Stocks associated with the news. (provider: benzinga)
-        tags : Optional[List[str]]
-            Tags associated with the news. (provider: benzinga)
+        id : Optional[str]
+            ID of the news. (provider: benzinga); Intrinio ID for the article. (provider: intrinio); Article ID. (provider: polygon)
+        author : Optional[str]
+            Author of the news. (provider: benzinga); Author of the article. (provider: polygon)
+        updated : Optional[datetime]
+            Updated date of the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
+        channels : Optional[str]
+            Channels associated with the news. (provider: benzinga)
+        stocks : Optional[str]
+            Stocks associated with the news. (provider: benzinga)
+        tags : Optional[str]
+            Tags associated with the news. (provider: benzinga)
         symbol : Optional[str]
             Ticker of the fetched news. (provider: fmp)
-        image : Optional[str]
-            URL to the image of the news source. (provider: fmp)
         site : Optional[str]
             Name of the news source. (provider: fmp)
-        id : Optional[str]
-            Article ID. (provider: intrinio, polygon)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
-        author : Optional[str]
-            Author of the article. (provider: polygon)
         image_url : Optional[str]
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
@@ -661,7 +636,7 @@ class CLASS_stocks(Container):
             Unique identifier for the news article (provider: yfinance)
         type : Optional[str]
             Type of the news article (provider: yfinance)
-        thumbnail : Optional[Mapping[str, Any]]
+        thumbnail : Optional[List[T]]
             Thumbnail related data to the ticker news article. (provider: yfinance)
         related_tickers : Optional[str]
             Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
@@ -672,7 +647,6 @@ class CLASS_stocks(Container):
             },
             standard_params={
                 "symbols": symbols,
-                "page": page,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -695,8 +669,8 @@ class CLASS_stocks(Container):
         self,
         symbol: typing_extensions.Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+            OpenBBCustomParameter(description="Comma separated list of symbols."),
+        ] = None,
         provider: Union[Literal["fmp", "intrinio"], None] = None,
         **kwargs
     ) -> OBBject[BaseModel]:
@@ -705,8 +679,8 @@ class CLASS_stocks(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for.
-        provider : Union[Literal['fmp', 'intrinio'], None]
+            Comma separated list of symbols.
+        provider : Union[Literal['fmp', 'intrinio'], NoneType]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -812,7 +786,11 @@ class CLASS_stocks(Container):
         market_center_code : Optional[str]
             Market center character code. (provider: intrinio)
         is_darkpool : Optional[bool]
-            Whether or not the current trade is from a darkpool. (provider: intrinio)"""  # noqa: E501
+            Whether or not the current trade is from a darkpool. (provider: intrinio)
+        messages : Optional[List[str]]
+            Messages associated with the endpoint. (provider: intrinio)
+        security : Optional[Mapping[str, Any]]
+            Security details related to the quote. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

@@ -1,14 +1,19 @@
 """FMP Stock Ownership fetcher."""
 
 
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many, most_recent_quarter
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_ownership import (
     StockOwnershipData,
     StockOwnershipQueryParams,
 )
+from pydantic import validator
 
 
 class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
@@ -16,6 +21,16 @@ class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
     """
+
+    @validator("date", pre=True, check_fields=True)
+    def time_validate(cls, v: str):  # pylint: disable=E021
+        """Validate the date."""
+        if v is None:
+            v = dateType.today()
+        if isinstance(v, str):
+            base = datetime.strptime(v, "%Y-%m-%d").date()
+            return most_recent_quarter(base)
+        return most_recent_quarter(v)
 
 
 class FMPStockOwnershipData(StockOwnershipData):

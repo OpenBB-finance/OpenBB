@@ -3,14 +3,14 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many, get_date_condition
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
     StockNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class PolygonStockNewsQueryParams(StockNewsQueryParams):
@@ -22,29 +22,17 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     class Config:
         fields = {"symbols": "ticker"}
 
-    ticker_lt: Optional[str] = Field(default=None, description="Less than.")
-    ticker_lte: Optional[str] = Field(default=None, description="Less than or equal.")
-    ticker_gt: Optional[str] = Field(default=None, description="Greater than.")
-    ticker_gte: Optional[str] = Field(
-        default=None, description="Greater than or equal."
-    )
     published_utc: Optional[str] = Field(
-        default=None, description="Published date of the query."
-    )
-    published_utc_lt: Optional[str] = Field(default=None, description="Less than.")
-    published_utc_lte: Optional[str] = Field(
-        default=None, description="Less than or equal."
-    )
-    published_utc_gt: Optional[str] = Field(default=None, description="Greater than.")
-    published_utc_gte: Optional[str] = Field(
-        default=None, description="Greater than or equal."
+        description="Date query to fetch articles. Supports operators <, <=, >, >="
     )
     order: Optional[Literal["asc", "desc"]] = Field(
-        default=None, description="Sort order of the query."
+        default="desc", description="Sort order of the articles."
     )
-    sort: Optional[str] = Field(
-        default=None, description="Order in which to sort the news."
-    )
+
+    @validator("limit", pre=True)
+    def limit_validator(cls, v: int) -> int:  # pylint: disable=E0213
+        """Limit validator."""
+        return min(v, 1000)
 
 
 class PolygonPublisher(BaseModel):
@@ -92,14 +80,22 @@ class PolygonStockNewsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
-        querystring = get_querystring(query.dict(by_alias=True), [])
-        request_url = f"{base_url}?{querystring}&apiKey={api_key}"
-        data = get_data(request_url, **kwargs)["results"]
 
-        if len(data) == 0:
-            raise RuntimeError("No news found")
+        if query.published_utc:
+            date, condition = get_date_condition(query.published_utc)
 
-        return data
+            if condition != "eq":
+                query_str = get_querystring(
+                    query.dict(by_alias=True), ["published_utc"]
+                )
+                query_str += f"&published_utc.{condition}={date}"
+
+        else:
+            query_str = get_querystring(query.dict(by_alias=True), [])
+
+        url = f"{base_url}?{query_str}&apiKey={api_key}"
+
+        return get_data_many(url, "results", **kwargs)
 
     @staticmethod
     def transform_data(

@@ -1,21 +1,32 @@
 """Historical Employees data model."""
 
 from datetime import date, datetime
+from typing import List, Set, Union
 
 from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class HistoricalEmployeesQueryParams(QueryParams, BaseSymbol):
+class HistoricalEmployeesQueryParams(QueryParams):
     """Historical Employees Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-class HistoricalEmployeesData(Data, BaseSymbol):
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
+
+
+class HistoricalEmployeesData(Data):
     """Historical Employees Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     cik: int = Field(
         description="CIK of the company to retrieve the historical employees of."
     )
@@ -49,3 +60,10 @@ class HistoricalEmployeesData(Data, BaseSymbol):
     def filing_date_validate(cls, v):  # pylint: disable=E0213
         """Validate filing date."""
         return datetime.strptime(v, "%Y-%m-%d")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
