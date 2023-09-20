@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-blackrock"
-version = "0.1.0"
+version = "0.1.0a0"
 description = "Blackrock extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"

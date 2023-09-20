@@ -18,6 +18,7 @@ openbb-polygon = "^0.1.0a0"
 
 openbb-crypto = "^0.1.0a0"
 openbb-economy = "^0.1.0a0"
+openbb-etf = "^0.1.0a0"
 openbb-forex = "^0.1.0a0"
 openbb-fixedincome = "^0.1.0a0"
 openbb-news = "^0.1.0a0"
@@ -25,8 +26,10 @@ openbb-stocks = "^0.1.0a0"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a0", optional = true }
+openbb-blackrock = { version = "^0.1.0a0", optional = true }
 openbb-cboe = { version = "^0.1.0a0", optional = true }
 openbb-quandl = { version = "^0.1.0a0", optional = true }
+openbb-tmx = { version = "^0.1.0a0", optional = true }
 openbb-yfinance = { version = "^0.1.0a0", optional = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true }
@@ -37,8 +40,10 @@ openbb-econometrics = { path = "./extensions/econometrics", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
+blackrock = ["openbb-blackrock"]
 cboe = ["openbb-cboe"]
 quandl = ["openbb-quandl"]
+tmx = ["openbb-tmx"]
 yfinance = ["openbb-yfinance"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
@@ -48,8 +53,10 @@ econometrics = ["openbb-econometrics"]
 
 all = [
     "openbb-alpha-vantage",
+    "openbb-blackrock",
     "openbb-cboe",
     "openbb-quandl",
+    "openbb-tmx",
     "openbb-yfinance",
     "openbb-charting",
     "openbb-futures",
