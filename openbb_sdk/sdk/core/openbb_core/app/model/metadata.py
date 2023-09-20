@@ -51,7 +51,7 @@ class Metadata(BaseModel):
                 columns = (item for sublist in columns for item in sublist)  # flatten
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": list(columns),
+                    "columns": list(set(columns)),
                 }
 
             # DataFrame
