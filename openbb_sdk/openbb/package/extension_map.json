@@ -9,17 +9,17 @@
         "news@0.1.0a0",
         "openbb_charting@0.1.0a1",
         "qa@0.1.0a0",
-        "stocks@0.1.0a0",
+        "stocks@0.1.0a1",
         "ta@0.1.0a0"
     ],
     "openbb_provider_extension": [
         "alpha_vantage@0.1.0a0",
-        "benzinga@0.1.0a0",
+        "benzinga@0.1.0a1",
         "cboe@0.1.0a0",
-        "fmp@0.1.0a0",
+        "fmp@0.1.0a1",
         "fred@0.1.0a0",
-        "intrinio@0.1.0a0",
-        "polygon@0.1.0a0",
+        "intrinio@0.1.0a1",
+        "polygon@0.1.0a1",
         "quandl@0.1.0a0",
         "yfinance@0.1.0a1"
     ]
