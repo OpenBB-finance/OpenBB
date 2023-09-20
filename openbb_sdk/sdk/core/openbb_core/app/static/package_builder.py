@@ -456,6 +456,9 @@ class DocstringGenerator:
                 explicit_dict.pop("extra_params", None)
 
                 returns = return_schema.model_fields
+                results_type = func.__annotations__.get("return", model_name)
+                if hasattr(results_type, "results_type_repr"):
+                    results_type = results_type.results_type_repr()
 
                 func.__doc__ = cls.generate_model_docstring(
                     model_name=model_name,
@@ -463,7 +466,7 @@ class DocstringGenerator:
                     explicit_params=explicit_dict,
                     params=params,
                     returns=returns,
-                    results_type=func.__annotations__["return"].results_type_repr(),
+                    results_type=results_type,
                 )
 
         return func
