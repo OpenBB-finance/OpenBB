@@ -59,6 +59,7 @@ class PackageBuilder:
         self.console = Console(verbose)
 
     def clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
+        """Delete the package folder or modules before building."""
         if modules:
             for module in modules:
                 module_path = self.directory / "package" / f"{module}.py"
