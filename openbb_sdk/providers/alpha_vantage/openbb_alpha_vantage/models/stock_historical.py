@@ -96,7 +96,6 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         cls, values: "AVStockHistoricalQueryParams"
     ):  # pylint: disable=E0213
         """Set the function based on the period."""
-
         functions_based_on_period = {
             "intraday": "TIME_SERIES_INTRADAY",
             "daily": "TIME_SERIES_DAILY",
@@ -224,7 +223,6 @@ class AVStockHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> AVStockHistoricalQueryParams:
         """Transform the query."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -243,7 +241,6 @@ class AVStockHistoricalFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the Alpha Vantage endpoint."""
-
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
 
         query_str = get_querystring(
@@ -276,5 +273,4 @@ class AVStockHistoricalFetcher(
         data: dict,
     ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
-
         return [AVStockHistoricalData.parse_obj(d) for d in data]

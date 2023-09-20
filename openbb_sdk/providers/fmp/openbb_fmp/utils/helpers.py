@@ -1,15 +1,14 @@
 """FMP Helpers Module."""
 
 import json
-from datetime import datetime
+from datetime import date as dateType
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
-from openbb_provider.abstract.data import Data
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import BaseModel, PositiveFloat, field_validator
+from pydantic import BaseModel
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
@@ -151,20 +150,17 @@ def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-class BaseStockPriceData(Data):
-    """Base Stock Price Data."""
-
-    date: datetime
-    open: PositiveFloat
-    high: PositiveFloat
-    low: PositiveFloat
-    close: PositiveFloat
-    volume: float
-
-    @field_validator("date", mode="before")
-    @classmethod
-    def time_validate(cls, v: str) -> datetime:  # pylint: disable=E0213
-        """Validate the date."""
-        if len(v) < 12:
-            return datetime.strptime(v, "%Y-%m-%d")
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
+    """Get the most recent quarter date."""
+    base = min(base, dateType.today())  # This prevents dates from being in the future
+    exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
+    for exact in exacts:
+        if base.month == exact[0] and base.day == exact[1]:
+            return base
+    if base.month < 4:
+        return dateType(base.year - 1, 12, 31)
+    if base.month < 7:
+        return dateType(base.year, 3, 31)
+    if base.month < 10:
+        return dateType(base.year, 6, 30)
+    return dateType(base.year, 9, 30)

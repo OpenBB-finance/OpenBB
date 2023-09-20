@@ -17,7 +17,6 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import (
     Field,
     PositiveInt,
-    field_validator,
 )
 
 
@@ -64,11 +63,6 @@ class PolygonStockHistoricalData(StockHistoricalData):
         alias="n",
     )
 
-    @field_validator("t", mode="before", check_fields=False)
-    @classmethod
-    def t_validate(cls, v):  # pylint: disable=E0213
-        return datetime.fromtimestamp(v / 1000)
-
 
 class PolygonStockHistoricalFetcher(
     Fetcher[
@@ -85,6 +79,7 @@ class PolygonStockHistoricalFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+
         return PolygonStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
@@ -95,31 +90,47 @@ class PolygonStockHistoricalFetcher(
     ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        data: list = []
+        data: List = []
 
         def multiple_symbols(
             symbol: str, data: List[PolygonStockHistoricalData]
         ) -> None:
-            request_url = (
+            results: List = []
+
+            url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
-            results = get_data(request_url, **kwargs).get("results", [])
+            response = get_data(url, **kwargs)
+
+            next_url = response.get("next_url", None)
+            results = response.get("results", [])
+
+            while next_url:
+                url = f"{next_url}&apiKey={api_key}"
+                response = get_data(url, **kwargs)
+                next_url = response.get("next_url", None)
+                results.extend(response.get("results", []))
 
             if "," in query.symbol:
                 results = [dict(symbol=symbol, **d) for d in results]
 
-            return data.extend([PolygonStockHistoricalData(**d) for d in results])
+            for r in results:
+                r["t"] = datetime.fromtimestamp(r["t"] / 1000)
+                if query.timespan not in ["minute", "hour"]:
+                    r["t"] = r["t"].date()
+
+            data.extend(results)
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
-
-        data.sort(key=lambda x: x.date)
 
         return data
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        return data
+        transformed_data = [PolygonStockHistoricalData.model_validate(d) for d in data]
+        transformed_data.sort(key=lambda x: x.date)
+        return transformed_data

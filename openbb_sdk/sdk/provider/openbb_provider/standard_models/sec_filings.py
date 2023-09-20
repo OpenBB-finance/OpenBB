@@ -2,13 +2,12 @@
 
 
 from datetime import datetime
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 FORM_TYPES = Literal[
@@ -115,9 +114,10 @@ FORM_TYPES = Literal[
 ]
 
 
-class SECFilingsQueryParams(QueryParams, BaseSymbol):
+class SECFilingsQueryParams(QueryParams):
     """SEC Filings Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     type: Optional[FORM_TYPES] = Field(
         default=None, description="Type of the SEC filing form."
     )
@@ -126,13 +126,28 @@ class SECFilingsQueryParams(QueryParams, BaseSymbol):
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
-class SECFilingsData(Data, BaseSymbol):
+
+class SECFilingsData(Data):
     """SEC Filings Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     filling_date: datetime = Field(description="Filling date of the SEC filing.")
     accepted_date: datetime = Field(description="Accepted date of the SEC filing.")
     cik: str = Field(description="CIK of the SEC filing.")
     type: str = Field(description="Type of the SEC filing.")
     link: str = Field(description="Link of the SEC filing.")
     final_link: str = Field(description="Final link of the SEC filing.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

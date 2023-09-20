@@ -2,24 +2,38 @@
 
 
 from datetime import date as dateType
-from typing import Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, NonNegativeInt, validator
 
 from openbb_provider.abstract.data import Data, StrictInt
-from openbb_provider.standard_models.base import (
-    BaseSymbol,
-    FinancialStatementQueryParams,
-)
+from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class IncomeStatementQueryParams(FinancialStatementQueryParams):
+class IncomeStatementQueryParams(QueryParams):
     """Income Statement Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: NonNegativeInt = Field(
+        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
 
-class IncomeStatementData(Data, BaseSymbol):
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
+
+
+class IncomeStatementData(Data):
     """Income Statement Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description="Date of the income statement.")
     period: Optional[str] = Field(
         default=None, description="Period of the income statement."
@@ -115,3 +129,10 @@ class IncomeStatementData(Data, BaseSymbol):
     final_link: Optional[str] = Field(
         default=None, description="Final link to the income statement."
     )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

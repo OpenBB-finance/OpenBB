@@ -279,6 +279,17 @@ def revseg(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="SECFilings")
+def sec(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """SEC Filings."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="ShareStatistics")
 def shrs(
     cc: CommandContext,

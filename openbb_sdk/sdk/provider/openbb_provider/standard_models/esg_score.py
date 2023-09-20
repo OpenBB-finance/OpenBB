@@ -1,60 +1,52 @@
 """ESG Score data model."""
 
 
-from datetime import date, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
+from typing import List, Set, Union
+
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class ESGScoreQueryParams(QueryParams, BaseSymbol):
-    """ESG score query model.
+class ESGScoreQueryParams(QueryParams):
+    """ESG score query model."""
 
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    """
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class ESGScoreData(Data):
-    """ESG Score data.
+    """ESG Score data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the asset.
-    cik : int
-        The CIK of the ESG Score.
-    company_name : str
-        The company name of the ESG Score.
-    form_type : str
-        The form type of the ESG Score.
-    accepted_date : datetime
-        The accepted date of the ESG Score.
-    date : date
-        The date of the ESG Score.
-    environmental_score : float
-        The environmental score of the ESG Score.
-    social_score : float
-        The social score of the ESG Score.
-    governance_score : float
-        The governance score of the ESG Score.
-    esg_score : float
-        The ESG score of the ESG Score.
-    url : str
-        The URL of the ESG Score.
-    """
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    cik: str = Field(description="CIK of the company.")
+    company_name: str = Field(description="Company name of the company.")
+    form_type: str = Field(description="Form type of the company.")
+    accepted_date: datetime = Field(description="Accepted date of the company.")
+    date: dateType = Field(description="Date of the fetched score.")
+    environmental_score: float = Field(
+        description="Environmental score of the company."
+    )
+    social_score: float = Field(description="Social score of the company.")
+    governance_score: float = Field(description="Governance score of the company.")
+    esg_score: float = Field(description="ESG score of the company.")
+    url: str = Field(description="URL of the company.")
 
-    symbol: str
-    cik: int
-    company_name: str
-    form_type: str
-    accepted_date: datetime
-    date: date
-    environmental_score: float
-    social_score: float
-    governance_score: float
-    esg_score: float
-    url: str
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

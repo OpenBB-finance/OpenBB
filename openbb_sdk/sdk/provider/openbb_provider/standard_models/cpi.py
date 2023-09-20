@@ -94,13 +94,7 @@ class CPIData(Data):
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
-    realtime_start: Optional[dateType] = Field(
-        default=None, description="Date the data was updated."
-    )
-    realtime_end: Optional[dateType] = Field(
-        default=None, description="Date the data was updated."
-    )
-    value: Optional[float] = Field(default=None, description="Value of the data.")
+    value: Optional[float] = Field(default=None, description="CPI value on the date.")
 
     @field_validator("value", mode="before")
     @classmethod

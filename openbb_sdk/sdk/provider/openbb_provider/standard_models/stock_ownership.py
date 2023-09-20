@@ -1,50 +1,20 @@
 """Stock owner data model."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Optional
+from datetime import date as dateType
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
-    """Get the most recent quarter date.
-
-    Parameter
-    ---------
-    base : date
-        The date to get the most recent quarter.
-
-    Returns
-    -------
-    date : date
-        The most recent quarter date.
-    """
-    base = min(base, dateType.today())  # This prevents dates from being in the future
-    exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
-    for exact in exacts:
-        if base.month == exact[0] and base.day == exact[1]:
-            return base
-    if base.month < 4:
-        return dateType(base.year - 1, 12, 31)
-    if base.month < 7:
-        return dateType(base.year, 3, 31)
-    if base.month < 10:
-        return dateType(base.year, 6, 30)
-    return dateType(base.year, 9, 30)
-
-
-class StockOwnershipQueryParams(QueryParams, BaseSymbol):
+class StockOwnershipQueryParams(QueryParams):
     """Stock ownership Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
@@ -58,10 +28,13 @@ class StockOwnershipQueryParams(QueryParams, BaseSymbol):
         """Validate the date."""
         if v is None:
             v = dateType.today()
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
         if isinstance(v, str):
-            base = datetime.strptime(v, "%Y-%m-%d").date()
-            return most_recent_quarter(base)
-        return most_recent_quarter(v)
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class StockOwnershipData(Data):

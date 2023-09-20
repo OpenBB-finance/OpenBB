@@ -2,28 +2,36 @@
 
 
 from datetime import date as dateType
-from typing import Literal
+from typing import List, Literal, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class AnalystEstimatesQueryParams(QueryParams, BaseSymbol):
+class AnalystEstimatesQueryParams(QueryParams):
     """Analyst Estimates query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     period: Literal["quarter", "annual"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
-class AnalystEstimatesData(Data, BaseSymbol):
+
+class AnalystEstimatesData(Data):
     """Analyst estimates data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
     estimated_revenue_low: StrictInt = Field(description="Estimated revenue low.")
     estimated_revenue_high: StrictInt = Field(description="Estimated revenue high.")
@@ -59,3 +67,10 @@ class AnalystEstimatesData(Data, BaseSymbol):
     number_analysts_estimated_eps: StrictInt = Field(
         description="Number of analysts who estimated EPS."
     )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

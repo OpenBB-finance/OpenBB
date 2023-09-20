@@ -15,7 +15,6 @@ from typing_extensions import Annotated
 class CLASS_stocks(Container):
     """/stocks
     /ca
-    /dd
     /fa
     info
     load
@@ -34,12 +33,6 @@ class CLASS_stocks(Container):
         from . import stocks_ca
 
         return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
-
-    @property
-    def dd(self):  # route = "/stocks/dd"
-        from . import stocks_dd
-
-        return stocks_dd.CLASS_stocks_dd(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
@@ -243,10 +236,24 @@ class CLASS_stocks(Container):
             Multiplier of the timespan. (provider: polygon)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
+        actions : bool
+            Include actions. (provider: yfinance)
+        auto_adjust : bool
+            Adjust all OHLC data automatically. (provider: yfinance)
         back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+            Attempt to adjust all the data automatically. (provider: yfinance)
+        progress : bool
+            Show progress bar. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+        rounding : bool
+            Round to two decimal places? (provider: yfinance)
+        repair : bool
+            Detect currency unit 100x mixups and attempt repair. (provider: yfinance)
+        keepna : bool
+            Keep NaN rows returned by Yahoo? (provider: yfinance)
+        group_by : Literal['ticker', 'column']
+            Group by ticker or column. (provider: yfinance)
 
         Returns
         -------
@@ -295,11 +302,11 @@ class CLASS_stocks(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
-            Change \\% in the price of the symbol over a period of time. (provider: fmp)
+            Change % in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
         interval : Optional[str]
@@ -527,7 +534,7 @@ class CLASS_stocks(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="Number of results to return per page."),
-        ] = 15,
+        ] = 20,
         chart: bool = False,
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
@@ -621,6 +628,8 @@ class CLASS_stocks(Container):
             Published date of the news.
         title : str
             Title of the news.
+        image : Optional[str]
+            Image URL of the news.
         text : Optional[str]
             Text/body of the news.
         url : str
@@ -635,18 +644,18 @@ class CLASS_stocks(Container):
             Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
+        channels : Optional[str]
+            Channels associated with the news. (provider: benzinga)
+        stocks : Optional[str]
+            Stocks associated with the news. (provider: benzinga)
+        tags : Optional[str]
+            Tags associated with the news. (provider: benzinga)
         symbol : Optional[str]
             Ticker of the fetched news. (provider: fmp)
-        image : Optional[str]
-            URL to the image of the news source. (provider: fmp)
         site : Optional[str]
             Name of the news source. (provider: fmp)
-        id : Optional[str]
-            Article ID. (provider: intrinio, polygon)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
-        author : Optional[str]
-            Author of the article. (provider: polygon)
         image_url : Optional[str]
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
@@ -670,7 +679,6 @@ class CLASS_stocks(Container):
             },
             standard_params={
                 "symbols": symbols,
-                "page": page,
                 "limit": limit,
             },
             extra_params=kwargs,
@@ -810,7 +818,11 @@ class CLASS_stocks(Container):
         market_center_code : Optional[str]
             Market center character code. (provider: intrinio)
         is_darkpool : Optional[bool]
-            Whether or not the current trade is from a darkpool. (provider: intrinio)"""  # noqa: E501
+            Whether or not the current trade is from a darkpool. (provider: intrinio)
+        messages : Optional[List[str]]
+            Messages associated with the endpoint. (provider: intrinio)
+        security : Optional[Mapping[str, Any]]
+            Security details related to the quote. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

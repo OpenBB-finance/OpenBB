@@ -82,8 +82,10 @@ class FMPBalanceSheetData(BalanceSheetData):
     total_debt: Optional[StrictInt] = Field(default=None, description="Total Debt")
     net_debt: Optional[StrictInt] = Field(default=None, description="Net Debt")
 
-    link: Optional[str] = Field(default=None, description="Link")
-    final_link: Optional[str] = Field(default=None, description="Final Link")
+    link: Optional[str] = Field(default=None, description="Link to the statement.")
+    final_link: Optional[str] = Field(
+        default=None, description="Link to the final statement."
+    )
 
 
 class FMPBalanceSheetFetcher(

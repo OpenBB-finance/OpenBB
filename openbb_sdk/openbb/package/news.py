@@ -91,6 +91,8 @@ class CLASS_news(Container):
             Published date of the news.
         title : str
             Title of the news.
+        image : Optional[str]
+            Image URL of the news.
         text : Optional[str]
             Text/body of the news.
         url : str
@@ -105,6 +107,12 @@ class CLASS_news(Container):
             Tags associated with the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
+        channels : Optional[str]
+            Channels associated with the news. (provider: benzinga)
+        stocks : Optional[str]
+            Stocks associated with the news. (provider: benzinga)
+        tags : Optional[str]
+            Tags associated with the news. (provider: benzinga)
         site : Optional[str]
             Site of the news. (provider: fmp)
         id : Optional[str]
@@ -117,7 +125,7 @@ class CLASS_news(Container):
                 "provider": provider,
             },
             standard_params={
-                "page": page,
+                "limit": limit,
             },
             extra_params=kwargs,
         )

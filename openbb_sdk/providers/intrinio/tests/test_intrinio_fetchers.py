@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
@@ -25,7 +27,11 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_intrinio_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 23),
+        "end_date": date(2023, 5, 23),
+    }
 
     fetcher = IntrinioStockHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -43,7 +49,7 @@ def test_intrinio_forex_pairs_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_stock_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbols": "AAPL"}
 
     fetcher = IntrinioStockNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -70,7 +76,7 @@ def test_intrinio_stock_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "date": "2023-09-15"}
 
     fetcher = IntrinioOptionsChainsFetcher()
     result = fetcher.test(params, credentials)

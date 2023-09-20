@@ -25,14 +25,6 @@ class IntrinioStockNewsQueryParams(StockNewsQueryParams):
     symbols: str = Field(
         description="A Company identifier (Ticker, CIK, LEI, Intrinio ID)."
     )
-    next_page: Optional[str] = Field(
-        description="Token to get the next page of data from a previous API call."
-    )
-    # TODO: Add support for all_pages
-    all_pages: Optional[bool] = Field(
-        default=False,
-        description="Returns all pages of data from the API call at once.",
-    )
 
 
 class IntrinioStockNewsData(StockNewsData):
@@ -40,7 +32,7 @@ class IntrinioStockNewsData(StockNewsData):
 
     __alias_dict__ = {"date": "publication_date", "text": "summary"}
 
-    id: str = Field(description="Article ID.")
+    id: str = Field(description="Intrinio ID for the article.")
 
     @validator("publication_date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -72,9 +64,9 @@ class IntrinioStockNewsFetcher(
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
-        base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbols", "all_pages"])
-        url = f"{base_url}/companies/{query.symbols}/news?{query_str}&api_key={api_key}"
+        base_url = "https://api-v2.intrinio.com/companies"
+        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols"])
+        url = f"{base_url}/{query.symbols}/news?{query_str}&api_key={api_key}"
 
         return get_data_many(url, "news", **kwargs)
 

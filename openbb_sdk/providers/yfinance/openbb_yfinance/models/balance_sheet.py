@@ -46,18 +46,21 @@ class YFinanceBalanceSheetFetcher(
         query: YFinanceBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[YFinanceBalanceSheetData]:
-        query.period = "yearly" if query.period == "annually" else "quarterly"  # type: ignore
+    ) -> List[Dict]:
+        query.period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_balance_sheet(
             as_dict=True, pretty=False, freq=query.period
         )
         data = [{"date": str(key), **value} for key, value in data.items()]
+        # To match standardization
+        for d in data:
+            d["Symbol"] = query.symbol
         data = json.loads(json.dumps(data))
 
-        return [YFinanceBalanceSheetData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceBalanceSheetData],
+        data: List[Dict],
     ) -> List[YFinanceBalanceSheetData]:
-        return data
+        return [YFinanceBalanceSheetData.parse_obj(d) for d in data]

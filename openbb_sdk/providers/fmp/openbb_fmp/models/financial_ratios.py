@@ -8,19 +8,19 @@ from typing import Any, Dict, List, Literal, Optional
 
 from openbb_fmp.utils.helpers import get_data_many, get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.base import FinancialStatementQueryParams
-from openbb_provider.standard_models.financial_ratios import FinancialRatiosData
+from openbb_provider.standard_models.financial_ratios import (
+    FinancialRatiosData,
+    FinancialRatiosQueryParams,
+)
 from pydantic import Field
 
 PeriodType = Literal["annual", "quarter"]
 
 
-class FMPFinancialRatiosQueryParams(FinancialStatementQueryParams):
+class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     """FMP Financial Ratios QueryParams.
 
     Source: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
-
-    Symbol must be provided.
     """
 
     with_ttm: Optional[bool] = Field(

@@ -24,15 +24,25 @@ class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
 class FMPForexHistoricalData(ForexHistoricalData):
     """FMP Forex end of day Data."""
 
-    adj_close: float = Field(description="Adjusted Close Price of the symbol.")
-    unadjusted_volume: float = Field(description="Unadjusted volume of the symbol.")
-    change: float = Field(
-        description="Change in the price of the symbol from the previous day."
+    adj_close: Optional[float] = Field(
+        default=None, description="Adjusted Close Price of the symbol."
     )
-    change_percent: float = Field(description=r"Change \% in the price of the symbol.")
-    label: str = Field(description="Human readable format of the date.")
-    change_over_time: float = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
+    unadjusted_volume: Optional[float] = Field(
+        default=None, description="Unadjusted volume of the symbol."
+    )
+    change: Optional[float] = Field(
+        default=None,
+        description="Change in the price of the symbol from the previous day.",
+    )
+    change_percent: Optional[float] = Field(
+        default=None, description="Change % in the price of the symbol."
+    )
+    label: Optional[str] = Field(
+        default=None, description="Human readable format of the date."
+    )
+    change_over_time: Optional[float] = Field(
+        default=None,
+        description="Change % in the price of the symbol over a period of time.",
     )
 
     @field_validator("date", mode="before", check_fields=False)

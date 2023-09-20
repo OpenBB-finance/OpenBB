@@ -2,25 +2,35 @@
 
 
 from datetime import date
-from typing import Optional
+from typing import List, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class CompanyOverviewQueryParams(QueryParams, BaseSymbol):
+class CompanyOverviewQueryParams(QueryParams):
     """Company overview Query."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-class CompanyOverviewData(Data, BaseSymbol):
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
+
+
+class CompanyOverviewData(Data):
     """Company Overview Data.
 
     Returns the profile of a given company.
     """
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     price: Optional[float] = Field(default=None, description="Price of the company.")
     beta: Optional[float] = Field(default=None, description="Beta of the company.")
     vol_avg: Optional[StrictInt] = Field(
@@ -55,7 +65,9 @@ class CompanyOverviewData(Data, BaseSymbol):
         default=None, description="Industry of the company."
     )
     website: Optional[str] = Field(default=None, description="Website of the company.")
-    description: Optional[str] = Field(description="Description of the company.")
+    description: Optional[str] = Field(
+        default=None, description="Description of the company."
+    )
     ceo: Optional[str] = Field(default=None, description="CEO of the company.")
     sector: Optional[str] = Field(default=None, description="Sector of the company.")
     country: Optional[str] = Field(default=None, description="Country of the company.")
@@ -82,3 +94,10 @@ class CompanyOverviewData(Data, BaseSymbol):
     is_actively_trading: bool = Field(description="If the company is actively trading.")
     is_adr: bool = Field(description="If the company is an ADR.")
     is_fund: bool = Field(description="If the company is a fund.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

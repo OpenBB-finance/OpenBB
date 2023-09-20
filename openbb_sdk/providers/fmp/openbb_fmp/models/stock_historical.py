@@ -42,7 +42,7 @@ class FMPStockHistoricalData(StockHistoricalData):
         description="Change in the price of the symbol from the previous day.",
     )
     change_percent: Optional[float] = Field(
-        default=None, description=r"Change \% in the price of the symbol."
+        default=None, description="Change % in the price of the symbol."
     )
     vwap: Optional[float] = Field(
         default=None, description="Volume Weighted Average Price of the symbol."
@@ -52,7 +52,7 @@ class FMPStockHistoricalData(StockHistoricalData):
     )
     change_over_time: Optional[float] = Field(
         default=None,
-        description=r"Change \% in the price of the symbol over a period of time.",
+        description="Change % in the price of the symbol over a period of time.",
     )
 
     @validator("date", pre=True, check_fields=False)

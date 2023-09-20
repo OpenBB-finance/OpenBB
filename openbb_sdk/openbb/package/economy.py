@@ -16,11 +16,16 @@ class CLASS_economy(Container):
     """/economy
     available_indices
     const
+    cot
+    cot_search
     cpi
     european_index
     european_index_constituents
     index
+    index_search
+    index_snapshots
     risk
+    sp500_multiples
     """
 
     def __repr__(self) -> str:
@@ -266,7 +271,7 @@ class CLASS_economy(Container):
 
         Parameters
         ----------
-        countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'croatia', 'cyprus', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'malta', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'romania', 'russian_federation', 'slovak_republic', 'slovakia', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states']]
+        countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgar...
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The data units.
@@ -301,12 +306,8 @@ class CLASS_economy(Container):
         ---
         date : Optional[date]
             The date of the data.
-        realtime_start : Optional[date]
-            Date the data was updated.
-        realtime_end : Optional[date]
-            Date the data was updated.
         value : Optional[float]
-            Value of the data."""  # noqa: E501
+            CPI value on the date."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -550,10 +551,8 @@ class CLASS_economy(Container):
             Period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        adjust : bool
-            Adjust all the data automatically. (provider: yfinance)
-        back_adjust : bool
-            Back-adjusted data to mimic true historical prices. (provider: yfinance)
+        rounding : bool
+            Round prices to two decimals? (provider: yfinance)
 
         Returns
         -------
@@ -596,7 +595,7 @@ class CLASS_economy(Container):
         change : Optional[float]
             Change in the price of the symbol from the previous day. (provider: fmp)
         change_percent : Optional[float]
-            Change \\% in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
@@ -670,5 +669,135 @@ class CLASS_economy(Container):
 
         return self._command_runner.run(
             "/economy/risk",
+            **inputs,
+        )
+
+    @validate_arguments
+    def sp500_multiples(
+        self,
+        series_name: typing_extensions.Annotated[
+            Literal[
+                "Shiller PE Ratio by Month",
+                "Shiller PE Ratio by Year",
+                "PE Ratio by Year",
+                "PE Ratio by Month",
+                "Dividend by Year",
+                "Dividend by Month",
+                "Dividend Growth by Quarter",
+                "Dividend Growth by Year",
+                "Dividend Yield by Year",
+                "Dividend Yield by Month",
+                "Earnings by Year",
+                "Earnings by Month",
+                "Earnings Growth by Year",
+                "Earnings Growth by Quarter",
+                "Real Earnings Growth by Year",
+                "Real Earnings Growth by Quarter",
+                "Earnings Yield by Year",
+                "Earnings Yield by Month",
+                "Real Price by Year",
+                "Real Price by Month",
+                "Inflation Adjusted Price by Year",
+                "Inflation Adjusted Price by Month",
+                "Sales by Year",
+                "Sales by Quarter",
+                "Sales Growth by Year",
+                "Sales Growth by Quarter",
+                "Real Sales by Year",
+                "Real Sales by Quarter",
+                "Real Sales Growth by Year",
+                "Real Sales Growth by Quarter",
+                "Price to Sales Ratio by Year",
+                "Price to Sales Ratio by Quarter",
+                "Price to Book Value Ratio by Year",
+                "Price to Book Value Ratio by Quarter",
+                "Book Value per Share by Year",
+                "Book Value per Share by Quarter",
+            ],
+            OpenBBCustomParameter(
+                description="The name of the series. Defaults to 'PE Ratio by Month'."
+            ),
+        ] = "PE Ratio by Month",
+        start_date: typing_extensions.Annotated[
+            Union[str, None],
+            OpenBBCustomParameter(
+                description="The start date of the time series. Format: YYYY-MM-DD"
+            ),
+        ] = "",
+        end_date: typing_extensions.Annotated[
+            Union[str, None],
+            OpenBBCustomParameter(
+                description="The end date of the time series. Format: YYYY-MM-DD"
+            ),
+        ] = "",
+        collapse: typing_extensions.Annotated[
+            Union[Literal["daily", "weekly", "monthly", "quarterly", "annual"], None],
+            OpenBBCustomParameter(
+                description="Collapse the frequency of the time series."
+            ),
+        ] = "monthly",
+        transform: typing_extensions.Annotated[
+            Union[Literal["diff", "rdiff", "cumul", "normalize"], None],
+            OpenBBCustomParameter(description="The transformation of the time series."),
+        ] = None,
+        provider: Union[Literal["quandl"], None] = None,
+        **kwargs,
+    ) -> OBBject[List]:
+        """Historical S&P 500 multiples and Shiller PE ratios.
+
+        Parameters
+        ----------
+        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Rat...
+            The name of the series. Defaults to 'PE Ratio by Month'.
+        start_date : Union[str, None]
+            The start date of the time series. Format: YYYY-MM-DD
+        end_date : Union[str, None]
+            The end date of the time series. Format: YYYY-MM-DD
+        collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'...
+            Collapse the frequency of the time series.
+        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], None]
+            The transformation of the time series.
+        provider : Union[Literal['quandl'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'quandl' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SP500Multiples]
+                Serializable results.
+            provider : Union[Literal['quandl'], NoneType]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            metadata: Optional[Metadata]
+                Metadata info about the command execution.
+
+        SP500Multiples
+        --------------
+        date : Optional[str]
+            The date data for the time series.
+        value : Optional[float]
+            The data value for the time series."""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "series_name": series_name,
+                "start_date": start_date,
+                "end_date": end_date,
+                "collapse": collapse,
+                "transform": transform,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._command_runner.run(
+            "/economy/sp500_multiples",
             **inputs,
         )

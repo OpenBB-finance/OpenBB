@@ -39,6 +39,7 @@ class CLASS_stocks_fa(Container):
     ratios
     revgeo
     revseg
+    sec
     shrs
     split
     transcript
@@ -583,7 +584,7 @@ class CLASS_stocks_fa(Container):
             Date of the fetched statement.
         period : Optional[str]
             Reporting period of the statement.
-        cik : Optional[int]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         net_income : Optional[int]
             Net income.

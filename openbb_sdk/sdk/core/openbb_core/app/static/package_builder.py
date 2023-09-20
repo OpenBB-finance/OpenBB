@@ -340,6 +340,16 @@ class DocstringGenerator:
     ) -> str:
         """Create the docstring for model."""
 
+        def format_type(type_: str, char_limit: Optional[int] = None) -> str:
+            """Format type in docstrings"""
+            type_str = str(type_)
+            type_str = type_str.replace("NoneType", "None")
+            if char_limit:
+                type_str = type_str[:char_limit] + (
+                    "..." if len(str(type_str)) > char_limit else ""
+                )
+            return type_str
+
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
@@ -372,7 +382,8 @@ class DocstringGenerator:
                 type_ = ""
                 description = ""
 
-            docstring += f"{param_name} : {type_}\n"
+            type_str = format_type(type_, char_limit=79)
+            docstring += f"{param_name} : {type_str}\n"
             docstring += f"    {description}\n"
 
         # Kwargs

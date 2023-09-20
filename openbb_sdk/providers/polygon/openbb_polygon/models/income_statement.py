@@ -1,16 +1,85 @@
-from typing import Any, Dict, List, Optional
+"""Polygon Income Statement Fetcher"""
+
+
+from datetime import date
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_polygon.utils.helpers import get_data
-from openbb_polygon.utils.types import PolygonFundamentalQueryParams
 from openbb_provider.abstract.data import StrictInt
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.income_statement import IncomeStatementData
+from openbb_provider.standard_models.income_statement import (
+    IncomeStatementData,
+    IncomeStatementQueryParams,
+)
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 
-class PolygonIncomeStatementQueryParams(PolygonFundamentalQueryParams):
-    """Polygon Income Statement Query Parameters"""
+class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
+    """Polygon Income Statement Query Parameters
+
+    Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
+    """
+
+    __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
+
+    company_name: Optional[str] = Field(
+        default=None, description="Name of the company."
+    )
+    company_name_search: Optional[str] = Field(
+        default=None, description="Name of the company to search."
+    )
+    sic: Optional[str] = Field(
+        default=None,
+        description="The Standard Industrial Classification (SIC) of the company.",
+    )
+    filing_date: Optional[date] = Field(
+        default=None, description="Filing date of the financial statement."
+    )
+    filing_date_lt: Optional[date] = Field(
+        default=None, description="Filing date less than the given date."
+    )
+    filing_date_lte: Optional[date] = Field(
+        default=None,
+        description="Filing date less than or equal to the given date.",
+    )
+    filing_date_gt: Optional[date] = Field(
+        default=None,
+        description="Filing date greater than the given date.",
+    )
+    filing_date_gte: Optional[date] = Field(
+        default=None,
+        description="Filing date greater than or equal to the given date.",
+    )
+    period_of_report_date: Optional[date] = Field(
+        default=None, description="Period of report date of the financial statement."
+    )
+    period_of_report_date_lt: Optional[date] = Field(
+        default=None,
+        description="Period of report date less than the given date.",
+    )
+    period_of_report_date_lte: Optional[date] = Field(
+        default=None,
+        description="Period of report date less than or equal to the given date.",
+    )
+    period_of_report_date_gt: Optional[date] = Field(
+        default=None,
+        description="Period of report date greater than the given date.",
+    )
+    period_of_report_date_gte: Optional[date] = Field(
+        default=None,
+        description="Period of report date greater than or equal to the given date.",
+    )
+    include_sources: Optional[bool] = Field(
+        default=None,
+        description="Whether to include the sources of the financial statement.",
+    )
+    order: Optional[Literal["asc", "desc"]] = Field(
+        default=None, description="Order of the financial statement."
+    )
+    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
+        default=None, description="Sort of the financial statement."
+    )
 
 
 class PolygonIncomeStatementData(IncomeStatementData):
@@ -30,7 +99,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     }
 
     income_loss_from_continuing_operations_before_tax: Optional[float] = Field(
-        description="Income/Loss From Continuing Operations After Tax"
+        default=None, description="Income/Loss From Continuing Operations After Tax"
     )
     income_loss_from_continuing_operations_after_tax: Optional[float] = Field(
         default=None, description="Income (loss) from continuing operations after tax"
@@ -54,13 +123,15 @@ class PolygonIncomeStatementData(IncomeStatementData):
     participating_securities_distributed_and_undistributed_earnings_loss_basic: Optional[
         float
     ] = Field(
-        description="Participating Securities Distributed And Undistributed Earnings Loss Basic"
+        default=None,
+        description="Participating Securities Distributed And Undistributed Earnings Loss Basic",
     )
     net_income_loss_available_to_common_stockholders_basic: Optional[float] = Field(
-        description="Net Income/Loss Available To Common Stockholders Basic"
+        default=None,
+        description="Net Income/Loss Available To Common Stockholders Basic",
     )
     nonoperating_income_loss: Optional[float] = Field(
-        description="Nonoperating Income Loss"
+        default=None, description="Nonoperating Income Loss"
     )
     preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
         default=None, description="Preferred stock dividends and other adjustments"
@@ -93,7 +164,7 @@ class PolygonIncomeStatementFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.model_dump(), [])
+        query_string = get_querystring(query.model_dump(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 

@@ -5,11 +5,13 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider import helpers
-from openbb_provider.standard_models.stock_news import StockNewsData
+from openbb_provider.standard_models.stock_news import (
+    StockNewsData,
+)
 from pydantic import BaseModel, Field
 
 
-def get_data(url: str, **kwargs: Any) -> dict:
+def get_data(url: str, **kwargs: Any) -> Dict:
     """Do an API request to Benzinga and return the data."""
     result = helpers.make_request(
         url, timeout=10, headers={"accept": "application/json"}, **kwargs
@@ -18,6 +20,8 @@ def get_data(url: str, **kwargs: Any) -> dict:
         data = result.json()
         if data == ['Access denied for user 0 "anonymous"']:
             raise RuntimeError("API Key is invalid")
+        if len(data) == 0:
+            raise RuntimeError("No news found!")
         message = data.get("message")
         error = data.get("error")
         value = message or error
