@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
 from openbb_cboe.models.european_index_constituents import (
@@ -99,7 +101,11 @@ def test_cboe_european_index_constituents_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_european_index_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "BUKBUS", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "BUKBUS",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = CboeEuropeanIndexHistoricalFetcher()
     result = fetcher.test(params, credentials)

@@ -1,5 +1,6 @@
 """The unit test generator for the fetchers."""
 import os
+from datetime import date
 from typing import Any, Dict, Tuple
 
 from openbb_provider.abstract.fetcher import Fetcher
@@ -41,10 +42,10 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
             example_dict = {
                 "symbol": "AAPL",
                 "symbols": "AAPL,MSFT",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": date(2023, 1, 1),
+                "end_date": date(2023, 6, 6),
                 "country": "Portugal",
-                "date": "2023-01-01",
+                "date": date(2023, 1, 1),
                 "countries": ["portugal", "spain"],
             }
             if field_name in example_dict:
@@ -61,11 +62,11 @@ def get_test_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
         # This makes sure that the unit test are reproducible by fixing the date
         elif not field.required and field_name in ["start_date", "end_date", "date"]:
             if field_name == "start_date":
-                test_params[field_name] = "2023-01-01"
+                test_params[field_name] = date(2023, 1, 1)
             elif field_name == "end_date":
-                test_params[field_name] = "2023-06-06"
+                test_params[field_name] = date(2023, 6, 6)
             elif field_name == "date":
-                test_params[field_name] = "2023-01-01"
+                test_params[field_name] = date(2023, 1, 1)
     return test_params
 
 

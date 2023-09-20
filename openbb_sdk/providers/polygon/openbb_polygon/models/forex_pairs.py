@@ -106,10 +106,6 @@ class PolygonForexPairsFetcher(
         )
         if params.get("date") is None:
             transform_params["start_date"] = now
-        else:
-            transform_params["date"] = datetime.strptime(
-                params["date"], "%Y-%m-%d"
-            ).date()
 
         return PolygonForexPairsQueryParams(**transform_params)
 
