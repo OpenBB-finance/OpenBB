@@ -3,14 +3,13 @@
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_fmp.utils.helpers import get_available_etfs
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_search import (
     EtfSearchData,
     EtfSearchQueryParams,
 )
 from pydantic import Field
-
-from openbb_fmp.utils.helpers import get_available_etfs
 
 
 class FMPEtfSearchQueryParams(EtfSearchQueryParams):
