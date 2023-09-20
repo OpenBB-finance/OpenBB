@@ -17,9 +17,11 @@ class classproperty:
     """Class property decorator."""
 
     def __init__(self, f):
+        """Initialize decorator."""
         self.f = f
 
     def __get__(self, obj, owner):
+        """Get the property."""
         return self.f(owner)
 
 
@@ -105,18 +107,16 @@ class Fetcher(Generic[Q, R]):
         # Query Assertions
         assert query
         assert issubclass(type(query), cls.query_params_type)
-        assert all([getattr(query, key) == value for key, value in test_params.items()])
+        assert all(getattr(query, key) == value for key, value in test_params.items())
 
         # Data Assertions
         assert data
         is_list = isinstance(data, list)
         if is_list:
             assert all(
-                [
-                    field in data[0]
-                    for field in cls.data_type.__fields__
-                    if field in data[0]
-                ]
+                field in data[0]
+                for field in cls.data_type.__fields__
+                if field in data[0]
             )
             # This makes sure that the data is not transformed yet so that the
             # pipeline is implemented correctly. We can remove this assertion if we
@@ -124,7 +124,7 @@ class Fetcher(Generic[Q, R]):
             assert issubclass(type(data[0]), cls.data_type) is False
         else:
             assert all(
-                [field in data for field in cls.data_type.__fields__ if field in data]
+                field in data for field in cls.data_type.__fields__ if field in data
             )
             assert issubclass(type(data), cls.data_type) is False
 
@@ -137,10 +137,8 @@ class Fetcher(Generic[Q, R]):
         if is_list:
             assert len(transformed_data) > 0  # type: ignore
             assert all(
-                [
-                    field in transformed_data[0].__dict__  # type: ignore
-                    for field in cls.return_type.__args__[0].__fields__
-                ]
+                field in transformed_data[0].__dict__  # type: ignore
+                for field in cls.return_type.__args__[0].__fields__
             )
             assert issubclass(type(transformed_data[0]), cls.data_type)  # type: ignore
             assert issubclass(
@@ -149,10 +147,8 @@ class Fetcher(Generic[Q, R]):
             )
         else:
             assert all(
-                [
-                    field in transformed_data.__dict__
-                    for field in cls.return_type.__fields__
-                ]
+                field in transformed_data.__dict__
+                for field in cls.return_type.__fields__
             )
             assert issubclass(type(transformed_data), cls.data_type)
             assert issubclass(type(transformed_data), cls.return_type)

@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
@@ -30,7 +32,11 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "BTC-USD", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "BTC-USD",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = YFinanceCryptoHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -39,7 +45,11 @@ def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_y_finance_forex_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "EURUSD",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = YFinanceForexHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -48,7 +58,11 @@ def test_y_finance_forex_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_y_finance_major_indices_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "SPY", "start_date": "2023-01-01", "end_date": "2023-01-10"}
+    params = {
+        "symbol": "SPY",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = YFinanceMajorIndicesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -66,7 +80,7 @@ def test_y_finance_stock_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "ES", "start_date": "2023-01-01", "end_date": "2023-05-10"}
+    params = {"symbol": "ES", "start_date": date(2023, 1, 1), "end_date": "2023-05-10"}
 
     fetcher = YFinanceFuturesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -76,7 +90,7 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 @pytest.mark.skip(reason="Blows up on download errors for specific dates.")
 def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
-    params = {"symbol": "ES", "start_date": "2023-01-01", "end_date": "2023-05-10"}
+    params = {"symbol": "ES", "start_date": date(2023, 1, 1), "end_date": "2023-05-10"}
 
     fetcher = YFinanceFuturesCurveFetcher()
     result = fetcher.test(params, credentials)

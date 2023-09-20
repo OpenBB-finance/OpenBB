@@ -102,17 +102,9 @@ class IntrinioStockHistoricalFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
-        else:
-            transformed_params["start_date"] = datetime.strptime(
-                params["start_date"], "%Y-%m-%d"
-            ).date()
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        else:
-            transformed_params["end_date"] = datetime.strptime(
-                params["end_date"], "%Y-%m-%d"
-            ).date()
 
         if params.get("start_time") is None:
             transformed_params["start_time"] = time(0, 0, 0)

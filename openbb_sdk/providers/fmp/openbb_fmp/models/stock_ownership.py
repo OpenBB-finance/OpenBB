@@ -48,13 +48,7 @@ class FMPStockOwnershipFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPStockOwnershipQueryParams:
         """Transform the query params."""
-        transform_params = params
-
-        transform_params["date"] = datetime.strptime(
-            transform_params["date"], "%Y-%m-%d"
-        ).date()
-
-        return FMPStockOwnershipQueryParams(**transform_params)
+        return FMPStockOwnershipQueryParams(**params)
 
     @staticmethod
     def extract_data(
