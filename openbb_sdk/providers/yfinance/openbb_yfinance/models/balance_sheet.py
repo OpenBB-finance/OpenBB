@@ -26,9 +26,13 @@ class YFinanceBalanceSheetData(BalanceSheetData):
 
     # TODO: Standardize the fields
 
-    @field_validator("date", mode="before")
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+        """Return datetime object from string."""
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+        return v
 
 
 class YFinanceBalanceSheetFetcher(
@@ -47,9 +51,9 @@ class YFinanceBalanceSheetFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        query.period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
+        period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_balance_sheet(
-            as_dict=True, pretty=False, freq=query.period
+            as_dict=True, pretty=False, freq=period
         )
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization

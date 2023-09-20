@@ -1,7 +1,15 @@
 import os
+from pathlib import Path
 
 import pytest
 from openbb_core.app.model.system_settings import SystemSettings
+from pydantic import BaseModel, ConfigDict
+
+
+class MockSystemSettings(BaseModel):
+    """Mock QueryParams class."""
+
+    model_config = ConfigDict(extra="allow", populate_by_name=True)
 
 
 def test_system_settings():
@@ -11,63 +19,69 @@ def test_system_settings():
 
 def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
     # Arrange
-    values = {
-        "openbb_directory": str(tmpdir.join("openbb")),
-        "user_settings_path": str(tmpdir.join("user_settings.json")),
-        "system_settings_path": str(tmpdir.join("system_settings.json")),
-    }
+    values = SystemSettings(
+        **{
+            "openbb_directory": str(tmpdir.join("openbb")),
+            "user_settings_path": str(tmpdir.join("user_settings.json")),
+            "system_settings_path": str(tmpdir.join("system_settings.json")),
+        }
+    )
 
     # Act
     SystemSettings.create_openbb_directory(values)
 
     # Assert
-    assert os.path.exists(values["openbb_directory"])
-    assert os.path.exists(values["user_settings_path"])
-    assert os.path.exists(values["system_settings_path"])
+    assert os.path.exists(values.openbb_directory)
+    assert os.path.exists(values.user_settings_path)
+    assert os.path.exists(values.system_settings_path)
 
 
 def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
     # Arrange
-    values = {
-        "openbb_directory": str(tmpdir.join("openbb")),
-        "user_settings_path": str(tmpdir.join("user_settings.json")),
-        "system_settings_path": str(tmpdir.join("system_settings.json")),
-    }
+    values = SystemSettings(
+        **{
+            "openbb_directory": str(tmpdir.join("openbb")),
+            "user_settings_path": str(tmpdir.join("user_settings.json")),
+            "system_settings_path": str(tmpdir.join("system_settings.json")),
+        }
+    )
 
     # Create the openbb directory
-    os.makedirs(values["openbb_directory"])
+    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)
 
     # Act
     SystemSettings.create_openbb_directory(values)
 
     # Assert
-    assert os.path.exists(values["openbb_directory"])
-    assert os.path.exists(values["user_settings_path"])
-    assert os.path.exists(values["system_settings_path"])
+    assert os.path.exists(values.openbb_directory)
+    assert os.path.exists(values.user_settings_path)
+    assert os.path.exists(values.system_settings_path)
 
 
 def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir):
     # Arrange
-    values = {
-        "openbb_directory": str(tmpdir.join("openbb")),
-        "user_settings_path": str(tmpdir.join("user_settings.json")),
-        "system_settings_path": str(tmpdir.join("system_settings.json")),
-    }
+    values = SystemSettings(
+        **{
+            "openbb_directory": str(tmpdir.join("openbb")),
+            "user_settings_path": str(tmpdir.join("user_settings.json")),
+            "system_settings_path": str(tmpdir.join("system_settings.json")),
+        }
+    )
 
     # Create the openbb directory
-    os.makedirs(values["openbb_directory"])
+    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)
 
     # Create the user_settings.json file
-    with open(values["user_settings_path"], "w") as f:
+    with open(values.user_settings_path, "w") as f:
         f.write("{}")
 
     # Act
     SystemSettings.create_openbb_directory(values)
 
     # Assert
-    assert os.path.exists(values["openbb_directory"])
-    assert os.path.exists(values["user_settings_path"])
-    assert os.path.exists(values["system_settings_path"])
+    assert os.path.exists(values.openbb_directory)
+    assert os.path.exists(values.user_settings_path)
+    assert os.path.exists(values.system_settings_path)
 
 
 @pytest.mark.parametrize(
@@ -118,11 +132,12 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
     ],
 )
 def test_validate_posthog_handler(values, expected_handlers):
+    values = MockSystemSettings(**values)
     # Act
     result = SystemSettings.validate_posthog_handler(values)
 
     # Assert
-    assert result["logging_handlers"] == expected_handlers
+    assert result.logging_handlers == expected_handlers
 
 
 @pytest.mark.parametrize(

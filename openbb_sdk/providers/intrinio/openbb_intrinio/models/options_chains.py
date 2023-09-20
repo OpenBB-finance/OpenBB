@@ -1,7 +1,6 @@
 """Intrinio Options Chains fetcher."""
 
 from datetime import (
-    date as dateType,
     datetime,
     timedelta,
 )
@@ -42,10 +41,12 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-def get_weekday(date: dateType) -> str:
-    if date.weekday() in [5, 6]:
-        date = date - timedelta(days=2 if date.weekday() == 6 else 1)
-    return date.strftime("%Y-%m-%d")
+def get_weekday(date: str) -> str:
+    """Return the weekday date."""
+    strptime = datetime.strptime(date, "%Y-%m-%d")
+    if strptime.weekday() in [5, 6]:
+        date = (strptime - timedelta(days=strptime.weekday() - 4)).strftime("%Y-%m-%d")
+    return date
 
 
 class IntrinioOptionsChainsFetcher(
@@ -60,7 +61,7 @@ class IntrinioOptionsChainsFetcher(
 
         now = datetime.now().date()
         if params.get("date") is None:
-            transform_params["date"] = now - timedelta(days=1)
+            transform_params["date"] = (now - timedelta(days=1)).strftime("%Y-%m-%d")
 
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
@@ -77,7 +78,7 @@ class IntrinioOptionsChainsFetcher(
         if query.symbol in TICKER_EXCEPTIONS:
             query.symbol = f"${query.symbol}"
 
-        def get_expirations(date: dateType) -> List[str]:
+        def get_expirations(date: str) -> List[str]:
             """Return the expirations for the given date."""
             url = (
                 f"{base_url}/expirations/{query.symbol}/eod?"

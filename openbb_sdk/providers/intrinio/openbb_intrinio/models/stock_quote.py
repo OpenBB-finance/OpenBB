@@ -130,5 +130,4 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_data(data: Dict) -> IntrinioStockQuoteData:
         """Return the transformed data."""
-        print(data)
         return IntrinioStockQuoteData.model_validate(data)

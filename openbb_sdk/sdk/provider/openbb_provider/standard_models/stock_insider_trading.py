@@ -4,7 +4,7 @@
 from datetime import date, datetime
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, field_validator, model_validator, validator
+from pydantic import Field, field_validator, model_validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
@@ -98,7 +98,7 @@ class StockInsiderTradingData(Data):
     )
     link: str = Field(description="Link of the stock insider trading.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

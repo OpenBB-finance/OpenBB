@@ -130,7 +130,7 @@ def test_get_type_hint(method_definition):
     """Test get type hint."""
 
     class TestField:
-        type = int
+        annotation = int
 
     field = TestField()
     result = method_definition.get_type(field)
@@ -141,11 +141,11 @@ def test_field_with_type_attribute_missing_type(method_definition):
     """Test field with type attribute missing type."""
 
     class TestField:
-        type = Parameter.empty
+        annotation = Parameter.empty
 
     field = TestField()
     result = method_definition.get_type(field)
-    assert result is Parameter.empty
+    assert result is _empty
 
 
 def test_get_default(method_definition):

@@ -492,7 +492,9 @@ class MethodDefinition:
     @staticmethod
     def get_type(field: FieldInfo) -> type:
         """Get the type of the field."""
-        field_type = getattr(field, "type", Parameter.empty)
+        field_type = getattr(
+            field, "annotation", getattr(field, "type", Parameter.empty)
+        )
         if isclass(field_type):
             name = field_type.__name__
             if name.startswith("Constrained") and name.endswith("Value"):
@@ -504,12 +506,13 @@ class MethodDefinition:
     @staticmethod
     def get_default(field: FieldInfo):
         """Get the default value of the field."""
-        field_default = getattr(field, "get_default", lambda: PydanticUndefined)()
+
+        field_default = getattr(field, "default", None)
         if field_default is None or field_default is PydanticUndefined:
             return Parameter.empty
 
         default_default = getattr(field_default, "default", None)
-        if default_default is None or default_default is PydanticUndefined:
+        if default_default is PydanticUndefined or default_default is Ellipsis:
             return Parameter.empty
 
         return default_default
@@ -628,9 +631,6 @@ class MethodDefinition:
                         value.annotation,
                         OpenBBCustomParameter(description=field.description),
                     ],
-                    default=field.default
-                    if field.default is not PydanticUndefined
-                    else Parameter.empty,
                 )
 
                 od[param] = new_value

@@ -65,9 +65,7 @@ class FMPKeyMetricsFetcher(
             url = create_url(
                 3, f"key-metrics/{symbol}", api_key, query, exclude=["symbol"]
             )
-            ttm_url = create_url(
-                3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
-            )
+            ttm_url = url.replace("key-metrics", "key-metrics-ttm")
             if query.with_ttm and (metrics_ttm := get_data_one(ttm_url, **kwargs)):
                 data.append(
                     {

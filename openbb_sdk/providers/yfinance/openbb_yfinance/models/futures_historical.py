@@ -44,7 +44,9 @@ class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
+        return v
 
 
 class YFinanceFuturesHistoricalFetcher(

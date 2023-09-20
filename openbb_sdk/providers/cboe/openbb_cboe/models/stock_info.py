@@ -2,7 +2,7 @@
 
 import concurrent.futures
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from openbb_cboe.utils.helpers import (
@@ -87,7 +87,7 @@ class CboeStockInfoData(StockInfoData):
 class CboeStockInfoFetcher(
     Fetcher[
         CboeStockInfoQueryParams,
-        CboeStockInfoData,
+        List[CboeStockInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
@@ -102,13 +102,10 @@ class CboeStockInfoFetcher(
         query: CboeStockInfoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
         results = []
-        query.symbol = query.symbol.upper()
-        symbols = (
-            query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
-        )
+
         INDEXES = get_cboe_index_directory().index.to_list()
         SYMBOLS = get_cboe_directory()
 
@@ -127,7 +124,7 @@ class CboeStockInfoFetcher(
                 results.append(data.to_dict())
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(get_one, symbols)
+            executor.map(get_one, query.symbol.split(","))
 
         return (
             pd.DataFrame.from_records(results)
@@ -136,7 +133,7 @@ class CboeStockInfoFetcher(
         )
 
     @staticmethod
-    def transform_data(data: dict) -> CboeStockInfoData:
+    def transform_data(data: List[Dict]) -> List[CboeStockInfoData]:
         """Transform the data to the standard format"""
 
-        return CboeStockInfoData.model_validate(data)
+        return [CboeStockInfoData.model_validate(d) for d in data]

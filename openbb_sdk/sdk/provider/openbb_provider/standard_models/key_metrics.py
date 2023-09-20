@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -15,7 +15,7 @@ class KeyMetricsQueryParams(QueryParams):
     """Key Metrics Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Literal["annual", "quarter"] = Field(
+    period: Optional[Literal["annual", "quarter"]] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: Optional[int] = Field(
@@ -193,9 +193,9 @@ class KeyMetricsData(Data):
         default=None, description="Capital expenditures per share"
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None

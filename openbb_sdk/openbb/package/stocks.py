@@ -50,7 +50,7 @@ class CLASS_stocks(Container):
         ],
         provider: Optional[Literal["cboe"]] = None,
         **kwargs,
-    ) -> OBBject[Data]:
+    ) -> OBBject[List[Data]]:
         """Get general price and performance metrics of a stock.
 
         Parameters
@@ -65,7 +65,7 @@ class CLASS_stocks(Container):
         Returns
         -------
         OBBject
-            results : StockInfo
+            results : List[StockInfo]
                 Serializable results.
             provider : Optional[Literal['cboe']]
                 Provider name.

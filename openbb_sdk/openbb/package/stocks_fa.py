@@ -134,7 +134,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             Date of the fetched statement.
@@ -309,7 +309,7 @@ class CLASS_stocks_fa(Container):
 
         BalanceSheetGrowth
         ------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
@@ -577,7 +577,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             Date of the fetched statement.
@@ -732,7 +732,7 @@ class CLASS_stocks_fa(Container):
 
         CashFlowStatementGrowth
         -----------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
@@ -1382,7 +1382,7 @@ class CLASS_stocks_fa(Container):
 
         IncomeStatement
         ---------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             Date of the income statement.
@@ -1543,7 +1543,7 @@ class CLASS_stocks_fa(Container):
 
         IncomeStatementGrowth
         ---------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
@@ -1889,7 +1889,7 @@ class CLASS_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
+            Optional[Literal["annual", "quarter"]],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
         limit: Annotated[
@@ -1905,7 +1905,7 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Optional[Literal['annual', 'quarter']]
             Period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
@@ -1932,7 +1932,7 @@ class CLASS_stocks_fa(Container):
 
         KeyMetrics
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.

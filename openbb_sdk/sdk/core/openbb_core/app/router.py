@@ -1,7 +1,7 @@
 import traceback
 import warnings
 from functools import partial
-from inspect import Parameter, Signature, signature
+from inspect import Parameter, Signature, isclass, signature
 from typing import (
     Any,
     Callable,
@@ -60,14 +60,15 @@ class CommandValidator:
 
     @staticmethod
     def is_valid_pydantic_model_type(model_type: Type) -> bool:
+        if not isclass(model_type):
+            return False
+
         if issubclass(model_type, BaseModel):
             try:
                 model_type.model_json_schema()
                 return True
             except ValueError:
                 return False
-        else:
-            return False
 
     @classmethod
     def is_serializable_value_type(cls, value_type: Type) -> bool:
@@ -132,7 +133,7 @@ class CommandValidator:
 
         valid_return_type = False
 
-        if hasattr(return_type, "__class__") and issubclass(return_type, OBBject):
+        if isclass(return_type) and issubclass(return_type, OBBject):
             results_type = return_type.__pydantic_generic_metadata__.get("args", [])[
                 0
             ]  # type: ignore
@@ -257,7 +258,9 @@ class SignatureInspector:
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
 
-        if not issubclass(func.__annotations__["return"], OBBject):
+        if isclass(return_type := func.__annotations__["return"]) and not issubclass(
+            return_type, OBBject
+        ):
             return func
 
         provider_interface = ProviderInterface()

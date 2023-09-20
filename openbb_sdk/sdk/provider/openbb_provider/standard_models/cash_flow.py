@@ -1,10 +1,12 @@
 """Cash Flow Statement Data Model."""
 
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+)
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt, field_validator, validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
@@ -130,9 +132,9 @@ class CashFlowStatementData(Data):
         description="Net increase (decrease) in cash, cash equivalents, and restricted cash",
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
