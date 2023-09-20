@@ -23,7 +23,7 @@ pip install openbb
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
 ```bash
-# Install charting extension
+# Install single extension, e.g. openbb-charting
 pip install openbb[charting]
 
 # Install all available extensions
