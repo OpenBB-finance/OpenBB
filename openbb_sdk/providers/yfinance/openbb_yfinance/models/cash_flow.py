@@ -47,17 +47,20 @@ class YFinanceCashFlowStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
-        query.period = "yearly" if query.period == "annually" else "quarterly"  # type: ignore
+        query.period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=True, pretty=False, freq=query.period
         )
         data = [{"date": str(key), **value} for key, value in data.items()]
+        # To match standardization
+        for d in data:
+            d["Symbol"] = query.symbol
         data = json.loads(json.dumps(data))
 
-        return [YFinanceCashFlowStatementData.parse_obj(d) for d in data]
+        return data
 
     @staticmethod
     def transform_data(
-        data: List[YFinanceCashFlowStatementData],
+        data: List[Dict],
     ) -> List[YFinanceCashFlowStatementData]:
-        return data
+        return [YFinanceCashFlowStatementData.parse_obj(d) for d in data]

@@ -42,11 +42,11 @@ class FMPCryptoHistoricalData(CryptoHistoricalData):
         alias="change",
     )
     changePercent: float = Field(
-        description=r"Change \% in the price of the symbol.", alias="change_percent"
+        description=r"Change % in the price of the symbol.", alias="change_percent"
     )
     label: str = Field(description="Human readable format of the date.")
     changeOverTime: float = Field(
-        description=r"Change \% in the price of the symbol over a period of time.",
+        description=r"Change % in the price of the symbol over a period of time.",
         alias="change_over_time",
     )
 
@@ -75,6 +75,7 @@ class FMPCryptoHistoricalFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+
         return FMPCryptoHistoricalQueryParams(**transformed_params)
 
     @staticmethod

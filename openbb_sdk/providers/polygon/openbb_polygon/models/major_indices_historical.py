@@ -70,6 +70,7 @@ class PolygonMajorIndicesHistoricalFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+
         return PolygonMajorIndicesHistoricalQueryParams(**transformed_params)
 
     @staticmethod

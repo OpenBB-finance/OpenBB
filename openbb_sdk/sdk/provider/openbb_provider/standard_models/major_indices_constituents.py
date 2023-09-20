@@ -2,13 +2,13 @@
 
 
 from datetime import date
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class MajorIndicesConstituentsQueryParams(QueryParams):
@@ -20,9 +20,10 @@ class MajorIndicesConstituentsQueryParams(QueryParams):
     )
 
 
-class MajorIndicesConstituentsData(Data, BaseSymbol):
+class MajorIndicesConstituentsData(Data):
     """Major Indices Constituents Data."""
 
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="Name of the constituent company in the index.")
     sector: str = Field(
         description="Sector the constituent company in the index belongs to."
@@ -42,3 +43,10 @@ class MajorIndicesConstituentsData(Data, BaseSymbol):
     founded: Union[date, str] = Field(
         description="Founding year of the constituent company in the index."
     )
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

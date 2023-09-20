@@ -1,49 +1,44 @@
 """ESG Risk Rating data model."""
 
 
-from typing import Literal
+from typing import List, Literal, Set, Union
+
+from pydantic import Field, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.standard_models.base import BaseSymbol
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class ESGRiskRatingQueryParams(QueryParams, BaseSymbol):
-    """ESG risk rating query model.
+class ESGRiskRatingQueryParams(QueryParams):
+    """ESG risk rating query model."""
 
-    Parameter
-    ---------
-    symbol : str
-        The symbol of the company.
-    """
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class ESGRiskRatingData(Data, BaseSymbol):
-    """ESG Risk Rating data.
+class ESGRiskRatingData(Data):
+    """ESG Risk Rating data."""
 
-    Returns
-    -------
-    symbol : str
-        The symbol of the asset.
-    cik : int
-        The CIK of the ESG Risk Rating.
-    company_name : str
-        The company name of the ESG Risk Rating.
-    industry : str
-        The industry of the ESG Risk Rating.
-    year : int
-        The year of the ESG Risk Rating.
-    esg_risk_rating : str
-        The ESG Risk Rating of the ESG Risk Rating.
-    industry_rank : str
-        The industry rank of the ESG Risk Rating.
-    """
-
-    cik: int
-    company_name: str
-    industry: str
-    year: int
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    cik: str = Field(description="CIK of the company.")
+    company_name: str = Field(description="Company name of the company.")
+    industry: str = Field(description="Industry of the company.")
+    year: int = Field(description="Year of the ESG risk rating.")
     esg_risk_rating: Literal[
         "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"
-    ]
-    industry_rank: str
+    ] = Field(description="ESG risk rating of the company.")
+    industry_rank: str = Field(description="Industry rank of the company.")
+
+    @validator("symbol", pre=True, check_fields=False, always=True)
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])

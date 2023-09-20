@@ -25,7 +25,7 @@ class CboeMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     """
 
     interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Data granularity.",
+        description="Use interval, 1m, for intraday prices during the most recent trading period.",
         default="1d",
     )
 
@@ -46,7 +46,10 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
-        return datetime.strptime(v, "%Y-%m-%d")
+        try:
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeMajorIndicesHistoricalFetcher(
@@ -70,7 +73,8 @@ class CboeMajorIndicesHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint."""
+        """Return the raw data from the CBOE endpoint"""
+
         # Synbol directories are cached for seven days and are used for error handling and URL generation.
         INDEXES = get_cboe_index_directory().index.to_list()
         query.symbol = query.symbol.upper()
@@ -172,7 +176,7 @@ class CboeMajorIndicesHistoricalFetcher(
         if query.interval == "1m":
             data_list = r.json()["data"]
             date: List[datetime] = []
-            open: List[float] = []
+            open_: List[float] = []
             high: List[float] = []
             low: List[float] = []
             close: List[float] = []
@@ -181,22 +185,21 @@ class CboeMajorIndicesHistoricalFetcher(
             puts_volume: List[float] = []
             total_options_volume: List[float] = []
 
-            for i in enumerate(data_list):
-                date.append(data_list[i[0]]["datetime"])
-                open.append(data_list[i[0]]["price"]["open"])
-                high.append(data_list[i[0]]["price"]["high"])
-                low.append(data_list[i[0]]["price"]["low"])
-                close.append(data_list[i[0]]["price"]["close"])
-                volume.append(data_list[i[0]]["volume"]["stock_volume"])
-                calls_volume.append(data_list[i[0]]["volume"]["calls_volume"])
-                puts_volume.append(data_list[i[0]]["volume"]["puts_volume"])
+            for i in range(0, len(data_list)):
+                date.append(data_list[i]["datetime"])
+                open_.append(data_list[i]["price"]["open"])
+                high.append(data_list[i]["price"]["high"])
+                low.append(data_list[i]["price"]["low"])
+                close.append(data_list[i]["price"]["close"])
+                volume.append(data_list[i]["volume"]["stock_volume"])
+                calls_volume.append(data_list[i]["volume"]["calls_volume"])
+                puts_volume.append(data_list[i]["volume"]["puts_volume"])
                 total_options_volume.append(
-                    data_list[i[0]]["volume"]["total_options_volume"]
+                    data_list[i]["volume"]["total_options_volume"]
                 )
-
             data = pd.DataFrame()
             data["date"] = pd.to_datetime(date)
-            data["open"] = open
+            data["open"] = open_
             data["high"] = high
             data["low"] = low
             data["close"] = close
@@ -212,5 +215,5 @@ class CboeMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeMajorIndicesHistoricalData]:
-        """Transform the data to the standard format."""
+        """Transform the data to the standard format"""
         return [CboeMajorIndicesHistoricalData.parse_obj(d) for d in data]

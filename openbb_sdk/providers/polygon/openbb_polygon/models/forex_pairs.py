@@ -100,9 +100,13 @@ class PolygonForexPairsFetcher(
     def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
         """Transform the query parameters. Ticker is set if symbol is provided."""
         transform_params = params
+        now = datetime.now().date()
         transform_params["symbol"] = (
             f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
         )
+        if params.get("date") is None:
+            transform_params["start_date"] = now
+
         return PolygonForexPairsQueryParams(**transform_params)
 
     @staticmethod

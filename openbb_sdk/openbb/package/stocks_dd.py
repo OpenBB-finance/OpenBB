@@ -1,13 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class CLASS_stocks_dd(Container):
@@ -21,11 +21,11 @@ class CLASS_stocks_dd(Container):
     @validate_arguments
     def sec(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        type: typing_extensions.Annotated[
+        type: Annotated[
             Literal[
                 "1",
                 "1-A",
@@ -130,15 +130,15 @@ class CLASS_stocks_dd(Container):
             ],
             OpenBBCustomParameter(description="Type of the SEC filing form."),
         ] = "10-K",
-        page: typing_extensions.Annotated[
-            Union[int, None],
+        page: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="Page number of the results."),
         ] = 0,
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """SEC Filings.
@@ -149,11 +149,11 @@ class CLASS_stocks_dd(Container):
             Symbol to get data for.
         type : Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10...
             Type of the SEC filing form.
-        page : Union[int, None]
+        page : Optional[int]
             Page number of the results.
-        limit : Union[int, None]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -163,7 +163,7 @@ class CLASS_stocks_dd(Container):
         OBBject
             results : List[SECFilings]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

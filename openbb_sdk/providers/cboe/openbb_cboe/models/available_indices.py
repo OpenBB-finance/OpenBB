@@ -78,7 +78,7 @@ class CboeAvailableIndicesFetcher(
         List[CboeAvailableIndicesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeAvailableIndicesQueryParams:
