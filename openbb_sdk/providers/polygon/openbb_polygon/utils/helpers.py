@@ -2,7 +2,7 @@
 
 import json
 from io import StringIO
-from typing import Any, List, Optional, TypeVar, Union
+from typing import Any, List, Optional, Tuple, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
@@ -129,3 +129,23 @@ def get_date_condition(date: str) -> str:
             return date.split(key)[1], value
 
     return date, "eq"
+
+
+def get_timespan_and_multiplier(interval: str) -> Tuple[int, str]:
+    """Get the multiplier and timestamp from the interval"""
+
+    intervals = {
+        "s": "second",
+        "m": "minute",
+        "h": "hour",
+        "d": "day",
+        "W": "week",
+        "M": "month",
+        "Q": "quarter",
+        "Y": "year",
+    }
+
+    multiplier = int(interval[:-1])
+    timespan = intervals[interval[-1]]
+
+    return multiplier, timespan

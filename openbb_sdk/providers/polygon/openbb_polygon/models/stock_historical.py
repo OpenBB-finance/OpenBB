@@ -7,7 +7,7 @@ from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data, get_timespan_and_multiplier
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -23,9 +23,7 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
-    timespan: Literal[
-        "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="Timespan of the data.")
+    interval: str = Field(default="1d", description="Data granularity.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -35,9 +33,6 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     adjusted: bool = Field(
         default=True,
         description="Output time series is adjusted by historical split and dividend events.",
-    )
-    multiplier: PositiveInt = Field(
-        default=1, description="Multiplier of the timespan."
     )
 
 
@@ -87,6 +82,8 @@ class PolygonStockHistoricalFetcher(
     ) -> List[dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
+        multiplier, timespan = get_timespan_and_multiplier(query.interval)
+
         data: List = []
 
         def multiple_symbols(
@@ -95,11 +92,12 @@ class PolygonStockHistoricalFetcher(
             results: List = []
 
             url = (
-                f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
+                "https://api.polygon.io/v2/aggs/ticker/"
+                f"{symbol.upper()}/range/{multiplier}/{timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
+
             response = get_data(url, **kwargs)
 
             next_url = response.get("next_url", None)
@@ -116,7 +114,7 @@ class PolygonStockHistoricalFetcher(
 
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000)
-                if query.timespan not in ["minute", "hour"]:
+                if timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
 
             data.extend(results)
