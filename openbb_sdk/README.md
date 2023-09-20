@@ -52,13 +52,13 @@ date                                ...
 
 ## API keys
 
-To fully leverage the OpenBB Platform you need to configure some API keys to connect with data providers. Here are the 3 options on how to do it:
+To fully leverage the OpenBB Platform you need to get some API keys to connect with data providers. Here are the 3 options on where to set them:
 
-1. From OpenBB Hub
-2. At runtime
-3. From local file
+1. OpenBB Hub
+2. Runtime
+3. Local file
 
-### 1. From OpenBB Hub
+### 1. OpenBB Hub
 
 You can also load your the keys from the OpenBB Hub. Get your personal access token at https://my.openbb.co/app/sdk/pat.
 
@@ -67,7 +67,7 @@ You can also load your the keys from the OpenBB Hub. Get your personal access to
 >>> openbb.account.login(pat="OPENBB_PAT")
 ```
 
-### 2. At runtime
+### 2. Runtime
 
 ```python
 >>> from openbb import obb
@@ -78,7 +78,7 @@ You can also load your the keys from the OpenBB Hub. Get your personal access to
 >>> obb.account.save()
 ```
 
-### 3. From local file
+### 3. Local file
 
 You can specify the keys directly in the `~/.openbb_sdk/user_settings.json` file.
 
