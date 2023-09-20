@@ -490,7 +490,7 @@ script that generates the package code is triggered. It detects if there are new
 extensions installed in the environment and rebuilds the package code accordingly. If
 new extensions are not found it just uses the current package version.
 
-If you are developing chances are you want to manually trigger the package rebuild. You
+When you are developing chances are you want to manually trigger the package rebuild. You
 can do that with:
 
 ```python
