@@ -5,7 +5,7 @@ from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(autouse=True)
 def setup_and_teardown():
     # Code to run before each test function
     yield  # This is where the test function runs
@@ -13,19 +13,31 @@ def setup_and_teardown():
     ChartingService._instances = {}
 
 
-def test_charting_service():
-    sys = SystemSettings()
-    user = UserSettings()
+# fixture for system_settings
+@pytest.fixture()
+def system_settings():
+    return SystemSettings()
 
-    assert ChartingService(user_settings=user, system_settings=sys)
+
+# fixture for user_settings
+@pytest.fixture()
+def user_settings():
+    return UserSettings()
 
 
-def test_charting_service_singleton_prop():
-    sys = SystemSettings()
-    user = UserSettings()
+# fixture for charting_service
+@pytest.fixture()
+def charting_service(user_settings, system_settings):
+    return ChartingService(user_settings=user_settings, system_settings=system_settings)
 
-    cm_1 = ChartingService(user_settings=user, system_settings=sys)
-    cm_2 = ChartingService(user_settings=user, system_settings=sys)
+
+def test_charting_service(user_settings, system_settings):
+    assert ChartingService(user_settings=user_settings, system_settings=system_settings)
+
+
+def test_charting_service_singleton_prop(user_settings, system_settings):
+    cm_1 = ChartingService(user_settings=user_settings, system_settings=system_settings)
+    cm_2 = ChartingService(user_settings=user_settings, system_settings=system_settings)
 
     assert cm_1 is cm_2
 
@@ -40,18 +52,14 @@ def test_charting_settings():
     assert cm.charting_settings.test_mode is True
 
 
-def test_charting_settings_setter():
-    sys = SystemSettings()
-    user = UserSettings()
-    cm = ChartingService(user_settings=user, system_settings=sys)
-
+def test_charting_settings_setter(charting_service):
     sys = SystemSettings(test_mode=True)
     user = UserSettings(preferences={"plot_enable_pywry": False})
 
-    cm.charting_settings = (sys, user)
+    charting_service.charting_settings = (sys, user)
 
-    assert cm.charting_settings.plot_enable_pywry is False
-    assert cm.charting_settings.test_mode is True
+    assert charting_service.charting_settings.plot_enable_pywry is False
+    assert charting_service.charting_settings.test_mode is True
 
 
 @pytest.mark.parametrize(
@@ -62,13 +70,12 @@ def test_charting_settings_setter():
     ],
 )
 def test_check_and_get_charting_extension_name(
-    user_preferences_charting_extension, expected_result
+    system_settings, user_preferences_charting_extension, expected_result
 ):
-    sys = SystemSettings()
     user = UserSettings(
         preferences={"charting_extension": user_preferences_charting_extension}
     )
-    cm = ChartingService(user_settings=user, system_settings=sys)
+    cm = ChartingService(user_settings=user, system_settings=system_settings)
 
     if expected_result == ChartingServiceError:
         with pytest.raises(ChartingServiceError) as exc_info:
@@ -102,18 +109,14 @@ def test_check_and_get_charting_extension_name(
     ],
 )
 def test_check_charting_extension_installed(
-    mock_entry_points, charting_extension, expected_result
+    mock_entry_points, charting_service, charting_extension, expected_result
 ):
     class MockEntryPoint:
         def __init__(self, name):
             self.name = name
 
-    sys = SystemSettings()
-    user = UserSettings()
-    cm = ChartingService(user_settings=user, system_settings=sys)
-
     mock_entry_points.return_value = [MockEntryPoint("mock_extension")]
 
     # Call the function and assert the result
-    result = cm._check_charting_extension_installed(charting_extension)
+    result = charting_service._check_charting_extension_installed(charting_extension)
     assert result == expected_result
