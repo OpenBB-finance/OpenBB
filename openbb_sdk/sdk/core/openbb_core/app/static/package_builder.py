@@ -292,7 +292,7 @@ class ClassDefinition:
             )
         )
 
-        doc = f'    """{path}\n' if path else '    # fmt: off\n    """\n'
+        doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)

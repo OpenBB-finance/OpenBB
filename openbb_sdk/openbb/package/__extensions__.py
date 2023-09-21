@@ -7,6 +7,7 @@ from openbb_core.app.static.container import Container
 class Extensions(Container):
     # fmt: off
     """
+Routers:
     /crypto
     /economy
     /fixedincome
