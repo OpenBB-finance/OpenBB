@@ -7,6 +7,7 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
+from dateutil import parser
 from pydantic import Field, NonNegativeInt, PositiveFloat, validator
 
 from openbb_provider.abstract.data import Data
@@ -44,3 +45,8 @@ class MajorIndicesHistoricalData(Data):
     volume: Optional[NonNegativeInt] = Field(
         description=DATA_DESCRIPTIONS.get("volume", "")
     )
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        return parser.isoparse(str(v))
