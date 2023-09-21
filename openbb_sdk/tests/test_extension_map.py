@@ -44,7 +44,7 @@ def test_extension_map():
     for ext in req_ext:
         assert ext in ext_map, (
             f"Extension '{ext}' is required in pyproject.toml but is not built, install"
-            " it and rebuild or remove it mandatory requirements in pyproject.toml"
+            " it and rebuild or remove it from mandatory requirements in pyproject.toml"
         )
 
     for name, version in ext_map.items():
