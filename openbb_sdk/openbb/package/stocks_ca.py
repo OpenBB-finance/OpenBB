@@ -44,7 +44,7 @@ class CLASS_stocks_ca(Container):
         OBBject
             results : List[StockPeers]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
