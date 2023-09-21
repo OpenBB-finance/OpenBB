@@ -230,3 +230,39 @@ def test_get_chart_function(
         with pytest.raises(AttributeError) as exc_info:
             charting_service._get_chart_function("mock_extension", route)
             assert str(exc_info.value) == f"Attribute '{route}' not found."
+
+
+@pytest.mark.parametrize("charting_router_module", [(...), (None)])
+@patch("openbb_core.app.charting_service.ChartingService._get_extension_router")
+def test_get_implemented_charting_functions(
+    mock_get_extension_router, charting_service, charting_router_module
+):
+    if not charting_router_module:
+        mock_get_extension_router.return_value = None
+        assert charting_service.get_implemented_charting_functions() == []
+
+    else:
+
+        class MockChartingRouterModule:
+            __name__ = "MockChartingRouterModule"
+
+            def stocks_load(self):
+                pass
+
+            def crypto_load(self):
+                pass
+
+            def ta_ema(self):
+                raise NotImplementedError()
+
+        MockChartingRouterModule.stocks_load.__module__ = (
+            MockChartingRouterModule.__name__
+        )
+        MockChartingRouterModule.crypto_load.__module__ = (
+            MockChartingRouterModule.__name__
+        )
+        MockChartingRouterModule.ta_ema.__module__ = MockChartingRouterModule.__name__
+
+        mock_get_extension_router.return_value = MockChartingRouterModule
+        result = charting_service.get_implemented_charting_functions()
+        assert result == ["crypto_load", "stocks_load"]

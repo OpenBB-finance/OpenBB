@@ -189,6 +189,7 @@ class ChartingService(metaclass=SingletonMeta):
         """
 
         module = cls._get_extension_router(extension_name)
+
         if not module:
             return []
 
