@@ -4,6 +4,7 @@ import pytest
 from openbb_core.app.charting_service import ChartingService, ChartingServiceError
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from typing import Callable
 
 
 @pytest.fixture(autouse=True)
@@ -194,3 +195,38 @@ def test_get_chart_format(mock_get_extension_router, charting_service):
     mock_get_extension_router.return_value = MockChartingRouterModule()
 
     assert charting_service._get_chart_format("mock_extension") == "mock_chart_format"
+
+
+@pytest.mark.parametrize(
+    "route, expected_result",
+    [
+        ("/stocks/load", ...),
+        ("/crypto/load", ...),
+        ("/ta/ema", ...),
+        ("wrong/route", AttributeError),
+    ],
+)
+@patch("openbb_core.app.charting_service.ChartingService._get_extension_router")
+def test_get_chart_function(
+    mock_get_extension_router, charting_service, route, expected_result
+):
+    class MockChartingRouterModule:
+        def stocks_load(self):
+            pass
+
+        def crypto_load(self):
+            pass
+
+        def ta_ema(self):
+            pass
+
+    mock_get_extension_router.return_value = MockChartingRouterModule()
+
+    if expected_result != AttributeError:
+        assert isinstance(
+            charting_service._get_chart_function("mock_extension", route), Callable
+        )
+    else:
+        with pytest.raises(AttributeError) as exc_info:
+            charting_service._get_chart_function("mock_extension", route)
+            assert str(exc_info.value) == f"Attribute '{route}' not found."
