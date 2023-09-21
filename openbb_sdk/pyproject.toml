@@ -8,7 +8,7 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = "^0.1.0a0"
+openbb-core = "^0.1.0a1"
 
 openbb-benzinga = "^0.1.0a0"
 openbb-fmp = "^0.1.0a0"

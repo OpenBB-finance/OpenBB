@@ -10,8 +10,8 @@ packages = [{ include = "openbb_qa" }]
 python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
 scipy = "^1.10.1"
 statsmodels = "^0.14.0"
-pandas-ta = "^0.3.13"
-openbb-core = "^0.1.0a0"
+pandas-ta = "^0.3.14b"
+openbb-core = "^0.1.0a1"
 
 [build-system]
 requires = ["poetry-core"]
