@@ -184,3 +184,13 @@ def test_handle_back_end(mock_import_module, charting_service):
         )
         is None
     )
+
+
+@patch("openbb_core.app.charting_service.ChartingService._get_extension_router")
+def test_get_chart_format(mock_get_extension_router, charting_service):
+    class MockChartingRouterModule:
+        CHART_FORMAT = "mock_chart_format"
+
+    mock_get_extension_router.return_value = MockChartingRouterModule()
+
+    assert charting_service._get_chart_format("mock_extension") == "mock_chart_format"
