@@ -156,3 +156,31 @@ def test_get_extension_router(
     else:
         result = charting_service._get_extension_router("mock_extension")
         assert result == "mock_module"
+
+
+@patch("openbb_core.app.charting_service.import_module")
+def test_handle_back_end(mock_import_module, charting_service):
+    class MockBackend:
+        def __init__(self):
+            pass
+
+        def start(self, debug):
+            pass
+
+    class MockBackendModule:
+        def __init__(self):
+            self._backend = None
+
+        def create_backend(self, charting_settings):
+            self._backend = MockBackend()
+
+        def get_backend(self):
+            return self._backend
+
+    mock_import_module.return_value = MockBackendModule()
+    assert (
+        charting_service._handle_backend(
+            "mock_extension", charting_service.charting_settings
+        )
+        is None
+    )
