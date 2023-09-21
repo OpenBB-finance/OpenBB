@@ -5,6 +5,7 @@ from openbb_core.app.static.container import Container
 
 
 class Extensions(Container):
+    # fmt: off
     """
     /crypto
     /economy
@@ -12,8 +13,21 @@ class Extensions(Container):
     /forex
     /news
     /stocks
-    """
 
+Extensions:
+    - crypto@0.1.0a0
+    - economy@0.1.0a0
+    - fixedincome@0.1.0a0
+    - forex@0.1.0a0
+    - news@0.1.0a0
+    - stocks@0.1.0a1
+
+    - benzinga@0.1.0a1
+    - fmp@0.1.0a1
+    - fred@0.1.0a0
+    - intrinio@0.1.0a1
+    - polygon@0.1.0a1    """
+    # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
 

@@ -12,7 +12,7 @@ E = TypeVar("E", bound=Type[Container])
 
 class BaseApp:
     # fmt: off
-    """OpenBB SDK.
+    """OpenBB Platform
 
 Utilities:
     /account
@@ -20,7 +20,7 @@ Utilities:
     /system
     /coverage
 
-Extensions:"""
+Menus:"""
     # fmt: on
 
     def __init__(self, command_runner: CommandRunner):
