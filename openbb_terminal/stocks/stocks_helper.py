@@ -411,6 +411,7 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("[red]No results found in yahoo finance reply.[/red]")
                 return pd.DataFrame()
 
             df_stock_candidate.index = pd.to_datetime(
