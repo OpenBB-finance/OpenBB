@@ -443,29 +443,27 @@ name = "openbb-core"
 version = "0.1.0a1"
 description = "OpenBB package with core functionality"
 optional = false
-python-versions = "^3.8"
-files = []
-develop = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_core-0.1.0a1-py3-none-any.whl", hash = "sha256:b1da36e5ce2c74f36ddd916befce2ffe9b30677a6dd96e21f5e8879f1c166738"},
+    {file = "openbb_core-0.1.0a1.tar.gz", hash = "sha256:7c1ac0389bd8860181d3c9a145146fbe49fe5e8f2a17687e629cd17150c131c6"},
+]
 
 [package.dependencies]
-bcrypt = "^4.0.1"
-black = "^23.7.0"
-fastapi = "^0.100.1"
-html5lib = "^1.1"
-openbb-provider = "^0.1.0a1"
+bcrypt = ">=4.0.1,<5.0.0"
+black = ">=23.7.0,<24.0.0"
+fastapi = ">=0.100.1,<0.101.0"
+html5lib = ">=1.1,<2.0"
+openbb-provider = ">=0.1.0a1,<0.2.0"
 pandas = ">=1.5.3"
-passlib = "^1.7.4"
-posthog = "^3.0.1"
-python-jose = "^3.3.0"
-python-multipart = "^0.0.6"
+passlib = ">=1.7.4,<2.0.0"
+posthog = ">=3.0.1,<4.0.0"
+python-jose = ">=3.3.0,<4.0.0"
+python-multipart = ">=0.0.6,<0.0.7"
 ruff = "0.0.256"
-uuid7 = "^0.1.0"
-uvicorn = "^0.20.0"
-websockets = "^10.4"
-
-[package.source]
-type = "directory"
-url = "../../sdk/core"
+uuid7 = ">=0.1.0,<0.2.0"
+uvicorn = ">=0.20.0,<0.21.0"
+websockets = ">=10.4,<11.0"
 
 [[package]]
 name = "openbb-provider"
@@ -1052,4 +1050,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "ed5c1001c4f47bae1cfde8d8509294643e3b3ea101a8482c3f0248085360bb18"
+content-hash = "d29d9adf8b88c8b492981fba7274f7b29859b2ce9abad0076230a97a3601c666"

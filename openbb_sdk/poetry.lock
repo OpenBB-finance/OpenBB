@@ -1508,7 +1508,7 @@ openbb-core = ">=0.1.0a0,<0.2.0"
 name = "openbb-etf"
 version = "0.1.0a0"
 description = "ETF extension for OpenBB"
-optional = true
+optional = false
 python-versions = "^3.8"
 files = []
 develop = false
@@ -3519,7 +3519,7 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-alpha-vantage", "openbb-blackrock", "openbb-cboe", "openbb-charting", "openbb-econometrics", "openbb-etf", "openbb-futures", "openbb-qa", "openbb-quandl", "openbb-ta", "openbb-tmx", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-blackrock", "openbb-cboe", "openbb-charting", "openbb-econometrics", "openbb-futures", "openbb-qa", "openbb-quandl", "openbb-ta", "openbb-tmx", "openbb-yfinance"]
 alpha-vantage = ["openbb-alpha-vantage"]
 blackrock = ["openbb-blackrock"]
 cboe = ["openbb-cboe"]
@@ -3535,4 +3535,4 @@ yfinance = ["openbb-yfinance"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "5fde8708a5c0e939816f8f227033e31b879dde42fc3913661c1abfb916b68132"
+content-hash = "220b338ef1e1e75f8a1f7fb651eb6ca32f545015ef4f212c966623ae7921b06e"
