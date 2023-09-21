@@ -113,7 +113,7 @@ def test_intrinio_income_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_fred_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "GDP"}
+    params = {"symbol": "GDP", "start_date": "2023-09-20", "end_date": "2023-09-20"}
 
     fetcher = IntrinioFredHistoricalFetcher()
     result = fetcher.test(params, credentials)
