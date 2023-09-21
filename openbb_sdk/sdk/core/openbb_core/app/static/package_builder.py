@@ -84,7 +84,7 @@ class PackageBuilder:
             self.run_linters()
 
     def get_extension_map(self) -> Dict[str, List[str]]:
-        """Get of extensions available at build time"""
+        """Get map of extensions available at build time"""
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {
             g: sorted(
