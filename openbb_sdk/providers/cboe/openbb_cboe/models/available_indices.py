@@ -30,45 +30,53 @@ class CboeAvailableIndicesData(AvailableIndicesData):
     """
 
     isin: Optional[str] = Field(
-        description="ISIN code for the index. Valid only for European indices."
+        default=None,
+        description="ISIN code for the index. Valid only for European indices.",
     )
 
     region: Optional[str] = Field(
-        description="Region for the index. Valid only for European indices"
+        default=None,
+        description="Region for the index. Valid only for European indices",
     )
 
     symbol: Optional[str] = Field(description="Symbol for the index.")
 
     description: Optional[str] = Field(
-        description="Description for the index. Valid only for US indices."
+        default=None,
+        description="Description for the index. Valid only for US indices.",
     )
 
     data_delay: Optional[int] = Field(
-        description="Data delay for the index. Valid only for US indices."
+        default=None, description="Data delay for the index. Valid only for US indices."
     )
 
     open_time: Optional[time] = Field(
-        description="Opening time for the index. Valid only for US indices."
+        default=None,
+        description="Opening time for the index. Valid only for US indices.",
     )
 
     close_time: Optional[time] = Field(
-        description="Closing time for the index. Valid only for US indices."
+        default=None,
+        description="Closing time for the index. Valid only for US indices.",
     )
 
     time_zone: Optional[str] = Field(
-        description="Time zone for the index. Valid only for US indices."
+        default=None, description="Time zone for the index. Valid only for US indices."
     )
 
     tick_days: Optional[str] = Field(
-        description="The trading days for the index. Valid only for US indices."
+        default=None,
+        description="The trading days for the index. Valid only for US indices.",
     )
 
     tick_frequency: Optional[str] = Field(
-        description="The frequency of the index ticks. Valid only for US indices."
+        default=None,
+        description="The frequency of the index ticks. Valid only for US indices.",
     )
 
     tick_period: Optional[str] = Field(
-        description="The period of the index ticks. Valid only for US indices."
+        default=None,
+        description="The period of the index ticks. Valid only for US indices.",
     )
 
 
