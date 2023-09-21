@@ -18,7 +18,6 @@ openbb-polygon = "^0.1.0a0"
 
 openbb-crypto = "^0.1.0a0"
 openbb-economy = "^0.1.0a0"
-openbb-etf = "^0.1.0a0"
 openbb-forex = "^0.1.0a0"
 openbb-fixedincome = "^0.1.0a0"
 openbb-news = "^0.1.0a0"
@@ -26,12 +25,13 @@ openbb-stocks = "^0.1.0a0"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a0", optional = true }
-openbb-blackrock = { version = "^0.1.0a0", optional = true }
+openbb-blackrock = { path = "./providers/blackrock", optional = true }
 openbb-cboe = { version = "^0.1.0a0", optional = true }
 openbb-quandl = { version = "^0.1.0a0", optional = true }
-openbb-tmx = { version = "^0.1.0a0", optional = true }
+openbb-tmx = { path = "./providers/tmx", optional = true }
 openbb-yfinance = { version = "^0.1.0a0", optional = true }
 
+openbb-etf = { path = "./extensions/etf", optional = true }
 openbb-charting = { path = "./extensions/charting", optional = true }
 openbb-futures = { path = "./extensions/futures", optional = true }
 openbb-qa = { path = "./extensions/qa", optional = true }
@@ -55,6 +55,7 @@ all = [
     "openbb-alpha-vantage",
     "openbb-blackrock",
     "openbb-cboe",
+    "openbb-etf",
     "openbb-quandl",
     "openbb-tmx",
     "openbb-yfinance",
