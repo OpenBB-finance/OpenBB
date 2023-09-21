@@ -1,15 +1,16 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import pydantic
+import pydantic.main
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
-from pydantic import validate_call
-from typing_extensions import Annotated
+from pydantic import BaseModel, validate_arguments
 
 
 class CLASS_stocks_fa(Container):
@@ -47,75 +48,73 @@ class CLASS_stocks_fa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate_arguments
     def balance(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            int,
+        limit: typing_extensions.Annotated[
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Balance Sheet.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : int
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            Central Index Key (CIK) of the company. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[int]
+        year : Union[int, None]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[str]
+        company_name : Union[str, None]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[str]
+        company_name_search : Union[str, None]
             Name of the company to search. (provider: polygon)
-        sic : Optional[str]
+        sic : Union[str, None]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[datetime.date]
+        filing_date : Union[datetime.date, None]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Union[datetime.date, None]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Union[datetime.date, None]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Union[datetime.date, None]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Union[datetime.date, None]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Union[datetime.date, None]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Union[datetime.date, None]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Union[datetime.date, None]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Union[datetime.date, None]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Union[datetime.date, None]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[bool]
+        include_sources : Union[bool, None]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], None]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], None]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -123,7 +122,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheet]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -136,114 +135,108 @@ class CLASS_stocks_fa(Container):
         ------------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             Date of the fetched statement.
-        cik : Optional[str]
-            Central Index Key (CIK) of the company.
-        currency : Optional[str]
-            Reporting currency.
-        filling_date : Optional[date]
-            Filling date.
-        accepted_date : Optional[datetime]
-            Accepted date.
         period : Optional[str]
             Reporting period of the statement.
+        cik : Optional[str]
+            Central Index Key (CIK) of the company.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
         short_term_investments : Optional[int]
             Short-term investments
-        long_term_investments : Optional[int]
-            Long-term investments
-        inventory : Optional[int]
-            Inventory
         net_receivables : Optional[int]
             Receivables, net
+        inventory : Optional[int]
+            Inventory
+        other_current_assets : Optional[int]
+            Other current assets
+        total_current_assets : Optional[int]
+            Total current assets
         marketable_securities : Optional[int]
             Marketable securities
         property_plant_equipment_net : Optional[int]
             Property, plant and equipment, net
         goodwill : Optional[int]
             Goodwill
-        assets : Optional[int]
-            Total assets
-        current_assets : Optional[int]
-            Total current assets
-        other_current_assets : Optional[int]
-            Other current assets
         intangible_assets : Optional[int]
             Intangible assets
         tax_assets : Optional[int]
             Accrued income taxes
-        other_assets : Optional[int]
-            Other assets
-        non_current_assets : Optional[int]
-            Total non-current assets
         other_non_current_assets : Optional[int]
             Other non-current assets
+        total_non_current_assets : Optional[int]
+            Total non-current assets
+        other_assets : Optional[int]
+            Other assets
+        total_assets : Optional[int]
+            Total assets
         account_payables : Optional[int]
-            Accounts payable
+            Accounts payables
+        short_term_debt : Optional[int]
+            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
         tax_payables : Optional[int]
             Accrued income taxes
         deferred_revenue : Optional[int]
             Accrued income taxes, other deferred revenue
-        total_assets : Optional[int]
-            Total assets
-        long_term_debt : Optional[int]
-            Long-term debt, Operating lease obligations, Long-term finance lease obligations
-        short_term_debt : Optional[int]
-            Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
-        liabilities : Optional[int]
-            Total liabilities
         other_current_liabilities : Optional[int]
             Other current liabilities
-        current_liabilities : Optional[int]
+        total_current_liabilities : Optional[int]
             Total current liabilities
-        total_liabilities_and_total_equity : Optional[int]
-            Total liabilities and total equity
+        long_term_debt : Optional[int]
+            Long-term debt, Operating lease obligations, Long-term finance lease obligations
+        deferred_revenue_non_current : Optional[int]
+            Deferred revenue, non-current
+        deferred_tax_liabilities_non_current : Optional[int]
+            Deferred income taxes and other
+        other_non_current_liabilities : Optional[int]
+            Deferred income taxes and other
+        total_non_current_liabilities : Optional[int]
+            Total non-current liabilities
         other_liabilities : Optional[int]
             Other liabilities
-        other_non_current_liabilities : Optional[int]
-            Other non-current liabilities
-        non_current_liabilities : Optional[int]
-            Total non-current liabilities
-        total_liabilities_and_stockholders_equity : Optional[int]
-            Total liabilities and stockholders' equity
-        other_stockholder_equity : Optional[int]
-            Other stockholders equity
-        total_stockholders_equity : Optional[int]
-            Total stockholders' equity
         total_liabilities : Optional[int]
             Total liabilities
-        common_stock : Optional[int]
-            Common stock
         preferred_stock : Optional[int]
             Preferred stock
-        accumulated_other_comprehensive_income_loss : Optional[int]
-            Accumulated other comprehensive income (loss)
+        common_stock : Optional[int]
+            Common stock
         retained_earnings : Optional[int]
             Retained earnings
-        minority_interest : Optional[int]
-            Minority interest
+        accumulated_other_comprehensive_income_loss : Optional[int]
+            Accumulated other comprehensive income (loss)
+        other_shareholder_equity : Optional[int]
+            Other shareholder's equity
+        total_shareholder_equity : Optional[int]
+            Total shareholder's equity
         total_equity : Optional[int]
             Total equity
+        total_liabilities_and_shareholders_equity : Optional[int]
+            Total liabilities and shareholder's equity
+        minority_interest : Optional[int]
+            Minority interest
+        total_liabilities_and_total_equity : Optional[int]
+            Total liabilities and total equity
+        reported_currency : Optional[str]
+            Reported currency in the statement. (provider: fmp)
+        filling_date : Optional[date]
+            Filling date. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date. (provider: fmp)
         calendar_year : Optional[int]
-            Calendar Year (provider: fmp)
+            Calendar year. (provider: fmp)
         cash_and_short_term_investments : Optional[int]
-            Cash and Short Term Investments (provider: fmp)
+            Cash and short term investments (provider: fmp)
         goodwill_and_intangible_assets : Optional[int]
             Goodwill and Intangible Assets (provider: fmp)
-        deferred_revenue_non_current : Optional[int]
-            Deferred Revenue Non Current (provider: fmp)
-        total_investments : Optional[int]
-            Total investments (provider: fmp)
         capital_lease_obligations : Optional[int]
             Capital lease obligations (provider: fmp)
-        deferred_tax_liabilities_non_current : Optional[int]
-            Deferred Tax Liabilities Non Current (provider: fmp)
+        total_investments : Optional[int]
+            Total investments (provider: fmp)
         total_debt : Optional[int]
-            Total Debt (provider: fmp)
+            Total debt (provider: fmp)
         net_debt : Optional[int]
-            Net Debt (provider: fmp)
+            Net debt (provider: fmp)
         link : Optional[str]
             Link to the statement. (provider: fmp)
         final_link : Optional[str]
@@ -266,29 +259,29 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def balance_growth(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Balance Sheet Statement Growth.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -298,7 +291,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[BalanceSheetGrowth]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -311,87 +304,87 @@ class CLASS_stocks_fa(Container):
         ------------------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
+        period : Optional[str]
             Reporting period.
-        growth_cash_and_cash_equivalents : float
+        growth_cash_and_cash_equivalents : Optional[float]
             Growth rate of cash and cash equivalents.
-        growth_short_term_investments : float
+        growth_short_term_investments : Optional[float]
             Growth rate of short-term investments.
-        growth_cash_and_short_term_investments : float
+        growth_cash_and_short_term_investments : Optional[float]
             Growth rate of cash and short-term investments.
-        growth_net_receivables : float
+        growth_net_receivables : Optional[float]
             Growth rate of net receivables.
-        growth_inventory : float
+        growth_inventory : Optional[float]
             Growth rate of inventory.
-        growth_other_current_assets : float
+        growth_other_current_assets : Optional[float]
             Growth rate of other current assets.
-        growth_total_current_assets : float
+        growth_total_current_assets : Optional[float]
             Growth rate of total current assets.
-        growth_property_plant_equipment_net : float
+        growth_property_plant_equipment_net : Optional[float]
             Growth rate of net property, plant, and equipment.
-        growth_goodwill : float
+        growth_goodwill : Optional[float]
             Growth rate of goodwill.
-        growth_intangible_assets : float
+        growth_intangible_assets : Optional[float]
             Growth rate of intangible assets.
-        growth_goodwill_and_intangible_assets : float
+        growth_goodwill_and_intangible_assets : Optional[float]
             Growth rate of goodwill and intangible assets.
-        growth_long_term_investments : float
+        growth_long_term_investments : Optional[float]
             Growth rate of long-term investments.
-        growth_tax_assets : float
+        growth_tax_assets : Optional[float]
             Growth rate of tax assets.
-        growth_other_non_current_assets : float
+        growth_other_non_current_assets : Optional[float]
             Growth rate of other non-current assets.
-        growth_total_non_current_assets : float
+        growth_total_non_current_assets : Optional[float]
             Growth rate of total non-current assets.
-        growth_other_assets : float
+        growth_other_assets : Optional[float]
             Growth rate of other assets.
-        growth_total_assets : float
+        growth_total_assets : Optional[float]
             Growth rate of total assets.
-        growth_account_payables : float
+        growth_account_payables : Optional[float]
             Growth rate of accounts payable.
-        growth_short_term_debt : float
+        growth_short_term_debt : Optional[float]
             Growth rate of short-term debt.
-        growth_tax_payables : float
+        growth_tax_payables : Optional[float]
             Growth rate of tax payables.
-        growth_deferred_revenue : float
+        growth_deferred_revenue : Optional[float]
             Growth rate of deferred revenue.
-        growth_other_current_liabilities : float
+        growth_other_current_liabilities : Optional[float]
             Growth rate of other current liabilities.
-        growth_total_current_liabilities : float
+        growth_total_current_liabilities : Optional[float]
             Growth rate of total current liabilities.
-        growth_long_term_debt : float
+        growth_long_term_debt : Optional[float]
             Growth rate of long-term debt.
-        growth_deferred_revenue_non_current : float
+        growth_deferred_revenue_non_current : Optional[float]
             Growth rate of non-current deferred revenue.
-        growth_deferrred_tax_liabilities_non_current : float
+        growth_deferrred_tax_liabilities_non_current : Optional[float]
             Growth rate of non-current deferred tax liabilities.
-        growth_other_non_current_liabilities : float
+        growth_other_non_current_liabilities : Optional[float]
             Growth rate of other non-current liabilities.
-        growth_total_non_current_liabilities : float
+        growth_total_non_current_liabilities : Optional[float]
             Growth rate of total non-current liabilities.
-        growth_other_liabilities : float
+        growth_other_liabilities : Optional[float]
             Growth rate of other liabilities.
-        growth_total_liabilities : float
+        growth_total_liabilities : Optional[float]
             Growth rate of total liabilities.
-        growth_common_stock : float
+        growth_common_stock : Optional[float]
             Growth rate of common stock.
-        growth_retained_earnings : float
+        growth_retained_earnings : Optional[float]
             Growth rate of retained earnings.
-        growth_accumulated_other_comprehensive_income_loss : float
+        growth_accumulated_other_comprehensive_income_loss : Optional[float]
             Growth rate of accumulated other comprehensive income/loss.
-        growth_othertotal_stockholders_equity : float
+        growth_othertotal_stockholders_equity : Optional[float]
             Growth rate of other total stockholders' equity.
-        growth_total_stockholders_equity : float
+        growth_total_stockholders_equity : Optional[float]
             Growth rate of total stockholders' equity.
-        growth_total_liabilities_and_stockholders_equity : float
+        growth_total_liabilities_and_stockholders_equity : Optional[float]
             Growth rate of total liabilities and stockholders' equity.
-        growth_total_investments : float
+        growth_total_investments : Optional[float]
             Growth rate of total investments.
-        growth_total_debt : float
+        growth_total_debt : Optional[float]
             Growth rate of total debt.
-        growth_net_debt : float
+        growth_net_debt : Optional[float]
             Growth rate of net debt."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -410,33 +403,33 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def cal(
         self,
-        start_date: Annotated[
-            Union[datetime.date, str],
+        start_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
-            Union[datetime.date, str],
+        end_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Show Dividend Calendar for a given start and end dates.
 
         Parameters
         ----------
-        start_date : date
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : date
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -446,7 +439,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[DividendCalendar]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -457,15 +450,15 @@ class CLASS_stocks_fa(Container):
 
         DividendCalendar
         ----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        label : str
+        label : Optional[str]
             Date in human readable form in the calendar.
-        adj_dividend : Optional[float]
+        adj_dividend : Optional[NonNegativeFloat]
             Adjusted dividend on a date in the calendar.
-        dividend : Optional[float]
+        dividend : Optional[NonNegativeFloat]
             Dividend amount in the calendar.
         record_date : Optional[date]
             Record date of the dividend in the calendar.
@@ -490,75 +483,73 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def cash(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            int,
+        limit: typing_extensions.Annotated[
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Cash Flow Statement.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : int
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            Central Index Key (CIK) of the company. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[int]
+        year : Union[int, None]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[str]
+        company_name : Union[str, None]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[str]
+        company_name_search : Union[str, None]
             Name of the company to search. (provider: polygon)
-        sic : Optional[str]
+        sic : Union[str, None]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[datetime.date]
+        filing_date : Union[datetime.date, None]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Union[datetime.date, None]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Union[datetime.date, None]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Union[datetime.date, None]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Union[datetime.date, None]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Union[datetime.date, None]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Union[datetime.date, None]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Union[datetime.date, None]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Union[datetime.date, None]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Union[datetime.date, None]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[bool]
+        include_sources : Union[bool, None]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], None]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], None]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -566,7 +557,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CashFlowStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -579,7 +570,7 @@ class CLASS_stocks_fa(Container):
         -----------------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             Date of the fetched statement.
         period : Optional[str]
             Reporting period of the statement.
@@ -689,29 +680,29 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def cash_growth(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Cash Flow Statement Growth.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -721,7 +712,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[CashFlowStatementGrowth]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -734,69 +725,69 @@ class CLASS_stocks_fa(Container):
         -----------------------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
+        period : Optional[str]
             Period the statement is returned for.
-        growth_net_income : float
+        growth_net_income : Optional[float]
             Growth rate of net income.
-        growth_depreciation_and_amortization : float
+        growth_depreciation_and_amortization : Optional[float]
             Growth rate of depreciation and amortization.
-        growth_deferred_income_tax : float
+        growth_deferred_income_tax : Optional[float]
             Growth rate of deferred income tax.
-        growth_stock_based_compensation : float
+        growth_stock_based_compensation : Optional[float]
             Growth rate of stock-based compensation.
-        growth_change_in_working_capital : float
+        growth_change_in_working_capital : Optional[float]
             Growth rate of change in working capital.
-        growth_accounts_receivables : float
+        growth_accounts_receivables : Optional[float]
             Growth rate of accounts receivables.
-        growth_inventory : float
+        growth_inventory : Optional[float]
             Growth rate of inventory.
-        growth_accounts_payables : float
+        growth_accounts_payables : Optional[float]
             Growth rate of accounts payables.
-        growth_other_working_capital : float
+        growth_other_working_capital : Optional[float]
             Growth rate of other working capital.
-        growth_other_non_cash_items : float
+        growth_other_non_cash_items : Optional[float]
             Growth rate of other non-cash items.
-        growth_net_cash_provided_by_operating_activities : float
+        growth_net_cash_provided_by_operating_activities : Optional[float]
             Growth rate of net cash provided by operating activities.
-        growth_investments_in_property_plant_and_equipment : float
+        growth_investments_in_property_plant_and_equipment : Optional[float]
             Growth rate of investments in property, plant, and equipment.
-        growth_acquisitions_net : float
+        growth_acquisitions_net : Optional[float]
             Growth rate of net acquisitions.
-        growth_purchases_of_investments : float
+        growth_purchases_of_investments : Optional[float]
             Growth rate of purchases of investments.
-        growth_sales_maturities_of_investments : float
+        growth_sales_maturities_of_investments : Optional[float]
             Growth rate of sales maturities of investments.
-        growth_other_investing_activities : float
+        growth_other_investing_activities : Optional[float]
             Growth rate of other investing activities.
-        growth_net_cash_used_for_investing_activities : float
+        growth_net_cash_used_for_investing_activities : Optional[float]
             Growth rate of net cash used for investing activities.
-        growth_debt_repayment : float
+        growth_debt_repayment : Optional[float]
             Growth rate of debt repayment.
-        growth_common_stock_issued : float
+        growth_common_stock_issued : Optional[float]
             Growth rate of common stock issued.
-        growth_common_stock_repurchased : float
+        growth_common_stock_repurchased : Optional[float]
             Growth rate of common stock repurchased.
-        growth_dividends_paid : float
+        growth_dividends_paid : Optional[float]
             Growth rate of dividends paid.
-        growth_other_financing_activities : float
+        growth_other_financing_activities : Optional[float]
             Growth rate of other financing activities.
-        growth_net_cash_used_provided_by_financing_activities : float
+        growth_net_cash_used_provided_by_financing_activities : Optional[float]
             Growth rate of net cash used/provided by financing activities.
-        growth_effect_of_forex_changes_on_cash : float
+        growth_effect_of_forex_changes_on_cash : Optional[float]
             Growth rate of the effect of foreign exchange changes on cash.
-        growth_net_change_in_cash : float
+        growth_net_change_in_cash : Optional[float]
             Growth rate of net change in cash.
-        growth_cash_at_end_of_period : float
+        growth_cash_at_end_of_period : Optional[float]
             Growth rate of cash at the end of the period.
-        growth_cash_at_beginning_of_period : float
+        growth_cash_at_beginning_of_period : Optional[float]
             Growth rate of cash at the beginning of the period.
-        growth_operating_cash_flow : float
+        growth_operating_cash_flow : Optional[float]
             Growth rate of operating cash flow.
-        growth_capital_expenditure : float
+        growth_capital_expenditure : Optional[float]
             Growth rate of capital expenditure.
-        growth_free_cash_flow : float
+        growth_free_cash_flow : Optional[float]
             Growth rate of free cash flow."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -815,23 +806,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def comp(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Executive Compensation.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -841,7 +832,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[ExecutiveCompensation]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -852,31 +843,31 @@ class CLASS_stocks_fa(Container):
 
         ExecutiveCompensation
         ---------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         cik : Optional[str]
             Central Index Key (CIK) of the company.
-        filing_date : date
+        filing_date : Optional[date]
             Date of the filing.
-        accepted_date : datetime
+        accepted_date : Optional[datetime]
             Date the filing was accepted.
-        name_and_position : str
+        name_and_position : Optional[str]
             Name and position of the executive.
-        year : int
+        year : Optional[int]
             Year of the compensation.
-        salary : float
+        salary : Optional[PositiveFloat]
             Salary of the executive.
-        bonus : float
+        bonus : Optional[NonNegativeFloat]
             Bonus of the executive.
-        stock_award : float
+        stock_award : Optional[NonNegativeFloat]
             Stock award of the executive.
-        incentive_plan_compensation : float
+        incentive_plan_compensation : Optional[NonNegativeFloat]
             Incentive plan compensation of the executive.
-        all_other_compensation : float
+        all_other_compensation : Optional[NonNegativeFloat]
             All other compensation of the executive.
-        total : float
+        total : Optional[PositiveFloat]
             Total compensation of the executive.
-        url : str
+        url : Optional[str]
             URL of the filing data."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -894,33 +885,33 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def comsplit(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Stock Split Calendar.
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -930,7 +921,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[StockSplitCalendar]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -941,15 +932,15 @@ class CLASS_stocks_fa(Container):
 
         StockSplitCalendar
         ------------------
-        date : date
+        date : Optional[date]
             Date of the stock splits.
-        label : str
+        label : Optional[str]
             Label of the stock splits.
-        symbol : str
+        symbol : Optional[str]
             Symbol of the company.
-        numerator : float
+        numerator : Optional[float]
             Numerator of the stock splits.
-        denominator : float
+        denominator : Optional[float]
             Denominator of the stock splits."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -968,23 +959,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def divs(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Historical Dividends.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -994,7 +985,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[HistoricalDividends]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1005,13 +996,13 @@ class CLASS_stocks_fa(Container):
 
         HistoricalDividends
         -------------------
-        date : date
+        date : Optional[date]
             Date of the historical dividends.
-        label : str
+        label : Optional[str]
             Label of the historical dividends.
-        adj_dividend : float
+        adj_dividend : Optional[float]
             Adjusted dividend of the historical dividends.
-        dividend : float
+        dividend : Optional[float]
             Dividend of the historical dividends.
         record_date : Optional[date]
             Record date of the historical dividends.
@@ -1035,29 +1026,29 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def earning(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
-            Optional[int],
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Earnings Calendar.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        limit : Optional[int]
+        limit : Union[int, None]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1067,7 +1058,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[EarningsCalendar]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1078,23 +1069,23 @@ class CLASS_stocks_fa(Container):
 
         EarningsCalendar
         ----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
         eps : Optional[float]
             EPS of the earnings calendar.
         eps_estimated : Optional[float]
             Estimated EPS of the earnings calendar.
-        time : str
+        time : Optional[str]
             Time of the earnings calendar.
-        revenue : Optional[float]
+        revenue : Optional[int]
             Revenue of the earnings calendar.
-        revenue_estimated : Optional[float]
+        revenue_estimated : Optional[int]
             Estimated revenue of the earnings calendar.
         updated_from_date : Optional[date]
             Updated from date of the earnings calendar.
-        fiscal_date_ending : date
+        fiscal_date_ending : Optional[date]
             Fiscal date ending of the earnings calendar."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -1113,23 +1104,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def emp(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Number of Employees.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1139,7 +1130,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[HistoricalEmployees]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1150,23 +1141,23 @@ class CLASS_stocks_fa(Container):
 
         HistoricalEmployees
         -------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        cik : int
+        cik : Optional[int]
             CIK of the company to retrieve the historical employees of.
-        acceptance_time : datetime
+        acceptance_time : Optional[datetime]
             Time of acceptance of the company employee.
-        period_of_report : date
+        period_of_report : Optional[date]
             Date of reporting of the company employee.
-        company_name : str
+        company_name : Optional[str]
             Registered name of the company to retrieve the historical employees of.
-        form_type : str
+        form_type : Optional[str]
             Form type of the company employee.
-        filing_date : date
+        filing_date : Optional[date]
             Filing date of the company employee
-        employee_count : int
+        employee_count : Optional[int]
             Count of employees of the company.
-        source : str
+        source : Optional[str]
             Source URL which retrieves this data for the company."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -1184,35 +1175,35 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def est(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annual", "quarter"],
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Analyst Estimates.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['quarter', 'annual']
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1222,7 +1213,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[AnalystEstimates]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1233,49 +1224,49 @@ class CLASS_stocks_fa(Container):
 
         AnalystEstimates
         ----------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             A specific date to get data for.
-        estimated_revenue_low : int
+        estimated_revenue_low : Optional[int]
             Estimated revenue low.
-        estimated_revenue_high : int
+        estimated_revenue_high : Optional[int]
             Estimated revenue high.
-        estimated_revenue_avg : int
+        estimated_revenue_avg : Optional[int]
             Estimated revenue average.
-        estimated_ebitda_low : int
+        estimated_ebitda_low : Optional[int]
             Estimated EBITDA low.
-        estimated_ebitda_high : int
+        estimated_ebitda_high : Optional[int]
             Estimated EBITDA high.
-        estimated_ebitda_avg : int
+        estimated_ebitda_avg : Optional[int]
             Estimated EBITDA average.
-        estimated_ebit_low : int
+        estimated_ebit_low : Optional[int]
             Estimated EBIT low.
-        estimated_ebit_high : int
+        estimated_ebit_high : Optional[int]
             Estimated EBIT high.
-        estimated_ebit_avg : int
+        estimated_ebit_avg : Optional[int]
             Estimated EBIT average.
-        estimated_net_income_low : int
+        estimated_net_income_low : Optional[int]
             Estimated net income low.
-        estimated_net_income_high : int
+        estimated_net_income_high : Optional[int]
             Estimated net income high.
-        estimated_net_income_avg : int
+        estimated_net_income_avg : Optional[int]
             Estimated net income average.
-        estimated_sga_expense_low : int
+        estimated_sga_expense_low : Optional[int]
             Estimated SGA expense low.
-        estimated_sga_expense_high : int
+        estimated_sga_expense_high : Optional[int]
             Estimated SGA expense high.
-        estimated_sga_expense_avg : int
+        estimated_sga_expense_avg : Optional[int]
             Estimated SGA expense average.
-        estimated_eps_avg : float
+        estimated_eps_avg : Optional[float]
             Estimated EPS average.
-        estimated_eps_high : float
+        estimated_eps_high : Optional[float]
             Estimated EPS high.
-        estimated_eps_low : float
+        estimated_eps_low : Optional[float]
             Estimated EPS low.
-        number_analyst_estimated_revenue : int
+        number_analyst_estimated_revenue : Optional[int]
             Number of analysts who estimated revenue.
-        number_analysts_estimated_eps : int
+        number_analysts_estimated_eps : Optional[int]
             Number of analysts who estimated EPS."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -1295,75 +1286,73 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def income(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            int,
+        limit: typing_extensions.Annotated[
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Income Statement.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : int
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[str]
-            The CIK of the company if no symbol is provided. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[int]
+        year : Union[int, None]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[str]
+        company_name : Union[str, None]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[str]
+        company_name_search : Union[str, None]
             Name of the company to search. (provider: polygon)
-        sic : Optional[str]
+        sic : Union[str, None]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[datetime.date]
+        filing_date : Union[datetime.date, None]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[datetime.date]
+        filing_date_lt : Union[datetime.date, None]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[datetime.date]
+        filing_date_lte : Union[datetime.date, None]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[datetime.date]
+        filing_date_gt : Union[datetime.date, None]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[datetime.date]
+        filing_date_gte : Union[datetime.date, None]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[datetime.date]
+        period_of_report_date : Union[datetime.date, None]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[datetime.date]
+        period_of_report_date_lt : Union[datetime.date, None]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[datetime.date]
+        period_of_report_date_lte : Union[datetime.date, None]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[datetime.date]
+        period_of_report_date_gt : Union[datetime.date, None]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[datetime.date]
+        period_of_report_date_gte : Union[datetime.date, None]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[bool]
+        include_sources : Union[bool, None]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], None]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Literal['filing_date', 'period_of_report_date']]
+        sort : Union[Literal['filing_date', 'period_of_report_date'], None]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -1371,7 +1360,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[IncomeStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1384,7 +1373,7 @@ class CLASS_stocks_fa(Container):
         ---------------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             Date of the income statement.
         period : Optional[str]
             Period of the income statement.
@@ -1446,36 +1435,26 @@ class CLASS_stocks_fa(Container):
             Weighted average shares outstanding.
         weighted_average_shares_outstanding_dil : Optional[int]
             Weighted average shares outstanding diluted.
-        link : Optional[str]
-            Link to the income statement.
-        final_link : Optional[str]
-            Final link to the income statement.
-        reported_currency : Optional[str]
-            Reporting currency. (provider: fmp)
-        filling_date : Optional[date]
-            Filling date. (provider: fmp)
-        accepted_date : Optional[datetime]
-            Accepted date. (provider: fmp)
-        calendar_year : Optional[int]
-            Calendar year. (provider: fmp)
         income_loss_from_continuing_operations_before_tax : Optional[float]
             Income/Loss From Continuing Operations After Tax (provider: polygon)
         income_loss_from_continuing_operations_after_tax : Optional[float]
-            Income (loss) from continuing operations after tax (provider: polygon)
+            Income/Loss From Continuing Operations After Tax (provider: polygon)
         benefits_costs_expenses : Optional[float]
-            Benefits, costs and expenses (provider: polygon)
-        net_income_loss_attributable_to_noncontrolling_interest : Optional[int]
-            Net income (loss) attributable to noncontrolling interest (provider: polygon)
+            Benefits, Costs And Expenses (provider: polygon)
+        net_income_loss_attributable_to_noncontrolling_interest : Optional[float]
+            Net Income/Loss Attributable To Noncontrolling Interest (provider: polygon)
         net_income_loss_attributable_to_parent : Optional[float]
-            Net income (loss) attributable to parent (provider: polygon)
-        net_income_loss_available_to_common_stockholders_basic : Optional[float]
-            Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
+            Net Income/Loss Attributable To Parent (provider: polygon)
+        income_tax_expense_benefit_deferred : Optional[float]
+            Income Tax Expense/Benefit Deferred (provider: polygon)
         participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             Participating Securities Distributed And Undistributed Earnings Loss Basic (provider: polygon)
+        net_income_loss_available_to_common_stockholders_basic : Optional[float]
+            Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
         nonoperating_income_loss : Optional[float]
             Nonoperating Income Loss (provider: polygon)
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            Preferred stock dividends and other adjustments (provider: polygon)"""  # noqa: E501
+            Preferred Stock Dividends And Other Adjustments (provider: polygon)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1494,35 +1473,35 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def income_growth(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Income Statement Growth.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         limit : int
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1532,7 +1511,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[IncomeStatementGrowth]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1545,61 +1524,61 @@ class CLASS_stocks_fa(Container):
         ---------------------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
+        period : Optional[str]
             Period the statement is returned for.
-        growth_revenue : float
+        growth_revenue : Optional[float]
             Growth rate of total revenue.
-        growth_cost_of_revenue : float
+        growth_cost_of_revenue : Optional[float]
             Growth rate of cost of goods sold.
-        growth_gross_profit : float
+        growth_gross_profit : Optional[float]
             Growth rate of gross profit.
-        growth_gross_profit_ratio : float
+        growth_gross_profit_ratio : Optional[float]
             Growth rate of gross profit as a percentage of revenue.
-        growth_research_and_development_expenses : float
+        growth_research_and_development_expenses : Optional[float]
             Growth rate of expenses on research and development.
-        growth_general_and_administrative_expenses : float
+        growth_general_and_administrative_expenses : Optional[float]
             Growth rate of general and administrative expenses.
-        growth_selling_and_marketing_expenses : float
+        growth_selling_and_marketing_expenses : Optional[float]
             Growth rate of expenses on selling and marketing activities.
-        growth_other_expenses : float
+        growth_other_expenses : Optional[float]
             Growth rate of other operating expenses.
-        growth_operating_expenses : float
+        growth_operating_expenses : Optional[float]
             Growth rate of total operating expenses.
-        growth_cost_and_expenses : float
+        growth_cost_and_expenses : Optional[float]
             Growth rate of total costs and expenses.
-        growth_interest_expense : float
+        growth_interest_expense : Optional[float]
             Growth rate of interest expenses.
-        growth_depreciation_and_amortization : float
+        growth_depreciation_and_amortization : Optional[float]
             Growth rate of depreciation and amortization expenses.
-        growth_ebitda : float
+        growth_ebitda : Optional[float]
             Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.
-        growth_ebitda_ratio : float
+        growth_ebitda_ratio : Optional[float]
             Growth rate of EBITDA as a percentage of revenue.
-        growth_operating_income : float
+        growth_operating_income : Optional[float]
             Growth rate of operating income.
-        growth_operating_income_ratio : float
+        growth_operating_income_ratio : Optional[float]
             Growth rate of operating income as a percentage of revenue.
-        growth_total_other_income_expenses_net : float
+        growth_total_other_income_expenses_net : Optional[float]
             Growth rate of net total other income and expenses.
-        growth_income_before_tax : float
+        growth_income_before_tax : Optional[float]
             Growth rate of income before taxes.
-        growth_income_before_tax_ratio : float
+        growth_income_before_tax_ratio : Optional[float]
             Growth rate of income before taxes as a percentage of revenue.
-        growth_income_tax_expense : float
+        growth_income_tax_expense : Optional[float]
             Growth rate of income tax expenses.
-        growth_net_income : float
+        growth_net_income : Optional[float]
             Growth rate of net income.
-        growth_net_income_ratio : float
+        growth_net_income_ratio : Optional[float]
             Growth rate of net income as a percentage of revenue.
-        growth_eps : float
+        growth_eps : Optional[float]
             Growth rate of Earnings Per Share (EPS).
-        growth_eps_diluted : float
+        growth_eps_diluted : Optional[float]
             Growth rate of diluted Earnings Per Share (EPS).
-        growth_weighted_average_shs_out : float
+        growth_weighted_average_shs_out : Optional[float]
             Growth rate of weighted average shares outstanding.
-        growth_weighted_average_shs_out_dil : float
+        growth_weighted_average_shs_out_dil : Optional[float]
             Growth rate of diluted weighted average shares outstanding."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -1619,14 +1598,14 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def ins(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        transactionType: Annotated[
+        transactionType: typing_extensions.Annotated[
             Union[
                 List[
                     Literal[
@@ -1650,29 +1629,40 @@ class CLASS_stocks_fa(Container):
                         "Z-Trust",
                     ]
                 ],
-                str,
                 None,
             ],
             OpenBBCustomParameter(description="Type of the transaction."),
         ] = ["P-Purchase"],
-        page: Annotated[
-            Optional[int],
+        reportingCik: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="CIK of the reporting owner."),
+        ] = None,
+        companyCik: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="CIK of the company owner."),
+        ] = None,
+        page: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Stock Insider Trading.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', ...
             Type of the transaction.
-        page : Optional[int]
+        reportingCik : Union[int, None]
+            CIK of the reporting owner.
+        companyCik : Union[int, None]
+            CIK of the company owner.
+        page : Union[int, None]
             Page number of the data to fetch.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1682,7 +1672,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[StockInsiderTrading]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1693,35 +1683,35 @@ class CLASS_stocks_fa(Container):
 
         StockInsiderTrading
         -------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        filing_date : datetime
+        filing_date : Optional[datetime]
             Filing date of the stock insider trading.
-        transaction_date : date
+        transaction_date : Optional[date]
             Transaction date of the stock insider trading.
-        reporting_cik : int
+        reporting_cik : Optional[int]
             Reporting CIK of the stock insider trading.
-        transaction_type : str
+        transaction_type : Optional[str]
             Transaction type of the stock insider trading.
-        securities_owned : int
+        securities_owned : Optional[int]
             Securities owned of the stock insider trading.
-        company_cik : int
+        company_cik : Optional[int]
             Company CIK of the stock insider trading.
-        reporting_name : str
+        reporting_name : Optional[str]
             Reporting name of the stock insider trading.
-        type_of_owner : str
+        type_of_owner : Optional[str]
             Type of owner of the stock insider trading.
-        acquisition_or_disposition : str
-            Acquisition or disposition of the stock insider trading.
-        form_type : str
+        acquistion_or_disposition : Optional[str]
+            Acquistion or disposition of the stock insider trading.
+        form_type : Optional[str]
             Form type of the stock insider trading.
-        securities_transacted : float
+        securities_transacted : Optional[float]
             Securities transacted of the stock insider trading.
-        price : float
+        price : Optional[float]
             Price of the stock insider trading.
-        security_name : str
+        security_name : Optional[str]
             Security name of the stock insider trading.
-        link : str
+        link : Optional[str]
             Link of the stock insider trading."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -1731,6 +1721,8 @@ class CLASS_stocks_fa(Container):
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "transactionType": transactionType,
+                "reportingCik": reportingCik,
+                "companyCik": companyCik,
                 "page": page,
             },
             extra_params=kwargs,
@@ -1741,35 +1733,34 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def ins_own(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        include_current_quarter: Annotated[
-            Optional[bool],
-            OpenBBCustomParameter(description="Include current quarter data."),
+        include_current_quarter: typing_extensions.Annotated[
+            bool, OpenBBCustomParameter(description="Include current quarter data.")
         ] = False,
-        date: Annotated[
-            Optional[datetime.date],
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Institutional Ownership.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        include_current_quarter : Optional[bool]
+        include_current_quarter : bool
             Include current quarter data.
-        date : Optional[datetime.date]
+        date : Union[datetime.date, None]
             A specific date to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1779,7 +1770,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[InstitutionalOwnership]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1790,17 +1781,17 @@ class CLASS_stocks_fa(Container):
 
         InstitutionalOwnership
         ----------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         cik : Optional[str]
             CIK of the company.
-        date : date
+        date : Optional[date]
             The date of the data.
-        investors_holding : int
+        investors_holding : Optional[int]
             Number of investors holding the stock.
-        last_investors_holding : int
+        last_investors_holding : Optional[int]
             Number of investors holding the stock in the last quarter.
-        investors_holding_change : int
+        investors_holding_change : Optional[int]
             Change in the number of investors holding the stock.
         number_of_13f_shares : Optional[int]
             Number of 13F shares.
@@ -1808,59 +1799,59 @@ class CLASS_stocks_fa(Container):
             Number of 13F shares in the last quarter.
         number_of_13f_shares_change : Optional[int]
             Change in the number of 13F shares.
-        total_invested : float
+        total_invested : Optional[float]
             Total amount invested.
-        last_total_invested : float
+        last_total_invested : Optional[float]
             Total amount invested in the last quarter.
-        total_invested_change : float
+        total_invested_change : Optional[float]
             Change in the total amount invested.
-        ownership_percent : float
+        ownership_percent : Optional[float]
             Ownership percent.
-        last_ownership_percent : float
+        last_ownership_percent : Optional[float]
             Ownership percent in the last quarter.
-        ownership_percent_change : float
+        ownership_percent_change : Optional[float]
             Change in the ownership percent.
-        new_positions : int
+        new_positions : Optional[int]
             Number of new positions.
-        last_new_positions : int
+        last_new_positions : Optional[int]
             Number of new positions in the last quarter.
-        new_positions_change : int
+        new_positions_change : Optional[int]
             Change in the number of new positions.
-        increased_positions : int
+        increased_positions : Optional[int]
             Number of increased positions.
-        last_increased_positions : int
+        last_increased_positions : Optional[int]
             Number of increased positions in the last quarter.
-        increased_positions_change : int
+        increased_positions_change : Optional[int]
             Change in the number of increased positions.
-        closed_positions : int
+        closed_positions : Optional[int]
             Number of closed positions.
-        last_closed_positions : int
+        last_closed_positions : Optional[int]
             Number of closed positions in the last quarter.
-        closed_positions_change : int
+        closed_positions_change : Optional[int]
             Change in the number of closed positions.
-        reduced_positions : int
+        reduced_positions : Optional[int]
             Number of reduced positions.
-        last_reduced_positions : int
+        last_reduced_positions : Optional[int]
             Number of reduced positions in the last quarter.
-        reduced_positions_change : int
+        reduced_positions_change : Optional[int]
             Change in the number of reduced positions.
-        total_calls : int
+        total_calls : Optional[int]
             Total number of call options contracts traded for Apple Inc. on the specified date.
-        last_total_calls : int
+        last_total_calls : Optional[int]
             Total number of call options contracts traded for Apple Inc. on the previous reporting date.
-        total_calls_change : int
+        total_calls_change : Optional[int]
             Change in the total number of call options contracts traded between the current and previous reporting dates.
-        total_puts : int
+        total_puts : Optional[int]
             Total number of put options contracts traded for Apple Inc. on the specified date.
-        last_total_puts : int
+        last_total_puts : Optional[int]
             Total number of put options contracts traded for Apple Inc. on the previous reporting date.
-        total_puts_change : int
+        total_puts_change : Optional[int]
             Change in the total number of put options contracts traded between the current and previous reporting dates.
-        put_call_ratio : float
+        put_call_ratio : Optional[float]
             Put-call ratio, which is the ratio of the total number of put options to call options traded on the specified date.
-        last_put_call_ratio : float
+        last_put_call_ratio : Optional[float]
             Put-call ratio on the previous reporting date.
-        put_call_ratio_change : float
+        put_call_ratio_change : Optional[float]
             Change in the put-call ratio between the current and previous reporting dates.
         """  # noqa: E501
 
@@ -1881,47 +1872,45 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def metrics(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Optional[Literal["annual", "quarter"]],
+        period: typing_extensions.Annotated[
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            Optional[int],
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Key Metrics.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        period : Optional[Literal['annual', 'quarter']]
+        period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : Optional[int]
+        limit : Union[int, None]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        with_ttm : Optional[bool]
-            Include trailing twelve months (TTM) data. (provider: fmp)
 
         Returns
         -------
         OBBject
             results : List[KeyMetrics]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1934,9 +1923,9 @@ class CLASS_stocks_fa(Container):
         ----------
         symbol : Optional[str]
             Symbol to get data for.
-        date : date
+        date : Optional[date]
             The date of the data.
-        period : str
+        period : Optional[str]
             Period of the data.
         revenue_per_share : Optional[float]
             Revenue per share
@@ -2070,23 +2059,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def mgmt(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Key Executives.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2096,7 +2085,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[KeyExecutives]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2107,17 +2096,17 @@ class CLASS_stocks_fa(Container):
 
         KeyExecutives
         -------------
-        title : str
+        title : Optional[str]
             Designation of the key executive.
-        name : str
+        name : Optional[str]
             Name of the key executive.
         pay : Optional[int]
             Pay of the key executive.
-        currency_pay : str
+        currency_pay : Optional[str]
             Currency of the pay.
         gender : Optional[str]
             Gender of the key executive.
-        year_born : Optional[int]
+        year_born : Optional[str]
             Birth year of the key executive.
         title_since : Optional[int]
             Date the tile was held since."""  # noqa: E501
@@ -2137,23 +2126,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def overview(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[Data]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
         """Company Overview.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2161,9 +2150,9 @@ class CLASS_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : CompanyOverview
+            results : List[CompanyOverview]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2174,7 +2163,7 @@ class CLASS_stocks_fa(Container):
 
         CompanyOverview
         ---------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         price : Optional[float]
             Price of the company.
@@ -2236,15 +2225,15 @@ class CLASS_stocks_fa(Container):
             Image of the company.
         ipo_date : Optional[date]
             IPO date of the company.
-        default_image : bool
+        default_image : Optional[bool]
             If the image is the default image.
-        is_etf : bool
+        is_etf : Optional[bool]
             If the company is an ETF.
-        is_actively_trading : bool
+        is_actively_trading : Optional[bool]
             If the company is actively trading.
-        is_adr : bool
+        is_adr : Optional[bool]
             If the company is an ADR.
-        is_fund : bool
+        is_fund : Optional[bool]
             If the company is a fund."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -2262,35 +2251,35 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def own(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        date: Annotated[
-            Optional[datetime.date],
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        page: Annotated[
-            Optional[int],
+        page: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Stock Ownership.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        date : Optional[datetime.date]
+        date : Union[datetime.date, None]
             A specific date to get data for.
-        page : Optional[int]
+        page : Union[int, None]
             Page number of the data to fetch.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2300,7 +2289,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[StockOwnership]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2311,83 +2300,83 @@ class CLASS_stocks_fa(Container):
 
         StockOwnership
         --------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        cik : int
+        cik : Optional[int]
             Cik of the stock ownership.
-        filing_date : date
+        filing_date : Optional[date]
             Filing date of the stock ownership.
-        investor_name : str
+        investor_name : Optional[str]
             Investor name of the stock ownership.
-        symbol : str
+        symbol : Optional[str]
             Symbol of the stock ownership.
-        security_name : str
+        security_name : Optional[str]
             Security name of the stock ownership.
-        type_of_security : str
+        type_of_security : Optional[str]
             Type of security of the stock ownership.
-        security_cusip : str
+        security_cusip : Optional[str]
             Security cusip of the stock ownership.
-        shares_type : str
+        shares_type : Optional[str]
             Shares type of the stock ownership.
-        put_call_share : str
+        put_call_share : Optional[str]
             Put call share of the stock ownership.
-        investment_discretion : str
+        investment_discretion : Optional[str]
             Investment discretion of the stock ownership.
-        industry_title : str
+        industry_title : Optional[str]
             Industry title of the stock ownership.
-        weight : float
+        weight : Optional[float]
             Weight of the stock ownership.
-        last_weight : float
+        last_weight : Optional[float]
             Last weight of the stock ownership.
-        change_in_weight : float
+        change_in_weight : Optional[float]
             Change in weight of the stock ownership.
-        change_in_weight_percentage : float
+        change_in_weight_percentage : Optional[float]
             Change in weight percentage of the stock ownership.
-        market_value : int
+        market_value : Optional[int]
             Market value of the stock ownership.
-        last_market_value : int
+        last_market_value : Optional[int]
             Last market value of the stock ownership.
-        change_in_market_value : int
+        change_in_market_value : Optional[int]
             Change in market value of the stock ownership.
-        change_in_market_value_percentage : float
+        change_in_market_value_percentage : Optional[float]
             Change in market value percentage of the stock ownership.
-        shares_number : int
+        shares_number : Optional[int]
             Shares number of the stock ownership.
-        last_shares_number : int
+        last_shares_number : Optional[int]
             Last shares number of the stock ownership.
-        change_in_shares_number : float
+        change_in_shares_number : Optional[float]
             Change in shares number of the stock ownership.
-        change_in_shares_number_percentage : float
+        change_in_shares_number_percentage : Optional[float]
             Change in shares number percentage of the stock ownership.
-        quarter_end_price : float
+        quarter_end_price : Optional[float]
             Quarter end price of the stock ownership.
-        avg_price_paid : float
+        avg_price_paid : Optional[float]
             Average price paid of the stock ownership.
-        is_new : bool
+        is_new : Optional[bool]
             Is the stock ownership new.
-        is_sold_out : bool
+        is_sold_out : Optional[bool]
             Is the stock ownership sold out.
-        ownership : float
+        ownership : Optional[float]
             How much is the ownership.
-        last_ownership : float
+        last_ownership : Optional[float]
             Last ownership amount.
-        change_in_ownership : float
+        change_in_ownership : Optional[float]
             Change in ownership amount.
-        change_in_ownership_percentage : float
+        change_in_ownership_percentage : Optional[float]
             Change in ownership percentage.
-        holding_period : int
+        holding_period : Optional[int]
             Holding period of the stock ownership.
-        first_added : date
+        first_added : Optional[date]
             First added date of the stock ownership.
-        performance : float
+        performance : Optional[float]
             Performance of the stock ownership.
-        performance_percentage : float
+        performance_percentage : Optional[float]
             Performance percentage of the stock ownership.
-        last_performance : float
+        last_performance : Optional[float]
             Last performance of the stock ownership.
-        change_in_performance : float
+        change_in_performance : Optional[float]
             Change in performance of the stock ownership.
-        is_counted_for_performance : bool
+        is_counted_for_performance : Optional[bool]
             Is the stock ownership counted for performance."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -2407,23 +2396,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def pt(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[Data]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
         """Price Target Consensus.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2431,9 +2420,9 @@ class CLASS_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : PriceTargetConsensus
+            results : List[PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2444,7 +2433,7 @@ class CLASS_stocks_fa(Container):
 
         PriceTargetConsensus
         --------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         target_high : Optional[float]
             High target of the price target consensus.
@@ -2470,23 +2459,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def pta(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Price Target.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2498,7 +2487,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2509,9 +2498,9 @@ class CLASS_stocks_fa(Container):
 
         PriceTarget
         -----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        published_date : datetime
+        published_date : Optional[datetime]
             Published date of the price target.
         news_url : Optional[str]
             News URL of the price target.
@@ -2532,11 +2521,11 @@ class CLASS_stocks_fa(Container):
         news_base_url : Optional[str]
             News base URL of the price target.
         new_grade : Optional[str]
-            New grade (provider: fmp)
+            None
         previous_grade : Optional[str]
-            Previous grade (provider: fmp)
+            None
         grading_company : Optional[str]
-            Grading company (provider: fmp)"""  # noqa: E501
+            None"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2553,47 +2542,45 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def ratios(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
+        period: typing_extensions.Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        limit: Annotated[
-            int,
+        limit: typing_extensions.Annotated[
+            pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Extensive set of ratios over time.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['annual', 'quarter']
             Period of the data to return.
-        limit : int
+        limit : NonNegativeInt
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        with_ttm : Optional[bool]
-            Include trailing twelve months (TTM) data. (provider: fmp)
 
         Returns
         -------
         OBBject
             results : List[FinancialRatios]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2604,11 +2591,11 @@ class CLASS_stocks_fa(Container):
 
         FinancialRatios
         ---------------
-        symbol : str
+        symbol : Optional[str]
             Symbol of the company.
-        date : str
+        date : Optional[str]
             Date of the financial ratios.
-        period : str
+        period : Optional[str]
             Period of the financial ratios.
         current_ratio : Optional[float]
             Current ratio.
@@ -2736,35 +2723,35 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def revgeo(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annual", "quarter"],
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        structure: Annotated[
+        structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Revenue Geographic.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['quarter', 'annual']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2774,7 +2761,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[RevenueGeographic]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2785,9 +2772,9 @@ class CLASS_stocks_fa(Container):
 
         RevenueGeographic
         -----------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        geographic_segment : Dict[str, int]
+        geographic_segment : Optional[Mapping[str, int]]
             Day level data containing the revenue of the geographic segment.
         americas : Optional[int]
             Revenue from the the American segment.
@@ -2817,35 +2804,35 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def revseg(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: Annotated[
-            Literal["annual", "quarter"],
+        period: typing_extensions.Annotated[
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Period of the data to return."),
         ] = "annual",
-        structure: Annotated[
+        structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Revenue Business Line.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         period : Literal['quarter', 'annual']
             Period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2855,7 +2842,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[RevenueBusinessLine]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2866,9 +2853,9 @@ class CLASS_stocks_fa(Container):
 
         RevenueBusinessLine
         -------------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        business_line : Dict[str, int]
+        business_line : Optional[Mapping[str, int]]
             Day level data containing the revenue of the business line."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -2888,15 +2875,15 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def sec(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        type: Annotated[
-            Optional[
+        type: typing_extensions.Annotated[
+            Union[
                 Literal[
                     "1",
                     "1-A",
@@ -2998,34 +2985,35 @@ class CLASS_stocks_fa(Container):
                     "N-8B-4",
                     "N-8F",
                     "N-CEN",
-                ]
+                ],
+                None,
             ],
             OpenBBCustomParameter(description="Type of the SEC filing form."),
         ] = None,
-        page: Annotated[
-            Optional[int],
+        page: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="Page number of the results."),
         ] = 0,
-        limit: Annotated[
-            Optional[int],
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """SEC Filings.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        type : Optional[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', ...
+        type : Union[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-...
             Type of the SEC filing form.
-        page : Optional[int]
+        page : Union[int, None]
             Page number of the results.
-        limit : Optional[int]
+        limit : Union[int, None]
             The number of data entries to return.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3035,7 +3023,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[SECFilings]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3046,19 +3034,19 @@ class CLASS_stocks_fa(Container):
 
         SECFilings
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        filling_date : datetime
+        filling_date : Optional[datetime]
             Filling date of the SEC filing.
-        accepted_date : datetime
+        accepted_date : Optional[datetime]
             Accepted date of the SEC filing.
-        cik : str
+        cik : Optional[str]
             CIK of the SEC filing.
-        type : str
+        type : Optional[str]
             Type of the SEC filing.
-        link : str
+        link : Optional[str]
             Link of the SEC filing.
-        final_link : str
+        final_link : Optional[str]
             Final link of the SEC filing."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -3079,23 +3067,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def shrs(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Share Statistics.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3105,7 +3093,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[ShareStatistics]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3116,7 +3104,7 @@ class CLASS_stocks_fa(Container):
 
         ShareStatistics
         ---------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         date : Optional[date]
             A specific date to get data for.
@@ -3144,23 +3132,23 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def split(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Historical Stock Splits.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3170,7 +3158,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[HistoricalStockSplits]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3181,13 +3169,13 @@ class CLASS_stocks_fa(Container):
 
         HistoricalStockSplits
         ---------------------
-        date : date
+        date : Optional[date]
             The date of the data.
-        label : str
+        label : Optional[str]
             Label of the historical stock splits.
-        numerator : float
+        numerator : Optional[float]
             Numerator of the historical stock splits.
-        denominator : float
+        denominator : Optional[float]
             Denominator of the historical stock splits."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -3205,37 +3193,37 @@ class CLASS_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate_arguments
     def transcript(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        year: Annotated[
+        year: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
-        quarter: Annotated[
+        quarter: typing_extensions.Annotated[
             Literal[1, 2, 3, 4],
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),
         ] = 1,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[List[Data]]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List]:
         """Earnings Call Transcript.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
         year : int
             Year of the earnings call transcript.
         quarter : Literal[1, 2, 3, 4]
             Quarter of the earnings call transcript.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3245,7 +3233,7 @@ class CLASS_stocks_fa(Container):
         OBBject
             results : List[EarningsCallTranscript]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3256,15 +3244,15 @@ class CLASS_stocks_fa(Container):
 
         EarningsCallTranscript
         ----------------------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
-        quarter : int
+        quarter : Optional[int]
             Quarter of the earnings call transcript.
-        year : int
+        year : Optional[int]
             Year of the earnings call transcript.
-        date : datetime
+        date : Optional[datetime]
             The date of the data.
-        content : str
+        content : Optional[str]
             Content of the earnings call transcript."""  # noqa: E501
 
         inputs = filter_inputs(

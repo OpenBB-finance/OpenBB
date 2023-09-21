@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
-from pydantic import validate_call
-from typing_extensions import Annotated
+from pydantic import BaseModel, validate_arguments
 
 
 class CLASS_stocks_ca(Container):
@@ -19,23 +18,23 @@ class CLASS_stocks_ca(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate_arguments
     def peers(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
-    ) -> OBBject[Data]:
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[BaseModel]:
         """Company peers.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, List[str]]
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -43,9 +42,9 @@ class CLASS_stocks_ca(Container):
         Returns
         -------
         OBBject
-            results : StockPeers
+            results : List[StockPeers]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -56,9 +55,9 @@ class CLASS_stocks_ca(Container):
 
         StockPeers
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol representing the entity requested in the data.
-        peers_list : List[str]
+        peers_list : Optional[List[str]]
             A list of stock peers based on sector, exchange and market cap."""  # noqa: E501
 
         inputs = filter_inputs(
