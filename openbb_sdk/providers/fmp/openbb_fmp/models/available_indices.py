@@ -64,4 +64,4 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPAvailableIndicesData]:
         """Return the transformed data."""
-        return [FMPAvailableIndicesData(**d) for d in data]
+        return [FMPAvailableIndicesData.parse_obj(d) for d in data]

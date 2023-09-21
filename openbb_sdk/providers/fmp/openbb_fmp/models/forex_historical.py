@@ -90,4 +90,4 @@ class FMPForexHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPForexHistoricalData]:
         """Return the transformed data."""
-        return [FMPForexHistoricalData(**d) for d in data]
+        return [FMPForexHistoricalData.parse_obj(d) for d in data]

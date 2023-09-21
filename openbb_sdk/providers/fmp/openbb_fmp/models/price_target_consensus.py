@@ -53,4 +53,4 @@ class FMPPriceTargetConsensusFetcher(
         data: Dict,
     ) -> FMPPriceTargetConsensusData:
         """Return the transformed data."""
-        return FMPPriceTargetConsensusData(**data)
+        return FMPPriceTargetConsensusData.parse_obj(data)
