@@ -6,7 +6,7 @@ from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many, get_data_one
+from openbb_fmp.utils.helpers import get_data_many, get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.key_metrics import (
     KeyMetricsData,
@@ -58,18 +58,18 @@ class FMPKeyMetricsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        base_url = "https://financialmodelingprep.com/api/v3"
 
         data: List[Dict] = []
 
         def multiple_symbols(symbol: str, data: List[Dict]) -> None:
-            url = create_url(
-                3,
-                f"key-metrics/{symbol}",
-                api_key,
-                query,
-                exclude=["symbol", "with_ttm"],
+            url = (
+                f"{base_url}/key-metrics/{symbol}?"
+                f"period={query.period}&limit={query.limit}&apikey={api_key}"
             )
-            ttm_url = url.replace("key-metrics", "key-metrics-ttm")
+
+            # TTM data
+            ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
             if query.with_ttm and (metrics_ttm := get_data_one(ttm_url, **kwargs)):
                 data.append(
                     {

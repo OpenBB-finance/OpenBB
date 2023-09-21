@@ -19,7 +19,7 @@ def test_system_settings():
 
 def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
     # Arrange
-    values = SystemSettings(
+    values = MockSystemSettings(
         **{
             "openbb_directory": str(tmpdir.join("openbb")),
             "user_settings_path": str(tmpdir.join("user_settings.json")),
@@ -38,7 +38,7 @@ def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
 
 def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
     # Arrange
-    values = SystemSettings(
+    values = MockSystemSettings(
         **{
             "openbb_directory": str(tmpdir.join("openbb")),
             "user_settings_path": str(tmpdir.join("user_settings.json")),
@@ -60,7 +60,7 @@ def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
 
 def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir):
     # Arrange
-    values = SystemSettings(
+    values = MockSystemSettings(
         **{
             "openbb_directory": str(tmpdir.join("openbb")),
             "user_settings_path": str(tmpdir.join("user_settings.json")),
