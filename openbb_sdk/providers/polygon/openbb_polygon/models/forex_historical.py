@@ -12,7 +12,7 @@ from openbb_provider.standard_models.forex_historical import (
     ForexHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, validator
+from pydantic import Field, PositiveInt
 
 
 class PolygonForexHistoricalQueryParams(ForexHistoricalQueryParams):
@@ -54,10 +54,6 @@ class PolygonForexHistoricalData(ForexHistoricalData):
         description="Number of transactions for the symbol in the time period.",
         alias="n",
     )
-
-    @validator("t", pre=True, check_fields=False)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonForexHistoricalFetcher(
