@@ -20,7 +20,7 @@ Utilities:
     /system
     /coverage
 
-Menus:"""
+Routers:"""
     # fmt: on
 
     def __init__(self, command_runner: CommandRunner):
