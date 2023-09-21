@@ -97,7 +97,7 @@ class BlackrockEtfSearchFetcher(
         results.columns = [camel_to_snake(c) for c in results.columns]
         results = results.drop(columns=["product_page_url"])
 
-        return results.reset_index().to_dict("records")
+        return results.reset_index().fillna(value=0).to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[BlackrockEtfSearchData]:

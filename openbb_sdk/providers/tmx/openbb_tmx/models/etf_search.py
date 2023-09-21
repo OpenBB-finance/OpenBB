@@ -120,7 +120,7 @@ class TmxEtfSearchFetcher(
         if query.sort_by:
             data = data.sort_values(by=query.sort_by, ascending=False)
 
-        return data.to_dict("records")
+        return data.fillna(value=0).to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[TmxEtfSearchData]:

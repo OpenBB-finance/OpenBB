@@ -108,7 +108,7 @@ class FMPEtfSearchFetcher(
                 | etfs["industry"].str.contains(query.query, case=False)
             ]
 
-        return etfs.to_dict("records")
+        return etfs.fillna(value=0).to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEtfSearchData]:

@@ -83,6 +83,7 @@ class FMPEtfSectorsFetcher(
             pd.DataFrame(results)
             .transpose()
             .reset_index()
+            .fillna(value=0)
             .rename(columns={"index": "symbol"})
             .to_dict("records")
         )

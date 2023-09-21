@@ -73,6 +73,7 @@ class BlackrockEtfCountriesFetcher(
             .transpose()
             .reset_index()
             .rename(columns={"index": "symbol"})
+            .fillna(value=0)
             .to_dict("records")
         )
 
