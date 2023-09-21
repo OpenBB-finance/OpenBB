@@ -8,7 +8,7 @@ packages = [{ include = "openbb_etf" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = { path = "../../sdk/core" }
+openbb-core = "^0.1.0a0"
 
 [build-system]
 requires = ["poetry-core"]
