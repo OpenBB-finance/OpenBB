@@ -120,3 +120,38 @@ def test_check_charting_extension_installed(
     # Call the function and assert the result
     result = charting_service._check_charting_extension_installed(charting_extension)
     assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    "extension_name, expected_result",
+    [
+        ("mock_extension", "mock_module"),
+        ("another_extension", ChartingServiceError),
+    ],
+)
+@patch("openbb_core.app.charting_service.import_module")
+@patch("openbb_core.app.charting_service.entry_points")
+def test_get_extension_router(
+    mock_entry_points,
+    mock_import_module,
+    charting_service,
+    extension_name,
+    expected_result,
+):
+    class MockEntryPoint:
+        def __init__(self, name, module):
+            self.name = name
+            self.module = module
+
+    mock_entry_points.return_value = [MockEntryPoint("mock_extension", "mock_module")]
+    mock_import_module.return_value = "mock_module"
+
+    if expected_result == ChartingServiceError:
+        with pytest.raises(ChartingServiceError) as exc_info:
+            charting_service._get_extension_router(extension_name)
+            assert str(exc_info.value) == (
+                f"Extension '{extension_name}' is not installed."
+            )
+    else:
+        result = charting_service._get_extension_router("mock_extension")
+        assert result == "mock_module"
