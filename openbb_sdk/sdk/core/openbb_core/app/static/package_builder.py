@@ -851,7 +851,7 @@ class PathHandler:
         """Build the module class."""
         if not path:
             return "Extensions"
-        return f"CLASS_{cls.clean_path(path=path)}"
+        return f"ROUTER_{cls.clean_path(path=path)}"
 
 
 class Linters:

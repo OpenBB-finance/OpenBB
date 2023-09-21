@@ -11,7 +11,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
 
 
-class CLASS_crypto(Container):
+class ROUTER_crypto(Container):
     """/crypto
     load
     """
