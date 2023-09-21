@@ -84,13 +84,13 @@ const config = {
           lastVersion: "current",
           versions: {
             current: {
-              label: "v3",
-              path: "",
-            },
-            v4: {
               label: "v4",
-              path: "v4",
+              path: "",
               banner: "unreleased",
+            },
+            v3: {
+              label: "v3",
+              path: "v3",
             },
           },
           sidebarPath: require.resolve("./sidebars.js"),

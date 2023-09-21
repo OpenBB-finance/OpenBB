@@ -2,7 +2,7 @@
 title: Setting API Keys
 sidebar_position: 1
 description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB Terminal.
-keywords: [api, keys, api keys, openbb terminal, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, twitter, whale alert]
+keywords: [api, keys, api keys, openbb terminal, data provider, data, free, alpha vantage, fred, iex, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, whale alert]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -551,7 +551,7 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 ```
 
 </details>
-  
+
 
 ### OpenAI
 
@@ -574,7 +574,7 @@ Click the top right "Personal" button to find the following drop down:
 
 Click `View API Keys`. This will take you to the api Keys menu. Then click `Create new secret key`:
 ![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/210fa55b-8a33-4647-bdd4-28a478b02ba8)
-  
+
 Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
 
 ```console
@@ -582,9 +582,9 @@ Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
 ```
 
 </details>
-  
-  
-  
+
+
+
 
 ### Polygon
 
@@ -713,33 +713,6 @@ Add it to the OpenBB Terminal by entering:
 
 ```console
 /keys/santiment REPLACE_WITH_KEY
-```
-
-</details>
-
-### ShroomDK
-
-> ShroomDK (SDK), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
-
-<details>
-<summary>Instructions</summary>
-
-Go to: https://sdk.flipsidecrypto.xyz/shroomdk
-
-![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)
-
-Click "Mint Your ShroomDK API Key", and sign up for an account.
-
-![ShroomDK](https://user-images.githubusercontent.com/46355364/207850176-f29cc73b-2b55-46e8-bce3-62c9342b6599.png)
-
-Once created, connect a wallet to complete minting the NFT license. The API key will be displayed under the account.
-
-![ShroomDK](https://user-images.githubusercontent.com/46355364/207850380-b59554af-1e65-4616-921d-e02c9ecf1aad.png)
-
-Enter it into the OpenBB Terminal by typing:
-
-```console
-/keys/shroom REPLACE_WITH_KEY
 ```
 
 </details>
