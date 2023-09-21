@@ -30,7 +30,7 @@ pip install openbb[charting]==4.0.0a0
 pip install openbb[all]==4.0.0a0
 ``````
 
-> Note: These instruction are specific to v4. For installation instructons and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
+> Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
 
 ## Python
 
