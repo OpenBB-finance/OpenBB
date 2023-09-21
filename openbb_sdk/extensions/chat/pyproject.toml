@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "openbb-chat"
+version = "0.1.0a1"
+description = "Extension for talking with OpenBB dataframable data."
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_chat" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"  # scipy forces python <4.0 explicitly
+openbb-core = "^0.1.0a0"
+pandasai = "^1.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
