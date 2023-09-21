@@ -128,9 +128,6 @@ class ChartingService(metaclass=SingletonMeta):
         Get the module of the given extension.
         """
         entry_points_ = entry_points(group=plugin)
-
-        print(entry_points_)
-
         entry_point = next(
             (ep for ep in entry_points_ if ep.name == extension_name), None
         )
