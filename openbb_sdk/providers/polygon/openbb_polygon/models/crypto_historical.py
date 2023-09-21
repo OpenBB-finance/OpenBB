@@ -5,14 +5,14 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, validator
+from pydantic import Field, PositiveInt
 
 
 class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
@@ -21,6 +21,9 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
     """
 
+    multiplier: PositiveInt = Field(
+        default=1, description="Multiplier of the timespan."
+    )
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
     ] = Field(default="day", description="Timespan of the data.")
@@ -31,9 +34,6 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
-    multiplier: PositiveInt = Field(
-        default=1, description="Multiplier of the timespan."
-    )
 
 
 class PolygonCryptoHistoricalData(CryptoHistoricalData):
@@ -53,10 +53,6 @@ class PolygonCryptoHistoricalData(CryptoHistoricalData):
     n: PositiveInt = Field(
         description="Number of transactions for the symbol in the time period."
     )
-
-    @validator("t", pre=True, check_fields=False)
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonCryptoHistoricalFetcher(
@@ -94,18 +90,15 @@ class PolygonCryptoHistoricalFetcher(
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
+        data = get_data_many(request_url, "results", **kwargs)
 
-        data = get_data(request_url, **kwargs)
-        if isinstance(data, list):
-            raise ValueError("Expected a dict, got a list")
-
-        if "results" not in data or len(data["results"]) == 0:
-            raise RuntimeError("No results found. Please change your query parameters.")
+        for d in data:
+            d["t"] = datetime.fromtimestamp(d["t"] / 1000)
+            if query.timespan not in ["minute", "hour"]:
+                d["t"] = d["t"].date()
 
         return data
 
     @staticmethod
     def transform_data(data: dict) -> List[PolygonCryptoHistoricalData]:
-        return [
-            PolygonCryptoHistoricalData.parse_obj(d) for d in data.get("results", [])
-        ]
+        return [PolygonCryptoHistoricalData.parse_obj(d) for d in data]
