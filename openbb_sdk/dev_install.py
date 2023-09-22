@@ -73,7 +73,7 @@ def install_local(extras: bool = False):
 
         subprocess.run(  # noqa: PLW1510
             CMD + ["lock", "--no-update"], cwd=SDK_PATH  # noqa: S603
-        )  # noqa: S603,PLW1510
+        )
         subprocess.run(  # noqa: PLW1510
             CMD + ["install"] + extras_args, cwd=SDK_PATH  # noqa: S603
         )
