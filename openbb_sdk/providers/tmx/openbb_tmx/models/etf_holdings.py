@@ -72,10 +72,13 @@ class TmxEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        query.symbol = query.symbol.upper()
+        if ".TO" in query.symbol:
+            query.symbol = query.symbol.replace(".TO", "")
         results = []
         etf = pd.DataFrame()
         etfs = get_all_etfs()
-        etf = etfs[etfs["symbol"] == query.symbol.upper()]
+        etf = etfs[etfs["symbol"] == query.symbol]
 
         if len(etf) == 1:
             top_holdings = pd.DataFrame(etf["holdings_top10"].iloc[0])
