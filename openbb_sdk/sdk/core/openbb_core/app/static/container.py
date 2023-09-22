@@ -11,4 +11,6 @@ class Container:
 
     def run(self, *args, **kwargs) -> OBBject:
         """Run a command in the container."""
-        return self._command_runner.run(*args, **kwargs)
+        obbject = self._command_runner.run(*args, **kwargs)
+        obbject.extra["user_settings"] = self._command_runner.user_settings
+        return obbject
