@@ -1,7 +1,7 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: Installation and Updates to the OpenBB SDK.
+description: Installation and Updates to the OpenBB Platform.
 keywords:
   [
     installation,
@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - SDK | OpenBB Docs" />
+<HeadTitle title="Installation and Updates - Platform | OpenBB Docs" />
 
 ## Installation and Updates
 
@@ -44,7 +44,7 @@ Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual
 
 <details><summary>Do I have to use Miniconda?</summary>
 
-There are certain dependencies which are sourced exclusively from the `conda-forge` directory. Other virtual environment managers, such a `venv`, may not solve the environment properly, resulting in failed package installations or incorrect builds. We highly recommend using Miniconda as the Python virtual environment manager for installing the OpenBB SDK.
+There are certain dependencies which are sourced exclusively from the `conda-forge` directory. Other virtual environment managers, such a `venv`, may not solve the environment properly, resulting in failed package installations or incorrect builds. We highly recommend using Miniconda as the Python virtual environment manager for installing the OpenBB Platform.
 
 </details>
 

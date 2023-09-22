@@ -5,7 +5,7 @@ description: This guide introduces the Stocks Insiders module by briefly explain
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="Stocks Insiders - SDK | OpenBB Docs" />`
+`<HeadTitle title="Stocks Insiders - Platform | OpenBB Docs" />`
 
 ## Overview
 
@@ -24,7 +24,7 @@ help(openbb.stocks.ins)
 ```python
 Type:        property
 String form: <property object at 0x7f3df1102f70>
-Docstring:  
+Docstring:
 Stocks Insiders Submodule
 
 Attributes:
@@ -241,7 +241,7 @@ OwnChangeMinPct =
 OwnChangeMaxPct =
 ```
 
-The sector industrial classification is also selectable.  Most of the included presets are for filtering by industry.  For example, `Mortgages`.  
+The sector industrial classification is also selectable.  Most of the included presets are for filtering by industry.  For example, `Mortgages`.
 
 **Do not include `.ini` in the preset name.**
 

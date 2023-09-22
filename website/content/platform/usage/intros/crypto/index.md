@@ -6,13 +6,13 @@ description: The Introduction to Cryptocurrency explains how to use the Cryptocu
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Crypto - SDK | OpenBB Docs" />
+<HeadTitle title="Crypto - Platform | OpenBB Docs" />
 
 The Crypto module wraps the functions of the OpenBB Terminal menu. This allows web applications and dashboards to be built quickly on top of the existing infrastructure. Navigating the functions is similar to operating the OpenBB Terminal.
 
 ## How to Use
 
-The list below are all the SDK functions at the `openbb.crypto` level:
+The list below are all the Platform functions at the `openbb.crypto` level:
 
 | Path                  |    Type    |           Description |
 | :-------------------- | :--------: | --------------------: |

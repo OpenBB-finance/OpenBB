@@ -1,14 +1,14 @@
 ---
 title: Alternative
 keywords: [alternative data, alternative, data, alt, openbb terminal, sdk, how to, usage, oss, covid, examples]
-description: The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated.
+description: The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB Platform module, and then access the functions similarly to how the Terminal menus are navigated.
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Alternative - SDK | OpenBB Docs" />
+<HeadTitle title="Alternative - Platform | OpenBB Docs" />
 
-The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.alt`
+The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB Platform module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.alt`
 
 ## How to Use
 ​
@@ -19,7 +19,7 @@ from openbb_terminal.sdk import openbb
 import pandas as pd
 ```
 
-A brief description below highlights the main Functions and Modules available in the Alternative SDK
+A brief description below highlights the main Functions and Modules available in the Alternative Platform
 
 ### OSS
 
@@ -42,7 +42,7 @@ A brief description below highlights the main Functions and Modules available in
 |openbb.alt.covid.ov |Function | overview historical cases and deaths by country |
 
 
-Alternatively you can print the contents of the Alternative SDK with:
+Alternatively you can print the contents of the Alternative Platform with:
 ​
 ```python
 help(openbb.alt.covid)
@@ -54,13 +54,13 @@ help(openbb.alt.oss)
 
 :::note
 
-To use some of the OSS SDK commands you will need a GitHub API key - you can get one [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+To use some of the OSS Platform commands you will need a GitHub API key - you can get one [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 
 :::
 ### alt.oss.top
 ​
-The alt.oss.top SDK command lets you display top repositories - You can pass different parameters like `sortby` `categories` and `limit` to enhance the output.
+The alt.oss.top Platform command lets you display top repositories - You can pass different parameters like `sortby` `categories` and `limit` to enhance the output.
 ​
 ```python
 summary = pd.DataFrame.from_dict(openbb.alt.oss.top(sortby='stars', categories='finance', limit=10))
@@ -82,7 +82,7 @@ print(summary[['full_name', 'open_issues', 'stargazers_count']])
 
 ### alt.oss.summary
 
-The alt.oss.summary SDK command gets you some info on a reposity - You just pass the repo path and can see all kinds of interesting information.
+The alt.oss.summary Platform command gets you some info on a reposity - You just pass the repo path and can see all kinds of interesting information.
 
 ```python
 summary = pd.DataFrame.from_dict(openbb.alt.oss.summary(repo="openbb-finance/openbbterminal"))

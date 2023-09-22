@@ -6,7 +6,7 @@ description: The Forecast menu is a machine learning toolkit that provides pract
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Forecast - SDK | OpenBB Docs" />
+<HeadTitle title="Forecast - Platform | OpenBB Docs" />
 
 The Forecast module provides programmatic access to the same commands found in the OpenBB Terminal Forecast menu. The extensive library of models, built on top of the [u8darts](https://unit8co.github.io/darts/) library, are easily tuned with hyper-parameters.
 
@@ -124,7 +124,7 @@ openbb.forecast.plot(data=spy, columns = ['Adj Close'])
 
 ### Theta
 
-Data consisting of a numeric value and a datetime index is sufficient enough for feeding the inputs to a forecast model. One important distinction between the Terminal and SDK is that the `target_column` must be explicitly declared when using the SDK, if it is not labeled as "close". It is case-sensitive.
+Data consisting of a numeric value and a datetime index is sufficient enough for feeding the inputs to a forecast model. One important distinction between the Terminal and Platform is that the `target_column` must be explicitly declared when using the Platform, if it is not labeled as "close". It is case-sensitive.
 
 To use a forecast model with default parameters, all that is required in the syntax is:
 

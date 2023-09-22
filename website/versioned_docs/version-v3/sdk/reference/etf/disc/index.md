@@ -1,3 +1,3 @@
 # disc
 
-- [mover](/sdk/reference/etf/disc/mover)
+- [mover](/v3/sdk/reference/etf/disc/mover)

@@ -6,13 +6,13 @@ description: Learn about functionality and using the Econometrics menu. Its purp
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Econometrics - SDK | OpenBB Docs" />
+<HeadTitle title="Econometrics - Platform | OpenBB Docs" />
 
-The capabilities of the [Econometrics menu](/terminal/usage/intros/econometrics) in the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
+The capabilities of the [Econometrics menu](/terminal/usage/intros/econometrics) in the OpenBB Terminal are wrapped into a powerful Platform, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 
 ## How to use
 
-Start a Python script or Notebook file and import the SDK module:
+Start a Python script or Notebook file and import the Platform module:
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -50,7 +50,7 @@ Below is a brief description of each function within the Portfolio module:
 | openbb.econometrics.ols                 | Function | Perform an Ordinary Least Squares (ols) regression on time-series data |
 | openbb.econometrics.comparison          | Function |                       Compare different regression models in one table |
 
-Alternatively you can print the contents of the Econometrics SDK with:
+Alternatively you can print the contents of the Econometrics Platform with:
 
 ```python
 help(openbb.econometrics)
@@ -102,7 +102,7 @@ file_load = openbb.econometric.load("PATH_TO_FILE/FILE.xlsx")
 
 ### Working with Time Series data
 
-To demonstrate the usage of the Econometrics SDK for time series data, the
+To demonstrate the usage of the Econometrics Platform for time series data, the
 <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a> dataset is loaded in.
 
 ```python
@@ -329,7 +329,7 @@ wage_panel.dtypes
 | expersq    | int64    |
 | occupation | int64    |
 
-The dataset is now properly configured to allow for proper panel regressions. The Econometrics SDK supports the following regression techniques.
+The dataset is now properly configured to allow for proper panel regressions. The Econometrics Platform supports the following regression techniques.
 
 | Path                      |                                                            Description |
 | :------------------------ | ---------------------------------------------------------------------: |

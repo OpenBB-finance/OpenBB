@@ -62,7 +62,7 @@ When an installer-packaged version of the OpenBB Terminal fails to launch, becau
 
 <details><summary>ModuleNotFoundError: No module named '______'</summary>
 
-Before troubleshooting please verify that the recommended installation instructions were followed. These errors often can occur when the virtual environment has not been activated, or the `poetry install` command was skipped. Activate the OpenBB virtual environment created during the installation process prior to launching or importing the SDK.
+Before troubleshooting please verify that the recommended installation instructions were followed. These errors often can occur when the virtual environment has not been activated, or the `poetry install` command was skipped. Activate the OpenBB virtual environment created during the installation process prior to launching or importing the Platform.
 
 **Terminal**:
 
@@ -71,7 +71,7 @@ conda activate obb
 python terminal.py
 ```
 
-**SDK**:
+**Platform**:
 
 ```console
 conda activate obb

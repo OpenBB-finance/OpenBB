@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Information about data sources and providers offered through the OpenBB SDK.
+description: Information about data sources and providers offered through the OpenBB Platform.
 keywords:
   [
     installation,
@@ -25,7 +25,7 @@ keywords:
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources - SDK | OpenBB Docs" />
+<HeadTitle title="Data Sources - Platform | OpenBB Docs" />
 
 ## Data and Sources
 
@@ -61,7 +61,7 @@ df = openbb.stocks.load(SPY, interval = 60)
 
 <details><summary>Can I stream live prices and news feeds?</summary>
 
-It is not currently possible to stream live feeds with the OpenBB SDK.
+It is not currently possible to stream live feeds with the OpenBB Platform.
 
 </details>
 

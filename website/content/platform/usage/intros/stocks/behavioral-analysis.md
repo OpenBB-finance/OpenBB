@@ -6,9 +6,9 @@ description: The Behavioural Analysis menu offers the user tools for gauging the
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Behavioral Analysis - SDK | OpenBB Docs" />
+<HeadTitle title="Behavioral Analysis - Platform | OpenBB Docs" />
 
-The BA module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ba`
+The BA module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB Platform module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ba`
 ​
 
 ## How to Use
@@ -22,7 +22,7 @@ from openbb_terminal.sdk import openbb
 ```
 
 ​
-A brief description below highlights the main Functions and Modules available in the BA SDK
+A brief description below highlights the main Functions and Modules available in the BA Platform
 
 | Path                       |    Type    |                                  Description |
 | :------------------------- | :--------: | -------------------------------------------: |
@@ -47,7 +47,7 @@ A brief description below highlights the main Functions and Modules available in
 | openbb.stocks.ba.stalker          |  Function  |                    Stocktwit's last messages |
 | openbb.stocks.ba.rise             |  Function  |                   Top Rising Related Queries |
 
-Alternatively you can print the contents of the BA SDK with:
+Alternatively you can print the contents of the BA Platform with:
 
 ```python
 help(openbb.stocks.ba)

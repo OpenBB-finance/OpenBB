@@ -1,3 +1,3 @@
 # scr
 
-- [screen](/sdk/reference/etf/scr/screen)
+- [screen](/v3/sdk/reference/etf/scr/screen)

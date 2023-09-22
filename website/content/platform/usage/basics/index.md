@@ -1,20 +1,20 @@
 ---
 title: Basics
 sidebar_position: 1
-description: The OpenBB SDK is a modern investment research platform for everyone. It is a Software Development Kit that allows you to access all the data and tools you need to make better investment decisions.
+description: The OpenBB Platform is a modern investment research platform for everyone. It is a Software Development Kit that allows you to access all the data and tools you need to make better investment decisions.
 keywords: [basics, installation, commands, menus, your own data, introduction, openbb sdk, explanation, basic usage, usage, how to, openbb terminal, importing, navigation, docstrings, function, charts, display]
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Basics - SDK | OpenBB Docs" />
+<HeadTitle title="Basics - Platform | OpenBB Docs" />
 
 ## Overview
 
-The OpenBB SDK provides programmatic access to nearly all Terminal commands, allowing custom scripts and functions to power creations built on top of the core platform.  It is easy to use and as flexible as one's imagination.  The sections below will outline how to get started using it.  If it isn't already installed, follow the instructions to install via [PyPi (pip)](https://docs.openbb.co/terminal/installation/pypi) or from the [source code](https://docs.openbb.co/terminal/installation/source).
+The OpenBB Platform provides programmatic access to nearly all Terminal commands, allowing custom scripts and functions to power creations built on top of the core platform.  It is easy to use and as flexible as one's imagination.  The sections below will outline how to get started using it.  If it isn't already installed, follow the instructions to install via [PyPi (pip)](https://docs.openbb.co/terminal/installation/pypi) or from the [source code](https://docs.openbb.co/terminal/installation/source).
 
-## Importing the OpenBB SDK
+## Importing the OpenBB Platform
 
-No additional software is required to use the OpenBB SDK, it can be consumed directly from the command line Terminal within the virtual environment created during the installation process.
+No additional software is required to use the OpenBB Platform, it can be consumed directly from the command line Terminal within the virtual environment created during the installation process.
 
 ### Terminal Command Line
 
@@ -87,7 +87,7 @@ This will launch the Jupyter server and open a browser window with the applicati
 
 There will be only one choice for the kernel, `Python3 (ipykernel)`.  Click on, `Select`.
 
-In the console window (or a new Notebook file) the OpenBB SDK is imported by entering:
+In the console window (or a new Notebook file) the OpenBB Platform is imported by entering:
 
 ```console
 from openbb_terminal.sdk import openbb
@@ -97,14 +97,14 @@ Docstrings can be viewed in a pop-up with the key command, `shift+tab`.  The con
 
 ![Jupyter Lab Import](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7cc04e49-57fe-4bbf-bb5e-4cfbdab62eaf)
 
-The `Contextual Help` window displays more details, and also previews DataFrames after they are assigned.  These tools are an excellent way to understand the structure of the SDK along with the syntax for each command and argument.
+The `Contextual Help` window displays more details, and also previews DataFrames after they are assigned.  These tools are an excellent way to understand the structure of the Platform along with the syntax for each command and argument.
 
 ### Code Editors and IDEs
 
 Regardless of the code editor of choice, the program must know that the `obb` virtual Python environment exists.  The steps for setting it up will vary by platform, consult the manual for the specific editor.  VS Code is a recommended choice because it is free, flexible, and has integrations with GitHub and Jupyter, and has a plugin marketplace that can enhance a workspace with tools like GitHub Co-Pilot.  Some code editing and IDE suites will charge a subscription for Jupyter integrations, which make them less ideal.
 
 :::note
-Spyder is not recommended for installing or operating the OpenBB SDK.
+Spyder is not recommended for installing or operating the OpenBB Platform.
 :::
 
 #### Helpful VS Code Extensions
@@ -120,13 +120,13 @@ Icons on the sidebar for Jupyter and Python provide quick access to the virtual 
 
 ![VS Code](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/bf04c707-a591-47c8-a5e9-c4c0e60e302a)
 
-When opening a Notebook file, or a new interactive window, ensure that the correct environment is being used.  If the selected environment is not the one created during installation, the OpenBB SDK will not import.
+When opening a Notebook file, or a new interactive window, ensure that the correct environment is being used.  If the selected environment is not the one created during installation, the OpenBB Platform will not import.
 
 Click on the item in the top-right of the window to select or change the environment.
 
 ![VS Code environment](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/0e4904cf-4ff7-4130-b965-30b3de140392)
 
-The OpenBB SDK is imported with:
+The OpenBB Platform is imported with:
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -134,7 +134,7 @@ from openbb_terminal.sdk import openbb
 
 ## Navigation
 
-The layout of the OpenBB SDK is similar to the menus in the OpenBB Terminal, with each one represented as a module.  Instead of a `/` in the path, it is `.`.  For example, `openbb.stocks.gov` is the Government sub-module of `stocks`.
+The layout of the OpenBB Platform is similar to the menus in the OpenBB Terminal, with each one represented as a module.  Instead of a `/` in the path, it is `.`.  For example, `openbb.stocks.gov` is the Government sub-module of `stocks`.
 
 ![Navigation](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ad3617fe-b84c-4bbd-9139-2563702849ba)
 
@@ -152,7 +152,7 @@ Call signature: openbb.stocks.gov.contracts(*args: Any, **kwargs: Any) -> Any
 Type:           get_contracts
 String form:    <openbb_terminal.stocks.government.quiverquant_model.Operation object at 0x2b57d0700>
 File:           ~/GitHub/OpenBBTerminal/openbb_terminal/stocks/government/quiverquant_model.py
-Docstring:     
+Docstring:
 Get government contracts for ticker [Source: quiverquant.com]
 
 Parameters
@@ -170,13 +170,13 @@ pd.DataFrame
 
 ## Docstrings
 
-Docstrings are the SDK equivalent to the Terminal's `--help` argument.  They contain information on the functions, its input parameters, and the type of data being returned.  The Contextual Help window, in Jupyter, is a very convenient way to keep this information on hand.  Referencing the docstrings will greatly reduce the need to consult the online documentation pages.
+Docstrings are the Platform equivalent to the Terminal's `--help` argument.  They contain information on the functions, its input parameters, and the type of data being returned.  The Contextual Help window, in Jupyter, is a very convenient way to keep this information on hand.  Referencing the docstrings will greatly reduce the need to consult the online documentation pages.
 
 ![Docstrings](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ffbfcdec-c16e-41e7-8828-b099325910a5)
 
 ## API Keys
 
-The `keys` module provides methods for managing access credentials to data sources.  If the API keys have already been set in a locally installed OpenBB Terminal application, no further action is required.  A new installation can be authorized using the OpenBB Hub, or they can be entered manually in the SDK.  For instructions on obtaining and authorizing each individual source, see the guide [here](https://docs.openbb.co/sdk/usage/guides/api-keys).  A key can be stored permanently, or only for the active session.  Use the `persist` boolean argument to remember or forget it.
+The `keys` module provides methods for managing access credentials to data sources.  If the API keys have already been set in a locally installed OpenBB Terminal application, no further action is required.  A new installation can be authorized using the OpenBB Hub, or they can be entered manually in the Platform.  For instructions on obtaining and authorizing each individual source, see the guide [here](https://docs.openbb.co/platform/usage/guides/api-keys).  A key can be stored permanently, or only for the active session.  Use the `persist` boolean argument to remember or forget it.
 
 ```python
 openbb.keys.fred(key= "REPLACE_WITH_YOUR_KEY", persist=True)
@@ -188,7 +188,7 @@ API keys can be imported to the session by logging in to an [OpenBB Hub account]
 
 ![OpenBB Personal Access Token](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8c3988b4-cba9-4008-b8f3-04eef72878be)
 
-Copy the generated token and enter as the value for the `token` parameter, ignoring the email and password fields.  By default, the credentials will be forgotten when the SDK session is terminated.
+Copy the generated token and enter as the value for the `token` parameter, ignoring the email and password fields.  By default, the credentials will be forgotten when the Platform session is terminated.
 
 ```python
 openbb.login?
@@ -239,9 +239,9 @@ openbb.login(token = "REPLACE_WITH_THE_PERSONAL_ACCESS_TOKEN")
 
 The token can be revoked from the OpenBB Hub API Keys page, by clicking on the `Regenerate` button, which will invalidate the current one.
 
-## How to Use the SDK
+## How to Use the Platform
 
-The syntax examples provided assume that the SDK has already been imported.
+The syntax examples provided assume that the Platform has already been imported.
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -274,7 +274,7 @@ openbb.stocks.quote("SPY")
 
 ![Data Response](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/cb932ee1-3a87-4744-81a5-840c452eac51)
 
-The presentation of the responses will vary by platform, the sample above is from Jupyter Lab.  When the same function in the Terminal outputs a chart, the response is separated into the model and view components.  The SDK map will show two functions for the same command where the second has `_chart` added on.  Using this second command will display the chart while the former returns the raw Pandas DataFrame.
+The presentation of the responses will vary by platform, the sample above is from Jupyter Lab.  When the same function in the Terminal outputs a chart, the response is separated into the model and view components.  The Platform map will show two functions for the same command where the second has `_chart` added on.  Using this second command will display the chart while the former returns the raw Pandas DataFrame.
 
 ![Model and View](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/08bccaae-13f3-4fcd-857c-13cd30250492)
 
@@ -283,7 +283,7 @@ data = openbb.stocks.load("SPY", weekly = True)
 openbb.ta.atr_chart(data, symbol = "SPY")
 ```
 
-If the SDK session is from the command line (`python` or `ipython`), a window will open to display the chart.  Within an IDE, or Jupyter Notebook, they will be displayed inline and will not have the same toolbars.
+If the Platform session is from the command line (`python` or `ipython`), a window will open to display the chart.  Within an IDE, or Jupyter Notebook, they will be displayed inline and will not have the same toolbars.
 
 ![openbb.ta.atr_chart](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b668556b-27a5-49cc-989b-8d7de1e420e2)
 
@@ -296,7 +296,7 @@ data = openbb.stocks.load('VOO', start_date = "2022-05-15")
 data["SMA"] = openbb.ta.sma(data = data["Close"], length = 20)
 ```
 
-The code block below takes the top ten results from the `unusual_volume` [screener preset](https://docs.openbb.co/sdk/usage/intros/stocks/stocks-screener), gets a single DataFrame with the daily returns for each ticker YTD, then identifies the date of the best performing day.  These operations will require importing the Pandas library to the session.
+The code block below takes the top ten results from the `unusual_volume` [screener preset](https://docs.openbb.co/platform/usage/intros/stocks/stocks-screener), gets a single DataFrame with the daily returns for each ticker YTD, then identifies the date of the best performing day.  These operations will require importing the Pandas library to the session.
 
 ```python
 import pandas as pd
@@ -352,7 +352,7 @@ fig = OpenBBFigure()
 
 ### Chart Themes
 
-Themes used by the charting and tables libraries are accessible in the SDK through a separate import statement.
+Themes used by the charting and tables libraries are accessible in the Platform through a separate import statement.
 
 ```python
 from openbb_terminal import theme

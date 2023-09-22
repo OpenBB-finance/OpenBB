@@ -6,9 +6,9 @@ description: Learn how to lookup any ETF and obtain an overview about the chosen
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ETF - SDK | OpenBB Docs" />
+<HeadTitle title="ETF - Platform | OpenBB Docs" />
 
-The ETF module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.etf`
+The ETF module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB Platform module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.etf`
 ​
 
 ## How to Use
@@ -40,7 +40,7 @@ import pandas as pd
 |openbb.etf.symbols |Dictionary |Dictionary of {Ticker:Name} |
 |openbb.etf.weights |Function |Table or Pie Graph of Sector Weightings |
 
-Alternatively you can print the contents of the ETF SDK with:
+Alternatively you can print the contents of the ETF Platform with:
 ​
 
 ```python
@@ -135,7 +135,7 @@ holdings.head(5)
 
 ### ETF Screener
 
-The ETF screener is also accessible through the SDK. Variables for the screener are set in preset files. The path to their location will depend on the type of installation and operating system; it will be similar to:
+The ETF screener is also accessible through the Platform. Variables for the screener are set in preset files. The path to their location will depend on the type of installation and operating system; it will be similar to:
 
 - For a pip/PyPi installation: `~/path_to/miniconda3/envs/obb/Lib/site-packages/openbb_terminal/etf/screener/presets/etf_config.ini`
 - For a Git Clone & Conda installation: `~/path_to/cloned_folder/OpenBBTerminal/openbb_terminal/etf/screener/presets/etf_config.ini`

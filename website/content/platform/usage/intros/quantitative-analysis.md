@@ -6,9 +6,9 @@ description: Learn how to use and see examples of the Quantitative Analysis menu
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quantitative Analysis - SDK | OpenBB Docs" />
+<HeadTitle title="Quantitative Analysis - Platform | OpenBB Docs" />
 
-The `qa` module is the Terminal's Quantitative Analysis menu for the SDK environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter `.` after, `openbb.qa`.
+The `qa` module is the Terminal's Quantitative Analysis menu for the Platform environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter `.` after, `openbb.qa`.
 
 ## How to Use
 

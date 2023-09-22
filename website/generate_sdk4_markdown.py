@@ -69,7 +69,7 @@ def create_nested_menus_card(folder: Path, url: str, data_models: bool = False) 
     ]
     path = "reference" if not data_models else "data_models"
     categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
-    url = f"/v4/platform/{path}/{url}/{folder.name}".replace("//", "/")
+    url = f"/platform/{path}/{url}/{folder.name}".replace("//", "/")
 
     index_card = f"""<ReferenceCard
         title="{folder.name}"
@@ -83,7 +83,7 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) 
     path = "reference" if not data_models else "data_models"
     cmd_cards = ""
     for cmd in cmd_text:
-        url = f"/v4/platform/{path}/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        url = f"/platform/{path}/{cmd['url']}/{cmd['title']}".replace("//", "/")
         description = shorten(f"{cmd['description']}", width=116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
     title="{cmd["title"]}"
@@ -150,7 +150,7 @@ def get_annotation_type(annotation: Any) -> str:
         .replace("datetime.datetime", "datetime")
         .replace("datetime.date", "date")
         .replace("NoneType", "None")
-        .replace("None, str]", "str]"),
+        .replace(", None", ""),
     )
 
 
@@ -323,15 +323,17 @@ def generate_data_markdown_section(meta: Dict[str, Any], command: bool = True):
 <TabItem value="standard" label="Standard">\n\n"""
     markdown += "| Name | Type | Description |\n"
     markdown += "| ---- | ---- | ----------- |\n"
+    standard = ""
     for name, field in meta["schema"]["standard"].items():
-        markdown += f"| {name} | {field['type']} | {field['doc']} |\n"
-
+        standard += f"| {name} | {field['type']} | {field['doc']} |\n"
+    markdown += standard
     markdown += "</TabItem>\n\n"
 
     for provider, fields in meta["schema"]["provider_extras"].items():
         markdown += f"<TabItem value='{provider}' label='{provider}'>\n\n"
         markdown += "| Name | Type | Description |\n"
         markdown += "| ---- | ---- | ----------- |\n"
+        markdown += standard
         for name, field in fields.items():
             markdown += f"| {name} | {field['type']} | {field['doc']} |\n"
         markdown += "</TabItem>\n\n"
@@ -348,15 +350,18 @@ def generate_params_markdown_section(meta: Dict[str, Any]):
 <TabItem value="standard" label="Standard">\n\n"""
     markdown += "| Name | Type | Description | Default | Optional |\n"
     markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
+    standard = ""
     for param in meta["params"]:
-        markdown += f"| {param['name']} | {param['type']} | {param['doc']} | {param['default']} | {param['optional']} |\n"
+        standard += f"| {param['name']} | {param['type']} | {param['doc']} | {param['default']} | {param['optional']} |\n"
 
+    markdown += standard
     markdown += "</TabItem>\n\n"
 
     for provider, fields in meta["provider_params"].items():
         markdown += f"<TabItem value='{provider}' label='{provider}'>\n\n"
         markdown += "| Name | Type | Description | Default | Optional |\n"
         markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
+        markdown += standard
         for name, field in fields.items():
             markdown += f"| {name} | {field['type']} | {field['doc']} | {field['default']} | {field['optional']} |\n"
         markdown += "</TabItem>\n\n"

@@ -5,7 +5,7 @@ description: This guide introduces the Fundamental Analysis menu within the Stoc
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="Fundamental Analysis - SDK | OpenBB Docs" />`
+`<HeadTitle title="Fundamental Analysis - Platform | OpenBB Docs" />`
 
 The FA module provides programmatic access to the commands from within the OpenBB Terminal. To get the most out of these functions, we recommend obtaining API keys from:
 
@@ -14,7 +14,7 @@ The FA module provides programmatic access to the commands from within the OpenB
 - Financial Modeling Prep
 - Polygon
 
-View [this page](https://docs.openbb.co/sdk/usage/guides/api-keys) for a list of all API sources used across the platform.
+View [this page](https://docs.openbb.co/platform/usage/guides/api-keys) for a list of all API sources used across the platform.
 
 ## The FA Module
 
@@ -66,7 +66,7 @@ Parameters for each function are displayed using the same syntax.
 ```python
 help(openbb.stocks.fa.balance)
 
-Signature:   
+Signature:
 openbb.stocks.fa.balance(
     symbol: str,
     quarterly: bool = False,
@@ -78,7 +78,7 @@ Call signature: openbb.stocks.fa.balance(*args: Any, **kwargs: Any) -> Any
 Type:           get_balance_sheet
 String form:    <openbb_terminal.stocks.fundamental_analysis.sdk_helpers.Operation object at 0x1684e8f70>
 File:           ~/GitHub/OpenBBTerminal/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py
-Docstring:   
+Docstring:
 Get balance sheet.
 
 Parameters

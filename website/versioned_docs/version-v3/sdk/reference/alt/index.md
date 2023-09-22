@@ -2,18 +2,18 @@
 
 
 ### covid
-- [global_cases](/sdk/reference/alt/covid/global_cases)
-- [global_deaths](/sdk/reference/alt/covid/global_deaths)
-- [ov](/sdk/reference/alt/covid/ov)
-- [slopes](/sdk/reference/alt/covid/slopes)
-- [stat](/sdk/reference/alt/covid/stat)
+- [global_cases](/v3/sdk/reference/alt/covid/global_cases)
+- [global_deaths](/v3/sdk/reference/alt/covid/global_deaths)
+- [ov](/v3/sdk/reference/alt/covid/ov)
+- [slopes](/v3/sdk/reference/alt/covid/slopes)
+- [stat](/v3/sdk/reference/alt/covid/stat)
 
 ### oss
-- [_make_request](/sdk/reference/alt/oss/_make_request)
-- [_retry_session](/sdk/reference/alt/oss/_retry_session)
-- [github_data](/sdk/reference/alt/oss/github_data)
-- [history](/sdk/reference/alt/oss/history)
-- [ross](/sdk/reference/alt/oss/ross)
-- [search](/sdk/reference/alt/oss/search)
-- [summary](/sdk/reference/alt/oss/summary)
-- [top](/sdk/reference/alt/oss/top)
+- [_make_request](/v3/sdk/reference/alt/oss/_make_request)
+- [_retry_session](/v3/sdk/reference/alt/oss/_retry_session)
+- [github_data](/v3/sdk/reference/alt/oss/github_data)
+- [history](/v3/sdk/reference/alt/oss/history)
+- [ross](/v3/sdk/reference/alt/oss/ross)
+- [search](/v3/sdk/reference/alt/oss/search)
+- [summary](/v3/sdk/reference/alt/oss/summary)
+- [top](/v3/sdk/reference/alt/oss/top)

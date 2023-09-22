@@ -6,9 +6,9 @@ description: Introducing the Discovery menu, within the Stocks menu. This guide 
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Discovery - SDK | OpenBB Docs" />
+<HeadTitle title="Discovery - Platform | OpenBB Docs" />
 
-The Disc module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.disc`
+The Disc module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB Platform module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.disc`
 ​
 
 ## How to Use
@@ -22,7 +22,7 @@ from openbb_terminal.sdk import openbb
 ```
 
 ​
-A brief description below highlights the main Functions and Modules available in the ETF SDK
+A brief description below highlights the main Functions and Modules available in the ETF Platform
 
 | Path                       |    Type    |                                  Description |
 | :------------------------- | :--------: | -------------------------------------------: |
@@ -44,7 +44,7 @@ A brief description below highlights the main Functions and Modules available in
 | openbb.stocks.disc.rtat           |  Function  |                  Top 10 Retail Traded Stocks |
 | openbb.stocks.disc.dividends      |  Function  |                            Screener Overview |
 
-Alternatively you can print the contents of the Disc SDK with:
+Alternatively you can print the contents of the Disc Platform with:
 
 ```python
 help(openbb.stocks.disc)

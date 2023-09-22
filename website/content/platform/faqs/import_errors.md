@@ -1,7 +1,7 @@
 ---
 title: Import Errors
 sidebar_position: 2
-description: Troubleshoot common issues with import errors in the OpenBB SDK.
+description: Troubleshoot common issues with import errors in the OpenBB Platform.
 keywords:
   [
     installation,
@@ -28,15 +28,15 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Import Errors - SDK | OpenBB Docs" />
+<HeadTitle title="Import Errors - Platform | OpenBB Docs" />
 
 ## Import Errors
 
-When packages not included in the OpenBB installation are installed to the same environment as the SDK, it is possible that an incompatible build of a specific library (like SciPy) has overwritten the existing and creating a conflict. In this event, try creating a new environment containing only the OpenBB dependencies.
+When packages not included in the OpenBB installation are installed to the same environment as the Platform, it is possible that an incompatible build of a specific library (like SciPy) has overwritten the existing and creating a conflict. In this event, try creating a new environment containing only the OpenBB dependencies.
 
 <details><summary>ModuleNotFoundError: No module named '______'</summary>
 
-Before troubleshooting please verify that the recommended installation instructions were followed. These errors often can occur when the virtual environment has not been activated, or the `poetry install` command was skipped. Activate the OpenBB virtual environment created during the installation process prior to launching or importing the SDK.
+Before troubleshooting please verify that the recommended installation instructions were followed. These errors often can occur when the virtual environment has not been activated, or the `poetry install` command was skipped. Activate the OpenBB virtual environment created during the installation process prior to launching or importing the Platform.
 
 **Terminal**:
 
@@ -45,7 +45,7 @@ conda activate obb
 python terminal.py
 ```
 
-**SDK**:
+**Platform**:
 
 ```console
 conda activate obb

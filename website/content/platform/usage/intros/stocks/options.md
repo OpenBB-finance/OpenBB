@@ -6,9 +6,9 @@ excerpt: This guide introduces the user to Options submenu within the Stocks men
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Options - SDK | OpenBB Docs" />
+<HeadTitle title="Options - Platform | OpenBB Docs" />
 
-The Options module wraps the Terminal commands for the SDK layer, providing programmatic access and greater flexibility for processing data.
+The Options module wraps the Terminal commands for the Platform layer, providing programmatic access and greater flexibility for processing data.
 
 ## How to Use
 

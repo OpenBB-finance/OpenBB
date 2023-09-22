@@ -451,3 +451,7 @@ details summary {
 .main-wrapper main {
   min-height: 1000px !important;
 }
+
+.theme-doc-version-badge {
+  margin-bottom: 20px !important;
+}

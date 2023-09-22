@@ -1,4 +1,4 @@
 # screener
 
-- [historical](/sdk/reference/stocks/screener/historical)
-- [screener_data](/sdk/reference/stocks/screener/screener_data)
+- [historical](/v3/sdk/reference/stocks/screener/historical)
+- [screener_data](/v3/sdk/reference/stocks/screener/screener_data)

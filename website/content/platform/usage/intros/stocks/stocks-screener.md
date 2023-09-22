@@ -1,14 +1,14 @@
 ---
 title: Stocks Screener
 keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, amex, nasdaq, nyse, default, description, how to, example]
-description: This guide introduces the Stock Screener, within the context of the OpenBB SDK.
+description: This guide introduces the Stock Screener, within the context of the OpenBB Platform.
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Stocks Screener - SDK | OpenBB Docs" />
+<HeadTitle title="Stocks Screener - Platform | OpenBB Docs" />
 
-The Stocks Screener module imports the same screener found in the OpenBB Terminal. The screener utilizes presets (.ini files) to scan for stocks meeting the defined criteria. User-generated files are kept in the `stocks/screener` folder within the [OpenBBUserData](https://docs.openbb.co/sdk/usage/guides/data) folder.
+The Stocks Screener module imports the same screener found in the OpenBB Terminal. The screener utilizes presets (.ini files) to scan for stocks meeting the defined criteria. User-generated files are kept in the `stocks/screener` folder within the [OpenBBUserData](https://docs.openbb.co/platform/usage/guides/data) folder.
 
 This screener can find stocks on three exchanges:
 
@@ -130,7 +130,7 @@ To make a screener with only a few filters, it should look something like this:
 
 ```console
 # Author of preset: OpenBB
-# Description: SDK Demo Screener
+# Description: Platform Demo Screener
 
 [General]
 Order = Relative Volume
@@ -147,7 +147,7 @@ Price/Free Cash Flow = Low (<15)
 Beta = Under 1
 ```
 
-Copy the block above to a new text file in any editor, and save the file to the [OpenBBUserData](https://docs.openbb.co/sdk/usage/guides/data) folder, naming it something like, `sdk_guide_preset.ini`.  **This preset has also been included with the installation**.  Declaring the path to the preset file, when located in the OpenBBUserData folder, is not required. The kernel must be restarted when a file is renamed or created; however, changes to the preset itself will be reflected immediately and without restarting.
+Copy the block above to a new text file in any editor, and save the file to the [OpenBBUserData](https://docs.openbb.co/platform/usage/guides/data) folder, naming it something like, `sdk_guide_preset.ini`.  **This preset has also been included with the installation**.  Declaring the path to the preset file, when located in the OpenBBUserData folder, is not required. The kernel must be restarted when a file is renamed or created; however, changes to the preset itself will be reflected immediately and without restarting.
 
 It is a good idea to test choices made before making it too complicated. Start with a handful of filters and modify, or add, them one-at-a-time. Let's pass what we have so far through the screener with `performance` selected as the `data_type`.
 

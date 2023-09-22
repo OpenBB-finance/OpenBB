@@ -6,7 +6,7 @@ excerpt: This guide introduces the Options class and data object.
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Options Chains - SDK | OpenBB Docs" />
+<HeadTitle title="Options Chains - Platform | OpenBB Docs" />
 
 ## Overview
 
@@ -147,7 +147,7 @@ CBOE:
 
 ```python
 In [7]: data.underlying_price
-Out[7]: 
+Out[7]:
 type                                 stock
 tick                                  down
 bid                                 449.18
@@ -187,7 +187,7 @@ TMX:
 In [8]: data = openbb.stocks.options.load_options_chains("XIU", "TMX")
 
 In [9]: data.underlying_price
-Out[9]: 
+Out[9]:
 time                15:59:56.910
 previousClose              30.86
 transactions                 393
@@ -225,7 +225,7 @@ Historical EOD chains data is currently available from `Intrinio` or `TMX`.  The
 In [12]: data = openbb.stocks.options.load_options_chains("CCO", "TMX", date = "2016-06-29")
 
 In [13]: data.underlying_price
-Out[13]: 
+Out[13]:
 date             2016-06-29
 bid                   13.99
 ask                   14.01

@@ -6,7 +6,7 @@ description: This guide introduces the Technical Analysis menu, which is common 
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Technical Analysis - SDK | OpenBB Docs" />
+<HeadTitle title="Technical Analysis - Platform | OpenBB Docs" />
 
 The Technical Analysis module is a toolkit for analyzing time-series data, at any resolution. The functions are a collection of formulas that fit into broad categories, and they are mostly derived from the pandas_ta library:
 
@@ -19,7 +19,7 @@ The Technical Analysis module is a toolkit for analyzing time-series data, at an
 
 ## How to Use
 
-Every SDK function also has a secondary `_chart` command. The table below is a brief description of each SDK function within the `ta` module; for simplicity, `_chart` has been omitted. Technical Analysis functions specific to stocks are included as a sub-module, `openbb.stocks.ta`.
+Every Platform function also has a secondary `_chart` command. The table below is a brief description of each Platform function within the `ta` module; for simplicity, `_chart` has been omitted. Technical Analysis functions specific to stocks are included as a sub-module, `openbb.stocks.ta`.
 
 | Path               |  Category  |                                    Description |
 | :----------------- | :--------: | ---------------------------------------------: |

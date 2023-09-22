@@ -34,7 +34,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
-This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
+This section provides steps to install the OpenBB Terminal and Platform from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -209,17 +209,17 @@ After the obb environment is created, activate it by entering:
 conda activate obb
 ```
 
-## Install the OpenBB Terminal and SDK
+## Install the OpenBB Terminal and Platform
 
 Make sure to have completed all previous steps. If followed, there will be a virtual environment, named `obb`, and this environment is activated.
 
-Install the main package of Openbb SDK with `pip`, a package manager.
+Install the main package of Openbb Platform with `pip`, a package manager.
 
 ```shell
 pip install openbb --no-cache-dir
 ```
 
-This method provides access to the data aggregation and charting functions of the OpenBB SDK. It does not provide access to the advanced features that are provided by the Portfolio Optimization and Machine Learning toolkits.
+This method provides access to the data aggregation and charting functions of the OpenBB Platform. It does not provide access to the advanced features that are provided by the Portfolio Optimization and Machine Learning toolkits.
 
 The toolkits can be installed individually with:
 
@@ -240,7 +240,7 @@ pip install "openbb[all]" --no-cache-dir
 ```
 
 :::info
-`pip install openbb[all]` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
+`pip install openbb[all]` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and Platform.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
 :::
 
 ## Verify Installation
@@ -251,7 +251,7 @@ Once this installation process is completed, the terminal is launched by running
 openbb
 ```
 
-To confirm the installation of the SDK, open the Python interpreter with a `python` command, then run the following:
+To confirm the installation of the Platform, open the Python interpreter with a `python` command, then run the following:
 
 ```python
 from openbb_terminal.sdk import openbb
@@ -273,9 +273,9 @@ conda activate obb
 openbb
 ```
 
-## Updating the OpenBB SDK Version
+## Updating the OpenBB Platform Version
 
-Upgrade the OpenBB SDK to the latest version via `pypi`. When using the terminal or SDK without toolkits, first activate  environment by running:
+Upgrade the OpenBB Platform to the latest version via `pypi`. When using the terminal or Platform without toolkits, first activate  environment by running:
 
 ```shell
 conda activate obb
@@ -295,7 +295,7 @@ pip install -U "openbb[all]" --no-cache-dir
 
 ## Nightly Builds
 
-OpenBB SDK is updated daily with new features and bug fixes, but some features being worked on may be unstable. To use the same SDK version as the development team, install the nightly build with:
+OpenBB Platform is updated daily with new features and bug fixes, but some features being worked on may be unstable. To use the same Platform version as the development team, install the nightly build with:
 
 ```shell
 conda activate obb
@@ -303,5 +303,5 @@ pip install -U openbb-nightly --no-cache-dir
 ```
 
 :::info
-If issues are encountered with the installation, please try installing OpenBB Terminal and SDK from source [(link)](/terminal/installation/source), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
+If issues are encountered with the installation, please try installing OpenBB Terminal and Platform from source [(link)](/terminal/installation/source), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 :::

@@ -1,20 +1,20 @@
 # etf
 
-- [candle](/sdk/reference/etf/candle)
+- [candle](/v3/sdk/reference/etf/candle)
 
 ### disc
-- [mover](/sdk/reference/etf/disc/mover)
-- [etf_by_category](/sdk/reference/etf/etf_by_category)
-- [etf_by_name](/sdk/reference/etf/etf_by_name)
-- [holdings](/sdk/reference/etf/holdings)
-- [ld](/sdk/reference/etf/ld)
-- [ln](/sdk/reference/etf/ln)
-- [load](/sdk/reference/etf/load)
-- [news](/sdk/reference/etf/news)
-- [overview](/sdk/reference/etf/overview)
+- [mover](/v3/sdk/reference/etf/disc/mover)
+- [etf_by_category](/v3/sdk/reference/etf/etf_by_category)
+- [etf_by_name](/v3/sdk/reference/etf/etf_by_name)
+- [holdings](/v3/sdk/reference/etf/holdings)
+- [ld](/v3/sdk/reference/etf/ld)
+- [ln](/v3/sdk/reference/etf/ln)
+- [load](/v3/sdk/reference/etf/load)
+- [news](/v3/sdk/reference/etf/news)
+- [overview](/v3/sdk/reference/etf/overview)
 
 ### scr
-- [screen](/sdk/reference/etf/scr/screen)
-- [summary](/sdk/reference/etf/summary)
-- [symbols](/sdk/reference/etf/symbols)
-- [weights](/sdk/reference/etf/weights)
+- [screen](/v3/sdk/reference/etf/scr/screen)
+- [summary](/v3/sdk/reference/etf/summary)
+- [symbols](/v3/sdk/reference/etf/symbols)
+- [weights](/v3/sdk/reference/etf/weights)

@@ -6,7 +6,7 @@ description: An Introduction to Cryptocurrency Discovery, within the Cryptocurre
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Discovery - SDK | OpenBB Docs" />
+<HeadTitle title="Discovery - Platform | OpenBB Docs" />
 
 The Discovery sub-module contains the tools for finding new trends in Crpyto markets and making new discoveries. The commands within the menu are listed below along with a short description. The module is accessed by entering, `openbb.crypto.disc`, and then a `.` activates code completion and type hints.
 

@@ -81,6 +81,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          breadcrumbs: true,
           lastVersion: "current",
           versions: {
             current: {
@@ -93,9 +94,9 @@ const config = {
               path: "v3",
             },
           },
+          editUrl: ({ versionDocsDirPath, docPath }) =>
+            `https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/${versionDocsDirPath}/${docPath}`,
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
           routeBasePath: "/",
           path: "content",
           remarkPlugins: [math],
@@ -115,6 +116,9 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      docs: {
+        versionPersistence: "localStorage",
       },
       navbar: {
         items: [

@@ -6,9 +6,9 @@ description: The Portfolio menu, and its sub-menus, are dedicated to properly ex
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Portfolio - SDK | OpenBB Docs" />
+<HeadTitle title="Portfolio - Platform | OpenBB Docs" />
 
-The [Portfolio menu](/terminal/usage/intros/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
+The [Portfolio menu](/terminal/usage/intros/portfolio), from the OpenBB Terminal, is wrapped into a Python Platform layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
 
 ## How to Use
 
@@ -84,7 +84,7 @@ The table below illustrates the required column titles:
 | 2011-01-03 | STOCK  | TSLA     | Buy    |    1.76 |        100 |      0 |          176 | USD        | Consumer Cyclical      | Auto Manufacturers             | United States | North America |
 | 2011-01-03 | STOCK  | GOOG     | Buy    |   15.01 |        100 |      0 |         1501 | USD        | Communication Services | Internet Content & Information | United States | North America |
 
-The template Excel file also has additional columns but these are _optional_. The OpenBB SDK can figure out by itself what industry, sector, country and region belongs to the loaded in Equity. So the field can be left blank if your holdings do not include this information.
+The template Excel file also has additional columns but these are _optional_. The OpenBB Platform can figure out by itself what industry, sector, country and region belongs to the loaded in Equity. So the field can be left blank if your holdings do not include this information.
 
 ## Examples
 
@@ -304,4 +304,4 @@ print(returns.tail(5))
 | 2022-11-24 |           0.00  |           0.00 |
 | 2022-11-25 |          -0.01  |           0.00 |
 
-Read the [Portfolio Optimization Intro](https://docs.openbb.co/sdk/usage/intros/portfolio/po) to learn about the optimization features, and the parameters preset template.
+Read the [Portfolio Optimization Intro](https://docs.openbb.co/platform/usage/intros/portfolio/po) to learn about the optimization features, and the parameters preset template.

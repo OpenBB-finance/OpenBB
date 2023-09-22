@@ -170,11 +170,11 @@ You can also delete your locally stored routines, which will then be synced with
 
 ## Personal Access Tokens
 
-Setting up API keys on the OpenBB Hub has an additional benefit: it allows you to generate a personal access token (PAT) that can be used with the OpenBB SDK. With this token, you can programmatically access the data that powers the OpenBB Terminal, without the need to add individual API keys for each user.
+Setting up API keys on the OpenBB Hub has an additional benefit: it allows you to generate a personal access token (PAT) that can be used with the OpenBB Platform. With this token, you can programmatically access the data that powers the OpenBB Terminal, without the need to add individual API keys for each user.
 
 ### OpenBB Hub
 
-If you go to the bottom of [this page](https://my.openbb.co/app/sdk/api-keys) you can find your OpenBB PAT. This is the API Keys that will be used on the OpenBB SDK and this is the same as the ones set in the OpenBB Terminal.
+If you go to the bottom of [this page](https://my.openbb.co/app/sdk/api-keys) you can find your OpenBB PAT. This is the API Keys that will be used on the OpenBB Platform and this is the same as the ones set in the OpenBB Terminal.
 
 <img width="1427" alt="Screenshot 2023-04-14 at 10 37 44 PM" src="https://user-images.githubusercontent.com/25267873/232185425-672a7eb0-e4ba-4863-8dbb-dd951afd25cc.png"/>
 
@@ -191,7 +191,7 @@ openbb.login(token = "<YOUR TOKEN HERE>")
 
 Although the PAT is not meant to be used in the OpenBB Terminal, you can still manage it in the `/account` menu through the `generate` command. This will delete any previously issued tokens.
 
-Once you have generated a token, an SDK session can be initiated anywhere utilizing:
+Once you have generated a token, an Platform session can be initiated anywhere utilizing:
 
 ```python
 from openbb_terminal.sdk import openbb

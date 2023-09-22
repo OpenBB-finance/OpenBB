@@ -61,16 +61,16 @@ build financial applications and reports."
 
 ### Getting Started
 
-To know more about OpenBB SDK, you can start by reading the [Installation Guide](/sdk/installation).
+To know more about OpenBB SDK, you can start by reading the [Installation Guide](/v3/v3/sdk/installation).
 
 ### Using OpenBB SDK
 
-To learn how to use OpenBB SDK, you can start by reading the [Basics Guide](/sdk/usage/basics).
+To learn how to use OpenBB SDK, you can start by reading the [Basics Guide](/v3/sdk/usage/basics).
 
 ### SDK Reference
 
-SDK Reference is a complete list of all functions available in OpenBB SDK. It is automatically generated and updated every time a new version of OpenBB SDK is released. It can be found [here](/sdk/reference).
+SDK Reference is a complete list of all functions available in OpenBB SDK. It is automatically generated and updated every time a new version of OpenBB SDK is released. It can be found [here](/v3/sdk/reference).
 
 ### Showcase
 
-OpenBB SDK is used by many financial analysts, data scientists, and developers to build financial applications and reports. Here are some examples of what you can do with OpenBB SDK: [Showcase](/sdk/showcase).
+OpenBB SDK is used by many financial analysts, data scientists, and developers to build financial applications and reports. Here are some examples of what you can do with OpenBB SDK: [Showcase](/v3/sdk/showcase).

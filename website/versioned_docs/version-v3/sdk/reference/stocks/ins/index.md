@@ -1,5 +1,5 @@
 # ins
 
-- [act](/sdk/reference/stocks/ins/act)
-- [lins](/sdk/reference/stocks/ins/lins)
-- [print_insider_data](/sdk/reference/stocks/ins/print_insider_data)
+- [act](/v3/sdk/reference/stocks/ins/act)
+- [lins](/v3/sdk/reference/stocks/ins/lins)
+- [print_insider_data](/v3/sdk/reference/stocks/ins/print_insider_data)

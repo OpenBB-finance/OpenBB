@@ -1,7 +1,7 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: General operation and troubleshooting for the OpenBB SDK.
+description: General operation and troubleshooting for the OpenBB Platform.
 keywords:
   [
     installation,
@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="General Operation - SDK | OpenBB Docs" />
+<HeadTitle title="General Operation - Platform | OpenBB Docs" />
 
 Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.
 

@@ -1,19 +1,19 @@
 ---
 title: Showcase
 sidebar_position: 6
-description: Showcasing apps created by users using the OpenBB SDK
+description: Showcasing apps created by users using the OpenBB Platform
 keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Showcase - SDK | OpenBB Docs" />
+<HeadTitle title="Showcase - Platform | OpenBB Docs" />
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
-This page contains a list of projects that use the OpenBB SDK.
+This page contains a list of projects that use the OpenBB Platform.
 
-If you have a project that uses the OpenBB SDK, please feel free to add it [here](#).
+If you have a project that uses the OpenBB Platform, please feel free to add it [here](#).
 
 ---
 

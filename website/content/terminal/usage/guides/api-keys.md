@@ -574,7 +574,7 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 ```
 
 </details>
-  
+
 
 ### OpenAI
 
@@ -597,7 +597,7 @@ Click the top right "Personal" button to find the following drop down:
 
 Click `View API Keys`. This will take you to the api Keys menu. Then click `Create new secret key`:
 ![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/210fa55b-8a33-4647-bdd4-28a478b02ba8)
-  
+
 Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
 
 ```console
@@ -605,9 +605,9 @@ Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
 ```
 
 </details>
-  
-  
-  
+
+
+
 
 ### Polygon
 
@@ -742,7 +742,7 @@ Add it to the OpenBB Terminal by entering:
 
 ### ShroomDK
 
-> ShroomDK (SDK), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
+> ShroomDK (Platform), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
 
 <details>
 <summary>Instructions</summary>

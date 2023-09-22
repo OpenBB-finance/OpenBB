@@ -1,17 +1,17 @@
 ---
 title: Setting API Keys
 sidebar_position: 1
-description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB SDK.
+description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB Platform.
 keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, twitter, whale alert]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API Keys - SDK | OpenBB Docs" />
+<HeadTitle title="API Keys - Platform | OpenBB Docs" />
 
 ## The Keys Module
 
-API (Application Programming Interface) keys are access credentials for obtaining data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer). Each source is entered into the SDK with the `openbb.keys` module, using the syntax described in the sections below. Wrapping the command with `help()` will print the docstrings to the screen. For example:
+API (Application Programming Interface) keys are access credentials for obtaining data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer). Each source is entered into the Platform with the `openbb.keys` module, using the syntax described in the sections below. Wrapping the command with `help()` will print the docstrings to the screen. For example:
 
 ```console
 help(openbb.keys.reddit)
@@ -89,7 +89,7 @@ Go to: https://www.alphavantage.co/support/#api-key
 
 ![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)
 
-Fill out the form, pass Captcha, and click on, "GET FREE API KEY". The issued key can be entered into the OpenBB SDK with:
+Fill out the form, pass Captcha, and click on, "GET FREE API KEY". The issued key can be entered into the OpenBB Platform with:
 
 ```console
 openbb.keys.av(key = 'REPLACE_WITH_KEY', persist = True)
@@ -108,7 +108,7 @@ Go to: https://www.binance.com/en/support/faq/how-to-create-api-360002502072
 
 ![Binance](https://user-images.githubusercontent.com/46355364/207839805-f71cf12a-62d2-41cb-ba19-0c35917abc40.png)
 
-These instructions should provide clear guidance for obtaining an API Key. Enter the issued credentials into the OpenBB SDK with:
+These instructions should provide clear guidance for obtaining an API Key. Enter the issued credentials into the OpenBB Platform with:
 
 ```console
 openbb.keys.binance(
@@ -139,7 +139,7 @@ After creating an account and verifying the email address, get the value for the
 
 ![Get Bitquery API Key](https://user-images.githubusercontent.com/46355364/207840833-35c1b12c-9b4b-43fe-a33e-f7b92c43a011.png)
 
-Enter this API key into the OpenBB SDK with:
+Enter this API key into the OpenBB Platform with:
 
 ```console
 openbb.keys.bitquery(key = 'REPLACE_WITH_KEY', persist = True)
@@ -195,7 +195,7 @@ Once the account has been created, copy the API key displayed within the dashboa
 
 ![CoinMarketCap](https://user-images.githubusercontent.com/46355364/207831705-e9f95018-bba7-49a9-b057-3443bc839861.png)
 
-Enter the API key into the OpenBB SDK with:
+Enter the API key into the OpenBB Platform with:
 
 ```console
 openbb.keys.cmc(key = 'REPLACE_WITH_KEY', persist = True)
@@ -214,7 +214,7 @@ Go to: https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-a
 
 ![Coinbase](https://user-images.githubusercontent.com/46355364/207841901-647f0aef-0c74-454d-b99e-367d784259f0.png)
 
-Follow the instructions to obtain the credentials for the specific account. Enter the three values into the OpenBB SDK with:
+Follow the instructions to obtain the credentials for the specific account. Enter the three values into the OpenBB Platform with:
 
 ```console
 openbb.keys.coinbase(
@@ -242,7 +242,7 @@ Click, "Log in", and then sign up for an account. This opens the page:
 
 ![Coinglass](https://user-images.githubusercontent.com/46355364/207844637-a9321889-c4d8-4d44-95fe-a6288a17ad19.png)
 
-With the account created, find the assigned API key within the account profile page. Enter this value into the OpenBB SDK with:
+With the account created, find the assigned API key within the account profile page. Enter this value into the OpenBB Platform with:
 
 ```console
 openbb.keys.coinglass(key = 'REPLACE_WITH_KEY', persist = True)
@@ -265,7 +265,7 @@ Click on, [&#34;Sign up&#34;](https://cryptopanic.com/accounts/signup/?next=/dev
 
 ![Crypto Panic](https://user-images.githubusercontent.com/46355364/207848971-3e4771b7-1faa-45fe-955f-81bd736b16b7.png)
 
-Enter that value in the OpenBB SDK with:
+Enter that value in the OpenBB Platform with:
 
 ```console
 openbb.keys.cpanic(key = 'REPLACE_WITH_KEY', persist = True)
@@ -307,7 +307,7 @@ Go to: https://www.degiro.com/
 
 ![Degiro](https://user-images.githubusercontent.com/46355364/207838353-001d350c-872c-4770-a586-fb21318122eb.png)
 
-Click on, "Open an account", and then go through the registration process. After setting up the account, the login credentials can be entered in the OpenBB SDK with:
+Click on, "Open an account", and then go through the registration process. After setting up the account, the login credentials can be entered in the OpenBB Platform with:
 
 ```console
 openbb.keys.degiro(
@@ -340,7 +340,7 @@ Once registered, the API Key will be next to "API TOKEN".
 
 ![EODHD](https://user-images.githubusercontent.com/46355364/207849462-37471270-929a-45c5-a164-a84249b19231.png)
 
-Enter this string into the OpenBB SDK with:
+Enter this string into the OpenBB Platform with:
 
 ```console
 openbb.keys.eodhd(key = 'REPLACE_WITH_KEY', persist = True)
@@ -367,7 +367,7 @@ Once the account has been created, find the API key in the account dashboard.
 
 ![Finnhub](https://user-images.githubusercontent.com/46355364/207832601-62007d95-410c-4d03-a5a3-b177d1894a4c.png)
 
-Add this key to the OpenBB SDK with:
+Add this key to the OpenBB Platform with:
 
 ```console
 openbb.keys.finnhub(key = 'REPLACE_WITH_KEY', persist = True)
@@ -396,7 +396,7 @@ With an account created, sign in and navigate to the Dashboard, which shows the 
 
 ![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207823170-dd8191db-e125-44e5-b4f3-2df0e115c91d.png)
 
-Enter the key into the OpenBB SDK with:
+Enter the key into the OpenBB Platform with:
 
 ```console
 openbb.keys.fmp(key = 'REPLACE_WITH_KEY', persist = True)
@@ -427,7 +427,7 @@ Fill in the box for information about the use-case for FRED, and by clicking, "R
 
 ![FRED](https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png)
 
-Enter the API key into the OpenBB SDK with:
+Enter the API key into the OpenBB Platform with:
 
 ```console
 openbb.keys.fred(key = 'REPLACE_WITH_KEY', persist = True)
@@ -452,7 +452,7 @@ Select, "New GitHub App":
 
 ![GitHub](https://user-images.githubusercontent.com/46355364/207847383-d24416c6-18be-43f2-ae7c-455e8372a6ed.png)
 
-After creating the app, the key will be issued. Enter this token into the OpenBB SDK with:
+After creating the app, the key will be issued. Enter this token into the OpenBB Platform with:
 
 ```console
 openbb.keys.github(key = 'REPLACE_WITH_KEY', persist = True)
@@ -479,7 +479,7 @@ After creating an account, navigate to the [account settings](https://studio.gla
 
 ![Glassnode](https://user-images.githubusercontent.com/46355364/207843950-5f33f37d-0203-4302-a67f-198808f18e06.png)
 
-Enter this key in the OpenBB SDK with:
+Enter this key in the OpenBB Platform with:
 
 ```console
 openbb.keys.glassnode(key = 'REPLACE_WITH_KEY', persist = True)
@@ -498,7 +498,7 @@ Go to: https://intrinio.com/starter-plan
 
 ![Intrinio](https://user-images.githubusercontent.com/85772166/219207307-d6605460-ae2c-46d3-8b4e-f82057cfce59.png)
 
-An API key will be issued with a subscription. Find the token value within the account dashboard, and enter it into the OpenBB SDK with:
+An API key will be issued with a subscription. Find the token value within the account dashboard, and enter it into the OpenBB Platform with:
 
 ```console
 openbb.keys.intrinio(key = 'REPLACE_WITH_KEY', persist = True)
@@ -525,7 +525,7 @@ After creating the account, navigate to the [account page](https://messari.io/ac
 
 ![Messari](https://user-images.githubusercontent.com/46355364/207848324-ade5bede-8e6b-4b87-bdec-eade3217c0d8.png)
 
-Copy the API key and add it to the OpenBB SDK with:
+Copy the API key and add it to the OpenBB Platform with:
 
 ```console
 openbb.keys.messari(key = 'REPLACE_WITH_KEY', persist = True)
@@ -552,7 +552,7 @@ Register for an account and the next screen will provide the API Key.
 
 ![News API](https://user-images.githubusercontent.com/46355364/207828736-f0fce53b-f302-4456-adf9-8d50ac41fbe2.png)
 
-Add this API key into the OpenBB SDK with:
+Add this API key into the OpenBB Platform with:
 
 ```console
 openbb.keys.news(key = 'REPLACE_WITH_KEY', persist = True)
@@ -575,7 +575,7 @@ After creating an account, follow the steps below.
 
 ![Oanda](https://user-images.githubusercontent.com/46355364/207839246-eb40f093-b583-4edd-b178-99fe399bfb66.png)
 
-Upon completion of the account setup, enter the credentials into the OpenBB SDK with:
+Upon completion of the account setup, enter the credentials into the OpenBB Platform with:
 
 ```console
 openbb.keys.oanda(
@@ -607,7 +607,7 @@ After signing up, the API Key is found at the bottom of the account dashboard pa
 
 ![Polygon](https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png)
 
-Enter the key into the OpenBB SDK with:
+Enter the key into the OpenBB Platform with:
 
 ```console
 openbb.keys.polygon(key = 'REPLACE_WITH_KEY', persist = True)
@@ -632,7 +632,7 @@ Follow the sign-up instructions, and upon completion the API key will be assigne
 
 ![Quandl](https://user-images.githubusercontent.com/46355364/207824664-3c82befb-9c69-42df-8a82-510d85c19a97.png)
 
-Enter the key into the OpenBB SDK with:
+Enter the key into the OpenBB Platform with:
 
 ```console
 openbb.keys.quandl(key = 'REPLACE_WITH_KEY', persist = True)
@@ -663,7 +663,7 @@ Click on, "Read the full API terms and sign up for usage", and fill out the form
 
 ![Reddit](https://user-images.githubusercontent.com/46355364/207834850-32a0d4c8-9990-4919-94e3-abad1487a3bd.png)
 
-After submitting the form, check for a confirmation email. The credentials will be displayed [here](https://old.reddit.com/prefs/apps/), add them to the OpenBB SDK with:
+After submitting the form, check for a confirmation email. The credentials will be displayed [here](https://old.reddit.com/prefs/apps/), add them to the OpenBB Platform with:
 
 ```console
 openbb.keys.reddit(
@@ -689,7 +689,7 @@ Go to: https://robinhood.com/us/en
 
 ![Robinhood](https://user-images.githubusercontent.com/46355364/207838058-a2311632-6459-4cfd-bc0a-639ee3931574.png)
 
-After registering for an account, it can be added to the OpenBB SDK with:
+After registering for an account, it can be added to the OpenBB Platform with:
 
 ```console
 openbb.keys.rb(
@@ -721,7 +721,7 @@ Navigate to the [account dashboard](https://app.santiment.net/account#api-keys) 
 
 ![Santiment](https://user-images.githubusercontent.com/46355364/207849839-31d1d0a7-6936-4ebd-a7f8-1292f6317b07.png)
 
-Add it to the OpenBB SDK with:
+Add it to the OpenBB Platform with:
 
 ```console
 openbb.keys.santiment(key = 'REPLACE_WITH_KEY', persist = True)
@@ -731,7 +731,7 @@ openbb.keys.santiment(key = 'REPLACE_WITH_KEY', persist = True)
 
 ### ShroomDK
 
-> ShroomDK (SDK), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
+> ShroomDK (Platform), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
 
 <details>
 <summary>Instructions</summary>
@@ -748,7 +748,7 @@ Once created, connect a wallet to complete minting the NFT license. The API key 
 
 ![ShroomDK](https://user-images.githubusercontent.com/46355364/207850380-b59554af-1e65-4616-921d-e02c9ecf1aad.png)
 
-Enter it into the OpenBB SDK with:
+Enter it into the OpenBB Platform with:
 
 ```console
 openbb.keys.shroom(key = 'REPLACE_WITH_KEY', persist = True)
@@ -775,7 +775,7 @@ Once logged in, navigate to the "Developers" tab and copy the API key.
 
 ![Stocksera](https://user-images.githubusercontent.com/46355364/207854224-e5ddace0-15d1-491c-b616-263cca0bef02.png)
 
-Add the key to the OpenBB SDK with:
+Add the key to the OpenBB Platform with:
 
 ```console
 openbb.keys.stocksera(key = 'REPLACE_WITH_KEY', persist = True)
@@ -802,7 +802,7 @@ Verify the email address, and then navigate go to the "API" tab and copy the API
 
 ![Token Terminal](https://user-images.githubusercontent.com/46355364/207851035-71ea3eff-a11f-4835-8592-c07b3aa3f800.png)
 
-Add the key to the OpenBB SDK with:
+Add the key to the OpenBB Platform with:
 
 ```console
 openbb.keys.tokenterminal(key = 'REPLACE_WITH_KEY', persist = True)
@@ -821,7 +821,7 @@ Go to: https://documentation.tradier.com
 
 ![Tradier](https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png)
 
-Click on, "Open Account", to start the sign-up process. After the account has been setup, navigate to [Tradier Broker Dash](https://dash.tradier.com/login?redirect=settings.api) and create the application. Request a sandbox access token, and enter this key into the OpenBB SDK with:
+Click on, "Open Account", to start the sign-up process. After the account has been setup, navigate to [Tradier Broker Dash](https://dash.tradier.com/login?redirect=settings.api) and create the application. Request a sandbox access token, and enter this key into the OpenBB Platform with:
 
 ```console
 openbb.keys.tradier(key = 'REPLACE_WITH_KEY', persist = True)
@@ -858,7 +858,7 @@ After creating the account, click on, "Create", to issue the API Key.
 
 ![Whale Alert](https://user-images.githubusercontent.com/46355364/207843214-20232465-9a52-4b66-b01a-0b8cecbdd612.png)
 
-Enter the key into the OpenBB SDK with:
+Enter the key into the OpenBB Platform with:
 
 ```console
 openbb.keys.walert(key = 'REPLACE_WITH_KEY', persist = True)

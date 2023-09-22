@@ -26,13 +26,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Developer Issues - SDK | OpenBB Docs" />
+<HeadTitle title="Developer Issues - Platform | OpenBB Docs" />
 
 ## Developer Issues
 
 <details><summary>How do I launch in debug mode?</summary>
 
-The PyWry window can be run in debug mode for identifying specific issues.  Use the code block below - with the `obb` Python environment active - to import the OpenBB SDK in debug mode.
+The PyWry window can be run in debug mode for identifying specific issues.  Use the code block below - with the `obb` Python environment active - to import the OpenBB Platform in debug mode.
 
 ```python
 import os
@@ -44,7 +44,7 @@ plots_backend().start(True)
 from openbb_terminal.sdk import openbb
 ```
 
-The charts and tables will now include a developer tools button, located at the top-left of the window.  
+The charts and tables will now include a developer tools button, located at the top-left of the window.
 
 </details>
 
