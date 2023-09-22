@@ -12,7 +12,7 @@ from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt
 
 
 class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
@@ -55,14 +55,6 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         description=r"Change % in the price of the symbol over a period of time.",
         default=None,
     )
-
-    @validator("date", pre=True, check_fields=False)
-    def date_validate(cls, v) -> datetime:  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPMajorIndicesHistoricalFetcher(

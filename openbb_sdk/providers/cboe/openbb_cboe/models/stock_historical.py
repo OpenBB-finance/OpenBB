@@ -162,13 +162,12 @@ class CboeStockHistoricalFetcher(
                     data["close"] = round(data.close.astype(float), 2)
                     data["volume"] = 0
 
-                data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
+                data.index = pd.to_datetime(data.index)
                 data = data[data["open"] > 0]
                 data = data[
-                    (data.index >= pd.to_datetime(start_date, format="%Y-%m-%d"))
-                    & (data.index <= pd.to_datetime(end_date, format="%Y-%m-%d"))
+                    (data.index >= pd.to_datetime(start_date))
+                    & (data.index <= pd.to_datetime(end_date))
                 ]
-                data.index = data.index.strftime("%Y-%m-%d")
             if query.interval == "1m":
                 data_list = r.json()["data"]
                 date: list[datetime] = []

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-fmp"
-version = "0.1.0a1"
+version = "0.1.0a0"
 description = "FMP extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
