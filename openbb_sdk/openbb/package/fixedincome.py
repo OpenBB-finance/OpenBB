@@ -74,8 +74,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         AMERIBOR
         --------
@@ -148,8 +148,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         ESTR
         ----
@@ -222,8 +222,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         FEDFUNDS
         --------
@@ -294,8 +294,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         IORB
         ----
@@ -350,8 +350,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         PROJECTIONS
         -----------
@@ -429,8 +429,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         SOFR
         ----
@@ -502,8 +502,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         SONIA
         -----
@@ -570,8 +570,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         TreasuryRates
         -------------
@@ -658,8 +658,8 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         USYieldCurve
         ------------

@@ -128,8 +128,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         BalanceSheet
         ------------
@@ -297,8 +297,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         BalanceSheetGrowth
         ------------------
@@ -445,8 +445,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         DividendCalendar
         ----------------
@@ -563,8 +563,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         CashFlowStatement
         -----------------
@@ -718,8 +718,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         CashFlowStatementGrowth
         -----------------------
@@ -838,8 +838,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         ExecutiveCompensation
         ---------------------
@@ -927,8 +927,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         StockSplitCalendar
         ------------------
@@ -991,8 +991,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         HistoricalDividends
         -------------------
@@ -1064,8 +1064,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EarningsCalendar
         ----------------
@@ -1136,8 +1136,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         HistoricalEmployees
         -------------------
@@ -1219,8 +1219,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         AnalystEstimates
         ----------------
@@ -1366,8 +1366,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         IncomeStatement
         ---------------
@@ -1517,8 +1517,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         IncomeStatementGrowth
         ---------------------
@@ -1678,8 +1678,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         StockInsiderTrading
         -------------------
@@ -1776,8 +1776,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         InstitutionalOwnership
         ----------------------
@@ -1916,8 +1916,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         KeyMetrics
         ----------
@@ -2091,8 +2091,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         KeyExecutives
         -------------
@@ -2158,8 +2158,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         CompanyOverview
         ---------------
@@ -2295,8 +2295,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         StockOwnership
         --------------
@@ -2428,8 +2428,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         PriceTargetConsensus
         --------------------
@@ -2493,8 +2493,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         PriceTarget
         -----------
@@ -2586,8 +2586,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         FinancialRatios
         ---------------
@@ -2767,8 +2767,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         RevenueGeographic
         -----------------
@@ -2848,8 +2848,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         RevenueBusinessLine
         -------------------
@@ -3029,8 +3029,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         SECFilings
         ----------
@@ -3099,8 +3099,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         ShareStatistics
         ---------------
@@ -3164,8 +3164,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         HistoricalStockSplits
         ---------------------
@@ -3239,8 +3239,8 @@ class ROUTER_stocks_fa(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EarningsCallTranscript
         ----------------------

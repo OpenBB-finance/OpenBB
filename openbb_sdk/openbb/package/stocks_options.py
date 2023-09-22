@@ -52,8 +52,8 @@ class ROUTER_stocks_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         OptionsChains
         -------------

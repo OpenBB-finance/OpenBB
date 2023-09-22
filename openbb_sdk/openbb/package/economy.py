@@ -47,8 +47,8 @@ class ROUTER_economy(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         AvailableIndices
         ----------------
@@ -109,8 +109,8 @@ class ROUTER_economy(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         MajorIndicesConstituents
         ------------------------
@@ -266,8 +266,8 @@ class ROUTER_economy(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         CPI
         ---
@@ -358,8 +358,8 @@ class ROUTER_economy(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         MajorIndicesHistorical
         ----------------------
@@ -432,8 +432,8 @@ class ROUTER_economy(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         RiskPremium
         -----------
