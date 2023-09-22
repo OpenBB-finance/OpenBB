@@ -17,17 +17,17 @@ The OpenBB Platform provides a convenient way to access raw financial data from 
 The command below provides access to the core functionalities behind the OpenBB Platform.
 
 ```bash
-pip install openbb==4.0.0a0
+pip install openbb==4.0.0a2
 ```
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
 ```bash
 # Install single extension, e.g. openbb-charting
-pip install openbb[charting]==4.0.0a0
+pip install openbb[charting]==4.0.0a2
 
 # Install all available extensions
-pip install openbb[all]==4.0.0a0
+pip install openbb[all]==4.0.0a2
 ``````
 
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
