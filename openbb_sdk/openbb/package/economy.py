@@ -12,7 +12,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_economy(Container):
+class ROUTER_economy(Container):
     """/economy
     available_indices
     const
@@ -451,7 +451,7 @@ class CLASS_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         open : float
             The open price of the symbol.
@@ -475,7 +475,7 @@ class CLASS_economy(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[Annotated[int, Gt(gt=0)]]
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 

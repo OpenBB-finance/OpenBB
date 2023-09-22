@@ -11,7 +11,7 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt
 
 
 class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -54,14 +54,6 @@ class FMPStockHistoricalData(StockHistoricalData):
         default=None,
         description="Change % in the price of the symbol over a period of time.",
     )
-
-    @validator("date", pre=True, check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPStockHistoricalFetcher(

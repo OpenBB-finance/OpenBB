@@ -13,7 +13,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_stocks(Container):
+class ROUTER_stocks(Container):
     """/stocks
     /ca
     /fa
@@ -31,13 +31,13 @@ class CLASS_stocks(Container):
     def ca(self):  # route = "/stocks/ca"
         from . import stocks_ca
 
-        return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
+        return stocks_ca.ROUTER_stocks_ca(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
         from . import stocks_fa
 
-        return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
+        return stocks_fa.ROUTER_stocks_fa(command_runner=self._command_runner)
 
     @validate_call
     def load(
@@ -89,6 +89,8 @@ class CLASS_stocks(Container):
             Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
         interval_size : Optional[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]
             The data time frequency. (provider: intrinio)
+        multiplier : PositiveInt
+            Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -97,8 +99,6 @@ class CLASS_stocks(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Output time series is adjusted by historical split and dividend events. (provider: polygon)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
 
         Returns
         -------
@@ -482,7 +482,7 @@ class CLASS_stocks(Container):
     def options(self):  # route = "/stocks/options"
         from . import stocks_options
 
-        return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
+        return stocks_options.ROUTER_stocks_options(command_runner=self._command_runner)
 
     @validate_call
     def quote(

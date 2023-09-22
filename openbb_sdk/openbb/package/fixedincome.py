@@ -12,7 +12,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_fixedincome(Container):
+class ROUTER_fixedincome(Container):
     """/fixedincome
     ameribor
     estr

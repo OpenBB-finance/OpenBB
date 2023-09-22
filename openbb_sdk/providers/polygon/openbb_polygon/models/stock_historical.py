@@ -26,6 +26,9 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
+    multiplier: PositiveInt = Field(
+        default=1, description="Multiplier of the timespan."
+    )
     timespan: Literal[
         "minute", "hour", "day", "week", "month", "quarter", "year"
     ] = Field(default="day", description="Timespan of the data.")
@@ -38,9 +41,6 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     adjusted: bool = Field(
         default=True,
         description="Output time series is adjusted by historical split and dividend events.",
-    )
-    multiplier: PositiveInt = Field(
-        default=1, description="Multiplier of the timespan."
     )
 
 

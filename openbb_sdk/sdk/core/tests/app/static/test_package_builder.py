@@ -432,7 +432,7 @@ def test_build_module_class(path_handler):
     assert module_class == "Extensions"
 
     module_class = path_handler.build_module_class(path="/stocks/load")
-    assert module_class == "CLASS_stocks_load"
+    assert module_class == "ROUTER_stocks_load"
 
 
 @pytest.fixture(scope="module")

@@ -11,7 +11,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_stocks_options(Container):
+class ROUTER_stocks_options(Container):
     """/stocks/options
     chains
     """

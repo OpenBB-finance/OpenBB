@@ -5,14 +5,14 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalData,
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, field_validator
+from pydantic import Field, PositiveInt
 
 
 class PolygonMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
@@ -47,18 +47,13 @@ class PolygonMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         "close": "c",
         "volume": "v",
         "vwap": "vw",
-        "transactions": "n",
     }
 
     transactions: Optional[PositiveInt] = Field(
         default=None,
         description="Number of transactions for the symbol in the time period.",
+        alias="n",
     )
-
-    @field_validator("t", mode="before", check_fields=False)
-    @classmethod
-    def time_validate(cls, v):  # pylint: disable=E0213
-        return datetime.fromtimestamp(v / 1000)
 
 
 class PolygonMajorIndicesHistoricalFetcher(
@@ -95,13 +90,12 @@ class PolygonMajorIndicesHistoricalFetcher(
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
+        data = get_data_many(request_url, "results", **kwargs)
 
-        data = get_data(request_url, **kwargs)
-        if isinstance(data, list):
-            raise ValueError("Expected a dict, got a list")
-
-        if "results" not in data or len(data["results"]) == 0:
-            raise RuntimeError("No results found. Please change your query parameters.")
+        for d in data:
+            d["t"] = datetime.fromtimestamp(d["t"] / 1000)
+            if query.timespan not in ["minute", "hour"]:
+                d["t"] = d["t"].date()
 
         return data
 
@@ -109,7 +103,4 @@ class PolygonMajorIndicesHistoricalFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonMajorIndicesHistoricalData]:
-        return [
-            PolygonMajorIndicesHistoricalData.model_validate(d)
-            for d in data.get("results", [])
-        ]
+        return [PolygonMajorIndicesHistoricalData.model_validate(d) for d in data]

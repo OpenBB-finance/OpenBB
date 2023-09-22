@@ -11,7 +11,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_news(Container):
+class ROUTER_news(Container):
     """/news
     globalnews
     """

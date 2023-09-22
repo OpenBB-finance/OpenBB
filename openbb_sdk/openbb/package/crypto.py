@@ -12,7 +12,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_crypto(Container):
+class ROUTER_crypto(Container):
     """/crypto
     load
     """
@@ -58,6 +58,10 @@ class CLASS_crypto(Container):
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Data granularity. (provider: fmp)
+        multiplier : PositiveInt
+            Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -66,8 +70,6 @@ class CLASS_crypto(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
 
         Returns
         -------
@@ -85,7 +87,7 @@ class CLASS_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         open : float
             The open price of the symbol.
@@ -95,7 +97,7 @@ class CLASS_crypto(Container):
             The low price of the symbol.
         close : float
             The close price of the symbol.
-        volume : float
+        volume : Optional[NonNegativeFloat]
             The volume of the symbol.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.

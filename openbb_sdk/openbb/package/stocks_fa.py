@@ -12,7 +12,7 @@ from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_stocks_fa(Container):
+class ROUTER_stocks_fa(Container):
     """/stocks/fa
     balance
     balance_growth

@@ -13,7 +13,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field
 
 
 class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -66,24 +66,6 @@ class IntrinioStockHistoricalData(StockHistoricalData):
         default=None,
         description="Change in the price of the symbol from the previous day.",
     )
-
-    @validator("time", pre=True, check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return (
-            datetime.fromisoformat(v.replace("Z", "+00:00"))
-            if v.endswith(("Z", "+00:00"))
-            else datetime.fromisoformat(v)
-        )
-
-    @validator("close_time", pre=True, check_fields=False)
-    def close_time_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return (
-            datetime.fromisoformat(v.replace("Z", "+00:00"))
-            if v.endswith(("Z", "+00:00"))
-            else datetime.fromisoformat(v)
-        )
 
 
 class IntrinioStockHistoricalFetcher(
