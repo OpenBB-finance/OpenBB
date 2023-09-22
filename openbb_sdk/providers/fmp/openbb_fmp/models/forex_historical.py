@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
@@ -11,7 +11,7 @@ from openbb_provider.standard_models.forex_historical import (
     ForexHistoricalData,
     ForexHistoricalQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field
 
 
 class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
@@ -20,33 +20,32 @@ class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
 
+    interval: Literal[
+        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
+    ] = Field(default="1day", description="Data granularity.")
+
 
 class FMPForexHistoricalData(ForexHistoricalData):
     """FMP Forex end of day Data."""
 
-    adjClose: float = Field(
+    adjClose: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.", alias="adj_close"
     )
-    unadjustedVolume: float = Field(
+    unadjustedVolume: Optional[float] = Field(
         description="Unadjusted volume of the symbol.", alias="unadjusted_volume"
     )
-    change: float = Field(
+    change: Optional[float] = Field(
         description="Change in the price of the symbol from the previous day.",
         alias="change",
     )
-    changePercent: float = Field(
+    changePercent: Optional[float] = Field(
         description=r"Change % in the price of the symbol.", alias="change_percent"
     )
-    label: str = Field(description="Human readable format of the date.")
-    changeOverTime: float = Field(
+    label: Optional[str] = Field(description="Human readable format of the date.")
+    changeOverTime: Optional[float] = Field(
         description=r"Change % in the price of the symbol over a period of time.",
         alias="change_over_time",
     )
-
-    @validator("date", pre=True)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
 
 
 class FMPForexHistoricalFetcher(
@@ -81,9 +80,17 @@ class FMPForexHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
-        query_str = query_str.replace("start_date", "from").replace("end_date", "to")
-        url = f"{base_url}/historical-price-full/forex/{query.symbol}?{query_str}&apikey={api_key}"
+        query_str = (
+            get_querystring(query.dict(), ["symbol"])
+            .replace("start_date", "from")
+            .replace("end_date", "to")
+        )
+
+        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
+        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
+
+        if query.interval == "1day":
+            url = f"{base_url}/historical-price-full/forex/{url_params}"
 
         return get_data_many(url, "historical", **kwargs)
 

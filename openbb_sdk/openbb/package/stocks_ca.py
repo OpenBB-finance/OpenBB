@@ -10,7 +10,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import BaseModel, validate_arguments
 
 
-class CLASS_stocks_ca(Container):
+class ROUTER_stocks_ca(Container):
     """/stocks/ca
     peers
     """
@@ -44,7 +44,7 @@ class CLASS_stocks_ca(Container):
         OBBject
             results : List[StockPeers]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
