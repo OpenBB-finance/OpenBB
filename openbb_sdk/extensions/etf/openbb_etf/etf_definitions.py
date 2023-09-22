@@ -76,7 +76,7 @@ class EtfSearch(EtfBase):
     """
 
     def __repr__(self):
-        query = self.metadata["arguments"]["standard_params"]["query"]  # type: ignore
+        query = self.dict()["metadata"]["arguments"]["standard_params"]["query"]  # type: ignore
         repr_str = (
             f"EtfSearch(provider={self.provider.lower()}, query={query}, "  # type: ignore
             f"fields={self.fields})"
@@ -132,7 +132,7 @@ class EtfHoldings(EtfBase):
     )
 
     def __repr__(self):
-        symbol = self.metadata["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbol = self.dict()["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfHoldings(provider={self.provider.lower()}, symbol={symbol.lower()}, "  # type: ignore
             f"fields={self.fields})"
@@ -185,7 +185,7 @@ class EtfSectors(EtfBase):
     """
 
     def __repr__(self) -> str:
-        symbols = self.metadata["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbols = self.dict()["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfSectors(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
             f"fields={self.to_dataframe().transpose().reset_index().columns.to_list()})"
@@ -242,7 +242,7 @@ class EtfCountries(EtfBase):
     """
 
     def __repr__(self) -> str:
-        symbols = self.metadata["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbols = self.dict()["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfCountries(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
             f"fields={self.to_dataframe().transpose().reset_index().columns.to_list()})"
@@ -299,7 +299,7 @@ class EtfInfo(EtfBase):
     """
 
     def __repr__(self) -> str:
-        symbols = self.metadata["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbols = self.dict()["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfInfo(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
             f"fields={self.to_dataframe().index.to_list()})"
