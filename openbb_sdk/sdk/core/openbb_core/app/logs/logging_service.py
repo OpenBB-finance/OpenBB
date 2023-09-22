@@ -159,7 +159,7 @@ class LoggingService(metaclass=SingletonMeta):
                     "route": route,
                     "PREFERENCES": self._user_settings.preferences,
                     "KEYS": check_credentials_defined(
-                        self._user_settings.credentials.dict()
+                        self._user_settings.credentials.model_dump()
                         if self._user_settings.credentials
                         else {}
                     ),

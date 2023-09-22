@@ -75,10 +75,8 @@ class UserService(metaclass=SingletonMeta):
         """Write default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
-        user_settings_json = user_settings.json(
-            include=cls.USER_SETTINGS_ALLOWED_FIELD_SET,
-            indent=4,
-            sort_keys=True,
+        user_settings_json = user_settings.model_dump_json(
+            include=cls.USER_SETTINGS_ALLOWED_FIELD_SET, indent=4
         )
         path.write_text(user_settings_json, encoding="utf-8")
 

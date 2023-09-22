@@ -607,18 +607,17 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fastapi"
-version = "0.103.1"
+version = "0.100.1"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fastapi-0.103.1-py3-none-any.whl", hash = "sha256:5e5f17e826dbd9e9b5a5145976c5cd90bcaa61f2bf9a69aca423f2bcebe44d83"},
-    {file = "fastapi-0.103.1.tar.gz", hash = "sha256:345844e6a82062f06a096684196aaf96c1198b25c06b72c1311b882aa2d8a35d"},
+    {file = "fastapi-0.100.1-py3-none-any.whl", hash = "sha256:ec6dd52bfc4eff3063cfcd0713b43c87640fefb2687bbbe3d8a08d94049cdf32"},
+    {file = "fastapi-0.100.1.tar.gz", hash = "sha256:522700d7a469e4a973d92321ab93312448fbe20fca9c8da97effc7e7bc56df23"},
 ]
 
 [package.dependencies]
-anyio = ">=3.7.1,<4.0.0"
-pydantic = ">=1.7.4,<1.8 || >1.8,<1.8.1 || >1.8.1,<2.0.0 || >2.0.0,<2.0.1 || >2.0.1,<2.1.0 || >2.1.0,<3.0.0"
+pydantic = ">=1.7.4,<1.8 || >1.8,<1.8.1 || >1.8.1,<2.0.0 || >2.0.0,<2.0.1 || >2.0.1,<3.0.0"
 starlette = ">=0.27.0,<0.28.0"
 typing-extensions = ">=4.5.0"
 
@@ -2189,15 +2188,24 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.6.1"
+version = "0.5.14"
 description = ""
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.6.1-py3-none-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ce0250bf88bd795bc2751daae162f03e9c3f64a2c0275edf4b376c180090154b"},
-    {file = "pywry-0.6.1-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:8f7dba93babc10eb49682dc8811afe5a9f108772e6a09457173b9c2b30f00e41"},
-    {file = "pywry-0.6.1-py3-none-win_amd64.whl", hash = "sha256:537381db5ec246a99e583260613f20a1a2b92829e53e2faa393537f1edc71476"},
-    {file = "pywry-0.6.1.tar.gz", hash = "sha256:0ef6a303d1c90db15e9ac62c337fa0b050dd73d3ece5005a96a97576fdc524ed"},
+    {file = "pywry-0.5.14-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:bf30e8e6e59863614fe06144e90c3c95c43256f944222d070be07e71c0303ad6"},
+    {file = "pywry-0.5.14-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:46fc00c02dfbbd3d81aa0f43cb9c5111c06e748a850cc795dfcd800a3b78958f"},
+    {file = "pywry-0.5.14-cp310-none-win_amd64.whl", hash = "sha256:ecd8e4c4d95f5fb114d0baa6572d2392ae0cc866f200c5fccd6c4bfa3b1a29cc"},
+    {file = "pywry-0.5.14-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:db5a298d57b80cc33c6a03f572b80f14d0018b2c4204e2137072ee9dfb23b1c1"},
+    {file = "pywry-0.5.14-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:335e97b0f242bfa6037ec7fdc90b3625611be0ad40496a8cf152dae0c6ae6605"},
+    {file = "pywry-0.5.14-cp311-none-win_amd64.whl", hash = "sha256:66cba8d3144bcd118808d09c33044e27544561f5c9a7b397edb9c3b3fcf6d3d9"},
+    {file = "pywry-0.5.14-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:713fe32afa2b61595057344b6c0b47772080dc05ee9b2f210448ba8cb2b8ac76"},
+    {file = "pywry-0.5.14-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:d0479f3a52f27658eedb37128e230c3ea620eb113d1371326ae235006a29f3e0"},
+    {file = "pywry-0.5.14-cp38-none-win_amd64.whl", hash = "sha256:3f42fd9e1fe6ae40be6f13195719e648fbbebda29fe9ba846c59797f71839add"},
+    {file = "pywry-0.5.14-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:b2690978499d63dfac3fe712ed3e3752866d7eb40ed7dcb21590b0ff109cecb7"},
+    {file = "pywry-0.5.14-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:2bcba7d64b9cdf2f1d65f4d468f87b00629157d233de251805b0816a43ba738b"},
+    {file = "pywry-0.5.14-cp39-none-win_amd64.whl", hash = "sha256:c5b949f5d16a43aa2cc703159caa6de45b91e6008a4fa608d99909b7c89f45c3"},
+    {file = "pywry-0.5.14.tar.gz", hash = "sha256:a2a03b18f0847366a4347d30429afd8a50c95cc35713371a3d6bbed077db9983"},
 ]
 
 [package.dependencies]
@@ -2769,13 +2777,11 @@ files = [
     {file = "statsmodels-0.14.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:5a6a0a1a06ff79be8aa89c8494b33903442859add133f0dda1daf37c3c71682e"},
     {file = "statsmodels-0.14.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:77b3cd3a5268ef966a0a08582c591bd29c09c88b4566c892a7c087935234f285"},
     {file = "statsmodels-0.14.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9c64ebe9cf376cba0c31aed138e15ed179a1d128612dd241cdf299d159e5e882"},
-    {file = "statsmodels-0.14.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:229b2f676b4a45cb62d132a105c9c06ca8a09ffba060abe34935391eb5d9ba87"},
     {file = "statsmodels-0.14.0-cp310-cp310-win_amd64.whl", hash = "sha256:fb471f757fc45102a87e5d86e87dc2c8c78b34ad4f203679a46520f1d863b9da"},
     {file = "statsmodels-0.14.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:582f9e41092e342aaa04920d17cc3f97240e3ee198672f194719b5a3d08657d6"},
     {file = "statsmodels-0.14.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:7ebe885ccaa64b4bc5ad49ac781c246e7a594b491f08ab4cfd5aa456c363a6f6"},
     {file = "statsmodels-0.14.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b587ee5d23369a0e881da6e37f78371dce4238cf7638a455db4b633a1a1c62d6"},
     {file = "statsmodels-0.14.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0ef7fa4813c7a73b0d8a0c830250f021c102c71c95e9fe0d6877bcfb56d38b8c"},
-    {file = "statsmodels-0.14.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:afe80544ef46730ea1b11cc655da27038bbaa7159dc5af4bc35bbc32982262f2"},
     {file = "statsmodels-0.14.0-cp311-cp311-win_amd64.whl", hash = "sha256:a6ad7b8aadccd4e4dd7f315a07bef1bca41d194eeaf4ec600d20dea02d242fce"},
     {file = "statsmodels-0.14.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:3757542c95247e4ab025291a740efa5da91dc11a05990c033d40fce31c450dc9"},
     {file = "statsmodels-0.14.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:de489e3ed315bdba55c9d1554a2e89faa65d212e365ab81bc323fa52681fc60e"},
@@ -3023,19 +3029,18 @@ files = [
 
 [[package]]
 name = "uvicorn"
-version = "0.23.2"
+version = "0.20.0"
 description = "The lightning-fast ASGI server."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.7"
 files = [
-    {file = "uvicorn-0.23.2-py3-none-any.whl", hash = "sha256:1f9be6558f01239d4fdf22ef8126c39cb1ad0addf76c40e760549d2c2f43ab53"},
-    {file = "uvicorn-0.23.2.tar.gz", hash = "sha256:4d3cc12d7727ba72b64d12d3cc7743124074c0a69f7b201512fc50c3e3f1569a"},
+    {file = "uvicorn-0.20.0-py3-none-any.whl", hash = "sha256:c3ed1598a5668208723f2bb49336f4509424ad198d6ab2615b7783db58d919fd"},
+    {file = "uvicorn-0.20.0.tar.gz", hash = "sha256:a4e12017b940247f836bc90b72e725d7dfd0c8ed1c51eb365f5ba30d9f5127d8"},
 ]
 
 [package.dependencies]
 click = ">=7.0"
 h11 = ">=0.8"
-typing-extensions = {version = ">=4.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "watchfiles (>=0.13)", "websockets (>=10.4)"]
@@ -3371,4 +3376,4 @@ yfinance = ["openbb-yfinance"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "889107dae0e13bdbec14a90279070ad43d1db4e737a9b9931aeb71e5c4eadec8"
+content-hash = "1e1d0b125fffc54a0405fbed31b621718b8afbe10002d983925ea6e8aeaed454"
