@@ -9,25 +9,38 @@ class Extensions(Container):
     """
 Routers:
     /crypto
+    /econometrics
     /economy
     /fixedincome
     /forex
+    /futures
     /news
+    /qa
     /stocks
+    /ta
 
 Extensions:
     - crypto@0.1.0a0
+    - econometrics@0.1.0a0
     - economy@0.1.0a0
     - fixedincome@0.1.0a0
     - forex@0.1.0a0
+    - futures@0.1.0a0
     - news@0.1.0a0
-    - stocks@0.1.0a1
+    - openbb_charting@0.1.0a1
+    - qa@0.1.0a0
+    - stocks@0.1.0a0
+    - ta@0.1.0a0
 
-    - benzinga@0.1.0a1
-    - fmp@0.1.0a1
+    - alpha_vantage@0.1.0a0
+    - benzinga@0.1.0a0
+    - cboe@0.1.0a0
+    - fmp@0.1.0a0
     - fred@0.1.0a0
-    - intrinio@0.1.0a1
-    - polygon@0.1.0a1    """
+    - intrinio@0.1.0a0
+    - polygon@0.1.0a0
+    - quandl@0.1.0a0
+    - yfinance@0.1.0a0    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
@@ -37,6 +50,12 @@ Extensions:
         from . import crypto
 
         return crypto.ROUTER_crypto(command_runner=self._command_runner)
+
+    @property
+    def econometrics(self):  # route = "/econometrics"
+        from . import econometrics
+
+        return econometrics.ROUTER_econometrics(command_runner=self._command_runner)
 
     @property
     def economy(self):  # route = "/economy"
@@ -57,13 +76,31 @@ Extensions:
         return forex.ROUTER_forex(command_runner=self._command_runner)
 
     @property
+    def futures(self):  # route = "/futures"
+        from . import futures
+
+        return futures.ROUTER_futures(command_runner=self._command_runner)
+
+    @property
     def news(self):  # route = "/news"
         from . import news
 
         return news.ROUTER_news(command_runner=self._command_runner)
 
     @property
+    def qa(self):  # route = "/qa"
+        from . import qa
+
+        return qa.ROUTER_qa(command_runner=self._command_runner)
+
+    @property
     def stocks(self):  # route = "/stocks"
         from . import stocks
 
         return stocks.ROUTER_stocks(command_runner=self._command_runner)
+
+    @property
+    def ta(self):  # route = "/ta"
+        from . import ta
+
+        return ta.ROUTER_ta(command_runner=self._command_runner)

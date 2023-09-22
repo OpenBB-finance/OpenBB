@@ -39,7 +39,7 @@ class ROUTER_forex(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp", "polygon"], None] = None,
+        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Forex Intraday Price.
@@ -52,10 +52,14 @@ class ROUTER_forex(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon'], None]
+        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity. (provider: fmp, yfinance)
+        multiplier : PositiveInt
+            Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -64,15 +68,15 @@ class ROUTER_forex(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-        multiplier : PositiveInt
-            Multiplier of the timespan. (provider: polygon)
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
+            Period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[ForexHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon'], None]
+            provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -83,7 +87,7 @@ class ROUTER_forex(Container):
 
         ForexHistorical
         ---------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -109,7 +113,7 @@ class ROUTER_forex(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+        transactions : Optional[PositiveInt]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
