@@ -7,6 +7,7 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
+from dateutil import parser
 from pydantic import Field, NonNegativeFloat, PositiveFloat, validator
 
 from openbb_provider.abstract.data import Data
@@ -45,3 +46,8 @@ class ForexHistoricalData(Data):
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: NonNegativeFloat = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
     vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        return parser.isoparse(str(v))

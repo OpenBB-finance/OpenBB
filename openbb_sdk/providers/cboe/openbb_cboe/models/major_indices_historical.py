@@ -15,7 +15,7 @@ from openbb_provider.standard_models.major_indices_historical import (
     MajorIndicesHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field, validator
+from pydantic import Field
 
 
 class CboeMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
@@ -42,14 +42,6 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     total_options_volume: Optional[float] = Field(
         description="Total number of options traded during the most recent trading period. Only valid if interval is 1m."
     )
-
-    @validator("date", pre=True, check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return datetime object from string."""
-        try:
-            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            return datetime.strptime(v, "%Y-%m-%d")
 
 
 class CboeMajorIndicesHistoricalFetcher(
@@ -162,14 +154,13 @@ class CboeMajorIndicesHistoricalFetcher(
                 data["close"] = round(data.close.astype(float), 2)
                 data["volume"] = 0
 
-            data.index = pd.to_datetime(data.index, format="%Y-%m-%d")
+            data.index = pd.to_datetime(data.index)
             data = data[data["open"] > 0]
 
             data = data[
-                (data.index >= pd.to_datetime(query.start_date, format="%Y-%m-%d"))
-                & (data.index <= pd.to_datetime(query.end_date, format="%Y-%m-%d"))
+                (data.index >= pd.to_datetime(query.start_date))
+                & (data.index <= pd.to_datetime(query.end_date))
             ]
-            data.index = data.index.astype(str)
 
         if query.interval == "1m":
             data_list = r.json()["data"]
