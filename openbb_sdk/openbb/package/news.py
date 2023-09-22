@@ -73,7 +73,7 @@ class CLASS_news(Container):
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'intrinio'], NoneType]
+            provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

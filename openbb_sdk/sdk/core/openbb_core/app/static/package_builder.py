@@ -58,12 +58,24 @@ class PackageBuilder:
         self.verbose = verbose
         self.console = Console(verbose)
 
+    def clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
+        """Delete the package folder or modules before building."""
+        if modules:
+            for module in modules:
+                module_path = self.directory / "package" / f"{module}.py"
+                if module_path.exists():
+                    module_path.unlink()
+        else:
+            shutil.rmtree(self.directory / "package", ignore_errors=True)
+
     def build(
         self,
         modules: Optional[Union[str, List[str]]] = None,
     ) -> None:
         """Build the extensions for the SDK."""
         self.console.log("\nBuilding extensions package...\n")
+
+        self.clean_package(modules)
 
         self.save_extension_map()
         self.save_module_map()
@@ -320,6 +332,7 @@ class DocstringGenerator:
             "    metadata: Optional[Metadata]\n"
             "        Metadata info about the command execution.\n"
         )
+        obbject_description = obbject_description.replace("NoneType", "None")
 
         return obbject_description
 
@@ -622,10 +635,6 @@ class MethodDefinition:
             item_type = get_args(get_type_hints(return_type)["results"])[0]
             if item_type.__module__ == "builtins":
                 func_returns = f"OBBject[{item_type.__name__}]"
-            # elif get_origin(item_type) == list:
-            #     inner_type = get_args(item_type)[0]
-            #     select = f"[{inner_type.__module__}.{inner_type.__name__}]"
-            #     func_returns = f"OBBject[{item_type.__module__}.{item_type.__name__}[{select}]]"
             else:
                 inner_type_name = (
                     item_type.__name__

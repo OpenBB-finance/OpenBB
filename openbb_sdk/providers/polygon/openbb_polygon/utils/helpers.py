@@ -64,11 +64,11 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     if r.status_code != 200:
         message = data.get("message")
         error = data.get("error")
-        value = message or error
+        value = error or message
 
         raise RuntimeError(f"Error in Polygon request -> {value}")
 
-    if len(data) == 0:
+    if "results" not in data or len(data) == 0:
         raise RuntimeError("No results found. Try adjusting the query parameters.")
 
     return data

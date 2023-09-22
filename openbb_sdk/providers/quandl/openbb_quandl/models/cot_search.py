@@ -22,7 +22,7 @@ class QuandlCotSearchData(CotSearchData):
     """Quandl CFTC Commitment of Traders Reports Search data."""
 
 
-class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, QuandlCotSearchData]):
+class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, List[QuandlCotSearchData]]):
     """Quandl CFTC Commitment of Traders Reports Search Fetcher."""
 
     @staticmethod
@@ -53,5 +53,5 @@ class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, QuandlCotSearchData])
     @staticmethod
     def transform_data(
         data: List[Dict],
-    ) -> QuandlCotSearchData:
-        return QuandlCotSearchData.parse_obj(data[0])
+    ) -> List[QuandlCotSearchData]:
+        return [QuandlCotSearchData(**d) for d in data]
