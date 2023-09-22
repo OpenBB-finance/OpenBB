@@ -53,4 +53,4 @@ class FMPSECFilingsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPSECFilingsData]:
         """Return the transformed data."""
-        return [FMPSECFilingsData(**d) for d in data]
+        return [FMPSECFilingsData.parse_obj(d) for d in data]

@@ -11,7 +11,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
 
 
-class CLASS_fixedincome(Container):
+class ROUTER_fixedincome(Container):
     """/fixedincome
     ameribor
     estr
@@ -68,7 +68,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[AMERIBOR]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -142,7 +142,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[ESTR]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -216,7 +216,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[FEDFUNDS]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -288,7 +288,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[IORB]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -344,7 +344,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[PROJECTIONS]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -423,7 +423,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[SOFR]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -496,7 +496,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[SONIA]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -564,7 +564,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[TreasuryRates]
                 Serializable results.
-            provider : Union[Literal['fmp'], NoneType]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -652,7 +652,7 @@ class CLASS_fixedincome(Container):
         OBBject
             results : List[USYieldCurve]
                 Serializable results.
-            provider : Union[Literal['fred'], NoneType]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

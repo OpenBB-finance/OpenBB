@@ -76,4 +76,4 @@ class FMPGlobalNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPGlobalNewsData]:
         """Return the transformed data."""
-        return [FMPGlobalNewsData(**d) for d in data]
+        return [FMPGlobalNewsData.parse_obj(d) for d in data]
