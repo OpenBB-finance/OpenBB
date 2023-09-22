@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class MockSystemSettings(BaseModel):
-    """Mock QueryParams class."""
+    """Mock SystemSettings."""
 
     model_config = ConfigDict(extra="allow", populate_by_name=True)
 

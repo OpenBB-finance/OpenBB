@@ -451,7 +451,7 @@ class ROUTER_economy(Container):
 
         MajorIndicesHistorical
         ----------------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
         open : float
             The open price of the symbol.
@@ -475,7 +475,7 @@ class ROUTER_economy(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[PositiveInt]
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 

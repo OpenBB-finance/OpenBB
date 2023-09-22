@@ -111,16 +111,15 @@ class PolygonStockHistoricalFetcher(
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 response = get_data(url, **kwargs)
-                next_url = response.get("next_url", None)
                 results.extend(response.get("results", []))
-
-            if "," in query.symbol:
-                results = [dict(symbol=symbol, **d) for d in results]
+                next_url = response.get("next_url", None)
 
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000)
                 if query.timespan not in ["minute", "hour"]:
                     r["t"] = r["t"].date()
+                if "," in query.symbol:
+                    r["symbol"] = symbol
 
             data.extend(results)
 

@@ -59,7 +59,7 @@ class ROUTER_forex(Container):
             no default.
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
-        multiplier : PositiveInt
+        multiplier : int
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
@@ -86,7 +86,7 @@ class ROUTER_forex(Container):
 
         ForexHistorical
         ---------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
         open : float
             The open price of the symbol.
@@ -112,7 +112,7 @@ class ROUTER_forex(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[PositiveInt]
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 

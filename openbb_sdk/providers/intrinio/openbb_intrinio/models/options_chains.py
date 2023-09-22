@@ -30,10 +30,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
 class IntrinioOptionsChainsData(OptionsChainsData):
     """Intrinio Options Chains Data."""
 
-    __alias_dict__ = {
-        "contract_symbol": "code",
-        "symbol": "ticker",
-    }
+    __alias_dict__ = {"contract_symbol": "code", "symbol": "ticker"}
 
     @validator("expiration", "date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

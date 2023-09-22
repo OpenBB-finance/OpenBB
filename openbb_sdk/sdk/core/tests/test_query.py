@@ -16,7 +16,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class MockBaseModel(BaseModel):
-    """Mock QueryParams class."""
+    """Mock BaseModel class."""
 
     model_config = ConfigDict(extra="allow", populate_by_name=True)
 

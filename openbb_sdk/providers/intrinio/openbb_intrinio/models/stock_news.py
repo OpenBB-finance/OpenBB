@@ -20,7 +20,7 @@ class IntrinioStockNewsQueryParams(StockNewsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
 
-    __alias_dict__ = {"symbols": "symbols", "page": "next_page", "limit": "page_size"}
+    __alias_dict__ = {"page": "next_page", "limit": "page_size"}
 
     symbols: str = Field(
         description="A Company identifier (Ticker, CIK, LEI, Intrinio ID)."

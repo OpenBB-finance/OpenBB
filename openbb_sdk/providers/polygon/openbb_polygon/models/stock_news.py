@@ -87,7 +87,7 @@ class PolygonStockNewsFetcher(
 
             if condition != "eq":
                 query_str = get_querystring(
-                    query.dict(by_alias=True), ["published_utc"]
+                    query.model_dump(by_alias=True), ["published_utc"]
                 )
                 query_str += f"&published_utc.{condition}={date}"
 

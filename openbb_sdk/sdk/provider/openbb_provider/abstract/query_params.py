@@ -1,7 +1,7 @@
 """The OpenBB Standardized QueryParams Model that holds the query input parameters."""
 from typing import Dict
 
-from pydantic import BaseModel, ConfigDict, alias_generators
+from pydantic import BaseModel, ConfigDict
 
 
 class QueryParams(BaseModel):
@@ -13,12 +13,9 @@ class QueryParams(BaseModel):
         """Return the string representation of the QueryParams object."""
         return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in self.model_dump().items()])})"
 
-    model_config = ConfigDict(
-        extra="allow", populate_by_name=True, alias_generator=alias_generators.to_snake
-    )
+    model_config = ConfigDict(extra="allow", populate_by_name=True)
 
     def model_dump(self, *args, **kwargs):
-        kwargs.pop("by_alias", False)
         original = super().model_dump(*args, **kwargs)
         if self.__alias_dict__:
             return {

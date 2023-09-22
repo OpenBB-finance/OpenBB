@@ -28,10 +28,7 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
 class FMPPriceTargetData(PriceTargetData):
     """FMP Price Target Data."""
 
-    __alias_dict__ = {
-        "news_url": "newsURL",
-        "news_base_url": "newsBaseURL",
-    }
+    __alias_dict__ = {"news_url": "newsURL", "news_base_url": "newsBaseURL"}
 
     new_grade: Optional[str] = Field(description="New grade", default=None)
     previous_grade: Optional[str] = Field(description="Previous grade", default=None)

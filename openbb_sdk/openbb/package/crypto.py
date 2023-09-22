@@ -60,7 +60,7 @@ class ROUTER_crypto(Container):
             Number of days to look back. (provider: fmp)
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
-        multiplier : PositiveInt
+        multiplier : int
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
@@ -87,7 +87,7 @@ class ROUTER_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
         open : float
             The open price of the symbol.
@@ -97,7 +97,7 @@ class ROUTER_crypto(Container):
             The low price of the symbol.
         close : float
             The close price of the symbol.
-        volume : Optional[NonNegativeFloat]
+        volume : float
             The volume of the symbol.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.
