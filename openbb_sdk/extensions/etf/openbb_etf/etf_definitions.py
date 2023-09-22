@@ -311,6 +311,7 @@ class EtfInfo(EtfBase):
         data = pd.DataFrame()
         if len(self.results) > 0:
             data = pd.DataFrame(self.dict()["results"]).transpose()
+            data.columns = data.loc["symbol"].to_list()
             data = data.drop("symbol", axis=0)
 
         return data
