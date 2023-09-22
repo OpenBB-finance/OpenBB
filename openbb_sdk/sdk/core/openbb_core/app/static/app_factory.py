@@ -12,15 +12,14 @@ E = TypeVar("E", bound=Type[Container])
 
 class BaseApp:
     # fmt: off
-    """OpenBB SDK.
+    """OpenBB Platform
 
 Utilities:
     /account
     /user
     /system
     /coverage
-
-Extensions:"""
+"""
     # fmt: on
 
     def __init__(self, command_runner: CommandRunner):
@@ -58,9 +57,7 @@ def create_app(extensions: Optional[E] = None) -> Type[BaseApp]:
     class App(BaseApp, extensions or EmptyClass):  # type: ignore
         def __repr__(self) -> str:
             # pylint: disable=E1101
-            ext_doc = (
-                extensions.__doc__ if extensions else "\n    No extensions installed."
-            )
+            ext_doc = extensions.__doc__ if extensions else ""
             return (super().__doc__ or "") + (ext_doc or "")
 
     return App(command_runner=CommandRunner())
