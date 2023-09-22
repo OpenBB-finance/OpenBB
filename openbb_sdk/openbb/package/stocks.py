@@ -89,6 +89,8 @@ class ROUTER_stocks(Container):
             Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
         interval_size : Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h'], None]
             The data time frequency. (provider: intrinio)
+        multiplier : PositiveInt
+            Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -97,8 +99,6 @@ class ROUTER_stocks(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Output time series is adjusted by historical split and dividend events. (provider: polygon)
-        multiplier : PositiveInt
-            Multiplier of the timespan. (provider: polygon)
 
         Returns
         -------
