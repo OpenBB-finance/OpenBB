@@ -80,23 +80,9 @@ class YFinanceStockHistoricalFetcher(
 
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - relativedelta(years=1)
-        else:
-            try:
-                transformed_params["start_date"] = datetime.strptime(
-                    transformed_params["start_date"], "%Y-%m-%d"
-                ).date()
-            except TypeError:
-                pass
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        else:
-            try:
-                transformed_params["end_date"] = datetime.strptime(
-                    transformed_params["end_date"], "%Y-%m-%d"
-                ).date()
-            except TypeError:
-                pass
 
         return YFinanceStockHistoricalQueryParams(**params)
 
@@ -125,12 +111,14 @@ class YFinanceStockHistoricalFetcher(
             group_by=query.group_by,
         )
 
+        query.end_date = (
+            datetime.now().date() if query.end_date is None else query.end_date
+        )
         days = (
             1
             if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
             else 0
         )
-
         if query.start_date:
             data.set_index("date", inplace=True)
             data.index = to_datetime(data.index)
@@ -139,7 +127,7 @@ class YFinanceStockHistoricalFetcher(
             end_date_dt = datetime.combine(query.end_date, datetime.min.time())
 
             data = data[
-                (data.index >= start_date_dt - timedelta(days=days))
+                (data.index >= start_date_dt + timedelta(days=days))
                 & (data.index <= end_date_dt)
             ]
 

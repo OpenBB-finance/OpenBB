@@ -12,7 +12,7 @@ from openbb_core.app.constants import (
     OPENBB_DIRECTORY,
     SYSTEM_SETTINGS_PATH,
     USER_SETTINGS_PATH,
-    VERSION
+    VERSION,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
 

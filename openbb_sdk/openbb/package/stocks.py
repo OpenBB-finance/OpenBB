@@ -13,7 +13,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import BaseModel, validate_arguments
 
 
-class CLASS_stocks(Container):
+class ROUTER_stocks(Container):
     """/stocks
     /ca
     /fa
@@ -31,13 +31,13 @@ class CLASS_stocks(Container):
     def ca(self):  # route = "/stocks/ca"
         from . import stocks_ca
 
-        return stocks_ca.CLASS_stocks_ca(command_runner=self._command_runner)
+        return stocks_ca.ROUTER_stocks_ca(command_runner=self._command_runner)
 
     @property
     def fa(self):  # route = "/stocks/fa"
         from . import stocks_fa
 
-        return stocks_fa.CLASS_stocks_fa(command_runner=self._command_runner)
+        return stocks_fa.ROUTER_stocks_fa(command_runner=self._command_runner)
 
     @validate_arguments
     def load(
@@ -480,7 +480,7 @@ class CLASS_stocks(Container):
     def options(self):  # route = "/stocks/options"
         from . import stocks_options
 
-        return stocks_options.CLASS_stocks_options(command_runner=self._command_runner)
+        return stocks_options.ROUTER_stocks_options(command_runner=self._command_runner)
 
     @validate_arguments
     def quote(

@@ -74,18 +74,17 @@ class PackageBuilder:
     ) -> None:
         """Build the extensions for the SDK."""
         self.console.log("\nBuilding extensions package...\n")
-
         self.clean_package(modules)
-
-        self.save_extension_map()
+        ext_map = self.get_extension_map()
+        self.save_extension_map(ext_map)
         self.save_module_map()
-        self.save_modules(modules)
+        self.save_modules(modules, ext_map)
         self.save_package()
         if self.lint:
             self.run_linters()
 
-    def save_extension_map(self):
-        """Save the map of extensions available at build time"""
+    def get_extension_map(self) -> Dict[str, List[str]]:
+        """Get map of extensions available at build time"""
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {
             g: sorted(
@@ -96,6 +95,10 @@ class PackageBuilder:
             )
             for g in groups
         }
+        return ext_map
+
+    def save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
+        """Save the map of extensions available at build time"""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")
@@ -111,7 +114,11 @@ class PackageBuilder:
         self.console.log("\nWriting module map...")
         self.write_to_package(code=code, name="module_map", extension="json")
 
-    def save_modules(self, modules: Optional[Union[str, List[str]]] = None):
+    def save_modules(
+        self,
+        modules: Optional[Union[str, List[str]]] = None,
+        ext_map: Optional[Dict[str, List[str]]] = None,
+    ):
         """Save the modules."""
         self.console.log("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -129,7 +136,10 @@ class PackageBuilder:
         for path in path_list:
             route = PathHandler.get_route(path=path, route_map=route_map)
             if route is None:
-                module_code = ModuleBuilder.build(path=path)
+                module_code = ModuleBuilder.build(
+                    path=path,
+                    ext_map=ext_map,
+                )
                 module_name = PathHandler.build_module_name(path=path)
                 self.console.log(f"({path})", end=" " * (MAX_LEN - len(path)))
                 self.write_to_package(code=module_code, name=module_name)
@@ -163,11 +173,11 @@ class ModuleBuilder:
     """Build the module for the SDK."""
 
     @staticmethod
-    def build(path: str) -> str:
+    def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the module."""
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         code += ImportDefinition.build(path=path)
-        code += ClassDefinition.build(path=path)
+        code += ClassDefinition.build(path, ext_map)
 
         return code
 
@@ -268,7 +278,7 @@ class ClassDefinition:
     """Build the class definition for the SDK."""
 
     @staticmethod
-    def build(path: str) -> str:
+    def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
         code = f"\nclass {class_name}(Container):\n"
@@ -282,7 +292,7 @@ class ClassDefinition:
             )
         )
 
-        doc = f'    """{path}\n'
+        doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
@@ -296,9 +306,28 @@ class ClassDefinition:
                     else None,
                 )  # type: ignore
             else:
-                doc += "/" + child_path.split("/")[-1] + "\n"
+                doc += "/" if path else "    /"
+                doc += child_path.split("/")[-1] + "\n"
                 methods += MethodDefinition.build_class_loader_method(path=child_path)
-        doc += '    """\n'
+
+        if not path:
+            if ext_map:
+                doc += "\n"
+                doc += "Extensions:\n"
+                doc += "\n".join(
+                    [f"    - {ext}" for ext in ext_map.get("openbb_core_extension", [])]
+                )
+                doc += "\n\n"
+                doc += "\n".join(
+                    [
+                        f"    - {ext}"
+                        for ext in ext_map.get("openbb_provider_extension", [])
+                    ]
+                )
+            doc += '    """\n'
+            doc += "# fmt: on\n"
+        else:
+            doc += '    """\n'
 
         code += doc
         code += "    def __repr__(self) -> str:\n"
@@ -822,7 +851,7 @@ class PathHandler:
         """Build the module class."""
         if not path:
             return "Extensions"
-        return f"CLASS_{cls.clean_path(path=path)}"
+        return f"ROUTER_{cls.clean_path(path=path)}"
 
 
 class Linters:
