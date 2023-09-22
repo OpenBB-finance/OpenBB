@@ -1,7 +1,11 @@
 from unittest.mock import patch
 
 import pytest
-from openbb_core.app.charting_service import ChartingService, ChartingServiceError
+from openbb_core.app.charting_service import (
+    ChartingService,
+    ChartingServiceError,
+    Chart,
+)
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from typing import Callable
@@ -266,3 +270,45 @@ def test_get_implemented_charting_functions(
         mock_get_extension_router.return_value = MockChartingRouterModule
         result = charting_service.get_implemented_charting_functions()
         assert result == ["crypto_load", "stocks_load"]
+
+
+@pytest.mark.parametrize(
+    "charting_extension_installed, expected_result",
+    [
+        (True, ...),
+    ],  # (False, ChartingServiceError)
+)
+@patch("openbb_core.app.charting_service.ChartingService._handle_backend")
+@patch("openbb_core.app.charting_service.import_module")
+def test_to_chart(
+    mock_handle_backend,
+    mock_import_module,
+    charting_service,
+    charting_extension_installed,
+    expected_result,
+):
+    charting_service._charting_extension_installed = charting_extension_installed
+
+    if expected_result != ChartingServiceError:
+
+        class MockBackendModule:
+            @staticmethod
+            def to_chart(**kwargs):
+                return ("mock_fig", "mock_content")
+
+        mock_import_module.return_value = MockBackendModule
+
+        result = charting_service.to_chart()
+
+        assert isinstance(result, Chart)
+        assert result.fig == "mock_fig"
+        assert result.content == "mock_content"
+
+        assert mock_handle_backend.called_once()
+
+    else:
+        with pytest.raises(AttributeError) as exc_info:
+            charting_service.to_chart()
+            assert str(exc_info.value) == (
+                "Charting extension is not installed. Please install it and restart the server."
+            )
