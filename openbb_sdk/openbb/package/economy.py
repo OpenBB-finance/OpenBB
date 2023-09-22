@@ -70,7 +70,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/economy/available_indices",
             **inputs,
         )
@@ -141,7 +141,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/economy/const",
             **inputs,
         )
@@ -291,7 +291,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/economy/cpi",
             **inputs,
         )
@@ -403,7 +403,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/economy/index",
             **inputs,
         )
@@ -454,7 +454,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/economy/risk",
             **inputs,
         )

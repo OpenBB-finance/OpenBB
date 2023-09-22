@@ -70,7 +70,7 @@ class ROUTER_stocks_ca(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/stocks/ca/peers",
             **inputs,
         )

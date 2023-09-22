@@ -120,7 +120,7 @@ class ROUTER_stocks_options(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/stocks/options/chains",
             **inputs,
         )

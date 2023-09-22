@@ -95,7 +95,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/ameribor",
             **inputs,
         )
@@ -169,7 +169,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/estr",
             **inputs,
         )
@@ -243,7 +243,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/fed",
             **inputs,
         )
@@ -315,7 +315,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/iorb",
             **inputs,
         )
@@ -380,7 +380,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/projections",
             **inputs,
         )
@@ -450,7 +450,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/sofr",
             **inputs,
         )
@@ -523,7 +523,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/sonia",
             **inputs,
         )
@@ -613,7 +613,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/treasury",
             **inputs,
         )
@@ -679,7 +679,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/ycrv",
             **inputs,
         )
