@@ -10,7 +10,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import BaseModel, validate_arguments
 
 
-class CLASS_stocks_ca(Container):
+class ROUTER_stocks_ca(Container):
     """/stocks/ca
     peers
     """

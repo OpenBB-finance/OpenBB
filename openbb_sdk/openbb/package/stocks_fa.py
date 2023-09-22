@@ -13,7 +13,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import BaseModel, validate_arguments
 
 
-class CLASS_stocks_fa(Container):
+class ROUTER_stocks_fa(Container):
     """/stocks/fa
     balance
     balance_growth

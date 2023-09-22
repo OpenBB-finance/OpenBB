@@ -11,7 +11,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
 
 
-class CLASS_fixedincome(Container):
+class ROUTER_fixedincome(Container):
     """/fixedincome
     ameribor
     estr

@@ -10,7 +10,7 @@ from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
 
 
-class CLASS_stocks_options(Container):
+class ROUTER_stocks_options(Container):
     """/stocks/options
     chains
     """
