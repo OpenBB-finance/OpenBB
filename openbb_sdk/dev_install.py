@@ -1,3 +1,4 @@
+# noqa: S603,PLW1510,T201
 import subprocess
 import sys
 from pathlib import Path
@@ -70,8 +71,12 @@ def install_local(extras: bool = False):
         PYPROJECT.write_text(TEMP_PYPROJECT)
         CMD = [sys.executable, "-m", "poetry"]
 
-        subprocess.run(CMD + ["lock", "--no-update"], cwd=SDK_PATH)
-        subprocess.run(CMD + ["install"] + extras_args, cwd=SDK_PATH)
+        subprocess.run(  # noqa: PLW1510
+            CMD + ["lock", "--no-update"], cwd=SDK_PATH  # noqa: S603
+        )  # noqa: S603,PLW1510
+        subprocess.run(  # noqa: PLW1510
+            CMD + ["install"] + extras_args, cwd=SDK_PATH  # noqa: S603
+        )
 
     except (Exception, KeyboardInterrupt) as e:
         print(e)  # noqa: T201
