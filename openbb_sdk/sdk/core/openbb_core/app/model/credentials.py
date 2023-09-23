@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional, Tuple
 
-from pydantic import Extra, create_model
+from pydantic import create_model
 
 from openbb_core.app.provider_interface import ProviderInterface
 
@@ -11,7 +11,6 @@ from openbb_core.app.provider_interface import ProviderInterface
 
 class Config:
     validate_assignment = True
-    extra = Extra.allow
 
 
 def format_map(
