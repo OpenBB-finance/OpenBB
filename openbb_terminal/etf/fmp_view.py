@@ -6,9 +6,11 @@ import os
 from typing import Optional
 
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 from openbb_terminal import OpenBBFigure, theme
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.etf import fmp_model
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -120,3 +122,39 @@ def display_etf_weightings(
         )
 
     return fig.show(external=external_axes)
+
+
+@log_start_end(log=logger)
+@check_api_key(['API_KEY_FINANCIALMODELINGPREP'])
+def view_etf_holdings_performance(ticker: str, start_date: str, end_date: str, limit: int = 10, raw: bool = False, export: str = "", sheet_name: Optional[str] = None):
+
+    data = fmp_model.get_holdings_pct_change(ticker, start_date, end_date)[0:limit]
+
+    colors = ['g' if x > 0 else 'r' for x in data['Percent Change']]
+
+    sns.barplot(
+        x= 'Percent Change',
+        y= 'Name',
+        data=data,
+        palette=colors,
+    )
+    if raw:
+        print_rich_table(
+            data,
+            show_index=False,
+            headers=["Ticker", "Name", "Percent Change"],
+            title="ETF Holdings' Performance",
+            limit=limit,
+            export=bool(export),
+        )
+
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "holdings_perf",
+            data,
+            sheet_name,
+        )
+
+    return plt.show()

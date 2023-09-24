@@ -702,6 +702,7 @@ en:
   etf/scr: screener ETFs                 overview/performance, using preset filters
   etf/overview: get overview
   etf/holdings: top company holdings
+  etf/holding_perf: Performance of holdings in ETF.
   etf/weights: sector weights allocation
   etf/candle: view a candle chart for ETF
   etf/news: latest news of the company

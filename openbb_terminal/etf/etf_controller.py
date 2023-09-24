@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import List, Optional
 
 import yfinance as yf
@@ -50,6 +50,7 @@ class ETFController(BaseController):
         "load",
         "overview",
         "holdings",
+        "holding_perf",
         "news",
         "candle",
         "weights",
@@ -106,6 +107,7 @@ class ETFController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("overview", self.etf_name)
         mt.add_cmd("holdings", self.etf_name)
+        mt.add_cmd("holding_perf", self.etf_name)
         mt.add_cmd("weights", self.etf_name)
         mt.add_cmd("news", self.etf_name)
         mt.add_cmd("candle", self.etf_name)
@@ -638,3 +640,53 @@ class ETFController(BaseController):
                 if ns_parser.sheet_name
                 else None,
             )
+
+    @log_start_end(log=logger)
+    def call_holding_perf(self, other_args: List[str]):
+        print(self.etf_holdings)
+        """Process holdings performance command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="holding_perf",
+            description="Look at ETF company holdings' performance",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now().date() - timedelta(days=366)),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) to get each holding's price"
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().date(),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) to get each holding's price"
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            type=check_positive,
+            dest="limit",
+            help="Number of holdings to get",
+            default=20,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw= True)
+        if ns_parser:
+            if self.etf_name:
+                fmp_view.view_etf_holdings_performance(
+                    ticker=self.etf_name,
+                    start_date=ns_parser.start,
+                    end_date=ns_parser.end,
+                    limit=ns_parser.limit,
+                )
+            else:
+                console.print("Please load a ticker using <load name>. \n")
