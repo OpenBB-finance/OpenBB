@@ -30,6 +30,7 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -450,5 +451,14 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPFinancialRatiosFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_market_snapshots_fetcher(credentials=test_credentials):
+    params = {"market": "LSE"}
+
+    fetcher = FMPMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
