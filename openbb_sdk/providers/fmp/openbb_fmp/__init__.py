@@ -27,6 +27,7 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -94,5 +95,6 @@ fmp_provider = Provider(
         "DividendCalendar": FMPDividendCalendarFetcher,
         "StockQuote": FMPStockQuoteFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
+        "MarketSnapshots": FMPMarketSnapshotsFetcher,
     },
 )

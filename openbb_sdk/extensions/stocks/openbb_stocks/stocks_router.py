@@ -97,3 +97,14 @@ def info(
 ) -> OBBject[BaseModel]:
     """Get general price and performance metrics of a stock."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="MarketSnapshots")
+def market_snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get a current, complete, market snapshot."""
+    return OBBject(results=Query(**locals()).execute())
