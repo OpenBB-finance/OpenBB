@@ -3,6 +3,7 @@ from pathlib import Path, PosixPath
 from typing import Any, Dict, List, Literal, get_origin
 
 from pydantic.fields import ModelField
+
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 from sdk.core.openbb_core.app.router import CommandMap
 
@@ -150,7 +151,7 @@ def test_{test_name}(params):
                     for test_params in test_params_list:
                         params += f"({test_params}),\n"
 
-                    read_file = open(test_file)
+                    read_file = open(test_file)  # noqa
                     if full_command_name not in read_file.read():
                         f.write(
                             template.format(

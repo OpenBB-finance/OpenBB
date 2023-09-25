@@ -281,7 +281,13 @@ def test_stocks_fa_ins(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "include_current_quarter": True, "date": "2023-01-01"}),
+        (
+            {
+                "symbol": "AAPL",
+                "include_current_quarter": True,
+                "date": datetime.date(2023, 1, 1),
+            }
+        ),
     ],
 )
 def test_stocks_fa_ins_own(params):
@@ -333,7 +339,7 @@ def test_stocks_fa_overview(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "date": "2023-01-01", "page": 1}),
+        ({"symbol": "AAPL", "date": datetime.date(2023, 1, 1), "page": 1}),
     ],
 )
 def test_stocks_fa_own(params):
@@ -478,7 +484,7 @@ def test_stocks_ca_peers(params):
     "params",
     [
         ({"symbol": "AAPL"}),
-        ({"date": "2023-01-01", "provider": "intrinio", "symbol": "AAPL"}),
+        ({"date": datetime.date(2023, 1, 1), "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
 def test_stocks_options_chains(params):
@@ -590,7 +596,7 @@ def test_stocks_load(params):
         (
             {
                 "display": "full",
-                "date": "2023-01-01",
+                "date": datetime.date(2023, 1, 1),
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
                 "updated_since": 1,
@@ -610,7 +616,7 @@ def test_stocks_load(params):
         ),
         (
             {
-                "published_utc": "2023-01-01",
+                "published_utc": datetime.date(2023, 1, 1),
                 "order": "desc",
                 "provider": "polygon",
                 "symbols": "AAPL",

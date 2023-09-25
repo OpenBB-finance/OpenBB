@@ -66,7 +66,7 @@ def test_{route.replace("/", "_")[1:]}(params, headers):
 
 
 def test_exists(route: str, path: str):
-    with open(path, "r") as f:
+    with open(path) as f:
         return route.replace("/", "_")[1:] in f.read()
 
 
@@ -129,4 +129,6 @@ if __name__ == "__main__":
     )
 
     if commands_not_found_in_openapi:
-        print(f"Commands not found in openapi.json: {commands_not_found_in_openapi}")
+        print(  # noqa
+            f"Commands not found in openapi.json: {commands_not_found_in_openapi}"
+        )
