@@ -51,7 +51,7 @@ class FREDFEDData(FEDData):
         try:
             return float(v)
         except ValueError:
-            return float("nan")
+            return None
 
 
 class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData]]]]):
