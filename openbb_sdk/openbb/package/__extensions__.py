@@ -20,27 +20,18 @@ Routers:
     /ta
 
 Extensions:
-    - crypto@0.1.0a0
-    - econometrics@0.1.0a0
-    - economy@0.1.0a0
-    - fixedincome@0.1.0a0
-    - forex@0.1.0a0
-    - futures@0.1.0a0
-    - news@0.1.0a0
-    - openbb_charting@0.1.0a1
-    - qa@0.1.0a0
-    - stocks@0.1.0a0
-    - ta@0.1.0a0
+    - crypto@0.1.0a2
+    - economy@0.1.0a2
+    - fixedincome@0.1.0a2
+    - forex@0.1.0a2
+    - news@0.1.0a2
+    - stocks@0.1.0a2
 
-    - alpha_vantage@0.1.0a0
-    - benzinga@0.1.0a0
-    - cboe@0.1.0a0
-    - fmp@0.1.0a0
-    - fred@0.1.0a0
-    - intrinio@0.1.0a0
-    - polygon@0.1.0a0
-    - quandl@0.1.0a0
-    - yfinance@0.1.0a0    """
+    - benzinga@0.1.0a2
+    - fmp@0.1.0a2
+    - fred@0.1.0a2
+    - intrinio@0.1.0a2
+    - polygon@0.1.0a2    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
