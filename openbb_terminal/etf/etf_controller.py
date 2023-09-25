@@ -643,8 +643,8 @@ class ETFController(BaseController):
 
     @log_start_end(log=logger)
     def call_holding_perf(self, other_args: List[str]):
-        print(self.etf_holdings)
         """Process holdings performance command"""
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -675,11 +675,13 @@ class ETFController(BaseController):
             help="Number of holdings to get",
             default=20,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw= True)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True
+        )
         if ns_parser:
             if self.etf_name:
                 fmp_view.view_etf_holdings_performance(
@@ -687,6 +689,9 @@ class ETFController(BaseController):
                     start_date=ns_parser.start,
                     end_date=ns_parser.end,
                     limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=ns_parser.sheet_name,
+                    raw=ns_parser.raw,
                 )
             else:
                 console.print("Please load a ticker using <load name>. \n")
