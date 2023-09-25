@@ -1,4 +1,6 @@
 """Test forex extension."""
+import datetime
+
 import pytest
 from openbb import obb
 from openbb_core.app.model.obbject import OBBject
@@ -12,7 +14,7 @@ from openbb_core.app.model.obbject import OBBject
             {
                 "symbol": "AAPL",
                 "date": datetime.date(2023, 9, 25),
-                "search": "TEST_STRING",
+                "search": "USD",
                 "active": True,
                 "order": "asc",
                 "sort": "ticker",
@@ -32,14 +34,42 @@ def test_forex_pairs(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
         (
             {
                 "interval": "1day",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "multiplier": 1,
+                "timespan": "min",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "provider": "polygon",
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -51,8 +81,18 @@ def test_forex_pairs(params):
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "5m",
+                "period": "max",
+                "provider": "yfinance",
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -61,8 +101,8 @@ def test_forex_pairs(params):
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
     ],

@@ -1,4 +1,6 @@
 """Test crypto extension."""
+import datetime
+
 import pytest
 from openbb import obb
 from openbb_core.app.model.obbject import OBBject
@@ -7,14 +9,42 @@ from openbb_core.app.model.obbject import OBBject
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
         (
             {
                 "interval": "1day",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "multiplier": 1,
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "provider": "polygon",
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -26,8 +56,18 @@ from openbb_core.app.model.obbject import OBBject
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "5m",
+                "period": "max",
+                "provider": "yfinance",
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -36,8 +76,8 @@ from openbb_core.app.model.obbject import OBBject
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
     ],

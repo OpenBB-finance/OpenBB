@@ -98,12 +98,12 @@ def test_economy_index(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"symbol": "BUKBUS", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "interval": "1d",
                 "provider": "cboe",
-                "symbol": "AAPL",
+                "symbol": "BUKBUS",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -111,7 +111,7 @@ def test_economy_index(params):
     ],
 )
 def test_economy_european_index(params):
-    result = obb.economy.european.index(params)
+    result = obb.economy.european_index(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -120,11 +120,11 @@ def test_economy_european_index(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
+        ({"symbol": "BUKBUS"}),
     ],
 )
 def test_economy_european_index_constituents(params):
-    result = obb.economy.european.index_constituents(params)
+    result = obb.economy.european_index_constituents(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -138,7 +138,7 @@ def test_economy_european_index_constituents(params):
     ],
 )
 def test_economy_available_indices(params):
-    result = obb.economy.available.indices(params)
+    result = obb.economy.available_indices(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -160,19 +160,19 @@ def test_economy_risk(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "TEST_STRING", "symbol": "AAPL"}),
+        ({"query": "DJ", "symbol": True}),
         (
             {
                 "europe": True,
                 "provider": "cboe",
-                "query": "TEST_STRING",
-                "symbol": "AAPL",
+                "query": "DJ",
+                "symbol": True,
             }
         ),
     ],
 )
 def test_economy_index_search(params):
-    result = obb.economy.index.search(params)
+    result = obb.economy.index_search(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -185,7 +185,7 @@ def test_economy_index_search(params):
     ],
 )
 def test_economy_index_snapshots(params):
-    result = obb.economy.index.snapshots(params)
+    result = obb.economy.index_snapshots(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -194,11 +194,11 @@ def test_economy_index_snapshots(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "TEST_STRING"}),
+        ({"query": "grain"}),
     ],
 )
 def test_economy_cot_search(params):
-    result = obb.economy.cot.search(params)
+    result = obb.economy.cot_search(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -245,7 +245,7 @@ def test_economy_cot(params):
     ],
 )
 def test_economy_sp500_multiples(params):
-    result = obb.economy.sp500.multiples(params)
+    result = obb.economy.sp500_multiples(params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

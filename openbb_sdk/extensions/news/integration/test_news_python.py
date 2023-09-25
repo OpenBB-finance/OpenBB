@@ -1,4 +1,6 @@
 """Test news extension."""
+import datetime
+
 import pytest
 from openbb import obb
 from openbb_core.app.model.obbject import OBBject
@@ -11,19 +13,19 @@ from openbb_core.app.model.obbject import OBBject
         (
             {
                 "display": "full",
-                "date": "2023-01-01",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "date": datetime.date(2023, 1, 1),
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
                 "updated_since": 1,
                 "published_since": 1,
                 "sort": "created",
                 "order": "desc",
-                "isin": "TEST_STRING",
-                "cusip": "TEST_STRING",
-                "channels": "TEST_STRING",
-                "topics": "TEST_STRING",
-                "authors": "TEST_STRING",
-                "content_types": "TEST_STRING",
+                "isin": "US0378331005",
+                "cusip": "037833100",
+                "channels": "General",
+                "topics": "Elon Musk",
+                "authors": "Benzinga Insights",
+                "content_types": "Car",
                 "provider": "benzinga",
                 "limit": 20,
             }
@@ -44,19 +46,19 @@ def test_news_globalnews(params):
         (
             {
                 "display": "full",
-                "date": "2023-01-01",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "date": datetime.date(2023, 1, 1),
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
                 "updated_since": 1,
                 "published_since": 1,
                 "sort": "created",
                 "order": "desc",
-                "isin": "TEST_STRING",
-                "cusip": "TEST_STRING",
-                "channels": "TEST_STRING",
-                "topics": "TEST_STRING",
-                "authors": "TEST_STRING",
-                "content_types": "TEST_STRING",
+                "isin": "US0378331005",
+                "cusip": "037833100",
+                "channels": "General",
+                "topics": "Elon Musk",
+                "authors": "Benzinga Insights",
+                "content_types": "Car",
                 "provider": "benzinga",
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
@@ -64,7 +66,7 @@ def test_news_globalnews(params):
         ),
         (
             {
-                "published_utc": "TEST_STRING",
+                "content_types": datetime.date(2023, 1, 1),
                 "order": "desc",
                 "provider": "polygon",
                 "symbols": "AAPL,MSFT",

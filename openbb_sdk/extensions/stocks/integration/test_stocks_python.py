@@ -20,9 +20,9 @@ from openbb_core.app.model.obbject import OBBject
         ),
         (
             {
-                "company_name": "TEST_STRING",
-                "company_name_search": "TEST_STRING",
-                "sic": "TEST_STRING",
+                "company_name": "Apple Inc",
+                "company_name_search": "AAPL",
+                "sic": "35719904",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
@@ -83,9 +83,9 @@ def test_stocks_fa_cal(params):
         ),
         (
             {
-                "company_name": "TEST_STRING",
-                "company_name_search": "TEST_STRING",
-                "sic": "TEST_STRING",
+                "company_name": "Apple Inc",
+                "company_name_search": "AAPL",
+                "sic": "35719904",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
@@ -211,9 +211,9 @@ def test_stocks_fa_est(params):
         ),
         (
             {
-                "company_name": "TEST_STRING",
-                "company_name_search": "TEST_STRING",
-                "sic": "TEST_STRING",
+                "company_name": "Apple Inc",
+                "company_name_search": "AAPL",
+                "sic": "35719904",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
@@ -486,7 +486,7 @@ def test_stocks_options_chains(params):
                 "interval": "60min",
                 "adjusted": True,
                 "extended_hours": True,
-                "month": "TEST_STRING",
+                "month": "2023-03",
                 "outputsize": "full",
                 "provider": "alpha_vantage",
                 "symbol": "AAPL",
@@ -579,12 +579,12 @@ def test_stocks_load(params):
                 "published_since": 1,
                 "sort": "created",
                 "order": "desc",
-                "isin": "TEST_STRING",
-                "cusip": "TEST_STRING",
-                "channels": "TEST_STRING",
-                "topics": "TEST_STRING",
-                "authors": "TEST_STRING",
-                "content_types": "TEST_STRING",
+                "isin": "US0378331005",
+                "cusip": "037833100",
+                "channels": "General",
+                "topics": "AAPL",
+                "authors": "Benzinga Insights",
+                "content_types": "headline",
                 "provider": "benzinga",
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
@@ -592,10 +592,10 @@ def test_stocks_load(params):
         ),
         (
             {
-                "published_utc": "TEST_STRING",
+                "published_utc": "2023-01-01",
                 "order": "desc",
                 "provider": "polygon",
-                "symbols": "AAPL,MSFT",
+                "symbols": "AAPL",
                 "limit": 20,
             }
         ),
@@ -624,7 +624,7 @@ def test_stocks_multiples(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "TEST_STRING", "ticker": True}),
+        ({"query": "AAPL", "ticker": True}),
     ],
 )
 def test_stocks_search(params):

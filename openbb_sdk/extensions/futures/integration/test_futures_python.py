@@ -9,10 +9,10 @@ from openbb_core.app.model.obbject import OBBject
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "ES",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "TEST_STRING",
+                "expiration": "2024-06",
             }
         ),
         (
@@ -23,10 +23,10 @@ from openbb_core.app.model.obbject import OBBject
                 "adjust": True,
                 "back_adjust": True,
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "ES",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "TEST_STRING",
+                "expiration": "2024-06",
             }
         ),
     ],

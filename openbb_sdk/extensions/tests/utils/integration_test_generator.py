@@ -17,7 +17,7 @@ def find_extensions():
     return extensions
 
 
-def create_integration_test_files(extensions: List[PosixPath]):
+def create_integration_test_files(extensions: List[PosixPath]) -> None:
     """Create integration test files for the python interface."""
     for extension in extensions:
         extension_name = extension.name
@@ -98,7 +98,7 @@ def get_test_params(
 def add_test_commands_to_file(  # pylint: disable=W0102
     extensions: List[PosixPath],
     commands_model: Dict[str, str] = cm.commands_model,
-):
+) -> None:
     """Add test commands to file."""
     provider_interface = ProviderInterface()
     provider_interface_map = provider_interface.map
@@ -161,7 +161,7 @@ def test_{test_name}(params):
                         )
 
 
-def write_integration_test():
+def write_integration_test() -> None:
     """Write integration test."""
     extensions = find_extensions()
     create_integration_test_files(extensions)
