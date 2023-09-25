@@ -1,4 +1,6 @@
 """Test stocks extension."""
+import datetime
+
 import pytest
 from openbb import obb
 from openbb_core.app.model.obbject import OBBject
@@ -57,7 +59,12 @@ def test_stocks_fa_balance_growth(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
     ],
 )
 def test_stocks_fa_cal(params):
@@ -133,7 +140,12 @@ def test_stocks_fa_comp(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
     ],
 )
 def test_stocks_fa_comsplit(params):
@@ -479,7 +491,13 @@ def test_stocks_options_chains(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
         (
             {
                 "period": "daily",
@@ -490,8 +508,8 @@ def test_stocks_options_chains(params):
                 "outputsize": "full",
                 "provider": "alpha_vantage",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -499,8 +517,8 @@ def test_stocks_options_chains(params):
                 "interval": "1d",
                 "provider": "cboe",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -508,8 +526,8 @@ def test_stocks_options_chains(params):
                 "interval": "1day",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -519,8 +537,8 @@ def test_stocks_options_chains(params):
                 "interval_size": "60m",
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -532,8 +550,8 @@ def test_stocks_options_chains(params):
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -552,8 +570,8 @@ def test_stocks_options_chains(params):
                 "group_by": "column",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
     ],
@@ -573,8 +591,8 @@ def test_stocks_load(params):
             {
                 "display": "full",
                 "date": "2023-01-01",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
                 "updated_since": 1,
                 "published_since": 1,
                 "sort": "created",
