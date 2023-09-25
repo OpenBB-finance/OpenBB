@@ -1,14 +1,14 @@
+from typing import Callable
 from unittest.mock import patch
 
 import pytest
 from openbb_core.app.charting_service import (
+    Chart,
     ChartingService,
     ChartingServiceError,
-    Chart,
 )
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from typing import Callable
 
 
 @pytest.fixture(autouse=True)
@@ -84,18 +84,17 @@ def test_check_and_get_charting_extension_name(
     cm = ChartingService(user_settings=user, system_settings=system_settings)
 
     if expected_result == ChartingServiceError:
-        with pytest.raises(ChartingServiceError) as exc_info:
-            # patch EXTENSION_NAME
-            with patch(
-                "openbb_core.app.charting_service.EXTENSION_NAME", "other_extension"
-            ):
-                cm._check_and_get_charting_extension_name(
-                    user_preferences_charting_extension
-                )
-                assert str(exc_info.value) == (
-                    f"The charting extension defined on user preferences must be the same as the one defined in the env file."
-                    f"diff: {user_preferences_charting_extension} != openbb_charting"
-                )
+        with pytest.raises(ChartingServiceError) as exc_info, patch(
+            "openbb_core.app.charting_service.EXTENSION_NAME", "other_extension"
+        ):
+            cm._check_and_get_charting_extension_name(
+                user_preferences_charting_extension
+            )
+            assert str(exc_info.value) == (
+                "The charting extension defined on user preferences must be "
+                "the same as the one defined in the env file."
+                f"diff: {user_preferences_charting_extension} != openbb_charting"
+            )
     else:
         with patch(
             "openbb_core.app.charting_service.EXTENSION_NAME", "openbb_charting"
