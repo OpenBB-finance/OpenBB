@@ -1,8 +1,8 @@
-import requests
-from typing import Dict, Type
-from typing import get_args, get_type_hints, Callable
-from openbb_core.app.router import CommandMap
 import os
+from typing import Callable, Dict, List, Type, get_args, get_type_hints
+
+import requests
+from openbb_core.app.router import CommandMap
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
@@ -12,7 +12,7 @@ def get_http_method(api_paths: Dict[str, dict], route: str):
     return list(route_info.keys())[0]
 
 
-def get_flat_params(hints: Dict[str, Type]):
+def get_get_flat_params(hints: Dict[str, Type]):
     params = {}
 
     for k, v in hints.items():
@@ -27,6 +27,10 @@ def get_flat_params(hints: Dict[str, Type]):
         else:
             flat_params.append(value)
     return flat_params
+
+
+def get_post_flat_params(hints: Dict[str, Type]):
+    return list(hints.keys())
 
 
 def write_init_test_template(path: str):
@@ -75,8 +79,10 @@ def test_{route.replace("/", "_")[1:]}(params, headers):
 
 def write_integration_tests(
     commandmap_map: Dict[str, Callable], api_paths: Dict[str, dict]
-):
+) -> List[str]:
     commands_not_found = []
+
+    http_method_get_params = {"get": get_get_flat_params, "post": get_post_flat_params}
 
     for route in commandmap_map:
         http_method = get_http_method(api_paths, f"/api/v1{route}")
@@ -88,20 +94,17 @@ def write_integration_tests(
         if not os.path.exists(path):
             write_init_test_template(path=path)
 
-        if http_method == "post":
-            # TODO: add post tests
-            pass
-        elif http_method == "get":
+        if not http_method:
+            commands_not_found.append(route)
+        else:
             hints = get_type_hints(commandmap_map[route])
             hints.pop("cc", None)
             hints.pop("return", None)
-            params = get_flat_params(hints)
 
+            params = http_method_get_params[http_method](hints)
             params = {k: "" for k in params}
 
             write_test_w_template(params=params, route=route, path=path)
-        else:
-            commands_not_found.append(route)
 
     return commands_not_found
 
