@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class ROUTER_forex(Container):
@@ -23,23 +23,23 @@ class ROUTER_forex(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Forex Intraday Price.
@@ -52,12 +52,12 @@ class ROUTER_forex(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp)
+        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity. (provider: fmp, yfinance)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -68,13 +68,15 @@ class ROUTER_forex(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
+            Period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[ForexHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -134,31 +136,29 @@ class ROUTER_forex(Container):
 
     @validate_arguments
     def pairs(
-        self,
-        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
     ) -> OBBject[List]:
         """Forex Available Pairs.
 
         Parameters
         ----------
-        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        symbol : Union[str, None]
+        symbol : Optional[str]
             Symbol of the pair to search. (provider: polygon)
-        date : Union[datetime.date, None]
+        date : Optional[datetime.date]
             A specific date to get data for. (provider: polygon)
-        search : Union[str, None]
+        search : Optional[str]
             Search for terms within the ticker and/or company name. (provider: polygon)
-        active : Union[Literal[True, False], None]
+        active : Optional[Literal[True, False]]
             Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], None]
+        order : Optional[Literal['asc', 'desc']]
             Order data by ascending or descending. (provider: polygon)
-        sort : Union[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc'], None]
+        sort : Optional[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']]
             Sort field used for ordering. (provider: polygon)
-        limit : Union[pydantic.types.PositiveInt, None]
+        limit : Optional[pydantic.types.PositiveInt]
             The number of data entries to return. (provider: polygon)
 
         Returns
@@ -166,7 +166,7 @@ class ROUTER_forex(Container):
         OBBject
             results : List[ForexPairs]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

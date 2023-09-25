@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
+from typing_extensions import Annotated
 
 
 class ROUTER_crypto(Container):
@@ -22,23 +22,23 @@ class ROUTER_crypto(Container):
     @validate_arguments
     def load(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
+        provider: Optional[Literal["fmp", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List]:
         """Crypto Historical Price.
@@ -51,14 +51,14 @@ class ROUTER_crypto(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
+        provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Union[pydantic.types.NonNegativeInt, None]
+        timeseries : Optional[pydantic.types.NonNegativeInt]
             Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp)
+        interval : Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+            Data granularity. (provider: fmp, yfinance)
         multiplier : PositiveInt
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -69,13 +69,15 @@ class ROUTER_crypto(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
+        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
+            Period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[CryptoHistorical]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
+            provider : Optional[Literal['fmp', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
