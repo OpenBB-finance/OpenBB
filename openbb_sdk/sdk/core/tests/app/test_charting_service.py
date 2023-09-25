@@ -281,8 +281,8 @@ def test_get_implemented_charting_functions(
 @patch("openbb_core.app.charting_service.ChartingService._handle_backend")
 @patch("openbb_core.app.charting_service.import_module")
 def test_to_chart(
-    mock_handle_backend,
     mock_import_module,
+    mock_handle_backend,
     charting_service,
     charting_extension_installed,
     expected_result,
@@ -292,17 +292,19 @@ def test_to_chart(
     if expected_result != ChartingServiceError:
 
         class MockBackendModule:
+            CHART_FORMAT = "plotly"
+
             @staticmethod
             def to_chart(**kwargs):
-                return ("mock_fig", "mock_content")
+                return ("mock_fig", {"content": "mock_content"})
 
-        mock_import_module.return_value = MockBackendModule
+        mock_import_module.return_value = MockBackendModule()
 
         result = charting_service.to_chart()
 
         assert isinstance(result, Chart)
         assert result.fig == "mock_fig"
-        assert result.content == "mock_content"
+        assert result.content == {"content": "mock_content"}
 
         assert mock_handle_backend.called_once()
 
