@@ -257,7 +257,7 @@ class ChartingService(metaclass=SingletonMeta):
         route: str,
         obbject_item: T,
         **kwargs,
-    ):
+    ) -> Chart:
         """
         If the charting extension is not installed, an error is raised.
         Otherwise, a charting function will be retrieved and executed from the user's preferred charting extension.

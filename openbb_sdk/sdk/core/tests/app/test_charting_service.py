@@ -274,9 +274,7 @@ def test_get_implemented_charting_functions(
 
 @pytest.mark.parametrize(
     "charting_extension_installed, expected_result",
-    [
-        (True, ...),
-    ],  # (False, ChartingServiceError)
+    [(True, ...), (False, ChartingServiceError)],
 )
 @patch("openbb_core.app.charting_service.ChartingService._handle_backend")
 @patch("openbb_core.app.charting_service.import_module")
@@ -289,17 +287,16 @@ def test_to_chart(
 ):
     charting_service._charting_extension_installed = charting_extension_installed
 
+    class MockBackendModule:
+        CHART_FORMAT = "plotly"
+
+        @staticmethod
+        def to_chart(**kwargs):
+            return ("mock_fig", {"content": "mock_content"})
+
+    mock_import_module.return_value = MockBackendModule()
+
     if expected_result != ChartingServiceError:
-
-        class MockBackendModule:
-            CHART_FORMAT = "plotly"
-
-            @staticmethod
-            def to_chart(**kwargs):
-                return ("mock_fig", {"content": "mock_content"})
-
-        mock_import_module.return_value = MockBackendModule()
-
         result = charting_service.to_chart()
 
         assert isinstance(result, Chart)
@@ -309,8 +306,57 @@ def test_to_chart(
         assert mock_handle_backend.called_once()
 
     else:
-        with pytest.raises(AttributeError) as exc_info:
+        with pytest.raises(ChartingServiceError) as exc_info:
             charting_service.to_chart()
             assert str(exc_info.value) == (
-                "Charting extension is not installed. Please install it and restart the server."
+                "Charting extension `openbb_charting` is not installed"
+            )
+
+
+@pytest.mark.parametrize(
+    "charting_extension_installed, expected_result",
+    [(True, ...), (False, ChartingServiceError)],
+)
+@patch("openbb_core.app.charting_service.ChartingService._handle_backend")
+@patch(
+    "openbb_core.app.charting_service.ChartingService._check_charting_extension_installed"
+)
+@patch("openbb_core.app.charting_service.ChartingService._get_chart_format")
+@patch("openbb_core.app.charting_service.ChartingService._get_chart_function")
+def test_chart(
+    mock_get_chart_function,
+    mock_get_chart_format,
+    mock_check_charting_extension_installed,
+    mock_handle_backend,
+    user_settings,
+    system_settings,
+    charting_service,
+    charting_extension_installed,
+    expected_result,
+):
+    def mock_chart_function(**kwargs):
+        return ("mock_fig", {"content": "mock_content"})
+
+    mock_check_charting_extension_installed.return_value = charting_extension_installed
+    mock_get_chart_function.return_value = mock_chart_function
+    mock_get_chart_format.return_value = "plotly"
+
+    if expected_result != ChartingServiceError:
+        result = charting_service.chart(
+            user_settings, system_settings, "/mock/route", "mock_obbject_item"
+        )
+
+        assert isinstance(result, Chart)
+        assert result.fig == "mock_fig"
+        assert result.content == {"content": "mock_content"}
+
+        assert mock_handle_backend.called_once()
+
+    else:
+        with pytest.raises(ChartingServiceError) as exc_info:
+            charting_service.chart(
+                user_settings, system_settings, "/mock/route", "mock_obbject_item"
+            )
+            assert str(exc_info.value) == (
+                "Charting extension `openbb_charting` is not installed"
             )
