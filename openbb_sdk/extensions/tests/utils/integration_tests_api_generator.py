@@ -65,6 +65,11 @@ def test_{route.replace("/", "_")[1:]}(params, headers):
         f.write(template)
 
 
+def test_exists(route: str, path: str):
+    with open(path, "r") as f:
+        return route.replace("/", "_")[1:] in f.read()
+
+
 def write_integration_tests(
     command_map: CommandMap,
     provider_interface: ProviderInterface,
@@ -102,8 +107,8 @@ def write_integration_tests(
                 )
             )
 
-            # TODO : only writes the test if it doesn't exist yet
-            write_test_w_template(params_list=params_list, route=route, path=path)
+            if not test_exists(route=route, path=path):
+                write_test_w_template(params_list=params_list, route=route, path=path)
 
     return commands_not_found
 
