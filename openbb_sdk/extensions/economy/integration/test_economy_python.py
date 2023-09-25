@@ -1,5 +1,4 @@
 """Test economy extension."""
-import datetime
 
 import pytest
 from openbb import obb
@@ -13,7 +12,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 def test_economy_const(params):
-    result = obb.economy.const(params)
+    result = obb.economy.const(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -28,14 +27,14 @@ def test_economy_const(params):
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
     ],
 )
 def test_economy_cpi(params):
-    result = obb.economy.cpi(params)
+    result = obb.economy.cpi(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -47,8 +46,8 @@ def test_economy_cpi(params):
         (
             {
                 "symbol": "DJI",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -56,8 +55,8 @@ def test_economy_cpi(params):
                 "interval": "1m",
                 "provider": "cboe",
                 "symbol": "AAVE100",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -65,8 +64,8 @@ def test_economy_cpi(params):
                 "interval": "1d",
                 "provider": "cboe",
                 "symbol": "AAVE100",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -74,8 +73,8 @@ def test_economy_cpi(params):
                 "interval": "1min",
                 "provider": "fmp",
                 "symbol": "^DJI",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -83,8 +82,8 @@ def test_economy_cpi(params):
                 "interval": "1day",
                 "provider": "fmp",
                 "symbol": "^DJI",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -96,8 +95,8 @@ def test_economy_cpi(params):
                 "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -109,8 +108,8 @@ def test_economy_cpi(params):
                 "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -121,8 +120,8 @@ def test_economy_cpi(params):
                 "rounding": True,
                 "provider": "yfinance",
                 "symbol": "DJI",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -133,14 +132,14 @@ def test_economy_cpi(params):
                 "rounding": True,
                 "provider": "yfinance",
                 "symbol": "DJI",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
     ],
 )
 def test_economy_index(params):
-    result = obb.economy.index(params)
+    result = obb.economy.index(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -152,8 +151,8 @@ def test_economy_index(params):
         (
             {
                 "symbol": "BUKBUS",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -161,8 +160,8 @@ def test_economy_index(params):
                 "interval": "1m",
                 "provider": "cboe",
                 "symbol": "BUKBUS",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -170,14 +169,14 @@ def test_economy_index(params):
                 "interval": "1d",
                 "provider": "cboe",
                 "symbol": "BUKBUS",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
     ],
 )
 def test_economy_european_index(params):
-    result = obb.economy.european_index(params)
+    result = obb.economy.european_index(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -190,7 +189,7 @@ def test_economy_european_index(params):
     ],
 )
 def test_economy_european_index_constituents(params):
-    result = obb.economy.european_index_constituents(params)
+    result = obb.economy.european_index_constituents(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -204,7 +203,7 @@ def test_economy_european_index_constituents(params):
     ],
 )
 def test_economy_available_indices(params):
-    result = obb.economy.available_indices(params)
+    result = obb.economy.available_indices(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -217,7 +216,7 @@ def test_economy_available_indices(params):
     ],
 )
 def test_economy_risk(params):
-    result = obb.economy.risk(params)
+    result = obb.economy.risk(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -231,14 +230,14 @@ def test_economy_risk(params):
             {
                 "europe": True,
                 "provider": "cboe",
-                "query": "DJ",
+                "query": "AA",
                 "symbol": True,
             }
         ),
     ],
 )
 def test_economy_index_search(params):
-    result = obb.economy.index_search(params)
+    result = obb.economy.index_search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -251,7 +250,7 @@ def test_economy_index_search(params):
     ],
 )
 def test_economy_index_snapshots(params):
-    result = obb.economy.index_snapshots(params)
+    result = obb.economy.index_snapshots(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -264,7 +263,7 @@ def test_economy_index_snapshots(params):
     ],
 )
 def test_economy_cot_search(params):
-    result = obb.economy.cot_search(params)
+    result = obb.economy.cot_search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -281,8 +280,8 @@ def test_economy_cot_search(params):
                 "legacy_format": True,
                 "report_type": "ALL",
                 "measure": "CR",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
                 "transform": "diff",
                 "provider": "quandl",
             }
@@ -290,7 +289,7 @@ def test_economy_cot_search(params):
     ],
 )
 def test_economy_cot(params):
-    result = obb.economy.cot(params)
+    result = obb.economy.cot(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -302,8 +301,8 @@ def test_economy_cot(params):
         (
             {
                 "series_name": "PE Ratio by Month",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
                 "collapse": "monthly",
                 "transform": "diff",
             }
@@ -311,7 +310,8 @@ def test_economy_cot(params):
     ],
 )
 def test_economy_sp500_multiples(params):
-    result = obb.economy.sp500_multiples(params)
+    result = obb.economy.sp500_multiples(**params)
     assert result
     assert isinstance(result, OBBject)
+    assert len(result.results) > 0
     assert len(result.results) > 0

@@ -25,7 +25,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 def test_forex_pairs(params):
-    result = obb.forex.pairs(params)
+    result = obb.forex.pairs(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -37,8 +37,8 @@ def test_forex_pairs(params):
         (
             {
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -46,8 +46,8 @@ def test_forex_pairs(params):
                 "interval": "1min",
                 "provider": "fmp",
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -55,8 +55,8 @@ def test_forex_pairs(params):
                 "interval": "1day",
                 "provider": "fmp",
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -68,8 +68,8 @@ def test_forex_pairs(params):
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -81,8 +81,8 @@ def test_forex_pairs(params):
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -91,8 +91,8 @@ def test_forex_pairs(params):
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -101,14 +101,14 @@ def test_forex_pairs(params):
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "EURUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
     ],
 )
 def test_forex_load(params):
-    result = obb.forex.load(params)
+    result = obb.forex.load(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

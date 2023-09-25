@@ -27,7 +27,7 @@ def headers():
                 "provider": "fmp",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -49,7 +49,7 @@ def headers():
                 "provider": "polygon",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -72,7 +72,7 @@ def headers():
                 "provider": "yfinance",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (

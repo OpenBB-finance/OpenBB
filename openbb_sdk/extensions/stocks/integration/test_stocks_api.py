@@ -552,7 +552,7 @@ def test_stocks_options_chains(params, headers):
                 "provider": "cboe",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -570,7 +570,7 @@ def test_stocks_options_chains(params, headers):
                 "provider": "fmp",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -589,6 +589,7 @@ def test_stocks_options_chains(params, headers):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -599,7 +600,7 @@ def test_stocks_options_chains(params, headers):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -612,7 +613,7 @@ def test_stocks_options_chains(params, headers):
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -645,7 +646,7 @@ def test_stocks_options_chains(params, headers):
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
         (

@@ -32,7 +32,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 def test_futures_load(params):
-    result = obb.futures.load(params)
+    result = obb.futures.load(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -45,7 +45,7 @@ def test_futures_load(params):
     ],
 )
 def test_futures_curve(params):
-    result = obb.futures.curve(params)
+    result = obb.futures.curve(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

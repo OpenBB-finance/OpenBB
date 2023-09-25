@@ -109,8 +109,8 @@ def add_test_commands_to_file(  # pylint: disable=W0102
         {params}
     ],
 )
-def test_{test_name}(params):
-    result = obb.{command_name}(params)
+def test_{test_name}(**params):
+    result = obb.{command_name}(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

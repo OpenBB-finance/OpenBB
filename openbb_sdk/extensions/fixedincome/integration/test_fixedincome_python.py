@@ -11,7 +11,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 def test_fixedincome_treasury(params):
-    result = obb.fixedincome.treasury(params)
+    result = obb.fixedincome.treasury(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -24,7 +24,7 @@ def test_fixedincome_treasury(params):
     ],
 )
 def test_fixedincome_ycrv(params):
-    result = obb.fixedincome.ycrv(params)
+    result = obb.fixedincome.ycrv(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -45,7 +45,7 @@ def test_fixedincome_ycrv(params):
     ],
 )
 def test_fixedincome_sofr(params):
-    result = obb.fixedincome.sofr(params)
+    result = obb.fixedincome.sofr(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -66,7 +66,7 @@ def test_fixedincome_sofr(params):
     ],
 )
 def test_fixedincome_estr(params):
-    result = obb.fixedincome.estr(params)
+    result = obb.fixedincome.estr(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -87,7 +87,7 @@ def test_fixedincome_estr(params):
     ],
 )
 def test_fixedincome_sonia(params):
-    result = obb.fixedincome.sonia(params)
+    result = obb.fixedincome.sonia(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -108,7 +108,7 @@ def test_fixedincome_sonia(params):
     ],
 )
 def test_fixedincome_ameribor(params):
-    result = obb.fixedincome.ameribor(params)
+    result = obb.fixedincome.ameribor(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -129,7 +129,7 @@ def test_fixedincome_ameribor(params):
     ],
 )
 def test_fixedincome_fed(params):
-    result = obb.fixedincome.fed(params)
+    result = obb.fixedincome.fed(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -143,7 +143,7 @@ def test_fixedincome_fed(params):
     ],
 )
 def test_fixedincome_projections(params):
-    result = obb.fixedincome.projections(params)
+    result = obb.fixedincome.projections(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -156,7 +156,7 @@ def test_fixedincome_projections(params):
     ],
 )
 def test_fixedincome_iorb(params):
-    result = obb.fixedincome.iorb(params)
+    result = obb.fixedincome.iorb(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

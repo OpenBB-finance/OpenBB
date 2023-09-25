@@ -1,5 +1,4 @@
 """Test crypto extension."""
-import datetime
 
 import pytest
 from openbb import obb
@@ -12,8 +11,8 @@ from openbb_core.app.model.obbject import OBBject
         (
             {
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -21,8 +20,8 @@ from openbb_core.app.model.obbject import OBBject
                 "interval": "1min",
                 "provider": "fmp",
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -30,8 +29,8 @@ from openbb_core.app.model.obbject import OBBject
                 "interval": "1day",
                 "provider": "fmp",
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -43,8 +42,8 @@ from openbb_core.app.model.obbject import OBBject
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -56,8 +55,8 @@ from openbb_core.app.model.obbject import OBBject
                 "adjusted": True,
                 "provider": "polygon",
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -66,8 +65,8 @@ from openbb_core.app.model.obbject import OBBject
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
             }
         ),
         (
@@ -76,14 +75,14 @@ from openbb_core.app.model.obbject import OBBject
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "BTCUSD",
-                "start_date": datetime.date(2023, 1, 1),
-                "end_date": datetime.date(2023, 6, 6),
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
             }
         ),
     ],
 )
 def test_crypto_load(params):
-    result = obb.crypto.load(params)
+    result = obb.crypto.load(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
