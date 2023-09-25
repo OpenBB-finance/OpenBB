@@ -855,7 +855,7 @@ class ROUTER_stocks_fa(Container):
             Name and position of the executive.
         year : Optional[int]
             Year of the compensation.
-        salary : Optional[PositiveFloat]
+        salary : Optional[NonNegativeFloat]
             Salary of the executive.
         bonus : Optional[NonNegativeFloat]
             Bonus of the executive.
@@ -865,7 +865,7 @@ class ROUTER_stocks_fa(Container):
             Incentive plan compensation of the executive.
         all_other_compensation : Optional[NonNegativeFloat]
             All other compensation of the executive.
-        total : Optional[PositiveFloat]
+        total : Optional[NonNegativeFloat]
             Total compensation of the executive.
         url : Optional[str]
             URL of the filing data."""  # noqa: E501
@@ -3205,7 +3205,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
         quarter: typing_extensions.Annotated[
-            Literal[1, 2, 3, 4],
+            int,
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),
@@ -3221,7 +3221,7 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         year : int
             Year of the earnings call transcript.
-        quarter : Literal[1, 2, 3, 4]
+        quarter : int
             Quarter of the earnings call transcript.
         provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.

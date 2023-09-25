@@ -67,9 +67,9 @@ def process_projections(data: Dict) -> List[Dict]:
         for key, value in data.items():
             val = [item["value"] for item in value if item["date"] == date]
             if val:
-                entry[key] = float(val[0]) if val != "." else float("nan")
+                entry[key] = float(val[0]) if val[0] != "." else None
             else:
-                entry[key] = float("nan")
+                entry[key] = None
         ldata.append(entry)
 
     return ldata
