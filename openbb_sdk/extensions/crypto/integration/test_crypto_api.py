@@ -20,12 +20,34 @@ def headers():
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"symbol": "BTCUSD", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "BTCUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
         (
             {
                 "interval": "1day",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "multiplier": 1,
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "provider": "polygon",
+                "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -38,7 +60,17 @@ def headers():
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "5m",
+                "period": "max",
+                "provider": "yfinance",
+                "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -48,7 +80,7 @@ def headers():
                 "interval": "1d",
                 "period": "max",
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }

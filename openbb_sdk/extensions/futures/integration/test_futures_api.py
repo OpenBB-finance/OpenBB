@@ -22,10 +22,10 @@ def headers():
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "ES",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "TEST_STRING",
+                "expiration": "2024-06",
             }
         ),
         (
@@ -36,10 +36,10 @@ def headers():
                 "adjust": True,
                 "back_adjust": True,
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "ES",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "TEST_STRING",
+                "expiration": "2024-06",
             }
         ),
     ],

@@ -1,5 +1,3 @@
-import datetime
-
 import pytest
 import requests
 from openbb_provider.utils.helpers import get_querystring
@@ -25,9 +23,9 @@ def headers():
         ({}),
         (
             {
-                "symbol": "AAPL",
-                "date": datetime.date(2023, 9, 25),
-                "search": "TEST_STRING",
+                "symbol": "EURUSD",
+                "date": "2023-01-01",
+                "search": "USD",
                 "active": True,
                 "order": "asc",
                 "sort": "ticker",
@@ -50,12 +48,34 @@ def test_forex_pairs(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
         (
             {
                 "interval": "1day",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "multiplier": 1,
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "provider": "polygon",
+                "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -68,7 +88,17 @@ def test_forex_pairs(params, headers):
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "5m",
+                "period": "max",
+                "provider": "yfinance",
+                "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -78,7 +108,7 @@ def test_forex_pairs(params, headers):
                 "interval": "1d",
                 "period": "max",
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }

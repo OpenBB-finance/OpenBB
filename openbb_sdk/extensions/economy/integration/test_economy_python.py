@@ -1,4 +1,6 @@
 """Test economy extension."""
+import datetime
+
 import pytest
 from openbb import obb
 from openbb_core.app.model.obbject import OBBject
@@ -26,8 +28,8 @@ def test_economy_const(params):
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
     ],
@@ -42,23 +44,60 @@ def test_economy_cpi(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "DJI",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "1m",
+                "provider": "cboe",
+                "symbol": "AAVE100",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
         (
             {
                 "interval": "1d",
                 "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "symbol": "AAVE100",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "^DJI",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
             {
                 "interval": "1day",
                 "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "symbol": "^DJI",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "multiplier": 1,
+                "provider": "polygon",
+                "symbol": "NDX",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -69,9 +108,21 @@ def test_economy_cpi(params):
                 "adjusted": True,
                 "multiplier": 1,
                 "provider": "polygon",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "symbol": "NDX",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "5m",
+                "period": "max",
+                "prepost": True,
+                "rounding": True,
+                "provider": "yfinance",
+                "symbol": "DJI",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
         (
@@ -81,9 +132,9 @@ def test_economy_cpi(params):
                 "prepost": True,
                 "rounding": True,
                 "provider": "yfinance",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "symbol": "DJI",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
     ],
@@ -98,14 +149,29 @@ def test_economy_index(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "BUKBUS", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "BUKBUS",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
+        (
+            {
+                "interval": "1m",
+                "provider": "cboe",
+                "symbol": "BUKBUS",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
+            }
+        ),
         (
             {
                 "interval": "1d",
                 "provider": "cboe",
                 "symbol": "BUKBUS",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
             }
         ),
     ],
@@ -215,8 +281,8 @@ def test_economy_cot_search(params):
                 "legacy_format": True,
                 "report_type": "ALL",
                 "measure": "CR",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
                 "transform": "diff",
                 "provider": "quandl",
             }
@@ -236,8 +302,8 @@ def test_economy_cot(params):
         (
             {
                 "series_name": "PE Ratio by Month",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": datetime.date(2023, 1, 1),
+                "end_date": datetime.date(2023, 6, 6),
                 "collapse": "monthly",
                 "transform": "diff",
             }

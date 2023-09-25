@@ -12,7 +12,7 @@ from openbb_core.app.model.obbject import OBBject
         ({}),
         (
             {
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "date": datetime.date(2023, 9, 25),
                 "search": "USD",
                 "active": True,
@@ -36,7 +36,7 @@ def test_forex_pairs(params):
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -45,7 +45,7 @@ def test_forex_pairs(params):
             {
                 "interval": "1min",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -54,7 +54,7 @@ def test_forex_pairs(params):
             {
                 "interval": "1day",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -62,12 +62,12 @@ def test_forex_pairs(params):
         (
             {
                 "multiplier": 1,
-                "timespan": "min",
+                "timespan": "minute",
                 "sort": "desc",
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -80,7 +80,7 @@ def test_forex_pairs(params):
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -90,7 +90,7 @@ def test_forex_pairs(params):
                 "interval": "5m",
                 "period": "max",
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -100,7 +100,7 @@ def test_forex_pairs(params):
                 "interval": "1d",
                 "period": "max",
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "EURUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }

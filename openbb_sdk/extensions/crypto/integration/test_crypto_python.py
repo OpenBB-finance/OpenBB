@@ -11,7 +11,7 @@ from openbb_core.app.model.obbject import OBBject
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -20,7 +20,7 @@ from openbb_core.app.model.obbject import OBBject
             {
                 "interval": "1min",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -29,7 +29,7 @@ from openbb_core.app.model.obbject import OBBject
             {
                 "interval": "1day",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -42,7 +42,7 @@ from openbb_core.app.model.obbject import OBBject
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -55,7 +55,7 @@ from openbb_core.app.model.obbject import OBBject
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -65,7 +65,7 @@ from openbb_core.app.model.obbject import OBBject
                 "interval": "5m",
                 "period": "max",
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }
@@ -75,7 +75,7 @@ from openbb_core.app.model.obbject import OBBject
                 "interval": "1d",
                 "period": "max",
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "BTCUSD",
                 "start_date": datetime.date(2023, 1, 1),
                 "end_date": datetime.date(2023, 6, 6),
             }

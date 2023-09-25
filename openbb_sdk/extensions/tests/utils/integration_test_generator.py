@@ -3,7 +3,6 @@ from pathlib import Path, PosixPath
 from typing import Any, Dict, List, Literal, get_origin
 
 from pydantic.fields import ModelField
-
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 from sdk.core.openbb_core.app.router import CommandMap
 
@@ -122,7 +121,11 @@ def test_{test_name}(params):
         test_file = extension / "integration" / test_file_name
         with open(test_file, "a") as f:
             for command in commands_model:
-                if extension_name in command:
+                if "news" in command:
+                    print("A")
+                if extension_name in command and command.startswith(
+                    f".{extension_name}."
+                ):
                     extension_name = command.split(".")[1]
 
                     if len(command.split(".")) > 3:
@@ -167,3 +170,6 @@ def write_integration_test() -> None:
     extensions = find_extensions()
     create_integration_test_files(extensions)
     add_test_commands_to_file(extensions)
+
+
+write_integration_test()

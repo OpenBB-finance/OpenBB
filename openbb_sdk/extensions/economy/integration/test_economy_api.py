@@ -59,12 +59,30 @@ def test_economy_cpi(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"symbol": "DJI", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "interval": "1m",
+                "provider": "cboe",
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
         (
             {
                 "interval": "1d",
                 "provider": "cboe",
-                "symbol": "AAPL",
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -73,7 +91,20 @@ def test_economy_cpi(params, headers):
             {
                 "interval": "1day",
                 "provider": "fmp",
-                "symbol": "AAPL",
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "multiplier": 1,
+                "provider": "polygon",
+                "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -86,7 +117,19 @@ def test_economy_cpi(params, headers):
                 "adjusted": True,
                 "multiplier": 1,
                 "provider": "polygon",
-                "symbol": "AAPL",
+                "symbol": "NDX",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1m",
+                "period": "max",
+                "prepost": True,
+                "rounding": True,
+                "provider": "yfinance",
+                "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -98,7 +141,7 @@ def test_economy_cpi(params, headers):
                 "prepost": True,
                 "rounding": True,
                 "provider": "yfinance",
-                "symbol": "AAPL",
+                "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -118,12 +161,21 @@ def test_economy_index(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"symbol": "BUKBUS", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "interval": "1m",
+                "provider": "cboe",
+                "symbol": "BUKBUS",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
         (
             {
                 "interval": "1d",
                 "provider": "cboe",
-                "symbol": "AAPL",
+                "symbol": "BUKBUS",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -142,7 +194,7 @@ def test_economy_european_index(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"symbol": "BUKBUS"})],
 )
 def test_economy_european_index_constituents(params, headers):
     params = {p: v for p, v in params.items() if v}
@@ -185,13 +237,13 @@ def test_economy_risk(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "TEST_STRING", "symbol": "AAPL"}),
+        ({"query": "DJ", "symbol": True}),
         (
             {
                 "europe": True,
                 "provider": "cboe",
-                "query": "TEST_STRING",
-                "symbol": "AAPL",
+                "query": "DJ",
+                "symbol": True,
             }
         ),
     ],
@@ -222,7 +274,7 @@ def test_economy_index_snapshots(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "TEST_STRING"})],
+    [({"query": "grain"})],
 )
 def test_economy_cot_search(params, headers):
     params = {p: v for p, v in params.items() if v}

@@ -13,7 +13,7 @@ from openbb_core.app.model.obbject import OBBject
         (
             {
                 "type": "reported",
-                "year": 1,
+                "year": 2023,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -81,7 +81,7 @@ def test_stocks_fa_cal(params):
         (
             {
                 "type": "reported",
-                "year": 1,
+                "year": 2023,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -214,7 +214,7 @@ def test_stocks_fa_est(params):
         (
             {
                 "type": "reported",
-                "year": 1,
+                "year": 2023,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -457,7 +457,7 @@ def test_stocks_fa_split(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "year": 1, "quarter": 1}),
+        ({"symbol": "AAPL", "year": 2023, "quarter": 1}),
     ],
 )
 def test_stocks_fa_transcript(params):
