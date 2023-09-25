@@ -24,6 +24,8 @@ from openbb_core.app.model.obbject import OBBject
                 "company_name_search": "TEST_STRING",
                 "sic": "TEST_STRING",
                 "include_sources": True,
+                "order": "asc",
+                "sort": "filing_date",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -85,6 +87,8 @@ def test_stocks_fa_cal(params):
                 "company_name_search": "TEST_STRING",
                 "sic": "TEST_STRING",
                 "include_sources": True,
+                "order": "asc",
+                "sort": "filing_date",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -211,6 +215,8 @@ def test_stocks_fa_est(params):
                 "company_name_search": "TEST_STRING",
                 "sic": "TEST_STRING",
                 "include_sources": True,
+                "order": "asc",
+                "sort": "filing_date",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -394,7 +400,7 @@ def test_stocks_fa_revseg(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "page": 1, "limit": 100}),
+        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100}),
     ],
 )
 def test_stocks_fa_sec(params):

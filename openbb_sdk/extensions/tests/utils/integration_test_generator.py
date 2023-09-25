@@ -1,19 +1,19 @@
 """Integration test generator."""
 from pathlib import Path, PosixPath
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Literal, get_origin
 
 from pydantic.fields import ModelField
-
-from openbb_sdk.sdk.core.openbb_core.app.provider_interface import ProviderInterface
-from openbb_sdk.sdk.core.openbb_core.app.router import CommandMap
+from sdk.core.openbb_core.app.provider_interface import ProviderInterface
+from sdk.core.openbb_core.app.router import CommandMap
 
 cm = CommandMap(coverage_sep=".")
 
 
 def find_extensions():
     """Find extensions."""
+    filter_ext = ["tests", "ta", "qa", "econometrics", "charting"]
     extensions = [x for x in Path("openbb_sdk/extensions").iterdir() if x.is_dir()]
-    extensions = [x for x in extensions if x.name != "tests"]
+    extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
 
 
@@ -60,6 +60,8 @@ def get_model_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
                 test_params[field_name] = 1.0
             elif field.type_ == bool:
                 test_params[field_name] = True
+            elif get_origin(field.type_) is Literal:
+                test_params[field_name] = field.type_.__args__[0]
 
     return test_params
 
