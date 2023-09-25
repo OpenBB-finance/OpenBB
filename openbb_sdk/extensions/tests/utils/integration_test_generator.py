@@ -121,8 +121,6 @@ def test_{test_name}(params):
         test_file = extension / "integration" / test_file_name
         with open(test_file, "a") as f:
             for command in commands_model:
-                if "news" in command:
-                    print("A")
                 if extension_name in command and command.startswith(
                     f".{extension_name}."
                 ):
@@ -142,6 +140,16 @@ def test_{test_name}(params):
                     command_name = command.split(".")[-1]
                     if "_" in command_name:
                         full_command_name = test_name.replace("_", ".", 2)
+                        # The code below double checks if the full command name is correct.
+                        # This eliminates edge cases.
+                        fix_full_command_name = full_command_name.split(".")
+                        for i, part in enumerate(fix_full_command_name):
+                            if part == command_name.split("_")[0]:
+                                fix_full_command_name[i] = command_name
+                                fix_full_command_name.pop()
+
+                        full_command_name = ".".join(fix_full_command_name)
+
                     else:
                         full_command_name = test_name.replace("_", ".")
 
