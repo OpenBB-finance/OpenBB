@@ -153,4 +153,4 @@ class FMPIncomeStatementFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPIncomeStatementData]:
         """Return the transformed data."""
-        return [FMPIncomeStatementData(**d) for d in data]
+        return [FMPIncomeStatementData.parse_obj(d) for d in data]

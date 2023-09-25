@@ -111,4 +111,4 @@ class FMPCashFlowStatementFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPCashFlowStatementData]:
         """Return the transformed data."""
-        return [FMPCashFlowStatementData(**d) for d in data]
+        return [FMPCashFlowStatementData.parse_obj(d) for d in data]

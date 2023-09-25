@@ -90,4 +90,4 @@ class IntrinioOptionsChainsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
         data = [{**item["option"], **item["prices"]} for item in data]
-        return [IntrinioOptionsChainsData(**d) for d in data]
+        return [IntrinioOptionsChainsData.parse_obj(d) for d in data]

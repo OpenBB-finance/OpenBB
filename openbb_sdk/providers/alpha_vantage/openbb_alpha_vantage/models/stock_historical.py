@@ -176,13 +176,13 @@ class AVStockHistoricalData(StockHistoricalData):
 
         fields = {"date": "timestamp", "adj_close": "adjusted_close"}
 
-    adjusted_close: PositiveFloat = Field(
+    adjusted_close: Optional[PositiveFloat] = Field(
         description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
-    dividend_amount: NonNegativeFloat = Field(
+    dividend_amount: Optional[NonNegativeFloat] = Field(
         description="Dividend amount paid for the corresponding date.",
     )
-    split_coefficient: NonNegativeFloat = Field(
+    split_coefficient: Optional[NonNegativeFloat] = Field(
         description="Split coefficient for the corresponding date.",
     )
 

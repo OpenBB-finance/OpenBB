@@ -71,7 +71,11 @@ def test_y_finance_major_indices_historical_fetcher(credentials=test_credentials
 
 @pytest.mark.record_http
 def test_y_finance_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "start_date": "2023-01-15", "end_date": "2023-01-25"}
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = YFinanceStockHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -80,7 +84,11 @@ def test_y_finance_stock_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "ES", "start_date": date(2023, 1, 1), "end_date": "2023-05-10"}
+    params = {
+        "symbol": "ES",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = YFinanceFuturesHistoricalFetcher()
     result = fetcher.test(params, credentials)
@@ -90,7 +98,11 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 @pytest.mark.skip(reason="Blows up on download errors for specific dates.")
 def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
-    params = {"symbol": "ES", "start_date": date(2023, 1, 1), "end_date": "2023-05-10"}
+    params = {
+        "symbol": "ES",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
 
     fetcher = YFinanceFuturesCurveFetcher()
     result = fetcher.test(params, credentials)
