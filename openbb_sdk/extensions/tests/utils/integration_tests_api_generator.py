@@ -1,7 +1,9 @@
 import os
-from typing import Callable, Dict, List, Type, get_args, get_type_hints
+from typing import Dict, List, Type, get_type_hints
 
 import requests
+from extensions.tests.utils.integration_test_generator import get_test_params
+from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
 
@@ -10,23 +12,6 @@ def get_http_method(api_paths: Dict[str, dict], route: str):
     if not route_info:
         return route_info
     return list(route_info.keys())[0]
-
-
-def get_get_flat_params(hints: Dict[str, Type]):
-    params = {}
-
-    for k, v in hints.items():
-        models = get_args(v)[0]
-        params[k] = list(get_type_hints(models).keys())
-
-    flat_params = []
-    for _, value in params.items():
-        if isinstance(value, list):
-            for item in value:
-                flat_params.append(item)
-        else:
-            flat_params.append(value)
-    return flat_params
 
 
 def get_post_flat_params(hints: Dict[str, Type]):
@@ -44,6 +29,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
+        timeout=5,
     )
 
 
@@ -57,18 +43,20 @@ def headers():
         f.write(template)
 
 
-def write_test_w_template(params: Dict[str, str], route: str, path: str):
+def write_test_w_template(params_list: List[Dict[str, str]], route: str, path: str):
+    params_str = ",\n".join([f"({params})" for params in params_list])
+
     template = f"""
 @pytest.mark.parametrize(
     "params",
-    [({params})],
+    [{params_str}],
 )
 def test_{route.replace("/", "_")[1:]}(params, headers):
     params = {{p: v for p, v in params.items() if v}}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1{route}?{{query_str}}"
-    result = requests.get(url, headers=headers)
+    result = requests.get(url, headers=headers, timeout=5)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 """
@@ -78,11 +66,15 @@ def test_{route.replace("/", "_")[1:]}(params, headers):
 
 
 def write_integration_tests(
-    commandmap_map: Dict[str, Callable], api_paths: Dict[str, dict]
+    command_map: CommandMap,
+    provider_interface: ProviderInterface,
+    api_paths: Dict[str, dict],
 ) -> List[str]:
     commands_not_found = []
 
-    http_method_get_params = {"get": get_get_flat_params, "post": get_post_flat_params}
+    commandmap_map = command_map.map
+    commandmap_models = command_map.commands_model
+    provider_interface_map = provider_interface.map
 
     for route in commandmap_map:
         http_method = get_http_method(api_paths, f"/api/v1{route}")
@@ -101,23 +93,34 @@ def write_integration_tests(
             hints.pop("cc", None)
             hints.pop("return", None)
 
-            params = http_method_get_params[http_method](hints)
-            params = {k: "" for k in params}
+            params_list = (
+                [{k: "" for k in get_post_flat_params(hints)}]
+                if http_method == "post"
+                else get_test_params(
+                    model_name=commandmap_models[route],
+                    provider_interface_map=provider_interface_map,
+                )
+            )
 
-            write_test_w_template(params=params, route=route, path=path)
+            # TODO : only writes the test if it doesn't exist yet
+            write_test_w_template(params_list=params_list, route=route, path=path)
 
     return commands_not_found
 
 
 if __name__ == "__main__":
-    r = requests.get("http://0.0.0.0:8000/openapi.json").json()
+    r = requests.get("http://0.0.0.0:8000/openapi.json", timeout=5).json()
 
     if not r:
         raise Exception("Could not get openapi.json")
 
     command_map = CommandMap()
+    provider_interface = ProviderInterface()
+
     commands_not_found_in_openapi = write_integration_tests(
-        commandmap_map=command_map.map, api_paths=r["paths"]
+        command_map=command_map,
+        provider_interface=provider_interface,
+        api_paths=r["paths"],
     )
 
     if commands_not_found_in_openapi:
