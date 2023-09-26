@@ -54,5 +54,5 @@ def test_extension_map():
         )
         assert req_ext[name].allows(version), (
             f"Version '{version}' of extension '{name}' is not compatible with the"
-            " version '{req_ext[name]}' constraint in pyproject.toml"
+            f" version '{req_ext[name]}' constraint in pyproject.toml"
         )
