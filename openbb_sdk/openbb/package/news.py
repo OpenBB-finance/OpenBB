@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import List, Literal, Union
 
 import pydantic
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from pydantic import validate_arguments
-from typing_extensions import Annotated
 
 
 class ROUTER_news(Container):
@@ -22,11 +22,11 @@ class ROUTER_news(Container):
     @validate_arguments
     def globalnews(
         self,
-        limit: Annotated[
+        limit: typing_extensions.Annotated[
             pydantic.types.NonNegativeInt,
             OpenBBCustomParameter(description="Number of articles to return."),
         ] = 20,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
+        provider: Union[Literal["benzinga", "fmp", "intrinio"], None] = None,
         **kwargs
     ) -> OBBject[List]:
         """Global News.
@@ -35,37 +35,37 @@ class ROUTER_news(Container):
         ----------
         limit : NonNegativeInt
             Number of articles to return.
-        provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
+        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Optional[str]
+        date : Union[str, None]
             Date of the news to retrieve. (provider: benzinga)
-        start_date : Optional[str]
+        start_date : Union[str, None]
             Start date of the news to retrieve. (provider: benzinga)
-        end_date : Optional[str]
+        end_date : Union[str, None]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Optional[int]
+        updated_since : Union[int, None]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Optional[int]
+        published_since : Union[int, None]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Optional[Literal['id', 'created', 'updated']]
+        sort : Union[Literal['id', 'created', 'updated'], None]
             Key to sort the news by. (provider: benzinga)
-        order : Optional[Literal['asc', 'desc']]
+        order : Union[Literal['asc', 'desc'], None]
             Order to sort the news by. (provider: benzinga)
-        isin : Optional[str]
+        isin : Union[str, None]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Optional[str]
+        cusip : Union[str, None]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        channels : Optional[str]
+        channels : Union[str, None]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Optional[str]
+        topics : Union[str, None]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Optional[str]
+        authors : Union[str, None]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Optional[str]
+        content_types : Union[str, None]
             Content types of the news to retrieve. (provider: benzinga)
 
         Returns
@@ -73,7 +73,7 @@ class ROUTER_news(Container):
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
+            provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
