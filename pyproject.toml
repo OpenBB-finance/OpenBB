@@ -203,13 +203,28 @@ target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
 # D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+select = [
+    "E",
+    "W",
+    "F",
+    "Q",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
 ignore = ["PLR2004", "PLR0913", "PLR0915"]
 exclude = ["^openbb_sdk/sdk/core/openbb_core/app/static/package/.*"]
 
 [tool.ruff.per-file-ignores]
 "*tests/*" = ["S101"]
+"*integration/*" = ["S101"]
 "*init*.py" = ["F401"]
 "website/*" = ["T201"]
 
