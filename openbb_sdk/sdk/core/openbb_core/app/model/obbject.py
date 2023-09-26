@@ -109,6 +109,12 @@ class OBBject(Tagged, Generic[T]):
         pd.DataFrame
             Pandas dataframe.
         """
+
+        def is_list_of_basemodel(items: List[Any]) -> bool:
+            return isinstance(items, list) and all(
+                isinstance(item, BaseModel) for item in items
+            )
+
         if self.results is None or self.results == []:
             raise OpenBBError("Results not found.")
 
@@ -117,28 +123,30 @@ class OBBject(Tagged, Generic[T]):
 
         try:
             res = self.results
-
             df = None
-
             sort_columns = True
-            if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
-                for r in res:
-                    dict_of_df = {}
-                    for k, v in r.items():
-                        if isinstance(v, list) and all(
-                            isinstance(nv, BaseModel) for nv in v
-                        ):
-                            dict_of_df[k] = basemodel_to_df(v, "date")
-                            sort_columns = False
-                        else:
-                            dict_of_df[k] = pd.DataFrame(v)
-                    df = pd.concat(dict_of_df, axis=1)
 
-            elif isinstance(res, list) and all(
-                isinstance(item, BaseModel) for item in res
-            ):
+            # List[Dict]
+            if isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
+                r = res[0]
+                dict_of_df = {}
+
+                for k, v in r.items():
+                    # Dict[str, List[BaseModel]]
+                    if is_list_of_basemodel(v):
+                        dict_of_df[k] = basemodel_to_df(v, "date")
+                        sort_columns = False
+                    # Dict[str, Any]
+                    else:
+                        dict_of_df[k] = pd.DataFrame(v)
+
+                df = pd.concat(dict_of_df, axis=1)
+
+            # List[BaseModel]
+            elif is_list_of_basemodel(res):
                 df = basemodel_to_df(res, "date")
                 sort_columns = False
+            # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 df = pd.DataFrame(res)
 
@@ -150,8 +158,18 @@ class OBBject(Tagged, Generic[T]):
                 df.sort_index(axis=1, inplace=True)
             df = df.dropna(axis=1, how="all")
 
-        except Exception as e:
-            raise OpenBBError("Failed to convert results to DataFrame.") from e
+        except OpenBBError as e:
+            raise e
+        except ValueError as ve:
+            raise OpenBBError(
+                f"ValueError: {ve}. Ensure the data format matches the expected format."
+            ) from ve
+        except TypeError as te:
+            raise OpenBBError(
+                f"TypeError: {te}. Check the data types in your results."
+            ) from te
+        except Exception as ex:
+            raise OpenBBError(f"An unexpected error occurred: {ex}") from ex
 
         return df
 

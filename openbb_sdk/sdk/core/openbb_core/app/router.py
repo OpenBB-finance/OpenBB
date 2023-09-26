@@ -423,6 +423,9 @@ class CommandMap:
         self._command_coverage = self.get_command_coverage(
             router=self._router, sep=coverage_sep
         )
+        self._commands_model = self.get_commands_model(
+            router=self._router, sep=coverage_sep
+        )
 
     @property
     def map(self) -> Dict[str, Callable]:
@@ -435,6 +438,10 @@ class CommandMap:
     @property
     def command_coverage(self) -> Dict[str, List[str]]:
         return self._command_coverage
+
+    @property
+    def commands_model(self) -> Dict[str, List[str]]:
+        return self._commands_model
 
     @staticmethod
     def get_command_map(
@@ -499,6 +506,26 @@ class CommandMap:
                         if route.path not in coverage_map:  # type: ignore
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
+        return coverage_map
+
+    @staticmethod
+    def get_commands_model(
+        router: Router, sep: Optional[str] = None
+    ) -> Dict[str, List[str]]:
+        api_router = router.api_router
+
+        coverage_map: Dict[Any, Any] = {}
+        for route in api_router.routes:
+            openapi_extra = getattr(route, "openapi_extra")
+            if openapi_extra:
+                model = openapi_extra.get("model", None)
+                if model and hasattr(route, "path"):
+                    rp = (
+                        route.path if sep is None else route.path.replace("/", sep)  # type: ignore
+                    )
+                    if route.path not in coverage_map:  # type: ignore
+                        coverage_map[rp] = []
+                    coverage_map[rp] = model
         return coverage_map
 
     def get_command(self, route: str) -> Optional[Callable]:

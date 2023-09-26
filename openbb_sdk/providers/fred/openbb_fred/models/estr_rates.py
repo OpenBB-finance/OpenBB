@@ -45,7 +45,7 @@ class FREDESTRData(ESTRData):
         try:
             return float(v)
         except ValueError:
-            return float("nan")
+            return None
 
 
 class FREDESTRFetcher(
