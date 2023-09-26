@@ -51,6 +51,7 @@ def write_test_w_template(params_list: List[Dict[str, str]], route: str, path: s
     "params",
     [{params_str}],
 )
+@pytest.mark.integration
 def test_{route.replace("/", "_")[1:]}(params, headers):
     params = {{p: v for p, v in params.items() if v}}
 

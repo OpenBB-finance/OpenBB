@@ -109,6 +109,7 @@ def add_test_commands_to_file(  # pylint: disable=W0102
         {params}
     ],
 )
+@pytest.mark.integration
 def test_{test_name}(**params):
     result = obb.{command_name}(**params)
     assert result
