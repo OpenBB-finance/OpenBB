@@ -120,6 +120,7 @@ class LoggingService(metaclass=SingletonMeta):
             format=FormatterWithExceptions.LOGFORMAT,
             datefmt=FormatterWithExceptions.DATEFORMAT,
             handlers=[],
+            force=True,
         )
         handlers_manager = HandlersManager(settings=self._logging_settings)
 
