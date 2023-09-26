@@ -34,6 +34,7 @@ from openbb_core.app.model.obbject import OBBject
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_balance(params):
     result = obb.stocks.fa.balance(**params)
     assert result
@@ -47,6 +48,7 @@ def test_stocks_fa_balance(params):
         ({"symbol": "AAPL", "limit": 10}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_balance_growth(params):
     result = obb.stocks.fa.balance_growth(**params)
     assert result
@@ -65,6 +67,7 @@ def test_stocks_fa_balance_growth(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_cal(params):
     result = obb.stocks.fa.cal(**params)
     assert result
@@ -102,6 +105,7 @@ def test_stocks_fa_cal(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_cash(params):
     result = obb.stocks.fa.cash(**params)
     assert result
@@ -115,6 +119,7 @@ def test_stocks_fa_cash(params):
         ({"symbol": "AAPL", "limit": 10}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_cash_growth(params):
     result = obb.stocks.fa.cash_growth(**params)
     assert result
@@ -128,6 +133,7 @@ def test_stocks_fa_cash_growth(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_comp(params):
     result = obb.stocks.fa.comp(**params)
     assert result
@@ -146,6 +152,7 @@ def test_stocks_fa_comp(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_comsplit(params):
     result = obb.stocks.fa.comsplit(**params)
     assert result
@@ -159,6 +166,7 @@ def test_stocks_fa_comsplit(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_divs(params):
     result = obb.stocks.fa.divs(**params)
     assert result
@@ -172,6 +180,7 @@ def test_stocks_fa_divs(params):
         ({"symbol": "AAPL", "limit": 50}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_earning(params):
     result = obb.stocks.fa.earning(**params)
     assert result
@@ -185,6 +194,7 @@ def test_stocks_fa_earning(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_emp(params):
     result = obb.stocks.fa.emp(**params)
     assert result
@@ -198,6 +208,7 @@ def test_stocks_fa_emp(params):
         ({"symbol": "AAPL", "period": "annual", "limit": 30}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_est(params):
     result = obb.stocks.fa.est(**params)
     assert result
@@ -235,6 +246,7 @@ def test_stocks_fa_est(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_income(params):
     result = obb.stocks.fa.income(**params)
     assert result
@@ -248,6 +260,7 @@ def test_stocks_fa_income(params):
         ({"symbol": "AAPL", "limit": 10, "period": "annual"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_income_growth(params):
     result = obb.stocks.fa.income_growth(**params)
     assert result
@@ -269,6 +282,7 @@ def test_stocks_fa_income_growth(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_ins(params):
     result = obb.stocks.fa.ins(**params)
     assert result
@@ -288,6 +302,7 @@ def test_stocks_fa_ins(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_ins_own(params):
     result = obb.stocks.fa.ins_own(**params)
     assert result
@@ -301,6 +316,7 @@ def test_stocks_fa_ins_own(params):
         ({"symbol": "AAPL", "period": "annual", "limit": 100}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_metrics(params):
     result = obb.stocks.fa.metrics(**params)
     assert result
@@ -314,6 +330,7 @@ def test_stocks_fa_metrics(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_mgmt(params):
     result = obb.stocks.fa.mgmt(**params)
     assert result
@@ -327,6 +344,7 @@ def test_stocks_fa_mgmt(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_overview(params):
     result = obb.stocks.fa.overview(**params)
     assert result
@@ -340,6 +358,7 @@ def test_stocks_fa_overview(params):
         ({"symbol": "AAPL", "date": "2023-01-01", "page": 1}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_own(params):
     result = obb.stocks.fa.own(**params)
     assert result
@@ -353,6 +372,7 @@ def test_stocks_fa_own(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_pt(params):
     result = obb.stocks.fa.pt(**params)
     assert result
@@ -367,6 +387,7 @@ def test_stocks_fa_pt(params):
         ({"with_grade": True, "provider": "fmp", "symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_pta(params):
     result = obb.stocks.fa.pta(**params)
     assert result
@@ -380,6 +401,7 @@ def test_stocks_fa_pta(params):
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_ratios(params):
     result = obb.stocks.fa.ratios(**params)
     assert result
@@ -393,6 +415,7 @@ def test_stocks_fa_ratios(params):
         ({"symbol": "AAPL", "period": "annual", "structure": "flat"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_revgeo(params):
     result = obb.stocks.fa.revgeo(**params)
     assert result
@@ -406,6 +429,7 @@ def test_stocks_fa_revgeo(params):
         ({"symbol": "AAPL", "period": "annual", "structure": "flat"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_revseg(params):
     result = obb.stocks.fa.revseg(**params)
     assert result
@@ -419,6 +443,7 @@ def test_stocks_fa_revseg(params):
         ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_sec(params):
     result = obb.stocks.fa.sec(**params)
     assert result
@@ -432,6 +457,7 @@ def test_stocks_fa_sec(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_shrs(params):
     result = obb.stocks.fa.shrs(**params)
     assert result
@@ -445,6 +471,7 @@ def test_stocks_fa_shrs(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_split(params):
     result = obb.stocks.fa.split(**params)
     assert result
@@ -458,6 +485,7 @@ def test_stocks_fa_split(params):
         ({"symbol": "AAPL", "year": 2023, "quarter": 1}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_transcript(params):
     result = obb.stocks.fa.transcript(**params)
     assert result
@@ -471,6 +499,7 @@ def test_stocks_fa_transcript(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_ca_peers(params):
     result = obb.stocks.ca.peers(**params)
     assert result
@@ -485,6 +514,7 @@ def test_stocks_ca_peers(params):
         ({"date": "2023-01-01", "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_options_chains(params):
     result = obb.stocks.options.chains(**params)
     assert result
@@ -641,6 +671,7 @@ def test_stocks_options_chains(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_load(params):
     result = obb.stocks.load(**params)
     assert result
@@ -684,6 +715,7 @@ def test_stocks_load(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_news(params):
     result = obb.stocks.news(**params)
     assert result
@@ -696,6 +728,7 @@ def test_stocks_news(params):
         ({"symbol": "AAPL", "limit": 100}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_multiples(params):
     result = obb.stocks.multiples(**params)
     assert result
@@ -709,6 +742,7 @@ def test_stocks_multiples(params):
         ({"query": "AAPL", "ticker": True}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_search(params):
     result = obb.stocks.search(**params)
     assert result
@@ -723,6 +757,7 @@ def test_stocks_search(params):
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_quote(params):
     result = obb.stocks.quote(**params)
     assert result
@@ -736,6 +771,7 @@ def test_stocks_quote(params):
         ({"symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_info(params):
     result = obb.stocks.info(**params)
     assert result

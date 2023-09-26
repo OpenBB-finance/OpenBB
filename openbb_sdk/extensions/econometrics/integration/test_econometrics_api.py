@@ -21,6 +21,7 @@ def headers():
     "params",
     [({"data": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_corr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -35,6 +36,7 @@ def test_econometrics_corr(params, headers):
     "params",
     [({"data": "", "y_column": "", "x_columns": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_ols_summary(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -49,6 +51,7 @@ def test_econometrics_ols_summary(params, headers):
     "params",
     [({"data": "", "y_column": "", "x_columns": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_dwat(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -63,6 +66,7 @@ def test_econometrics_dwat(params, headers):
     "params",
     [({"data": "", "y_column": "", "x_columns": "", "lags": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_bgot(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -77,6 +81,7 @@ def test_econometrics_bgot(params, headers):
     "params",
     [({"data": "", "columns": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_coint(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -91,6 +96,7 @@ def test_econometrics_coint(params, headers):
     "params",
     [({"data": "", "y_column": "", "x_column": "", "lag": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_granger(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -105,6 +111,7 @@ def test_econometrics_granger(params, headers):
     "params",
     [({"data": "", "column": "", "regression": ""})],
 )
+@pytest.mark.integration
 def test_econometrics_unitroot(params, headers):
     params = {p: v for p, v in params.items() if v}
 

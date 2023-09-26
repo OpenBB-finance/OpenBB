@@ -81,6 +81,7 @@ from openbb_core.app.model.obbject import OBBject
         ),
     ],
 )
+@pytest.mark.integration
 def test_crypto_load(params):
     result = obb.crypto.load(**params)
     assert result

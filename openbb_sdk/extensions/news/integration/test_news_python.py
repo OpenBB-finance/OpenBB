@@ -31,6 +31,7 @@ from openbb_core.app.model.obbject import OBBject
         ),
     ],
 )
+@pytest.mark.integration
 def test_news_globalnews(params):
     result = obb.news.globalnews(**params)
     assert result

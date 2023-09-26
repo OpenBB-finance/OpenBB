@@ -21,6 +21,7 @@ def headers():
     "params",
     [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
 )
+@pytest.mark.integration
 def test_fixedincome_treasury(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -35,6 +36,7 @@ def test_fixedincome_treasury(params, headers):
     "params",
     [({"date": "2023-01-01", "inflation_adjusted": True})],
 )
+@pytest.mark.integration
 def test_fixedincome_ycrv(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -59,6 +61,7 @@ def test_fixedincome_ycrv(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_sofr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -83,6 +86,7 @@ def test_fixedincome_sofr(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_estr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -107,6 +111,7 @@ def test_fixedincome_estr(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_sonia(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -131,6 +136,7 @@ def test_fixedincome_sonia(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_ameribor(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -155,6 +161,7 @@ def test_fixedincome_ameribor(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_fed(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -169,6 +176,7 @@ def test_fixedincome_fed(params, headers):
     "params",
     [({}), ({"long_run": True, "provider": "fred"})],
 )
+@pytest.mark.integration
 def test_fixedincome_projections(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -183,6 +191,7 @@ def test_fixedincome_projections(params, headers):
     "params",
     [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
 )
+@pytest.mark.integration
 def test_fixedincome_iorb(params, headers):
     params = {p: v for p, v in params.items() if v}
 

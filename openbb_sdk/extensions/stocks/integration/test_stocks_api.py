@@ -47,6 +47,7 @@ def headers():
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_balance(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -61,6 +62,7 @@ def test_stocks_fa_balance(params, headers):
     "params",
     [({"symbol": "AAPL", "limit": 10})],
 )
+@pytest.mark.integration
 def test_stocks_fa_balance_growth(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -75,6 +77,7 @@ def test_stocks_fa_balance_growth(params, headers):
     "params",
     [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_cal(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -115,6 +118,7 @@ def test_stocks_fa_cal(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_cash(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -129,6 +133,7 @@ def test_stocks_fa_cash(params, headers):
     "params",
     [({"symbol": "AAPL", "limit": 10})],
 )
+@pytest.mark.integration
 def test_stocks_fa_cash_growth(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -143,6 +148,7 @@ def test_stocks_fa_cash_growth(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_comp(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -157,6 +163,7 @@ def test_stocks_fa_comp(params, headers):
     "params",
     [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_comsplit(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -171,6 +178,7 @@ def test_stocks_fa_comsplit(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_divs(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -185,6 +193,7 @@ def test_stocks_fa_divs(params, headers):
     "params",
     [({"symbol": "AAPL", "limit": 50})],
 )
+@pytest.mark.integration
 def test_stocks_fa_earning(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -199,6 +208,7 @@ def test_stocks_fa_earning(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_emp(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -213,6 +223,7 @@ def test_stocks_fa_emp(params, headers):
     "params",
     [({"symbol": "AAPL", "period": "annual", "limit": 30})],
 )
+@pytest.mark.integration
 def test_stocks_fa_est(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -253,6 +264,7 @@ def test_stocks_fa_est(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_income(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -267,6 +279,7 @@ def test_stocks_fa_income(params, headers):
     "params",
     [({"symbol": "AAPL", "limit": 10, "period": "annual"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_income_growth(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -291,6 +304,7 @@ def test_stocks_fa_income_growth(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_stocks_fa_ins(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -305,6 +319,7 @@ def test_stocks_fa_ins(params, headers):
     "params",
     [({"symbol": "AAPL", "include_current_quarter": True, "date": "2023-01-01"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_ins_own(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -319,6 +334,7 @@ def test_stocks_fa_ins_own(params, headers):
     "params",
     [({"symbol": "AAPL", "period": "annual", "limit": 100})],
 )
+@pytest.mark.integration
 def test_stocks_fa_metrics(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -333,6 +349,7 @@ def test_stocks_fa_metrics(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_mgmt(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -347,6 +364,7 @@ def test_stocks_fa_mgmt(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_overview(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -361,6 +379,7 @@ def test_stocks_fa_overview(params, headers):
     "params",
     [({"symbol": "AAPL", "date": "2023-01-01", "page": 1})],
 )
+@pytest.mark.integration
 def test_stocks_fa_own(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -375,6 +394,7 @@ def test_stocks_fa_own(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_pt(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -389,6 +409,7 @@ def test_stocks_fa_pt(params, headers):
     "params",
     [({"symbol": "AAPL"}), ({"with_grade": True, "provider": "fmp", "symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_pta(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -403,6 +424,7 @@ def test_stocks_fa_pta(params, headers):
     "params",
     [({"symbol": "AAPL", "period": "annual", "limit": 12})],
 )
+@pytest.mark.integration
 def test_stocks_fa_ratios(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -417,6 +439,7 @@ def test_stocks_fa_ratios(params, headers):
     "params",
     [({"symbol": "AAPL", "period": "annual", "structure": "flat"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_revgeo(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -431,6 +454,7 @@ def test_stocks_fa_revgeo(params, headers):
     "params",
     [({"symbol": "AAPL", "period": "annual", "structure": "flat"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_revseg(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -445,6 +469,7 @@ def test_stocks_fa_revseg(params, headers):
     "params",
     [({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100})],
 )
+@pytest.mark.integration
 def test_stocks_fa_sec(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -459,6 +484,7 @@ def test_stocks_fa_sec(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_shrs(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -473,6 +499,7 @@ def test_stocks_fa_shrs(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_fa_split(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -487,6 +514,7 @@ def test_stocks_fa_split(params, headers):
     "params",
     [({"symbol": "AAPL", "year": 2023, "quarter": 1})],
 )
+@pytest.mark.integration
 def test_stocks_fa_transcript(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -501,6 +529,7 @@ def test_stocks_fa_transcript(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_ca_peers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -518,6 +547,7 @@ def test_stocks_ca_peers(params, headers):
         ({"date": "2023-01-01", "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_options_chains(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -671,6 +701,7 @@ def test_stocks_options_chains(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_load(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -717,6 +748,7 @@ def test_stocks_load(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_stocks_news(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -731,6 +763,7 @@ def test_stocks_news(params, headers):
     "params",
     [({"symbol": "AAPL", "limit": 100})],
 )
+@pytest.mark.integration
 def test_stocks_multiples(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -745,6 +778,7 @@ def test_stocks_multiples(params, headers):
     "params",
     [({"query": "AAPl", "ticker": True})],
 )
+@pytest.mark.integration
 def test_stocks_search(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -762,6 +796,7 @@ def test_stocks_search(params, headers):
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
+@pytest.mark.integration
 def test_stocks_quote(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -776,6 +811,7 @@ def test_stocks_quote(params, headers):
     "params",
     [({"symbol": "AAPL"})],
 )
+@pytest.mark.integration
 def test_stocks_info(params, headers):
     params = {p: v for p, v in params.items() if v}
 

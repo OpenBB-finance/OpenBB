@@ -31,6 +31,7 @@ from openbb_core.app.model.obbject import OBBject
         ),
     ],
 )
+@pytest.mark.integration
 def test_futures_load(params):
     result = obb.futures.load(**params)
     assert result
@@ -44,6 +45,7 @@ def test_futures_load(params):
         ({"symbol": "AAPL", "date": "2023-01-01"}),
     ],
 )
+@pytest.mark.integration
 def test_futures_curve(params):
     result = obb.futures.curve(**params)
     assert result

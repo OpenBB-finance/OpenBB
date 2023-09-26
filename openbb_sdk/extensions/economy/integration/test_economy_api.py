@@ -21,6 +21,7 @@ def headers():
     "params",
     [({"index": "dowjones"})],
 )
+@pytest.mark.integration
 def test_economy_const(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -46,6 +47,7 @@ def test_economy_const(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_economy_cpi(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -148,6 +150,7 @@ def test_economy_cpi(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_index(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -182,6 +185,7 @@ def test_economy_index(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_european_index(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -196,6 +200,7 @@ def test_economy_european_index(params, headers):
     "params",
     [({"symbol": "BUKBUS"})],
 )
+@pytest.mark.integration
 def test_economy_european_index_constituents(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -210,6 +215,7 @@ def test_economy_european_index_constituents(params, headers):
     "params",
     [({}), ({"europe": True, "provider": "cboe"})],
 )
+@pytest.mark.integration
 def test_economy_available_indices(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -224,6 +230,7 @@ def test_economy_available_indices(params, headers):
     "params",
     [({})],
 )
+@pytest.mark.integration
 def test_economy_risk(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -248,6 +255,7 @@ def test_economy_risk(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_index_search(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -262,6 +270,7 @@ def test_economy_index_search(params, headers):
     "params",
     [({"region": "US"})],
 )
+@pytest.mark.integration
 def test_economy_index_snapshots(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -276,6 +285,7 @@ def test_economy_index_snapshots(params, headers):
     "params",
     [({"query": "grain"})],
 )
+@pytest.mark.integration
 def test_economy_cot_search(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -305,6 +315,7 @@ def test_economy_cot_search(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_cot(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -329,6 +340,7 @@ def test_economy_cot(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_economy_sp500_multiples(params, headers):
     params = {p: v for p, v in params.items() if v}
 
