@@ -122,8 +122,7 @@ class YFinanceFuturesHistoricalFetcher(
             else 0
         )
         if query.start_date:
-            data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index)
+            data.index = to_datetime(data.index).tz_convert(None)
 
             start_date_dt = datetime.combine(query.start_date, datetime.min.time())
             end_date_dt = datetime.combine(query.end_date, datetime.min.time())
@@ -134,7 +133,7 @@ class YFinanceFuturesHistoricalFetcher(
             ]
 
         data.reset_index(inplace=True)
-        data.rename(columns={"index": "date"}, inplace=True)
+        data.rename(columns={"index": "Date"}, inplace=True)
 
         return data.to_dict("records")
 
