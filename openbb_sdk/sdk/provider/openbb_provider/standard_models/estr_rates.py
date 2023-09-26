@@ -28,4 +28,4 @@ class ESTRData(Data):
     """Return Treasury Rates Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float = Field(description="ESTR rate.")
+    rate: Optional[float] = Field(description="ESTR rate.")

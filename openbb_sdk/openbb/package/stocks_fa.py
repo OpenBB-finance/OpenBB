@@ -3203,7 +3203,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
         quarter: Annotated[
-            Literal[1, 2, 3, 4],
+            int,
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),
@@ -3219,7 +3219,7 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         year : int
             Year of the earnings call transcript.
-        quarter : Literal[1, 2, 3, 4]
+        quarter : int
             Quarter of the earnings call transcript.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.

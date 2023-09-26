@@ -2,7 +2,7 @@
 # ruff: noqa: SIM105
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
@@ -14,6 +14,7 @@ from openbb_provider.standard_models.futures_historical import (
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_yfinance.utils.helpers import get_futures_data
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
+from pandas import Timestamp, to_datetime
 from pydantic import Field, validator
 from yfinance import Ticker
 
@@ -40,10 +41,12 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     """YFinance Futures End of Day Data."""
 
-    @validator("Date", pre=True, check_fields=False)
+    @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return datetime object from string."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
+        """Return formatted datetime."""
+        if isinstance(v, Timestamp):
+            return v.to_pydatetime()
+        return v
 
 
 class YFinanceFuturesHistoricalFetcher(
@@ -63,23 +66,9 @@ class YFinanceFuturesHistoricalFetcher(
             now = datetime.now().date()
             if params.get("start_date") is None:
                 transformed_params["start_date"] = now - relativedelta(years=1)
-            else:
-                try:
-                    transformed_params["start_date"] = datetime.strptime(
-                        params["start_date"], "%Y-%m-%d"
-                    ).date()
-                except TypeError:
-                    pass
 
             if params.get("end_date") is None:
                 transformed_params["end_date"] = now
-            else:
-                try:
-                    transformed_params["end_date"] = datetime.strptime(
-                        params["end_date"], "%Y-%m-%d"
-                    ).date()
-                except TypeError:
-                    pass
 
         return YFinanceFuturesHistoricalQueryParams(**transformed_params)
 
@@ -124,10 +113,29 @@ class YFinanceFuturesHistoricalFetcher(
                 raise_errors=True,
             )
 
-        data = data.reset_index()
-        data["Date"] = (
-            data["Date"].dt.tz_localize(None).dt.strftime("%Y-%m-%dT%H:%M:%S")
+        query.end_date = (
+            datetime.now().date() if query.end_date is None else query.end_date
         )
+        days = (
+            1
+            if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
+            else 0
+        )
+        if query.start_date:
+            data.set_index("date", inplace=True)
+            data.index = to_datetime(data.index)
+
+            start_date_dt = datetime.combine(query.start_date, datetime.min.time())
+            end_date_dt = datetime.combine(query.end_date, datetime.min.time())
+
+            data = data[
+                (data.index >= start_date_dt + timedelta(days=days))
+                & (data.index <= end_date_dt)
+            ]
+
+        data.reset_index(inplace=True)
+        data.rename(columns={"index": "date"}, inplace=True)
+
         return data.to_dict("records")
 
     @staticmethod

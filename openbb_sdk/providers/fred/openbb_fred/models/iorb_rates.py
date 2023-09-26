@@ -31,7 +31,7 @@ class FREDIORBData(IORBData):
         try:
             return float(v)
         except ValueError:
-            return float("nan")
+            return None
 
 
 class FREDIORBFetcher(
