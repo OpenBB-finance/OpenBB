@@ -12,17 +12,201 @@ interactions:
     uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&token=MOCK_TOKEN
   response:
     body:
-      string: "[{\"id\":34919603,\"author\":\"Lara Goldstein\",\"created\":\"Tue,
-        26 Sep 2023 14:31:38 -0400\",\"updated\":\"Tue, 26 Sep 2023 14:31:38 -0400\",\"title\":\"Depression
-        Relief: Possible Therapy Boost With DMT & SSRIs, Per Small Pharma Clinical
-        Results\",\"teaser\":\"New findings on safety, tolerability and efficacy from
-        a clinical study assessing the interaction of psychedelics and traditional
-        pharma for the treatment of major depressive disorder (MDD) are out.\",\"body\":\"<p>New
+      string: "[{\"id\":34916272,\"author\":\"Murtuza Merchant\",\"created\":\"Tue,
+        26 Sep 2023 14:49:19 -0400\",\"updated\":\"Tue, 26 Sep 2023 14:49:19 -0400\",\"title\":\"Chase's
+        Crypto-Related Transactions Ban In UK: A Sign Of The Times \u2014 Or A Sign
+        Of Weakness?\",\"teaser\":\"JP Morgan Chase &amp; Co (NYSE: JPM), the prominent
+        banking institution, decided to halt cryptocurrency-related transactions for
+        its U.K. clientele starting\_Oct. 16, according to\_a recent communication
+        to its users.\",\"body\":\"<p><strong>JP Morgan Chase &amp; Co</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/JPM#NYSE\\\">JPM</a>),
+        the prominent banking institution, decided to halt cryptocurrency-related
+        transactions for its U.K. clientele starting&nbsp;Oct. 16, according to&nbsp;a
+        recent communication to its users.</p>\\r\\n\\r\\n<p>The bank stated, &quot;If
+        we think you&#39;re making a payment related to crypto assets, we&#39;ll decline
+        it,&quot; suggesting&nbsp;patrons keen on crypto investments might need to
+        explore other banking alternatives, Coindesk <a href=\\\"https://www.coindesk.com/policy/2023/09/26/chase-uk-to-block-crypto-payments-citing-fraud-scams/?utm_medium=social&amp;utm_source=onecryptofeed&amp;utm_campaign=headlines\\\">reported</a>.</p>\\r\\n\\r\\n<p>This
+        move by Chase comes ahead of the much-anticipated Benzinga&#39;s <a href=\\\"https://www.benzinga.com/events/digital-assets/?UTM_source=article\\\">Future
+        of Digital Assets</a> conference on Nov. 14, where such industry shifts are
+        likely to be discussed.</p>\\r\\n\\r\\n<p>Many U.K. banks have already been
+        traditionally wary of cryptocurrency transactions, often restricting or outright
+        blocking access for their customers.</p>\\r\\n\\r\\n<p>This cautious stance
+        has been so prevalent that the Financial Conduct Authority (FCA), the U.K.&#39;s
+        financial regulatory body,&nbsp;had to mediate dialogues between banks and
+        cryptocurrency entities due to the banking sector&#39;s hesitancy in serving
+        the crypto industry.</p>\\r\\n\\r\\n<p><em>Also Read:&nbsp;<a href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/09/34905989/fhenix-secures-7m-funding-aims-to-bolster-privacy-on-public-blockchains\\\">Fhenix
+        Secures $7M Funding, Aims To Bolster Privacy On Public Blockchains</a></em></p>\\r\\n\\r\\n<p>Chase&#39;s
+        decision, as detailed in the communication reviewed by CoinDesk, stemmed&nbsp;from
+        concerns over rising fraudulent activities linked to cryptocurrencies.</p>\\r\\n\\r\\n<p>The
+        bank expressed that malefactors are increasingly exploiting digital assets
+        to defraud individuals of substantial amounts.</p>\\r\\n\\r\\n<p>Echoing the
+        sentiments of other U.K. banks that have implemented similar restrictions,
+        a Chase U.K. representative mentioned, &ldquo;We&rsquo;re committed to helping
+        keep our customers&rsquo; money safe and secure. We&rsquo;ve seen an increase
+        in the number of crypto scams targeting U.K. consumers, so we have taken the
+        decision to prevent the purchase of crypto assets on a Chase debit card or
+        by transferring money to a crypto site from a Chase account.&rdquo;</p>\\r\\n\\r\\n<p><em>Read
+        Next:&nbsp;<a href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/09/34900667/taiwan-regulators-unveil-guiding-principles-to-regulate-digital-assets-crypto\\\">Taiwan
+        Regulators Unveil &#39;Guiding Principles&#39; To Regulate Digital Assets,
+        Crypto</a></em></p>\\r\\n\\r\\n<p><em>Meet and engage with transformative&nbsp;</em><em><a
+        href=\\\"https://www.benzinga.com/go/crypto-conference-article-link\\\" rel=\\\"noopener
+        noreferrer\\\" target=\\\"_blank\\\">Digital Asset and Crypto</a></em><em>&nbsp;business
+        leaders and investors at Benzinga&#39;s exclusive event:&nbsp;</em><em><a
+        href=\\\"https://www.benzinga.com/go/crypto-conference-article-link\\\" rel=\\\"noopener
+        noreferrer\\\" target=\\\"_blank\\\">Future of Digital Assets</a></em><em>.
+        Tickets are flying:&nbsp;</em><em><a href=\\\"https://www.benzinga.com/go/crypto-conference-article-link\\\"
+        rel=\\\"noopener noreferrer\\\" target=\\\"_blank\\\">Get yours</a></em><em>!&nbsp;</em></p>\\r\\n\\r\\n<p><em>Photo:
+        Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34916272/chases-crypto-related-transactions-ban-in-uk-a-sign-of-the-times-or-a-sign-of-weakness\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/banned.untitled_desigshutterstock..png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/banned.untitled_desigshutterstock..png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/banned.untitled_desigshutterstock..png\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"News\"},{\"name\":\"Global\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"JPM\"}],\"tags\":[{\"name\":\"crypto
+        assets\"},{\"name\":\"Crypto industry\"},{\"name\":\"Crypto Scams\"},{\"name\":\"cryptocurrency
+        transactions\"},{\"name\":\"debit card\"},{\"name\":\"Financial Conduct Authority\"},{\"name\":\"U.K.\"},{\"name\":\"UK\"}]},{\"id\":34923076,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 14:46:15 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:46:16 -0400\",\"title\":\"This Is What Whales Are Betting On
+        Home Depot\",\"teaser\":\" \",\"body\":\"<p>A whale with a lot of money to
+        spend has taken a noticeably bearish stance on <strong>Home Depot</strong>.</p>\\n<p>Looking
+        at options history for Home Depot (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/HD#NYSE\\\">HD</a>)
+        we detected 22 strange trades.</p>\\n<p>If we consider the specifics of each
+        trade, it is accurate to state that 36% of the investors opened trades with
+        bullish expectations and 63% with bearish.</p>\\n<p>From the overall spotted
+        trades, 11 are puts, for a total amount of $518,319 and 11, calls, for a total
+        amount of $545,972.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking into
+        account the Volume and Open Interest on these contracts, it appears that whales
+        have been targeting a price range from $290.0 to $375.0 for Home Depot over
+        the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>In
+        terms of liquidity and interest, the mean open interest for Home Depot options
+        trades today is 959.57 with a total volume of 2,099.00.</p>\\n<p>In the following
+        chart, we are able to follow the development of volume and open interest of
+        call and put options for Home Depot's big money trades within a strike price
+        range of $290.0 to $375.0 over the last 30 days.</p>\\n<h3>Home Depot Option
+        Volume And Open Interest Over Last 30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695753971_0.png\\\"
+        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>10/20/23</td>\\n<td>$315.00</td>\\n<td>$110.5K</td>\\n<td>1.4K</td>\\n<td
+        align=\\\"right\\\">480</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>01/19/24</td>\\n<td>$315.00</td>\\n<td>$105.0K</td>\\n<td>915</td>\\n<td
+        align=\\\"right\\\">53</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$320.00</td>\\n<td>$63.4K</td>\\n<td>245</td>\\n<td
+        align=\\\"right\\\">105</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$320.00</td>\\n<td>$63.3K</td>\\n<td>245</td>\\n<td
+        align=\\\"right\\\">155</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$320.00</td>\\n<td>$63.3K</td>\\n<td>245</td>\\n<td
+        align=\\\"right\\\">156</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
+        Is Home Depot Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 1,456,296,
+        the price of HD is down -1.5% at $301.89. </li>\\n<li>RSI indicators hint
+        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
+        to be released in 49 days.</li>\\n</ul>\\n<h3>What The Experts Say On Home
+        Depot:</h3>\\n<ul>\\n<li>Evercore ISI Group has decided to maintain their
+        Outperform rating on Home Depot, which currently sits at a price target of
+        $370. </li>\\n<li>Stifel downgraded its action to Hold with a price target
+        of $350</li>\\n<li>HSBC downgraded its action to Hold with a price target
+        of $365</li>\\n</ul>\\n<p>Options are a riskier asset compared to just trading
+        the stock, but they have higher profit potential. Serious options traders
+        manage this risk by educating themselves daily, scaling in and out of trades,
+        following more than one indicator, and following the markets closely.</p>\\n<p>If
+        you want to stay updated on the latest options trades for Home Depot, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34923076/this-is-what-whales-are-betting-on-home-depot\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"HD\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34919396,\"author\":\"Shivani
+        Kumaresan\",\"created\":\"Tue, 26 Sep 2023 14:38:48 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:38:48 -0400\",\"title\":\"Holiday Hiring In A Pinch? Dick's
+        Sporting Goods Aims To Hire Less Seasonal Help Than Last Year\",\"teaser\":\"Dick&#39;s
+        Sporting Goods Inc\_(NYSE: DKS) disclosed its intentions to onboard 8,600
+        seasonal teammates across the nation in\_\",\"body\":\"<p><strong>Dick&#39;s
+        Sporting Goods Inc</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DKS#NYSE\\\">DKS</a>)
+        disclosed its intentions to onboard 8,600 seasonal teammates across the nation
+        in&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/n34904539/dicks-sporting-goods-plans-to-hire-8-600-seasonal-teammates-for-holiday-shopping-season\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">anticipation of the upcoming holiday season.</a></p>\\r\\n\\r\\n<p>Last
+        year, the athletic-wear chain had marked a target of hiring&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://investors.dicks.com/news/news-details/2022/DICKS-Sporting-Goods-to-Begin-Holiday-Hiring-with-National-Signing-Day-on-September-28/default.aspx\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">9,000</a>&nbsp;interim staff for the festive rush.</p>\\r\\n\\r\\n<p>The
+        reveal from Dick&#39;s follows similar conservative seasonal employment goals
+        recently unveiled by giants like&nbsp;<strong>Target Corporation</strong>&nbsp;(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TGT#NYSE\\\">TGT</a>)
+        and&nbsp;<strong>Macy&#39;s Inc</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/M#NYSE\\\">M</a>), according to a
+        report from Reuters.</p>\\r\\n\\r\\n<p>The report quoted a study conducted
+        by Challenger, Gray &amp; Christmas that indicated a trend, noting retail
+        outlets in the U.S. are expected to hire the lowest number of seasonal workers
+        since 2008.</p>\\r\\n\\r\\n<p>Rising labor costs seem to be the primary reason
+        for this trend.</p>\\r\\n\\r\\n<p>The report also cited a recent analysis
+        by Deloitte, which highlights that the U.S. might witness the most sluggish
+        growth in holiday sales in half a decade due to escalating inflation rates,
+        leading households to tighten their budgetary belts.</p>\\r\\n\\r\\n<p>However,&nbsp;<strong>Amazon.Com,
+        Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        is on a different tangent altogether, with plans to amplify its hires by a
+        whopping 67% compared to its figures from the last two years.</p>\\r\\n\\r\\n<p><strong><em>Also
+        Read</em></strong><em>:&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34767824/amazons-holiday-hiring-spree-signals-strong-consumer-demand-expects-strong-q4-growth-bofa-analyst\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Amazon&#39;s Holiday Hiring Spree Signals Strong
+        Consumer Demand, Expects Strong Q4 Growth: BofA Analyst</em></a></p>\\r\\n\\r\\n<p>The
+        report further noted that brands like Dick&#39;s Sporting Goods,&nbsp;<strong>Nike,
+        Inc.</strong>(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NKE#NYSE\\\">NKE</a>),
+        and&nbsp;<strong>Foot Locker, Inc.</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/FL#NYSE\\\">FL</a>) have found themselves
+        grappling with diminished wholesale demand.</p>\\r\\n\\r\\n<p><strong>Price
+        Action</strong>: DKS shares are trading lower by 0.62% at $106.75 on the last
+        check Tuesday.</p>\\r\\n\\r\\n<p><em>This content was partially produced with
+        the help of AI tools and was reviewed and published by Benzinga editors.</em></p>\\r\\n
+        \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34919396/holiday-hiring-in-a-pinch-dicks-sporting-goods-aims-to-hire-less-seasonal-help-than-last-year\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/dks_1.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/dks_1.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/dks_1.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Small
+        Cap\"},{\"name\":\"Markets\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"DKS\"},{\"name\":\"FL\"},{\"name\":\"M\"},{\"name\":\"NKE\"},{\"name\":\"TGT\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"Consumer Discretionary\"},{\"name\":\"Department
+        Stores\"}]},{\"id\":34912218,\"author\":\"Lekha Gupta\",\"created\":\"Tue,
+        26 Sep 2023 14:34:53 -0400\",\"updated\":\"Tue, 26 Sep 2023 14:35:39 -0400\",\"title\":\"Blink
+        Charging And Parkopedia Collaborate, Adding 4,000 Locations To Platform\",\"teaser\":\"Blink
+        Charging Co\_(NASDAQ: BLNK) disclosed an agreement with Parkopedia to offer
+        increased accessibility\_\",\"body\":\"<p><strong>Blink Charging Co</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BLNK#NASDAQ\\\">BLNK</a>)
+        disclosed an agreement with Parkopedia to offer increased accessibility&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/g34903735/blink-charging-teams-up-with-parkopedia-to-provide-ev-drivers-greater-accessibility-to-electric-ve\\\"
+        style=\\\"background-image:none; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">to electric vehicle charging to drivers</a>.</p>\\r\\n\\r\\n<p>As
+        per the deal, BLNK will integrate more than 4,000 EV charging locations in
+        the Parkopedia platform in North America.&nbsp;</p>\\r\\n\\r\\n<p>This strategic
+        integration will grant the platform access to around 12,000 public EV chargers,
+        which include 129 DC fast chargers.</p>\\r\\n\\r\\n<p>&quot;Our collaboration
+        with Parkopedia creates a streamlined experience for EV drivers to conveniently
+        locate Blink EV charging stations across North America. The combination of
+        Parkopedia&#39;s excellence in serving drivers through convenience in parking
+        accessibility and Blink&#39;s extensive range of public EV chargers gives
+        EV drivers confidence in finding a reliable charging experience wherever they
+        are. This initiative builds upon our strategy of making it easy for EV drivers
+        to locate Blink chargers through a variety of platforms.&quot; said <strong>Jim
+        Nemec</strong>, chief revenue officer for Blink Charging.&nbsp;</p>\\r\\n\\r\\n<p>Last
+        month, BLNK reported a Q2 EPS loss of $0.44, which beat the analyst consensus
+        estimate of an EPS loss of $0.49, a decline of 7.32% Y/Y, and sales of $32.84
+        million, which&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/08/33645117/blink-charging-q2-earnings-strongest-quarter-in-history-raises-guidance\\\"
+        style=\\\"background-image:none; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">beat the analyst of $23.76 million</a>.</p>\\r\\n\\r\\n<p>The
+        company raised its FY23 revenue target to $110 and $120 million, targeting
+        a positive adjusted <a href=\\\"https://www.benzinga.com/calendars/guidance\\\">EBITDA
+        run rate by December 2024</a>.</p>\\r\\n\\r\\n<p><em>Also Read:&nbsp;</em><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/08/34027538/electrifying-partnership-blink-charging-becomes-the-ev-charging-supplier-for-tennessee-valley-au\\\"
+        style=\\\"background-image:none; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Electrifying Partnership - Blink Charging Becomes
+        The EV Charging Supplier For Tennessee Valley Authority</em></a></p>\\r\\n\\r\\n<p><strong>Price
+        Action</strong>: BLNK shares were trading 0.85% higher at $2.98&nbsp;on the
+        last check Tuesday.&nbsp;</p>\\r\\n\\r\\n<p><em>Photo: Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34912218/blink-charging-and-parkopedia-collaborate-adding-4-000-locations-to-platform\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/blink_shutter.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/blink_shutter.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/blink_shutter.jpg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Contracts\"},{\"name\":\"Small Cap\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"BLNK\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34919603,\"author\":\"Lara
+        Goldstein\",\"created\":\"Tue, 26 Sep 2023 14:31:38 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:31:38 -0400\",\"title\":\"Depression Relief: Possible Therapy
+        Boost With DMT & SSRIs, Per Small Pharma Clinical Results\",\"teaser\":\"New
         findings on safety, tolerability and efficacy from a clinical study assessing
         the interaction of psychedelics and traditional pharma for the treatment of
-        major depressive disorder (MDD) are out.</p>\\r\\n\\r\\n<p>They correspond
-        to U.K.&rsquo;s short-acting psychedelic therapies developer <strong>Small
-        Pharma</strong>&rsquo;s (OTCQB:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DMTTF#OTCQB\\\">DMTTF</a>)
+        major depressive disorder (MDD) are out.\",\"body\":\"<p>New findings on safety,
+        tolerability and efficacy from a clinical study assessing the interaction
+        of psychedelics and traditional pharma for the treatment of major depressive
+        disorder (MDD) are out.</p>\\r\\n\\r\\n<p>They correspond to U.K.&rsquo;s
+        short-acting psychedelic therapies developer <strong>Small Pharma</strong>&rsquo;s
+        (OTCQB:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DMTTF#OTCQB\\\">DMTTF</a>)
         open-label Phase 1b study assessing the joint work of its &ldquo;native&rdquo;
         DMT compound, SPL026&nbsp;and selective serotonin reuptake inhibitors (SSRIs.)</p>\\r\\n\\r\\n<p>The
         trial studied the safety, tolerability, pharmacokinetics and pharmacodynamics
@@ -69,7 +253,7 @@ interactions:
         come join us this Sept. 27-28 in Chicago for our 17th edition! Tickets <a
         href=\\\"https://www.benzinga.com/go/cannabis-conference-article-link\\\">HERE</a>.</em></p>\\r\\n\\r\\n<p><em>Photo:
         Benzinga edit with photo by&nbsp;Bacsica, aiyoshi597, Gisele Yashar and Gorodenkoff
-        on Shutterstock.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34919603/depression-relief-possible-therapy-boost-with-dmt-ssris-per-small-pharma-clinical-results\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
+        on Shutterstock.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34919603/depression-relief-possible-therapy-boost-with-dmt-ssris-per-small-pharma-clinical-results\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
         Stocks\"},{\"name\":\"Psychedelics\"},{\"name\":\"Management\"},{\"name\":\"Global\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"CYBN\"},{\"name\":\"DMTTF\"}],\"tags\":[{\"name\":\"DMT
         Clinical Trial\"},{\"name\":\"Drug Interactions\"},{\"name\":\"major depressive
         disorder\"},{\"name\":\"Psychedelic-Assisted Therapies\"}]},{\"id\":34922721,\"author\":\"Benzinga
@@ -371,7 +555,7 @@ interactions:
         Next:</em> <em><a href=\\\"https://www.benzinga.com/markets/cannabis/23/08/34149329/cashing-in-on-cannabis-urban-gro-secures-over-2m-in-deal-with-xs-financial-whats-next\\\">Cashing
         In On Cannabis: Urban-gro Secures Over $2M In Deal With XS Financial, What&#39;s
         Next?</a></em></p>\\r\\n\\r\\n<p><em>Image by <a href=\\\"https://www.benzinga.com/author/el-planteo\\\">El
-        Planteo</a></em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34920989/urban-gro-secures-11m-hospitality-recreation-contract-in-southeast-u-s\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/mercadocannabis.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Planteo</a></em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34920989/urban-gro-secures-11m-hospitality-recreation-contract-in-southeast-u-s\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/mercadocannabis.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
         Stocks\"},{\"name\":\"Financing\"},{\"name\":\"Events\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"UGRO\"}],\"tags\":[{\"name\":\"Bradley
         Nattrass\"},{\"name\":\"Cannabis Capital Conference\"},{\"name\":\"CCC\"},{\"name\":\"CCC
         Chicago\"},{\"name\":\"Controlled Environment Agriculture\"},{\"name\":\"Inc.\"},{\"name\":\"urban-gro\"}]},{\"id\":34915565,\"author\":\"Lekha
@@ -453,7 +637,7 @@ interactions:
         selected regions.</p>\\r\\n\\r\\n<p><strong>Price Action</strong>: KTB shares
         are trading higher by 1.23% at $42.21 on the last check Tuesday.</p>\\r\\n\\r\\n<p><em>This
         content was partially produced with the help of AI tools and was reviewed
-        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34911177/from-vintage-vibes-to-modern-street-lee-unveils-80s-inspired-collection-with-chinas-roaringwild\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/ktb.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"KTB\"}],\"tags\":[{\"name\":\"AI
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34911177/from-vintage-vibes-to-modern-street-lee-unveils-80s-inspired-collection-with-chinas-roaringwild\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/ktb.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"KTB\"}],\"tags\":[{\"name\":\"AI
         Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34921760,\"author\":\"Benzinga
         Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:50 -0400\",\"updated\":\"Tue,
         26 Sep 2023 14:00:51 -0400\",\"title\":\"The Latest Analyst Ratings for Clarivate\",\"teaser\":\"
@@ -532,7 +716,7 @@ interactions:
         tickers. It is important to keep in mind that while stock and sector analysts
         are specialists, they are also human and can only forecast their beliefs to
         traders.</p>\\n<p>This article was generated by Benzinga's automated content
-        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921757/expert-ratings-for-genmab\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Analyst
+        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921757/expert-ratings-for-genmab\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Analyst
         Ratings\"}],\"stocks\":[{\"name\":\"GMAB\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34921753,\"author\":\"Benzinga
         Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:24 -0400\",\"updated\":\"Tue,
         26 Sep 2023 14:00:25 -0400\",\"title\":\"Analyst Ratings for United Airlines
@@ -606,7 +790,7 @@ interactions:
         the P/E ratio should not be used in isolation, as other factors such as industry
         trends and business cycles can also impact a company's stock price. Therefore,
         investors should use the P/E ratio in conjunction with other financial metrics
-        and qualitative analysis to make informed investment decisions. </p>\",\"url\":\"https://www.benzinga.com/news/23/09/34921752/pe-ratio-insights-for-asml-holding\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Intraday
+        and qualitative analysis to make informed investment decisions. </p>\",\"url\":\"https://www.benzinga.com/news/23/09/34921752/pe-ratio-insights-for-asml-holding\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Intraday
         Update\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"ASML\"}],\"tags\":[{\"name\":\"BZI-PE\"}]},{\"id\":34921751,\"author\":\"Benzinga
         Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:17 -0400\",\"updated\":\"Tue,
         26 Sep 2023 14:00:17 -0400\",\"title\":\"4 Analysts Have This to Say About
@@ -645,7 +829,7 @@ interactions:
         and revenue to provide further guidance on stocks. Investors who use analyst
         ratings should note that this specialized advice comes from humans and may
         be subject to error.</p>\\n<p>This article was generated by Benzinga's automated
-        content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921751/4-analysts-have-this-to-say-about-thor-industries\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_2.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921751/4-analysts-have-this-to-say-about-thor-industries\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_2.jpeg\"}],\"channels\":[{\"name\":\"Analyst
         Ratings\"}],\"stocks\":[{\"name\":\"THO\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34904598,\"author\":\"Shivani
         Kumaresan\",\"created\":\"Tue, 26 Sep 2023 13:49:14 -0400\",\"updated\":\"Tue,
         26 Sep 2023 13:49:15 -0400\",\"title\":\"Upping The AI Security Ante: Booz
@@ -728,229 +912,7 @@ interactions:
         Korean Hackers Infiltrate Russian Missile Development Program: &#39;An Absolutely
         Hilarious Screwup&#39;</a></em></p>\\r\\n\\r\\n<p><em>Photo:&nbsp;<a href=\\\"https://www.shutterstock.com/es/g/max.ku\\\">max.ku</a>&nbsp;on
         Shutterstock.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/general/gaming/23/09/34919193/sony-allegedly-hacked-by-new-ransomware-group-company-is-currently-investigating\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/shutterstock_2012816243.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/shutterstock_2012816243.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/shutterstock_2012816243.jpg\"}],\"channels\":[{\"name\":\"Gaming\"},{\"name\":\"News\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"SONY\"}],\"tags\":[{\"name\":\"cyber
-        attack\"},{\"name\":\"cyber security\"},{\"name\":\"hack\"},{\"name\":\"hackers\"},{\"name\":\"Ransomed.vc\"},{\"name\":\"ransomware\"},{\"name\":\"Ransoned.vc\"}]},{\"id\":34920931,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 13:45:54 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 13:45:55 -0400\",\"title\":\"This Is What Whales Are Betting On
-        Caterpillar\",\"teaser\":\" \",\"body\":\"<p>A whale with a lot of money to
-        spend has taken a noticeably bearish stance on <strong>Caterpillar</strong>.</p>\\n<p>Looking
-        at options history for Caterpillar (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CAT#NYSE\\\">CAT</a>)
-        we detected 11 strange trades.</p>\\n<p>If we consider the specifics of each
-        trade, it is accurate to state that 45% of the investors opened trades with
-        bullish expectations and 54% with bearish.</p>\\n<p>From the overall spotted
-        trades, 7 are puts, for a total amount of $302,168 and 4, calls, for a total
-        amount of $232,340.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking into
-        account the Volume and Open Interest on these contracts, it appears that whales
-        have been targeting a price range from $250.0 to $350.0 for Caterpillar over
-        the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>Looking
-        at the volume and open interest is a powerful move while trading options.
-        This data can help you track the liquidity and interest for Caterpillar's
-        options for a given strike price. Below, we can observe the evolution of the
-        volume and open interest of calls and puts, respectively, for all of Caterpillar's
-        whale trades within a strike price range from $250.0 to $350.0 in the last
-        30 days. </p>\\n<h3>Caterpillar Option Volume And Open Interest Over Last
-        30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695750350_0.png\\\"
-        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
-        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
-        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
-        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
-        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>CAT</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/19/24</td>\\n<td>$310.00</td>\\n<td>$95.5K</td>\\n<td>1.9K</td>\\n<td
-        align=\\\"right\\\">408</td>\\n</tr>\\n<tr>\\n<td>CAT</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>02/16/24</td>\\n<td>$280.00</td>\\n<td>$60.1K</td>\\n<td>2.3K</td>\\n<td
-        align=\\\"right\\\">36</td>\\n</tr>\\n<tr>\\n<td>CAT</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>11/17/23</td>\\n<td>$270.00</td>\\n<td>$58.9K</td>\\n<td>1.4K</td>\\n<td
-        align=\\\"right\\\">73</td>\\n</tr>\\n<tr>\\n<td>CAT</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>NEUTRAL</td>\\n<td>11/17/23</td>\\n<td>$280.00</td>\\n<td>$57.4K</td>\\n<td>1.2K</td>\\n<td
-        align=\\\"right\\\">40</td>\\n</tr>\\n<tr>\\n<td>CAT</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>NEUTRAL</td>\\n<td>12/15/23</td>\\n<td>$280.00</td>\\n<td>$50.7K</td>\\n<td>97</td>\\n<td
-        align=\\\"right\\\">28</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
-        Is Caterpillar Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 706,342,
-        the price of CAT is down -1.0% at $271.52. </li>\\n<li>RSI indicators hint
-        that the underlying stock is currently neutral between overbought and oversold.</li>\\n<li>Next
-        earnings are expected to be released in 30 days.</li>\\n</ul>\\n<p>Options
-        are a riskier asset compared to just trading the stock, but they have higher
-        profit potential. Serious options traders manage this risk by educating themselves
-        daily, scaling in and out of trades, following more than one indicator, and
-        following the markets closely.</p>\\n<p>If you want to stay updated on the
-        latest options trades for Caterpillar, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
-        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34920931/this-is-what-whales-are-betting-on-caterpillar\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"CAT\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34920930,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 13:45:48 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 13:45:49 -0400\",\"title\":\"Adobe Unusual Options Activity\",\"teaser\":\"
-        \",\"body\":\"<p>Someone with a lot of money to spend has taken a bullish
-        stance on <strong>Adobe</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ADBE#NASDAQ\\\">ADBE</a>).</p>\\n<p>And
-        retail traders should know.</p>\\n<p>We noticed this today when the big position
-        showed up on publicly available options history that we track here at Benzinga.</p>\\n<p>Whether
-        this is an institution or just a wealthy individual, we don't know. But when
-        something this big happens with ADBE, it often means somebody knows something
-        is about to happen.</p>\\n<p>So how do we know what this whale just did? </p>\\n<p>Today,
-        <a href=\\\"https://pro.benzinga.com/?utm_source=insights\\\">Benzinga</a>'s
-        options scanner spotted 24 uncommon options trades for Adobe.</p>\\n<p>This
-        isn't normal.</p>\\n<p>The overall sentiment of these big-money traders is
-        split between 50% bullish and 50%, bearish.</p>\\n<p>Out of all of the special
-        options we uncovered, 13 are puts, for a total amount of $570,330, and 11
-        are calls, for a total amount of $1,267,490.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking
-        into account the Volume and Open Interest on these contracts, it appears that
-        whales have been targeting a price range from $340.0 to $575.0 for Adobe over
-        the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>In
-        terms of liquidity and interest, the mean open interest for Adobe options
-        trades today is 443.5 with a total volume of 2,353.00.</p>\\n<p>In the following
-        chart, we are able to follow the development of volume and open interest of
-        call and put options for Adobe's big money trades within a strike price range
-        of $340.0 to $575.0 over the last 30 days.</p>\\n<h3>Adobe Option Volume And
-        Open Interest Over Last 30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695750345_0.png\\\"
-        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
-        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
-        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
-        Trade Price</strong></th>\\n<th align=\\\"right\\\"><strong>Open Interest</strong></th>\\n<th
-        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>ADBE</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>12/15/23</td>\\n<td>$540.00</td>\\n<td>$577.5K</td>\\n<td
-        align=\\\"right\\\">341</td>\\n<td align=\\\"right\\\">301</td>\\n</tr>\\n<tr>\\n<td>ADBE</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>01/17/25</td>\\n<td>$520.00</td>\\n<td>$218.0K</td>\\n<td
-        align=\\\"right\\\">151</td>\\n<td align=\\\"right\\\">26</td>\\n</tr>\\n<tr>\\n<td>ADBE</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>01/17/25</td>\\n<td>$560.00</td>\\n<td>$99.6K</td>\\n<td
-        align=\\\"right\\\">53</td>\\n<td align=\\\"right\\\">11</td>\\n</tr>\\n<tr>\\n<td>ADBE</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>01/19/24</td>\\n<td>$510.00</td>\\n<td>$97.3K</td>\\n<td
-        align=\\\"right\\\">426</td>\\n<td align=\\\"right\\\">26</td>\\n</tr>\\n<tr>\\n<td>ADBE</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>NEUTRAL</td>\\n<td>09/29/23</td>\\n<td>$572.50</td>\\n<td>$92.1K</td>\\n<td
-        align=\\\"right\\\">18</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
-        Is Adobe Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 1,080,595,
-        the price of ADBE is down -1.58% at $503.54. </li>\\n<li>RSI indicators hint
-        that the underlying stock may be approaching oversold.</li>\\n<li>Next earnings
-        are expected to be released in 79 days.</li>\\n</ul>\\n<h3>What The Experts
-        Say On Adobe:</h3>\\n<ul>\\n<li>Wolfe Research has decided to maintain their
-        Outperform rating on Adobe, which currently sits at a price target of $650.
-        </li>\\n<li>Goldman Sachs has decided to maintain their Buy rating on Adobe,
-        which currently sits at a price target of $625. </li>\\n<li>Mizuho downgraded
-        its action to Buy with a price target of $630</li>\\n<li>Barclays has decided
-        to maintain their Equal-Weight rating on Adobe, which currently sits at a
-        price target of $620. </li>\\n<li>Barclays has decided to maintain their Equal-Weight
-        rating on Adobe, which currently sits at a price target of $640. </li>\\n</ul>\\n<p>Options
-        are a riskier asset compared to just trading the stock, but they have higher
-        profit potential. Serious options traders manage this risk by educating themselves
-        daily, scaling in and out of trades, following more than one indicator, and
-        following the markets closely.</p>\\n<p>If you want to stay updated on the
-        latest options trades for Adobe, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
-        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34920930/adobe-unusual-options-activity\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_1.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"ADBE\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34920929,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 13:45:42 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 13:45:43 -0400\",\"title\":\"Pfizer Unusual Options Activity\",\"teaser\":\"
-        \",\"body\":\"<p>Benzinga's options scanner just detected over 16 options
-        trades for <strong>Pfizer</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PFE#NYSE\\\">PFE</a>)
-        summing a total amount of $536,080.</p>\\n<p>At the same time, our algo caught
-        8 for a total amount of 326,565.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking
-        into account the Volume and Open Interest on these contracts, it appears that
-        whales have been targeting a price range from $25.0 to $55.0 for Pfizer over
-        the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>Looking
-        at the volume and open interest is a powerful move while trading options.
-        This data can help you track the liquidity and interest for Pfizer's options
-        for a given strike price. Below, we can observe the evolution of the volume
-        and open interest of calls and puts, respectively, for all of Pfizer's whale
-        trades within a strike price range from $25.0 to $55.0 in the last 30 days.
-        </p>\\n<h3>Pfizer Option Volume And Open Interest Over Last 30 Days</h3>\\n<p><img
-        src=\\\"https://www.benzinga.com/files/images/story/2023/1695750339_0.png\\\"
-        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
-        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
-        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
-        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>PFE</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>01/19/24</td>\\n<td>$38.00</td>\\n<td>$58.8K</td>\\n<td>20.0K</td>\\n<td>92</td>\\n</tr>\\n<tr>\\n<td>PFE</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$33.00</td>\\n<td>$55.3K</td>\\n<td>1.5K</td>\\n<td>1.1K</td>\\n</tr>\\n<tr>\\n<td>PFE</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>09/20/24</td>\\n<td>$27.50</td>\\n<td>$55.2K</td>\\n<td>1.6K</td>\\n<td>501</td>\\n</tr>\\n<tr>\\n<td>PFE</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>09/20/24</td>\\n<td>$27.50</td>\\n<td>$55.0K</td>\\n<td>1.6K</td>\\n<td>1.0K</td>\\n</tr>\\n<tr>\\n<td>PFE</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>12/15/23</td>\\n<td>$35.00</td>\\n<td>$48.7K</td>\\n<td>16.2K</td>\\n<td>829</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
-        Is Pfizer Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 12,045,597,
-        the price of PFE is down -0.69% at $32.75. </li>\\n<li>RSI indicators hint
-        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
-        to be released in 35 days.</li>\\n</ul>\\n<h3>What The Experts Say On Pfizer:</h3>\\n<ul>\\n<li>Cantor
-        Fitzgerald downgraded its action to Overweight with a price target of $75</li>\\n<li>Truist
-        Securities downgraded its action to Buy with a price target of $62</li>\\n<li>Cantor
-        Fitzgerald downgraded its action to Overweight with a price target of $75</li>\\n<li>Cantor
-        Fitzgerald downgraded its action to Overweight with a price target of $75</li>\\n</ul>\\n<p>Options
-        are a riskier asset compared to just trading the stock, but they have higher
-        profit potential. Serious options traders manage this risk by educating themselves
-        daily, scaling in and out of trades, following more than one indicator, and
-        following the markets closely.</p>\\n<p>If you want to stay updated on the
-        latest options trades for Pfizer, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
-        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34920929/pfizer-unusual-options-activity\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_0.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"PFE\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34920699,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 13:35:31 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 13:35:31 -0400\",\"title\":\"8 Industrials Stocks With Whale Alerts
-        In Today's Session\",\"teaser\":\" \",\"body\":\"<p>This whale alert can help
-        traders discover the next big trading opportunities.</p>\\n<p>Whales are entities
-        with large sums of money and we track their transactions here at Benzinga
-        on our options activity scanner.</p>\\n<p>Traders will search for circumstances
-        when the market estimation of an option diverges heavily from its normal worth.
-        High amounts of trading activity could push option prices to exaggerated or
-        underestimated levels. </p>\\n<p>Here's the list of options activity happening
-        in today's session:  <table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
-        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
-        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
-        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>AAL</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>05/17/24</td>\\n<td>$10.00</td>\\n<td>$68.2K</td>\\n<td>4.2K</td>\\n<td>5.1K</td>\\n</tr>\\n<tr>\\n<td>FDX</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>11/17/23</td>\\n<td>$260.00</td>\\n<td>$2.4
-        million</td>\\n<td>410</td>\\n<td>2.0K</td>\\n</tr>\\n<tr>\\n<td>CARR</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$50.00</td>\\n<td>$39.3K</td>\\n<td>2.9K</td>\\n<td>1.7K</td>\\n</tr>\\n<tr>\\n<td>ADP</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$245.00</td>\\n<td>$28.0K</td>\\n<td>12</td>\\n<td>645</td>\\n</tr>\\n<tr>\\n<td>UPS</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>11/17/23</td>\\n<td>$160.00</td>\\n<td>$65.5K</td>\\n<td>1.7K</td>\\n<td>483</td>\\n</tr>\\n<tr>\\n<td>GE</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>12/15/23</td>\\n<td>$115.00</td>\\n<td>$47.9K</td>\\n<td>637</td>\\n<td>131</td>\\n</tr>\\n<tr>\\n<td>DE</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/16/26</td>\\n<td>$400.00</td>\\n<td>$71.0K</td>\\n<td>9</td>\\n<td>11</td>\\n</tr>\\n<tr>\\n<td>RUN</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>06/21/24</td>\\n<td>$15.00</td>\\n<td>$66.7K</td>\\n<td>4.1K</td>\\n<td>0</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h2>Explanation</h2>\\n<p>These
-        bullet-by-bullet explanations have been constructed using the accompanying
-        table.  </p>\\n<p>\u2022  For <strong>AAL</strong> (NASDAQ:<a class=\\\"ticker\\\"
-        href=\\\"https://www.benzinga.com/stock/AAL#NASDAQ\\\">AAL</a>), we notice
-        a <strong>put</strong> option <strong>sweep</strong> that happens to be <strong>bearish</strong>,
-        expiring in 234 day(s) on <strong>May 17, 2024</strong>. This event was a
-        transfer of <strong>1264</strong> contract(s) at a <strong>$10.00</strong>
-        strike. This particular put needed to be split into 8 different trades to
-        become filled. The total cost received by the writing party (or parties) was
-        <strong>$68.2K</strong>, with a price of <strong>$54.0</strong> per contract.
-        There were <strong>4251</strong> open contracts at this strike prior to today,
-        and today <strong>5106</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
-        \ Regarding <strong>FDX</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/FDX#NYSE\\\">FDX</a>),
-        we observe a <strong>call</strong> option <strong>trade</strong> with <strong>bullish</strong>
-        sentiment. It expires in 52 day(s) on <strong>November 17, 2023</strong>.
-        Parties traded <strong>2000</strong> contract(s) at a <strong>$260.00</strong>
-        strike. The total cost received by the writing party (or parties) was <strong>$2.4
-        million</strong>, with a price of <strong>$1205.0</strong> per contract. There
-        were <strong>410</strong> open contracts at this strike prior to today, and
-        today <strong>2004</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
-        \ Regarding <strong>CARR</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CARR#NYSE\\\">CARR</a>),
-        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bullish</strong>
-        sentiment. It expires in 24 day(s) on <strong>October 20, 2023</strong>. Parties
-        traded <strong>872</strong> contract(s) at a <strong>$50.00</strong> strike.
-        This particular put needed to be split into 40 different trades to become
-        filled. The total cost received by the writing party (or parties) was <strong>$39.3K</strong>,
-        with a price of <strong>$45.0</strong> per contract. There were <strong>2915</strong>
-        open contracts at this strike prior to today, and today <strong>1751</strong>
-        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>ADP</strong>
-        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ADP#NASDAQ\\\">ADP</a>),
-        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
-        to be <strong>bullish</strong>, expiring in 24 day(s) on <strong>October 20,
-        2023</strong>. This event was a transfer of <strong>140</strong> contract(s)
-        at a <strong>$245.00</strong> strike. This particular call needed to be split
-        into 16 different trades to become filled. The total cost received by the
-        writing party (or parties) was <strong>$28.0K</strong>, with a price of <strong>$200.0</strong>
-        per contract. There were <strong>12</strong> open contracts at this strike
-        prior to today, and today <strong>645</strong> contract(s) were bought and
-        sold. </p>\\n<p>\u2022  Regarding <strong>UPS</strong> (NYSE:<a class=\\\"ticker\\\"
-        href=\\\"https://www.benzinga.com/stock/UPS#NYSE\\\">UPS</a>), we observe
-        a <strong>call</strong> option <strong>sweep</strong> with <strong>bearish</strong>
-        sentiment. It expires in 52 day(s) on <strong>November 17, 2023</strong>.
-        Parties traded <strong>208</strong> contract(s) at a <strong>$160.00</strong>
-        strike. This particular call needed to be split into 20 different trades to
-        become filled. The total cost received by the writing party (or parties) was
-        <strong>$65.5K</strong>, with a price of <strong>$315.0</strong> per contract.
-        There were <strong>1793</strong> open contracts at this strike prior to today,
-        and today <strong>483</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
-        \ For <strong>GE</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GE#NYSE\\\">GE</a>),
-        we notice a <strong>put</strong> option <strong>sweep</strong> that happens
-        to be <strong>bearish</strong>, expiring in 80 day(s) on <strong>December
-        15, 2023</strong>. This event was a transfer of <strong>62</strong> contract(s)
-        at a <strong>$115.00</strong> strike. This particular put needed to be split
-        into 9 different trades to become filled. The total cost received by the writing
-        party (or parties) was <strong>$47.9K</strong>, with a price of <strong>$775.0</strong>
-        per contract. There were <strong>637</strong> open contracts at this strike
-        prior to today, and today <strong>131</strong> contract(s) were bought and
-        sold. </p>\\n<p>\u2022  Regarding <strong>DE</strong> (NYSE:<a class=\\\"ticker\\\"
-        href=\\\"https://www.benzinga.com/stock/DE#NYSE\\\">DE</a>), we observe a
-        <strong>call</strong> option <strong>trade</strong> with <strong>bearish</strong>
-        sentiment. It expires in 843 day(s) on <strong>January 16, 2026</strong>.
-        Parties traded <strong>10</strong> contract(s) at a <strong>$400.00</strong>
-        strike. The total cost received by the writing party (or parties) was <strong>$71.0K</strong>,
-        with a price of <strong>$7100.0</strong> per contract. There were <strong>9</strong>
-        open contracts at this strike prior to today, and today <strong>11</strong>
-        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>RUN</strong>
-        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/RUN#NASDAQ\\\">RUN</a>),
-        we observe a <strong>put</strong> option <strong>trade</strong> with <strong>bearish</strong>
-        sentiment. It expires in 269 day(s) on <strong>June 21, 2024</strong>. Parties
-        traded <strong>150</strong> contract(s) at a <strong>$15.00</strong> strike.
-        The total cost received by the writing party (or parties) was <strong>$66.7K</strong>,
-        with a price of <strong>$445.0</strong> per contract. There were <strong>4108</strong>
-        open contracts at this strike prior to today, and today <strong>0</strong>
-        contract(s) were bought and sold. </p>\\n<p><strong>Options Alert Terminology</strong><br
-        />\\n - <strong>Call Contracts:</strong> The right to buy shares as indicated
-        in the contract.<br />\\n - <strong>Put Contracts:</strong> The right to sell
-        shares as indicated in the contract.<br />\\n - <strong>Expiration Date:</strong>
-        When the contract expires. One must act on the contract by this date if one
-        wants to use it.<br />\\n - <strong>Premium/Option Price:</strong> The price
-        of the contract.  </p>\\n<p>For more information, visit our <em><a href=\\\"https://pro.benzinga.com/blog/how-to-understand-option-alerts/\\\">Guide
-        to Understanding Options Alerts</a></em> or read <a href=\\\"https://www.benzinga.com/markets/options\\\">more
-        about unusual options activity</a>.  </p>\\n<p>This article was generated
-        by Benzinga's automated content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34920699/8-industrials-stocks-with-whale-alerts-in-todays-session\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_2.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAL\"},{\"name\":\"ADP\"},{\"name\":\"CARR\"},{\"name\":\"DE\"},{\"name\":\"FDX\"},{\"name\":\"GE\"},{\"name\":\"RUN\"},{\"name\":\"UPS\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]}]\n"
+        attack\"},{\"name\":\"cyber security\"},{\"name\":\"hack\"},{\"name\":\"hackers\"},{\"name\":\"Ransomed.vc\"},{\"name\":\"ransomware\"},{\"name\":\"Ransoned.vc\"}]}]\n"
     headers:
       Cache-Control:
       - max-age=3, must-revalidate
@@ -959,27 +921,27 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 26 Sep 2023 18:33:10 GMT
+      - Tue, 26 Sep 2023 18:55:40 GMT
       ETag:
-      - HRUevHrE4Lfq3ue7AaOc2O0Y9tn9pC9bimsRnOpCz78=
+      - jzwYAX1hLasfaXQlSn_E3Kc0_yLmeMYXcK7N1VNYqtc=
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept,Accept-Encoding
       Via:
-      - kong/2.8.3, 1.1 d178845d60baf589ab6db5ec371a50a0.cloudfront.net (CloudFront)
+      - kong/2.8.3, 1.1 5b0aec6a7e8c81eb2f4e97cd36107e50.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - XeBPdzt5gViPEwQ35INS4BycSCNaVDsLDMHujqi9_zpY27eUCMuqyg==
+      - DKcKDhe0vw-5MSAqqrEj5QSTJsaEAsDdgPboVkwARW3888T9BIzu6w==
       X-Amz-Cf-Pop:
       - MIA3-P4
       X-Bz-Request-Id:
-      - 192.168.240.19-8000-38-50994919-1-1695753190.372
+      - 192.168.155.192-8000-39-51347829-1-1695754540.826
       X-Cache:
       - Miss from cloudfront
       X-Kong-Proxy-Latency:
-      - '1'
+      - '0'
       X-Kong-Upstream-Latency:
-      - '45'
+      - '46'
       X-Powered-By:
       - Pentium
     status:

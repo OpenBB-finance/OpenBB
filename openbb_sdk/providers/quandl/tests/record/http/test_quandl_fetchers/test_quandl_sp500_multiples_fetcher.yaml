@@ -225,7 +225,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 26 Sep 2023 18:35:00 GMT
+      - Tue, 26 Sep 2023 18:57:32 GMT
       ETag:
       - W/"a6ee2d258da96c1ce8311105c66f456a"
       Pragma:
@@ -235,10 +235,10 @@ interactions:
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=OnBj8UdFSQKTwIc5/7FtQVMkE2UAAAAAQUIPAAAAAAA00ma4evTr5GmlRbVo/CIz;
-        expires=Wed, 25 Sep 2024 06:37:03 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=E93bZmWi+0ZYZY8GKj7S7QAAAACB7HuMd1Txy8eigwyLwCgT; path=/; Domain=.nasdaq.com
-      - incap_ses_7222_2170999=hj5NUUcLUkxrhapdl7M5ZFMkE2UAAAAAfoxzyVRBtuOes0y1RhC3xg==;
+      - visid_incap_2170999=E6xiPRCER4israquD3uOX5spE2UAAAAAQUIPAAAAAACLAZmqicJW+YtqKwikM1xS;
+        expires=Wed, 25 Sep 2024 07:05:56 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=oiNDC/tgVhLa6+ZzKj7S7QAAAAAyYPCiXFvIEvNCKwNESko+; path=/; Domain=.nasdaq.com
+      - incap_ses_469_2170999=yd28dUUVHySg/12hFjqCBpwpE2UAAAAAsO2YAJARXa3Hpf38IOrfuA==;
         path=/; Domain=.nasdaq.com
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -249,16 +249,16 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Iinfo:
-      - 14-184173276-184173345 NNNN CT(30 96 0) RT(1695753299104 228) q(0 0 1 2) r(4
-        4) U2
+      - 2-27686804-27686814 NNNN CT(25 53 0) RT(1695754651720 230) q(0 0 1 1) r(3
+        3) U2
       X-RateLimit-Limit:
       - '50'
       X-RateLimit-Remaining:
-      - '47'
+      - '49'
       X-Request-Id:
-      - 01b4e31a-75a1-4cca-af69-f734b735faa1
+      - 08c56f11-9fd6-4915-a73e-971292e65d43
       X-Runtime:
-      - '0.246481'
+      - '0.160837'
       X-XSS-Protection:
       - 1; mode=block
     status:
