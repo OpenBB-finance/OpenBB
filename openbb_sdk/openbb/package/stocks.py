@@ -17,13 +17,11 @@ class ROUTER_stocks(Container):
     """/stocks
     /ca
     /fa
-    info
     load
     multiples
     news
     /options
     quote
-    search
     """
 
     def __repr__(self) -> str:
@@ -75,7 +73,7 @@ class ROUTER_stocks(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
@@ -99,26 +97,8 @@ class ROUTER_stocks(Container):
             Sort order of the data. (provider: polygon)
         limit : int
             The number of data entries to return. (provider: polygon)
-        prepost : bool
-            Include Pre and Post market data. (provider: yfinance)
-        actions : bool
-            Include actions. (provider: yfinance)
-        auto_adjust : bool
-            Adjust all OHLC data automatically. (provider: yfinance)
-        back_adjust : bool
-            Attempt to adjust all the data automatically. (provider: yfinance)
-        progress : bool
-            Show progress bar. (provider: yfinance)
-        ignore_tz : bool
-            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
-        rounding : bool
-            Round to two decimal places? (provider: yfinance)
-        repair : bool
-            Detect currency unit 100x mixups and attempt repair. (provider: yfinance)
-        keepna : bool
-            Keep NaN rows returned by Yahoo? (provider: yfinance)
-        group_by : Literal['ticker', 'column']
-            Group by ticker or column. (provider: yfinance)
+        adjusted : bool
+            Output time series is adjusted by historical split and dividend events. (provider: polygon)
 
         Returns
         -------
@@ -150,18 +130,6 @@ class ROUTER_stocks(Container):
             The volume of the symbol.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.
-        adjusted_close : Optional[PositiveFloat]
-            The adjusted close price of the symbol. (provider: alpha_vantage)
-        dividend_amount : Optional[NonNegativeFloat]
-            Dividend amount paid for the corresponding date. (provider: alpha_vantage)
-        split_coefficient : Optional[NonNegativeFloat]
-            Split coefficient for the corresponding date. (provider: alpha_vantage)
-        calls_volume : Optional[float]
-            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        puts_volume : Optional[float]
-            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        total_options_volume : Optional[float]
-            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]
@@ -194,7 +162,6 @@ class ROUTER_stocks(Container):
                 "end_date": end_date,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -375,7 +342,6 @@ class ROUTER_stocks(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -494,15 +460,7 @@ class ROUTER_stocks(Container):
         publisher : Optional[openbb_polygon.models.stock_news.PolygonPublisher]
             Publisher of the article. (provider: polygon)
         tickers : Optional[List[str]]
-            Tickers covered in the article. (provider: polygon)
-        uuid : Optional[str]
-            Unique identifier for the news article (provider: yfinance)
-        type : Optional[str]
-            Type of the news article (provider: yfinance)
-        thumbnail : Optional[List[T]]
-            Thumbnail related data to the ticker news article. (provider: yfinance)
-        related_tickers : Optional[str]
-            Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
+            Tickers covered in the article. (provider: polygon)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -513,7 +471,6 @@ class ROUTER_stocks(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
-            chart=chart,
         )
 
         return self._command_runner.run(
@@ -667,72 +624,5 @@ class ROUTER_stocks(Container):
 
         return self._command_runner.run(
             "/stocks/quote",
-            **inputs,
-        )
-
-    @validate_arguments
-    def search(
-        self,
-        query: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="Search query.")
-        ] = "",
-        ticker: typing_extensions.Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ] = False,
-        provider: Union[Literal["cboe"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
-        """Search for a company or stock ticker.
-
-        Parameters
-        ----------
-        query : str
-            Search query.
-        ticker : bool
-            Whether to search by ticker symbol.
-        provider : Union[Literal['cboe'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[StockSearch]
-                Serializable results.
-            provider : Union[Literal['cboe'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
-
-        StockSearch
-        -----------
-        symbol : Optional[str]
-            Symbol to get data for.
-        name : Optional[str]
-            Name of the company.
-        dpm_name : Optional[str]
-            Name of the primary market maker. (provider: cboe)
-        post_station : Optional[str]
-            Post and station location on the CBOE trading floor. (provider: cboe)"""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-                "ticker": ticker,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._command_runner.run(
-            "/stocks/search",
             **inputs,
         )

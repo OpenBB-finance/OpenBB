@@ -3217,7 +3217,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
         quarter: Annotated[
-            Literal[1, 2, 3, 4],
+            int,
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),

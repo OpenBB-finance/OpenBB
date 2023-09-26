@@ -16,15 +16,10 @@ class ROUTER_economy(Container):
     """/economy
     available_indices
     const
-    cot
-    cot_search
     cpi
     fred_index
     index
-    index_search
-    index_snapshots
     risk
-    sp500_multiples
     """
 
     def __repr__(self) -> str:
@@ -40,10 +35,8 @@ class ROUTER_economy(Container):
         ----------
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        europe : bool
-            Filter for European indices. False for US indices. (provider: cboe)
 
         Returns
         -------
@@ -65,34 +58,11 @@ class ROUTER_economy(Container):
             Name of the index.
         currency : Optional[str]
             Currency the index is traded in.
-        isin : Optional[str]
-            ISIN code for the index. Valid only for European indices. (provider: cboe)
-        region : Optional[str]
-            Region for the index. Valid only for European indices (provider: cboe)
-        symbol : Optional[str]
-            Symbol for the index. (provider: cboe, yfinance)
-        description : Optional[str]
-            Description for the index. Valid only for US indices. (provider: cboe)
-        data_delay : Optional[int]
-            Data delay for the index. Valid only for US indices. (provider: cboe)
-        open_time : Optional[time]
-            Opening time for the index. Valid only for US indices. (provider: cboe)
-        close_time : Optional[time]
-            Closing time for the index. Valid only for US indices. (provider: cboe)
-        time_zone : Optional[str]
-            Time zone for the index. Valid only for US indices. (provider: cboe)
-        tick_days : Optional[str]
-            The trading days for the index. Valid only for US indices. (provider: cboe)
-        tick_frequency : Optional[str]
-            The frequency of the index ticks. Valid only for US indices. (provider: cboe)
-        tick_period : Optional[str]
-            The period of the index ticks. Valid only for US indices. (provider: cboe)
         stock_exchange : Optional[str]
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange where the index is listed. (provider: fmp)
-        code : Optional[str]
-            ID code for keying the index in the OpenBB Terminal. (provider: yfinance)"""  # noqa: E501
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -448,10 +418,12 @@ class ROUTER_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Data granularity. (provider: fmp)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -462,12 +434,6 @@ class ROUTER_economy(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : int
             Multiplier of the timespan. (provider: polygon)
-        period : Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
-            Period of the data to return. (provider: yfinance)
-        prepost : bool
-            Include Pre and Post market data. (provider: yfinance)
-        rounding : bool
-            Round prices to two decimals? (provider: yfinance)
 
         Returns
         -------
@@ -497,12 +463,6 @@ class ROUTER_economy(Container):
             The close price of the symbol.
         volume : Optional[int]
             The volume of the symbol.
-        calls_volume : Optional[float]
-            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        puts_volume : Optional[float]
-            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        total_options_volume : Optional[float]
-            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
         unadjusted_volume : Optional[float]
@@ -584,135 +544,5 @@ class ROUTER_economy(Container):
 
         return self._command_runner.run(
             "/economy/risk",
-            **inputs,
-        )
-
-    @validate_arguments
-    def sp500_multiples(
-        self,
-        series_name: typing_extensions.Annotated[
-            Literal[
-                "Shiller PE Ratio by Month",
-                "Shiller PE Ratio by Year",
-                "PE Ratio by Year",
-                "PE Ratio by Month",
-                "Dividend by Year",
-                "Dividend by Month",
-                "Dividend Growth by Quarter",
-                "Dividend Growth by Year",
-                "Dividend Yield by Year",
-                "Dividend Yield by Month",
-                "Earnings by Year",
-                "Earnings by Month",
-                "Earnings Growth by Year",
-                "Earnings Growth by Quarter",
-                "Real Earnings Growth by Year",
-                "Real Earnings Growth by Quarter",
-                "Earnings Yield by Year",
-                "Earnings Yield by Month",
-                "Real Price by Year",
-                "Real Price by Month",
-                "Inflation Adjusted Price by Year",
-                "Inflation Adjusted Price by Month",
-                "Sales by Year",
-                "Sales by Quarter",
-                "Sales Growth by Year",
-                "Sales Growth by Quarter",
-                "Real Sales by Year",
-                "Real Sales by Quarter",
-                "Real Sales Growth by Year",
-                "Real Sales Growth by Quarter",
-                "Price to Sales Ratio by Year",
-                "Price to Sales Ratio by Quarter",
-                "Price to Book Value Ratio by Year",
-                "Price to Book Value Ratio by Quarter",
-                "Book Value per Share by Year",
-                "Book Value per Share by Quarter",
-            ],
-            OpenBBCustomParameter(
-                description="The name of the series. Defaults to 'PE Ratio by Month'."
-            ),
-        ] = "PE Ratio by Month",
-        start_date: typing_extensions.Annotated[
-            Union[str, None],
-            OpenBBCustomParameter(
-                description="The start date of the time series. Format: YYYY-MM-DD"
-            ),
-        ] = "",
-        end_date: typing_extensions.Annotated[
-            Union[str, None],
-            OpenBBCustomParameter(
-                description="The end date of the time series. Format: YYYY-MM-DD"
-            ),
-        ] = "",
-        collapse: typing_extensions.Annotated[
-            Union[Literal["daily", "weekly", "monthly", "quarterly", "annual"], None],
-            OpenBBCustomParameter(
-                description="Collapse the frequency of the time series."
-            ),
-        ] = "monthly",
-        transform: typing_extensions.Annotated[
-            Union[Literal["diff", "rdiff", "cumul", "normalize"], None],
-            OpenBBCustomParameter(description="The transformation of the time series."),
-        ] = None,
-        provider: Union[Literal["quandl"], None] = None,
-        **kwargs,
-    ) -> OBBject[List]:
-        """Historical S&P 500 multiples and Shiller PE ratios.
-
-        Parameters
-        ----------
-        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Rat...
-            The name of the series. Defaults to 'PE Ratio by Month'.
-        start_date : Union[str, None]
-            The start date of the time series. Format: YYYY-MM-DD
-        end_date : Union[str, None]
-            The end date of the time series. Format: YYYY-MM-DD
-        collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'...
-            Collapse the frequency of the time series.
-        transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], None]
-            The transformation of the time series.
-        provider : Union[Literal['quandl'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'quandl' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[SP500Multiples]
-                Serializable results.
-            provider : Union[Literal['quandl'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
-
-        SP500Multiples
-        --------------
-        date : Optional[str]
-            The date data for the time series.
-        value : Optional[float]
-            The data value for the time series."""  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "series_name": series_name,
-                "start_date": start_date,
-                "end_date": end_date,
-                "collapse": collapse,
-                "transform": transform,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._command_runner.run(
-            "/economy/sp500_multiples",
             **inputs,
         )

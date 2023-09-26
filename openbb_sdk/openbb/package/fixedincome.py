@@ -82,7 +82,7 @@ class ROUTER_fixedincome(Container):
         --------
         date : date
             The date of the data.
-        rate : float
+        rate : Optional[float]
             AMERIBOR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -156,7 +156,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : float
+        rate : Optional[float]
             ESTR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -230,7 +230,7 @@ class ROUTER_fixedincome(Container):
         --------
         date : date
             The date of the data.
-        rate : float
+        rate : Optional[float]
             FED rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -302,7 +302,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : float
+        rate : Optional[float]
             IORB rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -358,19 +358,19 @@ class ROUTER_fixedincome(Container):
         -----------
         date : date
             The date of the data.
-        range_high : float
+        range_high : Optional[float]
             High projection of rates.
-        central_tendency_high : float
+        central_tendency_high : Optional[float]
             Central tendency of high projection of rates.
-        median : float
+        median : Optional[float]
             Median projection of rates.
-        range_midpoint : float
+        range_midpoint : Optional[float]
             Midpoint projection of rates.
-        central_tendency_midpoint : float
+        central_tendency_midpoint : Optional[float]
             Central tendency of midpoint projection of rates.
-        range_low : float
+        range_low : Optional[float]
             Low projection of rates.
-        central_tendency_low : float
+        central_tendency_low : Optional[float]
             Central tendency of low projection of rates."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -437,7 +437,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : float
+        rate : Optional[float]
             SOFR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -510,7 +510,7 @@ class ROUTER_fixedincome(Container):
         -----
         date : date
             The date of the data.
-        rate : float
+        rate : Optional[float]
             SONIA rate."""  # noqa: E501
 
         inputs = filter_inputs(

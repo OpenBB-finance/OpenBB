@@ -133,9 +133,10 @@ class YFinanceFuturesHistoricalFetcher(
                 & (data.index <= end_date_dt)
             ]
 
-        data.reset_index(inplace=True)
-        data.rename(columns={"index": "Date"}, inplace=True)
-
+        data = data.reset_index().rename(
+            columns={"index": "Date", "Datetime": "Date"}, errors="ignore"
+        )
+        data.columns = data.columns.str.lower()
         return data.to_dict("records")
 
     @staticmethod
