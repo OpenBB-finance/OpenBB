@@ -2,7 +2,8 @@
 from pathlib import Path, PosixPath
 from typing import Any, Dict, List, Literal, get_origin
 
-from pydantic.fields import ModelField
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 from sdk.core.openbb_core.app.router import CommandMap
 
@@ -24,7 +25,7 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
         test_file_name = f"test_{extension_name}_python.py"
         test_file = extension / "integration" / test_file_name
         if not test_file.exists():
-            with open(test_file, "w") as f:
+            with open(test_file, "w", encoding="utf-8", newline="\n") as f:
                 f.write(
                     f'''"""Test {extension_name} extension."""
 import pytest
@@ -34,13 +35,13 @@ from openbb_core.app.model.obbject import OBBject
                 )
 
 
-def get_model_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
+def get_model_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
     """Get the test params for the fetcher based on the required standard params."""
     test_params: Dict[str, Any] = {}
     for field_name, field in param_fields.items():
-        if field.default:
+        if field.default and field.default is not PydanticUndefined:
             test_params[field_name] = field.default
-        elif not field.default:
+        elif not field.default or field.default is PydanticUndefined:
             example_dict = {
                 "symbol": "AAPL",
                 "symbols": "AAPL,MSFT",
@@ -52,16 +53,16 @@ def get_model_params(param_fields: Dict[str, ModelField]) -> Dict[str, Any]:
             }
             if field_name in example_dict:
                 test_params[field_name] = example_dict[field_name]
-            elif field.type_ == str:
+            elif field.annotation == str:
                 test_params[field_name] = "TEST_STRING"
-            elif field.type_ == int:
+            elif field.annotation == int:
                 test_params[field_name] = 1
-            elif field.type_ == float:
+            elif field.annotation == float:
                 test_params[field_name] = 1.0
-            elif field.type_ == bool:
+            elif field.annotation == bool:
                 test_params[field_name] = True
-            elif get_origin(field.type_) is Literal:
-                test_params[field_name] = field.type_.__args__[0]
+            elif get_origin(field.annotation) is Literal:
+                test_params[field_name] = field.annotation.__args__[0]
 
     return test_params
 
@@ -71,7 +72,6 @@ def get_test_params(
 ) -> List[Dict[str, Any]]:
     """Get the test params for the integration test."""
     test_params_list: List[Dict[str, Any]] = []
-    available_providers = provider_interface_map[model_name].keys()
     standard_params = get_model_params(
         param_fields=provider_interface_map[model_name]["openbb"]["QueryParams"][
             "fields"
@@ -80,7 +80,7 @@ def get_test_params(
 
     test_params_list.append(standard_params)
 
-    for provider in available_providers:
+    for provider in provider_interface_map[model_name]:
         if provider != "openbb":
             test_params: Dict[str, Any] = get_model_params(
                 param_fields=provider_interface_map[model_name][provider][
@@ -120,7 +120,7 @@ def test_{test_name}(**params):
         extension_name = extension.name
         test_file_name = f"test_{extension_name}_python.py"
         test_file = extension / "integration" / test_file_name
-        with open(test_file, "a") as f:
+        with open(test_file, "a", encoding="utf-8", newline="\n") as f:
             for command in commands_model:
                 if extension_name in command and command.startswith(
                     f".{extension_name}."

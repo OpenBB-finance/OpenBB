@@ -1,15 +1,18 @@
 """The unit test generator for the fetchers."""
-import os
 from datetime import date
+from pathlib import Path
 from typing import Any, Dict, Tuple
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 from sdk.core.openbb_core.app.provider_interface import ProviderInterface
 
 from providers.tests.utils.credentials_schema import test_credentials
+
+PROVIDERS_PATH = Path(__file__).parent.parent.parent.resolve()
 
 
 def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
@@ -23,11 +26,12 @@ def get_provider_fetchers() -> Dict[str, Dict[str, Fetcher]]:
     return provider_fetcher_map
 
 
-def generate_fetcher_unit_tests(path: str) -> None:
+def generate_fetcher_unit_tests(path: Path) -> None:
     """Generate the fetcher unit tests in the provider test folders."""
-    if not os.path.exists(path):
-        with open(path, "w") as f:
+    if not path.exists():
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
             f.write(
+                "from datetime import datetime\n"
                 "import pytest\nfrom openbb_core.app.service.user_service import UserService\n"
             )
 
@@ -36,9 +40,9 @@ def get_test_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
     """Get the test params for the fetcher based on the requires standard params."""
     test_params: Dict[str, Any] = {}
     for field_name, field in param_fields.items():
-        if field.is_required() and field.default:
+        if field.is_required() and field.default is not PydanticUndefined:
             test_params[field_name] = field.default
-        elif field.is_required() and not field.default:
+        elif field.is_required() or field.default is PydanticUndefined:
             example_dict = {
                 "symbol": "AAPL",
                 "symbols": "AAPL,MSFT",
@@ -89,17 +93,17 @@ def vcr_config():
     return {{
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-         {credentials_str},
+            {credentials_str},
         ],
     }}
 """
-    with open(path, "a") as f:
+    with open(path, "a", encoding="utf-8", newline="\n") as f:
         f.write(template.format(credentials_str=str(credentials)))
 
 
 def check_pattern_in_file(file_path: str, pattern: str) -> bool:
     """Check if a pattern is in a file."""
-    with open(file_path) as f:
+    with open(file_path, encoding="utf-8", newline="\n") as f:
         lines = f.readlines()
         for line in lines:
             if pattern in line:
@@ -116,12 +120,7 @@ def write_fetcher_unit_tests() -> None:
     provider_fetchers: Dict[str, Dict[str, str]] = {}
 
     for provider, fetcher_dict in fetchers.items():
-        path = os.path.join(
-            "providers",
-            f"{provider}",
-            "tests",
-            f"test_{provider}_fetchers.py",
-        )
+        path = PROVIDERS_PATH / provider / "tests" / f"test_{provider}_fetchers.py"
         generate_fetcher_unit_tests(path)
 
         for model_name, fetcher in fetcher_dict.items():
@@ -135,7 +134,7 @@ def write_fetcher_unit_tests() -> None:
 
             pattern = f"from {fetcher_path}"
             if not check_pattern_in_file(path, pattern):
-                with open(path, "a") as f:
+                with open(path, "a", encoding="utf-8", newline="\n") as f:
                     f.write(f"{pattern} import {fetcher_name}\n")
 
         pattern = "vcr_config"
@@ -182,7 +181,7 @@ def test_{fetcher_name_snake}(credentials=test_credentials):
             if "european" in fetcher_name.lower() and "symbol" in test_params:
                 test_params["symbol"] = "BUKBUS"
 
-            with open(path, "a") as f:
+            with open(path, "a", encoding="utf-8", newline="\n") as f:
                 test_code = test_template.format(
                     fetcher_name_snake=to_snake_case(fetcher_name),
                     fetcher_name=fetcher_name,
