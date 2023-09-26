@@ -168,10 +168,10 @@ interactions:
         8jK3tBZIOm1KPjATow0imGbUMNR24afXsrSg8GtzAWCaxsLKzySJaINFIgUdUB/m7AoEWuQK4YKd
         pD4UzS6LmZBTer0zuI1+2hVNCPUDymiLrRMUyC/BiTAdGxF4C0a+lhCJCxZKdD5jghJ56QAnZOIL
         qMuZLMs99dNZfJaZJWhx3JJLTBvI2ZFSoPiySuX5nK2ivApKLfL5as9QPn/7x9/KJczJM1tqlQgv
-        YYCuW99QOlqDerDb3AIBtZ3xeKfWHIugLsaRCMTWuFFrlMolwqeWWvVquaTg3j0LskUq1zO/WX3D
-        QH7nmzKWvwaZsdr85fJje7f3qb3oLarzk2F10T//cN/vnH3+MDprvBv193qf+uLd9PDz4GL38qxe
-        i05V+iE8iO/7t6nu1U/tuLb7bjyKP49vd5ujj+n+6GK3fvyxfxVs9ocXF7EN3/am46PEiY8f8D3T
-        8ea726uP3d2ro/PPl/Xz7Oooya4WV1Vx0Tf49w9nhx9G7dI//m8AAAD///k8H4/paAAA
+        YYCuW99QOho1wm3R3NoSQdgUW0G1vhNFzXoTop3drVpQw9Ca8KmlVr1aLim4d8+CbJHK9cxvVt8w
+        kN/5pozlr0FmrDZ/ufzY3u19ai96i+r8ZFhd9M8/3Pc7Z58/jM4a70b9vd6nvng3Pfw8uNi9PKvX
+        olOVfggP4vv+bap79VM7ru2+G4/iz+Pb3eboY7o/utitH3/sXwWb/eHFRWzDt73p+Chx4uMHfM90
+        vPnu9upjd/fq6PzzZf08uzpKsqvFVVVc9A3+/cPZ4YdRu/SP/xsAAP//xBmSsuloAAA=
     headers:
       Connection:
       - keep-alive
@@ -180,7 +180,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 26 Sep 2023 18:57:24 GMT
+      - Tue, 26 Sep 2023 19:08:15 GMT
       Link:
       - <https://api.polygon.io/v2/reference/news?cursor=YXA9MjAyMy0wOS0yNVQxNCUzQTU4JTNBMjNaJmFzPW9YU21fRnpQdEhxNkpoM2Rsb19JbThzbk95TXpDTW92LXNZc3NSWWhsdHMmbGltaXQ9MjAmb3JkZXI9ZGVzY2VuZGluZyZ0aWNrZXI9QUFQTA>;
         rel="next"
@@ -195,7 +195,7 @@ interactions:
       X-Item-Count:
       - '20'
       X-Request-Id:
-      - 1e2c956eae18bb815bac2abfaca6b414
+      - f4d7a566acd5a6c028ff525ef8961c18
     status:
       code: 200
       message: OK

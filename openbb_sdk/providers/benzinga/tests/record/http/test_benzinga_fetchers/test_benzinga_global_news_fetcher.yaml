@@ -12,14 +12,205 @@ interactions:
     uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&token=MOCK_TOKEN
   response:
     body:
-      string: "[{\"id\":34916272,\"author\":\"Murtuza Merchant\",\"created\":\"Tue,
-        26 Sep 2023 14:49:19 -0400\",\"updated\":\"Tue, 26 Sep 2023 14:49:19 -0400\",\"title\":\"Chase's
-        Crypto-Related Transactions Ban In UK: A Sign Of The Times \u2014 Or A Sign
-        Of Weakness?\",\"teaser\":\"JP Morgan Chase &amp; Co (NYSE: JPM), the prominent
-        banking institution, decided to halt cryptocurrency-related transactions for
-        its U.K. clientele starting\_Oct. 16, according to\_a recent communication
-        to its users.\",\"body\":\"<p><strong>JP Morgan Chase &amp; Co</strong> (NYSE:<a
-        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/JPM#NYSE\\\">JPM</a>),
+      string: "[{\"id\":34923089,\"author\":\"Henry Khederian\",\"created\":\"Tue,
+        26 Sep 2023 15:04:20 -0400\",\"updated\":\"Tue, 26 Sep 2023 15:04:20 -0400\",\"title\":\"What's
+        Going On With PDD Holdings Stock?\",\"teaser\":\"PDD Holdings Inc - ADR (NASDAQ:
+        PDD) shares are trading lower by 2.6% to $94.16 Tuesday afternoon.\",\"body\":\"<p><strong>PDD
+        Holdings Inc - ADR</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PDD#NASDAQ\\\">PDD</a>)
+        shares are trading lower by 2.6% to $94.16 Tuesday afternoon. Shares of several
+        Chinese stocks are trading lower this week amid concerns over the country&#39;s
+        property sector following reports suggesting <a href=\\\"https://www.benzinga.com/markets/penny-stocks/23/09/34869281/china-property-market-woes-spark-fears-of-2008-style-global-recession-led-by-china-slump\\\">China
+        Evergrande</a> said it&#39;s unable to issue new debt due to an ongoing investigation
+        into its Hengda Real Estate subsidiary.</p>\\r\\n\\r\\n<p><strong>Why It Matters</strong></p>\\r\\n\\r\\n<p>If
+        there are concerns about a potential economic slowdown in China due to issues
+        in the property sector, consumer spending may decrease. PDD Holdings relies
+        on consumer spending for its e-commerce platform, and a reduction in consumer
+        confidence and spending can negatively impact its revenue and growth prospects.</p>\\r\\n\\r\\n<p>A
+        downturn in the property sector could also lead to disruptions in supply chains
+        and logistics, which may affect Pinduoduo&#39;s ability to source and deliver
+        products efficiently. Supply chain disruptions can increase costs and lead
+        to operational challenges for the company.</p>\\r\\n\\r\\n<p><strong>What&#39;s
+        Going On?</strong></p>\\r\\n\\r\\n<p>Evergrande, the beleaguered Chinese property
+        developer, said Friday that it was cancelling a creditor meeting scheduled
+        early this week.&nbsp;It said that&nbsp;&ldquo;sales had not been as expected&rdquo;.</p>\\r\\n\\r\\n<p>The
+        announcement is the latest in a series of scandals to hit the Chinese financial
+        behemoth. Mid-September, the domestic regulator&nbsp;<a href=\\\"https://asia.nikkei.com/Business/Markets/China-debt-crunch/Evergrande-s-life-insurance-arm-taken-over-by-new-state-owned-vehicle\\\"
+        target=\\\"_blank\\\">approved</a>&nbsp;a 50% sale of its insurance business
+        China Evergrande Life into a special purpose vehicle owned by the Chinese
+        state to free up cash.</p>\\r\\n\\r\\n<p>Then last week,&nbsp;staff in the
+        company&rsquo;s wealth management division&nbsp;were detained by Shenzhen
+        police...<em><a href=\\\"https://www.benzinga.com/markets/penny-stocks/23/09/34869281/china-property-market-woes-spark-fears-of-2008-style-global-recession-led-by-china-slump\\\">Read
+        More</a></em></p>\\r\\n\\r\\n<p>According to data from&nbsp;<a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a>, PDD Holdings has a 52-week high of $106.38 and a 52-week low of $38.80.</p>\\r\\n\",\"url\":\"https://www.benzinga.com/news/23/09/34923089/whats-going-on-with-pdd-holdings-stock\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/analysis-4937349.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/analysis-4937349.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/analysis-4937349.jpg\"}],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"PDD\"}],\"tags\":[{\"name\":\"why
+        it's moving\"}]},{\"id\":34923603,\"author\":\"Benzinga Insights\",\"created\":\"Tue,
+        26 Sep 2023 15:01:36 -0400\",\"updated\":\"Tue, 26 Sep 2023 15:01:37 -0400\",\"title\":\"Mastercard
+        Unusual Options Activity\",\"teaser\":\" \",\"body\":\"<p>A whale with a lot
+        of money to spend has taken a noticeably bearish stance on <strong>Mastercard</strong>.</p>\\n<p>Looking
+        at options history for Mastercard (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MA#NYSE\\\">MA</a>)
+        we detected 40 strange trades.</p>\\n<p>If we consider the specifics of each
+        trade, it is accurate to state that 45% of the investors opened trades with
+        bullish expectations and 55% with bearish.</p>\\n<p>From the overall spotted
+        trades, 30 are puts, for a total amount of $1,521,493 and 10, calls, for a
+        total amount of $1,215,296.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking
+        into account the Volume and Open Interest on these contracts, it appears that
+        whales have been targeting a price range from $370.0 to $480.0 for Mastercard
+        over the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>In
+        terms of liquidity and interest, the mean open interest for Mastercard options
+        trades today is 556.93 with a total volume of 3,529.00.</p>\\n<p>In the following
+        chart, we are able to follow the development of volume and open interest of
+        call and put options for Mastercard's big money trades within a strike price
+        range of $370.0 to $480.0 over the last 30 days.</p>\\n<h3>Mastercard Option
+        Volume And Open Interest Over Last 30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695754893_0.png\\\"
+        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>MA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/17/25</td>\\n<td>$400.00</td>\\n<td>$547.5K</td>\\n<td>422</td>\\n<td
+        align=\\\"right\\\">102</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/19/24</td>\\n<td>$410.00</td>\\n<td>$289.0K</td>\\n<td>3.8K</td>\\n<td
+        align=\\\"right\\\">226</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>01/17/25</td>\\n<td>$480.00</td>\\n<td>$120.4K</td>\\n<td>11</td>\\n<td
+        align=\\\"right\\\">49</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/17/25</td>\\n<td>$480.00</td>\\n<td>$103.4K</td>\\n<td>11</td>\\n<td
+        align=\\\"right\\\">85</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>01/17/25</td>\\n<td>$480.00</td>\\n<td>$95.0K</td>\\n<td>11</td>\\n<td
+        align=\\\"right\\\">24</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
+        Is Mastercard Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 1,501,965,
+        the price of MA is down -1.67% at $395.76. </li>\\n<li>RSI indicators hint
+        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
+        to be released in 30 days.</li>\\n</ul>\\n<h3>What The Experts Say On Mastercard:</h3>\\n<ul>\\n<li>Jefferies
+        has decided to maintain their Buy rating on Mastercard, which currently sits
+        at a price target of $475. </li>\\n<li>Truist Securities has decided to maintain
+        their Buy rating on Mastercard, which currently sits at a price target of
+        $475. </li>\\n<li>Mizuho downgraded its action to Buy with a price target
+        of $435</li>\\n</ul>\\n<p>Options are a riskier asset compared to just trading
+        the stock, but they have higher profit potential. Serious options traders
+        manage this risk by educating themselves daily, scaling in and out of trades,
+        following more than one indicator, and following the markets closely.</p>\\n<p>If
+        you want to stay updated on the latest options trades for Mastercard, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34923603/mastercard-unusual-options-activity\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_1.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"MA\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34917839,\"author\":\"Adam
+        Eckert\",\"created\":\"Tue, 26 Sep 2023 15:01:06 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 15:01:06 -0400\",\"title\":\"People's Net Worth Is Up Since COVID-19:
+        Here's Who Made The Most\",\"teaser\":\"A lot of people&#39;s net worth has
+        continued to climb since the COVID-19 pandemic,\_largely driven by stock market
+        gains and an increase in property values.\",\"body\":\"<p>A lot of people&#39;s
+        net worth has continued to climb since the COVID-19 pandemic,&nbsp;largely
+        driven by stock market gains and an increase in property values. <strong>That
+        may be why the rich <a href=\\\"https://www.benzinga.com/personal-finance/financial-advisors/23/07/33099045/the-richest-people-in-the-world-are-getting-richer-by-doing-this-you-can-do-i\\\">grew
+        their net worth the most</a>.</strong></p>\\r\\n\\r\\n<p><strong>What To Know:</strong>&nbsp;On
+        Tuesday, KPMG chief economist <strong>Diane Swonk</strong> shared a <a href=\\\"https://twitter.com/DianeSwonk/status/1706663509331718197\\\">chart</a>&nbsp;on
+        X&nbsp;showing&nbsp;household net worth grew across all incomes from the fourth
+        quarter of 2019 to the second quarter of this year.&nbsp;</p>\\r\\n\\r\\n<p>After
+        adjusting for inflation, the top 1% saw the highest&nbsp;net worth increase
+        of 22%. The net worth of those in the&nbsp;80th to 99th percentile jumped
+        by 12% to 13%, the 60th percentile increased by 9%, the 40th percentile increased
+        by 5% and earners in the 20th percentile saw their net worth climb by 9%.&nbsp;</p>\\r\\n\\r\\n<p><a
+        href=\\\"https://www.federalreserve.gov/releases/z1/\\\">Data</a> from the
+        Federal Reserve&nbsp;released earlier this month showed household wealth hit
+        record highs of $154.28 trillion last quarter, fueled by&nbsp;a stock market
+        rally and rebounding property values. That may help explain why those in the
+        top income percentiles are seeing the biggest increase in net worth.&nbsp;</p>\\r\\n\\r\\n<p>Households
+        have now fully regained the losses driven by declining real estate values
+        and&nbsp;a bear market in 2022 brought on by <a href=\\\"https://www.benzinga.com/economics/macro-economic-events/23/06/32861662/powell-hits-the-brakes-after-10-straight-interest-rate-increases-but-fed-signals-\\\">rising
+        interest rates</a> in response to high inflation.&nbsp;</p>\\r\\n\\r\\n<p><em>Related
+        Link:&nbsp;<a href=\\\"https://www.benzinga.com/federal-reserve/23/09/34761643/fed-meeting-preview-will-rates-hold-steady-despite-inflation-concerns\\\">Fed
+        Decision Looms: Will Steady Rates Prevail Despite Inflation Pressures?</a></em></p>\\r\\n\\r\\n<p>After
+        falling more than 18% in 2022, the<strong>&nbsp;SPDR S&amp;P 500 ETF Trust</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)
+        was&nbsp;up more than 12% since the start of the year. But markets have trended
+        lower in recent months. The SPY is down more than 3.5% over the last month
+        and was down 1.18% at last check Tuesday, according to&nbsp;<a href=\\\"https://benzinga.grsm.io/gxjhpowx7zks\\\">Benzinga
+        Pro</a>.</p>\\r\\n\\r\\n<p>In 2020, markets tumbled, but quickly recovered
+        and finished the year up about 18%. In 2021, the SPY surged more than 28%.&nbsp;</p>\\r\\n\\r\\n<p><em>Photo:
+        Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/news/23/09/34917839/peoples-net-worth-is-up-since-covid-19-heres-who-made-the-most\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/money.man_.shutterstock_283343006.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/money.man_.shutterstock_283343006.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/money.man_.shutterstock_283343006.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Economics\"},{\"name\":\"Personal
+        Finance\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"SPY\"}],\"tags\":[{\"name\":\"Diane
+        Swonk\"},{\"name\":\"KPMG\"},{\"name\":\"net worth\"}]},{\"id\":34923584,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 15:00:28 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 15:00:29 -0400\",\"title\":\"Analyst Expectations for AVITA Medical's
+        Future\",\"teaser\":\" \",\"body\":\"<p>AVITA Medical (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/RCEL#NASDAQ\\\">RCEL</a>) has observed
+        the following analyst ratings within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
+        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
+        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
+        Ratings</strong></td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">3</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
+        30D</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">2</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>According
+        to 5 analyst offering 12-month price targets in the last 3 months, AVITA Medical
+        has an average price target of $28.4 with a high of $40.00 and a low of $23.00.
+        </p>\\n<p>Below is a summary of how these 5 analysts rated AVITA Medical over
+        the past 3 months. The greater the number of bullish ratings, the more positive
+        analysts are on the stock and the greater the number of bearish ratings, the
+        more negative analysts are on the stock</p>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695754825_0.png\\\"
+        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This average price target has
+        increased by 28.1% over the past month.</p>\\n<p><a href=\\\"https://www.benzinga.com/quote/RCEL/analyst-ratings?utm_source=Benzinga
+        Insights\\\"><strong>Stay up to date on AVITA Medical analyst ratings.</strong></a></p>\\n<p>If
+        you are interested in following small-cap stock news and performance <a href=\\\"https://www.benzinga.com/news/small-cap\\\">you
+        can start by tracking it here</a>.</p>\\n<h1>How Are Analyst Ratings Determined?</h1>\\n<p>Benzinga
+        tracks 150 analyst firms and reports on their stock expectations. Analysts
+        typically arrive at their conclusions by predicting how much money a company
+        will make in the future, usually the upcoming five years, and how risky or
+        predictable that company's revenue streams are.</p>\\n<p>Analysts attend company
+        conference calls and meetings, research company financial statements, and
+        communicate with insiders to publish their ratings on stocks. Analysts typically
+        rate each stock once per quarter or whenever the company has a major update.</p>\\n<p>Some
+        analysts will also offer forecasts for metrics like growth estimates, earnings,
+        and revenue to provide further guidance on stocks. Investors who use analyst
+        ratings should note that this specialized advice comes from humans and may
+        be subject to error.</p>\\n<p>This article was generated by Benzinga's automated
+        content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34923584/analyst-expectations-for-avita-medicals-future\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_3.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"RCEL\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34923583,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 15:00:20 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 15:00:21 -0400\",\"title\":\"Expert Ratings for O-I Glass\",\"teaser\":\"
+        \",\"body\":\"<p>Analysts have provided the following ratings for O-I Glass
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/OI#NYSE\\\">OI</a>)
+        within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
+        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
+        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
+        Ratings</strong></td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
+        30D</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>These
+        4 analysts have an average price target of $28.0 versus the current price
+        of O-I Glass at $17.025, implying  upside.</p>\\n<p>Below is a summary of
+        how these 4 analysts rated O-I Glass over the past 3 months. The greater the
+        number of bullish ratings, the more positive analysts are on the stock and
+        the greater the number of bearish ratings, the more negative analysts are
+        on the stock</p>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695754817_0.png\\\"
+        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This current average has decreased
+        by 2.34% from the previous average price target of $28.67. </p>\\n<p><a href=\\\"https://www.benzinga.com/quote/OI/analyst-ratings?utm_source=Benzinga
+        Insights\\\"><strong>Stay up to date on O-I Glass analyst ratings.</strong></a></p>\\n<h1>What
+        Are Analyst Ratings?</h1>\\n<p>Analysts work in banking and financial systems
+        and typically specialize in reporting for stocks or defined sectors. Analysts
+        may attend company conference calls and meetings, research company financial
+        statements, and communicate with insiders to publish \\\"analyst ratings\\\"
+        for stocks. Analysts typically rate each stock once per quarter.</p>\\n<p>Some
+        analysts publish their predictions for metrics such as growth estimates, earnings,
+        and revenue to provide additional guidance with their ratings. When using
+        analyst ratings, it is important to keep in mind that stock and sector analysts
+        are also human and are only offering their opinions to investors.</p>\\n<p>If
+        you want to keep track of which analysts are outperforming others, you can
+        view updated analyst ratings along withanalyst success scores in <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a>.</p>\\n<p>This article was generated by Benzinga's automated content
+        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34923583/expert-ratings-for-o-i-glass\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"OI\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34916272,\"author\":\"Murtuza
+        Merchant\",\"created\":\"Tue, 26 Sep 2023 14:49:19 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:49:19 -0400\",\"title\":\"Chase's Crypto-Related Transactions
+        Ban In UK: A Sign Of The Times \u2014 Or A Sign Of Weakness?\",\"teaser\":\"JP
+        Morgan Chase &amp; Co (NYSE: JPM), the prominent banking institution, decided
+        to halt cryptocurrency-related transactions for its U.K. clientele starting\_Oct.
+        16, according to\_a recent communication to its users.\",\"body\":\"<p><strong>JP
+        Morgan Chase &amp; Co</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/JPM#NYSE\\\">JPM</a>),
         the prominent banking institution, decided to halt cryptocurrency-related
         transactions for its U.K. clientele starting&nbsp;Oct. 16, according to&nbsp;a
         recent communication to its users.</p>\\r\\n\\r\\n<p>The bank stated, &quot;If
@@ -555,7 +746,7 @@ interactions:
         Next:</em> <em><a href=\\\"https://www.benzinga.com/markets/cannabis/23/08/34149329/cashing-in-on-cannabis-urban-gro-secures-over-2m-in-deal-with-xs-financial-whats-next\\\">Cashing
         In On Cannabis: Urban-gro Secures Over $2M In Deal With XS Financial, What&#39;s
         Next?</a></em></p>\\r\\n\\r\\n<p><em>Image by <a href=\\\"https://www.benzinga.com/author/el-planteo\\\">El
-        Planteo</a></em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34920989/urban-gro-secures-11m-hospitality-recreation-contract-in-southeast-u-s\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/mercadocannabis.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Planteo</a></em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34920989/urban-gro-secures-11m-hospitality-recreation-contract-in-southeast-u-s\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/mercadocannabis.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
         Stocks\"},{\"name\":\"Financing\"},{\"name\":\"Events\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"UGRO\"}],\"tags\":[{\"name\":\"Bradley
         Nattrass\"},{\"name\":\"Cannabis Capital Conference\"},{\"name\":\"CCC\"},{\"name\":\"CCC
         Chicago\"},{\"name\":\"Controlled Environment Agriculture\"},{\"name\":\"Inc.\"},{\"name\":\"urban-gro\"}]},{\"id\":34915565,\"author\":\"Lekha
@@ -637,7 +828,7 @@ interactions:
         selected regions.</p>\\r\\n\\r\\n<p><strong>Price Action</strong>: KTB shares
         are trading higher by 1.23% at $42.21 on the last check Tuesday.</p>\\r\\n\\r\\n<p><em>This
         content was partially produced with the help of AI tools and was reviewed
-        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34911177/from-vintage-vibes-to-modern-street-lee-unveils-80s-inspired-collection-with-chinas-roaringwild\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/ktb.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"KTB\"}],\"tags\":[{\"name\":\"AI
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34911177/from-vintage-vibes-to-modern-street-lee-unveils-80s-inspired-collection-with-chinas-roaringwild\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/ktb.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"KTB\"}],\"tags\":[{\"name\":\"AI
         Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34921760,\"author\":\"Benzinga
         Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:50 -0400\",\"updated\":\"Tue,
         26 Sep 2023 14:00:51 -0400\",\"title\":\"The Latest Analyst Ratings for Clarivate\",\"teaser\":\"
@@ -716,203 +907,8 @@ interactions:
         tickers. It is important to keep in mind that while stock and sector analysts
         are specialists, they are also human and can only forecast their beliefs to
         traders.</p>\\n<p>This article was generated by Benzinga's automated content
-        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921757/expert-ratings-for-genmab\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Analyst
-        Ratings\"}],\"stocks\":[{\"name\":\"GMAB\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34921753,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:24 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 14:00:25 -0400\",\"title\":\"Analyst Ratings for United Airlines
-        Holdings\",\"teaser\":\" \",\"body\":\"<p>Within the last quarter, United
-        Airlines Holdings (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/UAL#NASDAQ\\\">UAL</a>)
-        has observed the following analyst ratings: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
-        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
-        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
-        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
-        Ratings</strong></td>\\n<td align=\\\"right\\\">5</td>\\n<td align=\\\"right\\\">6</td>\\n<td
-        align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
-        30D</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
-        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
-        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
-        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
-        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
-        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
-        Ago</strong></td>\\n<td align=\\\"right\\\">4</td>\\n<td align=\\\"right\\\">5</td>\\n<td
-        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>According
-        to 13 analyst offering 12-month price targets in the last 3 months, United
-        Airlines Holdings has an average price target of $71.92 with a high of $93.00
-        and a low of $50.00. </p>\\n<p>Below is a summary of how these 13 analysts
-        rated United Airlines Holdings over the past 3 months. The greater the number
-        of bullish ratings, the more positive analysts are on the stock and the greater
-        the number of bearish ratings, the more negative analysts are on the stock</p>\\n<p><img
-        src=\\\"https://www.benzinga.com/files/images/story/2023/1695751221_0.png\\\"
-        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This current average has increased
-        by 8.56% from the previous average price target of $66.25. </p>\\n<p><a href=\\\"https://www.benzinga.com/quote/UAL/analyst-ratings?utm_source=Benzinga
-        Insights\\\"><strong>Stay up to date on United Airlines Holdings analyst ratings.</strong></a></p>\\n<h1>How
-        Are Analyst Ratings Determined?</h1>\\n<p>Analysts are specialists within
-        banking and financial systems that typically report for specific stocks or
-        within defined sectors. These people research company financial statements,
-        sit in conference calls and meetings, and speak with relevant insiders to
-        determine what are known as analyst ratings for stocks. Typically, analysts
-        will rate each stock once a quarter. </p>\\n<p>Some analysts will also offer
-        forecasts for metrics like growth estimates, earnings, and revenue to provide
-        further guidance on stocks. Investors who use analyst ratings should note
-        that this specialized advice comes from humans and may be subject to error.</p>\\n<p>This
-        article was generated by Benzinga's automated content engine and reviewed
-        by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921753/analyst-ratings-for-united-airlines-holdings\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_3.png\"}],\"channels\":[{\"name\":\"Analyst
-        Ratings\"}],\"stocks\":[{\"name\":\"UAL\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34921752,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:20 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 14:00:21 -0400\",\"title\":\"P/E Ratio Insights for ASML Holding\",\"teaser\":\"
-        \",\"body\":\"<p>Looking into the current session, <strong>ASML Holding Inc.
-        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ASML#NASDAQ\\\">ASML</a>)</strong>
-        shares are trading at $571.36, after a <strong>2.52%</strong> drop. Over the
-        past month, the stock decreased by <strong>14.40%</strong>, but over the past
-        year, it actually spiked by <strong>29.49%</strong>. With questionable short-term
-        performance like this, and great long-term performance, long-term shareholders
-        might want to start looking into the company's price-to-earnings ratio. </p>\\n<p><p><img
-        src=\\\"https://www.benzinga.com/files/images/story/2023/1695751217_0.png\\\"
-        alt=\\\"Past Year Chart\\\" /></p></p>\\n<h3>Evaluating ASML Holding P/E in
-        Comparison to Its Peers</h3>\\n<p>The P/E ratio measures the current share
-        price to the company's EPS. It is used by long-term investors to analyze the
-        company's current performance against it's past earnings, historical data
-        and aggregate market data for the industry or the indices, such as S&amp;P
-        500. A higher P/E indicates that investors expect the company to perform better
-        in the future, and the stock is probably overvalued, but not necessarily.
-        It also could indicate that investors are willing to pay a higher share price
-        currently, because they expect the company to perform better in the upcoming
-        quarters. This leads investors to also remain optimistic about rising dividends
-        in the future. </p>\\n<p>ASML Holding has a lower P/E than the aggregate P/E
-        of <strong>38.98</strong> of the Semiconductors &amp; Semiconductor Equipment
-        industry. Ideally, one might believe that the stock might perform worse than
-        its peers, but it's also probable that the stock is undervalued. </p>\\n<p><p><img
-        src=\\\"https://www.benzinga.com/files/images/story/2023/1695751217_1.png\\\"
-        alt=\\\"Guage\\\" /></p></p>\\n<p>In conclusion, the price-to-earnings ratio
-        is a useful metric for analyzing a company's market performance, but it has
-        its limitations. While a lower P/E can indicate that a company is undervalued,
-        it can also suggest that shareholders do not expect future growth. Additionally,
-        the P/E ratio should not be used in isolation, as other factors such as industry
-        trends and business cycles can also impact a company's stock price. Therefore,
-        investors should use the P/E ratio in conjunction with other financial metrics
-        and qualitative analysis to make informed investment decisions. </p>\",\"url\":\"https://www.benzinga.com/news/23/09/34921752/pe-ratio-insights-for-asml-holding\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Intraday
-        Update\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"ASML\"}],\"tags\":[{\"name\":\"BZI-PE\"}]},{\"id\":34921751,\"author\":\"Benzinga
-        Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:17 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 14:00:17 -0400\",\"title\":\"4 Analysts Have This to Say About
-        Thor Industries\",\"teaser\":\" \",\"body\":\"<p>Thor Industries (NYSE:<a
-        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/THO#NYSE\\\">THO</a>)
-        has observed the following analyst ratings within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
-        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
-        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
-        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
-        Ratings</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
-        align=\\\"right\\\">3</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
-        30D</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
-        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
-        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
-        align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
-        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
-        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
-        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
-        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>In
-        the last 3 months, 4 analysts have offered 12-month price targets for Thor
-        Industries. The company has an average price target of $89.25 with a high
-        of $115.00 and a low of $72.00. </p>\\n<p>Below is a summary of how these
-        4 analysts rated Thor Industries over the past 3 months. The greater the number
-        of bullish ratings, the more positive analysts are on the stock and the greater
-        the number of bearish ratings, the more negative analysts are on the stock</p>\\n<p><img
-        src=\\\"https://www.benzinga.com/files/images/story/2023/1695751213_0.png\\\"
-        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This current average has decreased
-        by 10.3% from the previous average price target of $99.50. </p>\\n<p><a href=\\\"https://www.benzinga.com/quote/THO/analyst-ratings?utm_source=Benzinga
-        Insights\\\"><strong>Stay up to date on Thor Industries analyst ratings.</strong></a></p>\\n<h1>How
-        Are Analyst Ratings Determined?</h1>\\n<p>Ratings come from analysts, or specialists
-        within banking and financial systems that report for specific stocks or defined
-        sectors (typically once per quarter for each stock). Analysts usually derive
-        their information from company conference calls and meetings, financial statements,
-        and conversations with important insiders to reach their decisions.</p>\\n<p>Some
-        analysts will also offer forecasts for metrics like growth estimates, earnings,
-        and revenue to provide further guidance on stocks. Investors who use analyst
-        ratings should note that this specialized advice comes from humans and may
-        be subject to error.</p>\\n<p>This article was generated by Benzinga's automated
-        content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921751/4-analysts-have-this-to-say-about-thor-industries\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_2.jpeg\"}],\"channels\":[{\"name\":\"Analyst
-        Ratings\"}],\"stocks\":[{\"name\":\"THO\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34904598,\"author\":\"Shivani
-        Kumaresan\",\"created\":\"Tue, 26 Sep 2023 13:49:14 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 13:49:15 -0400\",\"title\":\"Upping The AI Security Ante: Booz
-        Allen Invests In HiddenLayer To Guard Machine Learning Models\",\"teaser\":\"Booz
-        Allen Hamilton Holding Corporation\_(NYSE: BAH), an AI service provider for
-        the U.S. Federal government, said its venture capital segment,\_Booz Allen
-        Ventures, has strategically invested in\_HiddenLayer.\",\"body\":\"<p><strong>Booz
-        Allen Hamilton Holding Corporation&nbsp;</strong>(NYSE:<a class=\\\"ticker\\\"
-        href=\\\"https://www.benzinga.com/stock/BAH#NYSE\\\">BAH</a>), an AI service
-        provider for the U.S. Federal government, said its venture capital segment,&nbsp;<strong>Booz
-        Allen Ventures</strong>, has strategically invested in&nbsp;<strong>HiddenLayer</strong>.
-        The&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/b34902031/booz-allen-doubles-down-on-adversarial-ai-capabilities-with-new-investment\\\"
-        style=\\\"background-image:initial; background-position:initial; background-size:initial;
-        background-repeat:initial; background-attachment:initial; background-origin:initial;
-        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
-        target=\\\"_blank\\\">financial terms were not disclosed.</a></p>\\r\\n\\r\\n<p>HiddenLayer
-        is a security platform that safeguards machine learning (ML) models.</p>\\r\\n\\r\\n<p>This
-        move amplifies Booz Allen&#39;s longstanding Adversarial AI expertise, especially
-        those developed for the Defense Department and intelligence clientele, ensuring
-        a fortified embrace of enterprise AI tools in sync with evolving national
-        defense threats and growing consumer anticipations.&nbsp;</p>\\r\\n\\r\\n<p>&quot;Every
-        AI-enabled solution should be assessed for risk and appropriately protected
-        from adversarial attacks &ndash; especially as the government looks to deploy
-        AI capabilities in increasingly important applications,&quot; said Matt Keating,
-        leader of Booz Allen&#39;s Adversarial AI portfolio.&nbsp;</p>\\r\\n\\r\\n<p><strong><em>Also
-        Read</em></strong><em>:&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/08/33514325/booz-allen-hamilton-raises-650m-via-debt-offering\\\"
-        style=\\\"background-image:initial; background-position:initial; background-size:initial;
-        background-repeat:initial; background-attachment:initial; background-origin:initial;
-        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
-        target=\\\"_blank\\\"><em>Booz Allen Hamilton Raises $650M Via Debt Offering</em></a></p>\\r\\n\\r\\n<p>With
-        surging AI integration, especially within mission critical systems, the vulnerability
-        perimeter broadens for diverse user categories, from federal to commercial.</p>\\r\\n\\r\\n<p>The
-        newly announced investment in HiddenLayer will complement and accelerate Booz
-        Allen&#39;s existing Adversarial AI capabilities.</p>\\r\\n\\r\\n<p>This includes
-        a longstanding focus on addressing key challenges with model security, such
-        as data poisoning, data leakage, model evasion, and malicious code injection.</p>\\r\\n\\r\\n<p>This
-        recent venture is one among several AI-centric moves by Booz Allen Ventures.
-        The company has been identifying and backing dual-purpose commercial tech
-        solutions, with investments spanning Shift5, Credo AI, Latent AI, and Reveal
-        Technology.&nbsp;</p>\\r\\n\\r\\n<p><strong><em>Also Read</em></strong><em>:&nbsp;</em><a
-        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/08/33829741/booz-allen-hamilton-bags-thunderdome-production-agreement\\\"
-        style=\\\"background-image:initial; background-position:initial; background-size:initial;
-        background-repeat:initial; background-attachment:initial; background-origin:initial;
-        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
-        target=\\\"_blank\\\"><em>Booz Allen Hamilton Bags Thunderdome Production
-        Agreement</em></a></p>\\r\\n\\r\\n<p><strong>Price Action</strong>: BAH shares
-        traded lower by 0.42% at $107.64 on the last check Tuesday.</p>\\r\\n\\r\\n<p><em>This
-        content was partially produced with the help of AI tools and was reviewed
-        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34904598/upping-the-ai-security-ante-booz-allen-invests-in-hiddenlayer-to-guard-machine-learning-models\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/bah_1.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/bah_1.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/bah_1.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Financing\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"BAH\"}],\"tags\":[{\"name\":\"AI
-        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34919193,\"author\":\"Franca
-        Quarneti\",\"created\":\"Tue, 26 Sep 2023 13:49:01 -0400\",\"updated\":\"Tue,
-        26 Sep 2023 13:49:02 -0400\",\"title\":\"Sony Allegedly Hacked By New Ransomware
-        Group, Company Is 'Currently Investigating'\",\"teaser\":\"A new ransomware
-        group known as Ransomed.vc claimed to have hacked all of Sony Group Corp&#39;s
-        (NYSE: SONY) systems.\",\"body\":\"<p>A new ransomware group known as <strong>Ransomed.vc
-        </strong>claimed to have hacked all of <a href=\\\"https://www.benzinga.com/general/gaming/23/09/34621105/sonys-state-of-play-resident-evil-4-vr-final-fantasy-vii-rebirth-and-more-await-playstation-fans\\\"><strong>Sony
-        Group Corp&#39;</strong>s (NYSE: </a><a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/sony#NYSE\\\">SONY</a>)
-        systems.</p>\\r\\n\\r\\n<p>This group, which has only been active since September,
-        was said to have&nbsp;accessed around 6,000 files from Sony, as <a href=\\\"https://www.cybersecurityconnect.com.au/commercial/9600-ransomed-vc-group-claims-hack-on-all-of-sony-systems\\\">reported</a>
-        by Cyber Security Connect.</p>\\r\\n\\r\\n<p><em>See Also:&nbsp;<a href=\\\"https://www.benzinga.com/general/entertainment/23/01/30557153/riot-games-refuses-to-give-in-to-blackmailers-after-league-of-legends-source-code-hack\\\">Riot
-        Games Refuses To Give In To Blackmailers After League of Legends Source Code
-        Hack</a></em></p>\\r\\n\\r\\n<p>The compromised data includes screenshots
-        of Sony&#39;s internal login page, an internal PowerPoint presentation with
-        test bench details, Java files&nbsp;and a document tree with various files.</p>\\r\\n\\r\\n<p>In
-        a recent <a href=\\\"https://www.ign.com/articles/sony-launches-investigation-after-ransomware-group-claims-to-have-breached-companys-systems\\\">statement</a>
-        to IGN, Sony said: &quot;We are currently investigating the situation, and
-        we have no further comment at this time.&quot;</p>\\r\\n\\r\\n<p>Meanwhile,
-        the group announced: &quot;We have successfully [compromised] all of [Sony&rsquo;s]
-        systems.&rdquo;</p>\\r\\n\\r\\n<p>The group went on to say,&nbsp;&quot;We
-        won&rsquo;t ransom them! We will sell the data. Due to Sony not wanting to
-        pay. DATA IS FOR SALE. WE ARE SELLING IT.&quot;</p>\\r\\n\\r\\n<p>Ransomed.vc
-        has not specified a price for the data but provided contact details for Sony
-        to negotiate. They have also set a &quot;post date&quot; of Sept. 28 for potential
-        data release.</p>\\r\\n\\r\\n<p>Curiously, Ransomed.vc appeared&nbsp;to be
-        both a ransomware operator and a ransomware-as-a-service organization.</p>\\r\\n\\r\\n<p>The
-        group is&nbsp;reportedly based in Russia and Ukraine and leverage data privacy
-        laws, such as the EU&#39;s GDPR, to report vulnerabilities and violations,
-        potentially using legal pressure to force victims into compliance.</p>\\r\\n\\r\\n<p><em>Read
-        Next:<a href=\\\"https://www.benzinga.com/government/23/08/33640289/north-korean-hackers-infiltrate-russian-missile-development-program-an-absolutely-hilarious-screwup\\\">&nbsp;North
-        Korean Hackers Infiltrate Russian Missile Development Program: &#39;An Absolutely
-        Hilarious Screwup&#39;</a></em></p>\\r\\n\\r\\n<p><em>Photo:&nbsp;<a href=\\\"https://www.shutterstock.com/es/g/max.ku\\\">max.ku</a>&nbsp;on
-        Shutterstock.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/general/gaming/23/09/34919193/sony-allegedly-hacked-by-new-ransomware-group-company-is-currently-investigating\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/shutterstock_2012816243.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/shutterstock_2012816243.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/shutterstock_2012816243.jpg\"}],\"channels\":[{\"name\":\"Gaming\"},{\"name\":\"News\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"SONY\"}],\"tags\":[{\"name\":\"cyber
-        attack\"},{\"name\":\"cyber security\"},{\"name\":\"hack\"},{\"name\":\"hackers\"},{\"name\":\"Ransomed.vc\"},{\"name\":\"ransomware\"},{\"name\":\"Ransoned.vc\"}]}]\n"
+        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921757/expert-ratings-for-genmab\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"GMAB\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]}]\n"
     headers:
       Cache-Control:
       - max-age=3, must-revalidate
@@ -921,27 +917,27 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 26 Sep 2023 18:55:40 GMT
+      - Tue, 26 Sep 2023 19:06:27 GMT
       ETag:
-      - jzwYAX1hLasfaXQlSn_E3Kc0_yLmeMYXcK7N1VNYqtc=
+      - Ad_qMZ8R2oY2FIw8KqnTuD0be6cMGbEqRGrqTLEaLAo=
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept,Accept-Encoding
       Via:
-      - kong/2.8.3, 1.1 5b0aec6a7e8c81eb2f4e97cd36107e50.cloudfront.net (CloudFront)
+      - kong/2.8.3, 1.1 5888333a47f4bcb4270f45fea45f08bc.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - DKcKDhe0vw-5MSAqqrEj5QSTJsaEAsDdgPboVkwARW3888T9BIzu6w==
+      - ns7pUh-G2tFcPJmWDK8PoG6AqogGH9xcNUe3-6cuo5nxdLdH-5Y_Zw==
       X-Amz-Cf-Pop:
       - MIA3-P4
       X-Bz-Request-Id:
-      - 192.168.155.192-8000-39-51347829-1-1695754540.826
+      - 192.168.240.19-8000-38-51085582-1-1695755186.987
       X-Cache:
       - Miss from cloudfront
       X-Kong-Proxy-Latency:
       - '0'
       X-Kong-Upstream-Latency:
-      - '46'
+      - '47'
       X-Powered-By:
       - Pentium
     status:

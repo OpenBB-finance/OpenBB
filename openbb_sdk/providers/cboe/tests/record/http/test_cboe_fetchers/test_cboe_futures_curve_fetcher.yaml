@@ -15,15 +15,15 @@ interactions:
       string: ''
     headers:
       CF-Cache-Status:
-      - MISS
+      - EXPIRED
       CF-RAY:
-      - 80cdb923f8b26de0-MIA
+      - 80cdc9017d2e0a3e-MIA
       Connection:
       - keep-alive
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 26 Sep 2023 18:55:47 GMT
+      - Tue, 26 Sep 2023 19:06:37 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
       Location:
@@ -55,21 +55,21 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3STy07DMBBF90j8Ax9gu57xOI6XVNAHKFIlRBTYldJFJaCoKhL8PX7UiR0pG2/O
-        nZs7j2xOx/ef3Zk9/X2+HT/Y/e/34bQ9H45fN3fb855tTofd/vqq7VjbKTt7VgwlKi4tR8OgElZe
-        IMlZe4EguSQGRkidIOQQoIAFqj0iayhVqhyjDhh7X5p1iQKXUNKcQai0tcEEXxNEjpJBLeRQuCDP
-        yDlyMJ7VZCDBZYLIwbVphXR5E1wlqIKrFQqgr3xIkIKtFQZVDx8T1BzRw7qP0yRUhQG5L5rAGgeb
-        6fFFPDmEiKfGEOnkICKeHEXEE8NYz1cvzD/FxbieCYXSOheMtusEui4EWfyLoDKFIMsQBEqYKgjW
-        S+afcQZ0DjLnowioXJM5HyVwnAr/UQAkQT7hbTMH5p/+n4oBLGkTVj8I2iKBdeUCZC7oigjBQVMu
-        iBnDGuMn/OnlgsWwyOCg3PlBLlgWXTgHELrKBavhtmPISkgX8h8AAP//bJRLDoQwDEMvNEKINC69
-        AiPNivufhaa0xGS6f8rHsePA4f42AIjA112+ygx4YpDvClWHW8nTgPP9Y/ApuqPdygHOgrVIadGV
-        ATpmzVKBIrTgQGAGUCSq5+sWObQgP7QWWZbtVYG/hM4A+hRti33rQg2A/0U2IM7wcyVbi6Kjghgg
-        fzokjBk6ELeAhApxhu6HCwAA//8DALzaIn5vBgAA
+        H4sIAAAAAAAAA3STy07DMBBF90j8Ax9gu57xK15SQZ+KVAkRBXaldFEJKKqKBH+PH3ViR83Gm3Pn
+        5vp6sjkd3392Z/L09/l2/CCPv9+H0/Z8OH7dPWzPe7I5HXb725umJU0r7ORZEOQoKLcUDQHNLL9A
+        ySfNBQKnXBIwjKsEIYcABSxQ5ZG0RqZJkWNUAWPnKydtokA5lDRnECZtZTDB1wSRIidQMd4PzqRn
+        0jlSMJ5V0kCC8wSRgrumZdzlTXCRoAiulgmAbnKVoAy2lhkUHVwnqCiih1UXp05Ih4LcF01gtYP1
+        eH0Rj5YQ8VgNkY4WEfFoFRGPlLGcLl6IP4qNcXeWyIRSuWDwuk6gqkKQxb8ItCkEWYYgEMzoIFjO
+        iT+GGdA58JwPIqBwl8z5IIHjsvAfBEDJpE94X0+B+KP7p2IAK5UJT98LmiKBdeMMeC5oiwjBQclc
+        EDOGZ4yf8KuXC2b9QwYH4dYPcsG8uIVzAKZ0Llj0ux1DasaLkKt+v71A66Fg3W85F9cE3W9gooPr
+        wTf5DwAA//9slMsNwCAMQxeqUEVIgGMHaE/sP0tJBMKkvT/F+dnX3RRoe8bIUbmI3WoB6AWVSCnw
+        iQAcs3upCouTQEPIHwCW6D/fp8hOAv7BJDKFuFXAlOA/AJLCpihxLGoCmBdZAd/DszZpEpVnBVKA
+        PntIMnsYgJ9CyFXwPYx/eAEAAP//AwC82iJ+bwYAAA==
     headers:
       CF-Cache-Status:
-      - MISS
+      - EXPIRED
       CF-RAY:
-      - 80cdb9264b6f6de0-MIA
+      - 80cdc903bfe90a3e-MIA
       Cache-Control:
       - max-age=30
       Connection:
@@ -81,9 +81,9 @@ interactions:
       Content-Type:
       - text/csv
       Date:
-      - Tue, 26 Sep 2023 18:55:48 GMT
+      - Tue, 26 Sep 2023 19:06:38 GMT
       Last-Modified:
-      - Tue, 26 Sep 2023 18:55:48 GMT
+      - Tue, 26 Sep 2023 18:33:18 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
       Server:
@@ -115,17 +115,17 @@ interactions:
       string: ''
     headers:
       Age:
-      - '2'
+      - '1'
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 80cdb92b9c7b31ea-MIA
+      - 80cdc908ab822227-MIA
       Connection:
       - keep-alive
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Tue, 26 Sep 2023 18:55:49 GMT
+      - Tue, 26 Sep 2023 19:06:38 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv>; rel="canonical"
       Location:
@@ -157,23 +157,23 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3STy07DMBBF90j8Ax9gu57xOI6XVNAHKFIlRBTYldJFJaCoKhL8PX7UiR0pG2/O
-        nZs7j2xOx/ef3Zk9/X2+HT/Y/e/34bQ9H45fN3fb855tTofd/vqq7VjbKTt7VgwlKi4tR8OgElZe
-        IMlZe4EguSQGRkidIOQQoIAFqj0iayhVqhyjDhh7X5p1iQKXUNKcQai0tcEEXxNEjpJBLeRQuCDP
-        yDlyMJ7VZCDBZYLIwbVphXR5E1wlqIKrFQqgr3xIkIKtFQZVDx8T1BzRw7qP0yRUhQG5L5rAGgeb
-        6fFFPDmEiKfGEOnkICKeHEXEE8NYz1cvzD/FxbieCYXSOheMtusEui4EWfyLoDKFIMsQBEqYKgjW
-        S+afcQZ0DjLnowioXJM5HyVwnAr/UQAkQT7hbTMH5p/+n4oBLGkTVj8I2iKBdeUCZC7oigjBQVMu
-        iBnDGuMn/OnlgsWwyOCg3PlBLlgWXTgHELrKBavhtmPISkgX8h8AAP//bJRLDoQwDEMvNEKINC69
-        AiPNivufhaa0xGS6f8rHsePA4f42AIjA112+ygx4YpDvClWHW8nTgPP9Y/ApuqPdygHOgrVIadGV
-        ATpmzVKBIrTgQGAGUCSq5+sWObQgP7QWWZbtVYG/hM4A+hRti33rQg2A/0U2IM7wcyVbi6Kjghgg
-        fzokjBk6ELeAhApxhu6HCwAA//8DALzaIn5vBgAA
+        H4sIAAAAAAAAA3STy07DMBBF90j8Ax9gu57xK15SQZ+KVAkRBXaldFEJKKqKBH+PH3ViR83Gm3Pn
+        5vp6sjkd3392Z/L09/l2/CCPv9+H0/Z8OH7dPWzPe7I5HXb725umJU0r7ORZEOQoKLcUDQHNLL9A
+        ySfNBQKnXBIwjKsEIYcABSxQ5ZG0RqZJkWNUAWPnKydtokA5lDRnECZtZTDB1wSRIidQMd4PzqRn
+        0jlSMJ5V0kCC8wSRgrumZdzlTXCRoAiulgmAbnKVoAy2lhkUHVwnqCiih1UXp05Ih4LcF01gtYP1
+        eH0Rj5YQ8VgNkY4WEfFoFRGPlLGcLl6IP4qNcXeWyIRSuWDwuk6gqkKQxb8ItCkEWYYgEMzoIFjO
+        iT+GGdA58JwPIqBwl8z5IIHjsvAfBEDJpE94X0+B+KP7p2IAK5UJT98LmiKBdeMMeC5oiwjBQclc
+        EDOGZ4yf8KuXC2b9QwYH4dYPcsG8uIVzAKZ0Llj0ux1DasaLkKt+v71A66Fg3W85F9cE3W9gooPr
+        wTf5DwAA//9slMsNwCAMQxeqUEVIgGMHaE/sP0tJBMKkvT/F+dnX3RRoe8bIUbmI3WoB6AWVSCnw
+        iQAcs3upCouTQEPIHwCW6D/fp8hOAv7BJDKFuFXAlOA/AJLCpihxLGoCmBdZAd/DszZpEpVnBVKA
+        PntIMnsYgJ9CyFXwPYx/eAEAAP//AwC82iJ+bwYAAA==
     headers:
       Age:
       - '1'
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 80cdb92d180231ea-MIA
+      - 80cdc90a2daa2227-MIA
       Cache-Control:
       - max-age=30
       Connection:
@@ -185,9 +185,9 @@ interactions:
       Content-Type:
       - text/csv
       Date:
-      - Tue, 26 Sep 2023 18:55:49 GMT
+      - Tue, 26 Sep 2023 19:06:39 GMT
       Last-Modified:
-      - Tue, 26 Sep 2023 18:55:48 GMT
+      - Tue, 26 Sep 2023 19:06:38 GMT
       Link:
       - <https://www.cboe.com/us/futures/market_statistics/settlement/csv/>; rel="canonical"
       Server:
