@@ -57,6 +57,10 @@ class ROUTER_crypto(Container):
             no default.
         timeseries : Union[pydantic.types.NonNegativeInt, None]
             Number of days to look back. (provider: fmp)
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Data granularity. (provider: fmp)
+        multiplier : PositiveInt
+            Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
@@ -65,8 +69,6 @@ class ROUTER_crypto(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-        multiplier : PositiveInt
-            Multiplier of the timespan. (provider: polygon)
 
         Returns
         -------
@@ -84,7 +86,7 @@ class ROUTER_crypto(Container):
 
         CryptoHistorical
         ----------------
-        date : Union[date, datetime]
+        date : Optional[datetime]
             The date of the data.
         open : Optional[PositiveFloat]
             The open price of the symbol.
@@ -94,7 +96,7 @@ class ROUTER_crypto(Container):
             The low price of the symbol.
         close : Optional[PositiveFloat]
             The close price of the symbol.
-        volume : Optional[PositiveFloat]
+        volume : Optional[NonNegativeFloat]
             The volume of the symbol.
         vwap : Optional[PositiveFloat]
             Volume Weighted Average Price of the symbol.
