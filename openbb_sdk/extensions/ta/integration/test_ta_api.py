@@ -32,6 +32,7 @@ def headers():
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_atr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -57,6 +58,7 @@ def test_ta_atr(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_fib(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -71,6 +73,7 @@ def test_ta_fib(params, headers):
     "params",
     [({"data": "", "index": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_obv(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -85,6 +88,7 @@ def test_ta_obv(params, headers):
     "params",
     [({"data": "", "index": "", "length": "", "signal": ""})],
 )
+@pytest.mark.integration
 def test_ta_fisher(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -99,6 +103,7 @@ def test_ta_fisher(params, headers):
     "params",
     [({"data": "", "index": "", "fast": "", "slow": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_adosc(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -125,6 +130,7 @@ def test_ta_adosc(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_bbands(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -139,6 +145,7 @@ def test_ta_bbands(params, headers):
     "params",
     [({"data": "", "target": "", "index": "", "length": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_zlma(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -153,6 +160,7 @@ def test_ta_zlma(params, headers):
     "params",
     [({"data": "", "index": "", "length": "", "scalar": ""})],
 )
+@pytest.mark.integration
 def test_ta_aroon(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -167,6 +175,7 @@ def test_ta_aroon(params, headers):
     "params",
     [({"data": "", "target": "", "index": "", "length": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_sma(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -192,6 +201,7 @@ def test_ta_sma(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_demark(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -206,6 +216,7 @@ def test_ta_demark(params, headers):
     "params",
     [({"data": "", "index": "", "anchor": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_vwap(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -220,6 +231,7 @@ def test_ta_vwap(params, headers):
     "params",
     [({"data": "", "target": "", "index": "", "fast": "", "slow": "", "signal": ""})],
 )
+@pytest.mark.integration
 def test_ta_macd(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -234,6 +246,7 @@ def test_ta_macd(params, headers):
     "params",
     [({"data": "", "target": "", "index": "", "length": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_hma(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -248,6 +261,7 @@ def test_ta_hma(params, headers):
     "params",
     [({"data": "", "index": "", "lower_length": "", "upper_length": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_donchian(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -274,6 +288,7 @@ def test_ta_donchian(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_ichimoku(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -288,6 +303,7 @@ def test_ta_ichimoku(params, headers):
     "params",
     [({"data": "", "index": "", "target": "", "period": ""})],
 )
+@pytest.mark.integration
 def test_ta_clenow(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -302,6 +318,7 @@ def test_ta_clenow(params, headers):
     "params",
     [({"data": "", "index": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_ad(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -316,6 +333,7 @@ def test_ta_ad(params, headers):
     "params",
     [({"data": "", "index": "", "length": "", "scalar": "", "drift": ""})],
 )
+@pytest.mark.integration
 def test_ta_adx(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -330,6 +348,7 @@ def test_ta_adx(params, headers):
     "params",
     [({"data": "", "target": "", "index": "", "length": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_wma(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -344,6 +363,7 @@ def test_ta_wma(params, headers):
     "params",
     [({"data": "", "index": "", "length": "", "scalar": ""})],
 )
+@pytest.mark.integration
 def test_ta_cci(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -369,6 +389,7 @@ def test_ta_cci(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_rsi(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -393,6 +414,7 @@ def test_ta_rsi(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_stoch(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -418,6 +440,7 @@ def test_ta_stoch(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_kc(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -432,6 +455,7 @@ def test_ta_kc(params, headers):
     "params",
     [({"data": "", "index": "", "length": ""})],
 )
+@pytest.mark.integration
 def test_ta_cg(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -457,6 +481,7 @@ def test_ta_cg(params, headers):
         )
     ],
 )
+@pytest.mark.integration
 def test_ta_cones(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -471,6 +496,7 @@ def test_ta_cones(params, headers):
     "params",
     [({"data": "", "target": "", "index": "", "length": "", "offset": ""})],
 )
+@pytest.mark.integration
 def test_ta_ema(params, headers):
     params = {p: v for p, v in params.items() if v}
 

@@ -87,6 +87,7 @@ def headers():
         ),
     ],
 )
+@pytest.mark.integration
 def test_crypto_load(params, headers):
     params = {p: v for p, v in params.items() if v}
 

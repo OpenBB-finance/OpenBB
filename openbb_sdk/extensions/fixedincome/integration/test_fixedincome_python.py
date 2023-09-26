@@ -10,6 +10,7 @@ from openbb_core.app.model.obbject import OBBject
         ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_treasury(params):
     result = obb.fixedincome.treasury(**params)
     assert result
@@ -23,6 +24,7 @@ def test_fixedincome_treasury(params):
         ({"date": "2023-01-01", "inflation_adjusted": True}),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_ycrv(params):
     result = obb.fixedincome.ycrv(**params)
     assert result
@@ -44,6 +46,7 @@ def test_fixedincome_ycrv(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_sofr(params):
     result = obb.fixedincome.sofr(**params)
     assert result
@@ -65,6 +68,7 @@ def test_fixedincome_sofr(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_estr(params):
     result = obb.fixedincome.estr(**params)
     assert result
@@ -86,6 +90,7 @@ def test_fixedincome_estr(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_sonia(params):
     result = obb.fixedincome.sonia(**params)
     assert result
@@ -107,6 +112,7 @@ def test_fixedincome_sonia(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_ameribor(params):
     result = obb.fixedincome.ameribor(**params)
     assert result
@@ -128,6 +134,7 @@ def test_fixedincome_ameribor(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_fed(params):
     result = obb.fixedincome.fed(**params)
     assert result
@@ -142,6 +149,7 @@ def test_fixedincome_fed(params):
         ({"long_run": True, "provider": "fred"}),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_projections(params):
     result = obb.fixedincome.projections(**params)
     assert result
@@ -155,6 +163,7 @@ def test_fixedincome_projections(params):
         ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
     ],
 )
+@pytest.mark.integration
 def test_fixedincome_iorb(params):
     result = obb.fixedincome.iorb(**params)
     assert result

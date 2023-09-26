@@ -35,6 +35,7 @@ def headers():
         ),
     ],
 )
+@pytest.mark.integration
 def test_forex_pairs(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -115,6 +116,7 @@ def test_forex_pairs(params, headers):
         ),
     ],
 )
+@pytest.mark.integration
 def test_forex_load(params, headers):
     params = {p: v for p, v in params.items() if v}
 

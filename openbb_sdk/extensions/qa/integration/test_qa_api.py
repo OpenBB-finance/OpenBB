@@ -21,6 +21,7 @@ def headers():
     "params",
     [({"data": "", "target": ""})],
 )
+@pytest.mark.integration
 def test_qa_normality(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -35,6 +36,7 @@ def test_qa_normality(params, headers):
     "params",
     [({"data": "", "target": ""})],
 )
+@pytest.mark.integration
 def test_qa_capm(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -49,6 +51,7 @@ def test_qa_capm(params, headers):
     "params",
     [({"data": "", "target": "", "threshold_start": "", "threshold_end": ""})],
 )
+@pytest.mark.integration
 def test_qa_om(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -63,6 +66,7 @@ def test_qa_om(params, headers):
     "params",
     [({"data": "", "target": "", "window": ""})],
 )
+@pytest.mark.integration
 def test_qa_kurtosis(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -77,6 +81,7 @@ def test_qa_kurtosis(params, headers):
     "params",
     [({"data": "", "target": "", "fuller_reg": "", "kpss_reg": ""})],
 )
+@pytest.mark.integration
 def test_qa_unitroot(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -91,6 +96,7 @@ def test_qa_unitroot(params, headers):
     "params",
     [({"data": "", "target": "", "rfr": "", "window": ""})],
 )
+@pytest.mark.integration
 def test_qa_sh(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -105,6 +111,7 @@ def test_qa_sh(params, headers):
     "params",
     [({"data": "", "target": "", "target_return": "", "window": "", "adjusted": ""})],
 )
+@pytest.mark.integration
 def test_qa_so(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -119,6 +126,7 @@ def test_qa_so(params, headers):
     "params",
     [({"data": "", "target": "", "window": ""})],
 )
+@pytest.mark.integration
 def test_qa_skew(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -133,6 +141,7 @@ def test_qa_skew(params, headers):
     "params",
     [({"data": "", "target": "", "window": "", "quantile_pct": ""})],
 )
+@pytest.mark.integration
 def test_qa_quantile(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -147,6 +156,7 @@ def test_qa_quantile(params, headers):
     "params",
     [({"data": "", "target": ""})],
 )
+@pytest.mark.integration
 def test_qa_summary(params, headers):
     params = {p: v for p, v in params.items() if v}
 

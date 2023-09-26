@@ -24,6 +24,7 @@ from openbb_core.app.model.obbject import OBBject
         ),
     ],
 )
+@pytest.mark.integration
 def test_forex_pairs(params):
     result = obb.forex.pairs(**params)
     assert result
@@ -107,6 +108,7 @@ def test_forex_pairs(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_forex_load(params):
     result = obb.forex.load(**params)
     assert result

@@ -43,6 +43,7 @@ def headers():
         ),
     ],
 )
+@pytest.mark.integration
 def test_news_globalnews(params, headers):
     params = {p: v for p, v in params.items() if v}
 

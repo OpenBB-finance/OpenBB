@@ -11,6 +11,7 @@ from openbb_core.app.model.obbject import OBBject
         ({"index": "dowjones"}),
     ],
 )
+@pytest.mark.integration
 def test_economy_const(params):
     result = obb.economy.const(**params)
     assert result
@@ -33,6 +34,7 @@ def test_economy_const(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_cpi(params):
     result = obb.economy.cpi(**params)
     assert result
@@ -138,6 +140,7 @@ def test_economy_cpi(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_index(params):
     result = obb.economy.index(**params)
     assert result
@@ -175,6 +178,7 @@ def test_economy_index(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_european_index(params):
     result = obb.economy.european_index(**params)
     assert result
@@ -188,6 +192,7 @@ def test_economy_european_index(params):
         ({"symbol": "BUKBUS"}),
     ],
 )
+@pytest.mark.integration
 def test_economy_european_index_constituents(params):
     result = obb.economy.european_index_constituents(**params)
     assert result
@@ -202,6 +207,7 @@ def test_economy_european_index_constituents(params):
         ({"europe": True, "provider": "cboe"}),
     ],
 )
+@pytest.mark.integration
 def test_economy_available_indices(params):
     result = obb.economy.available_indices(**params)
     assert result
@@ -215,6 +221,7 @@ def test_economy_available_indices(params):
         ({}),
     ],
 )
+@pytest.mark.integration
 def test_economy_risk(params):
     result = obb.economy.risk(**params)
     assert result
@@ -236,6 +243,7 @@ def test_economy_risk(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_index_search(params):
     result = obb.economy.index_search(**params)
     assert result
@@ -249,6 +257,7 @@ def test_economy_index_search(params):
         ({"region": "US"}),
     ],
 )
+@pytest.mark.integration
 def test_economy_index_snapshots(params):
     result = obb.economy.index_snapshots(**params)
     assert result
@@ -262,6 +271,7 @@ def test_economy_index_snapshots(params):
         ({"query": "grain"}),
     ],
 )
+@pytest.mark.integration
 def test_economy_cot_search(params):
     result = obb.economy.cot_search(**params)
     assert result
@@ -288,6 +298,7 @@ def test_economy_cot_search(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_cot(params):
     result = obb.economy.cot(**params)
     assert result
@@ -309,6 +320,7 @@ def test_economy_cot(params):
         ),
     ],
 )
+@pytest.mark.integration
 def test_economy_sp500_multiples(params):
     result = obb.economy.sp500_multiples(**params)
     assert result

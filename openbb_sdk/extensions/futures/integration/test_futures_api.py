@@ -44,6 +44,7 @@ def headers():
         ),
     ],
 )
+@pytest.mark.integration
 def test_futures_load(params, headers):
     params = {p: v for p, v in params.items() if v}
 
@@ -58,6 +59,7 @@ def test_futures_load(params, headers):
     "params",
     [({"symbol": "AAPL", "date": "2023-01-01"})],
 )
+@pytest.mark.integration
 def test_futures_curve(params, headers):
     params = {p: v for p, v in params.items() if v}
 
