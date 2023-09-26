@@ -167,7 +167,7 @@ class Backend(PyWry):
             theme=theme or self.charting_settings.chart_style,
             log_id=self.charting_settings.app_id,
             pywry_version=self.__version__,
-            terminal_version=self.charting_settings.version,
+            platform_version=self.charting_settings.version,
             python_version=self.charting_settings.python_version,
             posthog=posthog,
             command_location=cmd_loc,
