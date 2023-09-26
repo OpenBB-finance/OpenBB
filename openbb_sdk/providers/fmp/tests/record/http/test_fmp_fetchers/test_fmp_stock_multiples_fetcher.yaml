@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,27 +13,27 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5VWTW/jNhC9768I9twI5JDDIXvLx26bw9bbrFGgKHqQZSYRYkuuJHsbFP3vfYpF
-        RXKywNZ2TnkznI/3HvnHu7Ozf/B3dva+iYdY7ePn2Hx5yJu4XH56/+MZ2cyyV9aTVsZbJfaHI7qK
-        3U1V1NsTvMuUceydDqI1sUrwehebvCur+6u8ffi4qb/OwyQjZbShoAJZYxUPYXdNjG9HuMwaQ6Kc
-        xzeEQENEAfQcabLglWGljRWriBJyVdePv+Wb045N5k1wQXvN7C0pcgO+y6v7crWJl/8zru0xD/Vm
-        HZv2w1/7snv6zsCy6mIT2+46rrrX41LBuSA2+H4xQ8Q2bx5jd5XvhuWJJ6u9DZZcGCCxT7pryjY+
-        9zAAvetnPwPu4i0WVg+AkFmvfbDBYI6BQjoRmYq4rL/km9hO8CjQirYMFoA6SpkEr4u7ZpLWZqLE
-        KCssnk0iy+6uuJseLhkzkbUUNBtiSbDVBGRdhh2Dn4pRqXvJ1X0PKh6GHlL5lkXArKAc0COLT4a3
-        OMTmw+XN8vpiKNRkDkJhTYSVWh2m6RenChhiODNEooNWWjBansZ8nNA/bQoNGFRFxvdol9gc86ZC
-        8vb3Mm7WR6yCFk1AZiKjRNzL5KayOglwFKxD9eAVBDNWswYHl/WRvkewzlCAYiOkcQpp4Rn0om1j
-        16a8hhy6Q7lOGy/OJYrDRa6PmSdjVJlzHh+BKnwwiEva3jcNVjDZp4K2NYbAljB19iZ1mLRzVWNH
-        +X3iech6pgMLf7Lojkd4b2W/7vPNpD8dDFmnAhuU8SLLdXko17FazwenmLyWnjDMQtAcvwWHjAt0
-        MBakstOwRNv8qd7PO9UsQWDFveKVdTZpqu15+1Os0OfmolpfrLdlVbZdT7YDpHl7tPUhyxCD0YAw
-        xQPw1/j/Bva8RV2n6EyJQydaizMiGqx+Ge/ghu2yXtYdTp7ue/TiXfz7m8w/R0uwb/FekffOYY1h
-        Hjgr5rxnp7bivHVEip1lM4dfx10Ti7KfWTXEaMRAV8Aylq1HerRdXTxe5m1cX9XbXazaY9Cr9kmM
-        xlmiWDtSwScO3Df5Q779Zb9dxWagFsHGnUA8uJSCjFJr6rIYd+16qwOtsHLWisZldPumWlTLYaRz
-        6ZDH2A33DARDiOcVxA6/1KzOrIZ24Q5eJGibxPu1bh6fx78rsakBDU+w6vkzoLrp8ZPLAV4jcyRU
-        e3WU4in2XDMeCjxDl9UBQsSkp8d/0z3yo15vYxHLQ74aLdlIr/Fp3gH5OX+awCyuG1JvwG5QRdXV
-        zaBuwaRm2db5U/t8Ayz2XYtRrDGwdHJGbOADMF7BBeQmEenwV0HiM1awMSXUO42fxCzuxloW1c8I
-        GiZCcHYJeJ+QIwd6JHY3k1GAJ72hHSNCBkMQBdoxwanGKzkNZAa2GZRMnj3jWmI7PhnKcS4zOJyS
-        UY7CiwC2BIkmLjV1TBvsE2o8W3DjyYl2588VSFdg5a7vzYixOrWWvHEOh6nPr51P82dNbwSBoCA4
-        gdKwfRKg/33353/ADwnZzQoAAA==
+        H4sIAAAAAAAAA5VWTW/jNhC9768I9twIQ3LIIXvLx267h623WaNAUfSgyEwixJZcSfY2KPrf+2SL
+        iuQkwNaOT3lDzryZ94Z/vDs7+we/s7P3TdzHahe/xObrQ97E5fLz+x/PNGdsPbHXioxnEv7hiK5i
+        96kq6s0J3mVknPVOBVFKW0rwehubvCur+6u8ffi4rr/NwyTTZJTRgYJmw2SHsLsmxtcjXMbGaCHn
+        8Q0h6CGiAHqONFnwZCwpw8KkdULe1vXjb/n6tGKTeRNcUF5Z61mTdgO+y6v78nYdL/9nXNtjHur1
+        Kjbth792Zff0nYFl1cUmtt11vO1e0kXBuSAcfN+YIWKTN4+xu8q3Q/MA0Mo4Qe1qgMT+0G1TtvFQ
+        wwAU8eTtDLiNN2hYPQB8ZiWQN8aI9uJ96itOKuKy/pqvYzvBS0baahWcF0WBJaHr4q6ZnIrWWBIy
+        rAJrZ1Ph27vibnq5ywTZaWPFOONVSLDbCYg5C4ZEWXTaeh8SJdvue1BxP9Qw8mswxISv1l7J69wt
+        9rH5cPlpeX0x5KmzIMLaeqO0J7HT0xenAhj1ZdF7RDEr5SVMQj5Ohj/1KbMUjAkWY8JWyZhZ3lQ4
+        u/29jOvVEUtQIoeACixrw9qH1LOpqE4CBFloQ0GIjQ9pFFYYwGV9nN0jVmVeGbKmHy8TtBI7g160
+        bezadKzRTokK1jllvDiX2gwLuT6ePCGRMuc8PgJJ+GBk7Haxaxo0YNJMgrCVPdRnVc96YiMJ56pG
+        h/L7NOQh885oYGFOzJbtCO997Nddvp7Up4LR7ChYgzSeNbkq9+UqVqs5b2SZvWNiEWRjDb+GhoQL
+        FDDmQ9kbUdv8qd7NC1VQHyR6UDuxY5O8pZ/Zn2KFMtcX1epitSmrsu36SdtDljdHSx9OGWLADMal
+        eAD+Gv9fw5o3yOsUnZE4DiBLnBHBQJtndgcnbJf1su5w87Tdow9v499vjv05SoJ1w0hIe+8gfR3m
+        gbNkzvvZVCzOMwRJ1oGtOfw6bptYlD1n1RCjEEPInq0Fu2qcjrari8fLvI2rq3qzjVV7DHpRvhbI
+        mKyQVU5T8GkE7pv8Id/8stvcxmYUvofLBiQn0I5NNzV1WYy9dgaNxlTBTqwiPTaj2zXVoloOlM6V
+        oz1ohxNhAK1gcucZxA5/qViVsXLewLK8SFCchulb3Twe6N+W6NSAhsSZDp8B1U2vnywGBxbmSIj2
+        6qjEU+y5guOTnaHLag8dgunp9W+aR36U600sYrnPb0c7NtJLfHrugPySP01gUBOG4xXYJ2RRdXUz
+        iFvA1Oy0Vf7UHtx/setaULECYenmTFsDGzBIF1vDTSLS5S+CBMuS4GIkujcaP4lZ3I25LKqfETQw
+        ojMst4C3iXbYg9jo43g8U4E56f3sGBEyGAK2Ih5bGkY1brtEyAzMGZSsvfUWe9by+FwoR15mcBgl
+        9iMmmTWWPSSaZqmpY+pgfyD2ldJwphPtzp8qkK7AyV1fmxFs+lRa8sY5HJ4+mudhN3yeP2mgS7wO
+        FXa3ZQX/tBrgf9/9+R8YXz54yAoAAA==
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -53,9 +53,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 19 Sep 2023 11:13:40 GMT
+      - Tue, 26 Sep 2023 18:24:02 GMT
       ETag:
-      - W/"acd-wMrCo6q9XhcVJGGSsHWTuHFJqfI"
+      - W/"ac8-g4bNi0yGw+a0+qIRp/pfhEu14g0"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

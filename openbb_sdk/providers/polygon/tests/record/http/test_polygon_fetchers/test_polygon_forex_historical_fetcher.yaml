@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,25 +13,25 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/2yUTW8TMRCG/8ucLeQZz4e918KJAxKoJ4RQyW5EoWrV7G4RqvLfkbf+OpCTZTnP
-        k/H7Oq+w3Z9+LxeY4Gb6cPv59st7cPC8L5e/N0/74wYTegeXZd0ftnXYuZt/7eu2zDBtl31pJ2D6
-        +govMJEnYXHw8gcmfOctsIOnsiRxcCrrGBz8fFtLCg4e3tboIHvUQvAx+vxx8FixV1ccQmbd4bU6
-        VIm7I/uKQ7EqVJqCiHhUZGpRsAVsgvyVwmcfK1+VtPJVyZogeGsKDOq7IlPrDAM9dDwP9AHe2PlA
-        QXtOOvz6djcW81aBi2CFC/nU6fgfOkdKFU9JA42Xk7HVgV44dIe1jNWLVocQdkloEsEQmySajiEf
-        3CqhxIm7JMU2COcbO1Vhd0jrkfR7Ikt+TPnAVkdQDb1IEnvQpq2sR5+LI2Kfo49hxVAUB7UojJG7
-        Qa1V1XyuzKluc6tqbyq3qpKiDWEf0CLAoUmpha2RW9iW+lvrT00t9gEk4BA20vWbg3W72/YVJvj0
-        EfIzf96Xdft+P8MEEmddgucfKIaRksyeycfzWc8YhRUcnOo/xvVfAAAA//9IOm2AaQQAAA==
+        H4sIAAAAAAAA/2yUQW/UPBCG/8ucrU+eGXvGzrUfJw5IoJ4QQiUJolC16iYpQtX+d+TU9vjAnizL
+        +zw7fl/vK+z386/1AhPcTO9uP95++h8cPB/r5c/N0/G4w4TewWXdjod9G3bulp/Htq8LTPvlWPsJ
+        mD6/wgtM5CmG6ODlN0z4n1cODp7qkqKDua4TO/jxto6ZHTy8rdFB8Ygy+5R8+Th4bNirq45Iqubw
+        0hwiFMxRfNUh2BQSu4KIwqgo1KoIytgF5SuVH3xqfBGSxhch7QL22hXI4k1RqG2Ggc6GDwN9gHd2
+        OVDRPmQZfn2/G01lq8JjxAaP5LPR8R/0kCg3PGVhGi+nYJsDfQxsDu0Zi4/SHJHQJNwlETl1SVIZ
+        Qz65TUI55GCSnPogodzY3ITmiL1H0e6JNPsx5RPbHCzCVqSYLGiVXtazz9WR0OawMbQaquKkVoUG
+        DGYQ7VVVXyozt+3Qq2pNDb2qJKhD2Ce0CnBoUu5hSwo9bM321uypiSYbIDIOYSNdvzjY9rv92GCC
+        D++hPPPnY932r/cLTJBmXUXRL2nVKImWjN/5G3vByMyJwMHc/jGufwMAAP//ITNXWWkEAAA=
     headers:
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
       Content-Length:
-      - '451'
+      - '452'
       Content-Type:
       - application/json
       Date:
-      - Tue, 19 Sep 2023 13:38:10 GMT
+      - Tue, 26 Sep 2023 18:24:59 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
@@ -39,7 +39,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Request-Id:
-      - 58d6e304b15718295d04208ff6f18546
+      - 8c7e6710d8e75682d91f3b3061533382
     status:
       code: 200
       message: OK

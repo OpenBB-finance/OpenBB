@@ -3,7 +3,7 @@ interactions:
     body: null
     headers:
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
       User-Agent:
@@ -14,8 +14,6 @@ interactions:
       - python
       request-source-version:
       - 3.7.0
-      x-api-token:
-      - MOCK_API_TOKEN
     method: GET
     uri: https://data.nasdaq.com/api/v3/datasets/MULTPL/SP500_PE_RATIO_MONTH/data?order=asc&start_date=&end_date=&collapse=monthly
   response:
@@ -227,7 +225,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 19 Sep 2023 11:04:33 GMT
+      - Tue, 26 Sep 2023 18:25:03 GMT
       ETag:
       - W/"a6ee2d258da96c1ce8311105c66f456a"
       Pragma:
@@ -237,10 +235,10 @@ interactions:
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=XliGIaJ0S9KgvwWUFyrfrUGACWUAAAAAQUIPAAAAAAAH8vwoQO73UmWBJoAybafa;
-        expires=Wed, 18 Sep 2024 06:58:45 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=1/WuLvXrlkJlWpqcKj7S7QAAAADA5RQZB9kyu9x0hShfpbuY; path=/; Domain=.nasdaq.com
-      - incap_ses_1539_2170999=EEuMYRvQPSqzaQ/42qBbFUGACWUAAAAA+Y/oks09za7mdGSPGShzqw==;
+      - visid_incap_2170999=SEyjkktwQDCaUJvlXjJMDv4hE2UAAAAAQUIPAAAAAAAx9e3eFikB2oXjuZevSvz6;
+        expires=Wed, 25 Sep 2024 06:33:50 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=AciCQSAzJCNw2nHLKj7S7QAAAACp2dhls8miPlbI3ldsQ8bX; path=/; Domain=.nasdaq.com
+      - incap_ses_1596_2170999=n6nGIDg0ZnNRfIO4/yEmFv4hE2UAAAAAsplwb8BSG53noNxDq1uq+Q==;
         path=/; Domain=.nasdaq.com
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
@@ -251,16 +249,16 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Iinfo:
-      - 14-2142545-2142594 NNNY CT(11 6 0) RT(1695121473227 186) q(0 0 0 -1) r(1 1)
-        U2
+      - 16-116267296-116267350 NNNN CT(28 62 0) RT(1695752701988 230) q(0 0 1 5) r(4
+        4) U2
       X-RateLimit-Limit:
-      - '50000'
+      - '50'
       X-RateLimit-Remaining:
-      - '49990'
+      - '44'
       X-Request-Id:
-      - f915380d-bce8-4cb2-a7fa-931693cee602
+      - ce4e6544-16ba-4196-81d6-e4f1243618a0
       X-Runtime:
-      - '0.161450'
+      - '0.276681'
       X-XSS-Protection:
       - 1; mode=block
     status:

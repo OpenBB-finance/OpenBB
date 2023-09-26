@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,17 +13,17 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/0zUTYvbVhQG4P9y1+Jwvj+0bLrroou2UCilzIxVkjYkZCynlDD/PcjSvbJ31wg/
-        fs95db+19cPLv8trm9vv8w+/vvvtlx/b1L7cltf/332+fVrbTDi11+V6+7heH755uvxzu67Lpc3r
-        620ZT7T5j2/ta5s5WRmQqyLCTcWn9vW/NlMICZiHTO3zdqQIKJ3ay3ZQFVCf2vvtYOhT+3h/Rg1o
-        apvsIYKZuH2m9qnN5oFIb9NdldAICKNANnGxjrIqhCF1VOkQ73weom6/uYvIUDFIZtaTdCNSP0gi
-        kgQvIlcOZa3D9AqCwNTd9NpD7CobUFcpaVe9CEHPoCSOp8pVZnaobl5gElrGwcRlQxUDNaauGnXV
-        SxkkdtWrsKsoYDlU1PIHlUtZD3VbqoNxKZKXe0ZXUxHwVJMNYqgJ2HfKfcLugZDcVS4XPlUNC+pL
-        3UfnWWGlFMEDZQcu7gNOLZAD3f6A1xE1Mw80DAHHWjnDH5okGWbYo5Y4ArGLswmh51DFoDL8UN1r
-        RE1VUD6iInbV1SBPNQofymTEmdVVYlTgyjLTrTk76YmAUjrIHEE3XvtOk/p0rQr8FA/wyBnO2FdK
-        RlzAG4hSpSIDLQYjHCjZIB22vu0kSieVwc6FOsVDjcSSq6ckFkQQMhMR8uJhmhaYjqAm3E2ie0ff
-        7/PUw9StxAdoQvz4trCYvv05tev6tN6ubW4//9S2a+rLbbmuf324tLl50NNFn/nvS0leLoYey/Oz
-        1rN64JLZpvbSb7y37wEAAP//xcZxbSkFAAA=
+        H4sIAAAAAAAA/0zUT2vzRhAG8O+yZzHM/9nRsemthx7aQqGU4tgqSRsSYst5eQn57i+ytCv7tkb4
+        52ee0X6W+fn4/3QuY/lz/On3hz9++7kM5f06nb8/vF1f5zISDuU8Xa4v8+Xum8Ppv+tlnk5lnM/X
+        qT9Rxr8+y0cZubIyIGdGhJuKD+XjWxkphATMQ4bythwpAlKHclwOqgLqQ3laDoY+lJfbM2pAQ1lk
+        DxGsFZfPUF7LaB6I9DXcVAmNgDAKZBMXayirQhhSQ5U28cbXTdTlN1cRGTI6ycy6k25E6htJRFLB
+        k8iVQ1lzMz2DILDqanquIVaVDaipVGlVPQlB96AkjrvKmWa2qW6eYBKaxsHEaV0VAzWmpho11VMZ
+        JFbVM7GpKGC1q6jpdyqnsm7qUqqDcSqSp3uNplZFwF2tbBBdrYCtU24Tdg+Eyk3ldOFd1bCgVuo6
+        Oq8ZlkoR3FF24OQ24KoJsqHLH/DcotZaNzQMAXutXMPvNklqmGGLmuIIxC7OJoReuyoGWcM31T17
+        1KoKyltUxKa6GtRdjcS7ZTLiWrOpxKjAWdNMl81ZSa8IKKmdrD3owmvrtFKbrmWC7+IGbjnDGVul
+        ZMQJvIAomSrS0WQwwo6SddJh2beVRGmkMtheqFPcrZFY5WwpiQURhMxEhDy5m6YJpj2oCTeT6Laj
+        T+s8dTN1WeINNCG+f1tYTL/+HsplPszXSxnLr7+U5Zp6v06X+Z/nUxnLNJ1OrKxTOirRv4cTPaof
+        5fC4tB7HMpRju/G+fgQAAP//jlvE+SkFAAA=
     headers:
       Connection:
       - keep-alive
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 19 Sep 2023 13:38:10 GMT
+      - Tue, 26 Sep 2023 18:24:58 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
@@ -42,7 +42,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Request-Id:
-      - 671ad4b2fd938dd5067ebb49b4670e88
+      - eedd2424e960411fad1b46c3ab36257c
     status:
       code: 200
       message: OK

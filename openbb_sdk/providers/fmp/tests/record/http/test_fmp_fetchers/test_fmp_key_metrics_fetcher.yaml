@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -439,7 +439,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 19 Sep 2023 11:13:36 GMT
+      - Tue, 26 Sep 2023 18:23:55 GMT
       ETag:
       - W/"16ef2-bT1fdXj9QZJ32zLe5R2gh4XVGQ8"
       Server:
