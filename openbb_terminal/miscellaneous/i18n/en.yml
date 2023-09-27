@@ -921,9 +921,10 @@ en:
   funds/exclusion: exclusion policy
   funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
-  alternative/covid: COVID menu                  cases, deaths, rates
-  alternative/oss: Open Source menu            star history, repos information
-  alternative/realestate: Real Estate menu            sold prices, HPIs
+  alternative/covid: COVID menu,                 cases, deaths, rates
+  alternative/oss: Open Source menu,           star history, repos information
+  alternative/realestate: Real Estate menu,           sold prices, HPIs
+  alternative/companieshouse: Companies House menu,       UK company information
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -943,6 +944,14 @@ en:
   alternative/realestate/_enddate: End Date <YYYY-MM-DD>
   alternative/realestate/regionstats: retrieve UK sold house price stats by region
   alternative/realestate/_region: Region
+  alternative/companieshouse/_company: Current Company
+  alternative/companieshouse/search: search for companies by name
+  alternative/companieshouse/load: retrieve basic company details by company registration number
+  alternative/companieshouse/officers: retrieve company officies
+  alternative/companieshouse/signifcontrol: retrieve those with significant control over the company
+  alternative/companieshouse/filings: retrieve list of documents filed with Companies House (Default 100)
+  alternative/companieshouse/filingdocument: download filed document
+  alternative/companieshouse/charges: registered charges against the company
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
@@ -1094,6 +1103,7 @@ en:
   reports/_OpenBB_reports_: OpenBB reports
   reports/_Custom_reports_: Custom reports
   reports/run: Run a Jupyter notebook from OpenBBUserData/reports/custom reports
+  reports/exe: Execute a Jupyter notebook through a hyperlink using papermill
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv
@@ -1111,6 +1121,7 @@ en:
   forecast/rename: Rename columns from dataset
   forecast/export: Export a processed dataset
   forecast/_feateng_: Feature Engineering
+  forecast/timegpt: TimeGPT-1 (Beta) by Nixtla
   forecast/ema: Add Exponentially Weighted Moving Average
   forecast/sto: Add Stochastic Oscillator %K and %D
   forecast/rsi: Add Relative Strength Index
