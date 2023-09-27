@@ -74,9 +74,10 @@ def get_stock_price_change(
         Percent change of closing price over time period
     """
     current_user = get_current_user()
-    url = f"""https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?
-        from={start_date}&to={end_date}&serietype=line
-        &apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"""
+
+    url = f"""https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?\
+from={start_date}&to={end_date}&serietype=line\
+&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"""
     response = request(url)
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
@@ -113,8 +114,8 @@ def get_etf_holdings(ticker: str) -> List[Dict[str, Any]]:
     """
 
     current_user = get_current_user()
-    url = f"""https://financialmodelingprep.com/api/v3/etf-holder/{ticker}?
-        apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"""
+    url = f"""https://financialmodelingprep.com/api/v3/etf-holder/{ticker}\
+?apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"""
     response = request(url)
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
@@ -146,26 +147,25 @@ def get_holdings_pct_change(
     pd.DataFrame
         Calculated percentage change for each stock in the ETF, in descending order.
     """
-    holdings = get_etf_holdings(ticker=ticker)
-    if len(holdings) == 0:
-        return pd.DataFrame()
-    data_list = []
+    df = pd.DataFrame(columns=['Ticker', 'Name', 'Percent Change'], data=[])
+    holdings = get_etf_holdings(ticker)
+
     for stock in holdings:
-        if stock["asset"]:
-            pct_change = get_stock_price_change(
-                ticker=stock["asset"], start_date=start_date, end_date=end_date
-            )
-            data_list.append(
-                {
-                    "Ticker": stock["asset"],
-                    "Name": stock["name"],
-                    "Percent Change": pct_change,
-                }
-            )
-        else:
-            data_list.append({"Ticker": "", "Name": stock["name"], "Percent Change": 0})
+        pct_change = get_stock_price_change(stock["asset"], start_date, end_date)
+        if pct_change is None:
+            pct_change = 0
 
-    df = pd.DataFrame(data_list)
-    df.sort_values(by="Percent Change", ascending=False, inplace=True)
+        new_df = pd.DataFrame(
+                    {
+                        "Ticker": stock["asset"],
+                        "Name": stock["name"],
+                        "Percent Change": pct_change,
+                    },
+                    index=[0],
+                )
 
-    return df
+        df = pd.concat([df, new_df], ignore_index=True)
+
+    sorted_df = df.sort_values(by="Percent Change", ascending=False, inplace=False)
+
+    return sorted_df
