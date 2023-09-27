@@ -363,8 +363,8 @@ class DocstringGenerator:
             "        List of warnings.\n"
             "    chart : Optional[Chart]\n"
             "        Chart object.\n"
-            "    metadata: Optional[Metadata]\n"
-            "        Metadata info about the command execution.\n"
+            "    extra: Dict[str, Any]\n"
+            "        Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -781,7 +781,7 @@ class MethodDefinition:
             else:
                 code += f"            {name}={name},\n"
         code += "        )\n\n"
-        code += "        return self._command_runner.run(\n"
+        code += "        return self.run(\n"
         code += f"""            "{path}",\n"""
         code += "            **inputs,\n"
         code += "        )\n"

@@ -366,7 +366,7 @@ class StaticCommandRunner:
 
         if execution_context.user_settings.preferences.metadata:
             try:
-                obbject.metadata = Metadata(
+                obbject.extra["metadata"] = Metadata(
                     arguments=kwargs,
                     duration=duration,
                     route=route,

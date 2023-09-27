@@ -19,7 +19,6 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
 
@@ -51,9 +50,9 @@ class OBBject(Tagged, Generic[T]):
         default=None,
         description="Chart object.",
     )
-    metadata: Optional[Metadata] = Field(
-        default=None,
-        description="Metadata info about the command execution.",
+    extra: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Extra info.",
     )
 
     def __repr__(self) -> str:

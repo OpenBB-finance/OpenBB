@@ -1,15 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from pydantic import validate_call
-from typing_extensions import Annotated
 
 
 class ROUTER_crypto(Container):
@@ -23,24 +23,24 @@ class ROUTER_crypto(Container):
     @validate_call
     def load(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Crypto Historical Price.
 
@@ -48,15 +48,15 @@ class ROUTER_crypto(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Union[Literal['fmp', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Optional[Annotated[int, Ge(ge=0)]]
+        timeseries : Optional[Union[typing_extensions.Annotated[int, Ge(ge=0)]]]
             Number of days to look back. (provider: fmp)
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
@@ -74,16 +74,16 @@ class ROUTER_crypto(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoHistorical]
+            results : Union[List[CryptoHistorical]]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         CryptoHistorical
         ----------------
@@ -99,21 +99,21 @@ class ROUTER_crypto(Container):
             The close price of the symbol.
         volume : float
             The volume of the symbol.
-        vwap : Optional[Annotated[float, Gt(gt=0)]]
+        vwap : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
             Volume Weighted Average Price of the symbol.
-        adj_close : Optional[float]
+        adj_close : Optional[Union[float]]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjusted_volume : Optional[float]
+        unadjusted_volume : Optional[Union[float]]
             Unadjusted volume of the symbol. (provider: fmp)
-        change : Optional[float]
+        change : Optional[Union[float]]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        change_percent : Optional[float]
+        change_percent : Optional[Union[float]]
             Change % in the price of the symbol. (provider: fmp)
-        label : Optional[str]
+        label : Optional[Union[str]]
             Human readable format of the date. (provider: fmp)
-        change_over_time : Optional[float]
+        change_over_time : Optional[Union[float]]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[Annotated[int, Gt(gt=0)]]
+        transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
@@ -129,7 +129,7 @@ class ROUTER_crypto(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/crypto/load",
             **inputs,
         )
