@@ -8,9 +8,9 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, NonNegativeInt, PositiveFloat, validator
+from pydantic import Field, PositiveFloat, validator
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
@@ -42,8 +42,8 @@ class MajorIndicesHistoricalData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[NonNegativeInt] = Field(
-        description=DATA_DESCRIPTIONS.get("volume", "")
+    volume: Optional[StrictInt] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 
     @validator("date", pre=True, check_fields=False)

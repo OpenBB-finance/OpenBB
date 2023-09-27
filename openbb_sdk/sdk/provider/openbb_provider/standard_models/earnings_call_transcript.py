@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import List, Literal, Set, Union
+from typing import List, Set, Union
 
 from pydantic import Field, validator
 
@@ -16,8 +16,11 @@ class EarningsCallTranscriptQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     year: int = Field(description="Year of the earnings call transcript.")
-    quarter: Literal[1, 2, 3, 4] = Field(
-        default=1, description="Quarter of the earnings call transcript."
+    quarter: int = Field(
+        default=1,
+        gt=0,
+        lt=5,
+        description="Quarter of the earnings call transcript.",
     )
 
     @validator("symbol", pre=True, check_fields=False, always=True)

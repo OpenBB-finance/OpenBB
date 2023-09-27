@@ -148,3 +148,14 @@ def sp500_multiples(
 ) -> OBBject[BaseModel]:
     """Historical S&P 500 multiples and Shiller PE ratios."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="FredHistorical")
+def fred_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fred Historical."""
+    return OBBject(results=Query(**locals()).execute())

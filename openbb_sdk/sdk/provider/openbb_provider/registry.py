@@ -1,5 +1,6 @@
 """Provider Registry Module."""
 
+import traceback
 from typing import Dict
 
 from importlib_metadata import entry_points
@@ -39,6 +40,7 @@ class RegistryLoader:
             try:
                 registry.include_provider(provider=entry_point.load())
             except Exception as e:
+                traceback.print_exception(type(e), e, e.__traceback__)
                 raise LoadingError(f"Invalid provider '{entry_point.name}': {e}") from e
 
         return registry

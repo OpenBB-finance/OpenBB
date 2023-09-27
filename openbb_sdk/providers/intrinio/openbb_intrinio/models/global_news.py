@@ -23,13 +23,7 @@ class IntrinioGlobalNewsQueryParams(GlobalNewsQueryParams):
 class IntrinioGlobalNewsData(GlobalNewsData):
     """Intrinio Global News Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "date": "publication_date",
-            "text": "summary",
-        }
+    __alias_dict__ = {"date": "publication_date", "text": "summary"}
 
     id: str = Field(description="Article ID.")
     company: Dict[str, Any] = Field(
@@ -75,4 +69,4 @@ class IntrinioGlobalNewsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioGlobalNewsData]:
         """Return the transformed data."""
 
-        return [IntrinioGlobalNewsData.parse_obj(d) for d in data]
+        return [IntrinioGlobalNewsData.model_validate(d) for d in data]

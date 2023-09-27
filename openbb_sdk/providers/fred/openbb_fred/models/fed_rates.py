@@ -39,19 +39,14 @@ class FREDFEDQueryParams(FEDQueryParams):
 class FREDFEDData(FEDData):
     """FED data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "rate": "value",
-        }
+    __alias_dict__ = {"rate": "value"}
 
     @validator("rate", pre=True, check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
         except ValueError:
-            return float("nan")
+            return None
 
 
 class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData]]]]):

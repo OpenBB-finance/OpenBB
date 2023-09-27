@@ -6,7 +6,7 @@ from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
@@ -31,40 +31,64 @@ class CompanyOverviewData(Data):
     """
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    price: float = Field(description="Price of the company.")
-    beta: float = Field(description="Beta of the company.")
-    vol_avg: int = Field(description="Volume average of the company.")
-    mkt_cap: int = Field(description="Market capitalization of the company.")
-    last_div: float = Field(description="Last dividend of the company.")
-    range: str = Field(description="Range of the company.")
-    changes: float = Field(description="Changes of the company.")
-    company_name: str = Field(description="Company name of the company.")
-    currency: str = Field(description="Currency of the company.")
-    cik: Optional[str] = Field(description="CIK of the company.")
-    isin: Optional[str] = Field(description="ISIN of the company.")
-    cusip: Optional[str] = Field(description="CUSIP of the company.")
-    exchange: str = Field(description="Exchange of the company.")
-    exchange_short_name: str = Field(description="Exchange short name of the company.")
-    industry: str = Field(description="Industry of the company.")
-    website: str = Field(description="Website of the company.")
-    description: Optional[str] = Field(description="Description of the company.")
-    ceo: str = Field(description="CEO of the company.")
-    sector: str = Field(description="Sector of the company.")
-    country: str = Field(description="Country of the company.")
+    price: Optional[float] = Field(default=None, description="Price of the company.")
+    beta: Optional[float] = Field(default=None, description="Beta of the company.")
+    vol_avg: Optional[StrictInt] = Field(
+        default=None, description="Volume average of the company."
+    )
+    mkt_cap: Optional[StrictInt] = Field(
+        default=None, description="Market capitalization of the company."
+    )
+    last_div: Optional[float] = Field(
+        default=None, description="Last dividend of the company."
+    )
+    range: Optional[str] = Field(default=None, description="Range of the company.")
+    changes: Optional[float] = Field(
+        default=None, description="Changes of the company."
+    )
+    company_name: Optional[str] = Field(
+        default=None, description="Company name of the company."
+    )
+    currency: Optional[str] = Field(
+        default=None, description="Currency of the company."
+    )
+    cik: Optional[str] = Field(default=None, description="CIK of the company.")
+    isin: Optional[str] = Field(default=None, description="ISIN of the company.")
+    cusip: Optional[str] = Field(default=None, description="CUSIP of the company.")
+    exchange: Optional[str] = Field(
+        default=None, description="Exchange of the company."
+    )
+    exchange_short_name: Optional[str] = Field(
+        default=None, description="Exchange short name of the company."
+    )
+    industry: Optional[str] = Field(
+        default=None, description="Industry of the company."
+    )
+    website: Optional[str] = Field(default=None, description="Website of the company.")
+    description: Optional[str] = Field(
+        default=None, description="Description of the company."
+    )
+    ceo: Optional[str] = Field(default=None, description="CEO of the company.")
+    sector: Optional[str] = Field(default=None, description="Sector of the company.")
+    country: Optional[str] = Field(default=None, description="Country of the company.")
     full_time_employees: Optional[str] = Field(
-        description="Full time employees of the company."
+        default=None, description="Full time employees of the company."
     )
-    phone: Optional[str] = Field(description="Phone of the company.")
-    address: Optional[str] = Field(description="Address of the company.")
-    city: Optional[str] = Field(description="City of the company.")
-    state: Optional[str] = Field(description="State of the company.")
-    zip: Optional[str] = Field(description="Zip of the company.")
+    phone: Optional[str] = Field(default=None, description="Phone of the company.")
+    address: Optional[str] = Field(default=None, description="Address of the company.")
+    city: Optional[str] = Field(default=None, description="City of the company.")
+    state: Optional[str] = Field(default=None, description="State of the company.")
+    zip: Optional[str] = Field(default=None, description="Zip of the company.")
     dcf_diff: Optional[float] = Field(
-        description="Discounted cash flow difference of the company."
+        default=None, description="Discounted cash flow difference of the company."
     )
-    dcf: float = Field(description="Discounted cash flow of the company.")
-    image: str = Field(description="Image of the company.")
-    ipo_date: date = Field(description="IPO date of the company.")
+    dcf: Optional[float] = Field(
+        default=None, description="Discounted cash flow of the company."
+    )
+    image: Optional[str] = Field(default=None, description="Image of the company.")
+    ipo_date: Optional[date] = Field(
+        default=None, description="IPO date of the company."
+    )
     default_image: bool = Field(description="If the image is the default image.")
     is_etf: bool = Field(description="If the company is an ETF.")
     is_actively_trading: bool = Field(description="If the company is actively trading.")

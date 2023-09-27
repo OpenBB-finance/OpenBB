@@ -1,8 +1,8 @@
 """Stock Peers data model."""
 
-from typing import List, Optional, Set, Union
+from typing import List, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -14,7 +14,7 @@ class StockPeersQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -26,6 +26,7 @@ class StockPeersData(Data):
     """Stock Peers data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    peers_list: Optional[List[str]] = Field(
-        description="A list of stock peers based on sector, exchange and market cap."
+    peers_list: List[str] = Field(
+        default_factory=list,
+        description="A list of stock peers based on sector, exchange and market cap.",
     )

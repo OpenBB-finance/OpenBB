@@ -4,7 +4,8 @@
 from datetime import date, datetime
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from dateutil import parser
+from pydantic import Field, field_validator, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -28,7 +29,7 @@ class FuturesHistoricalQueryParams(QueryParams):
         description="Future expiry date with format YYYY-MM",
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -45,3 +46,8 @@ class FuturesHistoricalData(Data):
     low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+
+    @validator("date", pre=True, check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        return parser.isoparse(str(v))

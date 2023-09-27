@@ -24,6 +24,7 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
         default="reported", description="Type of the statement to be fetched."
     )
     year: Optional[int] = Field(
+        default=None,
         description="Year of the statement to be fetched.",
     )
 
@@ -31,20 +32,19 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
 class IntrinioBalanceSheetData(BalanceSheetData):
     """Intrinio Balance Sheet Data."""
 
-    class Config:
-        fields = {
-            "cash_and_cash_equivalents": "cash_and_equivalents",
-            "marketable_securities": "short_term_investments",
-            "net_receivables": "note_and_lease_receivable",
-            "inventory": "inventory_net",
-            "total_non_current_assets": "total_noncurrent_assets",
-            "tax_payables": "other_taxes_payables",
-            "deferred_revenue": "current_deferred_revenue",
-            "deferred_revenue_non_current": "noncurrent_deferred_revenue",
-            "deferred_tax_liabilities_non_current": "noncurrent_deferred_and_payable_income_tax_liabilities",
-            "other_liabilities": "other_long_term_liabilities",
-            "accumulated_other_comprehensive_income_loss": "accumulated_other_comprehensive_income_loss",
-        }
+    __alias_dict__ = {
+        "cash_and_cash_equivalents": "cash_and_equivalents",
+        "marketable_securities": "short_term_investments",
+        "net_receivables": "note_and_lease_receivable",
+        "inventory": "inventory_net",
+        "total_non_current_assets": "total_noncurrent_assets",
+        "tax_payables": "other_taxes_payables",
+        "deferred_revenue": "current_deferred_revenue",
+        "deferred_revenue_non_current": "noncurrent_deferred_revenue",
+        "deferred_tax_liabilities_non_current": "noncurrent_deferred_and_payable_income_tax_liabilities",
+        "other_liabilities": "other_long_term_liabilities",
+        "accumulated_other_comprehensive_income_loss": "accumulated_other_comprehensive_income_loss",
+    }
 
 
 class IntrinioBalanceSheetFetcher(

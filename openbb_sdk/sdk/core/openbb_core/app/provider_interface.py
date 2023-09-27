@@ -6,8 +6,15 @@ from fastapi import Query
 from openbb_provider.query_executor import QueryExecutor
 from openbb_provider.registry_map import MapType, RegistryMap
 from openbb_provider.utils.helpers import to_snake_case
-from pydantic import BaseConfig, BaseModel, Extra, Field, create_model
-from pydantic.fields import FieldInfo, ModelField
+from pydantic import (
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Extra,
+    Field,
+    create_model,
+)
+from pydantic.fields import FieldInfo
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 
@@ -200,25 +207,28 @@ class ProviderInterface(metaclass=SingletonMeta):
     @staticmethod
     def _create_field(
         name: str,
-        field: ModelField,
+        field: FieldInfo,
         provider_name: Optional[str] = None,
         query: bool = False,
         force_optional: bool = False,
+        alias_dict: Optional[Dict[str, List[str]]] = None,
     ) -> DataclassField:
+        alias_dict = alias_dict or {}
         new_name = name.replace(".", "_")
         # field.type_ don't work for nested types
         # field.outer_type_ don't work for Optional nested types
         type_ = field.annotation
+
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )
         description = (
-            f"{field.field_info.description} {provider_field}"
-            if provider_name and field.field_info.description
-            else f"{field.field_info.description}"
+            f"{field.description} {provider_field}"
+            if provider_name and field.description
+            else f"{field.description}"
         )
 
-        if field.required:
+        if field.is_required():
             if force_optional:
                 type_ = Optional[type_]  # type: ignore
                 default = None
@@ -231,11 +241,22 @@ class ProviderInterface(metaclass=SingletonMeta):
             # We need to use query if we want the field description to show up in the
             # swagger, it's a fastapi limitation
             default = Query(
-                default=default, title=provider_name, description=description
+                default=default,
+                title=provider_name,
+                description=description,
+                alias=field.alias or None,
             )
         elif provider_name:
-            default = Field(
-                default=default, title=provider_name, description=description
+            default: FieldInfo = Field(
+                default=default or None,
+                title=provider_name,
+                description=description,
+                validation_alias=AliasChoices(
+                    field.alias,
+                    *list(set(alias_dict.get(name, []))),
+                )
+                if alias_dict.get(name, [])
+                else None,
             )
 
         return DataclassField(new_name, type_, default)
@@ -304,11 +325,15 @@ class ProviderInterface(metaclass=SingletonMeta):
                         incoming.default,
                     )
             else:
+                alias_dict = model_details.get("Data", {}).get("alias_dict", {})
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
-                        s_name = to_snake_case(name)
                         incoming = cls._create_field(
-                            s_name, field, provider_name, force_optional=True
+                            to_snake_case(name),
+                            field,
+                            provider_name,
+                            force_optional=True,
+                            alias_dict=alias_dict,
                         )
 
                         if incoming.name in extra:
@@ -389,7 +414,13 @@ class ProviderInterface(metaclass=SingletonMeta):
 
             result[model_name] = make_dataclass(  # type: ignore
                 cls_name=model_name,
-                fields=[("provider", Literal[tuple(choices)])],  # type: ignore
+                fields=[
+                    (
+                        "provider",
+                        Literal[tuple(choices)],  # type: ignore
+                        ... if len(choices) > 1 else choices[0],
+                    )
+                ],
                 bases=(ProviderChoices,),
             )
 
@@ -444,8 +475,8 @@ class ProviderInterface(metaclass=SingletonMeta):
             standard = dataclasses["standard"]
             extra = dataclasses["extra"]
 
-            fields = standard.__fields__.copy()
-            fields.update(extra.__fields__)
+            fields = standard.model_fields.copy()
+            fields.update(extra.model_fields)
 
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
             for name, field in fields.items():
@@ -453,17 +484,21 @@ class ProviderInterface(metaclass=SingletonMeta):
                     field.annotation,
                     Field(
                         default=field.default,
-                        title=field.field_info.title,
-                        description=field.field_info.description,
+                        title=field.title,
+                        description=field.description,
+                        alias=field.alias,
+                        validation_alias=field.validation_alias,
                     ),
                 )
 
-            class Config(BaseConfig):
-                extra = Extra.allow
+            model_config = ConfigDict(
+                extra=Extra.allow,
+                populate_by_name=True,
+            )
 
             result[model_name] = create_model(  # type: ignore
                 model_name,
-                __config__=Config,
+                __config__=model_config,
                 **fields_dict,  # type: ignore
             )
 

@@ -47,19 +47,14 @@ class FREDAMERIBORQueryParams(AMERIBORQueryParams):
 class FREDAMERIBORData(AMERIBORData):
     """AMERIBOR data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "rate": "value",
-        }
+    __alias_dict__ = {"rate": "value"}
 
     @validator("rate", pre=True, check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
         except ValueError:
-            return float("nan")
+            return None
 
 
 class FREDAMERIBORFetcher(
@@ -77,7 +72,7 @@ class FREDAMERIBORFetcher(
     def extract_data(
         query: FREDAMERIBORQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> dict:
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = AMERIBOR_PARAMETER_TO_FRED_ID[query.parameter]

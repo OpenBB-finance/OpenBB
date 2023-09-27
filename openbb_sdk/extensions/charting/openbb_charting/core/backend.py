@@ -9,6 +9,7 @@ import sys
 import warnings
 from multiprocessing import current_process
 from pathlib import Path
+from threading import Thread
 from typing import Any, Dict, Optional, Union
 
 import aiohttp
@@ -498,7 +499,8 @@ async def download_plotly_js():
 
 # To avoid having plotly.js in the repo, we download it if it's not present
 if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
-    asyncio.run(download_plotly_js())
+    # We run this in a thread so we don't block the main thread
+    Thread(target=asyncio.run, args=(download_plotly_js(),)).start()
 
 
 def create_backend(charting_settings: Optional[ChartingSettings] = None):

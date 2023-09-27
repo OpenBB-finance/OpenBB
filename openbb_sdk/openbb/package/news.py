@@ -1,14 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
+from typing import List, Literal, Optional
 
-import pydantic
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
+from typing_extensions import Annotated
 
 
 class ROUTER_news(Container):
@@ -19,53 +19,52 @@ class ROUTER_news(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def globalnews(
         self,
-        limit: typing_extensions.Annotated[
-            pydantic.types.NonNegativeInt,
-            OpenBBCustomParameter(description="Number of articles to return."),
+        limit: Annotated[
+            int, OpenBBCustomParameter(description="Number of articles to return.")
         ] = 20,
-        provider: Union[Literal["benzinga", "fmp", "intrinio"], None] = None,
-        **kwargs
-    ) -> OBBject[List]:
+        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
+        **kwargs,
+    ) -> OBBject[List[Data]]:
         """Global News.
 
         Parameters
         ----------
-        limit : NonNegativeInt
+        limit : int
             Number of articles to return.
-        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Union[str, None]
+        date : Optional[str]
             Date of the news to retrieve. (provider: benzinga)
-        start_date : Union[str, None]
+        start_date : Optional[str]
             Start date of the news to retrieve. (provider: benzinga)
-        end_date : Union[str, None]
+        end_date : Optional[str]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Union[int, None]
+        updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Union[int, None]
+        published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Union[Literal['id', 'created', 'updated'], None]
+        sort : Optional[Literal['id', 'created', 'updated']]
             Key to sort the news by. (provider: benzinga)
-        order : Union[Literal['asc', 'desc'], None]
+        order : Optional[Literal['asc', 'desc']]
             Order to sort the news by. (provider: benzinga)
-        isin : Union[str, None]
+        isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Union[str, None]
+        cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        channels : Union[str, None]
+        channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Union[str, None]
+        topics : Optional[str]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Union[str, None]
+        authors : Optional[str]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Union[str, None]
+        content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
 
         Returns
@@ -73,7 +72,7 @@ class ROUTER_news(Container):
         OBBject
             results : List[GlobalNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -84,9 +83,9 @@ class ROUTER_news(Container):
 
         GlobalNews
         ----------
-        date : Optional[datetime]
+        date : datetime
             Published date of the news.
-        title : Optional[str]
+        title : str
             Title of the news.
         image : Optional[str]
             Image URL of the news.
@@ -98,19 +97,21 @@ class ROUTER_news(Container):
             ID of the news. (provider: benzinga); Article ID. (provider: intrinio)
         author : Optional[str]
             Author of the news. (provider: benzinga)
-        updated : Optional[datetime]
-            Updated date of the news. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
+        images : Optional[List[Dict[str, str]]]
+            Images associated with the news. (provider: benzinga)
         channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
         tags : Optional[str]
             Tags associated with the news. (provider: benzinga)
+        updated : Optional[datetime]
+            None
         site : Optional[str]
             Site of the news. (provider: fmp)
-        company : Optional[Mapping[str, Any]]
+        company : Optional[Dict[str, Any]]
             Company details related to the news article. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(

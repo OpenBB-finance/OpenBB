@@ -19,22 +19,18 @@ class FMPStockNewsQueryParams(StockNewsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
     """
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {"symbols": "tickers"}
+    __alias_dict__ = {"symbols": "tickers"}
 
 
 class FMPStockNewsData(StockNewsData):
     """FMP Stock News data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {"date": "publishedDate"}
+    __alias_dict__ = {"date": "publishedDate"}
 
     symbol: str = Field(description="Ticker of the fetched news.")
-    image: Optional[str] = Field(description="URL to the image of the news source.")
+    image: Optional[str] = Field(
+        default=None, description="URL to the image of the news source."
+    )
     site: str = Field(description="Name of the news source.")
 
 
@@ -79,4 +75,4 @@ class FMPStockNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockNewsData]:
         """Return the transformed data."""
-        return [FMPStockNewsData.parse_obj(d) for d in data]
+        return [FMPStockNewsData.model_validate(d) for d in data]

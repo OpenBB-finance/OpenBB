@@ -10,7 +10,7 @@ from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 from yfinance import Ticker
 
 
@@ -25,10 +25,11 @@ class YFinanceIncomeStatementData(IncomeStatementData):
     """yfinance Income Statement Data."""
 
     # TODO: Standardize the fields
-
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+        return v
 
 
 class YFinanceIncomeStatementFetcher(
@@ -47,9 +48,9 @@ class YFinanceIncomeStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceIncomeStatementData]:
-        query.period = "yearly" if query.period == "annual" else "quarterly"
+        period = "yearly" if query.period == "annual" else "quarterly"
         data = Ticker(query.symbol).get_income_stmt(
-            as_dict=True, pretty=False, freq=query.period
+            as_dict=True, pretty=False, freq=period
         )
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
@@ -63,4 +64,4 @@ class YFinanceIncomeStatementFetcher(
     def transform_data(
         data: List[Dict],
     ) -> List[YFinanceIncomeStatementData]:
-        return [YFinanceIncomeStatementData.parse_obj(d) for d in data]
+        return [YFinanceIncomeStatementData.model_validate(d) for d in data]

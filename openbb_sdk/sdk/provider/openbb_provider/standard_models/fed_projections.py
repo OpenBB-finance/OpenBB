@@ -2,6 +2,7 @@
 
 
 from datetime import date as dateType
+from typing import Optional
 
 from pydantic import Field
 
@@ -18,16 +19,16 @@ class PROJECTIONData(Data):
     """Return Treasury Rates Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    range_high: float = Field(description="High projection of rates.")
-    central_tendency_high: float = Field(
+    range_high: Optional[float] = Field(description="High projection of rates.")
+    central_tendency_high: Optional[float] = Field(
         description="Central tendency of high projection of rates."
     )
-    median: float = Field(description="Median projection of rates.")
-    range_midpoint: float = Field(description="Midpoint projection of rates.")
-    central_tendency_midpoint: float = Field(
+    median: Optional[float] = Field(description="Median projection of rates.")
+    range_midpoint: Optional[float] = Field(description="Midpoint projection of rates.")
+    central_tendency_midpoint: Optional[float] = Field(
         description="Central tendency of midpoint projection of rates."
     )
-    range_low: float = Field(description="Low projection of rates.")
-    central_tendency_low: float = Field(
+    range_low: Optional[float] = Field(description="Low projection of rates.")
+    central_tendency_low: Optional[float] = Field(
         description="Central tendency of low projection of rates."
     )

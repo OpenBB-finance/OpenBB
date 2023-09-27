@@ -22,10 +22,7 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
 
-    class Config:
-        fields = {
-            "limit": "page_size",
-        }
+    __alias_dict__ = {"limit": "page_size"}
 
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
@@ -37,10 +34,12 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
         default="realtime", description="The source of the data."
     )
     start_time: Optional[time] = Field(
-        description="Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'."
+        default=None,
+        description="Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'.",
     )
     end_time: Optional[time] = Field(
-        description="Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'."
+        default=None,
+        description="Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'.",
     )
     interval_size: Optional[INTERVALS] = Field(
         default="60m", description=QUERY_DESCRIPTIONS.get("frequency", "")
@@ -50,21 +49,22 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
 class IntrinioStockHistoricalData(StockHistoricalData):
     """Intrinio Stock end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "time",
-        }
+    __alias_dict__ = {"date": "time"}
 
     close_time: Optional[datetime] = Field(
-        description="The timestamp that represents the end of the interval span."
+        default=None,
+        description="The timestamp that represents the end of the interval span.",
     )
-    interval: Optional[str] = Field(description="The data time frequency.")
+    interval: Optional[str] = Field(
+        default=None, description="The data time frequency."
+    )
     average: Optional[float] = Field(
-        description="Average trade price of an individual stock during the interval."
+        default=None,
+        description="Average trade price of an individual stock during the interval.",
     )
     change: Optional[float] = Field(
+        default=None,
         description="Change in the price of the symbol from the previous day.",
-        alias="change",
     )
 
 
@@ -133,4 +133,4 @@ class IntrinioStockHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
-        return [IntrinioStockHistoricalData.parse_obj(d) for d in data]
+        return [IntrinioStockHistoricalData.model_validate(d) for d in data]

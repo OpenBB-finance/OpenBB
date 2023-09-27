@@ -23,8 +23,8 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     prepost: bool = Field(
@@ -142,4 +142,4 @@ class YFinanceStockHistoricalFetcher(
     ) -> List[YFinanceStockHistoricalData]:
         """Transform the data to the standard format."""
 
-        return [YFinanceStockHistoricalData.parse_obj(d) for d in data]
+        return [YFinanceStockHistoricalData.model_validate(d) for d in data]

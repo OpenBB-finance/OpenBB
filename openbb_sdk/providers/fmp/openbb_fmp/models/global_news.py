@@ -23,10 +23,7 @@ class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
 class FMPGlobalNewsData(GlobalNewsData):
     """FMP Global News Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {"date": "publishedDate"}
+    __alias_dict__ = {"date": "publishedDate"}
 
     site: str = Field(description="Site of the news.")
 
@@ -76,4 +73,4 @@ class FMPGlobalNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPGlobalNewsData]:
         """Return the transformed data."""
-        return [FMPGlobalNewsData.parse_obj(d) for d in data]
+        return [FMPGlobalNewsData.model_validate(d) for d in data]

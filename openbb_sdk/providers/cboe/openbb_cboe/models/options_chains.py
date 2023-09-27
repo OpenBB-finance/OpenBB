@@ -16,7 +16,7 @@ from openbb_provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -29,65 +29,30 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 class CboeOptionsChainsData(OptionsChainsData):
     """CBOE Options Chains Data."""
 
-    bid_size: int = Field(
-        description="Bid size for the option.",
-    )
-    ask_size: int = Field(
-        description="Ask size for the option.",
-    )
-    theoretical: float = Field(
-        description="Theoretical value of the option.",
-    )
-    open: float = Field(
-        description="Opening price of the option.",
-    )
-    high: float = Field(
-        description="High price of the option.",
-    )
-    low: float = Field(
-        description="Low price of the option.",
-    )
-    last_trade_price: float = Field(
-        description="Last trade price of the option.",
-    )
-    tick: str = Field(
-        description="Whether the last tick was up or down in price.",
-    )
-    prev_close: float = Field(
-        description="Previous closing price of the option.",
-    )
-    change: float = Field(
-        description="Change in  price of the option.",
-    )
-    change_percent: float = Field(
-        description="Change, in percent, of the option.",
-    )
-    implied_volatility: float = Field(
-        description="Implied volatility of the option.",
-    )
-    delta: float = Field(
-        description="Delta of the option.",
-    )
-    gamma: float = Field(
-        description="Gamma of the option.",
-    )
-    vega: float = Field(
-        description="Vega of the option.",
-    )
-    theta: float = Field(
-        description="Theta of the option.",
-    )
-    rho: float = Field(
-        description="Rho of the option.",
-    )
+    bid_size: int = Field(description="Bid size for the option.")
+    ask_size: int = Field(description="Ask size for the option.")
+    theoretical: float = Field(description="Theoretical value of the option.")
+    open: float = Field(description="Opening price of the option.")
+    high: float = Field(description="High price of the option.")
+    low: float = Field(description="Low price of the option.")
+    last_trade_price: float = Field(description="Last trade price of the option.")
+    tick: str = Field(description="Whether the last tick was up or down in price.")
+    prev_close: float = Field(description="Previous closing price of the option.")
+    change: float = Field(description="Change in  price of the option.")
+    change_percent: float = Field(description="Change, in percent, of the option.")
+    implied_volatility: float = Field(description="Implied volatility of the option.")
+    delta: float = Field(description="Delta of the option.")
+    gamma: float = Field(description="Gamma of the option.")
+    vega: float = Field(description="Vega of the option.")
+    theta: float = Field(description="Theta of the option.")
+    rho: float = Field(description="Rho of the option.")
     last_trade_timestamp: datetime = Field(
-        description="Last trade timestamp of the option.",
+        description="Last trade timestamp of the option."
     )
-    dte: int = Field(
-        description="Days to expiration for the option.",
-    )
+    dte: int = Field(description="Days to expiration for the option.")
 
-    @validator("expiration", pre=True, check_fields=False)
+    @field_validator("expiration", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
         return datetime.strptime(v, "%Y-%m-%d")
@@ -197,4 +162,4 @@ class CboeOptionsChainsFetcher(
         data: dict,
     ) -> List[CboeOptionsChainsData]:
         """Transform the data to the standard format"""
-        return [CboeOptionsChainsData.parse_obj(d) for d in data]
+        return [CboeOptionsChainsData.model_validate(d) for d in data]

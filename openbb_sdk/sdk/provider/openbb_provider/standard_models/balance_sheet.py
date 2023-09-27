@@ -1,12 +1,15 @@
 """Balance Sheet Data Model."""
 
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt, field_validator, validator
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
@@ -33,97 +36,145 @@ class BalanceSheetQueryParams(QueryParams):
 class BalanceSheetData(Data):
     """Balance Sheet Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     date: dateType = Field(description="Date of the fetched statement.")
-    period: Optional[str] = Field(description="Reporting period of the statement.")
-    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
+    cik: Optional[str] = Field(
+        default=None, description="Central Index Key (CIK) of the company."
+    )
+    currency: Optional[str] = Field(default=None, description="Reporting currency.")
+    filling_date: Optional[dateType] = Field(default=None, description="Filling date.")
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Accepted date."
+    )
+    period: Optional[str] = Field(
+        default=None, description="Reporting period of the statement."
+    )
 
-    cash_and_cash_equivalents: Optional[int] = Field(
-        description="Cash and cash equivalents"
+    cash_and_cash_equivalents: Optional[StrictInt] = Field(
+        default=None, description="Cash and cash equivalents"
     )
-    short_term_investments: Optional[int] = Field(description="Short-term investments")
-    net_receivables: Optional[int] = Field(description="Receivables, net")
-    inventory: Optional[int] = Field(description="Inventory")
-    other_current_assets: Optional[int] = Field(description="Other current assets")
-    total_current_assets: Optional[int] = Field(description="Total current assets")
+    short_term_investments: Optional[StrictInt] = Field(
+        default=None, description="Short-term investments"
+    )
+    long_term_investments: Optional[StrictInt] = Field(
+        default=None, description="Long-term investments"
+    )
 
-    marketable_securities: Optional[int] = Field(description="Marketable securities")
-    property_plant_equipment_net: Optional[int] = Field(
-        description="Property, plant and equipment, net"
+    inventory: Optional[StrictInt] = Field(default=None, description="Inventory")
+    net_receivables: Optional[StrictInt] = Field(
+        default=None, description="Receivables, net"
     )
-    goodwill: Optional[int] = Field(description="Goodwill")
-    intangible_assets: Optional[int] = Field(description="Intangible assets")
-    tax_assets: Optional[int] = Field(description="Accrued income taxes")
-    other_non_current_assets: Optional[int] = Field(
-        description="Other non-current assets"
-    )
-    total_non_current_assets: Optional[int] = Field(
-        description="Total non-current assets"
-    )
-    other_assets: Optional[int] = Field(description="Other assets")
-    total_assets: Optional[int] = Field(description="Total assets")
 
-    account_payables: Optional[int] = Field(description="Accounts payables")
-    short_term_debt: Optional[int] = Field(
+    marketable_securities: Optional[StrictInt] = Field(
+        default=None, description="Marketable securities"
+    )
+    property_plant_equipment_net: Optional[StrictInt] = Field(
+        default=None, description="Property, plant and equipment, net"
+    )
+    goodwill: Optional[StrictInt] = Field(default=None, description="Goodwill")
+
+    assets: Optional[StrictInt] = Field(default=None, description="Total assets")
+    current_assets: Optional[StrictInt] = Field(
+        default=None, description="Total current assets"
+    )
+    other_current_assets: Optional[StrictInt] = Field(
+        default=None, description="Other current assets"
+    )
+    intangible_assets: Optional[StrictInt] = Field(
+        default=None, description="Intangible assets"
+    )
+    tax_assets: Optional[StrictInt] = Field(
+        default=None, description="Accrued income taxes"
+    )
+    other_assets: Optional[StrictInt] = Field(default=None, description="Other assets")
+    non_current_assets: Optional[StrictInt] = Field(
+        default=None, description="Total non-current assets"
+    )
+    other_non_current_assets: Optional[StrictInt] = Field(
+        default=None, description="Other non-current assets"
+    )
+
+    account_payables: Optional[StrictInt] = Field(
+        default=None, description="Accounts payable"
+    )
+    tax_payables: Optional[StrictInt] = Field(
+        default=None, description="Accrued income taxes"
+    )
+    deferred_revenue: Optional[StrictInt] = Field(
+        default=None, description="Accrued income taxes, other deferred revenue"
+    )
+    other_assets: Optional[StrictInt] = Field(default=None, description="Other assets")
+    total_assets: Optional[StrictInt] = Field(default=None, description="Total assets")
+
+    long_term_debt: Optional[StrictInt] = Field(
+        default=None,
+        description="Long-term debt, Operating lease obligations, Long-term finance lease obligations",
+    )
+    short_term_debt: Optional[StrictInt] = Field(
+        default=None,
         description="Short-term borrowings, Long-term debt due within one year, "
         "Operating lease obligations due within one year, "
-        "Finance lease obligations due within one year"
-    )
-    tax_payables: Optional[int] = Field(description="Accrued income taxes")
-    deferred_revenue: Optional[int] = Field(
-        description="Accrued income taxes, other deferred revenue"
-    )
-    other_current_liabilities: Optional[int] = Field(
-        description="Other current liabilities"
-    )
-    total_current_liabilities: Optional[int] = Field(
-        description="Total current liabilities"
+        "Finance lease obligations due within one year",
     )
 
-    long_term_debt: Optional[int] = Field(
-        description="Long-term debt, Operating lease obligations, "
-        "Long-term finance lease obligations"
+    liabilities: Optional[StrictInt] = Field(
+        default=None, description="Total liabilities"
     )
-    deferred_revenue_non_current: Optional[int] = Field(
-        description="Deferred revenue, non-current"
+    other_current_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Other current liabilities"
     )
-    deferred_tax_liabilities_non_current: Optional[int] = Field(
-        description="Deferred income taxes and other"
+    current_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Total current liabilities"
     )
-    other_non_current_liabilities: Optional[int] = Field(
-        description="Deferred income taxes and other"
+    total_liabilities_and_total_equity: Optional[StrictInt] = Field(
+        default=None, description="Total liabilities and total equity"
     )
-    total_non_current_liabilities: Optional[int] = Field(
-        description="Total non-current liabilities"
+    other_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Other liabilities"
     )
-    other_liabilities: Optional[int] = Field(description="Other liabilities")
-    total_liabilities: Optional[int] = Field(description="Total liabilities")
-
-    preferred_stock: Optional[int] = Field(description="Preferred stock")
-    common_stock: Optional[int] = Field(description="Common stock")
-    retained_earnings: Optional[int] = Field(description="Retained earnings")
-    accumulated_other_comprehensive_income_loss: Optional[int] = Field(
-        description="Accumulated other comprehensive income (loss)"
+    other_non_current_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Other non-current liabilities"
     )
-    other_shareholder_equity: Optional[int] = Field(
-        description="Other shareholder's equity"
+    non_current_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Total non-current liabilities"
     )
-    total_shareholder_equity: Optional[int] = Field(
-        description="Total shareholder's equity"
+    total_liabilities_and_stockholders_equity: Optional[StrictInt] = Field(
+        default=None, description="Total liabilities and stockholders' equity"
     )
-
-    total_equity: Optional[int] = Field(description="Total equity")
-    total_liabilities_and_shareholders_equity: Optional[int] = Field(
-        description="Total liabilities and shareholder's equity"
+    other_stockholder_equity: Optional[StrictInt] = Field(
+        default=None, description="Other stockholders equity"
     )
-    minority_interest: Optional[int] = Field(description="Minority interest")
-    total_liabilities_and_total_equity: Optional[int] = Field(
-        description="Total liabilities and total equity"
+    total_stockholders_equity: Optional[StrictInt] = Field(
+        default=None, description="Total stockholders' equity"
+    )
+    other_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Other liabilities"
+    )
+    total_liabilities: Optional[StrictInt] = Field(
+        default=None, description="Total liabilities"
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    common_stock: Optional[StrictInt] = Field(default=None, description="Common stock")
+    preferred_stock: Optional[StrictInt] = Field(
+        default=None, description="Preferred stock"
+    )
+
+    accumulated_other_comprehensive_income_loss: Optional[StrictInt] = Field(
+        default=None, description="Accumulated other comprehensive income (loss)"
+    )
+    retained_earnings: Optional[StrictInt] = Field(
+        default=None, description="Retained earnings"
+    )
+    minority_interest: Optional[StrictInt] = Field(
+        default=None, description="Minority interest"
+    )
+    total_equity: Optional[StrictInt] = Field(default=None, description="Total equity")
+
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None

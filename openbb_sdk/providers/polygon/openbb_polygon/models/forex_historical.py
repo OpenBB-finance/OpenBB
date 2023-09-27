@@ -39,20 +39,20 @@ class PolygonForexHistoricalQueryParams(ForexHistoricalQueryParams):
 class PolygonForexHistoricalData(ForexHistoricalData):
     """Polygon forex end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "t",
-            "open": "o",
-            "high": "h",
-            "low": "l",
-            "close": "c",
-            "volume": "v",
-            "vwap": "vw",
-        }
+    __alias_dict__ = {
+        "date": "t",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+        "volume": "v",
+        "vwap": "vw",
+        "transactions": "n",
+    }
 
     transactions: Optional[PositiveInt] = Field(
+        default=None,
         description="Number of transactions for the symbol in the time period.",
-        alias="n",
     )
 
 
@@ -99,4 +99,4 @@ class PolygonForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: dict) -> List[PolygonForexHistoricalData]:
-        return [PolygonForexHistoricalData.parse_obj(d) for d in data]
+        return [PolygonForexHistoricalData.model_validate(d) for d in data]

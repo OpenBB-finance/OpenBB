@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -14,7 +14,7 @@ class StockQuoteQueryParams(QueryParams):
 
     symbol: str = Field(default=None, description="Comma separated list of symbols.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -34,5 +34,5 @@ class StockQuoteData(Data):
         description="Highest price of the stock in the current trading day.",
     )
     date: Optional[datetime] = Field(
-        description="Timestamp of the stock quote.", alias="timestamp"
+        description="Timestamp of the stock quote.", default=None
     )

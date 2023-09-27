@@ -52,4 +52,4 @@ class FMPStockPeersFetcher(
     @staticmethod
     def transform_data(data: Dict) -> FMPStockPeersData:
         """Return the transformed data."""
-        return FMPStockPeersData.parse_obj(data)
+        return FMPStockPeersData.model_validate(data)

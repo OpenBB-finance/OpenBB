@@ -14,7 +14,7 @@ from openbb_provider.standard_models.forex_pairs import (
     ForexPairsQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt, validator
+from pydantic import Field, PositiveInt, field_validator
 
 
 class PolygonForexPairsQueryParams(ForexPairsQueryParams):
@@ -23,7 +23,9 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
     Source: https://polygon.io/docs/forex/get_v3_reference_tickers
     """
 
-    symbol: Optional[str] = Field(description="Symbol of the pair to search.")
+    symbol: Optional[str] = Field(
+        default=None, description="Symbol of the pair to search."
+    )
     date: Optional[dateType] = Field(
         default=datetime.now().date(), description=QUERY_DESCRIPTIONS.get("date", "")
     )
@@ -31,7 +33,7 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
         default="",
         description="Search for terms within the ticker and/or company name.",
     )
-    active: Optional[Literal[True, False]] = Field(
+    active: Optional[bool] = Field(
         default=True,
         description="Specify if the tickers returned should be actively traded on the queried date.",
     )
@@ -60,29 +62,33 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
 class PolygonForexPairsData(ForexPairsData):
     """Polygon available pairs Data."""
 
-    market: str = Field(description="The name of the trading market. Always 'fx'.")
-    locale: str = Field(description="The locale of the currency pair.")
+    market: str = Field(description="Name of the trading market. Always 'fx'.")
+    locale: str = Field(description="Locale of the currency pair.")
     currency_symbol: Optional[str] = Field(
-        description="The symbol of the quote currency."
+        default=None, description="The symbol of the quote currency."
     )
-    currency_name: Optional[str] = Field(description="The name of the quote currency.")
+    currency_name: Optional[str] = Field(
+        default=None, description="Name of the quote currency."
+    )
     base_currency_symbol: Optional[str] = Field(
-        description="The symbol of the base currency."
+        default=None, description="The symbol of the base currency."
     )
     base_currency_name: Optional[str] = Field(
-        description="The name of the base currency."
+        default=None, description="Name of the base currency."
     )
     last_updated_utc: datetime = Field(description="The last updated timestamp in UTC.")
     delisted_utc: Optional[datetime] = Field(
-        description="The delisted timestamp in UTC."
+        default=None, description="The delisted timestamp in UTC."
     )
 
-    @validator("last_updated_utc", pre=True, check_fields=False)
+    @field_validator("last_updated_utc", mode="before", check_fields=False)
+    @classmethod
     def last_updated_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed last updated timestamp in UTC."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
-    @validator("delisted_utc", pre=True, check_fields=False)
+    @field_validator("delisted_utc", mode="before", check_fields=False)
+    @classmethod
     def delisted_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed delisted timestamp in UTC."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
@@ -159,4 +165,4 @@ class PolygonForexPairsFetcher(
         data: List[dict],
     ) -> List[PolygonForexPairsData]:
         """Transform the data into a list of PolygonForexPairsData."""
-        return [PolygonForexPairsData.parse_obj(d) for d in data]
+        return [PolygonForexPairsData.model_validate(d) for d in data]

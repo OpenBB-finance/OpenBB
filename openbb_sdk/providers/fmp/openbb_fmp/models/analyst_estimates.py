@@ -44,8 +44,6 @@ class FMPAnalystEstimatesFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        query.period = "quarter" if query.period == "quarterly" else "annual"
-
         url = create_url(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
@@ -55,4 +53,4 @@ class FMPAnalystEstimatesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPAnalystEstimatesData]:
         """Return the transformed data."""
-        return [FMPAnalystEstimatesData.parse_obj(d) for d in data]
+        return [FMPAnalystEstimatesData.model_validate(d) for d in data]

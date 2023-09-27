@@ -32,4 +32,6 @@ class FuturesCurveData(Data):
     """Futures curve Data."""
 
     expiration: str = Field(description="Futures expiration month.")
-    price: Optional[float] = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    price: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("close", "")
+    )
