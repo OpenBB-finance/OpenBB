@@ -21,7 +21,7 @@ class Preferences(BaseModel):
     metadata: bool = True
     output_type: Literal[
         "OBBject", "dataframe", "polars", "numpy", "dict", "chart"
-    ] = Field(default="OBBject", description="Method to apply to OBBject by default.")
+    ] = Field(default="OBBject", description="Python default output type.")
 
     model_config = ConfigDict(validate_assignment=True)
 
