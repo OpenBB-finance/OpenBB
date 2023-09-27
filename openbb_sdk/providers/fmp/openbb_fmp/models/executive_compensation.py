@@ -10,7 +10,7 @@ from openbb_provider.standard_models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 # This endpoint is only provided by FMP and not by the other providers for now.
 
@@ -25,12 +25,14 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
 
-    @validator("filingDate", pre=True, check_fields=False)
+    @field_validator("filingDate", mode="before", check_fields=False)
+    @classmethod
     def filing_date_validate(cls, v):  # pylint: disable=E0213
         """Return the filing date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
 
-    @validator("acceptedDate", pre=True, check_fields=False)
+    @field_validator("acceptedDate", mode="before", check_fields=False)
+    @classmethod
     def accepted_date_validate(cls, v):  # pylint: disable=E0213
         """Return the accepted date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
@@ -65,4 +67,4 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-        return [FMPExecutiveCompensationData.parse_obj(d) for d in data]
+        return [FMPExecutiveCompensationData.model_validate(d) for d in data]

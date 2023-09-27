@@ -109,27 +109,29 @@ def validate_output(c_out: OBBject) -> OBBject:
 
     def exclude_fields_from_api(key: str, value: Any):
         type_ = type(value)
+        field = c_out.model_fields.get(key, None)
+        json_schema_extra = field.json_schema_extra if field else None
 
         # case where 1st layer field needs to be excluded
-        if key in c_out.__fields__ and c_out.__fields__[key].field_info.extra.get(
-            "exclude_from_api", None
-        ):
+        if json_schema_extra and json_schema_extra.get("exclude_from_api", None):
             delattr(c_out, key)
 
         # if it's a model with nested fields
         elif is_model(type_):
             for field in type_.__fields__.values():
-                if field.field_info.extra.get("exclude_from_api", None):
+                if field.json_schema_extra and field.json_schema_extra.get(
+                    "exclude_from_api", None
+                ):
                     delattr(value, field.name)
 
                 # if it's a yet a nested model we need to go deeper in the recursion
-                elif is_model(field.type_):
+                elif is_model(field.annotation):
                     exclude_fields_from_api(field.name, getattr(value, field.name))
 
-    for k, v in c_out:
+    for k, v in c_out.model_copy():
         exclude_fields_from_api(k, v)
 
-    return c_out
+    return c_out.model_dump()
 
 
 def build_api_wrapper(
@@ -148,7 +150,7 @@ def build_api_wrapper(
 
     @wraps(wrapped=func)
     def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]):
-        user_settings: UserSettings = UserSettings.parse_obj(
+        user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
                 UserService.read_default_user_settings(),

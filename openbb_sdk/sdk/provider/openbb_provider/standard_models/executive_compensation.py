@@ -31,7 +31,9 @@ class ExecutiveCompensationData(Data):
     """Return Executive Compensation Data."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    cik: Optional[str] = Field(description="Central Index Key (CIK) of the company.")
+    cik: Optional[str] = Field(
+        default=None, description="Central Index Key (CIK) of the company."
+    )
     filing_date: dateType = Field(description="Date of the filing.")
     accepted_date: datetime = Field(description="Date the filing was accepted.")
     name_and_position: str = Field(description="Name and position of the executive.")

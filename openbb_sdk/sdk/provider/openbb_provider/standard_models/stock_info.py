@@ -1,8 +1,9 @@
 """Stock Info data model."""
 
+
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -14,7 +15,7 @@ class StockInfoQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -27,22 +28,31 @@ class StockInfoData(Data):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="Name associated with the ticker symbol.")
-    price: float = Field(description="Last transaction price.")
-    open: Optional[float] = Field(description="Opening price of the stock.")
-    high: Optional[float] = Field(description="High price of the current trading day.")
-    low: Optional[float] = Field(description="Low price of the current trading day.")
+    price: Optional[float] = Field(default=None, description="Last transaction price.")
+    open: Optional[float] = Field(
+        default=None, description="Opening price of the stock."
+    )
+    high: Optional[float] = Field(
+        default=None, description="High price of the current trading day."
+    )
+    low: Optional[float] = Field(
+        default=None, description="Low price of the current trading day."
+    )
     close: Optional[float] = Field(
-        description="Closing price of the most recent trading day."
+        default=None, description="Closing price of the most recent trading day."
     )
     change: Optional[float] = Field(
-        description="Change in price over the current trading period."
+        default=None, description="Change in price over the current trading period."
     )
     change_percent: Optional[float] = Field(
-        description="Percent change in price over the current trading period."
+        default=None,
+        description="Percent change in price over the current trading period.",
     )
-    prev_close: Optional[float] = Field(description="Previous closing price.")
+    prev_close: Optional[float] = Field(
+        default=None, description="Previous closing price."
+    )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

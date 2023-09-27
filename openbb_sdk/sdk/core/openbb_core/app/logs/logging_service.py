@@ -13,7 +13,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from pydantic.json import pydantic_encoder
+from pydantic_core import to_jsonable_python
 
 
 class LoggingService(metaclass=SingletonMeta):
@@ -159,13 +159,13 @@ class LoggingService(metaclass=SingletonMeta):
                     "route": route,
                     "PREFERENCES": self._user_settings.preferences,
                     "KEYS": check_credentials_defined(
-                        self._user_settings.credentials.dict()
+                        self._user_settings.credentials.model_dump()
                         if self._user_settings.credentials
                         else {}
                     ),
                     "SYSTEM": self._system_settings,
                 },
-                default=pydantic_encoder,
+                default=to_jsonable_python,
             ),
         )
 
@@ -230,7 +230,7 @@ class LoggingService(metaclass=SingletonMeta):
                     "input": kwargs,
                     "error": str(openbb_error.original) if openbb_error else None,
                 },
-                default=pydantic_encoder,
+                default=to_jsonable_python,
             )
             log_message = f"{message_label}: {log_message}"
 

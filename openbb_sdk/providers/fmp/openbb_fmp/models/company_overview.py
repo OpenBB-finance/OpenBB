@@ -1,6 +1,9 @@
 """FMP Company Overview Fetcher."""
 
 
+from datetime import (
+    date as dateType,
+)
 from typing import Any, Dict, Optional
 
 from openbb_fmp.utils.helpers import get_data_one
@@ -9,6 +12,7 @@ from openbb_provider.standard_models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
 )
+from pydantic import field_validator
 
 # This part is only provided by FMP and not by the other providers for now.
 
@@ -22,6 +26,14 @@ class FMPCompanyOverviewQueryParams(CompanyOverviewQueryParams):
 
 class FMPCompanyOverviewData(CompanyOverviewData):
     """FMP Company Overview Data."""
+
+    @field_validator("ipo_date", mode="before", check_fields=False)
+    @classmethod
+    def ipoDate_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        if isinstance(v, dateType) or v is None:
+            return v
+        return dateType.fromisoformat(v) if v else None
 
 
 class FMPCompanyOverviewFetcher(
@@ -56,4 +68,4 @@ class FMPCompanyOverviewFetcher(
         data: Dict,
     ) -> FMPCompanyOverviewData:
         """Return the transformed data."""
-        return FMPCompanyOverviewData.parse_obj(data)
+        return FMPCompanyOverviewData.model_validate(data)

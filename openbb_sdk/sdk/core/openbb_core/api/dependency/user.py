@@ -72,7 +72,7 @@ def create_jwt_token(
     algorithm=ALGORITHM,
 ) -> str:
     """Create JWT token."""
-    claims = access_token.dict()
+    claims = access_token.model_dump()
     encoded_jwt = jwt.encode(claims=claims, key=key, algorithm=algorithm)
     return encoded_jwt
 

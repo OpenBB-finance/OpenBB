@@ -8,7 +8,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 
 
 class ROUTER_fixedincome(Container):
@@ -27,7 +28,7 @@ class ROUTER_fixedincome(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def ameribor(
         self,
         start_date: typing_extensions.Annotated[
@@ -44,7 +45,7 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """
             Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
             short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
@@ -52,9 +53,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
@@ -66,7 +67,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[AMERIBOR]
+            results : Union[List[AMERIBOR]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -74,14 +75,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         AMERIBOR
         --------
-        date : Optional[date]
+        date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             AMERIBOR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -95,12 +96,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/ameribor",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def estr(
         self,
         start_date: typing_extensions.Annotated[
@@ -117,7 +118,7 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """
             The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
             the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
@@ -126,9 +127,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
@@ -140,7 +141,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[ESTR]
+            results : Union[List[ESTR]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -148,14 +149,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         ESTR
         ----
-        date : Optional[date]
+        date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             ESTR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -169,12 +170,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/estr",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def fed(
         self,
         start_date: typing_extensions.Annotated[
@@ -191,7 +192,7 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -200,9 +201,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
@@ -214,7 +215,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[FEDFUNDS]
+            results : Union[List[FEDFUNDS]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -222,14 +223,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         FEDFUNDS
         --------
-        date : Optional[date]
+        date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             FED rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -243,12 +244,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/fed",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def iorb(
         self,
         start_date: typing_extensions.Annotated[
@@ -265,7 +266,7 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """
             Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -274,9 +275,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
@@ -286,7 +287,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[IORB]
+            results : Union[List[IORB]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -294,14 +295,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         IORB
         ----
-        date : Optional[date]
+        date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             IORB rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -315,15 +316,15 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/iorb",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def projections(
         self, provider: Union[Literal["fred"], None] = None, **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
@@ -342,7 +343,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[PROJECTIONS]
+            results : Union[List[PROJECTIONS]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -350,26 +351,26 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         PROJECTIONS
         -----------
-        date : Optional[date]
+        date : date
             The date of the data.
-        range_high : Optional[float]
+        range_high : Union[float]
             High projection of rates.
-        central_tendency_high : Optional[float]
+        central_tendency_high : Union[float]
             Central tendency of high projection of rates.
-        median : Optional[float]
+        median : Union[float]
             Median projection of rates.
-        range_midpoint : Optional[float]
+        range_midpoint : Union[float]
             Midpoint projection of rates.
-        central_tendency_midpoint : Optional[float]
+        central_tendency_midpoint : Union[float]
             Central tendency of midpoint projection of rates.
-        range_low : Optional[float]
+        range_low : Union[float]
             Low projection of rates.
-        central_tendency_low : Optional[float]
+        central_tendency_low : Union[float]
             Central tendency of low projection of rates."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -380,12 +381,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/projections",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def sofr(
         self,
         start_date: typing_extensions.Annotated[
@@ -402,14 +403,14 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
@@ -421,7 +422,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[SOFR]
+            results : Union[List[SOFR]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -429,14 +430,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         SOFR
         ----
-        date : Optional[date]
+        date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             SOFR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -450,12 +451,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/sofr",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def sonia(
         self,
         start_date: typing_extensions.Annotated[
@@ -472,7 +473,7 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """
             SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
             transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
@@ -480,9 +481,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
@@ -494,7 +495,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[SONIA]
+            results : Union[List[SONIA]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -502,14 +503,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         SONIA
         -----
-        date : Optional[date]
+        date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             SONIA rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -523,12 +524,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/sonia",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def treasury(
         self,
         start_date: typing_extensions.Annotated[
@@ -545,14 +546,14 @@ class ROUTER_fixedincome(Container):
         ] = None,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Get treasury rates.
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
@@ -562,7 +563,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[TreasuryRates]
+            results : Union[List[TreasuryRates]]
                 Serializable results.
             provider : Union[Literal['fmp'], None]
                 Provider name.
@@ -570,36 +571,36 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         TreasuryRates
         -------------
-        date : Optional[date]
+        date : date
             The date of the data.
-        month_1 : Optional[float]
+        month_1 : float
             1 month treasury rate.
-        month_2 : Optional[float]
+        month_2 : float
             2 month treasury rate.
-        month_3 : Optional[float]
+        month_3 : float
             3 month treasury rate.
-        month_6 : Optional[float]
+        month_6 : float
             6 month treasury rate.
-        year_1 : Optional[float]
+        year_1 : float
             1 year treasury rate.
-        year_2 : Optional[float]
+        year_2 : float
             2 year treasury rate.
-        year_3 : Optional[float]
+        year_3 : float
             3 year treasury rate.
-        year_5 : Optional[float]
+        year_5 : float
             5 year treasury rate.
-        year_7 : Optional[float]
+        year_7 : float
             7 year treasury rate.
-        year_10 : Optional[float]
+        year_10 : float
             10 year treasury rate.
-        year_20 : Optional[float]
+        year_20 : float
             20 year treasury rate.
-        year_30 : Optional[float]
+        year_30 : float
             30 year treasury rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -613,12 +614,12 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/treasury",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def ycrv(
         self,
         date: typing_extensions.Annotated[
@@ -633,7 +634,7 @@ class ROUTER_fixedincome(Container):
         ] = False,
         provider: Union[Literal["fred"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
         Parameters
@@ -650,7 +651,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[USYieldCurve]
+            results : Union[List[USYieldCurve]]
                 Serializable results.
             provider : Union[Literal['fred'], None]
                 Provider name.
@@ -658,14 +659,14 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         USYieldCurve
         ------------
-        maturity : Optional[float]
+        maturity : float
             Maturity of the treasury rate in years.
-        rate : Optional[float]
+        rate : float
             Associated rate given in decimal form (0.05 is 5%)"""  # noqa: E501
 
         inputs = filter_inputs(
@@ -679,7 +680,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/fixedincome/ycrv",
             **inputs,
         )

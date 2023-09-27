@@ -1,57 +1,44 @@
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
-[![Stargazers][stars-shield]][stars-url]
-[![Forks][forks-shield]][forks-url]
-[![Contributors][contributors-shield]][contributors-url]
-[![MIT License][license-shield]][license-url]
-
-[![Issues][issues-shield]][issues-url]
-[![Bugs Open][bugs-open-shield]][bugs-open-url]
-[![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
-
-[![GitHub release](https://img.shields.io/github/release/OpenBB-finance/OpenBBTerminal.svg?maxAge=3600)](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/OpenBB-finance/OpenBBTerminal/main)](https://www.tickgit.com/browse?repo=github.com/OpenBB-finance/OpenBBTerminal&branch=main)
-
-![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
-
-[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBBTerminal)
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/OpenBB-finance/OpenBBTerminal)
-
-<!-- PROJECT LOGO -->
-
-| OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
-|:--:|
-| [![openbb.jpg](/images/openbb_gradient.png)](https://openbb.co) |
-| Check our website at [openbb.co](https://openbb.co) |
-
+<br />
+<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-dark.svg?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-light.svg?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
+<br />
 <br />
 
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
+[![GitHub release](https://img.shields.io/github/release/OpenBB-finance/OpenBBTerminal.svg?maxAge=3600)](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
+![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/OpenBB-finance/OpenBBTerminal)
+<a href="https://codespaces.new/OpenBB-finance/OpenBBTerminal">
+  <img src="https://github.com/codespaces/badge.svg" height="20" />
+</a>
+
+OpenBB is committed to building the future of investment research by focusing on an open-source infrastructure accessible to everyone, everywhere.
+
 <p align="center">
-  <h3 align="center">OpenBB Terminal 🚀</h3>
-  <h4 align="center">Documentation can be found at: https://openbb.co/docs </h4>
-  <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
 
   <p align="center">
      <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demo">
         <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="100%"/>
      </a>
+     <p align="center">Click on the GIF above for a DEMO</p>
   </p>
 
   <p align="center">
-    <a href="https://docs.openbb.co/terminal/installation"><strong>≪  GETTING STARTED</strong></a>
-    &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
+    <a href="https://docs.openbb.co/terminal/installation">
+      <strong>≪  GETTING STARTED</strong>
+    </a>
+    &nbsp · &nbsp
+    <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md">
+      <strong>CONTRIBUTING</strong>
+    </a>
+    &nbsp · &nbsp
+    <a href="https://openbb.co/docs">
+      <strong>DOCUMENTATION</strong>
+    </a>
+    &nbsp · &nbsp
     <a href="https://docs.openbb.co/terminal">
-    <strong>SEE FEATURES »</strong></a>
+      <strong>SEE FEATURES »</strong>
+    </a>
   </p>
 </p>
 

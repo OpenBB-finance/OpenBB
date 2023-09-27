@@ -25,8 +25,8 @@ class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParam
     Source: https://finance.yahoo.com/world-indices
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     prepost: bool = Field(default=True, description="Include Pre and Post market data.")
@@ -119,4 +119,4 @@ class YFinanceMajorIndicesHistoricalFetcher(
         data: dict,
     ) -> List[YFinanceMajorIndicesHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceMajorIndicesHistoricalData.parse_obj(d) for d in data]
+        return [YFinanceMajorIndicesHistoricalData.model_validate(d) for d in data]

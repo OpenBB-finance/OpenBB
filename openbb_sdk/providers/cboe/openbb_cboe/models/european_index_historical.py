@@ -31,16 +31,19 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
     """CBOE Stocks End of Day Data."""
 
     open: Optional[float] = Field(
-        description="Opening price for the interval. Only valid when interval is 1m."
+        default=None,
+        description="Opening price for the interval. Only valid when interval is 1m.",
     )
     high: Optional[float] = Field(
-        description="High price for the interval. Only valid when interval is 1m."
+        default=None,
+        description="High price for the interval. Only valid when interval is 1m.",
     )
     low: Optional[float] = Field(
-        description="Low price for the interval. Only valid when interval is 1m."
+        default=None,
+        description="Low price for the interval. Only valid when interval is 1m.",
     )
     utc_datetime: Optional[datetime] = Field(
-        description="UTC datetime. Only valid when interval is 1m."
+        default=None, description="UTC datetime. Only valid when interval is 1m."
     )
 
     @validator("date", pre=True, check_fields=False)
@@ -139,4 +142,4 @@ class CboeEuropeanIndexHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexHistoricalData]:
         """Transform the data to the standard format."""
-        return [CboeEuropeanIndexHistoricalData.parse_obj(d) for d in data]
+        return [CboeEuropeanIndexHistoricalData.model_validate(d) for d in data]

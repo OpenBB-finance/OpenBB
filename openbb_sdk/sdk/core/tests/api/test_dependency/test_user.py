@@ -51,7 +51,7 @@ def test_create_access_token():
 def test_create_jwt_token():
     """Test create_jwt_token."""
     mock_access_token = MagicMock(
-        spec=AccessToken, dict=lambda: {"sub": "subject", "exp": 12345}
+        spec=AccessToken, model_dump=lambda: {"sub": "subject", "exp": 12345}
     )
     jwt_token = create_jwt_token(mock_access_token)
 

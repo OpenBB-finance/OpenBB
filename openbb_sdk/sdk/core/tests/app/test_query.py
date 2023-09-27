@@ -12,7 +12,13 @@ from openbb_core.app.provider_interface import (
     StandardParams,
 )
 from openbb_core.app.query import Query
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+
+class MockBaseModel(BaseModel):
+    """Mock QueryParams class."""
+
+    model_config = ConfigDict(extra="allow", populate_by_name=True)
 
 
 def create_mock_query():
@@ -112,7 +118,7 @@ def query_instance():
 
 def test_execute_method_fake_credentials(query_instance, mock_registry):
     """Test execute method without setting credentials."""
-    mock_fetch_result = BaseModel()  # Replace with an actual instance of BaseModel
+    mock_fetch_result = MockBaseModel()
     mock_registry.fetch.return_value = mock_fetch_result
 
     with pytest.raises(Exception):

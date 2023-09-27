@@ -2,9 +2,11 @@
 
 
 from datetime import datetime
+from io import StringIO
 from typing import Any, Dict, List, Literal, Optional, get_args
 
 import pandas as pd
+import requests
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
@@ -13,7 +15,13 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, NonNegativeFloat, PositiveFloat, root_validator, validator
+from pydantic import (
+    Field,
+    NonNegativeFloat,
+    PositiveFloat,
+    field_validator,
+    model_validator,
+)
 
 
 class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -22,7 +30,9 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://www.alphavantage.co/documentation/
     """
 
-    _function: Literal[
+    __alias_dict__ = {"function_": "function"}
+
+    function_: Literal[
         "TIME_SERIES_INTRADAY",
         "TIME_SERIES_DAILY",
         "TIME_SERIES_WEEKLY",
@@ -34,29 +44,37 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         description="The time series of your choice. ",
         default="TIME_SERIES_DAILY",
     )
-    period: Literal["intraday", "daily", "weekly", "monthly"] = Field(
+    period: Optional[Literal["intraday", "daily", "weekly", "monthly"]] = Field(
         default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     interval: Optional[Literal["1min", "5min", "15min", "30min", "60min"]] = Field(
         description="Data granularity.",
         default="60min",
-        available_on_functions=["TIME_SERIES_INTRADAY"],
-        required_on_functions=["TIME_SERIES_INTRADAY"],
+        json_schema_extra=dict(
+            available_on_functions=["TIME_SERIES_INTRADAY"],
+            required_on_functions=["TIME_SERIES_INTRADAY"],
+        ),
     )
     adjusted: Optional[bool] = Field(
         description="Output time series is adjusted by historical split and dividend events.",
-        default=True,
-        available_on_functions=["TIME_SERIES_INTRADAY"],
+        default=False,
+        json_schema_extra=dict(
+            available_on_functions=["TIME_SERIES_INTRADAY"],
+        ),
     )
     extended_hours: Optional[bool] = Field(
         description="Extended trading hours during pre-market and after-hours.",
         default=False,
-        available_on_functions=["TIME_SERIES_INTRADAY"],
+        json_schema_extra=dict(
+            available_on_functions=["TIME_SERIES_INTRADAY"],
+        ),
     )
     month: Optional[str] = Field(
         description="Query a specific month in history (in YYYY-MM format).",
         default=None,
-        available_on_functions=["TIME_SERIES_INTRADAY"],
+        json_schema_extra=dict(
+            available_on_functions=["TIME_SERIES_INTRADAY"],
+        ),
     )
     outputsize: Optional[Literal["compact", "full"]] = Field(
         description="Compact returns only the latest 100 data points in the intraday "
@@ -64,15 +82,20 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         "if the month parameter (see above) is not specified, or the full intraday "
         "data for a specific month in history if the month parameter is specified.",
         default="full",
-        available_on_functions=[
-            "TIME_SERIES_INTRADAY",
-            "TIME_SERIES_DAILY",
-            "TIME_SERIES_DAILY_ADJUSTED",
-        ],
+        json_schema_extra=dict(
+            available_on_functions=[
+                "TIME_SERIES_INTRADAY",
+                "TIME_SERIES_DAILY",
+                "TIME_SERIES_DAILY_ADJUSTED",
+            ],
+        ),
     )
 
-    @root_validator
-    def setup_function(cls, values):  # pylint: disable=E0213
+    @model_validator(mode="after")
+    @classmethod
+    def setup_function(
+        cls, values: "AVStockHistoricalQueryParams"
+    ):  # pylint: disable=E0213
         """Set the function based on the period."""
         functions_based_on_period = {
             "intraday": "TIME_SERIES_INTRADAY",
@@ -80,36 +103,39 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
             "weekly": "TIME_SERIES_WEEKLY",
             "monthly": "TIME_SERIES_MONTHLY",
         }
-        values["_function"] = functions_based_on_period[values["period"]]
+        values.function_ = functions_based_on_period[values.period]
         return values
 
-    @root_validator
-    def adjusted_function_validate(cls, values):  # pylint: disable=E0213
-        """Validate that the function is adjusted if the `adjusted` parameter is set to True."""
+    @model_validator(mode="after")
+    @classmethod
+    def adjusted_function_validate(
+        cls, values: "AVStockHistoricalQueryParams"
+    ):  # pylint: disable=E0213
+        """
+        Validate that the function is adjusted if the `adjusted` parameter is set to True.
+        """
 
-        function = values["_function"]
-        adjusted = values.get("adjusted", None)
-
-        if function != "TIME_SERIES_INTRADAY":
-            values["_function"] = function if not adjusted else f"{function}_ADJUSTED"
+        if values.function_ != "TIME_SERIES_INTRADAY" and values.adjusted:
+            values.function_ = f"{values.function_}_ADJUSTED"
 
         return values
 
-    @root_validator
-    def on_functions_validate(cls, values):  # pylint: disable=E0213
-        """Validate the fields.
-
+    @model_validator(mode="after")
+    @classmethod
+    def on_functions_validate(
+        cls, values: "AVStockHistoricalQueryParams"
+    ):  # pylint: disable=E0213
+        """
         Validate that the functions used on custom extra Field attributes
         `available_on_functions` and `required_on_functions` are valid functions.
         """
         custom_attributes = ["available_on_functions", "required_on_functions"]
 
-        fields = cls.__fields__
-        available_functions = get_args(cls.__annotations__["_function"])
+        available_functions = get_args(cls.__annotations__["function_"])
 
-        if values["_function"] not in available_functions:
+        if values.function_ not in available_functions:
             raise ValueError(
-                f"Function {values['_function']} must be on of the following: {available_functions}"
+                f"Function {values.function_} must be on of the following: {available_functions}"
             )
 
         def validate_functions(functions: List[str]):
@@ -119,45 +145,46 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
                         f"Function {f} must be on of the following: {available_functions}"
                     )
 
-        for field in fields:
+        for field in cls.__fields__.values():
+            if (extra := field.json_schema_extra) is None:
+                continue
             for attr in custom_attributes:
-                if functions := fields[field].field_info.extra.get(attr, None):
+                if functions := extra.get(attr, None):
                     validate_functions(functions)
 
         return values
 
-    @root_validator
-    def on_functions_criteria_validate(cls, values):  # pylint: disable=E0213
-        """Validate the fields.
-
+    @model_validator(mode="after")
+    @classmethod
+    def on_functions_criteria_validate(
+        cls, values: "AVStockHistoricalQueryParams"
+    ):  # pylint: disable=E0213
+        """
         Validate that the fields are set to None if the function is not available
         and that the required fields are not None if the function is required.
         """
 
-        fields = cls.__fields__
-        function = values["_function"]
+        timeseries = values.function_
 
-        for field in fields:
+        for name, field in cls.__fields__.items():
+            if (extra := field.json_schema_extra) is None:
+                continue
+
+            field_value = getattr(values, name)
             if (
-                available_on_functions := fields[field].field_info.extra.get(
-                    "available_on_functions", None
-                )
-            ) and function not in available_on_functions:
-                values[field] = None
+                available_on_functions := extra.get("available_on_functions", None)
+            ) and timeseries not in available_on_functions:
+                setattr(values, name, None)
             if (
-                (
-                    required_on_functions := fields[field].field_info.extra.get(
-                        "required_on_functions", None
-                    )
-                )
-                and function in required_on_functions
-                and values[field] is None
+                (required_on_functions := extra.get("required_on_functions", None))
+                and timeseries in required_on_functions
+                and field_value is None
             ):
-                raise ValueError(f"Field {field} is required on function {function}")
+                raise ValueError(f"Field {name} is required on function {timeseries}")
 
         return values
 
-    @validator("month")
+    @field_validator("month")
     def month_validate(cls, v):  # pylint: disable=E0213
         """Validate month, check if the month is in YYYY-MM format."""
         if v is not None:
@@ -171,18 +198,17 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
 class AVStockHistoricalData(StockHistoricalData):
     """Alpha Vantage Stock End of Day Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {"date": "timestamp", "adj_close": "adjusted_close"}
 
-        fields = {"date": "timestamp", "adj_close": "adjusted_close"}
-
-    adjusted_close: Optional[PositiveFloat] = Field(
-        description=DATA_DESCRIPTIONS.get("adj_close", "")
+    adj_close: Optional[PositiveFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
     dividend_amount: Optional[NonNegativeFloat] = Field(
+        default=None,
         description="Dividend amount paid for the corresponding date.",
     )
     split_coefficient: Optional[NonNegativeFloat] = Field(
+        default=None,
         description="Split coefficient for the corresponding date.",
     )
 
@@ -218,14 +244,22 @@ class AVStockHistoricalFetcher(
         """Return the raw data from the Alpha Vantage endpoint."""
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
 
-        query_dict = query.dict()
-        query_dict["function"] = query_dict.pop("_function")
-
-        query_str = get_querystring(query_dict, ["start_date", "end_date"])
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["start_date", "end_date"]
+        )
 
         url = f"https://www.alphavantage.co/query?{query_str}&datatype=csv&apikey={api_key}"
+        get_data = requests.get(url, timeout=10)
 
-        data = pd.read_csv(url)
+        if "Information" in get_data.text:
+            info = get_data.json()["Information"]
+            raise ValueError(f"Alpha Vantage API Error: {info}")
+
+        data = pd.read_csv(
+            StringIO(get_data.text),
+            parse_dates=["timestamp"],
+        )
+
         data["timestamp"] = pd.to_datetime(data["timestamp"])
 
         data = data[
@@ -240,4 +274,4 @@ class AVStockHistoricalFetcher(
         data: dict,
     ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
-        return [AVStockHistoricalData.parse_obj(d) for d in data]
+        return [AVStockHistoricalData.model_validate(d) for d in data]

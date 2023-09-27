@@ -1,7 +1,7 @@
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Optional
 
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 
 class Preferences(BaseModel):
@@ -19,9 +19,11 @@ class Preferences(BaseModel):
     table_style: Literal["dark", "light"] = "dark"
     request_timeout: PositiveInt = 15
     metadata: bool = True
+    obbject_method: Optional[
+        Literal["to_dataframe", "to_df", "to_polars", "to_numpy", "to_dict", "to_chart"]
+    ] = Field(default=None, description="Method to apply to OBBject by default.")
 
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}\n\n" + "\n".join(

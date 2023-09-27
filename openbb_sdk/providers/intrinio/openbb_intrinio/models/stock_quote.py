@@ -28,18 +28,15 @@ class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
 class IntrinioStockQuoteData(StockQuoteData):
     """Intrinio Stock Quote Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "day_low": "low_price",
-            "day_high": "high_price",
-            "date": "last_time",
-        }
+    __alias_dict__ = {
+        "day_low": "low_price",
+        "day_high": "high_price",
+        "date": "last_time",
+    }
 
     last_price: float = Field(description="Price of the last trade.")
     last_time: datetime = Field(
-        description="Date and Time when the last trade occurred."
+        description="Date and Time when the last trade occurred.", alias="date"
     )
     last_size: int = Field(description="Size of the last trade.")
     bid_price: float = Field(description="Price of the top bid order.")
@@ -48,40 +45,49 @@ class IntrinioStockQuoteData(StockQuoteData):
     ask_size: int = Field(description="Size of the top ask order.")
     open_price: float = Field(description="Open price for the trading day.")
     close_price: Optional[float] = Field(
-        description="Closing price for the trading day (IEX source only)."
+        default=None, description="Closing price for the trading day (IEX source only)."
     )
-    high_price: float = Field(description="High Price for the trading day.")
-    low_price: float = Field(description="Low Price for the trading day.")
+    high_price: float = Field(
+        description="High Price for the trading day.", alias="day_high"
+    )
+    low_price: float = Field(
+        description="Low Price for the trading day.", alias="day_low"
+    )
     exchange_volume: Optional[int] = Field(
-        description="Number of shares exchanged during the trading day on the exchange."
+        default=None,
+        description="Number of shares exchanged during the trading day on the exchange.",
     )
     market_volume: Optional[int] = Field(
-        description="Number of shares exchanged during the trading day for the whole market."
+        default=None,
+        description="Number of shares exchanged during the trading day for the whole market.",
     )
     updated_on: datetime = Field(
         description="Date and Time when the data was last updated."
     )
     source: str = Field(description="Source of the data.")
     listing_venue: Optional[str] = Field(
-        description="Listing venue where the trade took place (SIP source only)."
+        default=None,
+        description="Listing venue where the trade took place (SIP source only).",
     )
     sales_conditions: Optional[str] = Field(
-        description="Indicates any sales condition modifiers associated with the trade."
+        default=None,
+        description="Indicates any sales condition modifiers associated with the trade.",
     )
     quote_conditions: Optional[str] = Field(
-        description="Indicates any quote condition modifiers associated with the trade."
+        default=None,
+        description="Indicates any quote condition modifiers associated with the trade.",
     )
     market_center_code: Optional[str] = Field(
-        description="Market center character code."
+        default=None, description="Market center character code."
     )
     is_darkpool: Optional[bool] = Field(
-        description="Whether or not the current trade is from a darkpool."
+        default=None, description="Whether or not the current trade is from a darkpool."
     )
     messages: Optional[List[str]] = Field(
-        description="Messages associated with the endpoint."
+        default=None, description="Messages associated with the endpoint."
     )
     security: Optional[Dict[str, Any]] = Field(
-        description="Security details related to the quote."
+        default=None, description="Security details related to the quote."
     )
 
     @validator("last_time", "updated_on", pre=True, check_fields=False)
@@ -124,4 +130,4 @@ class IntrinioStockQuoteFetcher(
     @staticmethod
     def transform_data(data: Dict) -> IntrinioStockQuoteData:
         """Return the transformed data."""
-        return IntrinioStockQuoteData.parse_obj(data)
+        return IntrinioStockQuoteData.model_validate(data)

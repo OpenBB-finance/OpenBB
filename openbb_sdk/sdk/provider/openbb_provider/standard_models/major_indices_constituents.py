@@ -29,19 +29,22 @@ class MajorIndicesConstituentsData(Data):
         description="Sector the constituent company in the index belongs to."
     )
     sub_sector: Optional[str] = Field(
-        description="Sub-sector the constituent company in the index belongs to."
+        default=None,
+        description="Sub-sector the constituent company in the index belongs to.",
     )
     headquarter: Optional[str] = Field(
-        description="Location of the headquarter of the constituent company in the index."
+        default=None,
+        description="Location of the headquarter of the constituent company in the index.",
     )
     date_first_added: Optional[Union[date, str]] = Field(
-        description="Date the constituent company was added to the index."
+        default=None, description="Date the constituent company was added to the index."
     )
     cik: int = Field(
         description="Central Index Key of the constituent company in the index."
     )
-    founded: Union[date, str] = Field(
-        description="Founding year of the constituent company in the index."
+    founded: Optional[Union[date, str]] = Field(
+        default=None,
+        description="Founding year of the constituent company in the index.",
     )
 
     @validator("symbol", pre=True, check_fields=False, always=True)

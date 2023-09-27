@@ -24,13 +24,12 @@ class FMPForexPairsData(ForexPairsData):
 
     symbol: str = Field(description="Symbol of the currency pair.")
     currency: str = Field(description="Base currency of the currency pair.")
-    stockExchange: Optional[str] = Field(
-        description="Stock exchange of the currency pair.",
-        alias="stock_exchange",
+    stock_exchange: Optional[str] = Field(
+        default=None, description="Stock exchange of the currency pair."
     )
     exchange_short_name: Optional[str] = Field(
+        default=None,
         description="Short name of the stock exchange of the currency pair.",
-        alias="exchange_short_name",
     )
 
 
@@ -64,4 +63,4 @@ class FMPForexPairsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPForexPairsData]:
         """Return the transformed data."""
-        return [FMPForexPairsData.parse_obj(d) for d in data]
+        return [FMPForexPairsData.model_validate(d) for d in data]

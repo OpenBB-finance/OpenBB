@@ -51,4 +51,4 @@ class FMPHistoricalEmployeesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPHistoricalEmployeesData]:
         """Return the transformed data."""
-        return [FMPHistoricalEmployeesData.parse_obj(d) for d in data]
+        return [FMPHistoricalEmployeesData.model_validate(d) for d in data]
