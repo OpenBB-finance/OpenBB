@@ -175,7 +175,7 @@ def view_etf_holdings_performance(
         )
 
         fig.update_layout(
-            title=f"Percent Change from {start_date} to {end_date}",
+            title=f"Percent Change in Price for Each Holding from {start_date} to {end_date} for {ticker}",
             xaxis=dict(title="Percent Change"),
             yaxis=dict(title="Asset Name"),
         )

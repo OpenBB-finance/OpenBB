@@ -147,7 +147,7 @@ def get_holdings_pct_change(
     pd.DataFrame
         Calculated percentage change for each stock in the ETF, in descending order.
     """
-    df = pd.DataFrame(columns=['Ticker', 'Name', 'Percent Change'], data=[])
+    df = pd.DataFrame(columns=["Ticker", "Name", "Percent Change"], data=[])
     holdings = get_etf_holdings(ticker)
 
     for stock in holdings:
@@ -156,13 +156,13 @@ def get_holdings_pct_change(
             pct_change = 0
 
         new_df = pd.DataFrame(
-                    {
-                        "Ticker": stock["asset"],
-                        "Name": stock["name"],
-                        "Percent Change": pct_change,
-                    },
-                    index=[0],
-                )
+            {
+                "Ticker": stock["asset"],
+                "Name": stock["name"],
+                "Percent Change": pct_change,
+            },
+            index=[0],
+        )
 
         df = pd.concat([df, new_df], ignore_index=True)
 
