@@ -15,6 +15,7 @@ from openbb_core.app.static.build_utils import (
 )
 
 _this_dir = Path(os.path.dirname(os.path.realpath(__file__)))
+from openbb_core.app.model.obbject import OBBject
 
 
 def build(
@@ -49,3 +50,30 @@ try:
 except (ImportError, ModuleNotFoundError):
     print("Failed to import extensions.")
     obb = sdk = _create_app()  # type: ignore
+
+
+import importlib
+import pkgutil
+
+
+def discover_and_load_plugins():
+    for finder, name, ispkg in pkgutil.iter_modules():
+        # We need to pick a naming convention for this
+        if name.startswith("openbb_obbject"):
+            print(f"Loading plugin: {name}")
+            module = importlib.import_module(name)
+            plugin = getattr(module, "OBBjectPlugin")
+            # This can probably be more intuitive.  Technically this can extend anything
+            plugin().extend_myobject(OBBject)
+
+
+try:
+    # Extensions for OBBject
+    # This should go in the obb so that we dont need to do import openbb separately
+    discover_and_load_plugins()
+
+
+except Exception as e:
+    print("Failed to import OBBject extensions.")
+    # Debugging
+    print(e)

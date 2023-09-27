@@ -232,3 +232,12 @@ class OBBject(GenericModel, Generic[T], Tagged):
                 "Please compute the chart first by using the `chart=True` argument."
             )
         self.chart.fig.show()
+
+        setattr(self, method_name, method_func)
+
+
+class OBBjectPluginInterface:
+    """Base Class for OBBject plugins/extension"""
+
+    def extend_myobject(self, myobject):
+        pass

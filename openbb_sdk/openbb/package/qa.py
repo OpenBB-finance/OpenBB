@@ -337,7 +337,7 @@ class ROUTER_qa(Container):
         self,
         data: Union[List[openbb_provider.abstract.data.Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
     ) -> OBBject[openbb_qa.qa_models.UnitRootModel]:
         """Unit Root Test.
