@@ -18,5 +18,4 @@ class Container:
         python_output = user_settings.preferences.python_output
         if python_output:
             return getattr(obbject, python_output)()
-        obbject.extra["user_settings"] = user_settings.dict()
         return obbject
