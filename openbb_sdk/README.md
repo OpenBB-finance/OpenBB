@@ -104,3 +104,18 @@ uvicorn openbb_core.api.rest_api:app
 ```
 
 Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.
+
+## Install for development
+
+To develop the OpenBB Platform you need to have the following:
+
+- Git
+- Python 3.8 or higher
+- Virtual Environment with `poetry`
+  - To install poetry activate your virtual environment and run `pip install poetry`
+
+How to install the platform in editable mode?
+
+  1. Activate your virtual environment
+  1. Navigate into the `openbb_sdk` folder
+  1. Run `python dev_install.py` to install the packages in editable mode
