@@ -19,7 +19,7 @@ class Preferences(BaseModel):
     table_style: Literal["dark", "light"] = "dark"
     request_timeout: PositiveInt = 15
     metadata: bool = True
-    obbject_method: Optional[
+    output_type: Optional[
         Literal["to_dataframe", "to_df", "to_polars", "to_numpy", "to_dict", "to_chart"]
     ] = Field(default=None, description="Method to apply to OBBject by default.")
 
