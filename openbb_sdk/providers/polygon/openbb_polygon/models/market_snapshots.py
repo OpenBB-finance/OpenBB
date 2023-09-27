@@ -35,7 +35,7 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
     prev_low: Optional[float] = Field(
         description="The previous trading session low price."
     )
-    prev_volume: Optional[int] = Field(
+    prev_volume: Optional[float] = Field(
         description="The previous trading session volume."
     )
     prev_vwap: Optional[float] = Field(description="The previous trading session VWAP.")

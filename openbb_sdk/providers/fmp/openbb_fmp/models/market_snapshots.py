@@ -34,6 +34,11 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         "change_percent": "changesPercentage",
     }
 
+    name: Optional[str] = Field(
+        description="The name associated with the stock symbol."
+    )
+    price: Optional[float] = Field(description="The last price of the stock.")
+
     avg_volume: Optional[int] = Field(
         description="Average volume of the stock.", alias="avgVolume"
     )
