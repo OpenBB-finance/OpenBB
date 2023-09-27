@@ -52,4 +52,4 @@ class YFinanceAvailableIndicesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[YFinanceAvailableIndicesData]:
         """Return the transformed data."""
-        return [YFinanceAvailableIndicesData.parse_obj(d) for d in data]
+        return [YFinanceAvailableIndicesData.model_validate(d) for d in data]

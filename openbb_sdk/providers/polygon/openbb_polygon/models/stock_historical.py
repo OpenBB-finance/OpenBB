@@ -14,7 +14,10 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, PositiveInt
+from pydantic import (
+    Field,
+    PositiveInt,
+)
 
 
 class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -39,18 +42,18 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
 class PolygonStockHistoricalData(StockHistoricalData):
     """Polygon stocks end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "t",
-            "open": "o",
-            "high": "h",
-            "low": "l",
-            "close": "c",
-            "volume": "v",
-            "vwap": "vw",
-        }
+    __alias_dict__ = {
+        "date": "t",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+        "volume": "v",
+        "vwap": "vw",
+    }
 
     transactions: Optional[PositiveInt] = Field(
+        default=None,
         description="Number of transactions for the symbol in the time period.",
         alias="n",
     )
@@ -106,16 +109,15 @@ class PolygonStockHistoricalFetcher(
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 response = get_data(url, **kwargs)
-                next_url = response.get("next_url", None)
                 results.extend(response.get("results", []))
-
-            if "," in query.symbol:
-                results = [dict(symbol=symbol, **d) for d in results]
+                next_url = response.get("next_url", None)
 
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000)
                 if timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
+                if "," in query.symbol:
+                    r["symbol"] = symbol
 
             data.extend(results)
 
@@ -126,6 +128,6 @@ class PolygonStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        transformed_data = [PolygonStockHistoricalData.parse_obj(d) for d in data]
+        transformed_data = [PolygonStockHistoricalData.model_validate(d) for d in data]
         transformed_data.sort(key=lambda x: x.date)
         return transformed_data

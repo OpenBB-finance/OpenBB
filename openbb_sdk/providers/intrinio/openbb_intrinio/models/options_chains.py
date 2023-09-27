@@ -1,6 +1,9 @@
 """Intrinio Options Chains fetcher."""
 
-from datetime import datetime, timedelta
+from datetime import (
+    datetime,
+    timedelta,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_many
@@ -27,16 +30,20 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
 class IntrinioOptionsChainsData(OptionsChainsData):
     """Intrinio Options Chains Data."""
 
-    class Config:
-        fields = {
-            "contract_symbol": "code",
-            "symbol": "ticker",
-        }
+    __alias_dict__ = {"contract_symbol": "code", "symbol": "ticker"}
 
     @validator("expiration", "date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
         return datetime.strptime(v, "%Y-%m-%d")
+
+
+def get_weekday(date: str) -> str:
+    """Return the weekday date."""
+    strptime = datetime.strptime(date, "%Y-%m-%d")
+    if strptime.weekday() in [5, 6]:
+        date = (strptime - timedelta(days=strptime.weekday() - 4)).strftime("%Y-%m-%d")
+    return date
 
 
 class IntrinioOptionsChainsFetcher(
@@ -51,7 +58,7 @@ class IntrinioOptionsChainsFetcher(
 
         now = datetime.now().date()
         if params.get("date") is None:
-            transform_params["date"] = now - timedelta(days=1)
+            transform_params["date"] = (now - timedelta(days=1)).strftime("%Y-%m-%d")
 
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
@@ -68,21 +75,31 @@ class IntrinioOptionsChainsFetcher(
         if query.symbol in TICKER_EXCEPTIONS:
             query.symbol = f"${query.symbol}"
 
-        url = (
-            f"{base_url}/expirations/{query.symbol}/eod?"
-            f"after={query.date}&api_key={api_key}"
-        )
-        expirations = get_data_many(url, "expirations", **kwargs)
-
-        data = []
-
-        for expiration in expirations:
+        def get_expirations(date: str) -> List[str]:
+            """Return the expirations for the given date."""
             url = (
-                f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
-                f"date={query.date}&api_key={api_key}"
+                f"{base_url}/expirations/{query.symbol}/eod?"
+                f"after={date}&api_key={api_key}"
             )
-            response = get_data_many(url, "chain", **kwargs)
-            data.extend(response)
+            return get_data_many(url, "expirations", **kwargs)
+
+        def get_data(expirations: List[str]) -> List[Dict]:
+            """Return the data for the given expiration."""
+            data = []
+            for expiration in expirations:
+                url = (
+                    f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
+                    f"date={query.date}&api_key={api_key}"
+                )
+                response = get_data_many(url, "chain", **kwargs)
+                data.extend(response)
+
+            return data
+
+        if len(data := get_data(get_expirations(get_weekday(query.date)))) == 0:
+            data = get_data(
+                get_expirations(get_weekday(query.date - timedelta(days=1)))
+            )
 
         return data
 
@@ -90,4 +107,4 @@ class IntrinioOptionsChainsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
         data = [{**item["option"], **item["prices"]} for item in data]
-        return [IntrinioOptionsChainsData.parse_obj(d) for d in data]
+        return [IntrinioOptionsChainsData.model_validate(d) for d in data]

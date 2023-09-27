@@ -34,13 +34,16 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     """CBOE Stocks End of Day Data."""
 
     calls_volume: Optional[float] = Field(
-        description="Number of calls traded during the most recent trading period. Only valid if interval is 1m."
+        default=None,
+        description="Number of calls traded during the most recent trading period. Only valid if interval is 1m.",
     )
     puts_volume: Optional[float] = Field(
-        description="Number of puts traded during the most recent trading period. Only valid if interval is 1m."
+        default=None,
+        description="Number of puts traded during the most recent trading period. Only valid if interval is 1m.",
     )
     total_options_volume: Optional[float] = Field(
-        description="Total number of options traded during the most recent trading period. Only valid if interval is 1m."
+        default=None,
+        description="Total number of options traded during the most recent trading period. Only valid if interval is 1m.",
     )
 
 
@@ -205,4 +208,4 @@ class CboeMajorIndicesHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[CboeMajorIndicesHistoricalData]:
         """Transform the data to the standard format."""
-        return [CboeMajorIndicesHistoricalData.parse_obj(d) for d in data]
+        return [CboeMajorIndicesHistoricalData.model_validate(d) for d in data]

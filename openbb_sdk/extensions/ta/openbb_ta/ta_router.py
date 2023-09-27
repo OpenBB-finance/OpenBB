@@ -10,7 +10,12 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_provider.abstract.data import Data
-from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
+from pydantic import (
+    NonNegativeFloat,
+    NonNegativeInt,
+    PositiveFloat,
+    PositiveInt,
+)
 
 from . import ta_helpers
 
@@ -143,10 +148,12 @@ def obv(
     The On Balance Volume (OBV) is a cumulative total of the up and
     down volume. When the close is higher than the previous close, the volume is added
     to the running total, and when the close is lower than the previous close, the volume
-    is subtracted from the running total. \n \n To interpret the OBV, look for the OBV
-    to move with the price or precede price moves. If the price moves before the OBV,
-    then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the
-    OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
+    is subtracted from the running total.
+
+    To interpret the OBV, look for the OBV to move with the price or precede price moves.
+    If the price moves before the OBV, then it is a non-confirmed move. A series of rising peaks,
+    or falling troughs, in the OBV indicates a strong trend. If the OBV is flat, then the market
+    is not trending.
 
     Parameters
     ----------
@@ -287,7 +294,9 @@ def bbands(
     moving average (generally 20 periods) of the typical price (TP). The upper and lower
     bands are F standard deviations (generally 2) above and below the middle band.
     The bands widen and narrow when the volatility of the price is higher or lower,
-    respectively. \n \nBollinger Bands do not, in themselves, generate buy or sell signals;
+    respectively.
+
+    Bollinger Bands do not, in themselves, generate buy or sell signals;
     they are an indicator of overbought or oversold conditions. When the price is near the
     upper or lower band it indicates that a reversal may be imminent. The middle band
     becomes a support or resistance level. The upper and lower bands can also be
@@ -411,10 +420,11 @@ def aroon(
     The word aroon is Sanskrit for "dawn's early light." The Aroon
     indicator attempts to show when a new trend is dawning. The indicator consists
     of two lines (Up and Down) that measure how long it has been since the highest
-    high/lowest low has occurred within an n period range. \n \n When the Aroon Up is
-    staying between 70 and 100 then it indicates an upward trend. When the Aroon Down
-    is staying between 70 and 100 then it indicates an downward trend. A strong upward
-    trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
+    high/lowest low has occurred within an n period range.
+
+    When the Aroon Up is staying between 70 and 100 then it indicates an upward trend.
+    When the Aroon Down is staying between 70 and 100 then it indicates an downward trend.
+    A strong upward trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30.
     Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while
     the Aroon Up is below 30. Also look for crossovers. When the Aroon Down crosses above
     the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
@@ -620,13 +630,15 @@ def macd(
     """
     The Moving Average Convergence Divergence (MACD) is the difference
     between two Exponential Moving Averages. The Signal line is an Exponential Moving
-    Average of the MACD. \n \n The MACD signals trend changes and indicates the start
-    of new trend direction. High values indicate overbought conditions, low values
-    indicate oversold conditions. Divergence with the price indicates an end to the
-    current trend, especially if the MACD is at extreme high or low values. When the MACD
-    line crosses above the signal line a buy signal is generated. When the MACD crosses
-    below the signal line a sell signal is generated. To confirm the signal, the MACD
-    should be above zero for a buy, and below zero for a sell.
+    Average of the MACD.
+
+    The MACD signals trend changes and indicates the start of new trend direction.
+    High values indicate overbought conditions, low values indicate oversold conditions.
+    Divergence with the price indicates an end to the current trend, especially if the
+    MACD is at extreme high or low values. When the MACD line crosses above the
+    signal line a buy signal is generated. When the MACD crosses below the signal line a
+    sell signal is generated. To confirm the signal, the MACD should be above zero for a buy,
+    and below zero for a sell.
 
     Parameters
     ----------
@@ -888,7 +900,9 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     Volume (OBV), which sums the volume times +1/-1 based on whether the close is
     higher than the previous close. The Accumulation/Distribution indicator, however
     multiplies the volume by the close location value (CLV). The CLV is based on the
-    movement of the issue within a single bar and can be +1, -1 or zero. \n \n
+    movement of the issue within a single bar and can be +1, -1 or zero.
+
+
     The Accumulation/Distribution Line is interpreted by looking for a divergence in
     the direction of the indicator relative to price. If the Accumulation/Distribution
     Line is trending upward it indicates that the price may follow. Also, if the
@@ -982,7 +996,7 @@ def wma(
 ) -> OBBject[List[Data]]:
     """
     A Weighted Moving Average puts more weight on recent data and less on past data.
-    This is done by multiplying each bar’s price by a weighting factor. Because of its
+    This is done by multiplying each bar's price by a weighting factor. Because of its
     unique calculation, WMA will follow prices more closely than a corresponding Simple
     Moving Average.
 

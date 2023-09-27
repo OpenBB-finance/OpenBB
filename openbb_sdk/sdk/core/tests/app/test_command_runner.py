@@ -202,7 +202,7 @@ def test_parameters_builder_update_provider_choices(
 ):
     with patch(
         "openbb_core.app.command_runner.ProviderInterface",
-        **{"return_value.available_providers": ["provider1", "provider2"]}
+        **{"return_value.available_providers": ["provider1", "provider2"]},
     ):
         result = ParametersBuilder.update_provider_choices(
             mock_func, command_coverage, route, kwargs, route_default
@@ -217,7 +217,7 @@ def test_parameters_builder_validate_kwargs(mock_func):
     # TODO: add more test cases with @pytest.mark.parametrize
 
     result = ParametersBuilder.validate_kwargs(
-        mock_func, {"a": 1, "b": "2", "c": 3.0, "d": 4.3}
+        mock_func, {"a": 1, "b": "2", "c": 3.0, "d": 4}
     )
 
     assert result == {"a": 1, "b": 2, "c": 3.0, "d": 4, "provider_choices": {}}
@@ -230,7 +230,7 @@ def test_parameters_builder_build(mock_func, execution_context):
 
     with patch(
         "openbb_core.app.command_runner.ProviderInterface",
-        **{"return_value.available_providers": ["provider1", "provider2"]}
+        **{"return_value.available_providers": ["provider1", "provider2"]},
     ):
         result = ParametersBuilder.build(
             args=[1, 2],
@@ -277,6 +277,6 @@ def test_command_runner_build():
 
     with patch(
         "openbb_core.app.command_runner.StaticCommandRunner",
-        **{"return_value.run": True}
+        **{"return_value.run": True},
     ):
         assert runner.run("mock/route")

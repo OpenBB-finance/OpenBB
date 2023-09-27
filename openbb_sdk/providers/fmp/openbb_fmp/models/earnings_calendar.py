@@ -10,7 +10,7 @@ from openbb_provider.standard_models.earnings_calendar import (
     EarningsCalendarData,
     EarningsCalendarQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
@@ -23,17 +23,17 @@ class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
 class FMPEarningsCalendarData(EarningsCalendarData):
     """FMP Earnings Calendar Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("updatedFromDate", pre=True, check_fields=False)
+    @field_validator("updatedFromDate", mode="before", check_fields=False)
     def updated_from_date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the updated from date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
-    @validator("fiscalDateEnding", pre=True, check_fields=False)
+    @field_validator("fiscalDateEnding", mode="before", check_fields=False)
     def fiscal_date_ending_validate(cls, v: str):  # pylint: disable=E0213
         """Return the fiscal date ending as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
@@ -70,4 +70,4 @@ class FMPEarningsCalendarFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEarningsCalendarData]:
         """Return the transformed data."""
-        return [FMPEarningsCalendarData.parse_obj(d) for d in data]
+        return [FMPEarningsCalendarData.model_validate(d) for d in data]

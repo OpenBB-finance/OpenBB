@@ -4,6 +4,7 @@
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
+from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
@@ -28,5 +29,6 @@ intrinio_provider = Provider(
         "BalanceSheet": IntrinioBalanceSheetFetcher,
         "CashFlowStatement": IntrinioCashFlowStatementFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
+        "FredHistorical": IntrinioFredHistoricalFetcher,
     },
 )

@@ -130,7 +130,7 @@ def test_get_type_hint(method_definition):
     """Test get type hint."""
 
     class TestField:
-        type = int
+        annotation = int
 
     field = TestField()
     result = method_definition.get_type(field)
@@ -141,11 +141,11 @@ def test_field_with_type_attribute_missing_type(method_definition):
     """Test field with type attribute missing type."""
 
     class TestField:
-        type = Parameter.empty
+        annotation = Parameter.empty
 
     field = TestField()
     result = method_definition.get_type(field)
-    assert result is Parameter.empty
+    assert result is _empty
 
 
 def test_get_default(method_definition):
@@ -432,7 +432,7 @@ def test_build_module_class(path_handler):
     assert module_class == "Extensions"
 
     module_class = path_handler.build_module_class(path="/stocks/load")
-    assert module_class == "CLASS_stocks_load"
+    assert module_class == "ROUTER_stocks_load"
 
 
 @pytest.fixture(scope="module")
@@ -494,7 +494,7 @@ def test_generate_model_docstring(docstring_generator):
     pi = docstring_generator.provider_interface
     params = pi.params[model_name]
     return_schema = pi.return_schema[model_name]
-    returns = return_schema.__fields__
+    returns = return_schema.model_fields
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -508,6 +508,7 @@ def test_generate_model_docstring(docstring_generator):
         explicit_params=explicit_dict,
         params=params,
         returns=returns,
+        results_type="List[GlobalNews]",
     )
 
     assert docstring

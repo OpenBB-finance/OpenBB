@@ -33,7 +33,7 @@ class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, List[QuandlCotSearchD
     def extract_data(
         query: QuandlCotSearchQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> List[Dict]:
         """Search a curated list of CFTC Commitment of Traders Reports."""
         query_string = query.query  # noqa
@@ -54,4 +54,4 @@ class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, List[QuandlCotSearchD
     def transform_data(
         data: List[Dict],
     ) -> List[QuandlCotSearchData]:
-        return [QuandlCotSearchData(**d) for d in data]
+        return [QuandlCotSearchData.model_validate(d) for d in data]

@@ -24,17 +24,13 @@ class YFinanceStockNewsQueryParams(StockNewsQueryParams):
 class YFinanceStockNewsData(StockNewsData):
     """YFinance Stock News Data."""
 
-    class Config:
-        fields = {
-            "date": "providerPublishTime",
-            "url": "link",
-        }
+    __alias_dict__ = {"date": "providerPublishTime", "url": "link"}
 
     uuid: str = Field(description="Unique identifier for the news article")
     publisher: str = Field(description="Publisher of the news article")
     type: str = Field(description="Type of the news article")
     thumbnail: Optional[List] = Field(
-        description="Thumbnail related data to the ticker news article."
+        default=None, description="Thumbnail related data to the ticker news article."
     )
     relatedTickers: str = Field(description="Tickers related to the news article.")
 
@@ -76,4 +72,4 @@ class YFinanceStockNewsFetcher(
     def transform_data(
         data: List[Dict],
     ) -> List[YFinanceStockNewsData]:
-        return [YFinanceStockNewsData.parse_obj(d) for d in data]
+        return [YFinanceStockNewsData.model_validate(d) for d in data]

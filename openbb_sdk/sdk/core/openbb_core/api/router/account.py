@@ -80,7 +80,7 @@ async def pull_user_settings_from_hub(
         incoming = hub_service.pull()
         incoming.id = user_settings.id
         incoming_dict = incoming.dict(exclude_none=True)
-        filtered_incoming = UserSettings.parse_obj(incoming_dict)
+        filtered_incoming = UserSettings.model_validate(incoming_dict)
         user_service.user_settings_repository.update(filtered_incoming)
         return incoming
     raise HTTPException(

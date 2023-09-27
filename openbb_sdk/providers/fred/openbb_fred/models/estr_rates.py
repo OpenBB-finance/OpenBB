@@ -38,19 +38,14 @@ class FREDESTRQueryParams(ESTRQueryParams):
 class FREDESTRData(ESTRData):
     """ESTR data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "rate": "value",
-        }
+    __alias_dict__ = {"rate": "value"}
 
     @validator("rate", pre=True, check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
         except ValueError:
-            return float("nan")
+            return None
 
 
 class FREDESTRFetcher(

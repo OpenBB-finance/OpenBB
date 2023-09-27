@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "4.0.0a0"
+version = "4.0.0a2"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,32 +8,32 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = "^0.1.0a0"
+openbb-core = "^0.1.0a1"
 
-openbb-benzinga = "^0.1.0a0"
-openbb-fmp = "^0.1.0a0"
-openbb-fred = "^0.1.0a0"
-openbb-intrinio = "^0.1.0a0"
-openbb-polygon = "^0.1.0a0"
+openbb-benzinga = "^0.1.0a2"
+openbb-fmp = "^0.1.0a2"
+openbb-fred = "^0.1.0a2"
+openbb-intrinio = "^0.1.0a2"
+openbb-polygon = "^0.1.0a2"
 
-openbb-crypto = "^0.1.0a0"
-openbb-economy = "^0.1.0a0"
-openbb-forex = "^0.1.0a0"
-openbb-fixedincome = "^0.1.0a0"
-openbb-news = "^0.1.0a0"
-openbb-stocks = "^0.1.0a0"
+openbb-crypto = "^0.1.0a2"
+openbb-economy = "^0.1.0a2"
+openbb-forex = "^0.1.0a2"
+openbb-fixedincome = "^0.1.0a2"
+openbb-news = "^0.1.0a2"
+openbb-stocks = "^0.1.0a2"
 
 # Community dependencies
-openbb-alpha-vantage = { version = "^0.1.0a0", optional = true }
-openbb-cboe = { version = "^0.1.0a0", optional = true }
-openbb-quandl = { version = "^0.1.0a0", optional = true }
-openbb-yfinance = { version = "^0.1.0a0", optional = true }
+openbb-alpha-vantage = { version = "^0.1.0a2", optional = true }
+openbb-cboe = { version = "^0.1.0a2", optional = true }
+openbb-quandl = { version = "^0.1.0a2", optional = true }
+openbb-yfinance = { version = "^0.1.0a2", optional = true }
 
-openbb-charting = { path = "./extensions/charting", optional = true }
-openbb-futures = { path = "./extensions/futures", optional = true }
-openbb-qa = { path = "./extensions/qa", optional = true }
-openbb-ta = { path = "./extensions/ta", optional = true }
-openbb-econometrics = { path = "./extensions/econometrics", optional = true }
+openbb-charting = { version = "^0.1.0a2", optional = true }
+openbb-futures = { version = "^0.1.0a2", optional = true }
+openbb-qa = { version = "^0.1.0a2", optional = true }
+openbb-ta = { version = "^0.1.0a2", optional = true }
+openbb-econometrics = { version = "^0.1.0a2", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]

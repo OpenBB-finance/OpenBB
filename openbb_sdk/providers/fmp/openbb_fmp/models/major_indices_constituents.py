@@ -10,7 +10,7 @@ from openbb_provider.standard_models.major_indices_constituents import (
     MajorIndicesConstituentsData,
     MajorIndicesConstituentsQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams):
@@ -25,14 +25,10 @@ class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams
 class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
     """FMP Major Indices Constituents data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {"headquarter": "headQuarter"}
 
-        fields = {
-            "headquarter": "headQuarter",
-        }
-
-    @validator("dateFirstAdded", pre=True, check_fields=False)
+    @field_validator("dateFirstAdded", mode="before", check_fields=False)
+    @classmethod
     def date_first_added_validate(cls, v):  # pylint: disable=E0213
         """Return the date_first_added date as a datetime object for valid cases."""
         try:
@@ -41,7 +37,8 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
             # For returning string in case of mismatched dates
             return v
 
-    @validator("founded", pre=True, check_fields=False)
+    @field_validator("founded", mode="before", check_fields=False)
+    @classmethod
     def founded_validate(cls, v):  # pylint: disable=E0213
         """Return the founded date as a datetime object for valid cases."""
         try:
@@ -83,4 +80,4 @@ class FMPMajorIndicesConstituentsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMajorIndicesConstituentsData]:
         """Return the raw data from the FMP endpoint."""
-        return [FMPMajorIndicesConstituentsData.parse_obj(d) for d in data]
+        return [FMPMajorIndicesConstituentsData.model_validate(d) for d in data]

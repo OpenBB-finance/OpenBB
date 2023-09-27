@@ -24,6 +24,7 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
         default="reported", description="Type of the statement to be fetched."
     )
     year: Optional[int] = Field(
+        default=None,
         description="Year of the statement to be fetched.",
     )
 
@@ -31,16 +32,15 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
 class IntrinioIncomeStatementData(IncomeStatementData):
     """Intrinio Income Statement Data."""
 
-    class Config:
-        fields = {
-            "research_and_development_expenses": "ResearchAndDevelopmentExpense",
-            "selling_general_and_administrative_expenses": "SellingGeneralAndAdministrativeExpense",
-            "operating_income": "OperatingIncomeLoss",
-            "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",  # noqa: E501
-            "eps_diluted": "EarningsPerShareDiluted",
-            "weighted_average_shares_outstanding": "WeightedAverageNumberOfSharesOutstandingBasic",
-            "weighted_average_shares_outstanding_dil": "WeightedAverageNumberOfDilutedSharesOutstanding",
-        }
+    __alias_dict__ = {
+        "research_and_development_expenses": "ResearchAndDevelopmentExpense",
+        "selling_general_and_administrative_expenses": "SellingGeneralAndAdministrativeExpense",
+        "operating_income": "OperatingIncomeLoss",
+        "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",  # noqa: E501
+        "eps_diluted": "EarningsPerShareDiluted",
+        "weighted_average_shares_outstanding": "WeightedAverageNumberOfSharesOutstandingBasic",
+        "weighted_average_shares_outstanding_dil": "WeightedAverageNumberOfDilutedSharesOutstanding",
+    }
 
 
 class IntrinioIncomeStatementFetcher(

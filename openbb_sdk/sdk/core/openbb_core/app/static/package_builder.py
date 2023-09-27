@@ -5,7 +5,6 @@ import inspect
 import shutil
 import subprocess
 import sys
-from dataclasses import MISSING
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps
 from pathlib import Path
@@ -24,7 +23,8 @@ from typing import (
 
 import pandas as pd
 from importlib_metadata import entry_points
-from pydantic.fields import ModelField
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
@@ -74,18 +74,17 @@ class PackageBuilder:
     ) -> None:
         """Build the extensions for the SDK."""
         self.console.log("\nBuilding extensions package...\n")
-
         self.clean_package(modules)
-
-        self.save_extension_map()
+        ext_map = self.get_extension_map()
+        self.save_extension_map(ext_map)
         self.save_module_map()
-        self.save_modules(modules)
+        self.save_modules(modules, ext_map)
         self.save_package()
         if self.lint:
             self.run_linters()
 
-    def save_extension_map(self):
-        """Save the map of extensions available at build time"""
+    def get_extension_map(self) -> Dict[str, List[str]]:
+        """Get map of extensions available at build time"""
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {
             g: sorted(
@@ -96,6 +95,10 @@ class PackageBuilder:
             )
             for g in groups
         }
+        return ext_map
+
+    def save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
+        """Save the map of extensions available at build time"""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")
@@ -111,7 +114,11 @@ class PackageBuilder:
         self.console.log("\nWriting module map...")
         self.write_to_package(code=code, name="module_map", extension="json")
 
-    def save_modules(self, modules: Optional[Union[str, List[str]]] = None):
+    def save_modules(
+        self,
+        modules: Optional[Union[str, List[str]]] = None,
+        ext_map: Optional[Dict[str, List[str]]] = None,
+    ):
         """Save the modules."""
         self.console.log("\nWriting modules...")
         route_map = PathHandler.build_route_map()
@@ -129,7 +136,10 @@ class PackageBuilder:
         for path in path_list:
             route = PathHandler.get_route(path=path, route_map=route_map)
             if route is None:
-                module_code = ModuleBuilder.build(path=path)
+                module_code = ModuleBuilder.build(
+                    path=path,
+                    ext_map=ext_map,
+                )
                 module_name = PathHandler.build_module_name(path=path)
                 self.console.log(f"({path})", end=" " * (MAX_LEN - len(path)))
                 self.write_to_package(code=module_code, name=module_name)
@@ -163,11 +173,11 @@ class ModuleBuilder:
     """Build the module for the SDK."""
 
     @staticmethod
-    def build(path: str) -> str:
+    def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the module."""
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         code += ImportDefinition.build(path=path)
-        code += ClassDefinition.build(path=path)
+        code += ClassDefinition.build(path, ext_map)
 
         return code
 
@@ -242,16 +252,21 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_arguments, BaseModel"
+        code += "\nfrom pydantic import validate_call, BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         if sys.version_info < (3, 9):
             code += "\nimport typing_extensions"
         else:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
+        code += "\nfrom openbb_provider.abstract.data import Data"
+        if path.startswith("/qa"):
+            code += "\nfrom openbb_qa.qa_models import "
+            code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
@@ -268,7 +283,7 @@ class ClassDefinition:
     """Build the class definition for the SDK."""
 
     @staticmethod
-    def build(path: str) -> str:
+    def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
         code = f"\nclass {class_name}(Container):\n"
@@ -282,7 +297,7 @@ class ClassDefinition:
             )
         )
 
-        doc = f'    """{path}\n'
+        doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
@@ -296,9 +311,28 @@ class ClassDefinition:
                     else None,
                 )  # type: ignore
             else:
-                doc += "/" + child_path.split("/")[-1] + "\n"
+                doc += "/" if path else "    /"
+                doc += child_path.split("/")[-1] + "\n"
                 methods += MethodDefinition.build_class_loader_method(path=child_path)
-        doc += '    """\n'
+
+        if not path:
+            if ext_map:
+                doc += "\n"
+                doc += "Extensions:\n"
+                doc += "\n".join(
+                    [f"    - {ext}" for ext in ext_map.get("openbb_core_extension", [])]
+                )
+                doc += "\n\n"
+                doc += "\n".join(
+                    [
+                        f"    - {ext}"
+                        for ext in ext_map.get("openbb_provider_extension", [])
+                    ]
+                )
+            doc += '    """\n'
+            doc += "# fmt: on\n"
+        else:
+            doc += '    """\n'
 
         code += doc
         code += "    def __repr__(self) -> str:\n"
@@ -314,14 +348,14 @@ class DocstringGenerator:
     provider_interface = ProviderInterface()
 
     @staticmethod
-    def get_OBBject_description(model_name: str, providers: Optional[str]) -> str:
+    def get_OBBject_description(results_type: str, providers: Optional[str]) -> str:
         """Get the command output description."""
 
         available_providers = providers or "Optional[PROVIDERS]"
 
         obbject_description = (
             "OBBject\n"
-            f"    results : List[{model_name}]\n"
+            f"    results : {results_type}\n"
             "        Serializable results.\n"
             f"    provider : {available_providers}\n"
             "        Provider name.\n"
@@ -329,8 +363,8 @@ class DocstringGenerator:
             "        List of warnings.\n"
             "    chart : Optional[Chart]\n"
             "        Chart object.\n"
-            "    metadata: Optional[Metadata]\n"
-            "        Metadata info about the command execution.\n"
+            "    extra: Dict[str, Any]\n"
+            "        Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -343,7 +377,8 @@ class DocstringGenerator:
         summary: str,
         explicit_params: dict,
         params: dict,
-        returns: dict,
+        returns: Dict[str, FieldInfo],
+        results_type: str,
     ) -> str:
         """Create the docstring for model."""
 
@@ -360,6 +395,10 @@ class DocstringGenerator:
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
+        obb_query_fields: Dict[str, FieldInfo] = cls.provider_interface.map[model_name][
+            "openbb"
+        ]["QueryParams"]["fields"]
+
         docstring = summary
         docstring += "\n"
         docstring += "\nParameters\n----------\n"
@@ -368,10 +407,9 @@ class DocstringGenerator:
         for param_name, param in explicit_params.items():
             if param_name in standard_dict:
                 # pylint: disable=W0212
-                p_type = param._annotation.__args__[0]
+                p_type = obb_query_fields[param_name].annotation
                 type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                meta = param._annotation.__metadata__
-                description = getattr(meta[0], "description", "") if meta else ""
+                description = obb_query_fields[param_name].description
             elif param_name == "provider":
                 # pylint: disable=W0212
                 type_ = param._annotation
@@ -394,29 +432,53 @@ class DocstringGenerator:
         for param_name, param in extra_dict.items():
             p_type = param.type
             type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-            type_str = format_type(type_)
-            docstring += f"{param_name} : {type_str}\n"
+
+            if "NoneType" in str(type_):
+                type_ = f"Optional[{type_}]".replace(", NoneType", "")
+
+            docstring += f"{param_name} : {type_}\n"
             docstring += f"    {param.default.description}\n"
 
         # Returns
         docstring += "\nReturns\n-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
-        docstring += cls.get_OBBject_description(model_name, available_providers)
+
+        docstring += cls.get_OBBject_description(results_type, available_providers)
 
         # Schema
         underline = "-" * len(model_name)
         docstring += f"\n{model_name}\n{underline}\n"
 
-        for field_name, field in returns.items():
+        for name, field in returns.items():
             try:
-                field_type = field.__repr_args__()[1][1]
-            except AttributeError:
+                _type = field.annotation
+                is_optional = not field.is_required()
+                if "BeforeValidator" in str(_type):
+                    _type = "Optional[int]" if is_optional else "int"
+
+                field_type = (
+                    str(_type)
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                    .replace("typing.", "")
+                    .replace("pydantic.types.", "")
+                    .replace("datetime.datetime", "datetime")
+                    .replace("datetime.date", "date")
+                    .replace("NoneType", "None")
+                    .replace(", None", "")
+                )
+                field_type = (
+                    f"Optional[{field_type}]"
+                    if is_optional and "Optional" not in str(_type)
+                    else field_type
+                )
+            except TypeError:
                 # Fallback to the annotation if the repr fails
                 field_type = field.annotation
 
-            docstring += f"{field_name} : {field_type}\n"
-            docstring += f"    {field.field_info.description}\n"
+            docstring += f"{field.alias or name} : {field_type}\n"
+            docstring += f"    {field.description}\n"
 
         return docstring
 
@@ -435,7 +497,10 @@ class DocstringGenerator:
                 explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
 
-                returns = return_schema.__fields__
+                returns = return_schema.model_fields
+                results_type = func.__annotations__.get("return", model_name)
+                if hasattr(results_type, "results_type_repr"):
+                    results_type = results_type.results_type_repr()
 
                 func.__doc__ = cls.generate_model_docstring(
                     model_name=model_name,
@@ -443,6 +508,7 @@ class DocstringGenerator:
                     explicit_params=explicit_dict,
                     params=params,
                     returns=returns,
+                    results_type=results_type,
                 )
 
         return func
@@ -466,9 +532,11 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def get_type(field: ModelField) -> type:
+    def get_type(field: FieldInfo) -> type:
         """Get the type of the field."""
-        field_type = getattr(field, "type", Parameter.empty)
+        field_type = getattr(
+            field, "annotation", getattr(field, "type", Parameter.empty)
+        )
         if isclass(field_type):
             name = field_type.__name__
             if name.startswith("Constrained") and name.endswith("Value"):
@@ -478,14 +546,15 @@ class MethodDefinition:
         return field_type
 
     @staticmethod
-    def get_default(field: ModelField):
+    def get_default(field: FieldInfo):
         """Get the default value of the field."""
+
         field_default = getattr(field, "default", None)
-        if field_default is None or field_default is MISSING:
+        if field_default is None or field_default is PydanticUndefined:
             return Parameter.empty
 
         default_default = getattr(field_default, "default", None)
-        if default_default is MISSING or default_default is Ellipsis:
+        if default_default is PydanticUndefined or default_default is Ellipsis:
             return Parameter.empty
 
         return default_default
@@ -589,26 +658,21 @@ class MethodDefinition:
     ):
         """Add the field description to the param signature."""
         if model_name:
-            available_fields = (
-                ProviderInterface()
-                .map[model_name]["openbb"]["QueryParams"]["fields"]
-                .keys()
-            )
+            available_fields: Dict[str, FieldInfo] = ProviderInterface().map[
+                model_name
+            ]["openbb"]["QueryParams"]["fields"]
 
             for param, value in od.items():
                 if param not in available_fields:
                     continue
 
-                description = (
-                    ProviderInterface()
-                    .map[model_name]["openbb"]["QueryParams"]["fields"][param]
-                    .field_info.description
-                )
+                field = available_fields[param]
 
                 new_value = value.replace(
                     annotation=Annotated[
-                        value.annotation, OpenBBCustomParameter(description=description)
-                    ]
+                        value.annotation,
+                        OpenBBCustomParameter(description=field.description),
+                    ],
                 )
 
                 od[param] = new_value
@@ -621,11 +685,12 @@ class MethodDefinition:
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
+        func_params = func_params.replace("openbb_provider.abstract.data.Data", "Data")
 
         return func_params
 
     @staticmethod
-    def build_func_returns(return_type: type) -> str:
+    def build_func_returns(return_type: type, model_name: str = None) -> str:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
@@ -636,17 +701,9 @@ class MethodDefinition:
             if item_type.__module__ == "builtins":
                 func_returns = f"OBBject[{item_type.__name__}]"
             else:
-                inner_type_name = (
-                    item_type.__name__
-                    if hasattr(item_type, "__name__")
-                    else item_type._name
-                )
-                result_type = f"{item_type.__module__}.{inner_type_name}"
-
-                if "pydantic.main" in result_type:
-                    result_type = "BaseModel"
-
-                func_returns = f"OBBject[{result_type}]"
+                func_returns = return_type.__qualname__
+                if model_name:
+                    func_returns = func_returns.replace(model_name, "Data")
 
         return func_returns
 
@@ -662,14 +719,14 @@ class MethodDefinition:
             od=formatted_params, model_name=model_name
         )  # this modified `od` in place
         func_params = MethodDefinition.build_func_params(formatted_params)
-        func_returns = MethodDefinition.build_func_returns(return_type)
+        func_returns = MethodDefinition.build_func_returns(return_type, model_name)
 
         extra = (
             "(config=dict(arbitrary_types_allowed=True))"
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @validate_arguments{extra}"
+        code = f"\n    @validate_call{extra}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
@@ -724,7 +781,7 @@ class MethodDefinition:
             else:
                 code += f"            {name}={name},\n"
         code += "        )\n\n"
-        code += "        return self._command_runner.run(\n"
+        code += "        return self.run(\n"
         code += f"""            "{path}",\n"""
         code += "            **inputs,\n"
         code += "        )\n"
@@ -753,6 +810,7 @@ class MethodDefinition:
         code += cls.build_command_method_doc(
             func=func, formatted_params=formatted_params, model_name=model_name
         )
+
         code += cls.build_command_method_implementation(path=path, func=func)
 
         return code
@@ -822,7 +880,7 @@ class PathHandler:
         """Build the module class."""
         if not path:
             return "Extensions"
-        return f"CLASS_{cls.clean_path(path=path)}"
+        return f"ROUTER_{cls.clean_path(path=path)}"
 
 
 class Linters:

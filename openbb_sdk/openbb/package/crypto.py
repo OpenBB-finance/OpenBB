@@ -8,10 +8,11 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 
 
-class CLASS_crypto(Container):
+class ROUTER_crypto(Container):
     """/crypto
     load
     """
@@ -19,7 +20,7 @@ class CLASS_crypto(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def load(
         self,
         symbol: typing_extensions.Annotated[
@@ -40,38 +41,40 @@ class CLASS_crypto(Container):
         ] = None,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Crypto Historical Price.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fmp', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Union[pydantic.types.NonNegativeInt, None]
+        timeseries : Optional[Union[typing_extensions.Annotated[int, Ge(ge=0)]]]
             Number of days to look back. (provider: fmp)
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Data granularity. (provider: fmp)
+        multiplier : int
+            Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        limit : PositiveInt
+        limit : int
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-        multiplier : PositiveInt
-            Multiplier of the timespan. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : List[CryptoHistorical]
+            results : Union[List[CryptoHistorical]]
                 Serializable results.
             provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
@@ -79,38 +82,38 @@ class CLASS_crypto(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         CryptoHistorical
         ----------------
-        date : Union[date, datetime]
+        date : datetime
             The date of the data.
-        open : Optional[PositiveFloat]
+        open : float
             The open price of the symbol.
-        high : Optional[PositiveFloat]
+        high : float
             The high price of the symbol.
-        low : Optional[PositiveFloat]
+        low : float
             The low price of the symbol.
-        close : Optional[PositiveFloat]
+        close : float
             The close price of the symbol.
-        volume : Optional[PositiveFloat]
+        volume : float
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
+        vwap : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
             Volume Weighted Average Price of the symbol.
-        adj_close : Optional[float]
+        adj_close : Optional[Union[float]]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjusted_volume : Optional[float]
+        unadjusted_volume : Optional[Union[float]]
             Unadjusted volume of the symbol. (provider: fmp)
-        change : Optional[float]
+        change : Optional[Union[float]]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        change_percent : Optional[float]
+        change_percent : Optional[Union[float]]
             Change % in the price of the symbol. (provider: fmp)
-        label : Optional[str]
+        label : Optional[Union[str]]
             Human readable format of the date. (provider: fmp)
-        change_over_time : Optional[float]
+        change_over_time : Optional[Union[float]]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        n : Optional[PositiveInt]
+        transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
@@ -126,7 +129,7 @@ class CLASS_crypto(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/crypto/load",
             **inputs,
         )

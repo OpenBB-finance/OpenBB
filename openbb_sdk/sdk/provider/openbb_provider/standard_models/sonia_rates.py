@@ -28,4 +28,4 @@ class SONIAData(Data):
     """Return Treasury Rates Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float = Field(description="SONIA rate.")
+    rate: Optional[float] = Field(description="SONIA rate.")

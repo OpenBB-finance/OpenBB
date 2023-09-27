@@ -10,7 +10,7 @@ from openbb_provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):
@@ -23,7 +23,8 @@ class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):
 class FMPRevenueBusinessLineData(RevenueBusinessLineData):
     """FMP Revenue Business Line Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")

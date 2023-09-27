@@ -28,4 +28,4 @@ class FEDData(Data):
     """Return Treasury Rates Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: float = Field(description="FED rate.")
+    rate: Optional[float] = Field(description="FED rate.")

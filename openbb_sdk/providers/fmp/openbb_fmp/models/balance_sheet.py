@@ -1,19 +1,16 @@
 """FMP Balance Sheet Fetcher."""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_provider.abstract.data import StrictInt
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, model_validator
 
 
 class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -22,53 +19,75 @@ class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Balance-Sheet
     """
 
-    symbol: str = Field(description="Symbol/CIK of the company.")
+    cik: Optional[str] = Field(
+        default=None,
+        description="Central Index Key (CIK) of the company.",
+    )
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
+        """Check if symbol or cik is provided."""
+        if values.get("symbol") is None and values.get("cik") is None:
+            raise ValueError("symbol or cik must be provided")
+        return values
 
 
 class FMPBalanceSheetData(BalanceSheetData):
     """FMP Balance Sheet Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
+    __alias_dict__ = {
+        "currency": "reportedCurrency",
+        "current_assets": "totalCurrentAssets",
+        "non_current_assets": "totalNonCurrentAssets",
+        "assets": "totalAssets",
+        "current_liabilities": "totalCurrentLiabilities",
+        "non_current_liabilities": "totalNonCurrentLiabilities",
+        "liabilities": "totalLiabilities",
+        "other_stockholder_equity": "othertotalStockholdersEquity",
+        "filing_date": "fillingDate",
+    }
 
-        fields = {
-            "marketable_securities": "longTermInvestments",
-            "other_shareholder_equity": "othertotalStockholdersEquity",
-            "total_shareholder_equity": "totalStockholdersEquity",
-            "total_liabilities_and_shareholders_equity": "totalLiabilitiesAndStockholdersEquity",
-        }
-
-    reported_currency: str = Field(description="Reported currency in the statement.")
-
-    filling_date: dateType = Field(description="Filling date.")
-    accepted_date: datetime = Field(description="Accepted date.")
-    calendar_year: int = Field(description="Calendar year.")
-
-    cash_and_short_term_investments: Optional[int] = Field(
-        description="Cash and short term investments"
+    # Leftovers below
+    calendar_year: Optional[StrictInt] = Field(
+        default=None, description="Calendar Year"
     )
-    goodwill_and_intangible_assets: Optional[int] = Field(
-        description="Goodwill and Intangible Assets"
+
+    cash_and_short_term_investments: Optional[StrictInt] = Field(
+        default=None, description="Cash and Short Term Investments"
     )
-    capital_lease_obligations: Optional[int] = Field(
-        description="Capital lease obligations"
+    goodwill_and_intangible_assets: Optional[StrictInt] = Field(
+        default=None, description="Goodwill and Intangible Assets"
     )
-    total_investments: Optional[int] = Field(description="Total investments")
-    total_debt: Optional[int] = Field(description="Total debt")
-    net_debt: Optional[int] = Field(description="Net debt")
+    deferred_revenue_non_current: Optional[StrictInt] = Field(
+        default=None, description="Deferred Revenue Non Current"
+    )
+    total_investments: Optional[StrictInt] = Field(
+        default=None, description="Total Investments"
+    )
 
-    link: Optional[str] = Field(description="Link to the statement.")
-    final_link: Optional[str] = Field(description="Link to the final statement.")
+    capital_lease_obligations: Optional[StrictInt] = Field(
+        default=None, description="Capital Lease Obligations"
+    )
+    deferred_tax_liabilities_non_current: Optional[StrictInt] = Field(
+        default=None, description="Deferred Tax Liabilities Non Current"
+    )
+    capital_lease_obligations: Optional[StrictInt] = Field(
+        default=None, description="Capital lease obligations"
+    )
+    total_investments: Optional[StrictInt] = Field(
+        default=None, description="Total investments"
+    )
+    total_debt: Optional[StrictInt] = Field(default=None, description="Total debt")
+    net_debt: Optional[StrictInt] = Field(default=None, description="Net debt")
 
-    @validator("filing_date", pre=True, check_fields=False)
-    def filing_date_validate(cls, v):  # pylint: disable=no-self-argument
-        """Validate the filing date."""
-        return datetime.strptime(v, "%Y-%m-%d").date()
+    total_debt: Optional[StrictInt] = Field(default=None, description="Total Debt")
+    net_debt: Optional[StrictInt] = Field(default=None, description="Net Debt")
 
-    @validator("accepted_date", pre=True, check_fields=False)
-    def accepted_date_validate(cls, v):  # pylint: disable=no-self-argument
-        """Validate the accepted date."""
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+    link: Optional[str] = Field(default=None, description="Link to the statement.")
+    final_link: Optional[str] = Field(
+        default=None, description="Link to the final statement."
+    )
 
 
 class FMPBalanceSheetFetcher(
@@ -102,4 +121,4 @@ class FMPBalanceSheetFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPBalanceSheetData]:
         """Return the transformed data."""
-        return [FMPBalanceSheetData.parse_obj(d) for d in data]
+        return [FMPBalanceSheetData.model_validate(d) for d in data]

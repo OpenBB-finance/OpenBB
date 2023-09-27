@@ -11,7 +11,7 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -20,84 +20,93 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """
 
-    class Config:
-        fields = {
-            "symbol": "ticker",
-            "period": "timeframe",
-        }
+    __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    company_name: Optional[str] = Field(description="Name of the company.")
+    company_name: Optional[str] = Field(
+        default=None, description="Name of the company."
+    )
     company_name_search: Optional[str] = Field(
-        description="Name of the company to search."
+        default=None, description="Name of the company to search."
     )
     sic: Optional[str] = Field(
-        description="The Standard Industrial Classification (SIC) of the company."
+        default=None,
+        description="The Standard Industrial Classification (SIC) of the company.",
     )
     filing_date: Optional[date] = Field(
-        description="Filing date of the financial statement."
+        default=None, description="Filing date of the financial statement."
     )
     filing_date_lt: Optional[date] = Field(
-        description="Filing date less than the given date."
+        default=None, description="Filing date less than the given date."
     )
     filing_date_lte: Optional[date] = Field(
+        default=None,
         description="Filing date less than or equal to the given date.",
     )
     filing_date_gt: Optional[date] = Field(
+        default=None,
         description="Filing date greater than the given date.",
     )
     filing_date_gte: Optional[date] = Field(
+        default=None,
         description="Filing date greater than or equal to the given date.",
     )
     period_of_report_date: Optional[date] = Field(
-        description="Period of report date of the financial statement."
+        default=None, description="Period of report date of the financial statement."
     )
     period_of_report_date_lt: Optional[date] = Field(
+        default=None,
         description="Period of report date less than the given date.",
     )
     period_of_report_date_lte: Optional[date] = Field(
+        default=None,
         description="Period of report date less than or equal to the given date.",
     )
     period_of_report_date_gt: Optional[date] = Field(
+        default=None,
         description="Period of report date greater than the given date.",
     )
     period_of_report_date_gte: Optional[date] = Field(
+        default=None,
         description="Period of report date greater than or equal to the given date.",
     )
     include_sources: Optional[bool] = Field(
-        description="Whether to include the sources of the financial statement."
+        default=None,
+        description="Whether to include the sources of the financial statement.",
     )
     order: Optional[Literal["asc", "desc"]] = Field(
-        description="Order of the financial statement."
+        default=None, description="Order of the financial statement."
     )
     sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
-        description="Sort of the financial statement."
+        default=None, description="Sort of the financial statement."
     )
 
 
 class PolygonBalanceSheetData(BalanceSheetData):
     """Return Balance Sheet Data."""
 
-    class Config:
-        fields = {
-            "total_current_assets": "current_assets",
-            "marketable_securities": "fixed_assets",
-            "property_plant_equipment_net": "public_utilities_property_plant_and_equipment_net",
-            "other_non_current_assets": "other_noncurrent_assets_of_regulated_entity",
-            "total_non_current_assets": "noncurrent_assets",
-            "total_assets": "assets",
-            "total_current_liabilities": "current_liabilities",
-            "other_non_current_liabilities": "other _noncurrent_liabilities_of_regulated_entity",
-            "total_non_current_liabilities": "noncurrent_liabilities",
-            "total_liabilities": "liabilities",
-            "preferred_stock": "temporary_equity",
-            "total_shareholder_equity": "temporary_equity_attributable_to_parent",
-            "total_equity": "equity",
-            "total_liabilities_and_shareholders_equity": "liabilities_and_equity",
-            "minority_interest": "equity_attributable_to_noncontrolling_interest",
-        }
+    __alias_dict__ = {
+        "date": "start_date",
+        "total_liabilities_and_stockholders_equity": "liabilities_and_equity",
+        "minority_interest": "equity_attributable_to_noncontrolling_interest",
+        "total_current_assets": "current_assets",
+        "marketable_securities": "fixed_assets",
+        "property_plant_equipment_net": "public_utilities_property_plant_and_equipment_net",
+        "other_non_current_assets": "other_noncurrent_assets_of_regulated_entity",
+        "total_non_current_assets": "noncurrent_assets",
+        "total_assets": "assets",
+        "total_current_liabilities": "current_liabilities",
+        "other_non_current_liabilities": "other _noncurrent_liabilities_of_regulated_entity",
+        "total_non_current_liabilities": "noncurrent_liabilities",
+        "total_liabilities": "liabilities",
+        "preferred_stock": "temporary_equity",
+        "total_shareholder_equity": "temporary_equity_attributable_to_parent",
+        "total_equity": "equity",
+        "total_liabilities_and_shareholders_equity": "liabilities_and_equity",
+    }
 
-    @validator("symbol", pre=True, check_fields=False)
-    def symbol_from_tickers(cls, v):  # pylint: disable=no-self-argument
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def symbol_from_tickers(cls, v):
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -122,7 +131,7 @@ class PolygonBalanceSheetFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.dict(by_alias=True), [])
+        query_string = get_querystring(query.model_dump(), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 

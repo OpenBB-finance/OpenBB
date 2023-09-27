@@ -540,6 +540,20 @@ def check_positive_list(value) -> List[int]:
     return list_of_pos
 
 
+def check_positive_float_list(value) -> List[float]:
+    """Argparse type to return list of positive floats."""
+    list_of_nums = value.split(",")
+    list_of_pos = []
+    for a_value in list_of_nums:
+        new_value = float(a_value)
+        if new_value <= 0:
+            log_and_raise(
+                argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
+            )
+        list_of_pos.append(new_value)
+    return list_of_pos
+
+
 def check_positive(value) -> int:
     """Argparse type to check positive int."""
     new_value = int(value)
@@ -2281,3 +2295,15 @@ def query_LLM_remote(query_text: str):
         return None, None
 
     return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]
+
+
+def check_valid_date(date_string) -> bool:
+    """ "Helper to see if we can parse the string to a date"""
+    try:
+        # Try to parse the string with strptime()
+        datetime.strptime(
+            date_string, "%Y-%m-%d"
+        )  # Use the format your dates are expected to be in
+        return True  # If it can be parsed, then it is a valid date string
+    except ValueError:  # strptime() throws a ValueError if the string can't be parsed
+        return False
