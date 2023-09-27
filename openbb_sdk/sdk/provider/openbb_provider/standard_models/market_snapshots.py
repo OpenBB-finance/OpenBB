@@ -16,7 +16,9 @@ class MarketSnapshotsData(Data):
     """Market Snapshots Data"""
 
     symbol: str = Field(description="The stock symbol.")
-    name: Optional[str] = Field(description="The name associated with the stock symbol.")
+    name: Optional[str] = Field(
+        description="The name associated with the stock symbol."
+    )
     price: Optional[float] = Field(description="The last price of the stock.")
     open: Optional[float] = Field(
         description="The opening price of the stock on the current trading day."
