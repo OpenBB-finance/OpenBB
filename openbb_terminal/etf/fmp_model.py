@@ -71,7 +71,6 @@ def get_stock_price_change(ticker: str, start_date: str, end_date: str) -> float
     """
     current_user = get_current_user()
     url = f'''https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?from={start_date}&to={end_date}&serietype=line&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}'''
-
     response = request(url)
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
@@ -117,7 +116,7 @@ def get_etf_holdings(ticker: str) -> List[Dict[str,any]]:
             else message + "\n" + response.json()["Error Message"] + ".\n"
         )
         console.print(message)
-        return None
+        return []
 
     return response.json()
 
@@ -137,6 +136,8 @@ def get_holdings_pct_change(ticker: str, start_date: str, end_date: str) -> pd.D
         Calculated percentage change for each stock in the ETF, in descending order.
     """
     holdings = get_etf_holdings(ticker=ticker)
+    if len(holdings) == 0:
+        return pd.DataFrame()
     data_list = []
     for stock in holdings:
         if stock['asset']:
