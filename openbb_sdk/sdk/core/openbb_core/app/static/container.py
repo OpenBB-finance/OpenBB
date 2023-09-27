@@ -14,8 +14,7 @@ class Container:
     def run(self, *args, **kwargs) -> Union[OBBject, pd.DataFrame, dict]:
         """Run a command in the container."""
         obbject = self._command_runner.run(*args, **kwargs)
-        user_settings = self._command_runner.user_settings
-        python_output = user_settings.preferences.python_output
+        python_output = self._command_runner.user_settings.preferences.python_output
         if python_output:
             return getattr(obbject, python_output)()
         return obbject
