@@ -19,8 +19,8 @@ class Preferences(BaseModel):
     table_style: Literal["dark", "light"] = "dark"
     request_timeout: PositiveInt = 15
     metadata: bool = True
-    python_output: Optional[Literal["to_df", "to_dict"]] = Field(
-        default=None, description="Method to apply to python output by default."
+    obbject_method: Optional[Literal["to_df", "to_dict"]] = Field(
+        default=None, description="Method to apply to OBBject by default."
     )
 
     model_config = ConfigDict(validate_assignment=True)
