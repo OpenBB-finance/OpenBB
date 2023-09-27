@@ -1,132 +1,72 @@
-# CONTRIBUTING - THIS IS A WORK IN PROGRESS
 
-- [CONTRIBUTING - THIS IS A WORK IN PROGRESS](#contributing---this-is-a-work-in-progress)
-  - [Contributing Introduction](#contributing-introduction)
-    - [Cookiecuter, a closer look](#cookiecuter-a-closer-look)
-  - [Get your data](#get-your-data)
-    - [OpenBB Platform commands: query and output your data](#openbb-platform-commands-query-and-output-your-data)
+- [Quick look into the OpenBB Platform](#quick-look-into-the-openbb-platform)
   - [What is the Standardization Framework?](#what-is-the-standardization-framework)
     - [Standardization Caveats](#standardization-caveats)
     - [Standard QueryParams Example](#standard-queryparams-example)
     - [Standard Data Example](#standard-data-example)
-  - [Add a new data point to the OpenBB Platform repository](#add-a-new-data-point-to-the-openbb-platform-repository)
-    - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
-      - [Check if the standard model exists](#check-if-the-standard-model-exists)
-      - [Create Query Parameters model](#create-query-parameters-model)
-      - [Create Data Output model](#create-data-output-model)
-      - [Build the Fetcher](#build-the-fetcher)
-    - [Make the new provider visible to the Platform](#make-the-new-provider-visible-to-the-platform)
-  - [Using other extension as a dependency](#using-other-extension-as-a-dependency)
-    - [Using our internal extension](#using-our-internal-extension)
-    - [Adding an external extension](#adding-an-external-extension)
-    - [The charting extension](#the-charting-extension)
-      - [Add a visualization to an existing Platform command](#add-a-visualization-to-an-existing-platform-command)
-      - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
-  - [Environment and dependencies](#environment-and-dependencies)
-  - [Python package](#python-package)
-    - [Overview](#overview)
+  - [What is an extension?](#what-is-an-extension)
+    - [Types of extensions](#types-of-extensions)
+- [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
+  - [Add a custom data source](#add-a-custom-data-source)
+    - [OpenBB Platform commands](#openbb-platform-commands)
   - [QA your extension](#qa-your-extension)
     - [Unit tests](#unit-tests)
     - [Integration tests](#integration-tests)
     - [Import time](#import-time)
   - [Sharing your extension](#sharing-your-extension)
     - [Publish your extension to PyPI](#publish-your-extension-to-pypi)
-    - [Create a PR to the OpenBB Platform](#create-a-pr-to-the-openbb-platform)
+      - [Setup](#setup)
+      - [Release](#release)
+      - [Publish](#publish)
+- [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
+  - [Add a new data point](#add-a-new-data-point)
+    - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
+      - [Check if the standard model exists](#check-if-the-standard-model-exists)
+      - [Create Query Parameters model](#create-query-parameters-model)
+      - [Create Data Output model](#create-data-output-model)
+      - [Build the Fetcher](#build-the-fetcher)
+    - [Make the provider visible](#make-the-provider-visible)
+  - [Manage extensions](#manage-extensions)
+    - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
+  - [Manage environment and dependencies](#manage-environment-and-dependencies)
+  - [How to create a PR?](#how-to-create-a-pr)
+    - [Install pre-commit hooks](#install-pre-commit-hooks)
+    - [Branch Naming Conventions](#branch-naming-conventions)
 
-## Contributing Introduction
+# Quick look into the OpenBB Platform
 
-We have a Cookiecutter template that will help you get started.
+The OpenBB Platform is built by the Open-Source community and is characterized by its core and extensions. The core handles data integration and standardization, while the extensions enable customization and advanced functionalities. The OpenBB Platform is designed to be used both from a Python interface and a REST API.
 
-Please refer to the [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) and follow the instructions there.
+The REST API is built on top of FastAPI and can be started by running the following command from the root:
 
-This document will walk you through the steps of adding a new extension to the OpenBB Platform.
-
-The high level steps are:
-
-- Generate the extension structure
-- Install your dependencies
-- Install your new package
-- Use your extension (either from Python or the API interface)
-- QA your extension
-- Share your extension with the community
-
-### Cookiecuter, a closer look
-
-The Cookiecutter template generates a set of files in which we can find instructions and explanations.
-
-It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
-
-> Note that the code is functional, so you can just run it and start playing with it.
-
-## Get your data
-
-You will get your data either from a CSV file, local database or from an API endpoint.
-
-If you don't want to partake in the data standardization framework, you can simply write all the logic straight inside the router file. This is usually the case when you are adding alternative data that isn't easily standardizable.
-
-Saying that, we recommend following the standardization framework, as it will make your life easier in the long run and unlock a set of features that are only available to standardized data.
-
-When standardizing, all data is defined using two different pydantic models:
-
-1. Define the [query parameters](platform/provider/openbb_provider/abstract/query_params.py) model.
-2. Define the resulting [data schema](platform/provider/openbb_provider/abstract/data.py) model.
-
-> The models can be entirely custom, or inherit from the OpenBB standardized models.
-> They enforce a safe and consistent data structure, validation and type checking.
-
-We call this the ***Know-Your-Data*** principle.
-
-After you've defined both models, you'll need to define a `Fetcher` class which contains three methods:
-
-1. `transform_query` - transforms the query parameters to the format of the API endpoint.
-2. `extract_data` - makes the request to the API endpoint and returns the raw data.
-3. `transform_data` - transforms the raw data into the defined data model.
-
-> Note that the `Fetcher` should inherit from the [`Fetcher`](platform/provider/openbb_provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
-
-After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](platform/provider/openbb_provider/abstract/provider.py).
-
-Any command, using the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
-
-If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
-
-### OpenBB Platform commands: query and output your data
-
-The OpenBB Platform will enable you to query and output your data in a very simple way.
-
-> Any Platform endpoint will be available both from a Python interface and the API.
-
-The command definition on the Platform follows [FastAPI](https://fastapi.tiangolo.com/) conventions, meaning that you'll be creating **endpoints**.
-
-The Cookiecutter template generates for you a `router.py` file with a set of examples that you can follow, namely:
-
-- Perform a simple `GET` and `POST` request - without worrying on any custom data definition.
-- Using a custom data definition so you get your data the exact way you want it.
-
-You can expect the following endpoint structure when using a `Fetcher` to serve the data:
-
-```python
-@router.command(model="Example")
-def model_example(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Example Data."""
-    return OBBject(results=Query(**locals()).execute())
+```bash
+uvicorn openbb_terminal.terminal.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Let's break it down:
+The Python interfaces we provide to users is the `openbb` python package.
 
-- `@router.command(...)` - this tells the OpenBB Platform that this is a command.
-- `model="Example"` - this is the name of the `Fetcher` dictionary key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
-- `cc: CommandContext` - this contains a set of user and system settings that is useful during the execution of the command - eg. api keys.
-- `provider_choices: ProviderChoices` - all the providers that implement the `Example` `Fetcher`.
-- `standard_params: StandardParams` - standardized parameters that are common to all providers that implement the `Example` `Fetcher`.
-- `extra_params: ExtraParams` - it contains the provider specific arguments that are not standardized.
+The code you will find in this package is generated from a script and it is just a wrapper around the `openbb-core` and any installed extensions.
 
-You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
+When the user runs `import openbb`, `from openbb import obb` or other variants, the script that generates the package code is triggered. It detects if there are new openbb extensions installed in the environment and rebuilds the package code accordingly. If new extensions are not found, it just uses the current package version.
+
+When you are developing chances are you want to manually trigger the package rebuild.
+
+You can do that with:
+
+```python
+python -c "import openbb; openbb.build()"
+```
+
+The Python interface can be imported with:
+
+```python
+from openbb import obb
+```
+
+This document will take you through two types of contributions:
+
+1. Building a custom extension
+2. Contributing directly to the OpenBB Platform
 
 ## What is the Standardization Framework?
 
@@ -189,9 +129,226 @@ class StockHistoricalData(Data):
 
 The `Data` class is an abstract class that tells us the expected output data. Here we can see a `vwap` field that is `Optional`. This is because not all providers share this field while it is shared between two or more providers.
 
-## Add a new data point to the OpenBB Platform repository
+## What is an extension?
 
-In the `Get your data` section, we've seen how to get started with a template and inside the `What is the Standardization Framework?` section we've seen how to leverage the standardization framework.
+An extension adds functionality to the OpenBB Platform. It can be a new data source, a new command, a new visualization, etc.
+
+### Types of extensions
+
+We primarily have 3 types of extensions:
+
+1. OpenBB Extensions - built and maintained by the OpenBB team (e.g. `openbb-stocks`)
+2. Community Extensions - built by anyone and primarily maintained by OpenBB (e.g. `openbb-yfinance`)
+3. Independent Extensions - built and maintained independently by anyone
+
+If your extension is of high quality and you think that it would be a good community extension, you can open a PR to the OpenBB Platform repository and we'll review it.
+
+We encourage independent extensions to be shared with the community by publishing them to PyPI.
+
+# How to build OpenBB extensions?
+
+We have a Cookiecutter template that will help you get started. It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
+
+Please refer to the [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) and follow the instructions there.
+
+This document will walk you through the steps of adding a new extension to the OpenBB Platform.
+
+The high level steps are:
+
+- Generate the extension structure
+- Install your dependencies
+- Install your new package
+- Use your extension (either from Python or the API interface)
+- QA your extension
+- Share your extension with the community
+
+## Add a custom data source
+
+You will get your data either from a CSV file, local database or from an API endpoint.
+
+If you don't want to partake in the data standardization framework, you can simply write all the logic straight inside the router file. This is usually the case when you are adding alternative data that isn't easily standardizable.
+
+Saying that, we recommend following the standardization framework, as it will make your life easier in the long run and unlock a set of features that are only available to standardized data.
+
+When standardizing, all data is defined using two different pydantic models:
+
+1. Define the [query parameters](platform/provider/openbb_provider/abstract/query_params.py) model.
+2. Define the resulting [data schema](platform/provider/openbb_provider/abstract/data.py) model.
+
+> The models can be entirely custom, or inherit from the OpenBB standardized models.
+> They enforce a safe and consistent data structure, validation and type checking.
+
+We call this the ***Know-Your-Data*** principle.
+
+After you've defined both models, you'll need to define a `Fetcher` class which contains three methods:
+
+1. `transform_query` - transforms the query parameters to the format of the API endpoint.
+2. `extract_data` - makes the request to the API endpoint and returns the raw data.
+3. `transform_data` - transforms the raw data into the defined data model.
+
+> Note that the `Fetcher` should inherit from the [`Fetcher`](platform/provider/openbb_provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+
+After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](platform/provider/openbb_provider/abstract/provider.py).
+
+Any command, using the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
+
+If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
+
+### OpenBB Platform commands
+
+The OpenBB Platform will enable you to query and output your data in a very simple way.
+
+> Any Platform endpoint will be available both from a Python interface and the API.
+
+The command definition on the Platform follows [FastAPI](https://fastapi.tiangolo.com/) conventions, meaning that you'll be creating **endpoints**.
+
+The Cookiecutter template generates for you a `router.py` file with a set of examples that you can follow, namely:
+
+- Perform a simple `GET` and `POST` request - without worrying on any custom data definition.
+- Using a custom data definition so you get your data the exact way you want it.
+
+You can expect the following endpoint structure when using a `Fetcher` to serve the data:
+
+```python
+@router.command(model="Example")
+def model_example(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Example Data."""
+    return OBBject(results=Query(**locals()).execute())
+```
+
+Let's break it down:
+
+- `@router.command(...)` - this tells the OpenBB Platform that this is a command.
+- `model="Example"` - this is the name of the `Fetcher` dictionary key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
+- `cc: CommandContext` - this contains a set of user and system settings that is useful during the execution of the command - eg. api keys.
+- `provider_choices: ProviderChoices` - all the providers that implement the `Example` `Fetcher`.
+- `standard_params: StandardParams` - standardized parameters that are common to all providers that implement the `Example` `Fetcher`.
+- `extra_params: ExtraParams` - it contains the provider specific arguments that are not standardized.
+
+You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
+
+## QA your extension
+
+We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
+
+Primarily, we have tools that semi-automate the creation of unit and integration tests.
+
+> The QA tools are still in development and we are constantly improving them.
+
+### Unit tests
+
+Each `Fetcher` comes equipped with a `test` method that will ensure that it is implemented correctly and that it is returning the expected data. It also ensures that all types are correct and that the data is valid.
+
+To create unit tests for your Fetchers, you can run the following command:
+
+```bash
+python openbb_platform/providers/tests/utils/unit_test_generator.py
+```
+
+> Note that you should be running this file from the root of the repository.
+
+The automatic unit test generation will add unit tests for all the fetchers available in a given provider.
+
+> Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
+
+### Integration tests
+
+The integration tests are a bit more complex than the unit tests, as we want to test both the Python interface and the API interface. For this, we have two scripts that will help you generate the integration tests.
+
+To generate the integration tests for the Python interface, you can run the following command:
+
+```bash
+python openbb_platform/extensions/tests/utils/integration_tests_generator.py
+```
+
+To generate the integration tests for the API interface, you can run the following command:
+
+```bash
+python openbb_platform/extensions/tests/utils/integration_tests_api_generator.py
+```
+
+When testing the API interface, you'll need to run the OpenBB Platform locally before running the tests. To do so, you can run the following command:
+
+```bash
+uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+These automated tests are a great way to reduce the amount of code you need to write, but they are not a replacement for manual testing and might require tweaking. That's why we have unit tests that test the generated integration tests to ensure they cover all providers and parameters.
+
+### Import time
+
+We aim to have a short import time for the package. To measure that we use `tuna`.
+
+- <https://pypi.org/project/tuna/>
+
+To visualize the import time breakdown by module and find potential bottlenecks, run the
+following commands from `openbb_platform` directory:
+
+```bash
+pip install tuna
+python -X importtime openbb/__init__.py 2> import.log
+tuna import.log
+```
+
+## Sharing your extension
+
+We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
+
+### Publish your extension to PyPI
+
+To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
+
+#### Setup
+
+Create an account and get an API token from <https://pypi.org/manage/account/token/>
+Store the token with
+
+```bash
+poetry config pypi-token.pypi pypi-YYYYYYYY
+```
+
+#### Release
+
+`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
+
+```bash
+poetry build
+```
+
+This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
+
+If you want to test your package locally you can do it with
+
+```bash
+pip install dist/openbb_[FILE_NAME].whl
+```
+
+#### Publish
+
+To publish your package to PyPI run:
+
+```bash
+poetry publish
+```
+
+Now, you can pip install your package from PyPI with:
+
+```bash
+pip install openbb-some_ext
+```
+
+# How to contribute to the OpenBB Platform?
+
+There are many ways to contribute to the OpenBB Platform. You can add a new data point, add a new command, add a new visualization, add a new extension, fix a bug etc.
+
+In this document, we'll be focusing on adding a new data point to the OpenBB Platform.
+
+## Add a new data point
 
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_provider/standard_models) model.
 
@@ -260,7 +417,6 @@ It will receive the Query Parameters, and it will return the output while levera
 For the `StockHistorical` example, this would look like the following:
 
 ```python
-
 class <ProviderName>StockHistoricalFetcher(
     Fetcher[
         <ProviderName>StockHistoricalQueryParams,
@@ -294,17 +450,15 @@ class <ProviderName>StockHistoricalFetcher(
         """Transform the data to the standard format."""
 
         return [<ProviderName>StockHistoricalData.model_validate(d) for d in data]
-
 ```
 
 > Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**.
 
-### Make the new provider visible to the Platform
+### Make the provider visible
 
-In order to make the new provider visible to the Platform, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
+In order to make the new provider visible to the OpenBB Platform, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
 
 ```python
-
 """<Provider Name> Provider module."""
 from openbb_provider.abstract.provider import Provider
 
@@ -319,109 +473,34 @@ from openbb_<provider_name>.models.stock_eod import <ProviderName>StockHistorica
         "StockHistorical": <ProviderName>StockHistoricalFetcher,
     },
 )
-
 ```
 
 If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `required_credentials` list.
 
 After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
 
-## Using other extension as a dependency
+## Manage extensions
 
-We can use internal and external extensions with the custom developed extension and bundle it as a dependency.
+To install an extension hosted on PyPI, use the `pip install <extension>` command.
 
-### Using our internal extension
+> To install this in editable mode, add the `-e` argument.
 
-We will use the `openbb-qa` extension by utilizing its `summary` endpoint.
+To install an extension that is developed locally, ensure that it contains a `pyproject.toml` file. Then use the command `poetry lock` to create a `.lock` file.
 
-To create a `period_summary_example` endpoint we need to add the following to the `router.py` file:
+Now, you can use the command `poetry install <extension>` to install the extension.
 
-```python
-from typing import List
-from openbb_provider.abstract.data import Data
-from openbb_core.app.utils import basemodel_to_df, df_to_basemodel
-from openbb_qa.qa_router import summary
+> To install it in editable mode use the `-C` argument.
 
+### Add an extension as a dependency
 
-@router.command(methods=["POST"])
-def period_summary_example(
-    data: List[Data],
-    target: str,
-    start_date: str,
-    end_date: str,
-) -> OBBject[dict]:
-    """Example Data."""
+To add the `openbb-qa` extension as a dependency, you'll need to add it to the `pyproject.toml` file:
 
-    df = basemodel_to_df(data)
-    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
-    df = df.reset_index(drop=True)
-    target_data = df_to_basemodel(df)
-    results = summary(target_data, target=target)
-
-    return OBBject(results=results.results)
-```
-
-Here we are using two vital utility functions - `basemodel_to_df` and `df_to_basemodel`. The function `basemodel_to_df` converts the data to a pandas dataframe and `df_to_basemodel` converts the dataframe back to the `Data` model.
-
-### Adding an external extension
-
-To add the `openbb-charting` charting extension as a dependency, you'll need to add it to the `pyproject.toml` file:
-
-<!-- TODO: Change the version to match the stable release -->
 ```toml
 [tool.poetry.dependencies]
-openbb-charting = "^0.0.0a1"
+openbb-qa = "^0.0.0a2"
 ```
 
-Then execute the command `poetry install` in the root of your extension to install the new dependency.
-
-### The charting extension
-
-> In theory the same principles apply to any other extension.
-
-#### Add a visualization to an existing Platform command
-
-One should first ensure that the already implemented endpoint is available in the [charting router](extensions/charting/openbb_charting/charting_router.py).
-
-To do so, you can run:
- `python openbb_platform/extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
-
-Afterwards, you'll need to add the visualization to the [charting router](extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
-
-- `stocks/load` -> `stocks_load`
-- `ta/ema` -> `ta_ema`
-
-When you spot the charting function on the charting router file, you can add the visualization to it.
-
-The implementation should leverage the already existing classes and methods to do so, namely:
-
-- `OpenBBFigure`
-- `OpenBBFigureTable`
-- `PlotlyTA`
-
-Note that the return of each charting function should respect the already defined return types: `Tuple[OpenBBFigure, Dict[str, Any]]`.
-
-The returned tuple contains a `OpenBBFigure` that is an interactive plotly figure which can be used in a Python interpreter, and a `Dict[str, Any]` that contains the raw data leveraged by the API.
-
-After you're done implementing the charting function, you can use either the Python interface or the API to get the chart. To do so, you'll only need to set the already available `chart` argument to `True`.
-
-Refer to the charting extension [documentation](extensions/charting/README.md) for more information on usage.
-
-#### Using the `to_chart` OBBject method
-
-The `OBBject` is the custom OpenBB object that is returned by the Platform commands.
-It implements a set of `to_<something>` functions that enable the user to easily transform the data into a different format.
-
-The `to_chart` function should be taken as an advanced feature, as it requires the user to have a good understanding of the charting extension and the `OpenBBFigure` class.
-
-The user can use any number of `**kwargs` that will be passed to the `PlotlyTA` class in order to build custom visualizations with custom indicators and similar.
-
-Refer to the [`to_chart` implementation](extensions/charting/openbb_charting/core/to_chart.py) for further details.
-
-> Note that, this method will only work to some limited extent with data that is not standardized.
-> Also, it is currently designed only to handle time series data.
-
-## Environment and dependencies
+## Manage environment and dependencies
 
 In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
 
@@ -454,120 +533,38 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
     pip install poetry
     ```
 
-4. Install the `openbb-core`:
+4. Install the packages using the `dev_install.py` script located in the `openbb_platform` folder:
 
     ```bash
-    cd OpenBBTerminal/openbb_platform/platform/core/
-    poetry install
+    python dev_install.py
     ```
 
-5. Install dependencies:
+   > To install all the packages, including extras, use the `-e` argument with the above script.
 
-    ```bash
-    cd OpenBBTerminal/openbb_platform/extensions/stocks/ # or any other extension
-    poetry install
-    ```
+## How to create a PR?
 
-> When installing the dependencies using poetry we ensure that dependencies are being installed in editable mode, which is the most straightforward way to develop on top of the Platform.
+To create a PR to the OpenBB Platform, you'll need to fork the repository and create a new branch.
 
-<details>
-<summary>Install all dependencies in editable mode at once</summary>
+1. Create your Feature Branch, e.g. `git checkout -b feature/AmazingFeature`
+2. Check the files you have touched using `git status`
+3. Stage the files you want to commit, e.g.
+   `git add openbb_terminal/stocks/stocks_controller.py openbb_terminal/stocks/stocks_helper.py`.
+   Note: **DON'T** add any files with personal information.
+4. Write a concise commit message under 50 characters, e.g. `git commit -m "meaningful commit message"`. If your PR
+   solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that
+   these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
+   to go back to step 3 to add these.
 
-For development purposes, one can install every available extension by running a custom shell script:
+### Install pre-commit hooks
 
-Navigate to `/OpenBBTerminal/openbb_platform`
+To install pre-commit hooks, run `pre-commit install` in the root of the repository.
 
-Run `python dev_install.py`.
-</details>
+### Branch Naming Conventions
 
-> In order to install any other custom extension or provider, you'd follow the exact same steps as above.
+The accepted branch naming conventions are:
 
-## Python package
+- `feature/feature-name`
+- `hotfix/hotfix-name`
+- `release/2.1.0` or `release/2.1.0rc0`.
 
-### Overview
-
-One of the interfaces we provide to users is the `openbb` python package.
-
-The code you will find in this package is generated from a script and it is just a
-wrapper around the `openbb-core` and any installed extensions.
-
-When the user runs `import openbb`, `from openbb import obb` or other variants, the
-script that generates the package code is triggered. It detects if there are new openbb
-extensions installed in the environment and rebuilds the package code accordingly. If
-new extensions are not found, it just uses the current package version.
-
-When you are developing chances are you want to manually trigger the package rebuild.
-You can do that with:
-
-```python
-python -c "import openbb; openbb.build()"
-```
-
-## QA your extension
-
-We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
-
-Primarily, we have tools that semi-automate the creation of unit and integration tests.
-
-> The QA tools are still in development and we are constantly improving them.
-
-### Unit tests
-
-Each `Fetcher` comes equipped with a `test` method that will ensure that it is implemented correctly and that it is returning the expected data. It also ensures that all types are correct and that the data is valid.
-
-To create unit tests for your Fetchers, you can run the following command:
-
-```bash
-python openbb_platform/providers/tests/utils/unit_test_generator.py
-```
-
-> Note that you should be running this file from the root of the repository.
-
-The automatic unit test generation will add unit tests for all the fetchers available in a given provider.
-
-> Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
-
-### Integration tests
-
-The integration tests are a bit more complex than the unit tests, as we want to test both the Python interface and the API interface. For this, we have two scripts that will help you generate the integration tests.
-
-To generate the integration tests for the Python interface, you can run the following command:
-
-```bash
-python openbb_platform/extensions/tests/utils/integration_tests_generator.py
-```
-
-To generate the integration tests for the API interface, you can run the following command:
-
-```bash
-python openbb_platform/extensions/tests/utils/integration_tests_api_generator.py
-```
-
-When testing the API interface, you'll need to run the OpenBB Platform locally before running the tests. To do so, you can run the following command:
-
-```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
-```
-
-These automated tests are a great way to reduce the amount of code you need to write, but they are not a replacement for manual testing and might require tweaking. That's why we have unit tests that test the generated integration tests to ensure they cover all providers and parameters.
-
-### Import time
-
-We aim to have a short import time for the package. To measure that we use `tuna`.
-
-- <https://pypi.org/project/tuna/>
-
-To visualize the import time breakdown by module and find potential bottlenecks, run the
-following commands from `openbb_platform` directory:
-
-```bash
-pip install tuna
-python -X importtime openbb/__init__.py 2> import.log
-tuna import.log
-```
-
-## Sharing your extension
-
-### Publish your extension to PyPI
-
-### Create a PR to the OpenBB Platform
+All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
