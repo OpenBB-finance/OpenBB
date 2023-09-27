@@ -11,6 +11,7 @@ from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
 from openbb_polygon.models.major_indices_historical import (
     PolygonMajorIndicesHistoricalFetcher,
 )
+from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
@@ -120,5 +121,14 @@ def test_polygon_forex_pairs_fetcher(credentials=test_credentials):
     params = {"date": date(2023, 1, 1)}
 
     fetcher = PolygonForexPairsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_polygon_market_snapshots_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = PolygonMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

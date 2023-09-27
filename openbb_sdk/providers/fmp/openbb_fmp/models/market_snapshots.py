@@ -1,8 +1,9 @@
 """FMP Market Snapshots fetcher."""
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from openbb_fmp.utils.helpers import MARKETS
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
@@ -10,67 +11,6 @@ from openbb_provider.standard_models.market_snapshots import (
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field
-
-MARKETS = Literal[
-    "AMEX",
-    "AMS",
-    "ASE",
-    "ASX",
-    "ATH",
-    "BME",
-    "BRU",
-    "BUD",
-    "BUE",
-    "CAI",
-    "CNQ",
-    "CPH",
-    "DFM",
-    "DOH",
-    "DUS",
-    "ETF",
-    "EURONEXT",
-    "HEL",
-    "HKSE",
-    "ICE",
-    "IOB",
-    "IST",
-    "JKT",
-    "JNB",
-    "JPX",
-    "KLS",
-    "KOE",
-    "KSC",
-    "KUW",
-    "LSE",
-    "MEX",
-    "MIL",
-    "NASDAQ",
-    "NEO",
-    "NSE",
-    "NYSE",
-    "NZE",
-    "OSL",
-    "OTC",
-    "PNK",
-    "PRA",
-    "RIS",
-    "SAO",
-    "SAU",
-    "SES",
-    "SET",
-    "SGO",
-    "SHH",
-    "SHZ",
-    "SIX",
-    "STO",
-    "TAI",
-    "TLV",
-    "TSX",
-    "TWO",
-    "VIE",
-    "WSE",
-    "XETRA",
-]
 
 
 class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -87,13 +27,12 @@ class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
 class FMPMarketSnapshotsData(MarketSnapshotsData):
     """FMP Market Snapshots Data."""
 
-    class Config:
-        fields = {
-            "high": "dayHigh",
-            "low": "dayLow",
-            "prev_close": "previousClose",
-            "change_percent": "changesPercentage",
-        }
+    __alias_dict__ = {
+        "high": "dayHigh",
+        "low": "dayLow",
+        "prev_close": "previousClose",
+        "change_percent": "changesPercentage",
+    }
 
     avg_volume: Optional[int] = Field(
         description="Average volume of the stock.", alias="avgVolume"
@@ -111,7 +50,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     market_cap: Optional[float] = Field(
         description="Market cap of the stock.", alias="marketCap"
     )
-    shares_outstanding: Optional[int] = Field(
+    shares_outstanding: Optional[float] = Field(
         description="Number of shares outstanding.", alias="sharesOutstanding"
     )
     eps: Optional[float] = Field(description="Earnings per share.")
@@ -149,10 +88,12 @@ class FMPMarketSnapshotsFetcher(
                 f"Error fetching data from FMP  -> {response.status_code}"
             )
         data = pd.DataFrame(response.json())
-        data = data.drop(columns=["timestamp", "earningsAnnouncement"]).fillna(value=0)
+        data = data.drop(columns=["timestamp", "earningsAnnouncement"]).fillna(0)
         data = data[data["price"] > 0.01]
-
-        return data.sort_values(by="volume", ascending=False).to_dict(orient="records")
+        data["name"] = data["name"].replace(0, "")
+        return data.sort_values(by="changesPercentage", ascending=False).to_dict(
+            orient="records"
+        )
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMarketSnapshotsData]:
