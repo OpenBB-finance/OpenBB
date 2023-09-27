@@ -1,8 +1,10 @@
 """Container class."""
 from typing import Union
+
+import pandas as pd
+
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.obbject import OBBject
-import pandas as pd
 
 
 class Container:
