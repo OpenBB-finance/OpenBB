@@ -17,6 +17,6 @@ class Container:
         """Run a command in the container."""
         obbject = self._command_runner.run(*args, **kwargs)
         output_type = self._command_runner.user_settings.preferences.output_type
-        if output_type:
-            return getattr(obbject, output_type)()
-        return obbject
+        if output_type == "OBBject":
+            return obbject
+        return getattr(obbject, "to_" + output_type)()
