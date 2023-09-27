@@ -59,7 +59,7 @@ class OBBject(Tagged, Generic[T]):
     def __repr__(self) -> str:
         """Human readable representation of the object."""
         items = [
-            f"{k}: {v}"[:83] + "..." if len(f"{k}: {v}") > 83 else ""
+            f"{k}: {v}"[:83] + ("..." if len(f"{k}: {v}") > 83 else "")
             for k, v in self.model_dump().items()
         ]
         return f"{self.__class__.__name__}\n\n" + "\n".join(items)
