@@ -210,7 +210,8 @@ class OBBject(Tagged, Generic[T]):
         df = self.to_dataframe().reset_index()  # type: ignore
         results = {}
         for field in df.columns:
-            results[field] = df[field].tolist()
+            f = df[field].tolist()
+            results[field] = f[0] if len(f) == 1 else f
 
         # remove index from results
         if "index" in results:
