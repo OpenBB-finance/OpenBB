@@ -10,10 +10,7 @@ import pandas as pd
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.etf import fmp_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -123,26 +120,34 @@ def display_etf_weightings(
 
 
 @log_start_end(log=logger)
-@check_api_key(['API_KEY_FINANCIALMODELINGPREP'])
-def view_etf_holdings_performance(ticker: str, start_date: str, end_date: str, limit: int = 10, raw: bool = False, export: str = "", sheet_name: Optional[str] = None):
-    '''Display ETF's holdings' performance over specified time. [Source: FinancialModelingPrep]
-        Parameters
-        ----------
-        ticker: str
-            ETF ticker
-        start_date: str
-            Date from which data is fetched in format YYYY-MM-DD
-        end: str
-            Date from which data is fetched in format YYYY-MM-DD
-        limit: int
-            Limit number of holdings to view. Sorted by descending percent change.
-        raw: bool
-            Display holding performance
-        sheet_name: str
-            Optionally specify the name of the sheet the data is exported to.
-        export: str
-            Type of format to export data
-    '''
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def view_etf_holdings_performance(
+    ticker: str,
+    start_date: str,
+    end_date: str,
+    limit: int = 10,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+):
+    """Display ETF's holdings' performance over specified time. [Source: FinancialModelingPrep]
+    Parameters
+    ----------
+    ticker: str
+        ETF ticker
+    start_date: str
+        Date from which data is fetched in format YYYY-MM-DD
+    end: str
+        Date from which data is fetched in format YYYY-MM-DD
+    limit: int
+        Limit number of holdings to view. Sorted by descending percent change.
+    raw: bool
+        Display holding performance
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Type of format to export data
+    """
     data = fmp_model.get_holdings_pct_change(ticker, start_date, end_date)[0:limit]
 
     if raw:
@@ -158,14 +163,15 @@ def view_etf_holdings_performance(ticker: str, start_date: str, end_date: str, l
     fig = OpenBBFigure()
 
     if not raw or fig.is_image_export(export):
-
         fig.add_bar(
-            hovertext=[f'{x:.2f}'+"%" for x in data['Percent Change']],
-            x=data['Percent Change'],
-            y=data['Name'],
-            name = 'Stock',
-            orientation='h',
-            marker_color=['darkgreen' if x > 0 else 'darkred' for x in data['Percent Change']],
+            hovertext=[f"{x:.2f}" + "%" for x in data["Percent Change"]],
+            x=data["Percent Change"],
+            y=data["Name"],
+            name="Stock",
+            orientation="h",
+            marker_color=[
+                "darkgreen" if x > 0 else "darkred" for x in data["Percent Change"]
+            ],
         )
 
         fig.update_layout(
@@ -185,4 +191,6 @@ def view_etf_holdings_performance(ticker: str, start_date: str, end_date: str, l
         )
         return
 
-    return fig.show(external= raw or export)
+    fig.show(external=raw or bool(export))
+
+    return

@@ -43,7 +43,7 @@ def test_get_etf_holdings(recorder, ticker):
     assert result.count != 0
     recorder.capture(result)
 
-@pytest.mark.vcr(record_mode='all')
+
 @pytest.mark.parametrize(
     "ticker",
     [
@@ -51,7 +51,7 @@ def test_get_etf_holdings(recorder, ticker):
     ],
 )
 @pytest.mark.parametrize(
-       "start_date",
+    "start_date",
     [
         "2022-09-01",
     ],
@@ -68,6 +68,7 @@ def test_get_holdings_pct_change(recorder, ticker: str, start_date: str, end_dat
     assert result.empty
     recorder.capture(result)
 
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "ticker",
@@ -76,7 +77,7 @@ def test_get_holdings_pct_change(recorder, ticker: str, start_date: str, end_dat
     ],
 )
 @pytest.mark.parametrize(
-       "start_date",
+    "start_date",
     [
         "2022-09-01",
     ],

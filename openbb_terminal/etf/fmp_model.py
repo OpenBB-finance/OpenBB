@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 import json
 import logging
-from typing import Dict, List
+from typing import Any, Dict, List, Union
 from urllib.error import HTTPError
 from urllib.request import urlopen
+
 import pandas as pd
 
 from openbb_terminal.core.session.current_user import get_current_user
@@ -50,9 +51,12 @@ def get_etf_sector_weightings(name: str) -> Dict:
 
     return data
 
+
 @log_start_end(log=logger)
-@check_api_key(['API_KEY_FINANCIALMODELINGPREP'])
-def get_stock_price_change(ticker: str, start_date: str, end_date: str) -> float:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_stock_price_change(
+    ticker: str, start_date: str, end_date: str
+) -> Union[None, float]:
     """Get stock's price percent change over specified time period.
 
     Parameters
@@ -66,11 +70,13 @@ def get_stock_price_change(ticker: str, start_date: str, end_date: str) -> float
 
     Returns
     -------
-    float
+    Union[None, float]
         Percent change of closing price over time period
     """
     current_user = get_current_user()
-    url = f'''https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?from={start_date}&to={end_date}&serietype=line&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}'''
+    url = f"""https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?
+        from={start_date}&to={end_date}&serietype=line
+        &apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"""
     response = request(url)
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
@@ -83,15 +89,16 @@ def get_stock_price_change(ticker: str, start_date: str, end_date: str) -> float
         return None
     data = response.json()
 
-    close_end = data['historical'][0]['close']
-    close_start = data['historical'][-1]['close']
+    close_end = data["historical"][0]["close"]
+    close_start = data["historical"][-1]["close"]
     pct_change = 100 * (close_end - close_start) / close_start
 
     return pct_change
 
+
 @log_start_end(log=logger)
-@check_api_key(['API_KEY_FINANCIALMODELINGPREP'])
-def get_etf_holdings(ticker: str) -> List[Dict[str,any]]:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_etf_holdings(ticker: str) -> List[Dict[str, Any]]:
     """This endpoint returns all stocks held by a specific ETF.
 
     Parameters
@@ -106,7 +113,8 @@ def get_etf_holdings(ticker: str) -> List[Dict[str,any]]:
     """
 
     current_user = get_current_user()
-    url = f'''https://financialmodelingprep.com/api/v3/etf-holder/{ticker}?apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}'''
+    url = f"""https://financialmodelingprep.com/api/v3/etf-holder/{ticker}?
+        apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"""
     response = request(url)
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
@@ -120,9 +128,12 @@ def get_etf_holdings(ticker: str) -> List[Dict[str,any]]:
 
     return response.json()
 
+
 @log_start_end(log=logger)
-@check_api_key(['API_KEY_FINANCIALMODELINGPREP'])
-def get_holdings_pct_change(ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_holdings_pct_change(
+    ticker: str, start_date: str, end_date: str
+) -> pd.DataFrame:
     """Calculate percent change for each holding in ETF.
 
     Parameters
@@ -140,16 +151,21 @@ def get_holdings_pct_change(ticker: str, start_date: str, end_date: str) -> pd.D
         return pd.DataFrame()
     data_list = []
     for stock in holdings:
-        if stock['asset']:
-            pct_change = get_stock_price_change(ticker=stock['asset'],
-                start_date=start_date, end_date=end_date)
-            data_list.append({"Ticker": stock['asset'], "Name": stock["name"],
-                "Percent Change": pct_change})
+        if stock["asset"]:
+            pct_change = get_stock_price_change(
+                ticker=stock["asset"], start_date=start_date, end_date=end_date
+            )
+            data_list.append(
+                {
+                    "Ticker": stock["asset"],
+                    "Name": stock["name"],
+                    "Percent Change": pct_change,
+                }
+            )
         else:
-            data_list.append({"Ticker": '', "Name": stock["name"],
-                "Percent Change": 0})
+            data_list.append({"Ticker": "", "Name": stock["name"], "Percent Change": 0})
 
     df = pd.DataFrame(data_list)
-    df.sort_values(by='Percent Change',ascending=False, inplace=True)
+    df.sort_values(by="Percent Change", ascending=False, inplace=True)
 
     return df

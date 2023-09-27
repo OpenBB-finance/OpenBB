@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import yfinance as yf
@@ -657,7 +657,7 @@ class ETFController(BaseController):
             type=valid_date,
             default=(datetime.now().date() - timedelta(days=366)),
             dest="start",
-            help="The starting date (format YYYY-MM-DD) to get each holding's price"
+            help="The starting date (format YYYY-MM-DD) to get each holding's price",
         )
         parser.add_argument(
             "-e",
@@ -665,7 +665,7 @@ class ETFController(BaseController):
             type=valid_date,
             default=datetime.now().date(),
             dest="end",
-            help="The ending date (format YYYY-MM-DD) to get each holding's price"
+            help="The ending date (format YYYY-MM-DD) to get each holding's price",
         )
         parser.add_argument(
             "-l",
@@ -678,9 +678,11 @@ class ETFController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args,
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True
+            raw=True,
         )
         if ns_parser:
             if self.etf_name:
